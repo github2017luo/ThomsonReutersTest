@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Send Maritz Closure mail</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Case Closure mail</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>ESC_Maritz_Send_ClosureMail</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>caseList</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>caseList</name>
+            <value>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>emailAlertSelection</name>
+            <value>
+                <stringValue>Corp_GTaxCase_AutoResponse</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>send autoresponse</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <actionName>Case.Corp_GTaxCase_AutoResponse</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>myRule_3_A2</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>emailAlertSelection</name>
+            <value>
+                <stringValue>Corp_GTaxCase_ClosureMail</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>Send CorpGtax Closure Alert</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <actionName>Case.Corp_GTaxCase_ClosureMail</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Case closure mail</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>Corp GTAX Autoresponse</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>Corp Gtax Case Closure mail</label>
+        </rules>
+    </decisions>
+    <description>Case closure mail for Maritz</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,[Case].Is_ESC_Case__c = true ,NOT(ISNULL([Case].ContactId)), 
+[Case].IsClosed  = true, ISCHANGED([Case].Status) ,
+((CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment1__c,TEXT([Case].ESC_Product_Segment_Brand__c))) 
+||(CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment2__c,TEXT([Case].ESC_Product_Segment_Brand__c)))
+||(CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment3__c,TEXT([Case].ESC_Product_Segment_Brand__c)))
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment4__c)
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment5__c)
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment6__c)
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment7__c)
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment8__c)
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment9__c)
+||(TEXT([Case].ESC_Product_Segment_Brand__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment10__c)),
+((CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type1__c,TEXT([Case].ESC_Case_Type__c))) 
+||(CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type2__c,TEXT([Case].ESC_Case_Type__c)))
+||(TEXT([Case].ESC_Case_Type__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type3__c)
+||(TEXT([Case].ESC_Case_Type__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type4__c)
+||(TEXT([Case].ESC_Case_Type__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type5__c)),
+NOT(AND(TEXT([Case].ESC_Proactive_Type__c) != null, TEXT([Case].ESC_Proactive_Type__c) != &apos;&apos;,
+((CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Proactive_Type1__c,TEXT([Case].ESC_Proactive_Type__c))) 
+||(CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Proactive_Type2__c,TEXT([Case].ESC_Proactive_Type__c))))
+)),
+NOT(AND(TEXT([Case].ESC_Product_Title__c) != null, TEXT([Case].ESC_Product_Title__c) != &apos;&apos;,
+((CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title1__c,TEXT([Case].ESC_Product_Title__c))) 
+||(CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title2__c,TEXT([Case].ESC_Product_Title__c)))
+||(CONTAINS($Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title3__c,TEXT([Case].ESC_Product_Title__c)))
+||(TEXT([Case].ESC_Product_Title__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title4__c)
+||(TEXT([Case].ESC_Product_Title__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title5__c)
+||(TEXT([Case].ESC_Product_Title__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title6__c)
+||(TEXT([Case].ESC_Product_Title__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title7__c)
+||(TEXT([Case].ESC_Product_Title__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title8__c)
+||(TEXT([Case].ESC_Product_Title__c) = $Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title9__c)
+)
+))
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,{!myVariable_current.Is_ESC_Case__c} = true ,NOT(ISNULL({!myVariable_current.ContactId})), 
+{!myVariable_current.IsClosed}  = true, ISCHANGED({!myVariable_current.Status}) ,
+((CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment1__c},TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}))) 
+||(CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment2__c},TEXT({!myVariable_current.ESC_Product_Segment_Brand__c})))
+||(CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment3__c},TEXT({!myVariable_current.ESC_Product_Segment_Brand__c})))
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment4__c})
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment5__c})
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment6__c})
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment7__c})
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment8__c})
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment9__c})
+||(TEXT({!myVariable_current.ESC_Product_Segment_Brand__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Product_Brand_Segment10__c})),
+((CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type1__c},TEXT({!myVariable_current.ESC_Case_Type__c}))) 
+||(CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type2__c},TEXT({!myVariable_current.ESC_Case_Type__c})))
+||(TEXT({!myVariable_current.ESC_Case_Type__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type3__c})
+||(TEXT({!myVariable_current.ESC_Case_Type__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type4__c})
+||(TEXT({!myVariable_current.ESC_Case_Type__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Record_Type5__c})),
+NOT(AND(TEXT({!myVariable_current.ESC_Proactive_Type__c}) != null, TEXT({!myVariable_current.ESC_Proactive_Type__c}) != &apos;&apos;,
+((CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Proactive_Type1__c},TEXT({!myVariable_current.ESC_Proactive_Type__c}))) 
+||(CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Proactive_Type2__c},TEXT({!myVariable_current.ESC_Proactive_Type__c}))))
+)),
+NOT(AND(TEXT({!myVariable_current.ESC_Product_Title__c}) != null, TEXT({!myVariable_current.ESC_Product_Title__c}) != &apos;&apos;,
+((CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title1__c},TEXT({!myVariable_current.ESC_Product_Title__c}))) 
+||(CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title2__c},TEXT({!myVariable_current.ESC_Product_Title__c})))
+||(CONTAINS({!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title3__c},TEXT({!myVariable_current.ESC_Product_Title__c})))
+||(TEXT({!myVariable_current.ESC_Product_Title__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title4__c})
+||(TEXT({!myVariable_current.ESC_Product_Title__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title5__c})
+||(TEXT({!myVariable_current.ESC_Product_Title__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title6__c})
+||(TEXT({!myVariable_current.ESC_Product_Title__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title7__c})
+||(TEXT({!myVariable_current.ESC_Product_Title__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title8__c})
+||(TEXT({!myVariable_current.ESC_Product_Title__c}) = {!$Setup.ESC_MaritzCX_InvitationCode__c.ESC_Exclude_Product_Title9__c})
+)
+))
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+	[Case].Is_ESC_Case__c = true,
+	ISPICKVAL([Case].Origin, &apos;Email&apos;),
+	BEGINS([Case].OwnerId , &apos;00G&apos;),
+	[Case].ESC_Survey_Sent__c = false,
+        ISPICKVAL([Case].Status, &apos;New&apos;),
+        ISCHANGED([Case].Status) = false,
+        [Case].ESC_VSTS_Description__c != null,
+        [Case].ESC_VSTS_Description__c  !=&apos;&apos;,
+        [Case].ESC_Origin_Name__c =$Label.Corp_GTaxCase_OriginName
+	)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+	{!myVariable_current.Is_ESC_Case__c} = true,
+	ISPICKVAL({!myVariable_current.Origin}, &apos;Email&apos;),
+	BEGINS({!myVariable_current.OwnerId} , &apos;00G&apos;),
+	{!myVariable_current.ESC_Survey_Sent__c} = false,
+        ISPICKVAL({!myVariable_current.Status}, &apos;New&apos;),
+        ISCHANGED({!myVariable_current.Status}) = false,
+        {!myVariable_current.ESC_VSTS_Description__c} != null,
+        {!myVariable_current.ESC_VSTS_Description__c}  !=&apos;&apos;,
+        {!myVariable_current.ESC_Origin_Name__c} ={!$Label.Corp_GTaxCase_OriginName}
+	)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+[Case].Is_ESC_Case__c = true ,
+NOT(ISNULL([Case].ContactId)), 
+[Case].IsClosed  = true, 
+ISCHANGED([Case].Status) ,
+[Case].ESC_Unique_Identifier__c =&apos;CORP - GTM&apos;,
+ISPICKVAL([Case].Origin, &apos;Email&apos;),
+[Case].ESC_Origin_Name__c  = $Label.Corp_GTaxCase_OriginName 
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+{!myVariable_current.Is_ESC_Case__c} = true ,
+NOT(ISNULL({!myVariable_current.ContactId})), 
+{!myVariable_current.IsClosed}  = true, 
+ISCHANGED({!myVariable_current.Status}) ,
+{!myVariable_current.ESC_Unique_Identifier__c} =&apos;CORP - GTM&apos;,
+ISPICKVAL({!myVariable_current.Origin}, &apos;Email&apos;),
+{!myVariable_current.ESC_Origin_Name__c}  = {!$Label.Corp_GTaxCase_OriginName} 
+)</expression>
+    </formulas>
+    <interviewLabel>ESC_Maritz_Case_Closure_Without_Survey-7_InterviewLabel</interviewLabel>
+    <label>ESC Maritz Case Closure Mail</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Case</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_3_A2</name>
+        <label>Auto Response sent</label>
+        <locationX>300</locationX>
+        <locationY>300</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Survey Sent?</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Boolean</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>ESC_Survey_Sent__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>

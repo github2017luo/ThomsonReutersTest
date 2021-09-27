@@ -1,0 +1,73 @@
+<apex:page id="pageInvoicedetail" standardController="Source_System_Detail__c" extensions="USLARdetailcontroller"  sidebar="false" lightningStylesheets="true">
+
+ <style type="text/css">
+      .loadingIcon {
+            background-image: url(/img/loading.gif);
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+<apex:form id="Invoicedetail"> 
+<apex:pageMessages id="messagesGlobal" />
+     <apex:pageBlock id="invBlock" title="InvoiceDetail Item">   
+            <apex:pageBlockSection columns="1" title="InvoiceList"  rendered="{!!IsError}">            
+                       <apex:outputPanel id="Invoicedetail">
+                             <apex:outputPanel layout="block" rendered="{!oinvlist.invoiceLines.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.No_Records_to_Display}</apex:outputPanel>
+                            <apex:pageBlockTable value="{!oinvlist.invoiceLines}" id="Invtable" var="item" >
+                                 <apex:column >
+                               <apex:facet name="header">{!$Label.USL_materialNumber}</apex:facet>
+                              <apex:outputText value="{!item.materialNumber}"/> 
+                             </apex:column>
+                              <apex:column >
+                               <apex:facet name="header">{!$Label.USL_quantity}</apex:facet>
+                              <apex:outputText value="{!item.quantity}"/> 
+                             </apex:column>
+                              <apex:column >
+                               <apex:facet name="header">{!$Label.USL_PONumber}</apex:facet>
+                              <apex:outputText value="{!item.PONumber}"/> 
+                             </apex:column>
+                              <apex:column >
+                               <apex:facet name="header">{!$Label.USL_lineNumber}</apex:facet>
+                              <apex:outputText value="{!item.lineNumber}"/> 
+                             </apex:column>
+                            <apex:column >
+                               <apex:facet name="header">{!$Label.USL_description}</apex:facet>
+                              <apex:outputText value="{!item.description}"/> 
+                             </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">{!$Label.USL_netPrice}</apex:facet>
+                              <apex:outputText value="{!item.netPrice}"/> 
+                             </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">{!$Label.USL_taxAmount}</apex:facet>
+                              <apex:outputText value="{!item.taxAmount}"/> 
+                             </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">{!$Label.USL_netPerUnitDocCurr}</apex:facet>
+                              <apex:outputText value="{!item.netPerUnitDocCurr}"/> 
+                             </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">{!$Label.USL_taxPerUnitDocCurr}</apex:facet>
+                              <apex:outputText value="{!item.taxPerUnitDocCurr}"/> 
+                             </apex:column>
+                              <apex:column >
+                               <apex:facet name="header">{!$Label.USL_ServiceDate}</apex:facet>
+                              <apex:outputText value="{!item.serviceDate}"/> 
+                             </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                              <apex:outputText value="{!item.document.docnumber}"/> 
+                             </apex:column> 
+                            </apex:pageBlockTable>
+                        </apex:outputpanel>                             
+             <apex:outputPanel layout="block">
+                     {!$Label.AccountRec_Amount}:<apex:outputText value="{!oinvlist.invoiceHeader.amount}" />&nbsp;&nbsp; 
+                     {!$Label.USL_NetAmount}: <apex:outputText value="{!oinvlist.invoiceHeader.netAmount}" />&nbsp;&nbsp;
+                </apex:outputPanel>
+               
+            </apex:pageBlockSection>  
+        </apex:pageBlock> 
+    
+</apex:form>
+
+</apex:page>

@@ -1,0 +1,48 @@
+<!--
+* CNRelationshipGraph
+* {Purpose} – Displays Relationship Strength Graph
+*
+* @author	Glen Cunningham
+* @version	2015-09-09
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date			Name					Description
+* 2015-09-09	Glen Cuninngham		Created
+* =============================================================================
+-->  
+<apex:component >
+	<apex:attribute name="score" description="What is the relationship score?" type="String" required="required" />	
+	<apex:attribute name="con1" description="value 1 for scoring table" type="String" required="required"/>
+	<apex:attribute name="con2" description="value 2 for scoring table" type="String" required="required"/>
+	<apex:attribute name="con3" description="value 3 for scoring table" type="String" required="required"/>
+	<apex:attribute name="con4" description="value 4 for scoring table" type="String" required="required"/>
+	<apex:attribute name="con5" description="value 5 for scoring table" type="String" required="required"/>
+	<apex:attribute name="con6" description="value 6 for scoring table" type="String" required="required"/>
+	<apex:attribute name="con7" description="value 7 for scoring table" type="String" required="required" />
+	<apex:attribute name="colorClass" description="value of base color for scoring table" type="String" required="required" />
+	<apex:attribute name="normalizedScore" description="normalizedScore for title" type="String" required="required" />
+	
+	<table width="100%"><tr><td style="white-space:nowrap; border:0; outline: 0; background-color: transparent; border: 0px solid; padding: 0; spacing: 0; margin: 0;" > 
+		<div style="position: relative;" class="gridRow"> 
+			<div style="display: inline-block;   width:100px;" class="clearFix scoreBar" data-original-title="{!score}" title="{!score}">
+			  	<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
+				<td style="border-width: 0px; border-style: tranparent; "><div id="d1" class="strengthItem {!colorClass} {!con1}">&nbsp;</div>
+				<div id="d2" class="strengthItem {!colorClass} {!con2}">&nbsp;</div>  
+				<div id="d3" class="strengthItem {!colorClass} {!con3}">&nbsp;</div> 
+				<div id="d4" class="strengthItem {!colorClass} {!con4}">&nbsp;</div> 
+				<div id="d5" class="strengthItem {!colorClass} {!con5}">&nbsp;</div> 
+				<div id="d6" class="strengthItem {!colorClass} {!con6}">&nbsp;</div> 
+				<div id="d7" class="strengthItem {!colorClass} {!con7}">&nbsp;</div></td>  
+				</tr></table> 
+				<div id="tt" style="display:none">
+					<div class="tooltip fade bottom in" style="top: 13px; left: 22.5px; display: block;">
+					<div class="tooltip-arrow"></div>
+					<div class="tooltip-inner">{!score}</div></div>
+				</div>
+			</div> 
+		</div>
+	</td></tr></table>		
+</apex:component>

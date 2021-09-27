@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Defines the default permission level for roles accessing the Manage Team and Team Schedule Management pages.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Enable_Send_Notifications__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, the Team Schedule Notifications feature is enabled on the Team Schedule Planner page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, the Team Schedule Notifications feature is enabled on the Team Schedule Planner page.</inlineHelpText>
+        <label>Enable Send Notifications</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Fill_Schedule_Tooltip__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The API name of a field set used to display a custom tooltip for the Fill Schedule tab in the Team Schedule Planner.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The API name of a field set used to display a custom tooltip for the Fill Schedule tab in the Team Schedule Planner.</inlineHelpText>
+        <label>Fill Schedule Tooltip</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Schedule_Email_Template_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies the Template Unique Name of the email template to use for team schedule notifications.
+		If no template is defined, a system-generated email template for notifications is used that includes the team schedule time slot names, start times, and end times. Note that you can override the template at a team level with the Custom Template Name (Schedule) field on the Team object.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the Template Unique Name of the email template to use for team schedule notifications.</inlineHelpText>
+        <label>Email Template (Schedule)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Swap_Email_Template_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies the Template Unique Name of the email template to use for team shift swap notifications. If no template is defined, a system-generated email template for notifications is used that includes the team name, shift day and date,  previously assigned team member, new team member, start and end times, work hours, team time zone, user initiating the swap, and date and time of the swap.  Note that you can override the template at a team level with the Custom Template Name (Swap) field on the Team object.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the Template Unique Name of the email template to use for team shift swap notifications.</inlineHelpText>
+        <label>Email Template (Swap)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Team_Member_Permission_Level__c</fullName>
+        <defaultValue>&apos;1&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the default Team Member permission level for roles accessing the Manage Team and Team Schedule Management pages. Valid values are integers where 0 is None (no access), 1 is Read, and 2 is Edit. If not defined, the default is 1 (Read).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the default Team Member permission level for roles accessing the Manage Team and Team Schedule Management pages. Valid values are integers where 0 is None (no access), 1 is Read, and 2 is Edit. If not defined, the default is 1 (Read).</inlineHelpText>
+        <label>Team Member Permission Level</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Team Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,45 @@
+<!-- This page is used to display survey questions on the Survey -->
+<apex:page showHeader="false" standardController="MaritzCX__Survey__c" extensions="MaritzCX.SurveyQuestionsOnSurveyControllerExt" showChat="false" applyHtmlTag="false" lightningStylesheets="true">
+<style>
+    .sticky {
+        position: sticky !important;
+        top: 0px !important;
+        background-color: white;
+        z-index: 2;
+        border-bottom: 1px solid rgb(221, 219, 218);
+    } 
+    .surveyquestioncontainer {
+        max-height: 210px;
+        display: block;
+        overflow-y: auto;
+    }
+</style>
+<apex:form >
+<apex:pageBlock >
+<!-- this outputtext will render whenever there is no questions availaible -->
+<apex:outputText value="{!$Label.maritzcx__no_records_to_display}" escape="true" rendered="{!IF(surveyQuesList.size==0, true, false)}"/>
+<!-- This page Block table will render the Survey Questions -->
+    <apex:outputPanel styleClass="surveyquestioncontainer">
+        <apex:pageBlockTable value="{!surveyQuesList}" var="sur" rendered="{!IF(surveyQuesList.size > 0, true, false)}">  
+        
+            <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Question__c.fields.MaritzCX__Question_Label__c.label}" headerClass="sticky">
+                <a href="/{!JSENCODE(sur.Id)}" target="_blank"><apex:outputText value="{!if(len(sur.MaritzCX__Question_Label__c) > 40, LEFT(sur.MaritzCX__Question_Label__c, 40)+'...', sur.MaritzCX__Question_Label__c)}" escape="true"> </apex:outputText>&nbsp;</a>
+            </apex:column>
+
+            <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Question__c.fields.Name.label}" headerClass="sticky">
+                <a href="/{!JSENCODE(sur.Id)}" target="_blank">
+                    <apex:outputText title="{!sur.Name}" value="{!if(len(sur.Name) > 20, LEFT(sur.Name, 20)+'...', sur.Name)}" escape="true"/>&nbsp;</a>
+            </apex:column>          
+            
+            <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Question__c.fields.MaritzCX__Question_Type__c.label}" headerClass="sticky">
+                <apex:outputText title="{!sur.MaritzCX__Question_Type__c}" value="{!sur.MaritzCX__Question_Type__c}" escape="true"/>
+            </apex:column>
+
+            <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Question__c.fields.CreatedDate.label}" headerClass="sticky">
+                <apex:outputField value="{!sur.CreatedDate}"/>
+            </apex:column>            
+        </apex:pageBlockTable>
+    </apex:outputPanel>
+</apex:pageBlock>
+</apex:form>
+</apex:page>

@@ -1,0 +1,486 @@
+<template>
+   
+   <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+                <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                </svg>
+                <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate" style="color: orange;">Add User</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          
+                <template if:true={isTrialConsoleSection}>
+                <div class="slds-is-relative" style="background-color: rgb(251, 252, 253);">
+                    <div>
+                        <template if:true={isErrorSpinner} class="slds-m-bottom_large">
+                            <div class="slds-p-around_x-large slds-m-bottom_large">
+                                <lightning-spinner alternative-text="Loading"  size="large" variant="brand">
+        
+                                </lightning-spinner>
+                            </div>
+                            
+                        </template>
+                    </div>
+                    <div class="slds-box slds-p-vertical_small">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-proposition" title="Digital Trial">
+                                    <lightning-icon icon-name="standard:proposition" 
+                                    alternative-text="Connected" size="small" title="small size">
+                                    </lightning-icon>
+                                    <template if:false={isReviewPage}>
+                                        <span class="slds-assistive-text">Enterprise Trial</span>
+                                    </template>
+                                    <template if:true={isReviewPage}>
+                                        <span class="slds-assistive-text">Trial Summary</span>
+                                    </template>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                    <template if:true={isReviewPage}>
+                                        <span style="color: orange;">Trial Summary</span>
+                                    </template>
+                                    <template if:false={isReviewPage}>
+                                        <span style="color: orange;">Enterprise Trial</span>
+                                    </template>
+                                </h2>
+                            </div>
+                            </header>
+                        </div>
+
+                    <lightning-card>
+                            <lightning-record-view-form record-id={recordId} object-api-name="Ent_Trial__c"  title="Enterprise Trial">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Name</label> 
+                                        <p>
+                                            <lightning-formatted-url label={optyName}  value={optyLink} tooltip="Go to Oppotunity" target="_blank"></lightning-formatted-url>
+                                        </p>                                     
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Primary Contact</label>
+                                        <p><lightning-output-field field-name="Primary_Contact__c" variant="label-hidden"></lightning-output-field></p>								
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Trial Name</label> 
+                                        <p><lightning-output-field field-name="Name" variant="label-hidden"></lightning-output-field></p>                                   
+                                    </div>
+									
+									<div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Account SSD</label> 
+                                        <p><lightning-formatted-url label={ssdName}  value={ssdIdLink} tooltip="Go to Source System" target="_blank"></lightning-formatted-url></p>                                   
+                                    </div>
+									
+									<div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Account Name</label> 
+                                        <p>
+                                            <lightning-output-field field-name="Account__c" variant="label-hidden"></lightning-output-field>
+                                        </p>                                     
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <span style="color: red;">*</span>
+                                        <label class="slds-form-element__label" for="form-element-01">Start Date</label>
+										<lightning-input type="date" name="input1" style="width:200px" variant="label-hidden" label="Start Date" value={trialStartDate} onchange={getTrialStartDate} disabled="true"  required></lightning-input>                                        
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <span style="color: red;">*</span>
+                                        <label class="slds-form-element__label" for="form-element-01">Number of Days</label>
+										<lightning-input type="number" name="noOfDays" style="width:200px" variant="label-hidden" label="Number of Days" min="1" max="31" disabled="true" value={NoOfDaysForTrail}  onchange={calculateTrialEndDate} required></lightning-input>                                        
+                                    </div>                                   
+                                    
+                                </div>
+                            </lightning-record-view-form>
+                        </lightning-card>
+                    </div>
+        
+        
+                    <div class="slds-box slds-p-vertical_small">
+                        <div class="c-container slds-card" >
+                
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-product_workspace" title="Digital Trial">
+                                    <lightning-icon icon-name="standard:product_workspace" 
+                                    alternative-text="Connected" size="small" title="small size">
+                                    </lightning-icon>
+                                    <span class="slds-assistive-text">Selected Trial Products</span>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                    <span style="color: orange;">Selected Trial Products</span>
+                                    </h2>
+                                </div>
+                                </header>
+                            </div>
+                
+                           <!-- <lightning-layout>
+                                <lightning-layout-item padding="around-small">
+                                    <div class="header-column slds-m-top_x-small">
+                                        <p class="field-title slds-text-body_small" title="Field 1">Product Name/Material Number</p>
+                                        <p>
+                                            <input type="text" name="productName" value={productNameSearch} id="form-element-01" 
+                                            placeholder="Placeholder text…" class="slds-input" onchange ={getProductInput}/>                </p>
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item padding="around-small">
+                                    <div class="header-column slds-m-top_large">
+                                        <p>
+                                            <button class="slds-button slds-button_brand" onclick={searchProducts}>Search Products</button>
+                                        </p>
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>-->
+                        </div>
+                       <!-- <template if:true={isValidToShowProducts}> 
+                            <div class="slds-scrollable_y">
+                                <div class="slds-m-around_medium"  style="height:14rem">
+                                    <lightning-datatable
+                                    data-id="datarow" columns={prdcolumns}  data={searchProductResult} key-field="Id"
+                                    onrowaction={handleRowActions} hide-checkbox-column="true">
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                        </template>-->
+                  <!--<template if:false={isValidToShowProducts}> 
+                            <span style="color: orange;">
+                                <b>No Product to display!! </b> </span> 
+                            
+                        </template>-->
+                        <template if:true={isProductLoaded} class="slds-spinner_inline spinner-padding">
+                            <lightning-spinner variant="brand" 
+                                            alternative-text="Loading Products"     
+                                            size="large">
+                            </lightning-spinner>
+                        </template>
+                        <template if:true={seletedProductList.length}>
+                            <div class="slds-scrollable_y">
+                                <lightning-card> 
+                                    <div class="slds-m-around_medium"  style="height:10rem">
+                                        <lightning-datatable  columns={selectedPrdcolumns}  data={seletedProductList} key-field="trialPrdId"
+                                        onrowaction={handleRowRemove} hide-checkbox-column="true">
+                                        </lightning-datatable>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </template>
+                        
+                    </div>
+        
+                    <div class="slds-box slds-p-vertical_small">
+                        <div class="slds-scrollable_y">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-contact_list" title="Digital Trial">
+                                        <lightning-icon icon-name="standard:contact_list" 
+                                        alternative-text="Connected" size="small" title="small size">
+                                        </lightning-icon>
+                                        <template if:true={isValidToShowGSIContacts}>
+                                            <span class="slds-assistive-text">GSI Contacts</span>
+                                            </template>
+                                            <template if:false={isValidToShowGSIContacts}>
+                                            <span class="slds-assistive-text">Online Contacts</span>
+                                            </template>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <template if:true={isValidToShowGSIContacts}>
+                                            <span style="color: orange;">GSI Contacts</span>
+                                        </template>
+                                        <template if:false={isValidToShowGSIContacts}>
+                                            <span style="color: orange;">Online Contacts</span>
+                                        </template>
+                                    </h2>
+                                </div>
+                                
+                                <template if:true={isValidToShowGSIContacts}>
+                                    <lightning-button-icon title="Sync" icon-name="utility:sync"  onclick={refreshGSIContacts}>
+                                    </lightning-button-icon>
+                                </template>
+                                </header>
+                            </div> 
+                           
+                            <div class="slds-m-around_medium"  style="height:14rem">
+                                <lightning-datatable  data-id="TrialContactToDisplay" id="TrialContactToDisplay"
+                                key-field="Id" data={trailContactsToDisplay} columns={trialContTableColumns} 
+                                onrowaction={handleRowAddTrailContact}
+                                hide-checkbox-column="true"  >
+                                </lightning-datatable>
+                            </div>
+                            
+                            <template if:true={trailContactsSelected.length}>
+                            <div class="slds-m-around_medium"  style="height:10rem">
+                                <lightning-datatable  data-id="TrialContactSelected" id="TrialContactSelected"
+                                key-field="email" data={trailContactsSelected} columns={trialContTableColumnsSeleted} 
+                                onrowaction={handleRowRemoveTrialContact} 
+                                max-row-selection="1"  selected-rows={selectedRecord} 
+                                hide-checkbox-column="true" >
+                                </lightning-datatable>
+                                
+                            </div>
+                            </template>
+                        </div>
+                    </div>
+        
+                    <template if:true={isValidToShowGSIContacts}>
+                                
+                        <div class="slds-box slds-p-vertical_small">
+                            <lightning-card>
+                                <h3 slot="title">
+                                    <lightning-icon icon-name="standard:timesheet" alternative-text="Event" size="small"></lightning-icon>
+                                    &nbsp;New Contacts
+                                </h3>
+                                <template for:each={itemList} for:item="item" for:index="index">
+                                    <lightning-record-edit-form key={item.id} object-api-name="Contact" onsuccess={contactCreationSuccess} >
+                                        <lightning-messages> </lightning-messages>
+                                        <lightning-layout multiple-rows>
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                                                padding="around-small">
+                                                <lightning-input-field  field-name="FirstName" class="contactField" variant="label-stacked" required>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                                                padding="around-small">
+                                                <lightning-input-field field-name="LastName" class="contactField" variant="label-stacked" required>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                                                padding="around-small">
+                                                <lightning-input-field field-name="Email" class="contactField" variant="label-stacked" required>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                                                padding="around-small">
+                                                <lightning-input-field field-name="ESC_tocLanguage__c"  class="contactField" variant="label-stacked" required>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                                                padding="around-small">
+                                                <lightning-input-field field-name="AccountId" value={accountId} variant="label-stacked" disabled="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                                                padding="around-small">
+                                                <div class="slds-p-top_medium">
+                                                    <lightning-button-icon title="Add Row" icon-name="utility:new" value={index} access-key={item.id}  variant="bare" onclick={addRow}>
+                                                    </lightning-button-icon>
+                                                    <lightning-button-icon title="Delete Row" icon-name="utility:delete" value={index} access-key={item.id}  variant="bare" onclick={removeRow}>
+                                                    </lightning-button-icon>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                        
+                                    </lightning-record-edit-form>
+                                </template>
+                                </br>
+                                <lightning-layout>
+                                    <div class="slds-clearfix">
+                                        <div class="slds-float_right">
+                                            <lightning-button variant="brand" onclick={createContacts}  name="submit" label="Create Contact">
+                                            </lightning-button>
+                                        </div>
+                                      </div>
+                                </lightning-layout>
+                            </lightning-card>
+                        </div>
+                    </template>
+           
+                </div>
+        
+            </template>
+
+            <template if:true={isReviewPage}>
+                <div>
+                    <template if:true={isErrorSpinner} class="slds-m-bottom_large">
+                        <div class="slds-p-around_x-large slds-m-bottom_large">
+                            <lightning-spinner alternative-text="Loading"  size="large" variant="brand">
+    
+                            </lightning-spinner>
+                        </div>
+                        
+                    </template>
+                </div>
+                <div style="background-color: rgb(251, 252, 253);">
+                    <div class="slds-box slds-p-vertical_small">
+                        <div class="slds-card__header slds-grid">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                            <div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-standard-proposition" title="Digital Trial">
+                                    <lightning-icon icon-name="standard:proposition" 
+                                    alternative-text="Connected" size="small" title="small size">
+                                    </lightning-icon>
+                                <span class="slds-assistive-text">Trial Summary</span>
+                                </span>
+                            </div>
+                            <div class="slds-media__body">
+                                <h2 class="slds-card__header-title">
+                                <span style="color: orange;">Trial Summary</span>
+                                </h2>
+                            </div>
+                            </header>
+                        </div>
+                        
+                        <lightning-card>
+                            <lightning-record-view-form record-id={recordId} object-api-name="Ent_Trial__c"  title="Enterprise Trial">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Name</label> 
+                                        <p>
+                                            <lightning-formatted-url label={optyName}  value={optyLink} tooltip="Go to Oppotunity" target="_blank"></lightning-formatted-url>
+                                        </p>                                     
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Primary Contact</label>
+                                        <p><lightning-output-field field-name="Primary_Contact__c" variant="label-hidden"></lightning-output-field></p>								
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Name</label> 
+                                        <p><lightning-output-field field-name="Name" variant="label-hidden"></lightning-output-field></p>                                   
+                                    </div>
+									
+									<div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Account SSD</label> 
+                                        <p><lightning-formatted-url label={ssdName}  value={ssdIdLink} tooltip="Go to Source System" target="_blank"></lightning-formatted-url></p>                                   
+                                    </div>
+									
+									<div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+                                        <label class="slds-form-element__label" for="form-element-01">Account Name</label> 
+                                        <p>
+                                            <lightning-output-field field-name="Account__c" variant="label-hidden"></lightning-output-field>
+                                        </p>                                     
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+										<span style="color: red;">*</span>
+                                        <label class="slds-form-element__label" for="form-element-01">Number of Days</label>
+										<lightning-input type="number" name="noOfDays" style="width:200px" variant="label-hidden" label="Number of Days" min="1" max="31" disabled="true" value={NoOfDaysForTrail}  onchange={calculateTrialEndDate} required></lightning-input><br/>										                                      
+                                    </div>
+                                    
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">
+										<span style="color: red;">*</span>
+                                        <label class="slds-form-element__label" for="form-element-01">Start Date</label>
+										<lightning-input type="date" name="input1" style="width:200px" variant="label-hidden" label="Start Date" value={trialStartDate} onchange={getTrialStartDate} disabled="true"  required></lightning-input>										                                        
+                                    </div>
+                                    
+                                   
+                                    <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom--medium">			
+                                        <label class="slds-form-element__label" for="form-element-01">End Date</label>
+                                    <lightning-input type="date" name="input2" style="width:200px" variant="label-hidden" label="End Date" value={trialEndDate} disabled="true" ></lightning-input>
+                                    </div>
+                                </div>
+                                </lightning-record-view-form>
+                        </lightning-card>
+                    </div>
+                   
+                    <div class="slds-box slds-p-vertical_small">
+                            <div class="c-container slds-card" >
+                                <div class="slds-card__header slds-grid">
+                                    <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <span class="slds-icon_container slds-icon-standard-product_workspace" title="Digital Trial">
+                                        <lightning-icon icon-name="standard:product_workspace" 
+                                        alternative-text="Connected" size="small" title="small size">
+                                        </lightning-icon>
+                                        <span class="slds-assistive-text">Selected Trial Products</span>
+                                        </span>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <h2 class="slds-card__header-title">
+                                        <span style="color: orange;">Selected Trial Products</span>
+                                        </h2>
+                                    </div>
+                                    </header>
+                                </div>
+                            </div>
+                    
+                            <div class="slds-scrollable_y">
+                                <lightning-card title="">
+                                    <div class="slds-m-around_medium"  style="height:10rem">
+                                        <lightning-datatable  columns={selectedPrdcolumnsReview}  data={seletedProductList} key-field="Id"
+                                        hide-checkbox-column="true">
+                                        </lightning-datatable>
+                                    </div>
+                                </lightning-card>
+                            </div>
+                        </div>
+        
+                    <div class="slds-box slds-p-vertical_small">
+                        <div class="slds-scrollable_y">
+                            <div class="slds-card__header slds-grid">
+                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-standard-contact_list" title="Digital Trial">
+                                        <lightning-icon icon-name="standard:contact_list" 
+                                        alternative-text="Connected" size="small" title="small size">
+                                        </lightning-icon>
+                                        <template if:true={isValidToShowGSIContacts}>
+                                            <span class="slds-assistive-text">Selected GSI Contacts</span>
+                                        </template>
+                                        <template if:false={isValidToShowGSIContacts}>
+                                            <span class="slds-assistive-text">Selected Online Contacts</span>
+                                        </template>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        <template if:true={isValidToShowGSIContacts}>
+                                            <span style="color: orange;">Selected GSI Contacts</span>
+                                        </template>
+                                        <template if:false={isValidToShowGSIContacts}>
+                                            <span style="color: orange;">Selected Online Contacts</span>
+                                        </template>
+                                    
+                                    </h2>
+                                </div>
+                                </header>
+                            </div> 
+                            <div class="slds-m-around_medium"  style="height:10rem">
+                                <lightning-datatable  data-id="TrialContactReview" id="TrialContactReview"
+                                key-field="email" data={trailContactsSelected} columns={trialContTableColumnsReview} 
+                                  selected-rows={selectedRecord}  hide-checkbox-column="true">
+                                </lightning-datatable>
+                            </div>
+                           <!--<div>
+                                <span style="color: orange;">
+                                    <b>Primary Contact Email: </b> </span> {selectedRecord}
+                            </div>-->
+                        </div>
+                    </div>
+                    
+        
+                </div>
+                
+            </template>
+
+            </div>
+
+            <div class="slds-docked-form-footer">
+                <template if:true={isTrialConsoleSection}>
+                    <button type="button" class="slds-button slds-button_brand" onclick={goToReviewPage} >Review</button>
+                    <!--button class="slds-button slds-button_brand" onclick={saveTrials} >Save</button> -->
+                </template>
+                <template if:true={isReviewPage}>
+                    <button class="slds-button slds-button_brand" onclick={backToConsolePage} >Back</button>
+                    <button class="slds-button slds-button_brand" onclick={saveTrials} >Submit</button>
+                   <!-- <button class="slds-button slds-button_brand" onclick={startTrials}>Submit Trial</button>-->
+                </template>
+                <button type="button" class="slds-button slds-button_neutral"  onclick={closeQuickAction}>Cancel</button>
+                </div>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

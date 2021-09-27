@@ -1,0 +1,72 @@
+<apex:page controller="SF1LeadCreateController" lightningStylesheets="true">
+    <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/knockout/2.1.0/knockout-min.js" />
+    
+    <!--Include Stylsheets for the Mobile look and feel -->
+    <apex:stylesheet value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/css/app.min.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/js/jQuery2.0.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/js/jquery.touchwipe.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Mobile_Design_Templates, 
+                'Mobile-Design-Templates-master/common/js/main.min.js')}"/>
+                
+    <apex:includeScript value="/canvas/sdk/js/publisher.js"/> 
+    
+    <apex:form id="createForm">
+        
+        <script type="text/javascript">   
+            function goToSavedRecord(){  
+                /*alert('hi'); */
+                var boolRedirect =  '{!bRedirect}'; 
+                   
+                if(boolRedirect =='true'){     
+                    if(typeof sforce != 'undefined' && typeof sforce.one != 'undefined' && sforce != null){  
+                        /*alert('SRU'); */
+                        sforce.one.navigateToSObject('{!savedLeadId}');
+                    }
+                    else{  
+                        window.location.href = '/'+savedLeadId;
+                    } 
+                    return false;  
+                }
+            } 
+        </script>
+        
+        <apex:pageBlock mode="edit">
+            
+            <apex:pageBlockSection title="Lead Create" columns="1">
+                <apex:inputField value="{!Lead.FirstName}" required="true"/>
+                <apex:inputField value="{!Lead.LastName}"/>
+                <apex:inputField value="{!Lead.Company}" label="Company"/>
+                <apex:pageBlockSectionItem id="sectionItemCountry" >
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$ObjectType.Lead.Fields.Billing_Country__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" value="{!Lead.Billing_Country__c}" size="1" multiselect="false" required="true">
+                                <apex:selectOptions value="{!listCountryOptions}"/>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <!--</div>-->
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.Phone}"/>
+                <apex:inputField value="{!Lead.Email}"/>
+                <apex:inputField value="{!Lead.LeadSource}"/>
+                <apex:inputField value="{!Lead.Source__c}"/>
+                <apex:inputField value="{!Lead.Type__c}"/>   
+                
+                <!-- <apex:pageBlockButtons location="bottom"> -->
+                    <apex:commandButton value="Save" action="{!save}" title="Save" rerender="createForm" oncomplete="goToSavedRecord()"/>
+                <!-- </apex:pageBlockButtons>    -->
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>          
+    </apex:form>    
+
+</apex:page>

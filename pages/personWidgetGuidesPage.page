@@ -1,0 +1,19 @@
+<apex:page standardController="Contact" sidebar="false" showHeader="false" standardStylesheets="false" cache="true" expires="300" docType="html-5.0" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximumscale=1.0, user-scalable=no"/>
+    </head>
+    <body style="margin: 0px; padding:0px;">
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Contacts-View All" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='viewAll'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Contacts-With Recent Act" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='recAct'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Leads-Open Leads" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='openLead'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Leads-Unworked Leads" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='unworkLead'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Opportunities-Open" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='allOpen'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Opportunities-Closed" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='closedPipe'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Opportunities-Trial" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='oppOnDemTrails'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Subs-All Active" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='allAct'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Subs-Ren Next 90" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='subRenNext'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget Subs-Access" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='subAccess'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget MarkAct-Last90" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='markActLast90'}"/>
+        <icrt:AeSalesGuides sf1="publisher" guideName="Person Widget SalesAct-Last90" objectType="Contact" objectId="{!$CurrentPage.parameters.id}" alwaysNewGuide="true" rendered="{!$CurrentPage.parameters.funct='salesAct90'}"/>
+    </body>
+</apex:page>

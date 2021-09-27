@@ -1,0 +1,445 @@
+<apex:page id="pageInvoice" standardController="Account" extensions="InvoiceControllerNew"  sidebar="false" title="{!$Label.AccountRec_Title}:{!Account.Name}" lightningStylesheets="true">
+    <apex:includeScript value="/support/console/22.0/integration.js" />
+    <apex:sectionHeader id="title" title="{!$Label.AccountRec_Title}" subtitle="{!Account.Name}"/> 
+    <script>
+        function setFocusOnLoad(){}        
+    </script>
+    <script type="text/javascript">
+        function Opendocurl(docUrl){ 
+            if(docUrl=='' || docUrl == null){
+                alert('{!$Label.AccountRec_ImageError}');
+            }else {
+                window.open(docUrl);
+            }
+        }
+        function testOpenSubtab(){
+               // alert('Hi');
+                if (sforce.console.isInConsole()) { 
+                  //  alert('Hi Console');
+                    
+                    var url = '/{!Account.Id}?isdtp=vw'; 
+                    //alert(url);
+                    srcSelf(url); 
+                } else { 
+                  //  alert('Hi Sales');                 
+                    
+                    var url = '/{!Account.Id}';
+                    //alert(url); 
+                    window.open(url,'_top'); 
+                } 
+             }
+    </script>
+    <apex:form id="formInvoice">
+        <apex:pageMessages id="messagesGlobal" />
+        <apex:actionFunction name="rerenderInvoice" reRender="pageBlock" status="statusInvoice" action="{!setInvoiceDateRange}"/>  <br/><br/>
+        <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 6px;">
+            &laquo;
+            <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Account.Name}</a>    <!--SFD-16-->
+            <!--<apex:outputLink value="/{!Account.Id}" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Account.Name}</apex:outputLink>-->         
+        </div>
+        <br/>
+        <apex:outputLabel for="InvoiceType" value="{!$Label.AccountRec_ViewPicklistLabel} " style="font-weight:bold;"  />
+        <apex:selectList value="{!sSelectedOption}" size="1" id="i" onchange="rerenderInvoice();">
+            <apex:selectOptions value="{!InvoiceItemType}" />
+        </apex:selectList><br/><br/> 
+
+        <apex:actionStatus id="statusInvoice">                
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">                
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">                       
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>                        
+                        <apex:panelGroup >
+                            <div class="messageText">{!$Label.AccountRec_LoadingInv}</div>
+                        </apex:panelGroup>                        
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>            
+        </apex:actionStatus>
+        
+        <apex:actionStatus id="statusImage">                
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">                
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">                       
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>                        
+                        <apex:panelGroup >
+                            <div class="messageText">{!$Label.AccountRec_LoadingInvImg}</div>
+                        </apex:panelGroup>                        
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>            
+        </apex:actionStatus>
+     
+        <apex:pageBlock id="pageBlock">
+
+            <apex:pageBlockSection columns="6" id="sectionFilters" collapsible="false" title="{!$Label.AccountRec_DateRangeSecTitle}">
+                <apex:inputtext id="BeginDate" value="{!BeginDt}" onfocus="DatePicker.pickDate(false, this, false);"
+                    label="{!$Label.AccountRec_BeginDate}"/>
+                <apex:inputtext id="EndDate" value="{!EndDt}" onfocus="DatePicker.pickDate(false, this, false);"
+                    label="{!$Label.AccountRec_EndDate}"/>
+                <apex:commandButton value="{!$Label.AccountRec_DateRangeSecButton}" reRender="formInvoice" status="statusInvoice"
+                    action="{!setInvoiceDateRange}" />
+            </apex:pageBlockSection>
+           
+            <!-- PageBlockSection for ALL Items --> 
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionAllItems" title="{!$Label.AccountRec_AllItemSecHeader}"  rendered="{!sSelectedOption == $Label.AccountRec_SOAll}" collapsible="false">
+                <apex:pageblocktable value="{!InvoiceItemList}" var="invoice" id="tableInvoiceInfo">
+                     <apex:column headerValue="{!$Label.AccountRec_ViewImage}" >
+                         <apex:commandlink action="{!getDocUrl}"  rendered="{!invoice.ReferenceKey1!=null}" status="statusImage"  target="_blank" oncomplete="Opendocurl('{!strUrl}')">                        
+                             <apex:param name="refkey" value="{!invoice.ReferenceKey1}"/>
+                         Image </apex:commandLink>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ClearingDoc}</apex:facet>
+                          <apex:outputText value="{!invoice.ClearingDocumentNumber}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ClearingDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.ClearingDt}" />
+                          </apex:outputtext>
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DocNumber}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentNumber}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_InvoiceRef}</apex:facet>
+                          <apex:outputText value="{!invoice.InvoiceNumber}"/>
+                     </apex:column>
+					 <!-- MCL 1556 START --> 
+					 <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_Reference}</apex:facet>
+                          <apex:outputText value="{!invoice.reference}"/>
+                     </apex:column>
+					 <!-- MCL 1556 END -->
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_RefKey1}</apex:facet>
+                          <apex:outputText value="{!invoice.ReferenceKey1}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_RefKey2}</apex:facet>
+                          <apex:outputText value="{!invoice.Referencekey2}"/>
+                     </apex:column>
+                     <apex:column ><!-- rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_SalesOrg}</apex:facet>
+                          <apex:outputText value="{!invoice.salesOrg}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_TextSummary}</apex:facet>
+                          <apex:outputText value="{!invoice.ShortDesc}"/>
+                     </apex:column>
+                     <apex:column ><!-- rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_DueDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                   <apex:param value="{!invoice.DueDt}" />
+                          </apex:outputtext>                             
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_BillingDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                   <apex:param value="{!invoice.BaselineDt}" />
+                          </apex:outputtext>                             
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DocDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                   <apex:param value="{!invoice.DocumentDt}" />
+                          </apex:outputtext>                             
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ArrearsinDays}</apex:facet>
+                          <apex:outputText value="{!invoice.ArrearDays}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                          <apex:outputText value="{!invoice.frmtAmount}"/>
+                          <!--<apex:outputText value="{!DynamicFormatString}">
+                              <apex:param value="{!invoice.Amount}" />
+                          </apex:outputText>-->
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_Currency}</apex:facet>
+                          <apex:outputText value="{!invoice.CurrencyInd}"/>
+                     </apex:column>
+                     <!--<apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DocumentType}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentType}"/>
+                     </apex:column>-->
+                     <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_DocumentCode}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentType}"/>
+                     </apex:column>
+                     <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_DocumentDesc}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentDesc}"/>
+                     </apex:column>
+                     <!--
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_ReasonCode}</apex:facet>
+                          <apex:outputText value="{!invoice.ReasonCode}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DunnLevel}</apex:facet>
+                          <apex:outputText value="{!invoice.DunningLevel}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DunnBlock}</apex:facet>
+                          <apex:outputText value="{!invoice.DunningBlock}"/>
+                     </apex:column>
+                     -->
+                 </apex:pageBlockTable>    
+                 <apex:outputPanel layout="block"
+                                rendered="{!InvoiceItemList.size==0}"
+                                style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.AccountRec_NoRecordsMsg}
+                </apex:outputPanel>                          
+            </apex:pageBlockSection>        
+     
+       <!-- PageBlockSection for Open Items-->
+       <apex:pageBlockSection columns="1" id="bPageBlockSectionOpenItems" title="{!sSelectedOption} {!$Label.AccountRec_ItemsTrans}" rendered="{!OR(sSelectedOption == $Label.AccountRec_SOOpen,sSelectedOption == $Label.AccountRec_SOOpenDue,sSelectedOption == $Label.AccountRec_SOOpenNotDue)}" collapsible="false">
+             <apex:pageblocktable value="{!InvoiceItemList}" var="invoice" id="tableInvoiceInfo">     
+                 <apex:column headerValue="{!$Label.AccountRec_ViewImage}" >
+                     <apex:commandlink action="{!getDocUrl}" rendered="{!invoice.ReferenceKey1!=null}" status="statusImage" target="_blank" oncomplete="Opendocurl('{!strUrl}')">Images
+                     <apex:param name="refkey" value="{!invoice.ReferenceKey1}"/>
+                     </apex:commandlink>
+                 </apex:column>
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_ClearingDoc}</apex:facet>
+                      <apex:outputText value="{!invoice.ClearingDocumentNumber}"/>
+                 </apex:column>
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_ClearingDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.ClearingDt}" />
+                          </apex:outputtext>
+                 </apex:column>
+                 <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_DocNumber}</apex:facet>
+                      <apex:outputText value="{!invoice.DocumentNumber}"/>
+                 </apex:column>
+                 <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_InvoiceRef}</apex:facet>
+                      <apex:outputText value="{!invoice.InvoiceNumber}"/>
+                 </apex:column>
+				 <!-- MCL 1556 START -->
+				 <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_Reference}</apex:facet>
+                      <apex:outputText value="{!invoice.reference}"/>
+                 </apex:column>
+				 <!-- MCL 1556 END -->
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_RefKey1}</apex:facet>
+                      <apex:outputText value="{!invoice.ReferenceKey1}"/>
+                 </apex:column>
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_RefKey2}</apex:facet>
+                      <apex:outputText value="{!invoice.Referencekey2}"/>
+                 </apex:column> 
+                 <apex:column ><!-- rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">-->
+                      <apex:facet name="header">{!$Label.AccountRec_SalesOrg}</apex:facet>
+                      <apex:outputText value="{!invoice.salesOrg}"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">{!$Label.AccountRec_TextSummary}</apex:facet>
+                      <apex:outputText value="{!invoice.ShortDesc}"/>
+                 </apex:column>                 
+                 <apex:column ><!-- rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">-->
+                      <apex:facet name="header">{!$Label.AccountRec_DueDate}</apex:facet>
+                      <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.DueDt}" />
+                      </apex:outputtext>                             
+                 </apex:column>
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_BillingDate}</apex:facet>
+                      <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.BaselineDt}" />
+                      </apex:outputtext>                             
+                 </apex:column>
+                 <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_DocDate}</apex:facet>
+                      <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.DocumentDt}" />
+                      </apex:outputtext>                             
+                 </apex:column>
+                 <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ArrearsinDays}</apex:facet>
+                          <apex:outputText value="{!invoice.ArrearDays}"/>
+                 </apex:column>
+                 <apex:column >
+                      <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                      <apex:outputText value="{!invoice.frmtAmount}"/>
+                      <!--<apex:outputText value="{0,number,DynamicFormatString}">
+                          <apex:param value="{!invoice.Amount}" />
+                      </apex:outputText>-->
+                 </apex:column>
+                 <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_Currency}</apex:facet>
+                      <apex:outputText value="{!invoice.CurrencyInd}"/>
+                 </apex:column>
+                 <!--
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_ArrearsinDays}</apex:facet>
+                          <apex:outputText value="{!invoice.ArrearDays}"/>
+                 </apex:column>
+                 <apex:column rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_ArrearsinDays}</apex:facet>
+                      <apex:outputText value="{!invoice.ArrearDays}"/>
+                      <apex:facet name="footer">{!$Label.AccountRec_TotalAmount}&nbsp;{!sSelectedOption} {!$Label.AccountRec_ItemsTrans}</apex:facet>
+                 </apex:column>
+                 <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                      <apex:outputText value="{!invoice.Amount}"/>
+                 </apex:column>
+                 <apex:column rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                      <apex:outputText value="{!invoice.Amount}"/>
+                      <apex:facet name="footer">{!totalAmount}</apex:facet>
+                 </apex:column>
+                 -->
+                 <!--<apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                      <apex:facet name="header">{!$Label.AccountRec_DocumentType}</apex:facet>
+                      <apex:outputText value="{!invoice.DocumentType}"/>
+                 </apex:column>-->
+                 <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                      <apex:facet name="header">{!$Label.AccountRec_DocumentCode}</apex:facet>
+                      <apex:outputText value="{!invoice.DocumentType}"/>
+                 </apex:column>
+                 <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                      <apex:facet name="header">{!$Label.AccountRec_DocumentDesc}</apex:facet>
+                      <apex:outputText value="{!invoice.DocumentDesc}"/>
+                 </apex:column>
+                 <!--<apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_ReasonCode}</apex:facet>
+                          <apex:outputText value="{!invoice.ReasonCode}"/>
+                     </apex:column>-->
+                </apex:pageBlockTable>    
+                <apex:outputPanel layout="block" rendered="{!AND(NOT(InvoiceItemList.size==0),NOT($User.Language__c='English'))}"
+                                style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;text-align:center"><b>{!$Label.AccountRec_TotalAmount}&nbsp;{!$Label.AccountRec_ItemsTrans}&nbsp;{!sSelectedOption} :</b> {!frmtTotalAmount}
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" rendered="{!AND(NOT(InvoiceItemList.size==0),$User.Language__c='English')}"
+                                style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;text-align:center"><b>{!$Label.AccountRec_TotalAmount}&nbsp;{!sSelectedOption} {!$Label.AccountRec_ItemsTrans} :</b> {!frmtTotalAmount}
+                </apex:outputPanel>
+                <apex:outputPanel layout="block"
+                                rendered="{!InvoiceItemList.size==0}"
+                                style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.AccountRec_NoRecordsMsg}
+                </apex:outputPanel>
+           </apex:pageBlockSection>
+            
+           <!-- PageBlockSection for Cleared Items -->
+           <apex:pageBlockSection columns="1" id="bPageBlockSectionClearedItems" title="{!sSelectedOption} {!$Label.AccountRec_ItemsTrans}" rendered="{!sSelectedOption == $Label.AccountRec_SOCleared}" collapsible="false">
+                 <apex:pageblocktable value="{!InvoiceItemList}" var="invoice" id="tableInvoiceInfo">
+                     <apex:column headerValue="{!$Label.AccountRec_ViewImage}" >
+                         <apex:commandlink action="{!getDocUrl}" rendered="{!invoice.ReferenceKey1!=null}" status="statusImage" target="_blank" oncomplete="Opendocurl('{!strUrl}')">Images
+                         <apex:param name="refkey" value="{!invoice.ReferenceKey1}"/>
+                         </apex:commandlink>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ClearingDoc}</apex:facet>
+                          <apex:outputText value="{!invoice.ClearingDocumentNumber}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ClearingDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.ClearingDt}" />
+                          </apex:outputtext>
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DocNumber}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentNumber}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_InvoiceRef}</apex:facet>
+                          <apex:outputText value="{!invoice.InvoiceNumber}"/>
+                     </apex:column>
+					 <!-- MCL 1556 START -->
+					<apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_Reference}</apex:facet>
+                          <apex:outputText value="{!invoice.reference}"/>
+                     </apex:column>
+					  <!-- MCL 1556 END -->
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_RefKey1}</apex:facet>
+                          <apex:outputText value="{!invoice.ReferenceKey1}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                              <apex:facet name="header">{!$Label.AccountRec_RefKey2}</apex:facet>
+                              <apex:outputText value="{!invoice.Referencekey2}"/>
+                         </apex:column> 
+                     <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_SalesOrg}</apex:facet>
+                          <apex:outputText value="{!invoice.salesOrg}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_TextSummary}</apex:facet>
+                          <apex:outputText value="{!invoice.ShortDesc}"/>
+                     </apex:column>                 
+                     <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_DueDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                               <apex:param value="{!invoice.DueDt}" />
+                          </apex:outputtext>                             
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_BillingDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                   <apex:param value="{!invoice.BaselineDt}" />
+                          </apex:outputtext>                             
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DocDate}</apex:facet>
+                          <apex:outputText value="{0,date,MM/dd/yyyy}">
+                                   <apex:param value="{!invoice.DocumentDt}" />
+                          </apex:outputtext>                             
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_ArrearsinDays}</apex:facet>
+                          <apex:outputText value="{!invoice.ArrearDays}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                          <apex:outputText value="{!invoice.frmtAmount}"/>
+                          <!--<apex:outputText value="{!DynamicFormatString}">
+                              <apex:param value="{!invoice.Amount}" />
+                          </apex:outputText>-->
+                     </apex:column>
+                     <apex:column rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator',true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_Currency}</apex:facet>
+                          <apex:outputText value="{!invoice.CurrencyInd}"/>
+                     </apex:column>
+                     <!--<apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DocumentType}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentType}"/>
+                     </apex:column>-->
+                     <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_DocumentCode}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentType}"/>
+                     </apex:column>
+                     <apex:column ><!-- rendered="{!IF(($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator'),true,false)}">-->
+                          <apex:facet name="header">{!$Label.AccountRec_DocumentDesc}</apex:facet>
+                          <apex:outputText value="{!invoice.DocumentDesc}"/>
+                     </apex:column>
+                     <!--<apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_ReasonCode}</apex:facet>
+                          <apex:outputText value="{!invoice.ReasonCode}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DunnLevel}</apex:facet>
+                          <apex:outputText value="{!invoice.DunningLevel}"/>
+                     </apex:column>
+                     <apex:column rendered="{!IF(NOT($Profile.Name == 'LatAm User'),true,false)}">
+                          <apex:facet name="header">{!$Label.AccountRec_DunnBlock}</apex:facet>
+                          <apex:outputText value="{!invoice.DunningBlock}"/>
+                     </apex:column>-->
+                </apex:pageBlockTable> 
+                <apex:outputPanel layout="block"
+                                rendered="{!InvoiceItemList.size==0}"
+                                style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.AccountRec_NoRecordsMsg}
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>

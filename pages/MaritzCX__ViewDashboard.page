@@ -1,0 +1,43 @@
+<apex:page standardController="MaritzCX__Survey_Response__c" recordSetVar="abcc" showHeader="false" showChat="false" showQuickActionVfHeader="false" sidebar="false" standardStylesheets="false" wizard="false" setup="false" readOnly="true">
+    <apex:variable var="isLightning" value="{!$User.UIThemeDisplayed=='Theme4d' || $User.UIThemeDisplayed=='Theme4u'}"/>
+  <script>
+        window.onload = function(){            
+            var recordId = '{!JSENCODE($CurrentPage.parameters.Id)}';
+            var pageName='';
+            var conPrefix = '{!$ObjectType.Contact.keyPrefix}';
+            var accPrefix = '{!$ObjectType.Account.keyPrefix}';
+            var leadPrefix = '{!$ObjectType.Lead.keyPrefix}';
+            if(recordId!='')
+            {
+                if(recordId.substring(0,3) == conPrefix)
+                {
+                    pageName='visualizations';
+                }
+                else if(recordId.substring(0,3) == accPrefix)
+                {
+                    pageName='VisualizationOnAccount';
+                }
+                else if(recordId.substring(0,3) == leadPrefix)
+                {
+                    pageName='VisualizationOnLead';
+                }
+                
+                if(pageName != '')
+                {
+                    var namespace = '{!JSENCODE($Setup.AlPublic__c.NamespacePrefix__c)}';
+                    var screenWidth = window.screen.width;
+                    var screenHeight = window.screen.height;
+                    var windowWidth = screenWidth * (0.825);
+                    var adjScrWidth;
+                    var adjScrHeight;
+                    adjScrWidth = (screenWidth / 2) - (windowWidth / 2);
+                    adjScrHeight = (screenHeight / 2) - (275);
+                    var reportWindow = window.open('/apex/'+ namespace +'__'+pageName+'?id='+recordId + '&isLightning=' + {!isLightning}, 'Dashboard', 'status=no,height=360,width='+windowWidth+',resizable=0,left=' + adjScrWidth + ',top=' + adjScrHeight + ',screenX=' + adjScrWidth + ',screenY=' + adjScrHeight + ',toolbar=no,menubar=no,scrollbars=0,location=no,directories=no,titlebar=no,menubar=no');
+                    reportWindow.focus();
+                }
+            }
+            window.history.back();
+        }
+    </script>
+
+</apex:page>

@@ -1,0 +1,69 @@
+<apex:page standardController="Opportunity" extensions="IncentivePasswordControllerOpty" >
+    <apex:sectionHeader id="pageTitle" title="Create Contact" subtitle="New Contact" />
+    <apex:form id="formEdit" >     
+        <apex:pageMessages id="globalMessages" escape="false" />            
+        <apex:actionStatus id="statusValidateContact">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating contact please wait..." />
+            </apex:facet>
+        </apex:actionStatus>      
+        <apex:pageBlock title="New Contact" mode="edit"  rendered="{!NOT(HasMatchingContacts)}">
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton id="btnSave" value="Save" action="{!save}"  status="statusValidateContact" />
+                <!--<apex:commandButton id="btnRetry" value="Retry" action="{!save}" rendered="{!HasServiceErrors}" rerender="formEdit" status="statusValidateContact" />
+                <apex:commandButton id="btnContinue" value="Continue" action="{!continueSave}" rendered="{!HasServiceErrors}" />-->
+                <apex:commandButton id="btnCancel" value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Contact.fields.FirstName.Label}</apex:outputLabel>
+                    <apex:panelGroup >
+                        <apex:inputField value="{!oContact.salutation}"/>
+                        <apex:inputField value="{!oContact.FirstName}"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!oContact.LastName}"/>
+                <apex:inputField value="{!oContact.Email}" required="true"/>
+                <apex:inputField required="true" value="{!oContact.accountid}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>     
+       <apex:pageBlock title="New Contact" mode="mainDetail" rendered="{!HasMatchingContacts}">
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton id="btnCreateContact" value="Create Contact" action="{!continueSave}"  status="statusValidateContact" />
+                <apex:commandButton id="btnCancel" value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Contact.fields.FirstName.Label}</apex:outputLabel>
+                    <apex:panelGroup >
+                        <apex:outputField value="{!oContact.salutation}"/>
+                        <apex:outputField value="{!oContact.FirstName}"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!oContact.LastName}"/>
+                <apex:outputField value="{!oContact.Email}"/>
+                <apex:outputField value="{!oContact.accountId}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="sectionDuplicates" columns="1" title="Potential Duplicate Contacts">
+                <apex:pageBlockTable id="tblMatchedContacts" value="{!MatchedContacts}" var="match">
+                    <!-- <apex:column value="{!match.Name}" headerValue="Name"/>-->
+                    <!--apex:column style="white-space: nowrap; " headervalue="Name">
+                        <apex:outputText id="textContactName" 
+                            value="{!match.contactinfo.Name}"  
+                            rendered="{!ISNULL(match.contact.id)}"/>
+                            
+                        <apex:outputLink id="linkContact"
+                            value="/{!match.Contact.Id}" 
+                            rendered="{!NOT(ISNULL(match.contact.id))}">{!match.contactinfo.Name}</apex:outputLink>
+                    </apex:column-->
+                    <!--apex:column value="{!match.contact.ID}" headerValue="contact id"/-->
+                    <!--<apex:column value="{!match.MDBCustomerID}" headerValue="MDB Customer ID"/>-->
+                    <apex:column value="{!match.contact.Name}" headerValue="Name"/>
+                    <apex:column value="{!match.contact.SAP_Role__c}" headerValue="SAP Role"/>
+                    <apex:column value="{!match.contactinfo.EMail}" headerValue="Email"/>
+                    <apex:column value="{!match.contactinfo.Score}" headerValue="Score"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

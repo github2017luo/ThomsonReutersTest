@@ -1,0 +1,39 @@
+<!--
+ - This page is used to Expire Digital Proposals in Bulk
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+<apex:page standardController="Opportunity" recordSetVar="opportunities" extensions="Digital_BulkExpireAllProposalsController" lightningStylesheets="true">
+    <apex:messages />
+
+    <apex:form >
+        <!--styleClass="hidden"-->
+        <apex:pageBlock html-style="width: 50%; height: 21px; font-size: 14px;">
+            <div>
+                <apex:outputText rendered="{!isNotAuthorizedFlag}">
+                    <p>You are not authorized to Expire Proposals in bulk using this function. Please contact an authorized user to Expire Digital Quote/Proposals via the Opportunity List View.</p>
+                </apex:outputText>
+                <apex:outputText rendered="{!isNonDigital}">
+                    <p>Only Digital Quote/Proposals can be Expired from the Opportunity List View. Please deselect all non Digital Opportunities and try again.</p>
+                </apex:outputText>
+                <apex:outputText rendered="{!isContinue}">
+                    <br />Are you sure you wish to continue? <br />
+                    <br />This process will ‘Expire’ all Digital Quote/Proposals attached to these Opportunities.<br />
+                </apex:outputText>
+                <apex:outputText rendered="{!isNull}">
+                    <br />Please select at least one Opportunity.<br />
+                </apex:outputText>
+
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Return to Opportunity" action="{!ReturnToOpp}" rendered="{!isReturn}" />
+                    <apex:commandButton value="Yes" action="{!ContinueExpire}" rendered="{!not(isReturn)}" />
+                    <apex:commandButton value="No" action="{!ReturnToOpp}" rendered="{!not(isReturn)}" />
+                </apex:pageBlockButtons>
+            </div>
+        </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

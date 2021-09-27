@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings that determine the behavior of the resource planner.</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Add_Holidays_On_Assignment_Adjust__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, determines whether holiday schedule exception records are added if assignment date ranges are adjusted and the new date range falls within a holiday.</inlineHelpText>
+        <label>Add Holidays On Assignment Adjust</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_AdditionalFields_Fieldset__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the additional fields to display in the &quot;Additional Fields&quot; section of the Create Assignment dialog in Resource Planner.</inlineHelpText>
+        <label>Assn Additional Fields Field Set Name</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_Color_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the API name of the field on an Assignment that controls the assignment color bars in Resource Planner.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the API name of the field on an Assignment that controls the assignment color bars in Resource Planner.</inlineHelpText>
+        <label>Assignment Color Field</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_Ordering__c</fullName>
+        <defaultValue>&quot;name&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting defines the API name of a field to order assignments by and, optionally, the direction (ASC or DESC). Assignments always appear above held resource requests.</inlineHelpText>
+        <label>Assignment Ordering</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_Search_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines which Assignment fields are searched with the text search box on the resource planner.</inlineHelpText>
+        <label>Assignment Search Fieldset Name</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_Tooltip_Field_Set__c</fullName>
+        <defaultValue>&quot;Assignment_Tooltip_Field_Set&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The API name of the field set that contains the fields to show as tooltips for assignments on the resource planner. The field set must exist in the Assignment object.</inlineHelpText>
+        <label>Assignment Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Availability_Percentage_Precision__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of digits to show to the right of the decimal point when displaying an availability percentage value in the Availability column in Resource Planner.  The value is an integer.  The default is zero.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of digits to show to the right of the decimal point when displaying an availability percentage value in the Availability column in Resource Planner.  The value is an integer.  The default is zero.</inlineHelpText>
+        <label>Availability Decimal Precision</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Columns_Field_Set__c</fullName>
+        <defaultValue>&quot;Resource_Planner_Columns&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The API name of the field set that contains the columns to show on the resource planner. The field set must exist in the Contact object.</inlineHelpText>
+        <label>Columns Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Assignment_Future_Days__c</fullName>
+        <defaultValue>270</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting defines the number of future days, from today, for which the enhanced Resource Planner will display assignments. For example, enter 30 to display assignments that start or end within 30 days of today.</inlineHelpText>
+        <label>Default Future Days to Show Assignments</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Assignment_Historical_Days__c</fullName>
+        <defaultValue>7</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting defines the number of days prior to today for which the enhanced Resource Planner will display assignments. For example, enter 30 to display assignments that start or end in the preceding 30 days.</inlineHelpText>
+        <label>Default Past Days to Show Assignments</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Resource_Image__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines a URL (absolute or relative) that points to the default image to use for resources without a profile photo. Image files of 22 pixels square work best.</inlineHelpText>
+        <label>Default Resource Image</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>pse__Default_URR_End_Date_Buffer__c</fullName>
+        <defaultValue>14</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines the number of days to add to the included dates after the end date of the resource request in the Resource Request panel of the Resource Planner.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the number of days to add and display in included dates after the end date of the resource request in the Preview pane in the Resource Planner.</inlineHelpText>
+        <label>Add Included Dates After RR End Date</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_URR_Start_Date_Buffer__c</fullName>
+        <defaultValue>7</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines the number of days to add to the included dates before the start date of the resource request in the Resource Request panel of the Resource Planner.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the number of days to add and display in included dates before the start date of the resource request in the Preview pane in the Resource Planner.</inlineHelpText>
+        <label>Add Included Dates Before RR Start Date</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Filter_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the fields used for filtering in the Resource Planner. The value is a field set specifying fields available to filter on.</inlineHelpText>
+        <label>Resource Planner Filter Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Cost_Rate__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Hides Cost Rate fields in the Create Assignment dialog for Resource Planner</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When selected, the Cost Rate fields on the Create Assignment dialog will be hidden for all users.</inlineHelpText>
+        <label>Hide Cost Rate fields</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Inline_Dialog__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>DEPRECATED: Use Resource_Planner_Preferences__c.Hide_Inline_Dialog__c instead.</inlineHelpText>
+        <label>DEPRECATED: Hide Inline Edit Dialog</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Inherit_Proj_Date_For_Create_Assignment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, the start and end dates in the Create Assignments dialog are auto-populated from the project start and end dates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, the start and end dates in the Create Assignments dialog are auto-populated from the project start and end dates.</inlineHelpText>
+        <label>Inherit Dates For Create Assignment</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Inherit_Role_For_Create_Assignment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, the resource role in the Create Assignments dialog is auto-populated from the Contacts record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, the resource role in the Create Assignments dialog is auto-populated from the Contacts record.</inlineHelpText>
+        <label>Inherit Role For Create Assignment</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Inline_Edit_Mode_THHC__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>DEPRECATED: Use Resource_Planner_Preferences__c.Inline_Edit_Mode_THHC__c instead.</inlineHelpText>
+        <label>DEPRECATED: Hold total hours constant</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Override_Assignment_Name_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the API name of the assignment to display in Resource planner. If this field is blank, the Resource planner displays the Assignment name by default.</inlineHelpText>
+        <label>Override Assignment Name Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Override_Resource_Request_Name_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the API name of the resource request to display in Resource planner. If this field is blank, the Resource planner displays the Resource Request name by default.</inlineHelpText>
+        <label>Override Resource Request Name Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Preload_Limit__c</fullName>
+        <defaultValue>100</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting defines the maximum number of resources that load in the background when viewing large numbers of records. Entering a higher value results in fewer loading interruptions, but uses more memory.</inlineHelpText>
+        <label>Deprecated: Preload Limit</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Res_Request_Tooltip_Field_Set__c</fullName>
+        <defaultValue>&quot;Res_Request_Tooltip_Field_Set&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The API name of the field set that contains the fields to show as tooltips for resource requests on the resource planner. The field set must exist in the Resource Request object.</inlineHelpText>
+        <label>Resource Request Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__ResourceRequest_Search_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines which Resource Request fields are searched with the text search box on the resource planner.</inlineHelpText>
+        <label>Resource Request Search Fieldset Name</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Color_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the API name of the field on a Resource Request that controls the Resource Request color bars in Resource Planner.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the API name of the field on a Resource Request that controls the Resource Request color bars in Resource Planner.</inlineHelpText>
+        <label>Resource Request Color Field</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Ordering__c</fullName>
+        <defaultValue>&quot;name&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting defines the API name of a field to order held resource requests by and, optionally, the direction (ASC or DESC). Held resource requests always appear below assignments.</inlineHelpText>
+        <label>Resource Request Ordering</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Search_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines which Resource fields are searched with the text search box on the resource planner.</inlineHelpText>
+        <label>Search Fieldset Name</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Tooltip_Field_Set__c</fullName>
+        <defaultValue>&quot;Resource_Tooltip_Field_Set&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The API name of the field set that contains the fields to show as tooltips for resources on the resource planner. The field set must exist in the Contact object.</inlineHelpText>
+        <label>Resource Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Creation_Past_Dates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, you cannot create an assignment with start date in the past. The default value is deselected.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, you cannot create an assignment with start date in the past. The default value is deselected.</inlineHelpText>
+        <label>Restrict Creation Past Dates</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Editing_Past_Dates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, you cannot edit Resource Planner assignment and schedule hours in the past. The default value is deselected.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, you cannot edit Resource Planner assignment and schedule hours in the past. The default value is deselected.</inlineHelpText>
+        <label>Restrict Editing Past Dates</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Swapping_Past_Dates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, you cannot swap the resource on an assignment with a start date set in the past. The default value is deselected.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, you cannot swap the resource on an assignment with a start date set in the past. The default value is deselected.</inlineHelpText>
+        <label>Restrict Swapping Past Dates</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Save_Column_Prefs__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, customizations to width, order, and visibility of columns in the Resource Planner will be remembered per user.</inlineHelpText>
+        <label>Save Column Preferences</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Scheduling_Mode__c</fullName>
+        <defaultValue>&quot;False&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When True, schedules and schedule exceptions are respected when assignments or resource requests are dragged and dropped in the Resource Planner timeline. Non-working time is respected. The default value is False.</description>
+        <externalId>false</externalId>
+        <label>Respect Schedules</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Availability_Column__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, the Availability Column is visible on the Resource Planner. This setting is selected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, the Availability Column is visible on the Resource Planner. This setting is selected by default.</inlineHelpText>
+        <label>Show Availability Column</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Beige__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Beige for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Beige for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Beige</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Light_Blue__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Light Blue for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Light Blue for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Light Blue</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Light_Green__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Light Green for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Light Green for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Light Green</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Light_Red__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Light Red for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Light Red for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Light Red</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Light_Yellow__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Light Yellow for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Light Yellow for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Light Yellow</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Pink__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Pink for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Pink for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Pink</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Purple__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Purple for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Purple for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Purple</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Turquoise__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checkbox to use Turquoise for cells in Resource Planner. Default = False.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use Turquoise for cells in Resource Planner. Default = False</inlineHelpText>
+        <label>Use Turquoise</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_V2_Planner__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting determines whether your users see the enhanced (new) or classic Resource Planner.</inlineHelpText>
+        <label>DEPRECATED:Use New Resource Planner</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__record_load_limit__c</fullName>
+        <defaultValue>5</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the number of resources for which child data (assignments and resource requests) load per request. You should not adjust the Record Load Limit without first consulting Customer Support.</inlineHelpText>
+        <label>Record Load Limit</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__require_staffing_permission__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting determines whether or not your users will require a permission control, with the Staffing checkbox selected, before they can edit schedules on the enhanced Resource Planner.</inlineHelpText>
+        <label>Edit Requires Staffing Permission</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Planners - Resource</label>
+    <visibility>Public</visibility>
+</CustomObject>

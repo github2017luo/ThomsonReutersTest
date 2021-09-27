@@ -1,0 +1,2662 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignmentRule>
+        <fullName>Accreditation</fullName>
+        <active>false</active>
+        <ruleEntry>
+            <assignedTo>Accreditation</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Accreditation Support</value>
+            </criteriaItems>
+        </ruleEntry>
+    </assignmentRule>
+    <assignmentRule>
+        <fullName>ESC Tax Inactive Case Owner</fullName>
+        <active>false</active>
+        <ruleEntry>
+            <formula>TRUE</formula>
+        </ruleEntry>
+    </assignmentRule>
+    <assignmentRule>
+        <fullName>Emailtocase_LATAM</fullName>
+        <active>false</active>
+        <ruleEntry>
+            <assignedTo>Customer_Care</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email SupportRT,Email contactusRT,Email contentRT,Email SACRT,Email SupportOnline,Email SACRTOnline,Email feedbackRT,Email RTOnline</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>marialaura.pazos@trpcorelegal.com</assignedTo>
+            <assignedToType>User</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Web</value>
+            </criteriaItems>
+        </ruleEntry>
+    </assignmentRule>
+    <assignmentRule>
+        <fullName>S2E_Case_AssignmentRule</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <assignedTo>Latam_Account_Archive_Queue</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Archive Requests</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Account.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BEJE,EDIC,LLEY,LLPA,LLUR,LPCL,LPTC,SCSI,SFWS,SSRL,TGPS,TSCE,FSCO,RV01,TSL</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>USL_Account_Archive_Queue</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Archive Requests</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Account.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>WEST</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Care</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email SupportRT,Email contactusRT,Email contentRT,Email SACRT,Email SupportOnline,Email SACRTOnline,Email feedbackRT</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>marialaura.pazos@trpcorelegal.com</assignedTo>
+            <assignedToType>User</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Web</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>LLEY</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Contact</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ Contact</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_TechCare</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ TechCare</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_AGMTs_Processing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Subscriptions</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>CAB / Agreement Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Cancellations_Processing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Billing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Cancellation - No Credit,Cancellation - With Credit,Credit/Returns Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Material_Master</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND 2 AND ((3 AND 4) OR (5)) AND 6</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Orders</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Gratis</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Inspection Copy</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Replacement for Damaged Product,Subsequent Delivery</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Contact</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Billing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Credit Card Payment,Invoice Query,Payment Enquiry,Refund Enquiry,Refund Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>GSC_Payment_Plans</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Billing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Payment Plan</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Awaiting Invoice,Awaiting Signed Paperwork,Cancel Payment Plan,Change of Details,Declined,Overdue Debt,Query Pending,Request Authorisation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Account.ANZ_Credit_Officer__c</field>
+                <operation>equals</operation>
+                <value>GSC</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Credit_Services</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5) OR (6 AND 7) OR (6 AND 8 AND 9)) AND 10</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Account Maintenance</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Account Close,Account Consolidation,Account Name Change</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Accounts Receivable</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>TBA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Billing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Account Dispute,Balance Request,Bank Details Request,Billing Block Request,Billing Method Change,Small Deb /Writeoff Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Payment Plan</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Awaiting Invoice,Awaiting Signed Paperwork,Cancel Payment Plan,Change of Details,Declined,Overdue Debt,Query Pending,Request Authorisation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_FinOps_Mgmt</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5 AND 6)) AND 7</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Feedback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>People,Process</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Technical</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Access</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Non-Standard Access Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Customer_Master</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Account Maintenance</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Account Classification Change,Address / Contact Change,New Customer Set up</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Transactions_Receipting</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Orders</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Credit &amp; Rebill,Deal/Pack Changes,Expedited Order,New Order,Order Issue,Order Query</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>AU_Marketing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Technical</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Issue</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>eStore Promo Code</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_Marketing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Technical</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Issue</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>eStore Promo Code</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Sales_Territory_Assignment</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Account Maintenance</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Sales Territory Assignment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_TechCare</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5 AND 6) OR (4 AND 7 AND 8) OR (4 AND 9 AND 10) OR (4 AND 11 AND 12) OR (4 AND 13 AND 14)) AND 15</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Orders</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Trial</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Technical</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Access</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Add / Change / Remove IP,Add / Change / Remove Users,Re-Send Welcome Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Issue</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>CD / Software Installation Help,Forgotten U&amp;P / OnePass Lock-Out,Login Count / Session Time-Out,Platform Data Incorrect,Re-Send eNewsletter / Bulletin,Subscribed Content - Missing / Incorrect</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Usage Report</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Train</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>OnePass Registration Help,Platform Navigation Help,TR Trainer Login</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Trial</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Add / Change / Extend / Remove</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>AU_Academic_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Enquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Course Enquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_Academic_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Enquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Course Enquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>AU_Marketing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5) OR (4 AND 6 AND 7) OR (8 AND 9) OR (10 AND 11)) AND 12</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Customer Preferences</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Change in Communication Preference</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Enquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Promo Info Request,Speakers / Faculty / Authors</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>General / More Info</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Has_Account_Manager__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Feedback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Competitor Feedback,Marketing Suggestions,Platform,Price,Product,Retention</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Opportunities</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Market Insights,Partners,Sponsorships,Testimonial Opportunity</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_Marketing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5) OR (4 AND 6 AND 7) OR (8 AND 9) OR (10 AND 11)) AND 12</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Customer Preferences</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Change in Communication Preference</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Enquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Promo Info Request,Speakers / Faculty / Authors</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>General / More Info</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Has_Account_Manager__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Feedback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Competitor Feedback,Marketing Suggestions,Platform,Price,Product,Retention</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Opportunities</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Market Insights,Partners,Sponsorships,Testimonial Opportunity</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Orders_Processing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>BKRS,LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Billing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Delivery Block Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+            <template>unfiled$public/SUPPORTNewassignmentnotificationSAMPLE</template>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Cancellations_Processing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND 2 AND (3 OR 4) AND 5</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>ANN Renewal Retention</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Lapsed Sub</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Cancellation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Orders_Processing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND 2 AND (3 OR 4) AND 5</booleanFilter>
+            <criteriaItems>
+                <field>Case.Sales_Org__c</field>
+                <operation>equals</operation>
+                <value>LRA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>ANN Renewal Retention</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Pack / Sub Change – Immediate</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Pack / Sub Change – on Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Cash_Apps</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.ANZ_Issue__c</field>
+                <operation>equals</operation>
+                <value>Administrativa</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason__c</field>
+                <operation>equals</operation>
+                <value>Cobranzas/ Reintegros</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Reason_Detail__c</field>
+                <operation>equals</operation>
+                <value>Reintegro</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Transactions_Receipting</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ Transactions</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Software</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ Software</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_AGMTs_Processing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ CAB &amp; Agreements</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_InternationalCare</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ International Care</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_InternationalCare</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ International Care</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_Contact</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ Contact</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_ServiceFirst</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ ServiceFirst</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_TechCare</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ TechCare</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_TechFirst</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ TechFirst</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_Retention</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email Retention</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NZ_Training</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email Training</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_CustExp_No_Reply</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp No Reply</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Commissions</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3 AND 4 ) OR (5 AND 6 AND 7) OR (8 AND (9 AND 10) OR (11 AND 12)) or (13 AND 14))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>SCS Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Online</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Ancillary,Lapse,Incremental Window</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Renewal Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Auto Renewal Look Back,Missing Renewal,Renewals within same Calendar year</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Order Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Incorrect Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Order</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Award</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Wrong Payment to Me</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Draw,Guarantees,Incorrect Bonus,Incorrect Commission,Invoice Revenue Rates,Red Balance</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Commissions</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND( RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, ( OR( AND( 	ISPICKVAL(CaseType__c, &quot;Order is missing or questioning the amount awarded&quot;), 	OR( 	ISPICKVAL(Case_Type_Detail__c, &quot;No subscriptions involved (print/one time charge)&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Subscriptions are accurately processed in Sales Force&quot;) 	), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Other&quot;) 			), AND( 	ISPICKVAL(CaseType__c, &quot;Order is missing or questioning the amount awarded&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Subscriptions are not accurately processed in Sales Force&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Order is Special Offer&quot;) 	), AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I was paid on referenced doc&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Other&quot;) 	),	 AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I was not paid on referenced doc&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Chargeback is not part of incremental calculation&quot;) 	),	 AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I was not paid on referenced doc&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Chargeback is part of incremental calculation&quot;) 	), AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;There is no reference doc displayed on Sales Detail&quot;) 	), AND( 	ISPICKVAL(CaseType__c, &quot;I am requesting an exception&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;ADMEX&quot;) ), 	 AND( 	ISPICKVAL(CaseType__c, &quot;I need help with my reports&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I need help understanding my reports&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Sales Reports&quot;) 	) ) ) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Commissions</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND (5 OR (10 AND 11))) OR (6 AND 7) OR (8 AND (9 OR ( 10 AND 11))) OR (12 AND 13 AND 14))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Commission</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Commissions Rate,Multiyear Commission,New Customer Commission</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Payments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Incorrect Commission,Missing Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Order Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Split Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>DOS Approval Included</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Reinstatements</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Completed</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Commissions</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3 AND 4) or (5 AND 6 AND 4) OR (5 AND 7 AND 8) OR (5 AND 9) OR (10 AND 11) OR (12 AND 13 AND 14))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Order is missing or questioning the amount awarded</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>No subscriptions involved (print/one time charge),Subscriptions are accurately processed in SAM Portal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Other</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about a chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I was paid on referenced doc</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I was not paid on referenced doc</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Chargeback is not part of incremental calculation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>There is no reference doc displayed on Sales Detail</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I am requesting an exception</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>ADMEX</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I need help with my reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I need help understanding my reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Sales Reports</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Credit_AR</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>SCS Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Order</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Credit Hold</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Customer_Service</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND (3 AND 4) OR (5 AND 6)) OR (7 AND 8) OR (7 AND 9 AND 10))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Reinstatements</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Not Completed</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Lapse</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Lapsed in Error</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Bridge,Missing Lapse,Wrong Contract Terms,Wrong Product,Wrong Quantity</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Order</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Credit Hold</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Customer_Service</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND(  	RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, 	OR( 		AND( 			ISPICKVAL(CaseType__c, &quot;Chargeback&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;Print&quot;), 			OR( 				ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Physical Return&quot;), 				ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Credit&quot;) 			) 		), 		AND( 			ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;I was paid on referenced doc&quot;), 			ISPICKVAL(Additional_Case_Type_Detail__c, &quot;This return/credit should not have been issued to customer&quot;) 		) 	), 	NOT(ISPICKVAL(Salesperson__r.Sub_Bu__c, &quot;Canada&quot;)) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Finance</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND( RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, ( OR( AND( 	ISPICKVAL(CaseType__c, &quot;Renewal&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Renewal Value&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Eligibility List Question&quot;) 			), AND( 	ISPICKVAL(CaseType__c, &quot;Sales&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Missing Order&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Non-SAP orders&quot;) 	), AND( 	ISPICKVAL(CaseType__c, &quot;Wrong Payment to Me&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;SPIFF or Incentive Question&quot;), 	OR(ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Incentives&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Invoice Revenue Clarifications&quot;)) 			),			 AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about my payment&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I have an incentive payment question&quot;) 	), 	 AND( 	ISPICKVAL(CaseType__c, &quot;I am requesting an exception&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Large Law review exception request&quot;) 	)  ) ) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Manager</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND (3 AND 4) OR (5 AND 6)) OR (7 AND 8 AND 9) OR (10 AND (11 AND 12) OR (13 AND 14)) OR (13 AND (14) OR (15 AND 16) OR (17 AND 18)))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>SCS Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Award Timing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Bridge</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>BAR</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Bar Adjustments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>BAR</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Renewal Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Open Territory</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Order Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Split Request</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Wrong Payment to Me</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Draw,Guarantees,Incorrect Bonus,Incorrect Commission,Invoice Revenue Rates,Red Balance</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>SPIFF or Incentive Question</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Mentor Pay</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I am requesting an exception</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Requesting split or tranfer sale to another rep</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Manager_Findlaw</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND ((3) OR (4 AND 5))) OR ((6 OR 13) AND 7 AND 8) OR (9 AND 10) OR (11 AND 12) OR (14) OR (13 AND 7 AND 8) OR (15 AND 16))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Good Will Credit</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Lapse</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Before Contract Term</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Payments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Split Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>DOS Approval Needed</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Monthly Quota Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Open Territory,Renewal Reassignment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Comp Plan</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I am requesting an exception</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Requesting split or tranfer sale to another rep</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Territories</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3 AND 4) OR (5 AND (6 OR 7)) OR (8 AND 9 AND 10) OR (11 AND 12 AND 14) OR (11 AND 13 AND 15))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>SCS Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Order</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Account Assignment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Territories</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Account Assignment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Order is missing or questioning the amount awarded</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>No subscriptions involved (print/one time charge),Subscriptions are accurately processed in Sales Force</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I am not assigned to account in Sales Force and should be</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about my quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Sales Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Renewal Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Request for relief or question about quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Request for ramp</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Territories</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3 AND 4) OR (5 AND 6 AND 7))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Order is missing or questioning the amount awarded</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>No subscriptions involved (print/one time charge),Subscriptions are accurately processed in SAM Portal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I am not assigned to account in SAM Portal but should be</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about my quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Sales Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Request for relief or question about quota</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Marketing</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Payments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Split Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Tradeshows</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Tradeshow</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Payments</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>((1) AND ((2 AND 3) OR (4 AND 5) OR (6 AND 7 AND 8)))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Payments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Draw</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about my payment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Settlement question (bonus/cmsn/red balance),I am a manager requesting Mentoring/Coaching Pay,I have a question about my draw</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I need help with my reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I cannot access reports,I need help understanding my reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Payment Reports</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Payments</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND( RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, ( OR(  AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about my payment&quot;), 	OR(ISPICKVAL(Case_Type_Detail__c, &quot;I am a manager requesting Mentoring/Coaching Pay&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I have a question about my draw&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Settlement question (bonus/cmsn/red balance)&quot;)) 	), AND( 	ISPICKVAL(CaseType__c, &quot;I need help with my reports&quot;), 	OR(ISPICKVAL(Case_Type_Detail__c, &quot;I cannot access reports&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I need help understanding my reports&quot;)), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Payment Reports&quot;) 	),	 AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about my payment&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I have a question about my guaranteed payment&quot;) 	) ) ) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Order_Fulfillment</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND(  	RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, 	OR( 		AND( 			ISPICKVAL(CaseType__c, &quot;Award Timing&quot;), 			OR( 				AND( 					ISPICKVAL(Case_Type_Detail__c, &quot;Bridge&quot;), 					ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Policy Explanation&quot;) 				), 				AND( 					ISPICKVAL(Case_Type_Detail__c, &quot;Bar Adjustments&quot;), 					ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Financial BAR List&quot;) 				) 			) 		), 		AND( 			ISPICKVAL(CaseType__c, &quot;Sales&quot;), 			OR( 				AND( 					ISPICKVAL(Case_Type_Detail__c, &quot;Order Value&quot;), 					ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Incorrect Pricing&quot;) 				), 				AND( 					ISPICKVAL(Case_Type_Detail__c, &quot;Missing Order&quot;), 					ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Order isn’t processed yet,Credentialing Status&quot;) 				), 				ISPICKVAL(Case_Type_Detail__c, &quot;Product&quot;), 				ISPICKVAL(Case_Type_Detail__c, &quot;Wrong Quantity&quot;) 			) 		), 		AND( 			ISPICKVAL(CaseType__c, &quot;Order is missing or questioning the amount awarded&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;Subscriptions are not accurately processed in Sales Force&quot;), 			ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Order is not a Special Offer&quot;) 		), 		AND( 			ISPICKVAL(CaseType__c, &quot;I have an order correction&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;Data Field on order needs to be adjusted&quot;) 		) 	), 	NOT(ISPICKVAL(Salesperson__r.Sub_Bu__c, &quot;Canada&quot;)) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_SAM_Ops</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND ( 3 AND 4) OR (17 AND 4)) OR (5 AND 6 AND 7) OR (18 AND 19 AND 20) OR (8) OR (9 AND 10) OR (11 AND 12 AND 13) OR (14 AND 15 AND 16))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>SCS Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Award Timing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Bridge</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Policy Question,Value,BAR Exception</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Print</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Policy Explanation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Comp Plan</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Renewal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Policy Clarification</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Order Value</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>60 Day Move Rule</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Wrong Payment to Me</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>SPIFF or Incentive Question</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Manager Covering,Guarantees</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Bar Adjustments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Order</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Open Territory</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_SAM_Ops</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND( RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, ( OR( AND( 	ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I was paid on referenced doc&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Credit was provided to customer due to performance issue&quot;) 			),  AND( 	ISPICKVAL(CaseType__c, &quot;I am requesting an exception&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;All other type of exception requests&quot;) 	), AND( 	ISPICKVAL(CaseType__c, &quot;I need help with my reports&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;I cannot access reports&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Sales Reports&quot;) 	)  ) ) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Order_Fulfillment_Findlaw</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3) OR (4 AND 5 AND 6) OR (7 AND 8))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Order is missing or questioning the amount awarded</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Subscriptions are not accurately processed in SAM Portal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about a chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I was paid on referenced doc</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>This return/credit should not have been issued to customer</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have an order correction</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Data Field on order needs to be adjusted</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_SAM_Ops_FindLaw</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND (3 AND 4) OR (5 AND 6) OR 15 OR 16) OR (7 AND (8 OR (13 AND 14))) OR (9 AND 10) OR (11 AND (12 OR (13 AND 14) OR 17) OR (18 AND 19 AND 20)))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Reinstatements</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Completed</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Lapse</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Production,Incremental</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Payments</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Incentives</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Leave of Absence,Relief</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Missing Order</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Split Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Tradeshows</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Production/Service Credit</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Explanation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Tradeshow</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>Order is missing or questioning the amount awarded</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Subscriptions are accurately processed in SAM Portal</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>New Customer commission is missing</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_SAM_Ops_FindLaw</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>1 AND ((2 AND 3 AND 5) OR (2 AND 4 AND 6) OR (7 AND 8) OR (7 AND 9) OR (10 AND 11) OR (12 AND 13 AND 14) OR (15 AND 16 AND 17))</booleanFilter>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about a chargeback</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I was paid on referenced doc</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I was not paid on referenced doc</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Credit was provided to customer due to performance issue</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Chargeback is part of incremental calculation</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about my payment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I have an incentive payment question</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I have a question about my guaranteed payment</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I am requesting an exception</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>All other type of exception requests</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I need help with my reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>I cannot access reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Sales Reports</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.CaseType__c</field>
+                <operation>equals</operation>
+                <value>I have a question about my quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Renewal Quota</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Additional_Case_Type_Detail__c</field>
+                <operation>equals</operation>
+                <value>Request for relief or question about quota,Request for ramp</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>FindLaw_com_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Findlaw.com</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Product__c</field>
+                <operation>contains</operation>
+                <value>FindLaw</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Manager_Findlaw</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Findlaw Inquiry</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Renewals</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND( 	RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, 	ISPICKVAL(CaseType__c, &quot;I have a question about my quota&quot;), 	ISPICKVAL(Case_Type_Detail__c, &quot;Renewal Quota&quot;), 	ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Request for relief or question about quota&quot;) 	 )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Atendimento_Legal</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email Atendimento Legal One</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_CustExp_Premium_Care_Aaron</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ CustExp - Premium Care (Josh)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_CustExp_Premium_Care_Jayne</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ CustExp - Premium Care (Jayne)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_CustExp_Premium_Care_Carissa</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ CustExp - Premium Care (Carissa)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_CustExp_Premium_Care_Sharon</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ CustExp - Premium Care (Sharon)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_PremiumCare</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ CustExp - Premium</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ANZ_CustExp_Voicemail</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp Voicemail</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>notEqual</operation>
+                <value>LatAm</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Help_Desk_ADM</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp;  ((LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ar&apos;) &amp;&amp;  ((ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;)||(ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp;  (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) ||  ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;)  || ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;))))  &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))),  LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,  LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laley&apos;))) ,True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_LE_HelpDesk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos;) &amp;&amp; ((ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;) || (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;)))) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;brasilgeneral&apos;) || ((((ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;)) &amp;&amp; (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) ||ISPICKVAL(Product__c , &quot;Checkpoint&quot;) ||ISPICKVAL(Product__c , &quot;Proview&quot;)||ISPICKVAL(Product__c , &quot;RTO&quot;))) || (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Subscription - Print&quot;)))) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;legal&apos;) || ((ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Books&quot;))) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;trtamastersaf&apos;) || ((ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;)) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;legal(print)&apos;) ),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Help_Desk_T_A_Fun_Tech</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(  ISNEW() &amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;)) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos;) &amp;&amp;  (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))),LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;trtamastersaf&apos;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Software in House&quot;) || ISPICKVAL(Product__c , &quot;Software SAAS&quot;))) , True, False )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Technical_Support_FL</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; LCRM_Sub_BU__c = &apos;GGO&apos; &amp;&amp;   ((LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;py&apos; &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laleyparaguay&apos;) || (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ur&apos; &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laleyuruguay&apos;)) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp;  NOT(ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;) || ISPICKVAL(Product__c , &quot;Seminar&quot;) || ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;)))),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>DQA_Request_Queue</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND(  Text(Status) = &apos;New&apos;,  OwnerId = CreatedById,  OR(  CONTAINS(RecordTypeId, $Setup.FieldId__c.DQA_Request_Case__c ),  CONTAINS(RecordTypeId, $Setup.FieldId__c.GLI_Archive_Case__c )  )  )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>GLI_Training_Event_Requests</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <criteriaItems>
+                <field>Case.Is_GLI__c</field>
+                <operation>equals</operation>
+                <value>True</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>GLI Training Event Request</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Technical_Helpdesk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; ((RIGHT(ESC_Origin_Name__c, 3) == &apos;118&apos;) || ((ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Technical Support&apos;)&amp;&amp;(UPPER(RIGHT(ESC_Origin_Name__c, 3)) == &apos;JCT&apos;))), True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Support_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; ((RIGHT(ESC_Origin_Name__c, 3) == &apos;121&apos; ) ||(RIGHT(ESC_Origin_Name__c, 11) == &apos;DirectDebit&apos;)), True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_International</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;120&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Print_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;115&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Online</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;117&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Admin_support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;175&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Training_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;116&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Online_Access</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;102&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>PPO_Product_Pricing_Operations</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;109&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>CMD_Customer_Master_Data</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;108&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Support_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (UPPER(RIGHT(ESC_Origin_Name__c, 5)) == &apos;121MP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Key_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;113&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Support_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp;(UPPER(RIGHT(ESC_Origin_Name__c, 6)) == &apos;121CFI&apos;) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Print_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (UPPER(RIGHT(ESC_Origin_Name__c, 6)) == &apos;115ICR&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Print_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp;(UPPER(RIGHT(ESC_Origin_Name__c, 8)) == &apos;115PSALE&apos;) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Sales_Operations_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp;(UPPER(RIGHT(ESC_Origin_Name__c, 7)) == &apos;115SSUP&apos;) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Solcara_UKI_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;122&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Firmstyle</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;123&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>ukicommissionqueries</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 3) == &apos;124&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Customer_inbound</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 5) == &apos;ESSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Legal_Software</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Legal Software&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Key</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Key&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Growth</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Growth&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Core</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Core&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Opportunity_New_Business</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Opportunity / New Business&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Solutions</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Solutions&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Lead_Tax</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Lead Tax&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Strategic_Accounts</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Strategic Accounts&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Field_sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Field Sales&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Inside_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Inside Sales&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Software_Sales</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;Software Sales&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 12) == &apos;InternalSSUP&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Support_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Customer Support&apos;)&amp;&amp; ((RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) || (RIGHT(ESC_Origin_Name__c, 3) == &apos;126&apos; )|| (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; )) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Print_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI OTC Print&apos;)&amp;&amp;((RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos;)||(UPPER(RIGHT(ESC_Origin_Name__c, 3)) == &apos;JCT&apos;)) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>MOJ_Key_Accounts</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Moj &amp; Key Accounts&apos;)&amp;&amp;((RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) || (RIGHT(ESC_Origin_Name__c, 3) == &apos;126&apos; )|| (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; )), True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_International_Invoice_Queries</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI International Invoice Queries&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_International_EXIM_Orders</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI International EXIM Orders&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_International_General_Queries</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI International General Queries&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_International_EXIM_Claims</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI International EXIM Claims&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Admin_support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI OTC Admin support&apos;)&amp;&amp;((RIGHT(ESC_Origin_Name__c, 3) == &apos;125&apos; ) || (RIGHT(ESC_Origin_Name__c, 3) == &apos;126&apos; )|| (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; )) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>OTC_Online</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Online Order Management&apos;)&amp;&amp; ((RIGHT(ESC_Origin_Name__c, 3) == &apos;126&apos;)|| (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; )) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Training_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Online Customer Support&apos;)&amp;&amp; ((RIGHT(ESC_Origin_Name__c, 3) == &apos;126&apos;)|| (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; )) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Online_Access</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Online Access&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 3) == &apos;126&apos;) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Training_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Online Customer Support&apos;)&amp;&amp;(RIGHT(ESC_Origin_Name__c, 3) == &apos;127&apos;) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Customer_Support_Direct_Trade</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Customer Support&apos;)&amp;&amp;((RIGHT(ESC_Origin_Name__c, 3) == &apos;127&apos;)||(UPPER(RIGHT(ESC_Origin_Name__c, 3)) == &apos;JCT&apos;)) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>TR_Legal_Contract_Analysis</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 8) == &apos;contract&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Cash_Application_queries</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c == &apos;UKI&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (RIGHT(ESC_Origin_Name__c, 6) == &apos;credit&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_TA_Help_Desk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos;) &amp;&amp; (((ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;) || (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;)))) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c)))) -FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;trtamastersaf&apos;) || (((ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;)) &amp;&amp; (ISPICKVAL(Product__c , &quot;Cp-pro&quot;) || ISPICKVAL(Product__c , &quot;Site Advogado&quot;) || ISPICKVAL(Product__c , &quot;Cp-pro Web&quot;) || ISPICKVAL(Product__c , &quot;Cp-pro Mobile&quot;) || ISPICKVAL(Product__c , &quot;Decisões&quot;) || ISPICKVAL(Product__c , &quot;Perito&quot;) || ISPICKVAL(Product__c , &quot;Projetos De Lei&quot;) || ISPICKVAL(Product__c , &quot;Legal One Firms Brazil&quot;)|| ISPICKVAL(Product__c , &quot;Legal One Corporate Brazil&quot;) || ISPICKVAL(Product__c , &quot;Novajus&quot;) || ISPICKVAL(Product__c , &quot;Legal Core&quot;)|| ISPICKVAL(Product__c , &quot;Legal Update&quot;)|| ISPICKVAL(Product__c , &quot;Legal Core Onpremise&quot;)|| ISPICKVAL(Product__c , &quot;Legal One Migration Tool&quot;))) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c)))) -FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;legal&apos;))) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Help_Desk_ADM</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp;   (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;py&apos; &amp;&amp;  (ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;)||(ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp;  (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) ||  ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;)  || ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;))))  &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))),  LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,  LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laleyparaguay&apos;) || (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ur&apos; &amp;&amp;  (ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;)||(ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp;  (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) ||  ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;)  || ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;))))  &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))),  LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,  LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laleyuruguay&apos;)|| (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ch&apos; &amp;&amp;  (ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;)||(ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp;  (ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) ||  ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;)  || ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;))))  &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))),  LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,  LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;chile&apos;)),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>CH_TechnicalSupportL1</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp;   (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ch&apos; &amp;&amp;  (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp;   NOT(ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) ||  ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;)  || ISPICKVAL(Product__c , &quot;Seminar&quot;) ||ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;)))  &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))),  LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c,  LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;chile&apos;)),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Technical_Support_FL</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ar&apos; &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Product SaaS&quot;)|| ISPICKVAL(Product__c , &quot;Product in House&quot;) || ISPICKVAL(Product__c , &quot;Software SaaS&quot;)|| ISPICKVAL(Product__c , &quot;Software in House&quot;) || ISPICKVAL(Product__c , &quot;Activo Fijo Windows&quot;) || ISPICKVAL(Product__c , &quot;Administrador General Access&quot;)|| ISPICKVAL(Product__c , &quot;Administrador General SQL&quot;) || ISPICKVAL(Product__c , &quot;Back Up Online&quot;) || ISPICKVAL(Product__c , &quot;Balances Windows - Access&quot;) ||ISPICKVAL(Product__c , &quot;Balances Windows - SQL&quot;) || ISPICKVAL(Product__c , &quot;Bejerman eCommerce&quot;)|| ISPICKVAL(Product__c , &quot;Bodegas - SQL&quot;)|| ISPICKVAL(Product__c , &quot;BPM&quot;) || ISPICKVAL(Product__c , &quot;CG SaaS&quot;) || ISPICKVAL(Product__c , &quot;CG Windows - SQL&quot;) || ISPICKVAL(Product__c , &quot;CG Windows Access&quot;) || ISPICKVAL(Product__c , &quot;Consultas Especiales - SQL&quot;) ||ISPICKVAL(Product__c , &quot;D.O.S - Sistemas bajo DOS&quot;) || ISPICKVAL(Product__c , &quot;eFlex Documental - SQL&quot;)|| ISPICKVAL(Product__c , &quot;eFlexware - Express&quot;)|| ISPICKVAL(Product__c , &quot;eFlexware - MSDE&quot;) || ISPICKVAL(Product__c , &quot;eFlexware - SQL&quot;) || ISPICKVAL(Product__c , &quot;eFlexware Access&quot;) || ISPICKVAL(Product__c , &quot;eFlexweb&quot;) || ISPICKVAL(Product__c , &quot;Ganancias Windows - Access&quot;) ||ISPICKVAL(Product__c , &quot;Ganancias Windows - SQL&quot;) || ISPICKVAL(Product__c , &quot;Gestión de Clientes - Access&quot;) || ISPICKVAL(Product__c , &quot;Gestión de Clientes - SQL&quot;)|| ISPICKVAL(Product__c , &quot;Gestión del Estudio - SQL&quot;) || ISPICKVAL(Product__c , &quot;Gestión del Estudio Access&quot;) || ISPICKVAL(Product__c , &quot;InfoUNO&quot;) || ISPICKVAL(Product__c , &quot;Instalador y HL&quot;) || ISPICKVAL(Product__c , &quot;Integra&quot;) ||ISPICKVAL(Product__c , &quot;IVA  Saas&quot;) || ISPICKVAL(Product__c , &quot;IVA Windows - SQL&quot;)||ISPICKVAL(Product__c , &quot;IVA Windows Access&quot;)|| ISPICKVAL(Product__c , &quot;Legal One&quot;) || ISPICKVAL(Product__c , &quot;Micropym Windows Access&quot;) || ISPICKVAL(Product__c , &quot;ONVIO&quot;) || ISPICKVAL(Product__c , &quot;Recibo Digital&quot;) || ISPICKVAL(Product__c , &quot;Recursos Humanos - SQL&quot;) ||ISPICKVAL(Product__c , &quot;Recursos Humanos - TM&quot;) || ISPICKVAL(Product__c , &quot;SJ SaaS&quot;) || ISPICKVAL(Product__c , &quot;SJ Windows - Access&quot;) ||ISPICKVAL(Product__c , &quot;SJ Windows - SQL&quot;) || ISPICKVAL(Product__c , &quot;TCI&quot;) || ISPICKVAL(Product__c , &quot;Estudio One Web&quot;)|| ISPICKVAL(Product__c , &quot;Estudio One OnPremise&quot;))) &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;bejerman&apos;)),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Help_Desk_ADM</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ar&apos;) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Enquiry&quot;) || ISPICKVAL(ESC_Case_Type__c , &quot;Feedback&quot;) ||(ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (NOT(ISPICKVAL(Product__c , &quot;Software in House&quot;)|| ISPICKVAL(Product__c , &quot;Software SAAS&quot;) || ISPICKVAL(Product__c , &quot;Product SaaS&quot;)|| ISPICKVAL(Product__c , &quot;Product in House&quot;) || ISPICKVAL(Product__c , &quot;Activo Fijo Windows&quot;) ||  ISPICKVAL(Product__c , &quot;Administrador General Access&quot;)|| ISPICKVAL(Product__c , &quot;Administrador General SQL&quot;) || ISPICKVAL(Product__c , &quot;Back Up Online&quot;) ||  ISPICKVAL(Product__c , &quot;Balances Windows - Access&quot;) ||ISPICKVAL(Product__c , &quot;Balances Windows - SQL&quot;) || ISPICKVAL(Product__c , &quot;Bejerman eCommerce&quot;)||  ISPICKVAL(Product__c , &quot;Bodegas - SQL&quot;)|| ISPICKVAL(Product__c , &quot;BPM&quot;) || ISPICKVAL(Product__c , &quot;CG SaaS&quot;) || ISPICKVAL(Product__c , &quot;CG Windows - SQL&quot;) ||  ISPICKVAL(Product__c , &quot;CG Windows Access&quot;) || ISPICKVAL(Product__c , &quot;Consultas Especiales - SQL&quot;) ||ISPICKVAL(Product__c , &quot;D.O.S - Sistemas bajo DOS&quot;) ||  ISPICKVAL(Product__c , &quot;eFlex Documental - SQL&quot;)|| ISPICKVAL(Product__c , &quot;eFlexware - Express&quot;)|| ISPICKVAL(Product__c , &quot;eFlexware - MSDE&quot;) ||  ISPICKVAL(Product__c , &quot;eFlexware - SQL&quot;) || ISPICKVAL(Product__c , &quot;eFlexware Access&quot;) || ISPICKVAL(Product__c , &quot;eFlexweb&quot;) ||  ISPICKVAL(Product__c , &quot;Ganancias Windows - Access&quot;) ||ISPICKVAL(Product__c , &quot;Ganancias Windows - SQL&quot;) ||  ISPICKVAL(Product__c , &quot;Gestión de Clientes - Access&quot;) || ISPICKVAL(Product__c , &quot;Gestión de Clientes - SQL&quot;)||  ISPICKVAL(Product__c , &quot;Gestión del Estudio - SQL&quot;) || ISPICKVAL(Product__c , &quot;Gestión del Estudio Access&quot;) || ISPICKVAL(Product__c , &quot;InfoUNO&quot;) ||  ISPICKVAL(Product__c , &quot;Instalador y HL&quot;) || ISPICKVAL(Product__c , &quot;Integra&quot;) ||ISPICKVAL(Product__c , &quot;IVA  Saas&quot;) ||  ISPICKVAL(Product__c , &quot;IVA Windows - SQL&quot;)||ISPICKVAL(Product__c , &quot;IVA Windows Access&quot;)|| ISPICKVAL(Product__c , &quot;Legal One&quot;) ||  ISPICKVAL(Product__c , &quot;Micropym Windows Access&quot;) || ISPICKVAL(Product__c , &quot;ONVIO&quot;) || ISPICKVAL(Product__c , &quot;Recibo Digital&quot;) ||  ISPICKVAL(Product__c , &quot;Recursos Humanos - SQL&quot;) ||ISPICKVAL(Product__c , &quot;Recursos Humanos - TM&quot;) || ISPICKVAL(Product__c , &quot;SJ SaaS&quot;) ||  ISPICKVAL(Product__c , &quot;SJ Windows - Access&quot;) ||ISPICKVAL(Product__c , &quot;SJ Windows - SQL&quot;) || ISPICKVAL(Product__c , &quot;TCI&quot;)|| ISPICKVAL(Product__c , &quot;LEGAL ONE - GESTION&quot;)|| ISPICKVAL(Product__c , &quot;LEGAL ONE CORPORATE ARGENTINA&quot;)))) &amp;&amp;  (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;bejerman&apos;))) ,True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>AR_LEGAL_ONE_SUPPORT</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; LCRM_Sub_BU__c = &apos;GGO&apos; &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ar&apos; &amp;&amp; ((LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laley&apos;)|| (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;bejerman&apos;))) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;LEGAL ONE - GESTION&quot;)|| ISPICKVAL(Product__c , &quot;LEGAL ONE CORPORATE ARGENTINA&quot;)))),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Content_and_Tech</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; LCRM_Sub_BU__c = &apos;GGO&apos; &amp;&amp; ((LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos; &amp;&amp; ((LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;brasilgeneral&apos;)|| (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;trtamastersaf&apos;))) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Legal Core Onpremise&quot;)|| ISPICKVAL(Product__c , &quot;Cp-pro&quot;) || ISPICKVAL(Product__c , &quot;Checkpoint&quot;) || ISPICKVAL(Product__c , &quot;Proview&quot;)|| ISPICKVAL(Product__c , &quot;Rto&quot;) || ISPICKVAL(Product__c , &quot;Site Advogado&quot;) || ISPICKVAL(Product__c , &quot;Cp-pro Web&quot;) || ISPICKVAL(Product__c , &quot;Cp-pro Mobile&quot;) || ISPICKVAL(Product__c , &quot;Decisões&quot;) || ISPICKVAL(Product__c , &quot;Perito&quot;) || ISPICKVAL(Product__c , &quot;Projetos De Lei&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;)))) || ((LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos; &amp;&amp; (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))- FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;legal&apos;)) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Cp-pro&quot;) || ISPICKVAL(Product__c , &quot;Checkpoint&quot;) || ISPICKVAL(Product__c , &quot;Proview&quot;)|| ISPICKVAL(Product__c , &quot;Rto&quot;) || ISPICKVAL(Product__c , &quot;Site Advogado&quot;) || ISPICKVAL(Product__c , &quot;Cp-pro Web&quot;) || ISPICKVAL(Product__c , &quot;Cp-pro Mobile&quot;) || ISPICKVAL(Product__c , &quot;Decisões&quot;) || ISPICKVAL(Product__c , &quot;Perito&quot;) || ISPICKVAL(Product__c , &quot;Projetos De Lei&quot;))))),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Legal_One</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; LCRM_Sub_BU__c = &apos;GGO&apos; &amp;&amp; ((LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos; &amp;&amp; ((LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;brasilgeneral&apos;)|| (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;trtamastersaf&apos;))) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;LEGAL ONE FIRM&quot;)|| ISPICKVAL(Product__c , &quot;LEGAL ONE CORPORATE&quot;) || ISPICKVAL(Product__c , &quot;Novajus&quot;) || ISPICKVAL(Product__c , &quot;Legal Core&quot;)|| ISPICKVAL(Product__c , &quot;Legal Update&quot;)))) || ((LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos; &amp;&amp; (LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))- FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;legal&apos;)) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; (ISPICKVAL(Product__c , &quot;Legal One Firms Brazil&quot;)|| ISPICKVAL(Product__c , &quot;Legal One Corporate Brazil&quot;) || ISPICKVAL(Product__c , &quot;Novajus&quot;) || ISPICKVAL(Product__c , &quot;Legal Core&quot;)|| ISPICKVAL(Product__c , &quot;Legal Update&quot;)|| ISPICKVAL(Product__c , &quot;Legal Core Onpremise&quot;)|| ISPICKVAL(Product__c , &quot;Legal One Migration Tool&quot;))))),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Technical_Support_FL</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; LCRM_Sub_BU__c = &apos;GGO&apos; &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;ar&apos; &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))-FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;laley&apos;) &amp;&amp; (ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; NOT(ISPICKVAL(Product__c , &quot;Books&quot;)|| ISPICKVAL(Product__c , &quot;Proview One Shot&quot;) ||  ISPICKVAL(Product__c , &quot;Subscription - Print&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Online&quot;) || ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;) || ISPICKVAL(Product__c , &quot;Seminar&quot;) || ISPICKVAL(Product__c , &quot;Training&quot;) || ISPICKVAL(Product__c , &quot;Online&quot;) || ISPICKVAL(Product__c , &quot;LEGAL ONE - GESTION&quot;) || ISPICKVAL(Product__c , &quot;LEGAL ONE CORPORATE ARGENTINA&quot;)))),True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_LE_HelpDesk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;),ISPICKVAL(ESC_Country__c,&apos;Brazil&apos;),OR(RecordType.DeveloperName =&apos;ESC_Enquiry&apos;,RecordType.DeveloperName = &apos;ESC_Feedback&apos;)),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Content_and_Tech</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;),(ISPICKVAL(ESC_Country__c , &apos;Brazil&apos;)),AND(RecordType.DeveloperName = &apos;ESC_Incident&apos;,OR(ISPICKVAL(Product__c, &apos;Checkpoint&apos;), ISPICKVAL(Product__c, &apos;Proview&apos;),ISPICKVAL(Product__c, &apos;Rto&apos;))) ),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Legal_One</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;),(ISPICKVAL(ESC_Country__c , &apos;Brazil&apos;)),AND(RecordType.DeveloperName = &apos;ESC_Incident&apos;,OR(ISPICKVAL(Product__c, &apos;Legal One Corporate Brazil&apos;),ISPICKVAL(Product__c, &apos;Legal One Firms Brazil&apos;))) ),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_TA_Help_Desk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;), ISPICKVAL(ESC_Country__c,&apos;Brazil&apos;),(RecordType.DeveloperName = &apos;ESC_Incident&apos;), ISPICKVAL(ESC_Customer_Symptom__c,&apos;Application Issue&apos;)),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>AR_LEGAL_ONE_SUPPORT</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;), ISPICKVAL(ESC_Country__c,&apos;Argentina&apos;), AND(RecordType.DeveloperName = &apos;ESC_Incident&apos;,OR(ISPICKVAL(Product__c, &apos;Legal One Corporate Argentina&apos;), ISPICKVAL(Product__c, &apos;Legal One - Gestion&apos;))) ),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Help_Desk_ADM</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;),ISPICKVAL(ESC_Country__c,&apos;Argentina&apos;), OR(RecordType.DeveloperName =&apos;ESC_Enquiry&apos;,RecordType.DeveloperName = &apos;ESC_Feedback&apos;,AND(RecordType.DeveloperName = &apos;ESC_Incident&apos;,OR(ISPICKVAL(Product__c, &apos;Online&apos;), ISPICKVAL(Product__c, &apos;Proview&apos;))))),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>SL_Technical_Support_FL</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(AND(ISPICKVAL(Origin ,&apos;My TR&apos;), ISPICKVAL(ESC_Country__c,&apos;Argentina&apos;), AND(RecordType.DeveloperName = &apos;ESC_Incident&apos;,OR(ISPICKVAL(Product__c, &apos;Checkpoint&apos;), ISPICKVAL(ESC_Customer_Symptom__c,&apos;Application Issue&apos;))) ),TRUE, FALSE)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Order_Management_Canada</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND(  	RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, 	OR( 		AND( 			ISPICKVAL(CaseType__c, &quot;Order is missing or questioning the amount awarded&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;Subscriptions are not accurately processed in Sales Force&quot;), 			ISPICKVAL(Additional_Case_Type_Detail__c, &quot;Order is not a Special Offer&quot;) 		), 		AND( 			ISPICKVAL(CaseType__c, &quot;I have a question about a chargeback&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;I was paid on referenced doc&quot;), 			ISPICKVAL(Additional_Case_Type_Detail__c, &quot;This return/credit should not have been issued to customer&quot;) 		), 		AND( 			ISPICKVAL(CaseType__c, &quot;I have an order correction&quot;), 			ISPICKVAL(Case_Type_Detail__c, &quot;Data Field on order needs to be adjusted&quot;) 		) 	), 	ISPICKVAL(Salesperson__r.Sub_Bu__c, &quot;Canada&quot;) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_UKI_Commissions</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND( RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, (ISPICKVAL( CaseType__c , &quot;UKI Inquiry&quot;)) )</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Acritas_product_support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; ( ESC_Unique_Identifier__c  == &apos;Acritas-PS&apos;) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Acritas Product Support&apos;)&amp;&amp; (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>UKI_Acritas_Project_Inquiry</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF( ISNEW() &amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (ISPICKVAL(Sales_Org__c , &quot;GLI&quot;))&amp;&amp; (ESC_UKI_WebForm_Queue_Name__c == &apos;UKI Acritas Project Inquiry&apos;)&amp;&amp; (RIGHT(ESC_Origin_Name__c, 7) == &apos;Acritas&apos; ) , True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Content_and_Tech</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ISPICKVAL(Sales_Org__c,&quot;TSL&quot;) &amp;&amp; ISPICKVAL(Origin , &quot;Phone&quot;)&amp;&amp; CreatedBy.Profile.Name = $Label.LatAmPartnerCommunityProfile &amp;&amp; ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; ((ISPICKVAL(Product__c , &quot;Checkpoint&quot;)) || (ISPICKVAL(Product__c , &quot;Proview&quot;))||(ISPICKVAL(Product__c , &quot;Rto&quot;))||(ISPICKVAL(Product__c , &quot;Cp-pro&quot;))|| (ISPICKVAL(Product__c , &quot;Cp-pro Web&quot;))||(ISPICKVAL(Product__c , &quot;Cp-pro Mobile&quot;))|| (ISPICKVAL(Product__c , &quot;Decisões&quot;))|| (ISPICKVAL(Product__c , &quot;Perito&quot;))||(ISPICKVAL(Product__c , &quot;Projetos De Lei&quot;))|| (ISPICKVAL(Product__c , &quot;Site Advogado&quot;))),true,False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Content_and_Tech</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ISPICKVAL(Sales_Org__c,&quot;RV01&quot;) &amp;&amp; ISPICKVAL(Origin , &quot;Phone&quot;)&amp;&amp; CreatedBy.Profile.Name = $Label.LatAmPartnerCommunityProfile &amp;&amp; ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; ((ISPICKVAL(Product__c , &quot;Proview&quot;))||(ISPICKVAL(Product__c , &quot;Proview One Shot&quot;))|| (ISPICKVAL(Product__c , &quot;Rto&quot;))|| (ISPICKVAL(Product__c , &quot;Subscription - Online&quot;))|| (ISPICKVAL(Product__c , &quot;Subscription - Proview&quot;))),true,false)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_LE_HelpDesk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ISPICKVAL(Sales_Org__c,&quot;RV01&quot;) &amp;&amp; ISPICKVAL(Origin , &quot;Phone&quot;)&amp;&amp; CreatedBy.Profile.Name = $Label.LatAmPartnerCommunityProfile &amp;&amp; ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; ((ISPICKVAL(Product__c , &quot;Books&quot;))||(ISPICKVAL(Product__c , &quot;Subscription - Print&quot;))),true,false)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Legal_One</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ISPICKVAL(Sales_Org__c,&quot;TSL&quot;) &amp;&amp; ISPICKVAL(Origin , &quot;Phone&quot;)&amp;&amp; CreatedBy.Profile.Name = $Label.LatAmPartnerCommunityProfile &amp;&amp; ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;) &amp;&amp; ((ISPICKVAL(Product__c , &quot;Legal Analytics&quot;)) || (ISPICKVAL(Product__c , &quot;Legal Core&quot;))||(ISPICKVAL(Product__c , &quot;Legal Intelligence&quot;))||(ISPICKVAL(Product__c , &quot;Legal One Firms Brazil&quot;))|| (ISPICKVAL(Product__c , &quot;Legal One Corporate Brazil&quot;))||(ISPICKVAL(Product__c , &quot;Legal One Migration Tool&quot;))|| (ISPICKVAL(Product__c , &quot;Legal Update&quot;))|| (ISPICKVAL(Product__c , &quot;Novajus&quot;))||(ISPICKVAL(Product__c , &quot;SE&quot;))|| (ISPICKVAL(Product__c , &quot;Winsip&quot;))),true,False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_Support_Content_and_Tech</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ISPICKVAL(Sales_Org__c,&quot;TSL&quot;) &amp;&amp; ISPICKVAL(Origin , &quot;Phone&quot;)&amp;&amp; CreatedBy.Profile.Name = $Label.LatAmPartnerCommunityProfile &amp;&amp; ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;),true,False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>BR_LE_HelpDesk</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; ISPICKVAL(Sales_Org__c,&quot;RV01&quot;) &amp;&amp; ISPICKVAL(Origin , &quot;Phone&quot;)&amp;&amp; CreatedBy.Profile.Name = $Label.LatAmPartnerCommunityProfile &amp;&amp; ISPICKVAL(ESC_Case_Type__c , &quot;Incident&quot;),true,False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>Inquiry_Manager</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>AND(  	RecordType.DeveloperName = &quot;SCS_Inquiry&quot;, 	NOT(ISPICKVAL(Salesperson__r.Sub_Bu__c, &quot;Canada&quot;)), NOT(ISPICKVAL( CaseType__c , &quot;KS Inquiry&quot;))  	)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>LatAm_HighQ_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;mx&apos; &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c)))) -FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;mexico&apos;) &amp;&amp; ISPICKVAL(Product__c , &quot;HighQ&quot;)) ,True, False)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>NL_Customer_Support</assignedTo>
+            <assignedToType>Queue</assignedToType>
+            <formula>IF(ISNEW()&amp;&amp; (ISPICKVAL(Origin , &quot;Web&quot;) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;mx&apos; &amp;&amp; LOWER(TRIM(RIGHT(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))), LEN(TRIM(RIGHT(ESC_Origin_Name__c,LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c)))) -FIND(&quot;=&quot;,TRIM(RIGHT(ESC_Origin_Name__c, LEN(ESC_Origin_Name__c)- FIND(&quot;=&quot;,ESC_Origin_Name__c))))))) = &apos;mexico&apos;) &amp;&amp; NOT(ISPICKVAL(Product__c , &quot;HighQ&quot;))) ,True, False)</formula>
+        </ruleEntry>
+    </assignmentRule>
+</AssignmentRules>

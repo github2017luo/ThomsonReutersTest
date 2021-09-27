@@ -1,0 +1,53 @@
+<!--**********************************
+Class Name: ESC_CreateCaseReferralNewButton
+Purpose:
+Author:Mousumi Panda
+Date Created:07/06/2017
+Date Updated:V0:
+**********************************-->
+
+<apex:page standardController="Case" extensions="ESC_CreateCaseReferralController" tabStyle="ESC_Case_Collaborator__c">
+<apex:includeScript value="/support/console/28.0/integration.js"/>
+<apex:form id="theForm">
+  <apex:pagemessages />
+    <!--<apex:actionFunction action="{!cancel}" name="cancelJS"/>-->
+    <apex:sectionHeader help="" id="hdr" title="Referral"/>
+    {!$Label.ESC_Referral_Page}<br/><br/>
+    <apex:pageBlock id="ReferRecord">
+    
+        <apex:pageBlockButtons location="bottom" style="text-align:left">
+        <apex:commandButton action="{!saverecord}" value="{!$Label.ESC_Save}"/>
+        <apex:commandButton action="{!cancelRelatedList}" value="{!$Label.ESC_Cancel}" immediate="true"/>
+        </apex:pageBlockButtons>
+        
+
+      <apex:pageBlockSection columns="1">
+        <apex:pageBlockSectionitem >
+          <apex:outputLabel value="{!$Label.ESC_Referral_Role}" />
+
+          <apex:outputPanel >
+          <apex:actionregion >
+            <apex:selectList value="{!referralRecord.ESC_Role__c}" size="1" required="true" style="width:150px">
+                    <apex:selectOptions value="{!RefRoles}" />
+                </apex:selectList> 
+                </apex:actionregion>
+                
+                </apex:outputPanel>
+        </apex:pageBlockSectionitem>
+      
+        <apex:pageBlockSectionitem ></apex:pageBlockSectionitem>
+        <apex:pageBlockSectionitem >
+          <apex:outputLabel value="{!$Label.ESC_Referral_Owner}" />
+
+                <apex:outputPanel >
+                <apex:inputField value="{!referralRecord.OwnerId}" style="" ></apex:inputField>
+                </apex:outputPanel>
+        </apex:pageBlockSectionitem>
+        
+       
+      </apex:pageBlockSection>  
+        
+    
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

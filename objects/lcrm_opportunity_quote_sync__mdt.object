@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This custom metadata is used to store the field api names of the opportunity and quote object to sync the data between them.</description>
+    <fields>
+        <fullName>Key_field__c</fullName>
+        <description>Source key field  to get the target field</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Source field</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Object_name__c</fullName>
+        <description>Store the custom object name</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Store the custom object name</inlineHelpText>
+        <label>Object name</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sync_active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>To manually keep the sync active/inactive.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Sync active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Target_field__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Target field</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>lcrm_opportunity_quote_sync</label>
+    <listViews>
+        <fullName>lcrm_view</fullName>
+        <columns>Object_name__c</columns>
+        <columns>Sync_active__c</columns>
+        <columns>Key_field__c</columns>
+        <columns>Target_field__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>lcrm view</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>lcrm_opportunity_quote_syncs</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

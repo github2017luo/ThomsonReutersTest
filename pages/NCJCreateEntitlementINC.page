@@ -1,0 +1,46 @@
+<apex:page standardcontroller="Invite_Colleagues__c" lightningStylesheets="true" extensions="ODT_NCJCreateEntitlementINC" action="{!callService}">
+    <apex:pageBlock >
+        <apex:pageBlockSection >
+            <apex:outputText rendered="{!checkError}" style="width:100%;"> 
+                  <div class="container" >
+                      {!$Label.ODT_One_Pass_Error_Message}
+                  </div>    
+              </apex:outputText>
+            
+            <apex:outputText rendered="{!NOT(checkError)}" style="width:100%;"> 
+                  <div class="container" >
+                      {!$Label.ODT_One_Pass_Success_Message}
+                  </div>    
+              </apex:outputText>
+        </apex:pageBlockSection>
+        
+        <apex:form >
+            <div align="center">
+               <apex:commandButton value="Back To Invited Colleagues" action="{!closePopup}" styleClass="successbtn"/> 
+            </div>
+            
+        </apex:form>
+    </apex:pageBlock>
+
+    
+    <style>
+       .container{
+          border: 3px solid rgba(47,86,135,1);
+          border-radius: 10px;
+          display: block;
+          font-size: 1.5em;
+          font-family: sans-serif;
+          padding: 1em 2em;
+          margin: 2em auto;
+          width: 230%;
+          
+          text-align: center;
+         } 
+        
+        .successbtn{
+             width:250px;
+             height:25px;
+            
+            }
+   </style>
+</apex:page>

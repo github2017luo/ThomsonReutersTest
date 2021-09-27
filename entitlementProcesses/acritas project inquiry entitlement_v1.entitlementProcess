@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitlementProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <SObjectType>Case</SObjectType>
+    <active>true</active>
+    <entryStartDateField>Case.CreatedDate</entryStartDateField>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>true</value>
+    </exitCriteriaFilterItems>
+    <isVersionDefault>true</isVersionDefault>
+    <milestones>
+        <businessHours>Europe/London</businessHours>
+        <milestoneCriteriaFormula>ISPICKVAL(Origin , &apos;Web&apos;) &amp;&amp; BEGINS(OwnerId, &apos;00G&apos;) &amp;&amp; ISPICKVAL(Status , &apos;New&apos;) &amp;&amp; Owner:Queue.DeveloperName = &apos;UKI_Acritas_Project_Inquiry&apos;</milestoneCriteriaFormula>
+        <milestoneName>Case Acceptance Time</milestoneName>
+        <minutesToComplete>1440</minutesToComplete>
+        <successActions>
+            <name>USL_Case_Acceptance_Delay_Update</name>
+            <type>FieldUpdate</type>
+        </successActions>
+        <timeTriggers>
+            <actions>
+                <name>GGO_UpdatGGO_Updatee_IsEscalated_to_TRUE</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <name>Acritas Project Inquiry Entitlement</name>
+    <versionMaster>5523C000000GnE0</versionMaster>
+    <versionNumber>1</versionNumber>
+</EntitlementProcess>

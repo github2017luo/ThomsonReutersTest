@@ -1,0 +1,43 @@
+<!--
+============================================================================================== 
+OVERRIDE PAGE FOR EDITING NOTICEBOARDS
+REQUIRES THE ID OF A NOTICEBOARD, I.E:
+
+    [SF base URL]/Apex/[VF Page Name]?Id=[NoticeBoard id]
+
+ProvenWorks for Improved Apps
+Copyright (c.) Improved Apps Limited 2012. All Rights Reserved.
+============================================================================================== 
+ -->
+
+<apex:page standardController="ianb__NoticeBoard__c" extensions="ianb.ControllerExtensionNoticeBoardEdit" showHeader="true" sidebar="true" tabStyle="ianb__NoticeBoard__c" title="{!BrandingLocalisations['ProductName']}: {!DialogueLocalisations['TitleDialogueTitle']}" >
+    <apex:pageMessages />
+    
+    <apex:sectionHeader subtitle="{!ianb__NoticeBoard__c.Name}" title="{!BrandingLocalisations['NoticeBoardObjectName']}" />
+    
+    <apex:form >
+        <apex:pageBlock mode="edit" title="{!DialogueLocalisations['TitleSubtitleNoticeBoardEdit']}">
+
+            <apex:pageBlockButtons location="both">
+                <apex:commandButton action="{!save}" value="{!GlobalLocalisations['ButtonSave']}" id="saveButton" />
+                <apex:commandButton action="{!cancel}" value="{!GlobalLocalisations['ButtonCancel']}" id="cancelButton" />
+            </apex:pageBlockButtons>   
+            
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleInformation']}" columns="2" collapsible="false">
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelName']}" value="{!ianb__NoticeBoard__c.Name}" required="true" />
+                <apex:outputField label="{!GlobalLocalisations['FieldLabelOwner']}" rendered="{!NOT(ISNULL(ianb__NoticeBoard__c.OwnerId))}" value="{!ianb__NoticeBoard__c.OwnerId}" />
+            </apex:pageBlockSection>                
+
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleNoticeBoardDescription']}" columns="1" collapsible="true" >
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelSummary']}" value="{!ianb__NoticeBoard__c.ianb__Summary__c}" />
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelDescription']}" value="{!ianb__NoticeBoard__c.ianb__Description__c}" />
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelAckStatement']}" value="{!ianb__NoticeBoard__c.ianb__DefaultAcknowledgementStatement__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleTheme']}" columns="1" collapsible="true">
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelThemeImage']}" value="{!ianb__NoticeBoard__c.ianb__ThemeImageUrl__c}" />
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>    
+    </apex:form>
+</apex:page>

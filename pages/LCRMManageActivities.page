@@ -1,0 +1,95 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+Date         Name                    Description
+ 
+2019-02-05   Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+
+
+<apex:page id="mainPage" controller="LCRMManageActivitiesCtrl"  lightningStylesheets="true">
+    <apex:sectionHeader id="pageTitle" title="Activities" subtitle="Manage Activities"/>
+    <apex:pageMessages id="msgs"/>
+    <apex:form id="mainform">
+        <apex:actionFunction name="selectedOperationType" reRender="mainform" status="LoadStatus"/>
+        <apex:actionStatus id="LoadStatus">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Loading please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:outputLabel styleClass="ErrorClass"> <apex:actionStatus id="LoadStatus1"  startText=" Loading..."  stopText="" /> </apex:outputLabel>
+        <apex:pageBlock title="Selected Records Summary" id="summaryPB">
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Selected Task records : "></apex:outputLabel>
+                    <apex:outputText value="{!taskList.size}"></apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Selected Event records : "></apex:outputLabel>
+                    <apex:outputText value="{!eventList.size}"></apex:outputText>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>  
+        </apex:pageBlock>
+        <apex:pageBlock title="Activities Mass Update" id="functionSelectorPB">
+            <apex:pageBlockSection columns="1">
+                <apex:selectRadio value="{!selFunction}" onchange="selectedOperationType();">
+                    <apex:selectOptions value="{!FunctionList}" />
+                </apex:selectRadio> 
+            </apex:pageBlockSection>  
+        </apex:pageBlock>
+        <apex:pageBlock title="Select Status" id="updtStatusPB" rendered="{!selFunction='Status'}">
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem rendered="{!taskList.size>0}">
+                    <apex:outputLabel value="Task Status"></apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputField label="Task Status" value="{!tempTask.Status}" required="false"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!eventList.size>0}">
+                    <apex:outputLabel value="Event Status"></apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputField label="Event Status" value="{!tempEvent.Status__c}" required="false"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!updateStatus}" value="Save"  status="LoadStatus"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"  status="LoadStatus"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageBlock title="Select Due Date" id="updtDueDtPB" rendered="{!selFunction='Due Date'}">
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem rendered="{!taskList.size>0}">
+                    <apex:outputLabel value="Task Due Date"></apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputField label="Task Due Date" value="{!tempTask.ActivityDate}" required="false"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!eventList.size>0}">
+                    <apex:outputLabel value="Event Due Date"></apex:outputLabel>
+                    <apex:outputPanel >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputField label="Event Due Date" value="{!tempEvent.StartDateTime}" required="false"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!updateDueDate}" value="Save"  status="LoadStatus"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"  status="LoadStatus"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,58 @@
+<apex:component controller="TRFetchQuoteLineItems" access="global">
+    <apex:attribute name="qtId" type="Id" description="Id of the lineItem" assignTo="{!quoteId}"/>
+    <br/>
+    <table width="100%" style="width:100%;border-bottom:none;border-left:none;border-right:none;" cellpadding="0px" cellspacing="0px">        
+        <tr>
+            <th style="width:35%;border-top:2px solid;border-left:2px solid;border-right:0px solid;border-bottom:2px solid;" bgcolor="#D9D9D9">Descrição do Produto / Serviço</th>
+            <th style="width:15%;border-top:2px solid;border-left:2px solid;border-right:0px solid;border-bottom:2px solid;" bgcolor="#D9D9D9" align="center">Quantidade</th>
+            <th style="width:20%;border-top:2px solid;border-left:2px solid;border-right:0px solid;border-bottom:2px solid;" bgcolor="#D9D9D9">Valor total</th> 
+            <th style="width:15%;border-top:2px solid;border-left:2px solid;border-right:0px solid;border-bottom:2px solid;" bgcolor="#D9D9D9">Data de início</th>                
+            <th style="width:15%;border-top:2px solid;border-left:2px solid;border-bottom:2px solid;border-right:2px solid;" bgcolor="#D9D9D9">Data de término</th>                               
+        </tr>
+        <apex:variable value="{!0}" var="Total"/>
+
+        <apex:repeat value="{!qutLineItems}" var="qlt">
+        <tr>
+            <td style="width:35%;border-left:2px solid;border-right:0px solid;">{!qlt.Product2.name}</td>
+            <td style="width:15%;border-left:2px solid;border-right:0px solid;" align="center">{!qlt.Quantity}</td>
+            <td style="width:20%;border-left:2px solid;border-right:0px solid;" align="center">
+             <!--{!IsoCode} <c:TRRenewalNoticeTotalPrice priceValue="{!qlt.Quantity*qlt.UnitPrice}" />-->
+             {!IsoCode} <c:TRRenewalNoticeTotalPrice priceValue="{!qlt.Total_Price_Calc__c}" />
+            </td> 
+            <td style="width:15%;border-left:2px solid;border-right:0px solid;" align="center">{!DAY(qlt.Subscription_Start_Date__c)}/{!MONTH(qlt.Subscription_Start_Date__c)}/{!YEAR(qlt.Subscription_Start_Date__c)}</td>
+            <td style="width:15%;border-left:2px solid;border-right:2px solid;" align="center">{!DAY(qlt.Subscription_End_Date__c)}/{!MONTH(qlt.Subscription_End_Date__c)}/{!YEAR(qlt.Subscription_End_Date__c)}</td> 
+        </tr>
+        <!--<apex:variable var="Total" value="{!Total + (qlt.Quantity*qlt.UnitPrice)}"/>-->
+        <apex:variable var="Total" value="{!Total + qlt.Total_Price_Calc__c}"/>
+        
+        <!--<apex:variable var="total" value="{!qlt.Quantity+total}"/>-->
+        
+        </apex:repeat>  
+        
+        <tr>
+            
+            <td style="border-top:2px solid;" bgcolor="white" cellpadding="0px" cellspacing="0px" height="100%" width="35%">
+                &nbsp;
+            </td>
+            
+            <td bgcolor="#D9D9D9" style="border-left:2px solid !important;border-bottom:2px solid !important;padding-left:2px;border-top:2px solid !important;" cellspacing="0px" height="100%" width="15%">
+                <b>Total</b>
+            </td>
+            <td bgcolor="#D9D9D9" align="right" style="border-right:0px solid;border-top:2px solid;border-left:2px solid;border-bottom:2px solid !important;" width="21%">
+                {!IsoCode}<c:TRRenewalNoticeTotalPrice priceValue="{!Total}" />
+            </td>
+            <td style="border-top:2px solid;border-left:2px solid;" bgcolor="white" cellpadding="0px" cellspacing="0px" height="100%" width="14%">
+                &nbsp;
+            </td>
+            <td style="border-top:2px solid;border-right:0px !important" bgcolor="white" cellpadding="0px" cellspacing="0px" height="100%" width="15%">
+                &nbsp;
+            </td>
+                    
+            
+        </tr>
+            
+           <!--<apex:outputText value="{!GrandTotal}"></apex:outputText>
+           *****{!GrandTotal}*** -->
+    </table>
+        
+</apex:component>

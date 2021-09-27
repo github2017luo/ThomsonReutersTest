@@ -1,0 +1,35 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2018-04-25     Harika Devi Kalidindi      CRM -4943 Restrict visiblity of  Do Not Call,Do Not Mail,Do Not Pay a Visit fields to only accounts  where country equal to United States
+===============================================================================
+-->
+<apex:page standardController="Account" extensions="LCRMAccountMarketingPrefController" Rendered="{!isCountryUS}" lightningStylesheets="true" >
+
+    <apex:form >
+        <apex:commandButton value="{!$Label.Edit}" action="{!changeToEdit}" rendered="{! CheckPermission}" style="margin-left:15cm;"/>
+        <apex:commandButton value="{!$Label.Save}" action="{!save}" rendered="{! isEditable}" style="margin-left:15cm;"/>
+        <apex:commandButton value="{!$Label.Cancel}" action="{!cancel}" rendered="{! isEditable}"/>
+        <!-- Onload Page its looks like-->
+        <apex:pageBlock rendered="{!NOT(isEditable)}">
+            <apex:pageBlockSection >
+                
+                <apex:outputField value="{! Account.Do_Not_Call__c}"/>
+                <apex:outputField value="{!Account.Do_Not_Mail__c}"/>
+                <apex:outputField value="{!Account.Do_Not_Pay_a_Visit__c}"/>
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+       <!-- On Edit Page-->
+        <apex:pageBlock rendered="{!isEditable}">
+            <apex:pageBlockSection >
+            
+                <apex:inputField value="{!Account.Do_Not_Call__c}" />
+                <apex:inputField value="{!Account.Do_Not_Mail__c}" /> 
+                <apex:inputField value="{!Account.Do_Not_Pay_a_Visit__c}" />
+                  
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+  
+</apex:page>

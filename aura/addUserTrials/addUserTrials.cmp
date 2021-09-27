@@ -1,0 +1,26 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId,lightning:hasPageReference" 
+                access="global" >
+   <aura:attribute name="recordId" type="String" />
+   <!-- <aura:attribute name="trialOptyId" type="String" />-->
+    <aura:attribute name="optyId" type="id" />
+   <aura:attribute name="trial" type="Ent_Trial__c" default="{'sobjectType': 
+    'Ent_Trial__c'}" />
+   <aura:attribute name="recordLoadError" type="String" />
+    <force:recordData aura:id="recordLoader" recordId="{!v.recordId}"
+    fields="Opportunity__c"
+    targetFields="{!v.trial}" targetError="{!v.recordLoadError}" recordUpdated="{!c.doInit}" />
+ <aura:html tag="style">
+         .slds-modal__container{
+        width: 95%;
+        max-width: 95rem;
+        }
+        .modal-body{
+        height : 800px !important;
+        max-height: 800px !important;
+        }
+   </aura:html>  
+    
+   <aura:if isTrue="{!v.optyId}">
+<c:addUserOmniTrials recordId="{!v.recordId}" trialOptyId="{!v.optyId}" oncloseQuickAction="{!c.closeQuickAction_AuraMethod}" ></c:addUserOmniTrials>
+   </aura:if>
+</aura:component>

@@ -1,0 +1,25 @@
+<apex:page standardController="Quote" extensions="Contact_Count_Quote_controller" action="{!Contact_Count}" sidebar="false">
+<style>
+    .labelCol {
+        padding-right: 10px;
+        padding-left: 2px;
+        text-align: right;
+        font-size: 91%;
+        font-weight: bold;
+        color: #333;
+    }
+    .colA {
+        width : 30%;
+    }
+    .colB {
+    }
+</style>
+    <apex:panelGrid columns="2" style="padding-left: 12%;"  columnClasses="colA,colB">
+     <apex:outputLabel styleClass="labelCol" value="E-Billing Contact Status" />
+        <apex:panelGroup >
+               <apex:image value="/img/msg_icons/warning16.png" alt="Warning" rendered="{!IF(intContactCount!=null,IF(intContactCount > 1, true, false), false)}"/>
+               &nbsp;
+        <apex:outputText value="{!xReplace}"/>
+        </apex:panelGroup>
+    </apex:panelGrid>
+</apex:page>

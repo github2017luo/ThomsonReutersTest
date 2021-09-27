@@ -1,0 +1,50 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-02-14  Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page standardController="Account" extensions="AccountAlertDetailController" lightningStylesheets="true">   
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:form rendered="{!showAlertAvailable}">
+        <apex:pageBlock > 
+            <apex:pageBlockSection columns="{!columns}" collapsible="false">
+            <apex:repeat value="{!accAlertMapUI}" var="key">
+                <apex:pageBlockSection columns="1">
+                    <apex:pageBlockSection columns="1" rendered="{! If(key =='1. Severe' ,true,false) }">
+                        <table width= "100%">
+                          <tr width = "100%">
+                            <td width="20%"><img src="{!URLFOR($Resource.LCRMAccountAlert, 'Severe.png')}" style="margin-top:-12px; float:right" width="40" height="40" /></td>
+                            <td width="20%"><span style="font-weight:800; font-size: 12px; color:red; text-shadow: 1px 1px black; float:left;">{!RIGHT(key, LEN(key)-3)}</span></td>
+                            <td width="80%"><span style="font-size: 11px;">{!accAlertMapUI[key]}</span></td>
+                          </tr>
+                        </table>
+                    </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1"  rendered="{! If(key =='2. Important' ,true,false) }">
+                    <table width= "100%">
+                          <tr width = "100%">
+                              <td width="20%"><img src="{!URLFOR($Resource.LCRMAccountAlert, 'Important.png')}" style="margin-top:-12px; float:right" width="40" height="40" /></td>
+                              <td width="20%"><span style="font-weight:800; font-size: 12px; color:#FFF033; text-shadow: 1px 1px black; float:left;">{!RIGHT(key, LEN(key)-3)}</span></td>
+                              <td width="80%"><span style="font-size: 11px;">{!accAlertMapUI[key]}</span></td>
+                          </tr>
+                    </table>
+                </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1"  rendered="{! If(key =='3. Informational' ,true,false) }">
+                    <table width= "100%">
+                        <tr width="100%">
+                            <td width="20%"><img src="{!URLFOR($Resource.LCRMAccountAlert, 'Informational.png')}" style="margin-top:-12px; float:right" width="37" height="37"/>
+                            <td width="20%"><span style="font-weight:800; font-size: 12px; color:green; text-shadow: 1px 1px black; float:left;">{!RIGHT(key, LEN(key)-3)}</span></td>
+                            <td width="80%"><span style="font-size: 11px;">{!accAlertMapUI[key]}</span></td>
+                        </td>
+                        </tr>
+                    </table>
+                 </apex:pageBlockSection>
+                </apex:pageBlockSection>
+            </apex:repeat>
+            </apex:pageBlockSection> 
+        </apex:pageBlock> 
+    </apex:form>
+	
+</apex:page>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Acritas_Case_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This sharing is created to share the Acritas and Caselines cases to the S2E Users.</description>
+        <label>Acritas_Case_Sharing</label>
+        <sharedTo>
+            <group>Master_Support_Group</group>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>ESC_Product_Segment_Brand__c</field>
+            <operation>equals</operation>
+            <value>CaseLines,Acritas</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>AEM</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Case_CPQ_Manager</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Case CPQ Manager</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CPQ_Managers</roleAndSubordinatesInternal>
+        </sharedTo>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Elite CPQ Requests,Elite Closed CPQ Requests</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Case_Elite_Role</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Case_Elite_Role</label>
+        <sharedTo>
+            <group>Elite_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Elite CPQ Requests</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>ESC_GLI_Case_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>ESC GLI Case Sharing</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <booleanFilter>(1 OR 2) AND 3</booleanFilter>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Incident,Enhancement Request (Read Only),Feedback (Read Only),Incident (Read Only),Feedback,Enhancement Request</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Enquiry,Request for Service,Request for Action,Request for Service (Read Only),Request for Action (Read Only),Enquiry (Read Only)</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>ESC_GLI_Case_Sharing2</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>ESC GLI Case Sharing2</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <booleanFilter>(1 OR 2 )AND 3</booleanFilter>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Tech Support,Legal Content</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Legal Content (Read Only),Tech Support (Read Only)</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>ESC_Share_Case_Records_with_AEM_RegionUsers</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Share Case Records with AEM RegionUsers</label>
+        <sharedTo>
+            <group>ESC_ANZ_Risk_Order_Management</group>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>ESC_Product_Segment_Brand__c</field>
+            <operation>equals</operation>
+            <value>Risk</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>AEM</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>GLI_Archive_Cases</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>GLI Archive Cases</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>GLI Archive Requests</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>LCRM_Share_ANZ_Cases_with_USL</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>[CRM-15382] Give read/write access to ANZ and USL cases</description>
+        <label>LCRM Share ANZ Cases with USL</label>
+        <sharedTo>
+            <group>CashAppsGroup</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>ANZ</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>President_Legal_Case_Sharing_RW_New</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This  is to give Read/Write access for all case records for non-ICP record types  for everyone under role &quot;President Legal&quot;. Written as part of ICP so as not to impact existing case sharing settings for legal group.</description>
+        <label>President Legal  Case Sharing-RW New</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>President_Legal</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>notEqual</operation>
+            <value>SCS Inquiry,Findlaw Inquiry</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Share_DQA_request_with_GLI_users</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Created as part of  user story DPS-19996 (Scenario3)</description>
+        <label>Share DQA request with GLI users</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>DQA Request</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>TR_Legal_Rep_Case_Sharing_RW_New</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This  is to give Read/Write access for all case records for non-ICP record types  for everyone under role &quot;TR Legal Sales Rep&quot;.</description>
+        <label>TR Legal Rep Case Sharing-RW New</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>TR_Legal_Sales_Rep</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>notEqual</operation>
+            <value>SCS Inquiry,Findlaw Inquiry</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Thomson_Reuters_LATAM_Case_Sharing_RW_New</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Thomson Reuters LATAM Case Sharing-RW New</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Thomson_Reuters_LATAM</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>notEqual</operation>
+            <value>SCS Inquiry,Findlaw Inquiry</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

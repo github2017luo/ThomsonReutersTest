@@ -1,0 +1,18 @@
+<!--
+ - Used from Opportunity button to expire all quotes
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page showHeader="true" sidebar="true" controller="Digital_Expire_All_ProposalsController" action="{!Expire}" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form >
+        <div align="center">
+            <apex:commandButton value="OK" onclick="window.location='/{!opp.id}'; return false;" action="{!Expire}" rendered="{!opp.id!=null}" />
+        </div>
+    </apex:form>
+</apex:page>

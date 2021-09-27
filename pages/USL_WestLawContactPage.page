@@ -1,0 +1,93 @@
+<apex:page standardController="LCRM_Contact_SSD__c" extensions="USL_WestLawContactController" lightningStylesheets="true">
+    <apex:slds >
+     <apex:includeScript value="/support/console/22.0/integration.js" />
+    <apex:sectionHeader id="title" title="WestLaw Contact Information"/>
+   
+    <script>
+      function testOpenSubtab() {
+            if (sforce.console.isInConsole()) {
+                var url =
+                    '/{!LCRM_Contact_SSD__c.Name}?isdtp=vw';
+                srcSelf(url);
+            } else {
+             var url = '/{!LCRM_Contact_SSD__c.LCRM_Account_SSD__r.Name}';
+               window.open(url, '_top');
+            }
+        }
+        </script>
+        <apex:form >
+             <apex:pageMessages id="messagesGlobal" />
+    <apex:pageBlock rendered="{!!iserror}" id="pageBlock">
+        
+   
+  <!-- <apex:pageBlockSection columns="1" id="bPageBlockSectionOpenItems" title="Westlaw Info"> -->
+     
+  
+     
+    <table class="display" style="width:100%" >
+        
+      <tr>
+        <th>Preference Name</th>
+        <th>Preference Value</th>
+        <th>Access Start</th>
+        <th>Access End</th>
+        <th>Description</th>
+        <th>ContactNumber</th>
+        </tr>
+            <apex:repeat value="{!WLRes.UserPreferences}" var="uplist">
+        <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        </tr>
+        <apex:repeat value="{!uplist.preference}" var="res">
+            <tr>
+              
+           <td><apex:outputText value="{!res.PrefName}" /> </td>
+           <td><apex:outputText value="{!res.prefValue}" /> </td>
+           <td><apex:outputText value="{!res.startDate}" /> </td>
+            <td><apex:outputText value="{!res.endDate}" /> </td>
+            <td><apex:outputText value="{!res.prefDesc}" /> </td>
+           
+            <td><apex:outputText value="{!uplist.contactNumber}"/></td>
+            </tr>
+        </apex:repeat>
+        </apex:repeat>
+        </table> 
+      
+    <!--   <apex:pageBlockTable value="{!Condetail}" var="res">
+                   <apex:column >
+                        <apex:facet name="header">PrefName</apex:facet>
+                        <apex:outputText value="{!res.prefName}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">prefValue</apex:facet>
+                        <apex:outputText value="{!res.prefValue}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">startDate</apex:facet>
+                        <apex:outputText value="{!res.startDate}" />
+                    </apex:column>
+                  <apex:column >
+                        <apex:facet name="header">endDate</apex:facet>
+                        <apex:outputText value="{!res.endDate}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">prefDesc</apex:facet>
+                        <apex:outputText value="{!res.prefDesc}" />
+                    </apex:column>
+                <!--    <apex:column >
+                        <apex:facet name="header">customerNumber</apex:facet>
+                        <apex:outputText value="{!uplist.customerNumber}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">contactNumber</apex:facet>
+                        <apex:outputText value="{!uplist.contactNumber}" />
+                    </apex:column>
+        </apex:pageBlockTable>-->
+        
+   <!--      </apex:pageBlockSection> -->
+        
+    </apex:pageBlock>
+ </apex:form>
+ </apex:slds>
+</apex:page>

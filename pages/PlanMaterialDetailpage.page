@@ -1,0 +1,124 @@
+<apex:page tabstyle="Account" standardController="Account"	extensions="PlanMaterialDetailControler">  
+	<apex:sectionHeader title="Content" subtitle="Material Detail" />
+	<apex:form id="pageForm"> 
+		<!--   	<apex:pageBlock id="blockFilters"
+    		mode="mainDetail"
+    		title="Material Details">
+    	</apex:pageBlock>   -->
+		<apex:pageBlock id="blockPlanMatch" mode="mainDetail">
+			<apex:pageBlockSection id="sectionAccountInfo"	title="Account Information" columns="1" collapsible="false">
+				<apex:outputField value="{!Account.SAPAccountNumber__c}" />
+				<apex:outputField value="{!Account.Name}" />
+				<apex:pageBlockSectionItem id="sectionItemAddress">
+					<apex:outputLabel for="panelBillingAddress" value="Billing Address" />
+					<apex:outputPanel id="panelBillingAddress" layout="block">
+						<apex:outputField value="{!Account.BillingStreet}" />
+						<br />
+						<apex:outputField value="{!Account.BillingCity}" />
+						<span>,&nbsp;</span>
+						<apex:outputField value="{!Account.BillingState}" />
+						<span>&nbsp;</span>
+						<apex:outputField value="{!Account.BillingPostalCode}" />
+						<br />
+						<apex:outputField value="{!Account.BillingCountry}" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="sectionMatchInfo"	title="Material Information" columns="1" collapsible="false">
+				<!-- <apex:outputLabel value="Material Number" for="Material_Number"/>  -->
+			<!-- 	<apex:outputtext value="40975199" Label="Material Number"  -->
+				<apex:outputtext value="{!materialNumber}" Label="Material Number"	id="Material_Number" />
+				<!-- <apex:outputLabel value="Material Description" for="Material_Description"/>  -->
+				<!-- <apex:outputtext value="WL PRO GOVERNMENT AFFAIRS-STATE & FED"  -->
+				<apex:outputtext value="{!materialDescription}"	Label="Material Description" id="Material_Description" />
+			<!-- 						<apex:outputtext value="{!materialkey}"
+					Label="Material key!!!" id="Material_key" />   -->
+				<!-- <apex:outputLabel value="List Price" for="List_Price"/>  -->
+				<!-- <apex:outputtext value="1201.99" Label="List Price" id="List_Price" />  -->
+		<!--  		<apex:outputtext value="{!ListPrice}" Label="List Price" id="List_Price" />   -->
+									<apex:outputText value="{0, number, currency}" Label="List Price">
+										<apex:param value="{!Listprice}" />
+									</apex:outputText>
+				<!--<apex:pageBlockTable value="{!PlanMatchDetails}" var="p">
+	   				<apex:facet name="caption">
+	   					<div style="text-align:left; font-weight:bold; padding-top:20px;">
+	   						<span>Plan Matches</span>
+	   					</div>
+	   				</apex:facet> -->
+				<!--</apex:pageBlockTable>   -->
+				<!--</apex:pageBlockSectionItem> -->
+			</apex:pageBlockSection>
+			<!-- <apex:pageBlockSection id="MaterialDBS" title="Matched DBS"   -->
+			<apex:pageBlockSection id="MaterialDBS"	columns="1" collapsible="false"> 
+				<apex:tabPanel id="tabPanelPlanMatch" switchType="ajax"	selectedTab="tabPlanMatch" activeTabClass="activeTabStyle"	inactiveTabClass="inactiveTabStyle">
+					<apex:tab id="tabMatchDBS" label="Matched DBS" name="tabMatchDBS">
+						<!--  		<apex:outputPanel layout="block" style="background-color: white; height:300px;">  -->
+						<apex:outputPanel layout="block" style="background-color: white;">
+							<h3>Matched DBS</h3>
+							<apex:pageBlockTable id="tablePlanMatch" value="{!PlanMatchDBSs.page}"	var="d">
+
+<apex:facet name="footer">
+											<apex:panelGrid id="gridPlanMatchPrimaryLaw" columns="3">
+												<apex:panelGroup rendered="{!PlanMatchDBSs.HasPrev}">
+													<apex:commandButton value="Move Prev" rerender="tablePlanMatch">
+														<apex:param value="{!PlanMatchDBSs.PageIndex - 1}" assignTo="{!PlanMatchDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+												<apex:panelGroup >
+													<apex:outputText value="Page {0} of {1}">
+														<apex:param value="{!PlanMatchDBSs.PageNumber}"/>
+														<apex:param value="{!PlanMatchDBSs.Pages}"/>
+													</apex:outputText>
+												</apex:panelGroup>
+												<apex:panelGroup rendered="{!PlanMatchDBSs.HasNext}">
+													<apex:commandButton value="Move Next" rerender="tablePlanMatch">
+														<apex:param value="{!PlanMatchDBSs.PageIndex + 1}" assignTo="{!PlanMatchDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+											</apex:panelGrid>
+										</apex:facet>
+								<apex:column headerValue="DBS" value="{!d.dbs}" />
+							<!--	<apex:column headerValue="DBS Description"
+									value="{!d.dbsdescription}" /> -->
+								<apex:column headerValue="In-Plan" value="{!d.inplan}" />
+								<apex:column headerValue="In-Plan Trans"	value="{!d.inplantrans}" />
+								<apex:column headerValue="Ancillary Trans"	value="{!d.ancillarytrans}" />
+								<apex:column headerValue="WSD Trans" value="{!d.wsdtrans}" />
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:tab>
+					<apex:tab id="tabExcessDBS" label="Excess DBS" name="tabExcessDBS">
+						<apex:outputPanel layout="block" style="background-color: white;">
+							<h3>Excess DBS</h3>
+							<apex:pageBlockTable id="tableExcess" value="{!ExcessDBSs.page}"	var="d">
+<apex:facet name="footer">
+				<apex:panelGrid id="gridPlanMatchPrimaryLaw"	columns="3">
+												<apex:panelGroup rendered="{!ExcessDBSs.HasPrev}">
+													<apex:commandButton value="Move Prev" rerender="tableExcess">
+														<apex:param value="{!ExcessDBSs.PageIndex - 1}" assignTo="{!ExcessDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+												<apex:panelGroup >
+													<apex:outputText value="Page {0} of {1}">
+														<apex:param value="{!ExcessDBSs.PageNumber}"/>
+														<apex:param value="{!ExcessDBSs.Pages}"/>
+													</apex:outputText>
+												</apex:panelGroup>
+												<apex:panelGroup rendered="{!ExcessDBSs.HasNext}">
+													<apex:commandButton value="Move Next" rerender="tableExcess">
+														<apex:param value="{!ExcessDBSs.PageIndex + 1}" assignTo="{!ExcessDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+											</apex:panelGrid>
+										</apex:facet>
+								<apex:column headerValue="DBS" value="{!d.dbs}" />
+							<!-- 	<apex:column headerValue="DBS Description"
+									value="{!d.dbsdescription}" />  -->
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:tab>
+				</apex:tabPanel>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

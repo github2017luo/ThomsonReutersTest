@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This custom metadata will hold the fields dynamically based on the segment,region,Origin and source(ESC_Origin_name).</description>
+    <fields>
+        <fullName>ESC_Case_Field1__c</fullName>
+        <description>This will hold the Case Field Value</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>this will hold the case field value</inlineHelpText>
+        <label>Case Field1</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Case_Field2__c</fullName>
+        <description>This will hold the Case Field value</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>This will hold the case field value</inlineHelpText>
+        <label>Case Field2</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Case_Field3__c</fullName>
+        <description>This will hold the case field value</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>this will hold the case field value</inlineHelpText>
+        <label>Case Field3</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Case_Field4__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Case Field4</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Case_Field5__c</fullName>
+        <description>This will hold the case field vlaue</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>This will hold the case field value</inlineHelpText>
+        <label>Case Field5</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Is_Inactive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Is Inactive</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Origin__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Origin</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Region__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Region</label>
+        <length>50</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Segment__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Segment</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Source__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Unique Identifier</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_TimeZone__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>TimeZone</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>User</fullName>
+                    <default>true</default>
+                    <label>User</label>
+                </value>
+                <value>
+                    <fullName>Owner</fullName>
+                    <default>false</default>
+                    <label>Owner</label>
+                </value>
+                <value>
+                    <fullName>Creator</fullName>
+                    <default>false</default>
+                    <label>Creator</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>ESC Segment Region BH Selector Field</label>
+    <listViews>
+        <fullName>Businesshours</fullName>
+        <columns>MasterLabel</columns>
+        <columns>DeveloperName</columns>
+        <columns>ESC_Case_Field1__c</columns>
+        <columns>ESC_Origin__c</columns>
+        <columns>ESC_Region__c</columns>
+        <columns>ESC_Segment__c</columns>
+        <columns>ESC_Source__c</columns>
+        <columns>ESC_TimeZone__c</columns>
+        <columns>ESC_Case_Field2__c</columns>
+        <columns>ESC_Case_Field3__c</columns>
+        <columns>ESC_Case_Field4__c</columns>
+        <columns>ESC_Case_Field5__c</columns>
+        <columns>ESC_Is_Inactive__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>Businesshours</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>ESC Segment Region BH Selector Fields</pluralLabel>
+    <validationRules>
+        <fullName>ESC_ValRule1</fullName>
+        <active>false</active>
+        <description>Either Timezone or Casefield1/2/3/4/5 has to be entered on the metadata record to save it.</description>
+        <errorConditionFormula>(NOT(ISNULL(ESC_Case_Field1__c)) || NOT(ISNULL(ESC_Case_Field2__c)) || NOT(ISNULL(ESC_Case_Field3__c)) || NOT(ISNULL(ESC_Case_Field4__c)) || NOT(ISNULL(ESC_Case_Field5__c))
+) &amp;&amp; NOT(ISNULL(Text(ESC_TimeZone__c)))</errorConditionFormula>
+        <errorDisplayField>ESC_TimeZone__c</errorDisplayField>
+        <errorMessage>You cannot have timezone and Casefields listed on it together!</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+</CustomObject>

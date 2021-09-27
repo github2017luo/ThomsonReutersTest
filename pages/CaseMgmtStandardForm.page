@@ -1,0 +1,165 @@
+<apex:page standardController="Case" extensions="CaseMgmtStandardForm_Controller" sidebar="false" showHeader="false" language="{!strlancode}">
+<style>
+    .labelClass {
+        //color:red;
+        //font-style:italic;
+        font-size:16px;
+        font-family:Knowledge;
+    }
+</style>
+<c:HeaderThomsonReuters />
+    <apex:form >
+        <apex:pageMessages />
+        <apex:pageBlock title="General Inquiries Form" id="mainBlock" tabStyle="Contact">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!saveCasedata}" value="Submit" />
+              </apex:pageBlockButtons>
+              <apex:pageBlockSection title="General information Section" columns="2" collapsible="false">
+              <!-- <apex:outputPanel style="display:none">
+                <apex:inputField value="{!objCase.Sales_Org__c}"/> 
+                <apex:selectList size="1" value="{!strSalesOrg}">
+                        <apex:selectOptions value="{!CaseSalesOrg}"/>
+                    </apex:selectList>
+                </apex:outputPanel>
+                <apex:outputPanel />-->
+                
+                <apex:outputPanel >
+                   <apex:outputLabel value="{!$Label.Issue}" styleClass="labelClass"/>
+                </apex:outputPanel>
+                <apex:outputPanel >
+                    <apex:selectList size="1" value="{!strIssue}">
+                        <apex:selectOptions value="{!CaseIssue}"/>
+                        <apex:actionSupport event="onchange" reRender="ReasonValue" action="{!spin}" status="counterStatusIssue"/>
+                    </apex:selectList>
+                    <!--<apex:actionStatus id="counterStatusIssue" startText=" Loading..."/>-->
+                    <apex:actionStatus id="counterStatusIssue">
+                        <!--<apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.75; z-index: 1000; background-color: black;">
+                            &nbsp;
+                        </div>
+                        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                            <img src="http://upload.wikimedia.org/wikipedia/commons/e/ed/Cursor_Windows_Vista.gif" />
+                        </div>
+                        </apex:facet>
+                        <apex:facet name="start">
+                            <div class="slds-spinner_container">
+                              <div class="slds-spinner--brand slds-spinner slds-spinner--large" role="alert">
+                                <span class="slds-assistive-text">Loading</span>
+                                <div class="slds-spinner__dot-a"></div>
+                                <div class="slds-spinner__dot-b"></div>
+                              </div>
+                            </div>
+                        </apex:facet>-->
+                        <apex:facet name="start">
+                            <apex:outputPanel >
+                                <img src="/img/loading32.gif" width="25" height="25" />
+                                <apex:outputLabel value="Loading..."/>
+                            </apex:outputPanel>            
+                        </apex:facet>
+                    </apex:actionStatus>
+                </apex:outputPanel>
+                
+                <apex:outputPanel >
+                    <apex:outputLabel value="{!$Label.Reason_for_Case}" styleClass="labelClass"/>
+                </apex:outputPanel>
+                <apex:outputPanel >
+                    <apex:selectList size="1" value="{!strReason}" id="ReasonValue">
+                        <apex:selectOptions value="{!CaseReason}"/>
+                        <apex:actionSupport event="onchange" action="{!renderSection}"/>
+                    </apex:selectList>
+                </apex:outputPanel>
+                
+                <apex:outputLabel value="{!$Label.Name_of_the_account_in_which_the_invoice_was_issued}" styleClass="labelClass"/>
+                    <apex:inputText value="{!strNameoftheaccount}" />
+                <apex:outputLabel value="{!$Label.Name}"  styleClass="labelClass"/>
+                    <apex:inputText value="{!strName}" />
+                <apex:outputLabel value="{!$Label.Last_Name_Label}" styleClass="labelClass" />
+                    <apex:inputText value="{!strLastName}" />
+                <apex:outputLabel value="{!$Label.Customer_ID}" styleClass="labelClass"/>
+                    <apex:inputText value="{!strCustomerID}" />
+                <apex:outputLabel value="{!$Label.Email_Custom_Label}" styleClass="labelClass"/>
+                    <apex:inputText value="{!strEmail}" />
+                <apex:outputLabel value="{!$Label.Area_Code}" styleClass="labelClass"/>
+                    <apex:inputText value="{!strAreaCode}" />
+                <apex:outputLabel value="{!$Label.Telephone}" styleClass="labelClass"/>
+                    <apex:inputText value="{!strTelphone}" />
+                    
+                <apex:outputLabel value="{!$Label.Time_Availability}" styleClass="labelClass"/>
+                    <apex:selectList size="1" value="{!strTimeAvailability}">
+                        <apex:selectOptions value="{!CaseTimeAvailability}"/>
+                    </apex:selectList>
+               
+                <apex:outputLabel value="{!$Label.Product_Custom_Label}" styleClass="labelClass"/>
+                    <apex:selectList size="1" value="{!strProduct}">
+                        <apex:selectOptions value="{!Caseproduct}"/>
+                    </apex:selectList>
+                <apex:outputLabel value="{!$Label.Active_Subscription}" styleClass="labelClass"/>
+                    <apex:selectList size="1" value="{!strActiveSubscription}">
+                        <apex:selectOptions value="{!CaseActiveSubscription}"/>
+                    </apex:selectList>
+                
+                    <apex:outputLabel value="{!$Label.Comments}" styleClass="labelClass"/>
+                    <apex:inputText value="{!strComments}" />
+                  
+ <!--Below Section will appear upon selection as: Issue:Administrative Reason:Modification of data-->
+              
+              <apex:outputLabel value="{!$Label.Data_to_Modify}" styleClass="labelClass" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:selectList size="1" value="{!strDatatoModify}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}">
+                        <apex:selectOptions value="{!CaseDatatoModify}"/>
+                    </apex:selectList>
+              <apex:outputLabel value="{!$Label.Previous_Data}" styleClass="labelClass" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strPreviousData}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+              <apex:outputLabel value="{!$Label.New_Data}" styleClass="labelClass" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strNewData}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+              <apex:outputLabel value="{!$Label.City}" styleClass="labelClass" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strCity}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+              <apex:outputLabel value="{!$Label.State}" styleClass="labelClass" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <!--<apex:inputText value="{!strState}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>-->
+                    <apex:selectList size="1" value="{!strState}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}">
+                        <apex:selectOptions value="{!StateValues}"/>
+                    </apex:selectList>
+              <apex:outputLabel value="{!$Label.Zip_Code}" styleClass="labelClass" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strZipCode}" rendered="{!(blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+
+ <!--Below Section will appear upon selection as: Issue:Distribution Reason:No Reception--> 
+              
+              <apex:outputLabel value="{!$Label.Do_you_want_to_keep_this_address_for_future_shipments}" styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:selectList size="1" value="{!straddfutureshipments}" rendered="{!(!blnIsAdmReaMod && blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}">
+                        <apex:selectOptions value="{!AddressForFutureShipments}"/>
+                    </apex:selectList>
+              <apex:outputLabel value="{!$Label.Shipping_Addess}" styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strShippingAddess}" rendered="{!(!blnIsAdmReaMod && blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>  
+                    
+              
+              
+ <!--Below Section will appear upon selection as: Issue:Administrative Reason:No reception of bill -->    
+              
+              <apex:outputLabel value="{!$Label.Invoice_Number}" styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strInvoiceNumber}" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+              <apex:outputLabel value="{!$Label.Invoice_Date}" styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strInvoiceDate}" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && blnIsBilReaNoRecOfBil && !blnIsBilReaPayNote)}"/>
+              
+<!--Below Section will appear upon selection as: Issue:Administrative Reason:Billing/Adjustments/Refunds -->                 
+              
+              <!--<apex:outputLabel value="Invoice Number " styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strInvoiceNumber}" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && blnIsBilReaPayNote)}"/>-->
+              <apex:outputLabel value="{!$Label.Payment_Amount}" styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strPaymentAmount}" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && blnIsBilReaPayNote)}"/>
+              <apex:outputLabel value="{!$Label.Payment_Date}" styleClass="labelClass" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && blnIsBilReaPayNote)}"/>
+                    <apex:inputText value="{!strPaymentDate}" rendered="{!(!blnIsAdmReaMod && !blnIsDisReaNoRec && !blnIsBilReaNoRecOfBil && blnIsBilReaPayNote)}"/>
+              </apex:pageBlockSection> 
+              
+              <apex:pageBlockSection title="CAPTCHA Verification" columns="3"  collapsible="false">
+                <apex:outputLabel value="CAPTCHA : " styleClass="labelClass"/>
+                <apex:inputText value="{!strRandomOP}" disabled="true"/>
+                <apex:commandButton value="Refresh" action="{!refreshCaptcha}"/>
+                <apex:outputLabel value="Please enter the CAPTCHA : " styleClass="labelClass"/>
+                <apex:inputText value="{!strUserInput}" />
+                <!--<apex:commandButton action="{!checkCaptcha}" value="Verify" />-->
+              </apex:pageBlockSection>
+            <apex:inputHidden value="{!strSalesorgCode}"/>
+              
+        </apex:pageBlock>
+    </apex:form>
+    <c:FooterThomsonReuters />
+</apex:page>

@@ -1,0 +1,43 @@
+<apex:page standardController="Case" extensions="LCRM_TrainingEventCase_AddressController" lightningStylesheets="true" >
+ 
+    <apex:form id="addressForm">
+        <apex:outputPanel id="ErrorBlock">
+            <apex:pageMessages id="messagesGlobal" escape="false" />
+        </apex:outputPanel>
+        <apex:actionStatus id="statusValidateAddress">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating, please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:commandButton value="Edit" action="{!changeToEdit}" rendered="{! NOT(isEditable)}" style="margin-left:15cm;"/>
+        <apex:commandButton value="Save" action="{!save}" rendered="{! AND(isEditable,NOT(ServiceError))}" status="statusValidateAddress" reRender="addressForm,ErrorBlock" oncomplete="goToSavedRecord()" style="margin-left:15cm;"/>
+        <apex:commandButton id="buttonRetry" value="Retry" action="{!save}" rendered="{! AND(isEditable,ServiceError)}" rerender="addressForm" oncomplete="goToSavedRecord()"  status="statusValidateAddress" />
+        <apex:commandButton id="buttonContinue" value="Continue" action="{! continueSave}" rendered="{!AND(isEditable,ServiceError)}" rerender="addressForm" oncomplete="goToSavedRecord()"/>
+        <apex:commandButton value="Cancel" action="{!cancel}" rendered="{! isEditable}"/>
+        
+        <apex:pageBlock rendered="{! NOT(isEditable)}">
+            <apex:pageBlockSection >
+                <apex:outputField value="{! Case.LCRM_Address_1__c}"/>
+                <apex:outputField value="{! Case.LCRM_Address_2__c}"/>
+                <apex:outputField value="{! Case.LCRM_City__c}"/>
+                <apex:outputField value="{! Case.LCRM_Postcode_Zip__c}"/>
+                <apex:outputField value="{! Case.LCRM_State__c}"/>
+                <apex:outputField value="{! Case.LCRM_Country__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock rendered="{! isEditable}">
+             <apex:pageBlockSection >   
+                <apex:inputField value="{! Case.LCRM_Address_1__c}" required="true"/>
+                <apex:inputField value="{! Case.LCRM_Address_2__c}"/>
+                <apex:inputField value="{! Case.LCRM_City__c}" required="true"/>
+                <apex:inputField value="{! Case.LCRM_Postcode_Zip__c}" required="true"/>
+                <apex:inputField value="{! Case.LCRM_State__c}" required="true"/>
+                <apex:inputField value="{! Case.LCRM_Country__c}" required="true"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+    </apex:form>
+  
+</apex:page>

@@ -1,0 +1,139 @@
+<apex:component controller="ESC_PushTopicInitializerController">
+    <apex:attribute name="push" description="This is the value for the component." required="true" type="String" assignTo="{!selectedPushTopic}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/cometd.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/json2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery_cometd.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/cometdReplayExtension.js')}" />
+    <script>
+        var values = JSON.parse('{!selectedPushTopic}');
+        var token = "{!$Api.Session_ID}";
+        var loggedInUser = '{!$User.Id}';
+
+        function subscribeToPT() {
+           console.log('for Home Page________');
+            for (i = 0; i < values.length; i++) {
+                console.log(values[i]);
+                _subscription = subscribe(values[i], receive);
+            }
+           
+        }
+
+        function receive(message) {
+            var OwnerId;
+            var LastModifiedById;
+            var isLastM = false;
+            var objectIdentifier;
+            var isEmailType = false;
+            var defId = 'xxx';
+            var recordID = message.data.sobject.Id;
+            console.log(JSON.stringify(message,"\t"));
+            // for accomodating pushTopicHelper Object pushtopics
+            if (message.data.sobject.ESC_EventType__c != undefined && message.data.sobject.ESC_EventType__c != null && (message.data.sobject.ESC_EventType__c == 'New Incoming Email' || message.data.sobject.ESC_EventType__c == 'Email Read By'
+            || message.data.sobject.ESC_EventType__c == 'Created' || message.data.sobject.ESC_EventType__c == 'Updated')) {
+                console.log('entered for new incoming mail');
+                OwnerId = message.data.sobject.ESC_RecGuestUser__c;
+                 // LastModifiedById = message.data.sobject.ESC_RecGuestUser__c in case of shadow object being used
+                isLastM = OwnerId == loggedInUser && OwnerId == message.data.sobject.ESC_RecOwner__c;
+                isEmailType = true;
+                objectIdentifier = message.data.sobject.ESC_ParentRecID__c.substr(0, 3);
+                console.log(objectIdentifier);
+                
+            }
+            // for normal object which have native support
+            else {
+                OwnerId = message.data.sobject.OwnerId;
+                LastModifiedById = message.data.sobject.LastModifiedById;
+                isLastM = message.data.sobject.LastModifiedById == loggedInUser;
+                objectIdentifier = message.data.sobject.Id.substr(0, 3);
+               
+                
+            }
+            var channel = message.channel.split('/topic/')[1];
+            console.log('Channel:');
+            console.log(channel);
+            var blocksOfOwner = j$(".theHiddenInput:contains('" + OwnerId+ "')");
+            console.log('blocksOfOwner:');console.log(blocksOfOwner);
+            var blocksOfLastModified = j$(".theHiddenInput:contains('" + LastModifiedById+ "')");
+            console.log('blocksOfLastModified :');console.log(blocksOfLastModified );
+            if ((blocksOfOwner.length >= 1 || blocksOfLastModified.length >=1) && (isLastM)) {
+                 console.log('pageRefresh called');
+                 pageRefresh();
+                 
+            }
+           var isOverRidden = false;
+           j$("[rowID *= " + recordID + "]").closest(".pbBody").parent().find(
+                    ".flash").each(function(index) {
+                    console.log('recordID exist already on page hence enabing refresh for');
+                     console.log(this);
+                    if(channel != 'PTHelperMyQueuesArticles'){
+                    this.style.display = "inline";
+                    }
+                });
+           //Check if push topic has been already overrident for any of the block
+            console.log('checking if ovveriden');
+           blocksOfOwner.each(function(index){
+           
+               overRiddenPT = j$(this).attr('overRiddenPushTopic');
+               console.log('overRiddenPT :');
+               console.log(overRiddenPT);
+               if(overRiddenPT.indexOf(channel+',') !=-1 || overRiddenPT.indexOf(','+channel) != -1 ||overRiddenPT == channel){
+                   j$(this).closest('div').each(function(){
+                       isOverRidden = true;
+                console.log('Push topic is overrirden for one the block');
+                this.style.display = "inline";
+                var input = j$("#myHidden");
+                if (input.val().indexOf(this.id) == -1) {
+                    input.val(input.val() + this.id);
+                }
+                var highLight = j$("#highLight");
+                var recordID = message.data.sobject.Id;
+                if (isEmailType) {
+                    recordID = message.data.sobject.ESC_ParentRecID__c;
+                }
+                if (highLight.val().indexOf(':' + recordID) == -1) {
+                    highLight.val(highLight.val() + ':' + recordID + '_' + this.id);
+                }
+                   });
+                   
+               }
+               
+           });
+            console.log('finally ovveriden staus isOverRidden? '+isOverRidden);
+            if(!isOverRidden){
+                var recordsApplicable = j$(".theHiddenInput:contains('" + defId + "')[objectIdentifier ='" + objectIdentifier + "'],.theHiddenInput:contains('" + OwnerId + "')[objectIdentifier ='" + objectIdentifier + "']");
+                console.log('push Topic not specific for any of the block, will select block on basis of object + owner(user/queue) @@'+channel);
+                 recordsApplicable.closest("div").each(function(index) {
+                    console.log('found block on object and owner(user/queue) @@');
+                    this.style.display = "inline";
+                    var input = j$("#myHidden");
+                    if (input.val().indexOf(this.id) == -1) {
+                        input.val(input.val() + this.id);
+                    }
+                    var highLight = j$("#highLight");
+                    if (highLight.val().indexOf(':' + message.data.sobject.Id) == -1) {
+                    console.log('entered 1 highlight');
+                        highLight.val(highLight.val() + ':' + message.data.sobject.Id + '_' + this.id);
+                    }
+                    if(isEmailType){
+                        recordID = message.data.sobject.ESC_ParentRecID__c;
+                        console.log('entered 2highlight');
+                         if (highLight.val().indexOf(':' + message.data.sobject.ESC_ParentRecID__c) == -1) {
+                        highLight.val(highLight.val() + ':' + message.data.sobject.ESC_ParentRecID__c + '_' + this.id);
+                    }
+                    }
+                });
+
+            }
+            // nullify for memory reease
+            OwnerId = null;
+            isOverRidden = null;
+            isLastM =null;
+            objectIdentifier = null;
+            defId = null;
+            blocksOfOwner = null;
+            channel = null;
+            
+        }
+    </script>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/PushTopicConnectionEstablisher.js')}" /> </apex:component>

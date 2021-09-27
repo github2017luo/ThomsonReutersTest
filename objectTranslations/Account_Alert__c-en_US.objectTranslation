@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Account Alert</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Account Alerts</value>
+    </caseValues>
+    <fields>
+        <label><!-- Account Alert Expiry --></label>
+        <name>Account_Alert_Expiry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- Account Alerts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Active Alert --></label>
+        <name>Active_Alert__c</name>
+    </fields>
+    <fields>
+        <label><!-- Alert Category --></label>
+        <name>Alert_Category__c</name>
+        <picklistValues>
+            <masterLabel>Customer Service</masterLabel>
+            <translation><!-- Customer Service --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Financial</masterLabel>
+            <translation><!-- Financial --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Governance</masterLabel>
+            <translation><!-- Governance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sales</masterLabel>
+            <translation><!-- Sales --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Alert Description --></label>
+        <name>Alert_Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Alert Subject --></label>
+        <name>Alert_Subject__c</name>
+        <picklistValues>
+            <masterLabel>AR Hold</masterLabel>
+            <translation><!-- AR Hold --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Collection Issue(s)</masterLabel>
+            <translation><!-- Collection Issue(s) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other (See Description for Information)</masterLabel>
+            <translation><!-- Other (See Description for Information) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Outstanding Debt Collection Pending</masterLabel>
+            <translation><!-- Outstanding Debt Collection Pending --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Replicating Client (Elite)</masterLabel>
+            <translation><!-- Replicating Client (Elite) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sales Process Underway</masterLabel>
+            <translation><!-- Sales Process Underway --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sanctioned Account</masterLabel>
+            <translation><!-- Sanctioned Account --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Serial Trial Requester</masterLabel>
+            <translation><!-- Serial Trial Requester --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Serious Complaint</masterLabel>
+            <translation><!-- Serious Complaint --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Strategic Account Merger</masterLabel>
+            <translation><!-- Strategic Account Merger --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Support Hold</masterLabel>
+            <translation><!-- Support Hold --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Alert Severity --></label>
+        <name>Severity__c</name>
+        <picklistValues>
+            <masterLabel>Important</masterLabel>
+            <translation><!-- Important --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Informational</masterLabel>
+            <translation><!-- Informational --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Severe</masterLabel>
+            <translation><!-- Severe --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Source System ID --></label>
+        <name>Source_System_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Source System --></label>
+        <name>Source_System__c</name>
+    </fields>
+    <fields>
+        <label><!-- Sub-BU --></label>
+        <name>Sub_BU__c</name>
+        <picklistValues>
+            <masterLabel>All</masterLabel>
+            <translation><!-- All --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Elite</masterLabel>
+            <translation><!-- Elite --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>LatAm</masterLabel>
+            <translation><!-- LatAm --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>UKI</masterLabel>
+            <translation><!-- UKI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>USL</masterLabel>
+            <translation><!-- USL --></translation>
+        </picklistValues>
+    </fields>
+    <recordTypes>
+        <description><!-- Record Type for GLI created Account Alerts --></description>
+        <label><!-- Account Alert --></label>
+        <name>Account_Alert</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Record Type for Account Alerts created via integration --></description>
+        <label><!-- Integration Account Alert --></label>
+        <name>Integration_Account_Alert</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Account Alert Expiry Date must be greater than the Alert creation date. --></errorMessage>
+        <name>Expiry_Date_Must_be_Greater_than_Today</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Expiry Date cannot exceed 18 months from creation date. --></errorMessage>
+        <name>Expiry_Date_must_be_less_than_18_months</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Expiry Date cannot be blank. --></errorMessage>
+        <name>Expiry_Date_must_be_populated</name>
+    </validationRules>
+</CustomObjectTranslation>

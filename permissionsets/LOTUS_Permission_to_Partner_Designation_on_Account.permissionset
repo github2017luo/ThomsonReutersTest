@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Created the permission set as per DPS-5134, for LOTUS lightning enablement. This will give access to &quot;Partner Designation&quot; field on Account to LOTUS users.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.LTS_Account_Group__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.Partner_Designation__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>LOTUS - Permission to Partner Designation/ Account Group on Account</label>
+</PermissionSet>

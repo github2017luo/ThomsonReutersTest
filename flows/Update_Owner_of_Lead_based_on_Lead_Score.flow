@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Reassign Lead Owner to SDR Qualified Lead Queue</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>Reassign Lead Owner to BDR Prospect Queue</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision6</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>Reassign Lead to BDR Lead queue</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision6</name>
+        <label>myDecision6</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_7</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_7</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_7_A1</targetReference>
+            </connector>
+            <label>Reassign Lead to SDR Qualified lead Queue</label>
+        </rules>
+    </decisions>
+    <description>Update Owner of Lead based on Lead Score</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+[Lead].Is_GLI__c = TRUE,
+ISCHANGED([Lead].Lead_Scoring_Combined__c), OR(ISBLANK(PRIORVALUE([Lead].Lead_Scoring_Combined__c )) , 
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;A4&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;B4&quot;, PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;C4&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;D4&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;A3&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;B3&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;C3&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;D3&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;C2&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;D2&quot;
+  ),
+
+ OR
+([Lead].Lead_Scoring_Combined__c =&quot;A1&quot;, 
+[Lead].Lead_Scoring_Combined__c =&quot;A2&quot;,
+[Lead].Lead_Scoring_Combined__c =&quot;B1&quot;,
+[Lead].Lead_Scoring_Combined__c =&quot;B2&quot;,
+ [Lead].Lead_Scoring_Combined__c =&quot;C1&quot;,
+[Lead].Lead_Scoring_Combined__c =&quot;D1&quot;
+), 
+NOT([Lead].LCRM_Sub_BU__c = &quot;UKI&quot;), 
+
+OR
+(ISPICKVAL([Lead].Status , &quot;Unworked&quot;), 
+ISPICKVAL([Lead].Status , &quot;Telesales Accepted&quot;)),
+
+
+TEXT([Lead].LeadSource )&lt;&gt;&quot;MRP&quot;
+) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+{!myVariable_current.Is_GLI__c} = TRUE,
+ISCHANGED({!myVariable_current.Lead_Scoring_Combined__c}), OR(ISBLANK(PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} )) , 
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;A4&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;B4&quot;, PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;C4&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;D4&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;A3&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;B3&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;C3&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;D3&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;C2&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;D2&quot;
+  ),
+
+ OR
+({!myVariable_current.Lead_Scoring_Combined__c} =&quot;A1&quot;, 
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;A2&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;B1&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;B2&quot;,
+ {!myVariable_current.Lead_Scoring_Combined__c} =&quot;C1&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;D1&quot;
+), 
+NOT({!myVariable_current.LCRM_Sub_BU__c} = &quot;UKI&quot;), 
+
+OR
+(ISPICKVAL({!myVariable_current.Status} , &quot;Unworked&quot;), 
+ISPICKVAL({!myVariable_current.Status} , &quot;Telesales Accepted&quot;)),
+
+
+TEXT({!myVariable_current.LeadSource} )&lt;&gt;&quot;MRP&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false, [Lead].Is_GLI__c = TRUE,
+ISPICKVAL([Lead].Status ,&quot;Unworked&quot; ) ,
+ ISBLANK([Lead].Rep_Type__c) , 
+NOT([Lead].LCRM_Sub_BU__c =  &quot;UKI&quot;) ,
+BEGINS([Lead].OwnerId, &quot;00G&quot;),
+OR
+(ISPICKVAL([Lead].Tele_Interaction__c, &quot;BDR&quot;),
+ISPICKVAL([Lead].Tele_Interaction__c , &quot;SDR&quot;)),
+
+OR
+([Lead].Lead_Scoring_Combined__c =  &quot;A4&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;D4&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;C4&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;B4&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;D3&quot;,
+ ISBLANK([Lead].Lead_Scoring_Combined__c)),
+
+ OR
+([Lead].Owner:Queue.DeveloperName = &quot;BDR_Lead_Queue&quot;,
+[Lead].Owner:Queue.DeveloperName  = &quot;BDR_Prospect_Queue&quot;   ,
+[Lead].Owner:Queue.DeveloperName  = &quot;SDR_Qualified_Lead_Queue&quot; ,
+[Lead].Owner:Queue.DeveloperName  = &quot;LM_Lead_Queue&quot;) ,
+
+
+TEXT([Lead].LeadSource )&lt;&gt;&quot;MRP&quot;
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false, {!myVariable_current.Is_GLI__c} = TRUE,
+ISPICKVAL({!myVariable_current.Status} ,&quot;Unworked&quot; ) ,
+ ISBLANK({!myVariable_current.Rep_Type__c}) , 
+NOT({!myVariable_current.LCRM_Sub_BU__c} =  &quot;UKI&quot;) ,
+BEGINS({!myVariable_current.OwnerId}, &quot;00G&quot;),
+OR
+(ISPICKVAL({!myVariable_current.Tele_Interaction__c}, &quot;BDR&quot;),
+ISPICKVAL({!myVariable_current.Tele_Interaction__c} , &quot;SDR&quot;)),
+
+OR
+({!myVariable_current.Lead_Scoring_Combined__c} =  &quot;A4&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;D4&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;C4&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;B4&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;D3&quot;,
+ ISBLANK({!myVariable_current.Lead_Scoring_Combined__c})),
+
+ OR
+({!myVariable_current.Owner:Queue.DeveloperName} = &quot;BDR_Lead_Queue&quot;,
+{!myVariable_current.Owner:Queue.DeveloperName}  = &quot;BDR_Prospect_Queue&quot;   ,
+{!myVariable_current.Owner:Queue.DeveloperName}  = &quot;SDR_Qualified_Lead_Queue&quot; ,
+{!myVariable_current.Owner:Queue.DeveloperName}  = &quot;LM_Lead_Queue&quot;) ,
+
+
+TEXT({!myVariable_current.LeadSource} )&lt;&gt;&quot;MRP&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+[Lead].Is_GLI__c = TRUE,
+ISPICKVAL([Lead].Status ,&quot;Unworked&quot;) ,
+ISBLANK( [Lead].Rep_Type__c) ,
+NOT([Lead].LCRM_Sub_BU__c =  &quot;UKI&quot;),
+BEGINS([Lead].OwnerId, &quot;00G&quot;),
+
+OR
+(ISPICKVAL([Lead].Tele_Interaction__c, &quot;BDR&quot;),
+ISPICKVAL([Lead].Tele_Interaction__c , &quot;SDR&quot;)),
+
+OR
+([Lead].Lead_Scoring_Combined__c =  &quot;A3&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;B3&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;C3&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;C2&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;D2&quot;
+),
+
+ OR
+([Lead].Owner:Queue.DeveloperName  = &quot;BDR_Lead_Queue&quot;,
+[Lead].Owner:Queue.DeveloperName  = &quot;BDR_Prospect_Queue&quot;   ,
+[Lead].Owner:Queue.DeveloperName = &quot;SDR_Qualified_Lead_Queue&quot;, 
+[Lead].Owner:Queue.DeveloperName  = &quot;LM_Lead_Queue&quot;) ,
+
+
+TEXT([Lead].LeadSource )&lt;&gt;&quot;MRP&quot;
+)
+</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+{!myVariable_current.Is_GLI__c} = TRUE,
+ISPICKVAL({!myVariable_current.Status} ,&quot;Unworked&quot;) ,
+ISBLANK( {!myVariable_current.Rep_Type__c}) ,
+NOT({!myVariable_current.LCRM_Sub_BU__c} =  &quot;UKI&quot;),
+BEGINS({!myVariable_current.OwnerId}, &quot;00G&quot;),
+
+OR
+(ISPICKVAL({!myVariable_current.Tele_Interaction__c}, &quot;BDR&quot;),
+ISPICKVAL({!myVariable_current.Tele_Interaction__c} , &quot;SDR&quot;)),
+
+OR
+({!myVariable_current.Lead_Scoring_Combined__c} =  &quot;A3&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;B3&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;C3&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;C2&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;D2&quot;
+),
+
+ OR
+({!myVariable_current.Owner:Queue.DeveloperName}  = &quot;BDR_Lead_Queue&quot;,
+{!myVariable_current.Owner:Queue.DeveloperName}  = &quot;BDR_Prospect_Queue&quot;   ,
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;SDR_Qualified_Lead_Queue&quot;, 
+{!myVariable_current.Owner:Queue.DeveloperName}  = &quot;LM_Lead_Queue&quot;) ,
+
+
+TEXT({!myVariable_current.LeadSource} )&lt;&gt;&quot;MRP&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+[Lead].Is_GLI__c = TRUE,
+ISPICKVAL([Lead].Status ,&quot;Unworked&quot;) ,
+ISBLANK([Lead].Rep_Type__c),
+NOT([Lead].LCRM_Sub_BU__c =  &quot;UKI&quot;),
+BEGINS([Lead].OwnerId, &quot;00G&quot;),
+
+OR
+(ISPICKVAL([Lead].Tele_Interaction__c, &quot;BDR&quot;),
+ISPICKVAL([Lead].Tele_Interaction__c , &quot;SDR&quot;)),
+
+OR
+([Lead].Lead_Scoring_Combined__c =  &quot;A2&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;B2&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;A1&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;B1&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;C1&quot;,
+[Lead].Lead_Scoring_Combined__c =  &quot;D1&quot;
+), 
+
+OR
+( [Lead].Owner:Queue.DeveloperName = &quot;BDR_Lead_Queue&quot;,
+[Lead].Owner:Queue.DeveloperName = &quot;BDR_Prospect_Queue&quot;   ,
+[Lead].Owner:Queue.DeveloperName = &quot;SDR_Qualified_Lead_Queue&quot; , 
+[Lead].Owner:Queue.DeveloperName = &quot;LM_Lead_Queue&quot;) ,
+
+
+TEXT([Lead].LeadSource )&lt;&gt;&quot;MRP&quot;
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_7</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+{!myVariable_current.Is_GLI__c} = TRUE,
+ISPICKVAL({!myVariable_current.Status} ,&quot;Unworked&quot;) ,
+ISBLANK({!myVariable_current.Rep_Type__c}),
+NOT({!myVariable_current.LCRM_Sub_BU__c} =  &quot;UKI&quot;),
+BEGINS({!myVariable_current.OwnerId}, &quot;00G&quot;),
+
+OR
+(ISPICKVAL({!myVariable_current.Tele_Interaction__c}, &quot;BDR&quot;),
+ISPICKVAL({!myVariable_current.Tele_Interaction__c} , &quot;SDR&quot;)),
+
+OR
+({!myVariable_current.Lead_Scoring_Combined__c} =  &quot;A2&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;B2&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;A1&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;B1&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;C1&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =  &quot;D1&quot;
+), 
+
+OR
+( {!myVariable_current.Owner:Queue.DeveloperName} = &quot;BDR_Lead_Queue&quot;,
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;BDR_Prospect_Queue&quot;   ,
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;SDR_Qualified_Lead_Queue&quot; , 
+{!myVariable_current.Owner:Queue.DeveloperName} = &quot;LM_Lead_Queue&quot;) ,
+
+
+TEXT({!myVariable_current.LeadSource} )&lt;&gt;&quot;MRP&quot;
+)</expression>
+    </formulas>
+    <interviewLabel>Update_Owner_of_Lead_based_on_Lead_Score-3_InterviewLabel</interviewLabel>
+    <label>Update Owner of Lead based on Lead Score</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Lead</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Lead]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Reassign Lead Owner to SDR Qualified Lead Queue</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Owner</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideLabel</name>
+                <value>
+                    <stringValue>SDR_Qualified_Lead_Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G1B000004fubWUAQ</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Lead]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>Reassign the Lead Owner to BDR Prospect Queue</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Owner</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideLabel</name>
+                <value>
+                    <stringValue>BDR_Prospect_Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G1B000004fubTUAQ</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Lead]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>Reassign Lead owner to BDR Lead Queue</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Owner</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideLabel</name>
+                <value>
+                    <stringValue>BDR_Lead_Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G1B000004fubSUAQ</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Lead]</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_7_A1</name>
+        <label>Reassign Lead owner to SDR Qualified Lead Queue</label>
+        <locationX>700</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Owner</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideLabel</name>
+                <value>
+                    <stringValue>SDR_Qualified_Lead_Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G1B000004fubWUAQ</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Obsolete</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+</Flow>

@@ -1,0 +1,391 @@
+<!--
+CHANGE HISTORY
+=================================================================================
+  
+2019-02-25   Vinodhini    Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page id="mainPage" standardController="Opportunity" extensions="LCRMTrialWizardCtrl" lightningStylesheets="true">
+    <apex:sectionHeader id="title" title="{!$Label.LCRM_TrialWizCreateTrialHead}" subtitle="{!opp.Name}"/> 
+    <apex:outputPanel rendered="{!NOT(opp=NULL)}">
+        <div class="ptBreadcrumb" style="">
+            &laquo;
+            <apex:outputLink value="/{!opp.Id}" style="color:#015BA7;">{!$Label.LCRM_TrialWizGoBack}&nbsp;{!opp.Name}</apex:outputLink>         
+        </div>
+    </apex:outputPanel>
+    <br/>
+    <apex:form id="mainForm">
+        <apex:outputPanel id="mainPanel">
+            
+            <apex:Pagemessages id="errorMsg"/>
+            <apex:outputPanel id="stagesPanel" rendered="{!errorFlag=false}">
+            <center>
+            <table width="58%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <apex:variable var="counter" value="{!0}"/>
+                    <apex:repeat value="{!ScreensLblList}" var="screen">
+                        <td width="{!TableWidth}" align="center">
+                            <span class="{!IF(counter=CurrentScreenCounter,'circleBlue',IF(counter<CurrentScreenCounter,'circleGreen','circleGrey'))}"><apex:outputText style="font-size:20px;font-weight:bold;" value="{!counter+1}"></apex:outputText></span>
+                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="50%" align="center">
+                                        <hr class="{!IF(counter=0,'circleLineWhite',IF(counter<=CurrentScreenCounter,'circleLineGreen','circleLineGrey'))}"/>
+                                    </td>
+                                    <td width="50%" align="center">
+                                        <hr class="{!IF(counter=ScreensLblList.size-1,'circleLineWhite',IF(counter<CurrentScreenCounter,'circleLineGreen','circleLineGrey'))}"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <apex:variable var="counter" value="{!counter+1}"/>
+                    </apex:repeat>
+                </tr>
+                <tr>
+                    <apex:variable var="counter" value="{!0}"/>
+                    <apex:repeat value="{!ScreensLblList}" var="screen">
+                        <td width="{!TableWidth}" align="center">
+                            <b><apex:outputText styleClass="{!IF(counter=CurrentScreenCounter,'textBlue',IF(counter<CurrentScreenCounter,'textGreen','textGrey'))}" value="{!screen}"/></b>
+                        </td>
+                        <apex:variable var="counter" value="{!counter+1}"/>
+                    </apex:repeat>
+                </tr>
+            </table>
+            </center>
+            </apex:outputPanel>
+            
+            <apex:pageBlock id="pageBlock" title="{!currentScreen}" rendered="{!errorFlag=false}">
+                <apex:pageBlockButtons id="pageBlockButtons">
+                    <!--<apex:commandButton value="Preview" action="{!showMailPopup}" rendered="{!currentScreen='Email Details'}" status="loadStatus" reRender="mainPanel"/>-->
+                    <apex:commandButton value="{!$Label.LCRM_TrialWizPreviousBtn}" action="{!previousScreen}" rendered="{!AND(currentScreen<>'Create Trial Contract',CurrentScreenCounter>0)}" status="loadStatus" reRender="mainPanel"/>
+                    <apex:commandButton value="{!$Label.LCRM_TrialWizNextBtn}" action="{!nextScreen}" rendered="{!CurrentScreenCounter<ScreensLblList.size-1}" status="loadStatus" reRender="mainPanel"/>
+                    <apex:commandButton value="{!$Label.LCRM_TrialWizGenTrialConBtn}" action="{!showContarctPopup}" rendered="{!CurrentScreenCounter=ScreensLblList.size-1}" status="loadStatus" reRender="mainPanel"/>
+                </apex:pageBlockButtons>
+                
+                <apex:outputPanel id="mailPanel" rendered="{!currentScreen='Email Details'}">
+                    <apex:pageBlockSection title="{!$Label.LCRM_TrialWizEmailDetailSecTitle}" collapsible="false" columns="1">
+                        <apex:pageBlockSectionItem id="frompbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizFromLbl}"></apex:outputLabel>
+                            <apex:outputText value="{!emailTemplateObj.fromAddName + ' <' + emailTemplateObj.fromAddEmail + '>'}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="topbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizToLbl}"></apex:outputLabel>
+                            <apex:selectList value="{!emailTemplateObj.toAdd}" size="1" multiselect="false">
+                                <apex:selectOptions value="{!ToAddressList}"/>
+                            </apex:selectList>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="relTopbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizRelToOppLbl}"/>
+                            <apex:outputText value="{!emailTemplateObj.relatedToOpp}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="addTopbsi" helpText="{!$Label.LCRM_TrialWizHelpText}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizAddToLbl}"></apex:outputLabel>
+                            <apex:inputText value="{!emailTemplateObj.addToAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="ccpbsi" helpText="{!$Label.LCRM_TrialWizHelpText}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizCcLbl}"></apex:outputLabel>
+                            <apex:inputText value="{!emailTemplateObj.ccAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="bccpbsi" helpText="{!$Label.LCRM_TrialWizHelpText}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizBccLbl}"></apex:outputLabel>
+                            <apex:inputText value="{!emailTemplateObj.bccAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="mailSubjectpbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizSubjectLbl}"></apex:outputLabel>
+                            <apex:inputText size="100" value="{!emailTemplateObj.subject}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="bodypbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialWizBodyLbl}"></apex:outputLabel>
+                            <apex:inputTextarea rows="15" cols="120" value="{!emailTemplateObj.body}" richText="true"/>
+                        </apex:pageBlockSectionItem>
+                        <!--<apex:outputText value="{!templateBodyPreview}" escape="false"/>-->
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="contractPanel" rendered="{!currentScreen='Create Trial Contract'}">
+                    <apex:pageBlockSection id="contractSection" title="{!$Label.LCRM_TrialWizContractSecTitle}">
+                        <apex:outputField value="{!contractObj.AccountId}"/>
+                        <apex:outputField value="{!contractObj.TR_Retention__Primary_Contact__c}"/>
+                        <apex:outputField value="{!contractObj.LCRM_Originating_Opportunity__c}"/>
+                        <apex:outputField value="{!contractObj.LCRM_Transaction_Type__c}"/>
+                        <apex:inputField value="{!contractObj.StartDate}"/>
+                        <apex:inputField value="{!contractObj.TR_Retention__Contract_End_Date__c}"/>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection id="productSection" title="{!$Label.LCRM_TrialWizContractSelOppProdTitle}" columns="1">
+                        <apex:pageBlockTable value="{!oliList}" var="oli">
+                            <apex:column ><!-- headerValue="{!$Label.LCRM_TrialWizOppProdSelTitle}">-->
+                                <apex:facet name="header">
+                                    <apex:inputCheckbox value="{!selAllProd}" onchange="toggleSelAllProd();"/>
+                                </apex:facet>
+                                <apex:inputCheckbox value="{!oli.sel}"/>
+                            </apex:column>
+                            <apex:column value="{!oli.oliRec.Product2Id}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Product_Category__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Product_Type__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Action__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Units__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Current_ACV__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_New_ACV_SalesPrice__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Incremental_Amount__c}"/>
+                            <apex:column value="{!oli.oliRec.LCRM_Source_Opportunity__c}"/>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                    
+                </apex:outputPanel>
+            </apex:pageBlock>
+            <!--
+            <apex:pageBlock id="mailPageBlock" title="Send Email" rendered="{!currentScreen='Send Mail'}">
+                <apex:pageBlockButtons id="mailPageBlockButtons">
+                    <apex:commandButton value="Send Email & Next" action="{!nextScreen}" status="loadStatus" reRender="mainPanel"/>
+                    <apex:commandButton value="Next" action="{!nextScreen}" status="loadStatus" reRender="mainPanel"/>
+                </apex:pageBlockButtons>
+                <apex:outputText value="{!templateBodyPreview}" escape="false"/>
+            </apex:pageBlock>
+            
+            <apex:pageBlock id="oppPageBlock" title="Update Opportunity" rendered="{!currentScreen='Create & Update Opportunity'}">
+                <apex:pageBlockButtons id="oppPageBlockButtons">
+                    <apex:commandButton value="Previous" action="{!previousScreen}" status="loadStatus" reRender="mainPanel"/>
+                    <apex:commandButton value="Next" action="{!nextScreen}" status="loadStatus" reRender="mainPanel"/>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            
+            <apex:pageBlock id="contPageBlock" title="Create Contract" rendered="{!currentScreen='Create Contarct'}">
+                <apex:pageBlockButtons id="contPageBlockButtons">
+                    <apex:commandButton value="Previous" action="{!previousScreen}" status="loadStatus" reRender="mainPanel"/>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+            -->
+            
+            <apex:outputPanel id="mailBox" rendered="{!showMailPopup=TRUE}">
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span></span>
+                        <!--<p>&nbsp;</p>-->
+                        <apex:outputPanel >
+                            <div style="overflow:scroll;height:350px;">
+                        
+                                <table border="0px" width="100%" >
+                                    <tr>
+                                        <td colspan="4">&nbsp;</td>
+                                    </tr>
+                                    <tr class="border_bottom">
+                                        <td colspan="4">
+                                            <img src="{!mailHeaderUrl}" width="100%"/><br/><br/>
+                                            <apex:outputLabel value="{!MailText}" escape="false"></apex:outputLabel>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <center>
+                                <apex:commandButton id="cancelBtn2" value="{!$Label.LCRM_TrialWizPopupReturnBtn}" action="{!hideMailPopup}" reRender="mainForm" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            </center>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </apex:outputPanel>
+            
+            
+            <apex:outputPanel id="popupBox" rendered="{!AND(showContarctPopup=TRUE,showContarctPopupHasError=FALSE)}">
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <span></span>
+                        <!--<p>&nbsp;</p>-->
+                        <apex:outputPanel >
+                            
+                        
+                                <table border="0px" width="100%">
+                                    <tr>
+                                        <td colspan="4"><b><center><u>{!$Label.LCRM_TrialWizPopupTitle}</u></center></b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4">&nbsp;</td>
+                                    </tr>
+                                    <tr class="border_bottom">
+                                        <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Contract.fields.AccountId.Label}</b></td>
+                                        <td width="30%"><apex:outputField value="{!contractObj.AccountId}"/></td>
+                                        <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Contract.fields.TR_Retention__Primary_Contact__c.Label}</b></td>
+                                        <td width="30%"><apex:outputField value="{!contractObj.TR_Retention__Primary_Contact__c}"/></td>
+                                    </tr>
+                                    <tr class="border_bottom">
+                                        <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Contract.fields.LCRM_Originating_Opportunity__c.Label}</b></td>
+                                        <td width="30%"><apex:outputField value="{!contractObj.LCRM_Originating_Opportunity__c}"/></td>
+                                        <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Contract.fields.LCRM_Transaction_Type__c.Label}</b></td>
+                                        <td width="30%"><apex:outputField value="{!contractObj.LCRM_Transaction_Type__c}"/></td>
+                                    </tr>
+                                    <tr class="border_bottom">
+                                        <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Contract.fields.StartDate.Label}</b></td>
+                                        <td width="30%"><apex:outputField value="{!contractObj.StartDate}"/></td>
+                                        <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Contract.fields.TR_Retention__Contract_End_Date__c.Label}</b></td>
+                                        <td width="30%"><apex:outputField value="{!contractObj.TR_Retention__Contract_End_Date__c}"/></td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td colspan="4">
+                                            <apex:pageBlock title="{!$Label.LCRM_TrialWizPopupProdTblTitle}">
+                                            <div style="overflow: scroll; max-height: 200px;"> 
+                                                <apex:pageBlockTable value="{!cliList}" var="cli" style="overflow:scroll;max-height:250px;">
+                                                    <apex:column value="{!cli.Product__c}"/>
+                                                    <apex:column value="{!cli.Units__c}"/>
+                                                    <apex:column value="{!cli.Price__c}"/>
+                                                </apex:pageBlockTable>
+                                            </div>
+                                            </apex:pageBlock>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4"><b><center>{!$Label.LCRM_TrialWizPopupQuestion}</center></b></td>
+                                    </tr>
+                                </table>
+                            
+                            <center>
+                                <apex:commandButton id="yesBtn" value="{!$Label.LCRM_TrialWizPopupYesBtn}" onclick="this.disabled = true;finish();" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                                <apex:commandButton id="cancelBtn" value="{!$Label.LCRM_TrialWizPopupNoBtn}" action="{!hideContarctPopup}" reRender="mainForm" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            </center>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel id="alertBox" rendered="{!AND(showContarctPopup=TRUE,showContarctPopupHasError=TRUE)}">
+                <div id="myModal1" class="modal">
+                    <div class="modal-content" >
+                        <span></span>
+                        <p>&nbsp;</p>
+                        <p></p>
+                        <apex:outputPanel >
+                            <p>
+                                <table border="0" width="100%">
+                                    <tr>
+                                        <td><center><b>{!$Label.LCRM_TrialWizPopupErrorMsg}</b></center></td>
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                    </tr>
+                                </table>
+                            </p>
+                            <center>
+                                <p>
+                                    <apex:commandButton id="cancelBtn1" value="{!$Label.LCRM_TrialWizPopupReturnBtn}" action="{!hideContarctPopup}" reRender="mainForm" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                                </p>
+                            </center>
+                        </apex:outputPanel>
+                    </div>
+                </div>
+            </apex:outputPanel>
+        
+        </apex:outputPanel>
+        
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+        <apex:actionStatus id="loading" startText="loading..."></apex:actionStatus>
+        <apex:actionFunction name="toggleSelAllProd" action="{!toggleSelAllProd}" reRender="mainPanel" status="loadStatus"/>
+        <apex:actionFunction name="finish" action="{!finish}" status="loadStatus"/>
+    </apex:form>
+    <style>
+        span.circleBlue {
+            behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+            display: inline-block;
+            padding: 12px;
+            line-height: 30%;
+            
+            -moz-border-radius: 70%;
+            border-radius: 70%;
+        
+            background-color: #1798c1;
+            color: white;
+            text-align: center;
+            font-size: 35px;
+        }
+        span.circleGreen {
+            behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+            display: inline-block;
+            padding: 12px;
+            line-height: 30%;
+            
+            -moz-border-radius: 70%;
+            border-radius: 70%;
+        
+            background-color: #1aaa55;
+            color: white;
+            text-align: center;
+            font-size: 35px;
+        }
+        span.circleGrey {
+            behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+            display: inline-block;
+            padding: 12px;
+            line-height: 30%;
+            
+            -moz-border-radius: 70%;
+            border-radius: 70%;
+        
+            background-color: grey;
+            color: white;
+            text-align: center;
+            font-size: 35px;
+        }
+        span.textBlue{
+            color: #1798c1;
+        }
+        span.textGreen{
+            color: #1aaa55;
+        }
+        span.textGrey{
+            color: grey;
+        }
+        hr.circleLineWhite { 
+            border-width: 0px;
+            height: 8px;
+            background: #ffffff;
+            margin-top:-1.8em;
+        } 
+        hr.circleLineGrey { 
+            border-width: 0px;
+            height: 8px;
+            background: grey;
+            margin-top:-1.8em;
+        } 
+        hr.circleLineGreen { 
+            border-width: 0px;
+            height: 8px;
+            background: #1aaa55;
+            margin-top:-1.8em;
+        }
+        /* The Modal (background) */
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%;  Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 15% from the top and centered */
+            padding: 10px;
+            border: 1px solid #888;
+            width: 65%; /* Could be more or less, depending on screen size */
+        }
+        
+        tr.border_bottom td {
+            border-bottom:1pt solid #e0e3e5;
+        }
+    </style>
+
+</apex:page>

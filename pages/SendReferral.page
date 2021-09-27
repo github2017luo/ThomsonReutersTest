@@ -1,0 +1,84 @@
+<apex:page controller="sendReferral">
+    <apex:sectionHeader subtitle="Send Referral" title="Task"> </apex:sectionHeader>
+    <apex:includeScript value="/support/console/26.0/integration.js"/>
+    <script type="text/javascript">
+        var pageLoad = window.onload;
+        window.onload = function(){
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+        };
+         
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+        
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Send Referral');
+        };
+         function testOpenSubtab(){
+            if (sforce.console.isInConsole()) { 
+              //  alert('Hi Console');
+                
+               // var url = '/{!Accountid}?isdtp=vw'; 
+               var url = '/{JSENCODE(!Accountid)}?isdtp=vw'; //LTS-3396
+                //alert(url);
+                srcSelf(url); 
+            } else { 
+              //  alert('Hi Sales');                 
+                
+                // var url = '/{!Accountid}';
+                 var url = '/{!JSINHTMLENCODE(Accountid)}'; //LTS-3396
+                //alert(url); 
+                window.open(url,'_top'); 
+            }      
+         }
+         function testOpenTab(){
+            var aCategory = document.getElementById("{!$Component.myform.blockSendReferral.pbcs.ACategory}").value;
+            var aTrackingCode = document.getElementById("{!$Component.myform.blockSendReferral.pbcs.ATrackinCode}").value;    
+           // var url = '{!EmailURL}';
+            var url = '{!JSENCODE(EmailURL)}'; // LTS-3396
+            var searchString;
+            var replaceString;
+            if(aCategory && url){
+                searchString = 'category%3D';
+                replaceString = searchString+aCategory;
+                url = url.replace(searchString,replaceString);
+            }
+            
+            if(aTrackingCode && url){
+                searchString = 'tracking%3D';
+                replaceString = searchString+aTrackingCode;
+                url = url.replace(searchString,replaceString);
+            }
+             
+            if (sforce.console.isInConsole()) { 
+                
+               // var url = '{!EmailURL}?isdtp=vw';
+                srcSelf(url);
+            } else { 
+              //  alert('Hi Sales');                 
+              //  var url = '/{!EmailURL}';
+              //  window.top.location.href='{!EmailURL}'; 
+            window.top.location.href=url;
+            }      
+         }
+    </script>
+    <apex:form id="myform">
+        <apex:pageBlock id="blockSendReferral" >
+            <apex:pageBlockButtons location="bottom">
+                <input type = "button" onclick="javascript:testOpenTab();" value="Next" id="theCommandButton" class="btn" />
+                <!--apex:commandbutton value="Next" oncomplete="window.top.location.href='{!EmailURL}'"/--> 
+            &nbsp;&nbsp;&nbsp;
+            <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">Back</a> <!--SFD-16**Added by Priyanka-->
+            <!--<apex:outputLink value="/{!Accountid}">Back</apex:outputLink>-->
+            </apex:pageBlockButtons>
+            <apex:pageblockSection id="pbcs" columns="1"  collapsible="false" >
+                <apex:inputField id="ACategory" value="{!oTask.Activity_Category__c}"/>
+                <apex:inputField id="ATrackinCode" value="{!oTask.Tracking_Code__c}"/>
+            </apex:pageblockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

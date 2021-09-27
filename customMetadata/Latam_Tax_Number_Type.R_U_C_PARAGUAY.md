@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>R.U.C. PARAGUAY</label>
+    <protected>false</protected>
+    <values>
+        <field>Tax_Number_Code__c</field>
+        <value xsi:type="xsd:string">75</value>
+    </values>
+    <values>
+        <field>Tax_Number_Desc__c</field>
+        <value xsi:type="xsd:string">R.U.C. PARAGUAY</value>
+    </values>
+</CustomMetadata>

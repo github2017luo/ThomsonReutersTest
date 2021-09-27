@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>pse__Vendor_Invoice_Item_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>pse__Vendor_Invoice_Item_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>pse__Vendor_Invoice__c</fields>
+        <fields>pse__Amount__c</fields>
+        <fields>pse__Date__c</fields>
+        <fields>pse__Project__c</fields>
+        <label>Vendor Invoice Item Compact Layout</label>
+    </compactLayouts>
+    <customHelpPage>pse__VendorInvoiceItemHelp</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>The line item for a vendor invoice, calculated from the cost fields on timecards and milestones, and from reimbursement amounts on expenses.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>pse__Account_Currency__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>TEXT(pse__Vendor_Invoice__r.pse__Account__r.CurrencyIsoCode)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Currency</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Action_Recalc_Vendor_Currency_Amount__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Action: Recalc Vendor Currency Amount:</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The amount for this line item. This field is automatically populated from the respective related record: the Reimbursement Amount field from Expense, the Milestone Cost field from Milestone, the Amount field from Miscellaneous Adjustment, and Total Cost from Timecard Split.
+
+NOTE: this field is not automatically updated if the fields on the related record change.</description>
+        <externalId>false</externalId>
+        <label>Amount</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Budget_Header__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>A reference to the budget header that this item applies to. This field is required.</description>
+        <externalId>false</externalId>
+        <label>Budget Header</label>
+        <referenceTo>pse__Budget_Header__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Date__c</fullName>
+        <defaultValue>Today()</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The date of the invoice item. The value is populated by the New Invoice Items page from the respective field on the related record: Expense Date on Expense, Actual Date on Milestone, Effective Date on Misc. Adjustment, End Date on Timecard Split.</description>
+        <externalId>false</externalId>
+        <label>Date</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>pse__Description__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>pse__Expense__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Expense</label>
+        <referenceTo>pse__Expense__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Item_Exchange_Rate_Override__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Item-level vendor currency exchange rate override.  Is applied if and only if the above &quot;Override Item Exchange Rate&quot; checkbox is checked.  If not checked then this field value has no effect.  Note that this will be set as the relative rate between the Vendor currency and the Project currency.</description>
+        <externalId>false</externalId>
+        <label>Item Exchange Rate Override</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Milestone__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Milestone</label>
+        <referenceTo>pse__Milestone__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Miscellaneous_Adjustment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Miscellaneous Adjustment</label>
+        <referenceTo>pse__Miscellaneous_Adjustment__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Override_Item_Exchange_Rate__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>May only be checked if parent Vendor Invoice has Apply Vendor Exchange Rate Override UN-checked (otherwise the rate would come from the parent Vendor Invoice).</description>
+        <externalId>false</externalId>
+        <label>Override Item Exchange Rate</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Currency_Exchange_Rate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This is the system exchange rate for the project currency (relative to the corporate currency)  It should be read only the page layout.  The field is auto populated by the system.</description>
+        <externalId>false</externalId>
+        <label>Project Currency Exchange Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Project</label>
+        <referenceTo>pse__Proj__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Quantity__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Quantity</label>
+        <precision>14</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Resource related to this item. Valid for Time Card Splits and Expenses.</description>
+        <externalId>false</externalId>
+        <label>Resource</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Timecard</label>
+        <referenceTo>pse__Timecard__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Unit_Price__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Unit Price</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Vendor_Currency_Amount_Number__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Vendor Currency Amount Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Vendor_Currency_Amount__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>pse__Vendor_Currency__c+&apos; &apos;+TEXT(pse__Vendor_Currency_Amount_Number__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Vendor Currency Amount</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Vendor_Currency_Exchange_Rate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Vendor Currency Exchange Rate that is used to convert amount to Vendor currency.  This is always populated based on whichever rate is actually used - Project Currency Rate, Vendor Invoice Item override rate, or parent Vendor Invoice override rate.  This field is auto-populated by the system, and should be read only on the page layout.</description>
+        <externalId>false</externalId>
+        <label>Vendor Currency Exchange Rate</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>6</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Vendor_Currency__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>pse__Vendor_Invoice__r.pse__Vendor_Currency__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Vendor Currency</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Vendor_Invoice_ER_Override_Applied__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <formula>IF(pse__Vendor_Invoice__r.pse__Override_Vendor_Invoice_Exchange_Rate__c, $Label.pse__common_label_yes , $Label.pse__common_label_no)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Vendor Invoice ER Override Applied</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Vendor_Invoice__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Vendor Invoice</label>
+        <referenceTo>pse__Vendor_Invoice__c</referenceTo>
+        <relationshipLabel>Vendor Invoice Items</relationshipLabel>
+        <relationshipName>Vendor_Invoice_Items</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <label>Vendor Invoice Item</label>
+    <listViews>
+        <fullName>pse__All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>INVITEM-{00000000}</displayFormat>
+        <label>Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Vendor Invoice Items</pluralLabel>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>pse__Amount__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>pse__Date__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>pse__Vendor_Invoice__c</lookupDialogsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <validationRules>
+        <fullName>pse__Amount_Calculation_Error</fullName>
+        <active>true</active>
+        <description>Verify Amount = Quantity * Unit Price if set.</description>
+        <errorConditionFormula>AND(NOT(ISNULL( pse__Quantity__c )), NOT(ISNULL( pse__Unit_Price__c )),ABS(pse__Amount__c - (pse__Quantity__c*pse__Unit_Price__c))&gt;=0.01)</errorConditionFormula>
+        <errorDisplayField>pse__Amount__c</errorDisplayField>
+        <errorMessage>Amount field does not match Quantity times Unit Price</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Budget_Check_Type</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(LEN(pse__Budget_Header__c)&gt;0,NOT(OR(ISPICKVAL(pse__Budget_Header__r.pse__Type__c,&apos;Vendor Purchase Order&apos;), ISPICKVAL(pse__Budget_Header__r.pse__Type__c,&apos;Vendor Purchase Order Change Order&apos;))))</errorConditionFormula>
+        <errorDisplayField>pse__Budget_Header__c</errorDisplayField>
+        <errorMessage>Invoice items may only be applied to Budget Headers with the type Vendor Purchase Order or Vendor Purchase Order Change Order</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Budget_Currency_Mismatch</fullName>
+        <active>false</active>
+        <errorConditionFormula>AND(LEN(pse__Budget_Header__c)&gt;0,TEXT(CurrencyIsoCode) != TEXT(pse__Budget_Header__r.CurrencyIsoCode))</errorConditionFormula>
+        <errorDisplayField>CurrencyIsoCode</errorDisplayField>
+        <errorMessage>Currency does not match the budget&apos;s currency</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Budget_Project_Mismatch</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(LEN(pse__Budget_Header__c)&gt;0,pse__Budget_Header__r.pse__Project__c != pse__Project__c)</errorConditionFormula>
+        <errorMessage>The budget&apos;s project must match the project</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Budget_required_and_constant</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR(LEN(pse__Budget_Header__c)=0,ISCHANGED(pse__Budget_Header__c))</errorConditionFormula>
+        <errorMessage>Budget Header is required and cannot be changed once set</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Invoice_Account_Mismatch</fullName>
+        <active>false</active>
+        <errorConditionFormula>pse__Project__r.pse__Account__c != pse__Vendor_Invoice__r.pse__Account__c</errorConditionFormula>
+        <errorDisplayField>pse__Project__c</errorDisplayField>
+        <errorMessage>The selected project&apos;s account must match the account of the Vendor Invoice</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Invoice_Currency_Mismatch</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(LEN(pse__Vendor_Invoice__c)&gt;0,TEXT(CurrencyIsoCode) != TEXT(pse__Vendor_Invoice__r.CurrencyIsoCode))</errorConditionFormula>
+        <errorDisplayField>CurrencyIsoCode</errorDisplayField>
+        <errorMessage>The currency must match the currency of the Vendor Invoice</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Invoice_Override_in_Effect</fullName>
+        <active>true</active>
+        <description>Prevents checking the Override Currency Exchange rate check box on the item, if an invoice level override is in effect</description>
+        <errorConditionFormula>AND(pse__Override_Item_Exchange_Rate__c,(pse__Vendor_Invoice_ER_Override_Applied__c = $Label.pse__common_label_yes))</errorConditionFormula>
+        <errorMessage>Invoice Item Exchange Rate overrides are not permitted when an invoice level override is employed.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Invoice_Submitted_Check</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(pse__Vendor_Invoice__r.pse__Submitted__c,OR(ISCHANGED(pse__Amount__c),ISCHANGED(pse__Date__c)))</errorConditionFormula>
+        <errorMessage>The Amount and Date fields cannot be changed for submitted vendor invoices</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Invoice_Submitted_No_New_Items</fullName>
+        <active>true</active>
+        <errorConditionFormula>AND(pse__Vendor_Invoice__r.pse__Submitted__c,ISNEW())</errorConditionFormula>
+        <errorMessage>Cannot create new items for a submitted vendor invoice</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Project_is_constant</fullName>
+        <active>true</active>
+        <errorConditionFormula>OR(ISCHANGED(pse__Project__c),LEN(pse__Project__c)=0)</errorConditionFormula>
+        <errorDisplayField>pse__Project__c</errorDisplayField>
+        <errorMessage>Project is required and cannot be changed once set</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>pse__Rate_Required_when_Overriding</fullName>
+        <active>true</active>
+        <description>Ensures that a rate is provided if the Override Currency Exchange Rate checkbox is checked.</description>
+        <errorConditionFormula>AND(pse__Override_Item_Exchange_Rate__c =TRUE,
+         OR(ISNULL(pse__Item_Exchange_Rate_Override__c) ,
+               ISBLANK(pse__Item_Exchange_Rate_Override__c) 
+             )
+       )</errorConditionFormula>
+        <errorDisplayField>pse__Item_Exchange_Rate_Override__c</errorDisplayField>
+        <errorMessage>Item Exchange Rate Override must be supplied when checking the Override check box.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>pse__New_Invoice_Items</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>New Invoice Items</masterLabel>
+        <openType>sidebar</openType>
+        <page>pse__VendorInvoiceWizard</page>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+    </webLinks>
+</CustomObject>

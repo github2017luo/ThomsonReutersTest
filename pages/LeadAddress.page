@@ -1,0 +1,129 @@
+<apex:page standardController="Lead" extensions="LeadAddressController" showHeader="false" sidebar="false" id="page" lightningStylesheets="true">
+    <apex:includeScript value="/soap/ajax/26.0/connection.js"/> 
+<apex:includeScript value="/support/console/26.0/integration.js"/>
+    <apex:form id="formEdit">
+    <apex:pageMessages id="messagesGlobal" escape="false" />
+    <script>  
+     function goToSavedRecord(){         
+       window.parent.reload();
+       //document.getElementsByTagName('navigatortab').innerHTML = 'Hello';
+         
+     } 
+    </script>
+
+        <apex:actionStatus id="statusValidateAddress"
+            onStart="setParentFrameHeight();">
+            
+            <apex:facet name="start">
+                <c:PageStatusMessage message="{!$Label.Validating_address_please_wait}" />
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:pageBlock id="blockAddressDetail" mode="mainDetail" rendered="{!NOT(EditAddress)}">
+            <apex:pageBlockSection id="sectionAddressDetail"
+                columns="2">
+                
+                <apex:pageBlockSectionItem id="sectionItemStreet">
+                    <apex:outputLabel for="outputStreet" value="{!$ObjectType.Lead.Fields.Billing_Street__c.Label}" />
+                    <apex:outputPanel layout="none">
+                        <apex:outputField id="outputStreet" value="{!oLead.Billing_Street__c}" />
+                        <span>&nbsp;&nbsp;</span>
+                        <apex:commandLink id="linkEdit" value="{!$Label.Edit_AddressN}" action="{!edit}" rendered="{!OR(AND($Profile.Name=$Label.LatAmPartnerCommunityProfile,AllowEdit,OR(oLead.Approval_status__c=NULL,oLead.Approval_status__c="Not Submitted")),AND($Profile.Name<>$Label.LatAmPartnerCommunityProfile,AllowEdit))}" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:outputField id="outputStreet2" value="{!oLead.Billing_Street_2__c}" rendered="{!OR($Profile.Name=$Label.LatAmPartnerCommunityProfile, $Profile.Name='LatAm User', $Profile.Name='System Administrator')}"/>
+                <apex:outputField value="{!oLead.Billing_City__c}"/>
+                <apex:outputField value="{!oLead.Billing_Country__c}"/>
+                <apex:outputField value="{!oLead.Billing_State__c}"/>
+                <apex:outputField value="{!oLead.Billing_Zip__c}"/>
+                <apex:outputField value="{!oLead.County__c}"/>
+                <apex:outputField value="{!oLead.PO_Box__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock id="blockAddressEdit" mode="mainDetail" rendered="{!EditAddress}">
+             <apex:pageBlockButtons location="bottom">
+                <apex:commandButton id="buttonSave" value="{!$Label.Save}" action="{!save}"  rendered="{!NOT(HasServiceErrors)}" rerender="formEdit" oncomplete="goToSavedRecord()" status="statusValidateAddress" />
+                <apex:commandButton id="buttonRetry" value="{!$Label.Retry}" action="{!save}" rendered="{!HasServiceErrors}" rerender="formEdit" oncomplete="goToSavedRecord()" status="statusValidateAddress" />
+                <apex:commandButton id="buttonContinue" value="{!$Label.Continue}" action="{!continueSave}" rerender="formEdit"  oncomplete="goToSavedRecord()" rendered="{!HasServiceErrors}" />
+                <apex:commandButton id="buttonCancel" value="{!$Label.Cancel}" action="{!cancel}" rerender="formEdit"  oncomplete="goToSavedRecord()"  />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="sectionAddressDetail"
+                columns="2">
+                
+                <apex:inputField value="{!oLead.Billing_Street__c}"/>
+                <apex:inputText id="inputStreet2" value="{!oLead.Billing_Street_2__c}" maxlength="35" rendered="{!OR($Profile.Name=$Label.LatAmPartnerCommunityProfile, $Profile.Name='LatAm User', $Profile.Name='System Administrator')}"/>
+                <apex:inputField value="{!oLead.Billing_City__c}" />
+                <apex:pageBlockSectionItem id="sectionItemCountry" >
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$ObjectType.Lead.Fields.Billing_Country__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                        
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" 
+                                value="{!oLead.Billing_Country__c}" 
+                                size="1"
+                                multiselect="false" required="true">
+                                
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                    event="onchange"
+                                    action="{!addressCountryChanged}"
+                                    rerender="selectBillingState"
+                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="sectionItemState" >
+                    <apex:outputLabel for="selectBillingState" value="{!$ObjectType.Lead.Fields.Billing_State__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <apex:selectList id="selectBillingState" 
+                            value="{!oLead.Billing_State__c}" 
+                            size="1"
+                            multiselect="false">
+                            
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!oLead.Billing_Zip__c}"/>
+                <apex:inputField value="{!oLead.County__c}"/>
+                 <apex:inputField value="{!oLead.PO_Box__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+     <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"/>
+    
+    <script>
+        jQuery.noConflict();
+        
+        jQuery(document).ready(function() {
+            /* The following script only works if the account page is overriden so that it shares the same
+               domain as this page when rendered, otherwise XSS rules will apply as native salesforce uses
+               a different domain than custom visualforce pages - JDS*/
+            
+            //Resize parent iFrame based on content height
+            setParentFrameHeight();
+        });
+        
+        function setParentFrameHeight() {
+            try {
+                var parentFrame = jQuery('iframe[title="AccountAddress"]', window.parent.document);
+                parentFrame.height(jQuery(document.body).height() + 30);
+                parentFrame.attr('scrolling', 'auto');
+            } catch (e) { /*Ignore Error*/ }
+        }
+     </script>
+</apex:page>

@@ -1,0 +1,19 @@
+<apex:page standardController="Lead" extensions="LeadUpdateController" >
+
+    <apex:sectionHeader id="pageTitle"
+        title="Change Discard Reason" />
+
+    <apex:form >  
+    <apex:pageBlock >      
+    <apex:outputLabel value="Discard Reason" for="DiscardReason"></apex:outputLabel>
+                    <apex:selectList id="mgr" value="{!DiscardReason}" size="1" title="DiscardReason" multiselect="false">
+                        <apex:selectOptions value="{!DiscardReasonOptions}" rendered="true"></apex:selectOptions>
+                    </apex:selectList>
+                    
+    <apex:pageBlockButtons >                    
+    <apex:commandButton value="Save" title="Save" action="{!Save}" />
+    <apex:commandButton value="Cancel" action="{!URLFOR($Action.Lead.List, $ObjectType.Lead)}"/>
+    </apex:pageBlockButtons>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

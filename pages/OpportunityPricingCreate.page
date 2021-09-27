@@ -1,0 +1,51 @@
+<apex:page standardController="Opportunity_Product_Type__c"  extensions="OpportunityPricingCreateController" Id="Page1" >
+<apex:includeScript value="/support/console/26.0/integration.js"/>
+<script type="text/javascript"> //SFD-16 [Snehajit]
+        var pageLoad = window.onload;
+        window.onload = function(){
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+        };
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Opportunity Pricing');
+        };
+        
+   </script>
+  <apex:form id="Form1">
+    <apex:pageMessages id="globalMessages" escape="false" />
+    <apex:variable var="count" value="{!0}"/>
+    <apex:pageBlock title="New Opportunity Pricing" tabStyle="Opportunity_Product_Type__c" Id="OptyProductPgBlock" >
+    
+    <apex:pageBlockButtons >
+        <apex:commandButton title="Save" value="Save" action="{!save}"/>
+        <apex:commandButton title="Save" value="Save & new" action="{!SaveandNew}" />
+        <apex:commandButton title="Cancel" value="Cancel" action="{!cancel}"/>
+       
+    </apex:pageBlockButtons>
+    <apex:repeat value="{!listOpportunityPricing}" var="OpportunityPricing" Id="OptyPricinglist">
+   <apex:variable var="count" value="{!count + 1}"/> 
+   <apex:pageBlockSection title="Opportunity Pricing  {!count}">
+    
+       <apex:inputField value="{!OpportunityPricing.Product_Category__c}" required="{!if(count==1,"true","false")}" />
+       <apex:inputField value="{!OpportunityPricing.CurrencyIsoCode}"/>
+       <apex:inputField value="{!OpportunityPricing.Product_Type__c}"/>  
+       <apex:inputField value="{!OpportunityPricing.Incremental_Amount__c}"/>
+       <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+       <apex:inputField value="{!OpportunityPricing.Renewal_Amount__c}"/>
+   </apex:pageBlockSection>
+  
+   </apex:repeat>
+    
+     <apex:commandLink action="{!AddMore}" value="Add More ..."/>
+      </apex:pageBlock>
+  </apex:form>
+ 
+</apex:page>

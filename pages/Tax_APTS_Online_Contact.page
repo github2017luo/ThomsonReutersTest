@@ -1,0 +1,305 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c"  extensions="Tax_APTS_OnlineContactsController" lightningStylesheets="true">
+    <apex:sectionHeader title="" subtitle="Products with Online Contacts"/>
+    <apex:form id="form">
+        <apex:includeScript value="/soap/ajax/43.0/connection.js"/>
+        <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" />
+        <apex:includeScript value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.8/js/jquery.tablesorter.min.js" />
+        <apex:stylesheet value="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.8/css/theme.blue.css" />
+ 
+        <style type="text/css">
+            .empty-column-content {
+                display: none;
+            }
+            
+            .highlightRED {
+                border: 2px solid red;
+                border-radius: 4px;
+            }
+             .verticalLine {
+                      border-left: 4px solid red; padding-left: 2px;
+            } 
+            a.verticalLine {
+                border-left: none !important;
+        
+            }   
+            a.highlightRED{
+                 border: none !important;
+                 border-radius: none !important;
+            } 
+            
+            .textCss{
+                color: green;
+                font-weight: bold;
+            }
+            
+            .textCss1{
+                color: red;
+                font-weight: bold;
+            }
+                 
+        </style> 
+        
+        <apex:slds /> 
+
+        <script>
+            $(document).ready(function()
+            {
+                $("[id$='pspbs1']").tablesorter({theme: 'blue', dateFormat : "dd/mm/yyyy"});
+            });
+        </script>
+
+        <script type="text/javascript">
+            $j = jQuery.noConflict();    
+            $j(document).ready(function () {
+            $j("[id$='pspbs1']").tablesorter();
+            });    
+        </script>
+    
+        <script type="text/javascript">
+            j$ = jQuery.noConflict();
+            function isChecked(e) {
+                if(j$(".chkSelected:checked").length == 0){
+                    e.preventDefault();
+                    alert('Select one record at least');
+                }
+            }
+            function ChangeColor(clr)
+        
+            {   var ids=clr.id;
+                var ctrl = document.getElementById(ids);            
+                ctrl.style.backgroundcolor='grey';
+                var cellelement=ctrl.parentNode ;
+                var rowelement=cellelement.parentNode ;
+                for(var i=1;i<rowelement.cells.length;i++)
+                {
+                  rowelement.cells[i].style.backgroundColor ='grey';
+                }
+            }
+                  
+            <!--function handleRedirect() {
+                sforce.connection.sessionId = "{!$Api.Session_ID}";
+                var redirectURL = '{!redirectURL}';
+                if (redirectURL != null && redirectURL != '') {
+                    if ((typeof sforce != 'undefined') && (sforce != null)) {
+                        sforce.one.navigateToURL(redirectURL);
+                    } else {
+                        window.location.href = redirectURL;
+                    }
+                }
+            }-->
+        </script>
+   
+        <apex:pageblock id="pb">
+        
+            <apex:pageMessages id="errMsgs"></apex:pageMessages>
+              
+            <apex:pageblockButtons rendered="{!aptsProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted'}" location="both">
+                <apex:commandButton value="{!$Label.apttus__save}" action="{!save_close}" status="loadStatus" rerender="pb,pspbs1" />            
+                <!-- <apex:commandButton value="{!$Label.Latam_Save_and_Close}" action="{!saveRecordAndExit}" oncomplete="handleRedirect();" status="loadStatus" /> -->
+                <apex:commandButton value="{!$Label.Latam_Save_and_Close}" action="{!saveRecordAndExit}" status="loadStatus" />
+                <apex:commandButton value="{!$Label.Latam_Get_Account_Level_Contacts}"  action="{!displayAccountContacts}" rerender="pb,pspbs1" status="loadStatus" />
+                <apex:commandButton value="{!$Label.LatAm_Search}" action="{!searchOnlineContacts}" rerender="pb" status="loadStatus" />
+                <apex:commandButton value="{!$Label.Latam_Reset_All}"  onclick="if({!displayMaterials.size}>0)
+                                            {return confirm('Do you really want to clear the list and delete all previously saved onlinecontacts?');}
+                                            else{return confirm('Do you really want to clear the list?');}" action="{!resetOnlineContacts}" />
+                <!-- <apex:commandButton value="{!$Label.apttus__cancel}" action="{!cancel}" oncomplete="handleRedirect();" status="loadStatus" /> -->
+                <apex:commandButton value="{!$Label.apttus__cancel}" action="{!cancel}" status="loadStatus" /> 
+            </apex:pageblockButtons>
+            
+            <apex:pageblockButtons rendered="{! aptsProposal.Apttus_Proposal__Approval_Stage__c = 'Accepted'}" >        
+                <apex:commandButton value="Return" action="{!cancel}" status="loadStatus"/>        
+            </apex:pageblockButtons>
+            
+            <apex:pageBlockSection columns="2" >  
+                <apex:pageBlockSectionItem > 
+                    <apex:outputLabel for="droplist" value="{!$Label.Latam_LineItem_Products}"/>  
+                        <apex:selectList id="droplist" title="LineItem Products" value="{!productsdropdown}" multiselect="false" size="1"  styleClass="slds-lookup__search-input slds-input">
+                            <!--<apex:actionSupport event="onchange" action="{!mappingLogic}" status="loadStatus" rerender="pb,pspbs1" /> -->
+                            <apex:actionSupport event="onchange" action="{!mappingLogic}" status="loadStatus" rerender="pb"/> 
+                            <apex:param name="eventid" value="True" assignTo="{!isContactDisplayFromAccount }"/>
+                            <apex:selectOptions value="{!psProductsList}">
+                            </apex:selectOptions>
+                        </apex:selectList>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.Latam_Quantity}" for="qun"/>
+                    <apex:outputText id="ip" value="{!IF(OR(currentPLI=NULL,currentPLI.APTPS_Quantity_Display__c=NULL),0,currentPLI.APTPS_Quantity_Display__c)}" title="Quantity" />         
+                </apex:pageBlockSectionItem>
+                <!-- <apex:pageBlockSectionItem rendered="{! quoteAccepted==False}" >
+                        <apex:outputLabel value=" {!$Label.Latam_From_IP_Address}" for="ip1" />
+                        <apex:inputText id="ip" value="{!fromIppAdd}" title=" From IP Address" />  
+                              
+                 </apex:pageBlockSectionItem>
+                 
+                        
+                 <apex:pageBlockSectionItem rendered="{! quoteAccepted==False}">
+                        <apex:outputLabel value="{!$Label.Latam_To_IP_Address}" for="ip2" />
+                        <apex:inputText id="ip" value="{!toIpAdd}" title="To IP Address" />
+                  </apex:pageBlockSectionItem>   -->                  
+                 
+                 
+                <apex:pageBlockSectionItem rendered="{! aptsProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted' && IF(productsdropdown != '', true, false)}">
+                    <apex:outputLabel value="{!$Label.Latam_Search_Contact}" for="sp"/>
+                    <apex:inputText id="sp" value="{!searchString}" title="Search Contact" />            
+                </apex:pageBlockSectionItem>   
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="You have online contacts Active" for="contacts"/>
+                    <apex:outputText id="ip" value="{!total_online_contacts_tfms}" title="You have online contacts Active" />            
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem rendered="{!IF(OR(currentPLI=NULL,currentPLI.Apttus_QPConfig__PriceUom__c <> 'Concurrent'),true,false)}">                       
+                    <apex:outputLabel value="{!$Label.APTS_Remaining_Contacts}" for="contacts"  />
+                    <apex:outputText id="ip" value="{!remain_count_of_users}" title="Remaining Count of Contacts" styleClass="{!If(remain_count_of_users>= 0," textCss", "textCss1")}" />           
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem rendered="{! aptsProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted' && IF(productsdropdown != '', true, false)}" >
+                    <apex:outputLabel value="{!$Label.IP_Addres_Check}" for="ip1" />
+                    <apex:inputCheckbox value="{!currentPLI.IP_Address_Check__c}" />
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+              
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="position: fixed; margin-left: 500px; margin-top: 100px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="35" width="35" style="opacity: 1.0;"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+         
+            <apex:pageBlockSection columns="1" id="pspbs1" title="{!$Label.Latam_Online_Contacts}" collapsible="false">  
+                <apex:pageBlockTable value="{!displayMaterials}" var="oc" id="pspbs1"  styleclass="tablesorter" styleClass="slds-table slds-table--bordered slds-table--striped"  columnsWidth="20%,20%,20%,40%,20%,20%,20%,20%">
+                    <apex:variable value="{!0}" var="rowNum"/>
+                    <apex:column headerValue="{!$Label.Latam_Action}" style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                        <apex:inputCheckbox value="{!oc.isSelected}" rendered="{!OR(oc.evnetIdToAdd==True,oc.eventIdToEdit == True,oc.eventIdToDelete==True,isContactDisplayFromAccount == False)}" styleClass="chkSelected"/>
+                        <apex:commandLink value="Edit " action="{!undo_close}" style="color:blue"
+                             id="cmdeditlink"   rendered="{!AND(oc.evnetIdToAdd==False,oc.eventIdToDelete==False, aptsProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted', isContactDisplayFromAccount == True)}">  
+                             <apex:param name="eventid" value="True" assignTo="{!oc.eventIdToEdit}"/> 
+                        </apex:commandLink>
+                        <apex:commandLink value=" | Delete" action="{!undo_close}" style="color:blue"   id="cmdlink1" 
+                             oncomplete="return ChangeColor(this);" rendered="{!AND(oc.evnetIdToAdd==False,oc.eventIdToEdit ==False,aptsProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted', isContactDisplayFromAccount == True)}" reRender="pspbs1">  
+                            <apex:param name="eventid" value="True" assignTo="{!oc.eventIdToDelete}"/> 
+                        </apex:commandLink> 
+                        <!--<apex:commandLink value="{!$Label.apttus__remove}" id="del" action="{!removeOnlineContactRowFromDisplayList}"  rendered="{! oc.isNewContact==True }" rerender="pspbs1" style="color:red" >
+                            <apex:param value="{!rowNum}" name="rowToRemove" assignTo="{!rowToRemove}"/>
+                        </apex:commandLink>-->
+                        <apex:variable var="rowNum" value="{!rowNum + 1}"/>              
+                    </apex:column>
+                     
+                    <apex:column style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                        <apex:facet name="header"> 
+                            <apex:outputpanel >
+                                <apex:commandlink style="text-decoration:underline" action="{!sortByNameList}" value="{!$Label.Latam_First_Name}" rerender="pb" > 
+                                    <apex:param name="eventid" value="First Name" assignTo="{!sortStr}"/> 
+                                </apex:commandlink> 
+                                <apex:image value="{!$Resource.Latam_UpwardArrow}" width="8" height="8" rendered="{!AND(sortStr=='First Name',sortDir == 'ASC')}"> </apex:image>
+                                <apex:image value="{!$Resource.Latam_DownArrow}" width="8" height="8" rendered="{!AND(sortStr=='First Name', sortDir == 'DESC')}"> </apex:image>
+                            </apex:outputpanel> 
+                        </apex:facet>
+                        <apex:outputPanel >
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!oc.onlineContact.First_Name__c}" rendered="{!oc.evnetIdToAdd==True}"  /> 
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputField value="{!oc.onlineContact.First_Name__c}" rendered="{!oc.evnetIdToAdd==False}" styleClass="header"/>
+                    </apex:column> 
+                     
+                    <apex:column style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                        <apex:facet name="header"> 
+                            <apex:outputpanel >
+                                <apex:commandlink style="text-decoration:underline" action="{!sortByNameList}" value="{!$Label.Latam_Last_Name}" rerender="pb" > 
+                                    <apex:param name="eventid" value="Last Name" assignTo="{!sortStr}"/> 
+                                </apex:commandlink> 
+                                <apex:image value="{!$Resource.Latam_UpwardArrow}" width="8" height="8" rendered="{!AND(sortStr=='Last Name',sortDir == 'ASC')}"> </apex:image>
+                                <apex:image value="{!$Resource.Latam_DownArrow}" width="8" height="8" rendered="{!AND(sortStr=='Last Name', sortDir == 'DESC')}"> </apex:image>
+                            </apex:outputpanel> 
+                        </apex:facet>
+                        <!--<apex:inputField value="{!oc.onlineContact.Last_Name__c}" rendered="{!oc.evnetIdToAdd==True}" required="true"/> -->
+                        <apex:outputPanel >
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!oc.onlineContact.Last_Name__c}" rendered="{!oc.evnetIdToAdd==True}"/>
+                            </div>
+                        </apex:outputPanel>
+                        <apex:outputField value="{!oc.onlineContact.Last_Name__c}" rendered="{!oc.evnetIdToAdd==False}"/>
+                    </apex:column>
+                     
+                    <apex:column headerValue="{!$Label.Latam_Type}" style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;','color:black')}">
+                        <apex:outputPanel >
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                                <apex:inputField value="{!oc.onlineContact.Tax_Type__c}" rendered="{!AND($User.UIThemeDisplayed == "Theme3",oc.evnetIdToAdd==True)}" style="height:auto !important;" /> 
+                            </div>
+                        </apex:outputPanel>
+                        <apex:inputField value="{!oc.onlineContact.Tax_Type__c}" rendered="{!AND($User.UIThemeDisplayed <> "Theme3",oc.evnetIdToAdd==True)}" style="height:auto !important;" /> 
+                        <apex:outputField value="{!oc.onlineContact.Tax_Type__c}" rendered="{!oc.evnetIdToAdd==False}"/>
+                    </apex:column>                     
+                     
+                    <apex:column headerValue="{!$Label.Tax_Position}" style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                        <apex:inputField value="{!oc.onlineContact.Tax_Position__c}" rendered="{!oc.evnetIdToAdd==True}" /> 
+                        <apex:outputField value="{!oc.onlineContact.Tax_Position__c}" rendered="{!oc.evnetIdToAdd==False}"/>
+                    </apex:column>
+                     
+                    <apex:column headerValue="{!$Label.Tax_Username}" style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                        <apex:outputField value="{!oc.onlineContact.Tax_Username__c}"/>
+                    </apex:column>
+                    
+                    <apex:column style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}" >
+                        <apex:facet name="header"> 
+                             <apex:outputpanel >
+                                 <apex:commandlink style="text-decoration:underline" action="{!sortByNameList}" value="{!$Label.LatAm_Email}" rerender="pb" > 
+                                     <apex:param name="eventid" value="Email" assignTo="{!sortStr}"/> 
+                                 </apex:commandlink> 
+                                 <apex:image value="{!$Resource.Latam_UpwardArrow}" width="8" height="8" rendered="{!AND(sortStr=='Email',sortDir == 'ASC')}"> </apex:image>
+                                 <apex:image value="{!$Resource.Latam_DownArrow}" width="8" height="8" rendered="{!AND(sortStr=='Email', sortDir == 'DESC')}"> </apex:image>                                    
+                             </apex:outputpanel> 
+                         </apex:facet>
+                         <apex:outputPanel >
+                             <div class="requiredInput">
+                                 <div class="requiredBlock"></div>
+                                 <apex:inputField value="{!oc.onlineContact.Email__c}" rendered="{!OR(oc.evnetIdToAdd==True,oc.eventIdToEdit==True)}" />
+                             </div>
+                         </apex:outputPanel>
+                         <!--<apex:inputField value="{!oc.onlineContact.Email__c}" required="True" rendered="{!OR(oc.evnetIdToAdd==True,oc.eventIdToEdit==True)}" />-->
+                         <div class="slds-truncate_container_75" style="display:{!if(OR(AND(oc.eventIdToDelete == False,oc.eventIdToEdit== False,oc.isSelected == False,isContactDisplayFromAccount == True),OR(AND(isContactDisplayFromAccount == False,oc.isSelected == True ),AND(isContactDisplayFromAccount == False,oc.isSelected == FALSE))),"block","none")};">
+                             <div class="slds-truncate" title="{!oc.onlineContact.Email__c}">{!oc.onlineContact.Email__c}</div>
+                             <!--<apex:outputField value="{!oc.onlineContact.Email__c}" rendered="{!OR(AND(oc.eventIdToDelete == False,oc.eventIdToEdit== False,oc.isSelected == False,isContactDisplayFromAccount == True),OR(AND(isContactDisplayFromAccount == False,oc.isSelected == True ),AND(isContactDisplayFromAccount == False,oc.isSelected == FALSE)))}" styleclass="slds-truncate"/>-->
+                         </div>     
+                         <div class="slds-size_1-of-2" style="display:{!if(AND(oc.eventIdToDelete == True,oc.eventIdToEdit== False) ,"block","none")};">
+                             <div class="slds-truncate" title="{!oc.onlineContact.Email__c}">{!oc.onlineContact.Email__c}</div>
+                             <!--<apex:outputField value="{!oc.onlineContact.Email__c}" rendered="{!AND(oc.eventIdToDelete == True,oc.eventIdToEdit== False)}" styleClass="slds-truncate"/>-->
+                         </div>
+                         &nbsp;&nbsp;&nbsp;&nbsp; 
+                                                     
+                         <apex:commandLink value="Undo"  action="{!undo_close}" style="color:blue" rendered="{!OR(oc.eventIdToDelete == True,oc.eventIdToEdit== True)}">  
+                            <apex:param name="eventid" value="True" assignTo="{!oc.eventIdToUndo}"/> 
+                         </apex:commandLink> 
+                     </apex:column>
+
+                     <apex:column headerValue="{!$Label.Latam_Action_Event}" style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                         <apex:outputField value="{!oc.onlineContact.Latam_Action__c}" />
+                     </apex:column>
+                     <apex:column rendered="{!AND(currentPLI<>NULL, OR(currentPLI.Apttus_QPConfig__LineStatus__c = 'Upgrade/Downgrade', currentPLI.Apttus_QPConfig__LineStatus__c = 'Renewed'))}" style="{!if(oc.onlineContact.Latam_Action__c='Remove','background-color:grey;', 'color:black')}">
+                         <apex:outputtext value="{!if(oc.onlineContact.Is_TFMS__c,'Existing','New')}" />
+                     </apex:column>
+                     
+                     <apex:facet name="footer">{!TableFacet}</apex:facet>
+                     
+                </apex:pageBlockTable>
+
+                <apex:pageBlockSectionItem rendered="{!displayMaterials.size>0}">
+                    <apex:commandLink value="Previous" action="{!previous}"  rendered="{!hasPrevious}" style="color:blue"  reRender="pspbs1" /> 
+                    <apex:commandLink value="Next" action="{!next}"  rendered="{!hasNext}" style="color:blue"  reRender="pspbs1" />
+                </apex:pageBlockSectionItem>
+                <div align="Center" draggable="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:commandButton value="{!$Label.apttus__addrow}" action="{!add_rows}"  rendered="{! aptsProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted'}">
+                            <apex:param name="eventid" value="True" assignTo="{!oc.evnetIdToAdd}"/> 
+                        </apex:commandButton>
+                    </apex:pageBlockSectionItem>
+                </div>
+            </apex:pageBlocksection>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

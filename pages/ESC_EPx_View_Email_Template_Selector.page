@@ -1,0 +1,53 @@
+<apex:page standardController="ESC_EPx_Template_Selector__c"  extensions="ESC_Email_Template_Selector_Extension">
+
+   
+   <apex:form >
+     <apex:pageBlock title="{!$Label.ESC_EPx_View_Email_Template_Selector_Tit_e}" mode="edit">
+   
+      <apex:pageBlockButtons >
+            <apex:commandButton action="{!edit}" value="Edit"/>
+            <apex:commandButton action="{!delete}" value="Delete"/>
+        </apex:pageBlockButtons>
+        
+       <apex:pageBlockSection title="{!$Label.ESC_EPX_VF_Template_Section_RT_Profiels}" columns="2">
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.Profile__c}"/>
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.Record_Type__c}"/>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="{!$Label.ESC_EPx_Template_Information}" columns="2">
+            <apex:pageBlockSectionItem HelpText="{!$ObjectType.ESC_EPx_Template_Selector__c.fields.ESC_EPx_Email_Template__c.InlineHelpText}">
+                <apex:outputLabel value="{!$Label.ESC_EPX_Selected_Email_Template}"/>
+                <!--<apex:selectList value="{!ESC_EPx_Template_Selector__c.ESC_EPx_Email_Template__c}">
+                     <apex:selectOptions value="{!myPersonalTemplateOptions}"/>
+                 </apex:selectList>-->
+                 <apex:outputText value="{!TemplateName}"/>
+            </apex:pageBlockSectionItem>
+            <!--<apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_EPx_Email_Template__c}"/>-->
+            
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_EPs_Delay_Mins__c}"/>
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_EPs_Reopen_Auto__c}"/>
+            <!--<apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_SurveyFailover_Language__c}"/>-->
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_Expiration_In_Days__c}"/>
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.Allow_Multiple_EPS_Requests__c}"/>
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_EPx_Sent_From_Address__c}"/>
+            
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection title="{!$Label.ESC_EPX_Score_Thresholds}" columns="2">
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_EPs_Make_EscalationScore__c}"/>
+            <apex:outputField value="{!ESC_EPx_Template_Selector__c.ESC_EPs_Make_FeedbackScore__c}"/>
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection title="{!$Label.ESC_EPX_Matching_Criteria}" columns="3">
+            <apex:repeat value="{!$ObjectType.ESC_EPx_Template_Selector__c.FieldSets.ESC_EPX_Matching_Conditions}" var="f">
+                <apex:outputField value="{!ESC_EPx_Template_Selector__c[f]}"/>
+             </apex:repeat>
+        </apex:pageBlockSection>
+
+        
+        
+      </apex:pageBlock>
+    </apex:form>
+
+    
+</apex:page>

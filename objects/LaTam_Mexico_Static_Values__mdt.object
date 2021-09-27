@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>&apos;Mexico custom metadata&apos; is used to store different static values which are referenced in apex class , validation rule etc .</description>
+    <fields>
+        <fullName>Business_Unit__c</fullName>
+        <description>Used to store static values</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Business Unit</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sales_Org__c</fullName>
+        <description>Stores mexico sales org values</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Sales Org</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Tax_Number_Type_Condition__c</fullName>
+        <description>Mexico</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Tax Number Type Condition</label>
+        <referenceTo>LaTam_Tax_Number_Type_Condition__mdt</referenceTo>
+        <relationshipName>Mexico_Static_Values</relationshipName>
+        <required>false</required>
+        <type>MetadataRelationship</type>
+        <unique>false</unique>
+    </fields>
+    <label>LaTam Mexico Static Values</label>
+    <pluralLabel>LaTam Mexico Static Values</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

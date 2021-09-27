@@ -1,0 +1,36 @@
+<apex:page lightningStylesheets="true">
+  
+       "{!$Label.ESC_INF_Chrome}"
+       
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}"
+    />
+   <script type="text/javascript">
+    function configurNotification(){
+        if (!("Notification" in window)) {
+                console.log(
+                    "This browser does not support desktop notification");
+            }
+            else{
+                  Notification.requestPermission(function(permission) {
+                  console.log(permission);
+                    // If the user accepts, let's create a notification
+                    if (permission === "granted" ) {
+                      window.close();
+                    }
+                    else  if (permission === "denied" ) {
+                   
+                         $('#myMSG').text("You have opted for blocking chrome alerts provisioned by your administrators. If you wish to receive        notifications please reset your preferences");
+                       
+                    }
+                     
+                   
+                });
+                
+                }
+    }
+    isFirst = true;
+    configurNotification();
+      
+ </script>
+
+</apex:page>

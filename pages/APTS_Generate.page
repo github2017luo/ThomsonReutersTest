@@ -1,0 +1,18 @@
+<apex:page showHeader="true" sidebar="true" controller="APTS_GenerateController" action="{!generate}" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form rendered="{!(!isTaxQueue && !isRiskSQueue)}">
+        <div align="center">
+            <apex:commandButton value="Back" onclick="window.location='/{!proposal.id}'; return false;" rendered="{!proposal.id!=null}"/>   
+            <apex:commandButton action="{!dosubmit}" value="Proceed" rendered="{!IF(NOT(ISNULL(errorMsg)), true, false)}" />
+        </div> 
+    </apex:form>
+    <apex:form rendered="{!OR(isTaxQueue,isRiskSQueue)}">
+        <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);z-index:1">
+            <div class="waitingHolder" style="top: 274.2px; text-align:center;padding-top: 10%;">
+                <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;"/>
+                <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Order Form Generation in progress. Please Wait...</span>
+            </div>
+        </div>
+        <apex:actionPoller action="{!checkstatus}" interval="5"/>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,47 @@
+<!-- VFPageStatus:Not required,Forecasting,Spring 2021,Farah-Naz,For Billing Forecasting and destined for deprecation-->
+<apex:page standardController="pse__Practice__c" action="{!initForPractice}" extensions="pse.ForecastCalculatorController" tabStyle="Forecast_Scheduler__tab"
+    lightningStylesheets="true">
+    <!-- We use the scheduler tab style so we can easily get the chess piece icon -->
+    <apex:outputText value="{!pse__Practice__c.Name}" rendered="false" />
+
+    <apex:composition template="pse__ForecastCalculatorPage">
+        <apex:define name="sectionHeader">
+            <c:lightningOutDependency exportObjectName="$FFOUTAPP" />
+            <c:ffui_header instanceName="$FFHEADER" />
+            <c:WaitComponent />
+
+            <script>
+                prepareVFConfig();
+                function prepareVFConfig() {
+                    var config = {
+                        objectName: '{!JSENCODE($Label.pse__forecasting_label_calculate_forecasts)}',
+                        recordName: '{!JSENCODE(pse__Practice__c.Name)}',
+                        onRender: 'onHeaderLoadCallback',
+                        documentIcon: {
+                            name: 'psa_rpgs',
+                            namespace: $FFOUTAPP.getNamespace()
+                        },
+                        buttons: [{
+                            id: 'cancel',
+                            label: '{!JSENCODE($Label.pse__common_label_cancel)}',
+                            actionFn: 'doCancel'
+                        }, {
+                            id: 'calculate',
+                            label: '{!JSENCODE($Label.pse__common_label_calculate)}',
+                            actionFn: 'doCalculate'
+                        }],
+                        helpUrl: '{!$Page.pse__ForecastRunHelp}'
+                    };
+
+                    wait(true);
+                    $FFHEADER.renderHeader(config);
+                }
+
+                function onHeaderLoadCallback() {
+                    wait(false);
+                }
+            </script>
+        </apex:define>
+    </apex:composition>
+
+</apex:page>

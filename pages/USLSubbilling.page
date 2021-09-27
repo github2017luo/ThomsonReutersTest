@@ -1,0 +1,77 @@
+<apex:page id="pagesubbilling" standardController="Source_System_Detail__c" extensions="USLSubbillingcontroller"  sidebar="false">
+ <style type="text/css">
+      .loadingIcon {
+            background-image: url(/img/loading.gif);
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+<apex:form id="billingdetail">
+  <apex:pageMessages id="messagesGlobal" />
+     <apex:pageBlock id="detailblock" title="Billing Plan Information">   
+     
+       <apex:pageBlockSection columns="1" title="Billing Plan History"  rendered="{!!IsError}" collapsible="false">            
+                       <apex:outputPanel id="Invoicedetail">
+                             <apex:outputPanel layout="block" rendered="{!billlist.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.No_Records_to_Display}</apex:outputPanel>
+                             <apex:pageBlockTable value="{!item.billPlanHeader.billPlanInfo}" id="itemtable" var="it">
+                      <apex:column >           
+                       BillingplanType:<apex:outputText value="{!it.billPlanType}" />&nbsp;&nbsp;
+                       Start Date: <apex:outputText value="{!it.billPlanStartDate}" />&nbsp;&nbsp;
+                       End Date: <apex:outputText value="{!it.billPlanEndDate}" />&nbsp;&nbsp;
+                      </apex:column>
+                             </apex:pageBlockTable>
+                            <apex:pageBlockTable value="{!billlist}" id="billtable" var="bill">
+                            <apex:column >
+                               <apex:facet name="header">SettlementDate</apex:facet>
+                              <apex:outputText value="{!bill.settlementDate}"/> 
+                            </apex:column>
+                            <apex:column >
+                               <apex:facet name="header">To</apex:facet>
+                              <apex:outputText value="{!bill.billItemStartDate}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">Billingdate</apex:facet>
+                              <apex:outputText value="{!bill.billItemEndDate}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">Bill Value</apex:facet>
+                              <apex:outputText value="{!bill.billItemPrice}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">Crcy</apex:facet>
+                              <apex:outputText value="{!bill.billCurrency}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">Block</apex:facet>
+                              <apex:outputText value="{!bill.block}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">Billst</apex:facet>
+                              <apex:outputText value="{!bill.billItemStatus}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">BillType</apex:facet>
+                              <apex:outputText value="{!bill.billItemType}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">ManaulDateInd</apex:facet>
+                              <apex:outputText value="{!bill.manaulDateInd}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">CorrectionDateInd</apex:facet>
+                              <apex:outputText value="{!bill.correctionDateInd}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">paymentTerms</apex:facet>
+                              <apex:outputText value="{!bill.paymentTerms}"/> 
+                            </apex:column>
+                             <apex:column >
+                               <apex:facet name="header">dateCategory</apex:facet>
+                              <apex:outputText value="{!bill.dateCategory}"/> 
+                            </apex:column>
+                            </apex:pageBlockTable>
+                        </apex:outputpanel>                             
+            </apex:pageBlockSection>  
+     </apex:pageblock>
+ </apex:form>
+</apex:page>

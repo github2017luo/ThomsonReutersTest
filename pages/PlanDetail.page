@@ -1,0 +1,169 @@
+<apex:page tabstyle="Account" standardController="Account"	extensions="ContentController">
+	<!-- extensions="PlanDetailController">  -->
+<!-- back to match  <a
+												href="/apex/Planmatch">{"Back"}
+											</a> -->  
+&nbsp;<apex:outputLink value="href=/apex/PlanMatchpage"></apex:outputLink>
+<!-- Back to Account &nbsp;<apex:outputLink value="/{!account.id}">{!Account.name}</apex:outputLink> -->
+	<apex:sectionHeader title="Content"	subtitle="{!sType} Match Details" />
+	<!--  	subtitle="{!PlanType} Match Details" />  -->
+	<apex:form id="pageForm">
+				<apex:commandButton id="buttonSearch" value="Return to Match"	action="{!backpage}" />
+		<apex:actionFunction name="SearchPlanMatchDetails" action="{!SearchPlanMatchDetails}" rerender="out" status="myStatus" />
+		<apex:pageBlock id="blockPlanMatch" mode="mainDetail">
+			<apex:pageBlockSection id="sectionAccountInfo"	title="Account Information" columns="1" collapsible="false">
+				<apex:outputField value="{!Account.SAPAccountNumber__c}" />
+				<apex:outputField value="{!Account.Name}" />
+				<apex:pageBlockSectionItem id="sectionItemAddress">
+					<apex:outputLabel for="panelBillingAddress" value="Billing Address" />
+					<apex:outputPanel id="panelBillingAddress" layout="block">
+						<apex:outputField value="{!Account.BillingStreet}" />
+						<br />
+						<apex:outputField value="{!Account.BillingCity}" />
+						<span>,&nbsp;</span>
+						<apex:outputField value="{!Account.BillingState}" />
+						<span>&nbsp;</span>
+						<apex:outputField value="{!Account.BillingPostalCode}" />
+						<br />
+						<apex:outputField value="{!Account.BillingCountry}" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="sectionMatchInfo" title="{!sType} Match Details" columns="1" collapsible="false">
+				<!-- title="{!PlanType} Match Details" columns="1" collapsible="false"> -->
+				<!--   <apex:outputLabel value="% Match" for="percent__match"/>   -->
+				<!-- <apex:outputtext value="99.9" id="percent__match"/>  -->
+				<!--  <apex:outputtext value="99.9" label="% Match" id="percent__match" />  -->
+				<apex:outputtext value="{!PercentMatch}" label="% Match" id="percent__match" />
+				<!-- <apex:outputLabel value="% Excess" for="percent__excess"/>  -->
+				<!-- 	<apex:outputtext value="35" Label="% Excess" id="percent__excess" />  -->
+				<apex:outputtext value="{!percentexcess}" Label="% Excess"	id="percent__excess" />
+				<apex:pageBlockTable value="{!PlanMatchDetails}" var="p">
+					<apex:facet name="caption">
+						<div style="text-align: left; font-weight: bold; padding-top: 20px;">
+							<span>Selected Materials</span>
+						</div>
+					</apex:facet>
+					<apex:column headerValue="Material Number"	value="{!p.materialnumber}" />
+					<apex:column headerValue="Material Description"	value="{!p.materialdescription}" />
+					<!-- temp skg -->
+					<apex:column headerValue="Material key" value="{!p.materialkey}" />
+					<apex:column headerValue="List Price" value="{!p.listprice}" />
+				</apex:pageBlockTable>
+				<apex:tabPanel id="tabPanelPlanMatch" switchType="ajax"	selectedTab="tabPlanMatch" activeTabClass="activeTabStyle"	inactiveTabClass="inactiveTabStyle">
+					<apex:tab id="tabMatchDBS" label="Matched DBS" name="tabMatchDBS">
+						<!--  		<apex:outputPanel layout="block" style="background-color: white; height:300px;">  -->
+						<apex:outputPanel layout="block" style="background-color: white;">
+							<h3>Matched DBS</h3>
+							<apex:pageBlockTable id="tablePlanMatch" value="{!PlanMatchDBSs.page}" var="d">
+								<apex:facet name="caption">
+									<div style="text-align: left; font-weight: bold; padding-top: 20px;">
+										<!--		<span>Plan Matches</span> -->
+									</div>
+								</apex:facet>
+							<apex:facet name="footer">
+											<apex:panelGrid id="gridPlanMatchPrimaryLaw" columns="3">
+												<apex:panelGroup rendered="{!PlanMatchDBSs.HasPrev}">
+													<apex:commandButton value="Move Prev" rerender="tablePlanMatch">
+														<apex:param value="{!PlanMatchDBSs.PageIndex - 1}" assignTo="{!PlanMatchDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+												<apex:panelGroup >
+													<apex:outputText value="Page {0} of {1}">
+														<apex:param value="{!PlanMatchDBSs.PageNumber}"/>
+														<apex:param value="{!PlanMatchDBSs.Pages}"/>
+													</apex:outputText>
+												</apex:panelGroup>
+												<apex:panelGroup rendered="{!PlanMatchDBSs.HasNext}">
+													<apex:commandButton value="Move Next" rerender="tablePlanMatch">
+														<apex:param value="{!PlanMatchDBSs.PageIndex + 1}" assignTo="{!PlanMatchDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+											</apex:panelGrid>
+										</apex:facet>
+								<apex:column headerValue="DBS" value="{!d.dbs}" />
+						<!-- 		<apex:column headerValue="DBS Description"
+									value="{!d.dbsdescription}" /> -->
+								<apex:column headerValue="In-Plan" value="{!d.isinplan}" />
+								<apex:column headerValue="In-Plan Trans" value="{!d.inplandbstrans}" />
+								<apex:column headerValue="Ancillary Trans"	value="{!d.ancillarydbstrans}" />
+								<apex:column headerValue="WSD Trans" value="{!d.wsddbstrans}" />
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:tab>
+
+					<apex:tab id="tabUnmappedDBS" label="Unmapped DBS"	name="tabUnmappedDBS">
+						<!--  		<apex:outputPanel layout="block" style="background-color: white; height:300px;">  -->
+						<apex:outputPanel layout="block" style="background-color: white;">
+							<h3>Unmapped DBS</h3>
+							<apex:pageBlockTable id="tableUnmapped"  value="{!UnmappedDBSs.page}" var="e">
+								<apex:facet name="caption">
+									<div	style="text-align: left; font-weight: bold; padding-top: 20px;">
+									</div>
+								</apex:facet>
+<apex:facet name="footer">
+											<apex:panelGrid id="gridPlanMatchPrimaryLaw"	columns="3">
+												<apex:panelGroup rendered="{!UnmappedDBSs.HasPrev}">
+													<apex:commandButton value="Move Prev" rerender="tableUnmapped">
+														<apex:param value="{!UnmappedDBSs.PageIndex - 1}" assignTo="{!UnmappedDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+												<apex:panelGroup >
+													<apex:outputText value="Page {0} of {1}">
+														<apex:param value="{!UnmappedDBSs.PageNumber}"/>
+														<apex:param value="{!UnmappedDBSs.Pages}"/>
+													</apex:outputText>
+												</apex:panelGroup>
+												<apex:panelGroup rendered="{!UnmappedDBSs.HasNext}">
+													<apex:commandButton value="Move Next" rerender="tableUnmapped">
+														<apex:param value="{!UnmappedDBSs.PageIndex + 1}" assignTo="{!UnmappedDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+											</apex:panelGrid>
+										</apex:facet>
+								<apex:column headerValue="DBS" value="{!e.dbs}" />
+				<!-- 				<apex:column headerValue="DBS Description"
+									value="{!e.dbsdescription}" />  -->
+								<apex:column headerValue="In-Plan" value="{!e.isinplan}" />
+								<apex:column headerValue="In-Plan Trans" value="{!e.inplandbstrans}" />
+								<apex:column headerValue="Ancillary Trans"	value="{!e.ancillarydbstrans}" />
+								<apex:column headerValue="WSD Trans" value="{!e.wsddbstrans}" />
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:tab>
+					<apex:tab id="tabExcessDBS" label="Excess DBS" name="tabExcessDBS">
+						<!--  		<apex:outputPanel layout="block" style="background-color: white; height:300px;">  -->
+						<apex:outputPanel layout="block" style="background-color: white;">
+							<h3>Excess DBS</h3>
+							<apex:pageBlockTable id="tableExcess" value="{!ExcessDBSs.page}" var="d">
+<apex:facet name="footer">
+											<apex:panelGrid id="gridPlanMatchPrimaryLaw" columns="3">
+												<apex:panelGroup rendered="{!ExcessDBSs.HasPrev}">
+													<apex:commandButton value="Move Prev" rerender="tableExcess">
+														<apex:param value="{!ExcessDBSs.PageIndex - 1}" assignTo="{!ExcessDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+												<apex:panelGroup >
+													<apex:outputText value="Page {0} of {1}">
+														<apex:param value="{!ExcessDBSs.PageNumber}"/>
+														<apex:param value="{!ExcessDBSs.Pages}"/>
+													</apex:outputText>
+												</apex:panelGroup>
+												<apex:panelGroup rendered="{!ExcessDBSs.HasNext}">
+													<apex:commandButton value="Move Next" rerender="tableExcess">
+														<apex:param value="{!ExcessDBSs.PageIndex + 1}" assignTo="{!ExcessDBSs.PageIndex}" />
+													</apex:commandButton>
+												</apex:panelGroup>
+											</apex:panelGrid>
+										</apex:facet>
+								<apex:column headerValue="DBS" value="{!d.dbs}" />
+					<!-- 			<apex:column headerValue="DBS Description"
+									value="{!d.dbsdescription}" />  -->
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:tab>
+		</apex:tabPanel>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

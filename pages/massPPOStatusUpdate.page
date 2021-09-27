@@ -1,0 +1,103 @@
+<apex:page standardController="Opportunity" recordSetVar="opportunities" extensions="massOptyStatusUpdateController" showHeader="false" id="muopp">
+
+    <apex:form id="muform1" rendered="{!NOT(IsRecords)}">
+        
+        <apex:pageBlock >
+            
+            <apex:pageMessage summary="Atleast 1 opportunity record should be selected to edit the Status" 
+            severity="info" id="mupmst"/><br></br><br></br>
+            
+            <apex:commandButton value="Go Back to List View" action="{!cancel}" id="butcan" />
+        
+        </apex:pageBlock>
+    
+    </apex:form>
+     
+    <apex:form id="muform" rendered="{!IsRecords}">
+        
+        <apex:pageMessage summary="Editable Collection Size: {!ppoOppEditListSize}" severity="info" id="mupms"/>
+       
+        <apex:pageMessage rendered="{!IsNonEditPPOpty}" summary="Non Editable Collection Size: {!ppoOppNonEditListSize}" 
+            severity="info" id="mupm1"/>        
+        
+        <apex:pageBlock id="muselectedlist1" rendered="{!IsNonEditPPOpty}">
+            
+           <apex:pageBlockSection collapsible="true" title="Non Editable Opportunities">
+            <apex:pageMessage summary="These opportunities can't be updated as they are not 'Pre-Pipeline Opportunities'." severity="info" id="mupms3"/><br></br>
+            
+            <apex:pageBlockTable value="{!ppoOppNonEditList}" var="opp" id="mutab1">
+                <apex:column value="{!opp.name}" id="oppname1"/>
+                <apex:column value="{!opp.AccountId}" id="oppaccount1"/>
+                <apex:column headerValue="Record Type Name" value="{!opp.RecordType.Name}" id="opprectype1"/>
+                <apex:column value="{!opp.Status__c}" id="stst"/>   
+                <apex:column value="{!opp.Discard_Reason__c}" id="dlrsn"/>             
+            </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Opportunity Mass-Update" mode="edit" id="mub1"  rendered="{!isPPOEdit}">
+            
+            <apex:pageMessages />
+            
+            <apex:actionRegion >
+            
+                <apex:selectRadio value="{!Opt}" rendered="{!isPPOEdit}">
+                    <apex:selectOptions value="{!items}"/>                   
+                    <apex:actionSupport event="onclick" rerender="mub1,muselectedlist" action="{!Test}" status="ActionStatus"/>               
+                </apex:selectRadio>
+                
+            </apex:actionRegion><br></br><br></br>
+            
+            <apex:pageBlockSection id="mus1">
+            
+                <apex:inputField value="{!opportunity.Status__c}" id="status" required="true"  rendered="{!IsNotAll}">                 
+                <!-- <apex:actionSupport event="onchange" rerender="muselectedlist"/> -->
+                </apex:inputField>
+                <apex:inputField value="{!opportunity.Discard_Reason__c}" id="dsreason"  rendered="{!IsNotAll}">
+                <!-- <apex:actionSupport event="onchange" rerender="muselectedlist"/> -->
+                </apex:inputField>
+                
+            </apex:pageBlockSection> 
+            
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Selected Opportunities" id="muselectedlist">
+            
+            <apex:pageMessage summary="No editable opportunity selected." severity="info" id="mupms3" rendered="{!NOT(isPPOEdit)}"/><br></br>
+           
+            <apex:actionStatus id="ActionStatus" startText="Refreshing..." startStyle="color:red;font-weight:bold"></apex:actionStatus>        
+    
+            <apex:pageBlockTable value="{!selected}" var="opp" id="mutab" rendered="{!isPPOEdit}">
+                <apex:column value="{!opp.name}" id="oppname" width="15%"/>
+                <apex:column value="{!opp.AccountId}" id="oppaccount"  width="15%"/>
+                <apex:column value="{!opp.Status__c}" id="oppstatus" rendered="{!IsNotAll}" width="17.5%"/>
+                <apex:column value="{!opp.Discard_Reason__c}" id="oppdsreason" rendered="{!IsNotAll}" width="17.5%"/>
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Status" headerValue="Status" width="17.5%" > 
+                    <apex:inputField value="{!opp.Status__c}" id="oppstage8"/>
+                </apex:column>
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Discard Reason" headerValue="Discard Reason" width="17.5%" > 
+                    <apex:inputField value="{!opp.Discard_Reason__c}" id="oppwlreason1"/>
+                </apex:column>
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockButtons id="mubut1" rendered="{!isPPOEdit}">
+
+                <apex:commandButton value="Save" action="{!saveOpty}" id="butsav1" rendered="{!NOT(IsNotAll)}"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="Cancel" action="{!cancel}" id="butcan1" rendered="{!NOT(IsNotAll)}"/>            
+                <apex:commandButton value="Save" action="{!saveOpty}" id="butsav" rendered="{!IsNotAll}"/>&nbsp;&nbsp;&nbsp;&nbsp;                                
+                <apex:commandButton value="Cancel" action="{!cancel}" id="butcan" rendered="{!IsNotAll}"/>
+            </apex:pageBlockButtons><br></br>
+                                               
+            
+        </apex:pageBlock>
+         <apex:pageBlock id="mu445" rendered="{!NOT(isPPOEdit)}">
+          <apex:pageBlockButtons id="mubutfdg1" location="top">
+
+         <apex:commandButton value="Cancel" action="{!cancel}" id="butcadvdn1"/>            
+                </apex:pageBlockButtons><br></br>
+            
+          </apex:pageBlock>  
+        
+    </apex:form>
+    
+</apex:page>

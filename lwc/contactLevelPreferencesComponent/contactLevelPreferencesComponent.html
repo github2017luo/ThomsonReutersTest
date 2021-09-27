@@ -1,0 +1,29 @@
+<template>
+        <lightning-layout horizontal-align="spread" multiple-rows="true">
+                <lightning-layout-item padding="around-small">
+                    <div>{label.DO_NOT_MAIL} </div>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small">
+     <div><lightning-formatted-url value={preferencecenter.data} label={label.PREFERENCE_CENTER} target="_blank"> </lightning-formatted-url></div>
+                </lightning-layout-item>
+            <lightning-layout-item padding="around-small"><div></div></lightning-layout-item>
+            <lightning-layout-item padding="around-small"><div></div></lightning-layout-item>
+            <lightning-layout-item padding="around-small"><div></div></lightning-layout-item>
+            <lightning-layout-item padding="around-small"><div></div></lightning-layout-item>
+            </lightning-layout>
+        <lightning-record-view-form record-id={recordId} object-api-name="Contact"
+            columns="2" mode="readonly">
+            <lightning-output-field field-name="HasOptedOutOfEmail" readonly="true"></lightning-output-field>
+        </lightning-record-view-form> 
+        <template if:true={hasrendered}>
+    <lightning-record-form record-id={recordId} object-api-name="Contact" fields={USFields}
+     columns="2" mode="View"
+     onsuccess={handleSuccess} onsubmit={handleSubmit}>
+    </lightning-record-form>
+</template>
+<template if:false={hasrendered}>
+        <lightning-record-form record-id={recordId} object-api-name="Contact" fields={NONUSFields}
+     columns="2" mode="View" onsuccess={handleSuccess} onsubmit={handleSubmit}>
+    </lightning-record-form>
+    </template>
+</template>

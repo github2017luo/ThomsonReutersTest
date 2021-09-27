@@ -1,0 +1,169 @@
+<apex:page controller="ESC_IntrusiveNotificationController" lightningStylesheets="true">
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/cometd.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery.js')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/json2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery_cometd.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/cometdReplayExtension.js')}"/>
+    
+    <apex:form >
+        <apex:pageMessages ></apex:pageMessages>
+        
+    </apex:form>
+    <apex:includeScript value="/support/console/40.0/integration.js" />
+    <script type="text/javascript">
+            var token = "{!$Api.Session_ID}";
+            
+ //********* Part For Intrusive Notifications Settings Start *******************
+            configurNotification();
+              // To check if incognito mode is on or not
+            function main() {
+                var fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+                console.log(window);
+                if (!fs) {
+                    return;
+                }
+                fs(window.TEMPORARY, 100, function(fs) {
+                    //use new pge
+                    var timeOut = 20000; //
+                    myWindow = window.open(
+                        "/apex/ESC_Chatter_Desktop_Popup_Allow", "_blank", 'minimizable=no,scrollbars=no,resizable=no,titlebar=no,location=no,width=800,height=300');
+                    setTimeout(function() {
+                        myWindow.close();
+                    }, timeOut);
+                }, function(err) {
+                });
+            }
+            function configurNotification() {
+                console.log(Notification.permission);
+                var myWindow;
+                if (!("Notification" in window)) {
+                    console.log(
+                        "This browser does not support desktop notification");
+                }
+                if (Notification.permission != 'granted') {
+                    if (sforce.console.isInConsole()) {
+                        main();
+                    }
+                }
+            }
+            function notify(sobject, eventtype, sobjectType, objectIdentifier , ptName) {
+                console.log(sobject);
+                if (!("Notification" in window)) {
+                    console.log(
+                        "This browser does not support desktop notification");
+                }
+                // Let's check whether notification permissions have alredy been granted
+                else if (Notification.permission === "granted") {
+                    // If it's okay let's create a notification
+                    drawNotify(sobject, eventtype, sobjectType, objectIdentifier, ptName);
+                }
+            }
+            function drawNotify(sobject, eventtype, sobjectType, objectIdentifier, ptName) {
+                var millis = new Date().getTime();
+                var tag = 'tag'+sobject.id+ptName;
+                var title = sobjectType + ' ' + eventtype;
+                //default set to case
+                var intrusiveSchemaMSG = JSON.parse('{!IntrusiveSchemaMSG}');
+                var iconNot =
+                    "{! URLFOR($Resource.ESC_UniversalResource, '/IntrsusiveNotifications/notifyCase.jpeg')}";
+                var bodymsg = sobjectType + ' ' + eventtype;
+                if (intrusiveSchemaMSG[objectIdentifier] != null) {
+                    schemaMSG = intrusiveSchemaMSG[objectIdentifier];
+                    iconNot =
+                        "{! URLFOR($Resource.ESC_UniversalResource, '/IntrsusiveNotifications/" +
+                        schemaMSG.iconName + "')}";
+                    bodymsg = '';
+                    for (var i = 0; i < schemaMSG.fields.length; i++) {
+                        var fieldAPI = schemaMSG.fields[i];
+                        bodymsg = bodymsg + schemaMSG.fieldLabelMap[fieldAPI] + ':' +
+                            sobject[fieldAPI];
+                    }
+                }
+                var n = new Notification(title, {
+                    icon: iconNot,
+                    tag: tag,
+                    body: bodymsg,
+                    renotify: true
+                });
+                n.onclick = function() {
+                    window.focus();
+                    this.cancel();
+                };
+               console.log('n. '+n.renotify);
+            }
+   //********* Part For Intrusive Notifications Settings End *******************
+   
+    //********* Part For Push Topic Connection Start *******************
+            var groups = '{!groupIds}';
+            var myList = JSON.parse('{!PushTopicNames}');
+            var objBucket = new Array();
+            var user = '{!$User.Id}';
+            console.log('user' + user);
+            var objectIdentifierMap = JSON.parse('{!ObjectIdentifierMap}');
+            var channel = null;
+            var _connected = false;
+            var topicsubscription = [];
+            var _subscription;
+            var rAttempts = 0;
+            var oldConnection = false;
+            function subscribeToPT() {
+                var values = JSON.parse('{!PushTopicNames}');
+                for (i = 0; i < values.length; i++) {
+                   console.log(values[i]);
+                    _subscription = subscribe('/topic/' + values[i], receive);
+                }
+                _subscription2 = subscribe('/topic/BGPushNotification', receive2);
+            }
+            function receive2(message) {
+                message.data.event.type = "{!$Label.ESC_BGInvoked}";
+                message.data.sobject.Id = message.data.sobject.Id + 'BreakGlass';
+                receive(message);
+            }
+            function receive(message) {
+                console.log(message);
+                ptName = message.channel.split('/topic/')[1];
+                // $('#content').append('DEBUG: msg from the server'+JSON.stringify(message)+'<br><br>');
+                var d = new Date();
+                var addInfoResult = true;
+                  //  addToObjBucket(message.data.sobject.Id, d.getTime());
+                var lm = message.data.sobject.LastModifiedById;
+                lm = (lm == null || lm == undefined) ? '' : lm;
+                var objectIdentifier = message.data.sobject.Id.substr(0, 3);
+                //  if ((message.data.sobject.OwnerId=='{!$User.Id}' || groups.substring(message.data.sobject.OwnerId) != -1) &
+                if ((message.data.sobject.OwnerId =='{!$User.Id}' ||
+                        groups.indexOf(message.data.sobject.OwnerId) != -1) && 
+                        (user != message.data.sobject.LastModifiedById)) {
+                    
+                        notify(message.data.sobject, message.data.event.type, objectIdentifierMap[objectIdentifier], objectIdentifier ,ptName);
+                }
+            }
+            
+            //** now unused
+            /*
+            function addToObjBucket(objID, time) {
+                var size = objBucket.length;
+                var d = new Date();
+                var tempArray = new Array();
+                var currentTime = d.getTime();
+                var result = false;
+                for (var i = 0; i < size; i++) {
+                    var duration = currentTime - objBucket[i][1];
+                    if (duration / 1000 > 10) {
+                        objBucket.splice(i, 1);
+                    } else {
+                        tempArray.push(objBucket[i][0]);
+                    }
+                }
+                if (tempArray.indexOf(objID) == -1) {
+                    size = objBucket.length;
+                    var indexOfNew = (size == 10 || size == 0) ? 0 : (size);
+                    objBucket[indexOfNew] = [objID, time];
+                    result = true;
+                }
+                return true;
+            }
+            */
+    //********* Part For Push Topic Connection End *******************
+    </script>
+     <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/PushTopicConnectionEstablisher.js')}"/>
+</apex:page>

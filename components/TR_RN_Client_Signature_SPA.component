@@ -1,0 +1,46 @@
+<apex:component controller="TRFetchQuoteLineItems" access="global">
+    <apex:attribute name="qtId" type="Id" description="Id of the lineItem" assignTo="{!quoteId}"/>   
+        <table style="width:80%;align:left;text-align:left;border: 0px;border: none !important;" cellpadding="0px" cellspacing="0px">
+            <tr>
+                <th style="padding-left:2px;"><b>CLIENTE</b></th>
+            </tr> 
+        </table>
+        
+        <table style="width:80%;align:left;text-align:left;border: 1px solid black;" cellpadding="0px" cellspacing="0px">
+            <tr>
+                <td style="border: 1px solid black;border-right:0px;border-right: none !important;padding-left:2px;height:60px;">Firma Autorizada:</td>
+                <td style="border: 1px solid black;border-left:0px;border-left: none !important;">&nbsp;</td>
+            </tr>
+            <tr>      
+                <td style="border: 1px solid black;border-right:0px;border-right: none !important;padding-left:2px;">Nombre y Apellido:</td>
+                <td style="border: 1px solid black;border-left:0px;border-left: none !important;">&nbsp;</td>
+            </tr> 
+            <tr>
+                <td style="border: 1px solid black;border-right:0px;border-right: none !important;padding-left:2px;">Cargo:</td>
+                <td style="border: 1px solid black;border-left:0px;border-left: none !important;">&nbsp;</td>
+            </tr>
+            <tr> 
+                <td style="border: 1px solid black;border-right:0px;border-right: none !important;padding-left:2px;">Fecha:</td>      
+                <td style="border: 1px solid black;border-left:0px;border-left: none !important;">&nbsp;</td> 
+            </tr>
+            <tr> 
+                <td style="border: 1px solid black;border-right:0px;border-right: none !important;padding-left:2px;">Número Orden de Compra:</td>      
+                <td style="border: 1px solid black;border-left:0px;border-left: none !important;">&nbsp;</td> 
+            </tr> 
+            <!--  
+            <tr> 
+                <td style="border: 1px solid black;border-right:0px;border-right: none !important;padding-left:2px;">Comments:</td>      
+                <td style="border: 1px solid black;border-left:0px;border-right: none !important;">{!RenewalDispatchComments}</td> 
+            </tr> 
+            -->             
+        </table> 
+        <div style="padding-top:7px;">
+        <table style="width:100%;align:left;text-align:left;border: 1px solid black;" cellpadding="0px" cellspacing="0px">
+            <tr> 
+                <td style="Width:100%;border: 1px solid black;">
+                Comentarios:{!RenewalDispatchComments}
+                </td>      
+            </tr>                         
+        </table>
+        </div>
+</apex:component>

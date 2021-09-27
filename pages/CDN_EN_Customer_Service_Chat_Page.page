@@ -1,0 +1,190 @@
+<apex:page showHeader="false" standardStylesheets="false">
+  <style type='text/css'>
+    .embeddedServiceHelpButton .helpButton .uiButton { background-color: #005290; font-family: "Salesforce Sans", sans-serif; }
+    .embeddedServiceHelpButton .helpButton .uiButton:focus { outline: 1px solid #005290; }
+    @font-face {
+    font-family: 'Salesforce Sans';
+    src: url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.woff') format('woff'),
+    url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.ttf') format('truetype');
+    }
+</style>
+<script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+<script type='text/javascript'>
+function chattype() {
+           // window.top.location.href ='https://lrp1qa1-thomsonreuterss2elatam.cs17.force.com/liveagent2/?chattype='+urlpropertyname; 
+        return {!$CurrentPage.parameters.chattype};
+             
+        }
+var initESW = function(gslbBaseURL) {
+    
+    var url= new URL(location);
+    var caseNumber=url.searchParams.get("casenumber");
+    var firstname=url.searchParams.get("firstname");
+    var lastname=url.searchParams.get("lastname");
+    var LCRM_Is_GLI__c=url.searchParams.get("LCRM_Is_GLI__c");
+    var description=url.searchParams.get("description");
+    var product=url.searchParams.get("product");
+    var LCRM_Sub_BU__c=url.searchParams.get("LCRM_Sub_BU__c");
+    var Is_GLI__c=url.searchParams.get("Is_GLI__c");
+    var Sales_Org__c=url.searchParams.get("Sales_Org__c");
+     <!-- for canada -->
+    var BU_Segment__c=url.searchParams.get("BU_Segment__c");
+    var Email=url.searchParams.get("Email");
+    
+embedded_svc.settings.displayHelpButton = true; //Or false
+embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+embedded_svc.settings.defaultMinimizedText = '{!$Label.ESC_defaultMinimizedText}'; //(Defaults to Chat with an Expert)
+embedded_svc.settings.disabledMinimizedText = '{!$Label.ESc_disabledMinimizedText}'; //(Defaults to Agent Offline)
+
+//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+// Settings for Live Agent
+embedded_svc.settings.avatarImgURL = '';
+embedded_svc.settings.prechatBackgroundImgURL = '';
+embedded_svc.settings.waitingStateBackgroundImgURL = '';
+embedded_svc.settings.smallCompanyLogoImgURL = '';
+
+obj = [ 
+            { "label": "CaseNumber",
+            "value": caseNumber,
+            "displayToAgent": true,
+            "transcriptFields":["CaseNumber"] 
+            },            
+            { "label": "Origin",
+            "value": "Chat",
+            "displayToAgent": false,
+            "transcriptFields":["Origin"] 
+            },
+            { "label": "Description",
+            "value": description,
+            "displayToAgent": true,
+            "transcriptFields":["Description"] 
+            },
+            { "label": "Product",
+            "value": product,
+            "displayToAgent": true,
+            "transcriptFields":["Product"] 
+            },
+            { "label": "CaseStatus",
+            "value": "Work In Progress",
+            "displayToAgent": true,
+            "transcriptFields":["CaseStatus"] 
+            },
+            { "label": "LCRM_Sub_BU__c",
+            "value": "Canada",
+            "displayToAgent": false,
+            "transcriptFields":["LCRM_Sub_BU__c"] 
+            },
+             <!-- for canada -->
+            { "label": "BU_Segment__c",
+            "value": "Professional Legal",
+            "displayToAgent": false,
+            "transcriptFields":["BU_Segment__c"] 
+            },
+            { "label": "Is_GLI__c",
+            "value": "True",
+            "displayToAgent": false,
+            "transcriptFields":["Is_GLI__c"] 
+            },
+            { "label": "Sales_Org__c",
+            "value": "GLI",
+            "displayToAgent": false,
+            "transcriptFields":["Sales_Org__c"] 
+            },
+            { "label": "Is GLI",
+            "value": "true",
+            "displayToAgent": false,
+            "transcriptFields":["LCRM_Is_GLI__c"] 
+            }
+            ];
+          
+          //LCRM_Customer_First_Name__c,LCRM_Customer_Last_Name__c,LCRM_Email_Address__c added for DSS-3223
+    embedded_svc.settings.extraPrechatFormDetails = obj;
+    embedded_svc.settings.prepopulatedPrechatFields = {
+                                                        FirstName: firstname,
+                                                        LastName:lastname,
+                                                        LCRM_Customer_First_Name__c: firstname,
+                                                        LCRM_Customer_Last_Name__c:lastname,
+                                                        LCRM_Email_Address__c:Email,
+                                                        LCRM_Is_GLI__c:"True"
+                                                        }; 
+    if(caseNumber==null||caseNumber==""){
+    embedded_svc.settings.extraPrechatInfo=[
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"LCRM_Is_GLI__c","isExactMatch":true,"label":"Is GLI"}
+                                        ]
+                    ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                    {"entityFieldMaps":[
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_First_Name__c","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_Last_Name__c","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Email_Address__c","isExactMatch":true,"label":"Email"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Origin","isExactMatch":false,"label":"Origin"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Description","isExactMatch":false,"label":"Description"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"ProductId","isExactMatch":true,"label":"Product"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Status","isExactMatch":true,"label":"CaseStatus"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Sub_BU__c","isExactMatch":true,"label":"LCRM_Sub_BU__c"},
+                                         <!-- for canada -->
+                                        {"doCreate":true,"doFind":false,"fieldName":"BU_Segment__c","isExactMatch":true,"label":"BU_Segment__c"},
+                                        
+                                        {"doCreate":true,"doFind":false,"fieldName":"Is_GLI__c","isExactMatch":true,"label":"Is_GLI__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Sales_Org__c","isExactMatch":true,"label":"Sales_Org__c"}
+                                        ]
+                    ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":true}]; 
+    }
+    else{
+    
+    embedded_svc.settings.extraPrechatInfo = [
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"LCRM_Is_GLI__c","isExactMatch":true,"label":"Is GLI"}
+                                        ]
+                    ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"CaseNumber","isExactMatch":false,"label":"CaseNumber"}
+                                        ]
+                    ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":false}];  
+    }
+    
+//embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+//return "5732F00000000DF"; //button 2
+//return "5732F00000000DA"; // button1
+//};
+
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';
+
+        embedded_svc.init(
+            'https://thomsonreutersglis2e.my.salesforce.com',
+            'https://thomsonreuterss2elatam.secure.force.com/LiveAgentCDNCustServiceEn',
+            gslbBaseURL,
+            '00D30000000pLSL',
+            'CDN_EN_Customer_Service_Chat_SnapIn',
+            {
+                baseLiveAgentContentURL: 'https://c.la3-c2-ia2.salesforceliveagent.com/content',
+                deploymentId: '5721B000000k9dY',
+                buttonId: '5731B000000k9br',
+                baseLiveAgentURL: 'https://d.la3-c2-ia2.salesforceliveagent.com/chat',
+                eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I1B000000XZCXUA4_16aa72d79cb',
+                isOfflineSupportEnabled: false
+            }
+        );
+    };
+
+    if (!window.embedded_svc) {
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://thomsonreutersglis2e.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+        s.onload = function() {
+            initESW(null);
+        };
+        document.body.appendChild(s);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+</apex:page>

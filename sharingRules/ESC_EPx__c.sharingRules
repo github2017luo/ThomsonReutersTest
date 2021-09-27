@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>AEM_EPS_Sharing_Rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>AEM EPS Sharing Rule</label>
+        <sharedTo>
+            <group>AEM_EPS_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>AEM</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>CDN_EPS_Sharing_Rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>CDN EPS Sharing Rule</label>
+        <sharedTo>
+            <group>CDN_EPS_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>Canada</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Latam_EPS_Sharing_Rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Latam EPS Sharing Rule</label>
+        <sharedTo>
+            <group>Latam_EPS_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>LatAm</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Tax_EPS_Sharing_Rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Tax EPS Sharing Rule</label>
+        <sharedTo>
+            <group>Tax_EPS_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>ESC_Case_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Tax</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>UKI_EPS_Sharing_Rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>UKI EPS Sharing Rule</label>
+        <sharedTo>
+            <group>UKI_EPS_Roles</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>UKI</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>Europe</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>USL_EPS_Sharing_Rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>USL EPS Sharing Rule</label>
+        <sharedTo>
+            <group>USL_EPS_Roles</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>USL</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GLI_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>US</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

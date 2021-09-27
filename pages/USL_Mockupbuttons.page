@@ -1,0 +1,56 @@
+<apex:page standardController="Account" lightningstylesheets="true">
+    <apex:includeScript value="/support/console/42.0/integration.js"/>
+    <script>
+        function OpenUrl(){                
+        if(sforce.console.isInConsole()){          
+          var PrimaryTabId;            
+          sforce.console.getFocusedPrimaryTabId(function(result){
+          PrimaryTabId=result.id;         
+          sforce.console.openSubtab(PrimaryTabId,'/apex/LCRMCredentialInfo?id={!Account.id}',true,'Credentialing');
+          });
+         }       
+       }
+       function OpenUrl1(){
+        if(sforce.console.isInConsole()){
+          var PrimaryTabId;
+          sforce.console.getFocusedPrimaryTabId(function(result){
+          PrimaryTabId=result.id;          
+          sforce.console.openSubtab(PrimaryTabId,'/apex/LCRMOrderService?id={!Account.id}',true,'Orders');
+          });
+         }       
+       }
+        function OpenUrl2(){
+        if(sforce.console.isInConsole()){
+          var PrimaryTabId;
+          sforce.console.getFocusedPrimaryTabId(function(result){
+          PrimaryTabId=result.id;          
+          sforce.console.openSubtab(PrimaryTabId,'/apex/LCRMSubscriptions?id={!Account.id}',true,'Subscriptions');
+          });
+         }       
+       }
+       function OpenServiceNotes(){
+        if(sforce.console.isInConsole()){
+          var PrimaryTabId;
+          sforce.console.getFocusedPrimaryTabId(function(result){
+          PrimaryTabId=result.id;          
+          sforce.console.openSubtab(PrimaryTabId,'/apex/ServiceNotesESI?id={!Account.id}',true,'Service Notes');
+          });
+         }       
+       }
+    </script>
+    <apex:form >
+    <apex:outputpanel id="uslbuttons" rendered="{!IF($Profile.Name='System Administrator'||(($Profile.Name='USL Helpdesk Manager' || $Profile.Name='USL Accountable Resolver' || $Profile.Name='USL Hybrid Agent' || $Profile.Name='USL Helpdesk Agent') && (ISPICKVAL($User.Sub_Bu__c,'USL') || ISPICKVAL($User.Sub_Bu__c,'LMS') || ISPICKVAL($User.Sub_Bu__c,'FindLaw'))) ,true,false)}" >
+        <apex:commandButton value="Credentialing" style="margin-left: 10px;" onclick="OpenUrl();return false;" />        
+    </apex:outputpanel>
+    <apex:outputpanel id="glibuttons">
+        <apex:commandButton value="Orders" style="margin-left: 10px;" onclick="OpenUrl1();return false;"/>
+    </apex:outputpanel>
+     <apex:outputpanel id="glisubbuttons" rendered="{!IF($Profile.Name='System Administrator'||ISPICKVAL($User.Sub_Bu__c,'USL') ,true,false)}">
+        <apex:commandButton value="Subscriptions" style="margin-left: 10px;" onclick="OpenUrl2();return false;"/>
+    </apex:outputpanel>
+    <apex:outputpanel id="serviceNoteButton" rendered="{!IF($Profile.Name='System Administrator'||ISPICKVAL($User.Sub_Bu__c,'USL') ,true,false)}">
+        <apex:commandButton value="Service Notes" style="margin-left: 10px;" onclick="OpenServiceNotes();return false;"/>
+    </apex:outputpanel>
+    </apex:form>
+     
+</apex:page>

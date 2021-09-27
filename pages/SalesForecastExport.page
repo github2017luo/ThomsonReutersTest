@@ -1,0 +1,112 @@
+<apex:page id="pageAdvancedSearch"
+	standardController="SalesForecast__c"
+	extensions="SalesForecastDetailController"
+	sidebar="false"
+	showHeader="false"
+	standardStyleSheets="false"
+	title="{!SalesForecast__c.Name}"
+	cache="true"
+	contentType="application/vnd.ms-excel#sales_forecast_export.xls">
+	
+	<table border="0" cellpadding="0" cellspacing="0" class="list">
+		<thead>
+			<tr class="headerRow">
+				<th class="headerRow">Forecast Owner</th>
+				<th class="headerRow">New Sale/Renewal</th>
+				<th class="headerRow">Fiscal Month</th>
+				<th class="headerRow">Non-Pipeline Risk/Upside</th>
+				<th class="headerRow">Commit Forecast</th>
+				<th class="headerRow">Closed Forecast</th>
+				<th class="headerRow">Adjusted Forecast</th>
+				<th class="headerRow">Quota</th>
+				<th class="headerRow">% Quota</th>
+				<th class="headerRow">GAP</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<apex:repeat id="repeatNewSaleSnapshotRows" 
+				value="{!SalesForecastSnapshots}"
+				var="item">
+				
+				<tr>
+					<td><apex:outputField value="{!item.User__r.Name}" /></td>
+					<td>New Sale</td>
+					<td><apex:outputField value="{!item.M1_DisplayLabel__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleRiskUpsideAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleCommitAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleClosedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleAdjustedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleQuota__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleQuotaPercentage__c}"/></td>
+					<td><apex:outputField value="{!item.M1_NewSaleQuotaGap__c}"/></td>
+				</tr>
+				
+				<tr>
+					<td><apex:outputField value="{!item.User__r.Name}" /></td>
+					<td>New Sale</td>
+					<td><apex:outputField value="{!item.M2_DisplayLabel__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleRiskUpsideAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleCommitAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleClosedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleAdjustedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleQuota__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleQuotaPercentage__c}"/></td>
+					<td><apex:outputField value="{!item.M2_NewSaleQuotaGap__c}"/></td>
+				</tr>
+				
+				<tr>
+					<td><apex:outputField value="{!item.User__r.Name}" /></td>
+					<td>New Sale</td>
+					<td><apex:outputField value="{!item.M3_DisplayLabel__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleRiskUpsideAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleCommitAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleClosedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleAdjustedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleQuota__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleQuotaPercentage__c}"/></td>
+					<td><apex:outputField value="{!item.M3_NewSaleQuotaGap__c}"/></td>
+				</tr>
+				
+				<tr>
+					<td><apex:outputField value="{!item.User__r.Name}" /></td>
+					<td>Renewal</td>
+					<td><apex:outputField value="{!item.M1_DisplayLabel__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalRiskUpsideAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalCommitAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalClosedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalAdjustedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalQuota__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalQuotaPercentage__c}"/></td>
+					<td><apex:outputField value="{!item.M1_RenewalQuotaGap__c}"/></td>
+				</tr>
+				
+				<tr>
+					<td><apex:outputField value="{!item.User__r.Name}" /></td>
+					<td>Renewal</td>
+					<td><apex:outputField value="{!item.M2_DisplayLabel__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalRiskUpsideAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalCommitAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalClosedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalAdjustedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalQuota__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalQuotaPercentage__c}"/></td>
+					<td><apex:outputField value="{!item.M2_RenewalQuotaGap__c}"/></td>
+				</tr>
+				
+				<tr>
+					<td><apex:outputField value="{!item.User__r.Name}" /></td>
+					<td>Renewal</td>
+					<td><apex:outputField value="{!item.M3_DisplayLabel__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalRiskUpsideAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalCommitAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalClosedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalAdjustedAmount__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalQuota__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalQuotaPercentage__c}"/></td>
+					<td><apex:outputField value="{!item.M3_RenewalQuotaGap__c}"/></td>
+				</tr>
+			</apex:repeat>
+		</tbody>
+	</table>
+</apex:page>

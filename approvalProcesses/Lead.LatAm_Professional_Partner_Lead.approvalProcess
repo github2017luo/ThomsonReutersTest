@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Owner</field>
+        <field>Rejected_Reason__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>LatAm_Professional_Partner_Team</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <label>Step 1</label>
+        <name>Step_1</name>
+    </approvalStep>
+    <emailTemplate>LATAM_Mail/Approval_Notification_for_Leads</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND(
+	LatAm_Created_by_Partner__c=TRUE,
+	NOT(ISPICKVAL(Approval_status__c , &apos;Approved&apos;)),
+	NOT(ISPICKVAL(Approval_status__c , &apos;Rejected&apos;)),
+	CreatedBy.Profile.Name= $Label.LatAmPartnerCommunityProfile,
+	OR(
+		LOWER(TEXT(Business_Unit_LatAm__c))=&apos;novaprolink&apos;,
+		LOWER(TEXT(Business_Unit_LatAm__c))=&apos;revista – print&apos;,
+        LOWER(TEXT(Business_Unit_LatAm__c))=&apos;revista - print&apos;,
+	    LOWER(TEXT(Business_Unit_LatAm__c))=&apos;revista – online&apos;,
+		LOWER(TEXT(Business_Unit_LatAm__c))=&apos;revista - online&apos;,
+		LOWER(TEXT(Business_Unit_LatAm__c))=&apos;revista – telesales&apos;,
+		LOWER(TEXT(Business_Unit_LatAm__c))=&apos;revista - telesales&apos;
+	)
+)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Approval_Status_Field_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>true</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Approval_Status_Field_Update_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>LatAm_Lead_Status_Discarded</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Rejection_Notification</name>
+            <type>Alert</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>true</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>LatAmUpdate_Approval_Status_to_Submitted</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>LatAm Professional Partner Lead</label>
+    <processOrder>2</processOrder>
+    <recallActions>
+        <action>
+            <name>LatAmUpdate_Approval_Status_to_NotSub</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

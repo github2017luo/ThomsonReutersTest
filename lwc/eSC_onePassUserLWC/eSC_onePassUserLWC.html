@@ -1,0 +1,35 @@
+<template>
+    <lightning-card title="OnePass Search" icon-name="standard:partners">
+        
+        <div if:true={errorMsg} align="center">
+            <p style="color: red;">{errorMsg}</p>
+        </div>
+        <div align="Center" >
+            <b>
+                <lightning-input type="text" 
+                                 label="Enter OnePass Username:" 
+                                 onchange={handleAccountName} 
+                                 style="width:300px">
+                </lightning-input>
+            </b>
+            <br/>
+            <lightning-button label="Get Details" 
+                              variant="brand" 
+                              onclick={handleSearch}>
+            </lightning-button>
+        </div>
+        <div if:true={data}  style="margin: 100px;">
+            <lightning-card title="OnePass Results" 
+                            icon-name="standard:record">
+                <lightning-datatable    data={data} 
+                                columns={columns} 
+                                key-field="Id" 
+                                class="example"
+                                id="table_id"
+                                hide-checkbox-column="true"
+                >
+                </lightning-datatable>
+            </lightning-card>
+        </div>
+    </lightning-card>
+    </template>

@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Assignment_Batch_Size__c</fullName>
+        <defaultValue>100</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of assignments to process in a single batch when calculating utilization</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of assignments to process in a single batch when calculating utilization</inlineHelpText>
+        <label>Assignment Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Batch_Deletion_Cutoff__c</fullName>
+        <defaultValue>99000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When deleting previous utilization calculations, sets the maximum number of child records above which a batch deletion is used instead of cascading deletion.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sets the maximum number of child records above which a batch deletion is used instead of cascading deletion.</inlineHelpText>
+        <label>Batch Deletion Cut-Off Point</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Calculate_Cross_Products__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Allows the calculation of cross product combination of region, practice and group.
+Such as Region by Practice, or Group by Region</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Allows the calculation of cross product combination of region, practice and group.
+Such as Region by Practice, or Group by Region</inlineHelpText>
+        <label>Calculate Cross Products</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Calculate_Held_Resource_Request_Time__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, calculate the amount of scheduled time for held (unassigned) resource requests.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, calculate the amount of scheduled time for held (unassigned) resource requests.</inlineHelpText>
+        <label>Calculate Held Resource Request Time</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Calculate_Summary_By_Role__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Calculate Summary By Role</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Calculate_Unheld_Resource_Request_Time__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Calculate Unheld Resource Request Time</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__CustomFiltersforUnheldRRUtilization__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Controls the fields on the Resource Request object to include for utilization calculations of unheld resource requests. This setting accepts field values in SOQL queries. You can add custom Resource Request fields as valid values to this setting. For example, Staffer_Approval_Required__c = true AND Update_Related_Resource_Requests__c = true AND Custom_Approval__c = true. If not defined, unheld resource request utilization calculations use default criteria.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Controls the fields on the Resource Request object to include for utilization calculations of unheld resource requests. This setting accepts custom and standard field values in SOQL queries. If not defined, calculations use default criteria.</inlineHelpText>
+        <label>Custom Filters for Unheld RR Utilization</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Opportunity_Probability__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Default Opportunity Probability</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>pse__Deletion_Batch_Size__c</fullName>
+        <defaultValue>10</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When batch deleting previous utilization calculations, sets the maximum number of utilization calculation records to process per batch.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When batch deleting previous utilization calculations, sets the maximum number of utilization calculation records to process per batch.</inlineHelpText>
+        <label>Deletion Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Deletion_Child_Record_Batch_Size__c</fullName>
+        <defaultValue>9000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When batch deleting previous utilization calculations, sets the maximum number of utilization detail and summary records to process per batch.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When batch deleting previous utilization calculations, sets the maximum number of utilization detail and summary records to process per batch.</inlineHelpText>
+        <label>Deletion Child Record Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Historical_UTE_Work_Cal_Start_Day__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, historical utilization uses the start day based on the work calendar instead of the user&apos;s locale.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, historical utilization uses the start day based on the work calendar instead of the user&apos;s locale.</inlineHelpText>
+        <label>Historical UTE Work Cal Start Day</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Minimum_Opportunity_Probability__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Minimum Opportunity Probability</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Batch_Size__c</fullName>
+        <defaultValue>20</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of resources to process in a single batch when calculating utilization</inlineHelpText>
+        <label>Resource Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Batch_Size__c</fullName>
+        <defaultValue>100</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Resource Request Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Target_Utilization_Approach__c</fullName>
+        <defaultValue>&quot;WEIGHTED&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>For a value of “LAST” only the Utilization Target at the end date of any Time Period is used for the Utilization Detail result for that period, multiplying it with the calendar hours.
+For a value of “WEIGHTED” (default) between each Resource Change, the effective Target Utilization for each segment between Resource Change is multiplied with the calendar hours for that segment, and the resulting subtotals from each segment are summed (across both Historical and Scheduled periods) to arrive at Utilization Target Hours.</description>
+        <externalId>false</externalId>
+        <label>Target Utilization Approach</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_Batch_Size__c</fullName>
+        <defaultValue>100</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of timecards to process in a single batch when calculating utilization</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of timecards to process in a single batch when calculating utilization</inlineHelpText>
+        <label>Timecard Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_Statuses__c</fullName>
+        <defaultValue>&apos;Submitted,Approved&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>A comma delimited list of timecard status values that are used to determine which timecards are used for utilization calculations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A comma delimited list of timecard status values that are used to determine which timecards are used for utilization calculations.</inlineHelpText>
+        <label>Timecard Statuses</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Uncheck_Master_Based_On_Time_Parent__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines whether the &quot;Is Report Master&quot; flag is reset based on the Calculation Type and Parent object (checked) or based on the Utilization Calculation Name (unchecked).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines whether that &quot;Is Report Master&quot; flag is reset based on the Time Period and Parent object (Checked) or based on the Utilization Calculation Name (Unchecked)</inlineHelpText>
+        <label>Uncheck Master Based On Type/Parent</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Last_Date_on_Resource__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, utilization details do not calculate before the Start Date or beyond the Last Date on the resource.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, utilization details do not calculate beyond the Last Date on the resource.</inlineHelpText>
+        <label>Use Start Date and Last Date on Resource</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Utilization_Engine_TOD__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, the Utilization Engine is used for calculating utilization with Shift Management. The default is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, the Utilization Engine is used for calculating utilization with Shift Management. The default is false.</inlineHelpText>
+        <label>Use Utilization Engine for Shift Mgmt</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Utilization_Engine__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Use Utilization Engine</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Utilization_Engine_Batch_Size__c</fullName>
+        <defaultValue>25</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Utilization Engine Batch Size</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Utilization_Engine_Max_Range_TOD__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies the number of days into the future to maintain real time utilization data for Shift Management. The default value is 30.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the number of days into the future to maintain real time utilization data for Shift Management. The default value is 30.</inlineHelpText>
+        <label>Utilization Eng Max Range Shift Mgmt</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Utilization_Engine_Max_Range__c</fullName>
+        <defaultValue>365</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Maximum number of days into the future for which to maintain real time utilization data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of days into the future for which to maintain real time utilization data</inlineHelpText>
+        <label>Utilization Engine Max Range</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Utilization_Engine_Start_Range_TOD__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies the number of days prior to the current date to calculate real time utilization data for Shift Management.  The default value is 5.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the number of days prior to the current date to calculate real time utilization data for Shift Management.  The default value is 5.</inlineHelpText>
+        <label>Utilization Eng Start Range Shift Mgmt</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Utilization_Engine_Start_Range__c</fullName>
+        <defaultValue>50</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the number of days prior to the current date to calculate real time utilization data. Set to 0 to start calculation from the current date. The default value is 50.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the number of days prior to the current date to calculate real time utilization data. Set to 0 to start calculation from the current date. The default value is 50.</inlineHelpText>
+        <label>Utilization Engine Start Range</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Utilization</label>
+    <visibility>Public</visibility>
+</CustomObject>

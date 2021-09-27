@@ -1,0 +1,8 @@
+<apex:page standardController="Contact">
+
+    <apex:pageMessage strength="1" rendered="{!contact.DoNotCall && ($Profile.Name=='TR Legal US Sales User' || $Profile.Name=='System Administrator')}" severity="Warning" summary="Do Not Call" ></apex:pageMessage>
+    
+    <apex:pageMessage strength="1" rendered="{!contact.HasOptedOutOfEmail && ($Profile.Name!='Customer Portal Manager Standard' && $Profile.Name!='Gold Partner User'
+                                                                        && $Profile.Name!='Overage Customer Portal Manager Standard')}" severity="Warning"  summary="Contact has opted out of receiving certain types of email. Please review email preferences."></apex:pageMessage>
+   
+</apex:page>

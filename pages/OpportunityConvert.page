@@ -1,0 +1,30 @@
+<apex:page id="OpportunityConvert" standardController="Opportunity" extensions="OpportunityConvertController" showHeader="false" sidebar="false">
+<script type="text/javascript">  
+    Convert();
+function Convert(){
+    var OppId = '{!Opportunity.Id}';
+    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.OpportunityConvertController.Convert}',
+        '{!Opportunity.Id}',
+        function(result,event){
+            alert(event.status ? 'Opportunity successfully converted.' : 'Opportunity conversion failed, Please try again. If the problem persists please contact your admin.');
+           
+             if(typeof sforce != 'undefined'){
+               //sforce.one.navigateToSObject('{!Opportunity.Id}');
+               sforce.one.back(true);
+               //window.location.reload();
+                }           
+            else{
+                window.top.location = '/ui/support/servicedesk/ServiceDeskPage?tsid={!Opportunity.Id}';
+                //window.top.location = '/apex/OpportunityDetail?id={!Opportunity.Id}';
+                //window.top.location.reload();
+                //window.close();
+            }
+        },
+        {escape: false}
+        );
+}
+</script>
+<!--<div onclick="javascript:Convert();"> Convert this Opporrtunity to pipeline Opportunity</div>
+<br/>
+<button onclick="javascript:Convert();">Convert</button>-->
+</apex:page>

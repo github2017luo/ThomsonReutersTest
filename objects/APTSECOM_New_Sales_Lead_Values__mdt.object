@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>APTSECOM_Is_Abandoned__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>is Abandoned Lead</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>APTSECOM_Store__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Store</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Corporate</fullName>
+                    <default>false</default>
+                    <label>Corporate</label>
+                </value>
+                <value>
+                    <fullName>Corporate Westlaw</fullName>
+                    <default>false</default>
+                    <label>Corporate Westlaw</label>
+                </value>
+                <value>
+                    <fullName>FindLaw</fullName>
+                    <default>false</default>
+                    <label>FindLaw</label>
+                </value>
+                <value>
+                    <fullName>Find Law</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Find Law</label>
+                </value>
+                <value>
+                    <fullName>Government</fullName>
+                    <default>false</default>
+                    <label>Government</label>
+                </value>
+                <value>
+                    <fullName>Government Practical Law</fullName>
+                    <default>false</default>
+                    <label>Government Practical Law</label>
+                </value>
+                <value>
+                    <fullName>Small Law</fullName>
+                    <default>false</default>
+                    <label>Small Law</label>
+                </value>
+                <value>
+                    <fullName>Small Law Practical Law</fullName>
+                    <default>false</default>
+                    <label>Small Law Practical Law</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ECOM_Tracking_Code__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Tracking Code</label>
+        <length>20</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_Campaign_Cell__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Campaign Cell</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_Campaign_ID__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Campaign ID</label>
+        <length>20</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_Lead_Description__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Lead Description</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Ecom_Lead_Score__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Lead Score</label>
+        <length>20</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_Lead_Source__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Lead Source</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>All</fullName>
+                    <default>true</default>
+                    <label>All</label>
+                </value>
+                <value>
+                    <fullName>Association Promo Code</fullName>
+                    <default>false</default>
+                    <label>Association Promo Code</label>
+                </value>
+                <value>
+                    <fullName>Call Center</fullName>
+                    <default>false</default>
+                    <label>Call Center</label>
+                </value>
+                <value>
+                    <fullName>Call In</fullName>
+                    <default>false</default>
+                    <label>Call In</label>
+                </value>
+                <value>
+                    <fullName>Cross TR Referral</fullName>
+                    <default>false</default>
+                    <label>Cross TR Referral</label>
+                </value>
+                <value>
+                    <fullName>Customer</fullName>
+                    <default>false</default>
+                    <label>Customer</label>
+                </value>
+                <value>
+                    <fullName>Direct Mail</fullName>
+                    <default>false</default>
+                    <label>Direct Mail</label>
+                </value>
+                <value>
+                    <fullName>E-Mail</fullName>
+                    <default>false</default>
+                    <label>E-Mail</label>
+                </value>
+                <value>
+                    <fullName>Existing Customer</fullName>
+                    <default>false</default>
+                    <label>Existing Customer</label>
+                </value>
+                <value>
+                    <fullName>Forms</fullName>
+                    <default>false</default>
+                    <label>Forms</label>
+                </value>
+                <value>
+                    <fullName>Internal Event</fullName>
+                    <default>false</default>
+                    <label>Internal Event</label>
+                </value>
+                <value>
+                    <fullName>Internal Referral</fullName>
+                    <default>false</default>
+                    <label>Internal Referral</label>
+                </value>
+                <value>
+                    <fullName>Jigsaw</fullName>
+                    <default>false</default>
+                    <label>Jigsaw</label>
+                </value>
+                <value>
+                    <fullName>LinkedIn Sales Navigator</fullName>
+                    <default>false</default>
+                    <label>LinkedIn Sales Navigator</label>
+                </value>
+                <value>
+                    <fullName>List Load</fullName>
+                    <default>false</default>
+                    <label>List Load</label>
+                </value>
+                <value>
+                    <fullName>List Purchased</fullName>
+                    <default>false</default>
+                    <label>List Purchased</label>
+                </value>
+                <value>
+                    <fullName>List - Rented</fullName>
+                    <default>false</default>
+                    <label>List - Rented</label>
+                </value>
+                <value>
+                    <fullName>Live Event</fullName>
+                    <default>false</default>
+                    <label>Live Event</label>
+                </value>
+                <value>
+                    <fullName>Marketing</fullName>
+                    <default>false</default>
+                    <label>Marketing</label>
+                </value>
+                <value>
+                    <fullName>Marketing Automation</fullName>
+                    <default>false</default>
+                    <label>Marketing Automation</label>
+                </value>
+                <value>
+                    <fullName>Marketing Event</fullName>
+                    <default>false</default>
+                    <label>Marketing Event</label>
+                </value>
+                <value>
+                    <fullName>Marketing Promo Code</fullName>
+                    <default>false</default>
+                    <label>Marketing Promo Code</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Partner Event</fullName>
+                    <default>false</default>
+                    <label>Partner Event</label>
+                </value>
+                <value>
+                    <fullName>Referral</fullName>
+                    <default>false</default>
+                    <label>Referral</label>
+                </value>
+                <value>
+                    <fullName>Referral - External</fullName>
+                    <default>false</default>
+                    <label>Referral - External</label>
+                </value>
+                <value>
+                    <fullName>Referral Inbound</fullName>
+                    <default>false</default>
+                    <label>Referral Inbound</label>
+                </value>
+                <value>
+                    <fullName>Rep Generated</fullName>
+                    <default>false</default>
+                    <label>Rep Generated</label>
+                </value>
+                <value>
+                    <fullName>Seminar</fullName>
+                    <default>false</default>
+                    <label>Seminar</label>
+                </value>
+                <value>
+                    <fullName>Social</fullName>
+                    <default>false</default>
+                    <label>Social</label>
+                </value>
+                <value>
+                    <fullName>Tax</fullName>
+                    <default>false</default>
+                    <label>Tax</label>
+                </value>
+                <value>
+                    <fullName>Tradeshow</fullName>
+                    <default>false</default>
+                    <label>Tradeshow</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+                <value>
+                    <fullName>Unspecified</fullName>
+                    <default>false</default>
+                    <label>Unspecified</label>
+                </value>
+                <value>
+                    <fullName>VITO</fullName>
+                    <default>false</default>
+                    <label>VITO</label>
+                </value>
+                <value>
+                    <fullName>Webinar</fullName>
+                    <default>false</default>
+                    <label>Webinar</label>
+                </value>
+                <value>
+                    <fullName>Website</fullName>
+                    <default>false</default>
+                    <label>Website</label>
+                </value>
+                <value>
+                    <fullName>Website - Enquiry Form</fullName>
+                    <default>false</default>
+                    <label>Website - Enquiry Form</label>
+                </value>
+                <value>
+                    <fullName>West AM</fullName>
+                    <default>false</default>
+                    <label>West AM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Ecom_Lead_Type__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Lead Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>A</fullName>
+                    <default>true</default>
+                    <label>A</label>
+                </value>
+                <value>
+                    <fullName>B</fullName>
+                    <default>false</default>
+                    <label>B</label>
+                </value>
+                <value>
+                    <fullName>C</fullName>
+                    <default>false</default>
+                    <label>C</label>
+                </value>
+                <value>
+                    <fullName>N</fullName>
+                    <default>false</default>
+                    <label>N</label>
+                </value>
+                <value>
+                    <fullName>P</fullName>
+                    <default>false</default>
+                    <label>P</label>
+                </value>
+                <value>
+                    <fullName>S</fullName>
+                    <default>false</default>
+                    <label>S</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Ecom_Organization_Type__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Organization Type</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_Product_Solution_of_Interest__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Product Solution of Interest</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_Source_Description__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Source Description</label>
+        <required>false</required>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Ecom_Source_Type__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Source Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>3rd Party Call Center</fullName>
+                    <default>true</default>
+                    <label>3rd Party Call Center</label>
+                </value>
+                <value>
+                    <fullName>3rd Party Social Event</fullName>
+                    <default>false</default>
+                    <label>3rd Party Social Event</label>
+                </value>
+                <value>
+                    <fullName>Accountant</fullName>
+                    <default>false</default>
+                    <label>Accountant</label>
+                </value>
+                <value>
+                    <fullName>Andromeda</fullName>
+                    <default>false</default>
+                    <label>Andromeda</label>
+                </value>
+                <value>
+                    <fullName>Business Law Solution</fullName>
+                    <default>false</default>
+                    <label>Business Law Solution</label>
+                </value>
+                <value>
+                    <fullName>Campaign</fullName>
+                    <default>false</default>
+                    <label>Campaign</label>
+                </value>
+                <value>
+                    <fullName>Commercial Info Campaign</fullName>
+                    <default>false</default>
+                    <label>Commercial Info Campaign</label>
+                </value>
+                <value>
+                    <fullName>Customer Referral</fullName>
+                    <default>false</default>
+                    <label>Customer Referral</label>
+                </value>
+                <value>
+                    <fullName>Customer Service</fullName>
+                    <default>false</default>
+                    <label>Customer Service</label>
+                </value>
+                <value>
+                    <fullName>Data.com</fullName>
+                    <default>false</default>
+                    <label>Data.com</label>
+                </value>
+                <value>
+                    <fullName>Direct Email</fullName>
+                    <default>false</default>
+                    <label>Direct Email</label>
+                </value>
+                <value>
+                    <fullName>Direct Mail</fullName>
+                    <default>false</default>
+                    <label>Direct Mail</label>
+                </value>
+                <value>
+                    <fullName>Drop-Off/Email</fullName>
+                    <default>false</default>
+                    <label>Drop-Off/Email</label>
+                </value>
+                <value>
+                    <fullName>eCommerce ANZ</fullName>
+                    <default>false</default>
+                    <label>eCommerce ANZ</label>
+                </value>
+                <value>
+                    <fullName>Eloqua-ANZ</fullName>
+                    <default>false</default>
+                    <label>Eloqua-ANZ</label>
+                </value>
+                <value>
+                    <fullName>Eloqua-SLF</fullName>
+                    <default>false</default>
+                    <label>Eloqua-SLF</label>
+                </value>
+                <value>
+                    <fullName>External referral</fullName>
+                    <default>false</default>
+                    <label>External referral</label>
+                </value>
+                <value>
+                    <fullName>F&amp;R: Financial</fullName>
+                    <default>false</default>
+                    <label>F&amp;R: Financial</label>
+                </value>
+                <value>
+                    <fullName>F&amp;R: FXall</fullName>
+                    <default>false</default>
+                    <label>F&amp;R: FXall</label>
+                </value>
+                <value>
+                    <fullName>F&amp;R: GRC</fullName>
+                    <default>false</default>
+                    <label>F&amp;R: GRC</label>
+                </value>
+                <value>
+                    <fullName>FindLaw.com</fullName>
+                    <default>false</default>
+                    <label>FindLaw.com</label>
+                </value>
+                <value>
+                    <fullName>GGO: Corporate</fullName>
+                    <default>false</default>
+                    <label>GGO: Corporate</label>
+                </value>
+                <value>
+                    <fullName>GGO: F&amp;R - Financial</fullName>
+                    <default>false</default>
+                    <label>GGO: F&amp;R - Financial</label>
+                </value>
+                <value>
+                    <fullName>GGO: F&amp;R - FXall</fullName>
+                    <default>false</default>
+                    <label>GGO: F&amp;R - FXall</label>
+                </value>
+                <value>
+                    <fullName>GGO: F&amp;R - GRC</fullName>
+                    <default>false</default>
+                    <label>GGO: F&amp;R - GRC</label>
+                </value>
+                <value>
+                    <fullName>GGO: Government</fullName>
+                    <default>false</default>
+                    <label>GGO: Government</label>
+                </value>
+                <value>
+                    <fullName>GGO: IP &amp; Science</fullName>
+                    <default>false</default>
+                    <label>GGO: IP &amp; Science</label>
+                </value>
+                <value>
+                    <fullName>GGO: Legal</fullName>
+                    <default>false</default>
+                    <label>GGO: Legal</label>
+                </value>
+                <value>
+                    <fullName>GGO: Tax &amp; Accounting</fullName>
+                    <default>false</default>
+                    <label>GGO: Tax &amp; Accounting</label>
+                </value>
+                <value>
+                    <fullName>Inbound Call</fullName>
+                    <default>false</default>
+                    <label>Inbound Call</label>
+                </value>
+                <value>
+                    <fullName>Inbound Email</fullName>
+                    <default>false</default>
+                    <label>Inbound Email</label>
+                </value>
+                <value>
+                    <fullName>Internal Referral</fullName>
+                    <default>false</default>
+                    <label>Internal Referral</label>
+                </value>
+                <value>
+                    <fullName>Internet</fullName>
+                    <default>false</default>
+                    <label>Internet</label>
+                </value>
+                <value>
+                    <fullName>IP &amp; Science</fullName>
+                    <default>false</default>
+                    <label>IP &amp; Science</label>
+                </value>
+                <value>
+                    <fullName>ISS Campaign</fullName>
+                    <default>false</default>
+                    <label>ISS Campaign</label>
+                </value>
+                <value>
+                    <fullName>LawInfo.com</fullName>
+                    <default>false</default>
+                    <label>LawInfo.com</label>
+                </value>
+                <value>
+                    <fullName>LawyerMarketing.com</fullName>
+                    <default>false</default>
+                    <label>LawyerMarketing.com</label>
+                </value>
+                <value>
+                    <fullName>Legal: Australia &amp; New Zealand</fullName>
+                    <default>false</default>
+                    <label>Legal: Australia &amp; New Zealand</label>
+                </value>
+                <value>
+                    <fullName>Legal: Carswell</fullName>
+                    <default>false</default>
+                    <label>Legal: Carswell</label>
+                </value>
+                <value>
+                    <fullName>Legal: Core Legal</fullName>
+                    <default>false</default>
+                    <label>Legal: Core Legal</label>
+                </value>
+                <value>
+                    <fullName>Legal: Elite</fullName>
+                    <default>false</default>
+                    <label>Legal: Elite</label>
+                </value>
+                <value>
+                    <fullName>Legal: FindLaw</fullName>
+                    <default>false</default>
+                    <label>Legal: FindLaw</label>
+                </value>
+                <value>
+                    <fullName>Legal: Pangea 3</fullName>
+                    <default>false</default>
+                    <label>Legal: Pangea 3</label>
+                </value>
+                <value>
+                    <fullName>Legal: Practical Law</fullName>
+                    <default>false</default>
+                    <label>Legal: Practical Law</label>
+                </value>
+                <value>
+                    <fullName>Legal: Serengeti</fullName>
+                    <default>false</default>
+                    <label>Legal: Serengeti</label>
+                </value>
+                <value>
+                    <fullName>Legal: UKI</fullName>
+                    <default>false</default>
+                    <label>Legal: UKI</label>
+                </value>
+                <value>
+                    <fullName>Legal Solutions</fullName>
+                    <default>false</default>
+                    <label>Legal Solutions</label>
+                </value>
+                <value>
+                    <fullName>List Load</fullName>
+                    <default>false</default>
+                    <label>List Load</label>
+                </value>
+                <value>
+                    <fullName>Marketing</fullName>
+                    <default>false</default>
+                    <label>Marketing</label>
+                </value>
+                <value>
+                    <fullName>Market Presence</fullName>
+                    <default>false</default>
+                    <label>Market Presence</label>
+                </value>
+                <value>
+                    <fullName>Micro sites</fullName>
+                    <default>false</default>
+                    <label>Micro sites</label>
+                </value>
+                <value>
+                    <fullName>Name Drop</fullName>
+                    <default>false</default>
+                    <label>Name Drop</label>
+                </value>
+                <value>
+                    <fullName>On Demand Trial</fullName>
+                    <default>false</default>
+                    <label>On Demand Trial</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Other or Internal Event</fullName>
+                    <default>false</default>
+                    <label>Other or Internal Event</label>
+                </value>
+                <value>
+                    <fullName>Pangea3.com</fullName>
+                    <default>false</default>
+                    <label>Pangea3.com</label>
+                </value>
+                <value>
+                    <fullName>PR</fullName>
+                    <default>false</default>
+                    <label>PR</label>
+                </value>
+                <value>
+                    <fullName>Practical Law</fullName>
+                    <default>false</default>
+                    <label>Practical Law</label>
+                </value>
+                <value>
+                    <fullName>PracticalLaw.com</fullName>
+                    <default>false</default>
+                    <label>PracticalLaw.com</label>
+                </value>
+                <value>
+                    <fullName>Prospecting</fullName>
+                    <default>false</default>
+                    <label>Prospecting</label>
+                </value>
+                <value>
+                    <fullName>Publicity</fullName>
+                    <default>false</default>
+                    <label>Publicity</label>
+                </value>
+                <value>
+                    <fullName>Qualified Sales Lead</fullName>
+                    <default>false</default>
+                    <label>Qualified Sales Lead</label>
+                </value>
+                <value>
+                    <fullName>Recommended</fullName>
+                    <default>false</default>
+                    <label>Recommended</label>
+                </value>
+                <value>
+                    <fullName>Renewal</fullName>
+                    <default>false</default>
+                    <label>Renewal</label>
+                </value>
+                <value>
+                    <fullName>Sales Rep</fullName>
+                    <default>false</default>
+                    <label>Sales Rep</label>
+                </value>
+                <value>
+                    <fullName>Seminar</fullName>
+                    <default>false</default>
+                    <label>Seminar</label>
+                </value>
+                <value>
+                    <fullName>Service</fullName>
+                    <default>false</default>
+                    <label>Service</label>
+                </value>
+                <value>
+                    <fullName>Social Media</fullName>
+                    <default>false</default>
+                    <label>Social Media</label>
+                </value>
+                <value>
+                    <fullName>Sponsored Social Event</fullName>
+                    <default>false</default>
+                    <label>Sponsored Social Event</label>
+                </value>
+                <value>
+                    <fullName>Sponsorship</fullName>
+                    <default>false</default>
+                    <label>Sponsorship</label>
+                </value>
+                <value>
+                    <fullName>Targeted</fullName>
+                    <default>false</default>
+                    <label>Targeted</label>
+                </value>
+                <value>
+                    <fullName>Tax &amp; Accounting (KS)</fullName>
+                    <default>false</default>
+                    <label>Tax &amp; Accounting (KS)</label>
+                </value>
+                <value>
+                    <fullName>Tax &amp; Accounting (Professional)</fullName>
+                    <default>false</default>
+                    <label>Tax &amp; Accounting (Professional)</label>
+                </value>
+                <value>
+                    <fullName>Tax &amp; Accounting (TRTA)</fullName>
+                    <default>false</default>
+                    <label>Tax &amp; Accounting (TRTA)</label>
+                </value>
+                <value>
+                    <fullName>Thomsonreuters.com.au</fullName>
+                    <default>false</default>
+                    <label>Thomsonreuters.com.au</label>
+                </value>
+                <value>
+                    <fullName>TK Audit</fullName>
+                    <default>false</default>
+                    <label>TK Audit</label>
+                </value>
+                <value>
+                    <fullName>Trade Show</fullName>
+                    <default>false</default>
+                    <label>Trade Show</label>
+                </value>
+                <value>
+                    <fullName>Unspecified</fullName>
+                    <default>false</default>
+                    <label>Unspecified</label>
+                </value>
+                <value>
+                    <fullName>User</fullName>
+                    <default>false</default>
+                    <label>User</label>
+                </value>
+                <value>
+                    <fullName>Vendor</fullName>
+                    <default>false</default>
+                    <label>Vendor</label>
+                </value>
+                <value>
+                    <fullName>Web Audit</fullName>
+                    <default>false</default>
+                    <label>Web Audit</label>
+                </value>
+                <value>
+                    <fullName>Webinar</fullName>
+                    <default>false</default>
+                    <label>Webinar</label>
+                </value>
+                <value>
+                    <fullName>Web Trial Request</fullName>
+                    <default>false</default>
+                    <label>Web Trial Request</label>
+                </value>
+                <value>
+                    <fullName>www.technolawyer.com</fullName>
+                    <default>false</default>
+                    <label>www.technolawyer.com</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Ecom_Tracking_Code_Url__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Tracking Code Url</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>End_Journey_Reason__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>End Journey Reason</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Bad Credit</fullName>
+                    <default>false</default>
+                    <label>Bad Credit</label>
+                </value>
+                <value>
+                    <fullName>Active Online</fullName>
+                    <default>false</default>
+                    <label>Active Online</label>
+                </value>
+                <value>
+                    <fullName>Inactive Recent Online</fullName>
+                    <default>false</default>
+                    <label>Inactive Recent Online</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>New Sales Campaign code</label>
+    <pluralLabel>New Sales Campaign codes</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,256 @@
+<apex:page showHeader="false" standardStylesheets="false">
+  <style type='text/css'>
+    .embeddedServiceHelpButton .helpButton .uiButton { background-color: #005290; font-family: "Salesforce Sans", sans-serif; }
+    .embeddedServiceHelpButton .helpButton .uiButton:focus { outline: 1px solid #005290; }
+    @font-face {
+    font-family: 'Salesforce Sans';
+    src: url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.woff') format('woff'),
+    url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.ttf') format('truetype');
+    }
+</style>
+<script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+<script type='text/javascript'>
+function chattype() {
+           // window.top.location.href ='https://lrp1qa1-thomsonreuterss2elatam.cs17.force.com/liveagent2/?chattype='+urlpropertyname; 
+        return {!$CurrentPage.parameters.chattype};
+             
+        }
+var initESW = function(gslbBaseURL) {
+    
+    var url= new URL(location);
+    var caseNumber=url.searchParams.get("casenumber");
+    var firstname=url.searchParams.get("firstname");
+    var lastname=url.searchParams.get("lastname");
+    var Subject=url.searchParams.get("Subject");
+    var Email=url.searchParams.get("Email");
+    /* var CaseType__c=url.searchParams.get("CaseType__c");
+    var Case_Type_Detail__c=url.searchParams.get("Case_Type_Detail__c");
+    var Additional_Case_Type_Detail__c=url.searchParams.get("Additional_Case_Type_Detail__c"); */
+    var Sales_Org__c=url.searchParams.get("Sales_Org__c");
+    var Priority=url.searchParams.get("Priority");
+    var Doc_Number__c=url.searchParams.get("Doc_Number__c");
+    var Line_Item_Number__c=url.searchParams.get("Line_Item_Number__c");
+    var Material_Number__c=url.searchParams.get("Material_Number__c");
+    var Material_Description__c=url.searchParams.get("Material_Description__c");
+    var Payee_Number__c=url.searchParams.get("Payee_Number__c");
+    var Payee_ID__c=url.searchParams.get("Payee_ID__c");
+    var Payee_Type__c=url.searchParams.get("Payee_Type__c");
+    var Period__c=url.searchParams.get("Period__c");
+    var Territory__c=url.searchParams.get("Territory__c");
+    var SYM__c=url.searchParams.get("SYM__c");
+  
+    if(url.searchParams.get("Compensation_Amount__c")!=null){
+    var Compensation_Amount__c=url.searchParams.get("Compensation_Amount__c").replace(',', '');
+    }else{
+    var Compensation_Amount__c=url.searchParams.get("Compensation_Amount__c");
+    }
+    if(url.searchParams.get("Revenue__c")!=null){
+    var Revenue__c=url.searchParams.get("Revenue__c").replace(',', '');
+    }else{
+    var Revenue__c=url.searchParams.get("Revenue__c");
+    }
+   
+    var ESC_ASYM__c=url.searchParams.get("ESC_ASYM__c");
+    var ESC_Customer_Number__c=url.searchParams.get("ESC_Customer_Number__c");
+    var ESC_Opp_ID__c=url.searchParams.get("ESC_Opp_ID__c");
+    var ESC_GSI_Order_Source__c=url.searchParams.get("ESC_GSI_Order_Source__c");
+    var ESC_GSI_SalesPerson__c=url.searchParams.get("ESC_GSI_SalesPerson__c");
+      
+    embedded_svc.settings.displayHelpButton = true; //Or false
+    embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+    embedded_svc.settings.defaultMinimizedText = '{!$Label.Commission_defaultMinimizedText}'; //(Defaults to Chat with an Expert)
+    embedded_svc.settings.disabledMinimizedText = '{!$Label.ESc_disabledMinimizedText}'; //(Defaults to Agent Offline)
+
+//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+    // Settings for Live Agent
+    embedded_svc.settings.avatarImgURL = '';
+    embedded_svc.settings.prechatBackgroundImgURL = '';
+    embedded_svc.settings.waitingStateBackgroundImgURL = '';
+    embedded_svc.settings.smallCompanyLogoImgURL = '';
+
+obj = [ 
+            { "label": "CaseNumber",
+            "value": caseNumber,
+            "displayToAgent": true,
+            "transcriptFields":["CaseNumber"] 
+            },            
+            { "label": "Origin",
+            "value": "Chat",
+            "displayToAgent": false,
+            "transcriptFields":["Origin"] 
+            },
+            { "label": "Status",
+            "value": "New",
+            "displayToAgent": true,
+            "transcriptFields":["Case Status"] 
+            },
+            { "label": "SYM__c",
+            "value": SYM__c,
+            "displayToAgent": false,
+            "transcriptFields":["Case Status"] 
+            },
+            { "label": "Compensation_Amount__c",
+            "value": Compensation_Amount__c,
+            "displayToAgent": false,
+            "transcriptFields":["Case Status"] 
+            },
+            { "label": "Revenue__c",
+            "value": Revenue__c,
+            "displayToAgent": false,
+            "transcriptFields":["Case Status"] 
+            },
+             { "label": "ESC_GSI_SalesPerson__c",
+            "value": ESC_GSI_SalesPerson__c,
+            "displayToAgent": false,
+            "transcriptFields":["ESC_GSI_SalesPerson__c"] 
+            },
+            { "label": "First Name",
+            "value": firstname,
+            "displayToAgent": true,
+            "transcriptFields":["Ecom_First_Name__c"] 
+            },
+            { "label": "Last Name",
+            "value": lastname,
+            "displayToAgent": true,
+            "transcriptFields":["Ecom_Last_Name__c"] 
+            },
+            { "label": "Email",
+            "value": Email,
+            "displayToAgent": false,
+            "transcriptFields":["Ecom_Email__c"] 
+            }
+                       
+          ];
+          
+    embedded_svc.settings.extraPrechatFormDetails = obj;
+   
+    embedded_svc.settings.prepopulatedPrechatFields = {
+                                                        FirstName: firstname,
+                                                        LastName:lastname,
+                                                        Subject:Subject,
+                                                        Email:Email,
+                                                        /* CaseType__c: CaseType__c,
+                                                        Case_Type_Detail__c: Case_Type_Detail__c,
+                                                        Additional_Case_Type_Detail__c: Additional_Case_Type_Detail__c, */
+                                                        Sales_Org__c: Sales_Org__c,
+                                                        Priority: Priority,
+                                                        Doc_Number__c: Doc_Number__c,
+                                                        Line_Item_Number__c: Line_Item_Number__c,
+                                                        Material_Number__c: Material_Number__c,
+                                                        Material_Description__c: Material_Description__c,
+                                                        Payee_Number__c: Payee_Number__c,
+                                                        Payee_ID__c: Payee_ID__c,
+                                                        Payee_Type__c: Payee_Type__c,
+                                                        Period__c: Period__c,
+                                                        Territory__c:Territory__c,
+                                                        SYM__c:SYM__c,
+                                                        Compensation_Amount__c:Compensation_Amount__c,
+                                                        Revenue__c:Revenue__c,
+                                                        ESC_ASYM__c:ESC_ASYM__c,
+                                                        ESC_Customer_Number__c:ESC_Customer_Number__c,
+                                                        ESC_Opp_ID__c:ESC_Opp_ID__c,
+                                                        ESC_GSI_Order_Source__c:ESC_GSI_Order_Source__c
+                                                        }; 
+    if(caseNumber==null||caseNumber==""){
+    embedded_svc.settings.extraPrechatInfo=[
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"Email","isExactMatch":false,"label":"Email"}
+                                        ]
+                    ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                    {"entityFieldMaps":[
+                                        {"doCreate":true,"doFind":false,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Origin","isExactMatch":false,"label":"Origin"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Status","isExactMatch":true,"label":"CaseStatus"},
+                                        /* {"doCreate":true,"doFind":false,"fieldName":"CaseType__c","isExactMatch":false,"label":"CaseType__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Case_Type_Detail__c","isExactMatch":false,"label":"Case_Type_Detail__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Additional_Case_Type_Detail__c","isExactMatch":false,"label":"Additional_Case_Type_Detail__c"}, */
+                                        {"doCreate":true,"doFind":false,"fieldName":"Sales_Org__c","isExactMatch":false,"label":"Sales_Org__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Priority","isExactMatch":false,"label":"Priority"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Doc_Number__c","isExactMatch":false,"label":"Doc_Number__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Line_Item_Number__c","isExactMatch":false,"label":"Line_Item_Number__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Material_Number__c","isExactMatch":false,"label":"Material_Number__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Material_Description__c","isExactMatch":false,"label":"Material_Description__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Payee_Number__c","isExactMatch":false,"label":"Payee_Number__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Payee_ID__c","isExactMatch":false,"label":"Payee_ID__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Payee_Type__c","isExactMatch":false,"label":"Payee_Type__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Period__c","isExactMatch":false,"label":"Period__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Territory__c","isExactMatch":false,"label":"Territory__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"SYM__c","isExactMatch":false,"label":"SYM__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Compensation_Amount__c","isExactMatch":false,"label":"Compensation_Amount__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Revenue__c","isExactMatch":false,"label":"Revenue__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"ESC_ASYM__c","isExactMatch":false,"label":"ESC_ASYM__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"ESC_Customer_Number__c","isExactMatch":false,"label":"ESC_Customer_Number__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"ESC_Opp_ID__c","isExactMatch":false,"label":"ESC_Opp_ID__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"ESC_GSI_Order_Source__c","isExactMatch":false,"label":"ESC_GSI_Order_Source__c"}
+                                        ]
+                    ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":true}]; 
+    }
+    else{
+    
+    embedded_svc.settings.extraPrechatInfo = [
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"Email","isExactMatch":false,"label":"Email"}
+                                        ]
+                    ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"CaseNumber","isExactMatch":false,"label":"CaseNumber"}
+                                        ]
+                    ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":false}];  
+    }
+    
+         /*   embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+                var prechat = prechatFormData;
+                alert('prechatformdata: '+ prechat[4].value); 
+                var prechatQueue=prechat[4].value;
+               
+             }; */ 
+             
+           
+     embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+       
+           return "{!$Label.ESC_CommissionBtnId}";
+           // return "573K000000002e5";
+};
+
+        
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';
+
+        embedded_svc.init(
+            'https://thomsonreutersglis2e.my.salesforce.com',
+            'https://thomsonreuterss2elatam.secure.force.com/LiveAgentGSICustServiceEnd2',
+            gslbBaseURL,
+            '00D30000000pLSL',
+            'ESC_GSI_CommissionChatSnapIn',
+            {
+                baseLiveAgentContentURL: 'https://c.la3-c2-ph2.salesforceliveagent.com/content',
+                deploymentId: '5724O000000k9iP',
+                buttonId: '5734O000000k9ij',
+                baseLiveAgentURL: 'https://d.la3-c2-ph2.salesforceliveagent.com/chat',
+                eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I4O0000008OIZUA2_1723fc70361',
+                isOfflineSupportEnabled: false
+            }
+        );
+    };
+
+    if (!window.embedded_svc) {
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://thomsonreutersglis2e.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+        s.onload = function() {
+            initESW(null);
+        };
+        document.body.appendChild(s);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+</apex:page>

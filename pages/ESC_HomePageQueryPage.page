@@ -1,0 +1,33 @@
+<apex:page standardController="ESC_HomePageQuery__c" extensions="ESC_HomePageQueryController">
+
+    <apex:form >
+        <apex:pageMessages id="pm"></apex:pageMessages>
+        <apex:pageBlock title="HomePageQuery New" mode="Edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save" action="{!save}" />
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection title="Information">
+
+                <apex:repeat value="{!fields}" var="f">
+                    <apex:inputField rendered="{! if(OR(f.fieldPath == 'ESC_Profiles__c',f.fieldPath == 'ESC_Sequence__c',f.fieldPath == 'ESC_PushTopicName__c'),false,true)}" value="{!ehqr[f.fieldPath]}" required="{!OR(f.required, f.dbrequired)}"
+                    />
+                </apex:repeat>
+                <!--
+              <apex:selectList value="{!selectedPTName}"  id="ptNames" label="Pushtopic" size="1"> 
+                    <apex:selectOptions value="{!ptnameList}" />  
+                </apex:selectList>
+              <apex:pageblockSectionItem HelpText="Use Ctrl+Click to select multiple values">
+                <apex:outputLabel value="Applicable Profiles"/>
+                <apex:selectList value="{!selectedProfileList}" multiselect="true" id="profileNames" label="Applicable Profiles" size="5"> 
+                  <apex:selectOptions value="{!profileList}" />  
+                </apex:selectList>
+               
+                </apex:pageblockSectionItem>
+ -->
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+    </apex:form>
+
+</apex:page>

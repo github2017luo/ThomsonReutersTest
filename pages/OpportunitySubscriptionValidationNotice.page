@@ -1,0 +1,8 @@
+<apex:page standardcontroller="Opportunity" Extensions="OpportunityValidationUtils" action="{!validatesub}">
+    <apex:form >
+    <apex:pagemessages id="msgs"></apex:pagemessages> 
+    <apex:inputHidden value="{!opportunity.Expiration_Date__c}"/><br/>
+    <apex:inputHidden value="{!opportunity.Expected_Revenue_Date__c}"/><br/> 
+    <apex:inputHidden value="{!opp.Validation_Notice__c}"/>  
+    </apex:form>
+</apex:page>

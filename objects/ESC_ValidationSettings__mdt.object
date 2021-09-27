@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This is used to set the different criterias and validation error messages for the objects to handle validation errors. Created as part of Core Sprint3</description>
+    <fields>
+        <fullName>Custom_Label__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Custom Label</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Excluded_Fields__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Excluded Fields</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Queue_Name__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Queue Name</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ExcludeProfileName__c</fullName>
+        <description>Profile names will be ; seperated values in this field</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>ExcludeProfileName</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>FieldApiName__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>FieldApiName</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Field_Value__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Field Value</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>IncludeProfileName__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>IncludeProfileName</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MandatoryFieldApiNames__c</fullName>
+        <description>All Mandatory fields will be added in this seperated by ;</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>MandatoryFieldApiNames</label>
+        <length>5000</length>
+        <type>LongTextArea</type>
+        <visibleLines>2</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Object__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Object</label>
+        <required>true</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Case</fullName>
+                    <default>true</default>
+                    <label>Case</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Recordtype__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Recordtype</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Incident</fullName>
+                    <default>true</default>
+                    <label>Incident</label>
+                </value>
+                <value>
+                    <fullName>Enhancement Request</fullName>
+                    <default>false</default>
+                    <label>Enhancement Request</label>
+                </value>
+                <value>
+                    <fullName>Feedback</fullName>
+                    <default>false</default>
+                    <label>Feedback</label>
+                </value>
+                <value>
+                    <fullName>Enquiry</fullName>
+                    <default>false</default>
+                    <label>Enquiry</label>
+                </value>
+                <value>
+                    <fullName>Request for Service</fullName>
+                    <default>false</default>
+                    <label>Request for Service</label>
+                </value>
+                <value>
+                    <fullName>Hot Topic</fullName>
+                    <default>false</default>
+                    <label>Hot Topic</label>
+                </value>
+                <value>
+                    <fullName>Request for Action</fullName>
+                    <default>false</default>
+                    <label>Request for Action</label>
+                </value>
+                <value>
+                    <fullName>Case Intake</fullName>
+                    <default>false</default>
+                    <label>Case Intake</label>
+                </value>
+                <value>
+                    <fullName>Legal Content</fullName>
+                    <default>false</default>
+                    <label>Legal Content</label>
+                </value>
+                <value>
+                    <fullName>Tech Support</fullName>
+                    <default>false</default>
+                    <label>Tech Support</label>
+                </value>
+                <value>
+                    <fullName>ESC Customer Community</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>ESC Customer Community</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>ValidationSettings</label>
+    <pluralLabel>ValidationSettings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

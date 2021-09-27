@@ -1,0 +1,30 @@
+<template>
+          <div if:true={data} >
+            <lightning-card title="LiveNote License Code details" 
+                            icon-name="standard:record">
+                  <div style="height:350px">
+                <lightning-datatable  data={data} 
+                                columns={columns} 
+                                key-field="Id" 
+                                id="table_id"
+                                hide-checkbox-column="true"
+                >
+                </lightning-datatable>
+              </div>
+              </lightning-card>
+          </div>
+          <lightning-card>
+          <div if:true={errorMsg} >
+              <p style="color: red;">{errorMsg}</p>
+          </div>
+          <div class="demo-only" style="height:6rem" if:true={displaySpinner}>
+               <div class="slds-spinner_container">
+                 <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                   <span class="slds-assistive-text">Loading</span>
+                   <div class="slds-spinner__dot-a"></div>
+                   <div class="slds-spinner__dot-b"></div>
+                 </div>
+               </div>
+          </div>
+        </lightning-card>
+</template>

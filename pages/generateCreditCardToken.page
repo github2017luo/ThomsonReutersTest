@@ -1,0 +1,79 @@
+<apex:page standardController="Quote" extensions="generateCCTokenController" rendered="{!OR(userProfile == 'LatAm User' ,userProfile == 'Partner Portal User',userProfile == 'System Administrator')}" >
+    <script type="text/javascript">
+    function checkIsEmpty(){
+        var creditNumber = document.getElementById("{!$Component.Form1.pgblkEdit.pgblksecEdit.pgblksecItemCardNumber.creditCardNumber}");
+        var expirationDate = document.getElementById("{!$Component.Form1.pgblkEdit.pgblksecEdit.expirtnDateSec.expirtnDate}");
+        var cardValue= document.getElementById("{!$Component.Form1.pgblkEdit.pgblksecEdit.cardTypeSec.cardType}");
+            if(creditNumber.value==null || creditNumber.value==''){
+                alert('Please Enter Credit Card Number');
+                creditNumber.focus();
+                return false;
+            }else if(expirationDate.value == null || expirationDate.value=='' ){
+                alert('Please Enter Expiration Date');
+                expirationDate.focus();
+                return false;
+            }else if (cardValue.value == null || cardValue.value==''){
+                alert('Please Enter Card Type');
+                cardValue.focus();
+                return false;
+            }
+            else{
+                    generateToken();
+                    return false;
+            }
+    }
+    </script>
+    <apex:form id="Form1" >
+<!--   <div style="width: 350px;height: 20px;padding-left: 170px;"> -->
+    <apex:pagemessages />
+<!--    </div> -->
+        <apex:actionStatus id="ProcessingStatus">
+            <apex:facet name="start">
+                <div><img class="waitingImage" src="/img/loading.gif" title="Processing...Please Wait..."/>Processing...Please Wait...</div>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:pageBlock mode="mainDetail" id="pgblkMain" rendered="{!NOT(showInputFields)}">
+            <apex:pageBlockSection columns="1">
+                 <apex:pageBlockSectionItem >
+                      <apex:outputLabel for="CreditCardGeneration" value="{!$Label.Generate_Credit_Card_Token}"/>
+                      <apex:commandLink id="btnSave" value="Initiate" action="{!refreshPage}" reRender="Form1" status="ProcessingStatus" style="color:blue; font-weight:bold"/>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+              <apex:pageBlockSection columns="2" id="pgblksecMain" rendered="{!IF(oQuote.Credit_Card_Token__c!= null , true , false)}">
+                <apex:outputField value="{!oQuote.Credit_Card_Token__c}" />
+                 <apex:outputField value="{!oQuote.Token_Generated_Date__c}" />
+                 <apex:outputField value="{!oQuote.CC_Expiration_Date__c}"/>
+                  <apex:outputField value="{!oQuote.Card_Type__c}"/>
+                  </apex:pageBlockSection>           
+        </apex:pageBlock>
+        <apex:pageBlock mode="mainDetail" id="pgblkEdit" rendered="{!showInputFields}" >
+           <apex:actionFunction name="generateToken" action="{!generateToken}" status="ProcessingStatus" rerender="Form1"/>
+           <apex:pageBlockButtons location="top" style="padding-left: 125px;">
+                 <apex:commandButton value="   Generate Token   "  onclick="return checkIsEmpty();" /> 
+                <apex:commandButton value="   Cancel   " Action="{!clear}"   /> 
+             </apex:pageBlockButtons> 
+            <apex:pageBlockSection columns="3" id="pgblksecEdit">
+                <apex:pageBlockSectionItem id="pgblksecItemCardNumber">
+                    <apex:outputLabel value="Credit Card Number" />
+                    <apex:panelGroup >
+                    <span style="background-color:red;padding: 3px 0px;">&nbsp;</span><apex:inputText value="{!creditCardNumber}" id="creditCardNumber"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="expirtnDateSec">
+                    <apex:outputLabel value="Expiration Date" />
+                    <apex:panelGroup >
+                        <span style="background-color:red;padding: 3px 0px;">&nbsp;</span>&nbsp;
+                        <apex:inputField value="{!oQuote.CC_Expiration_Date__c}" id="expirtnDate" />
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="cardTypeSec"> 
+                    <apex:outputLabel value="Card Type" />
+                    <apex:panelGroup >
+                        <span style="background-color:red;padding: 3px 0px;">&nbsp;</span> 
+                        <apex:inputField value="{!oQuote.Card_Type__c}" id="cardType" />
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>           
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

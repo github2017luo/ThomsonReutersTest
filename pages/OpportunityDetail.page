@@ -1,0 +1,179 @@
+<!--
+
+Name               Description                                                                                        Date
+Vaishali Gayatri   JIRA NO: Enabling Lightning as part of Sales Lightning Project..just added lightning stylesheet    31-Jan-2019
+-->
+<apex:page id="pageOpportunity" standardController="Opportunity" extensions="OpportunityDetailController" title="{!Opportunity.Name}" action="{!onPageLoad}" lightningStylesheets="true" >
+    <!-- **To remove the link go to top appearing in middle **-->
+    <apex:includeScript value="/support/console/34.0/integration.js"/>
+    <style>
+    .fewerMore { display: none;}
+    </style>
+    <script type="text/javascript">
+        function reLoadPage()
+        {
+        location.reload();
+        }
+    </script>
+    <script>
+    /* [SFD-16] Rajashree added the below script */
+      var pageLoad = window.onload;
+      window.onload = function() {
+                if (pageLoad) {
+                        pageLoad();
+                }
+              OpenSubtab_IP();
+         };
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('{!JSENCODE(Opportunity.name)}');
+        }; 
+        </script>
+    <!--<apex:pageMessages id="messagesGlobal" /> -->
+    <!--apex:pageBlock id="blockSalesTeam" title="Sales Team"> 
+        
+            <apex:pageBlockButtons location="Top" >
+                <apex:commandButton value="Add" action="{!addSalesTeam}" rendered="{!bEditAccess}"/>
+                <apex:commandButton value="Delete All" rendered="{!And(bEditAccess,listSalesTeamMember.size!=0)}" onclick="var c = window.confirm('Are you sure?');if(c){deleteAllRow();}" reRender="none"/>
+                
+                <!--  **************  ADD TO SALES TEAM button ********************* -->
+                
+                <!--apex:commandButton value="Add to Sales Team"  action="{!addToSalesTeam}"  onComplete="reLoadPage()" />
+               
+           </apex:pageBlockButtons>    
+         
+            <apex:outputPanel id="panelSalesTeam"></apex:outputPanel-->
+            
+            <!-- ** Pageblock table will display max of 250 records in detail view ** -->
+            <!--apex:pageBlockTable id="tableSalesTeam"
+            var="Team"
+            value="{!listSalesTeamMember}" 
+            rows="{!rowsToDisplay}" rendered="{!listSalesTeamMember.size!=0}">
+                <apex:column headerValue="Action" rendered="{!bEditAccess}">
+                    <apex:commandLink style="color: #015BA7;text-decoration: none" onclick="var c = window.confirm('Are you sure?');if(c){deleteRow('{!Team.id}');}" reRender="none" rendered="{!Team.UserId<>opportunity.ownerid}">
+                        Del                        
+                    </apex:commandLink>
+                </apex:column>
+                <apex:column headervalue="Team Member">
+                    <apex:outputLink value="/{!Team.UserId}">{!Team.user.Name}</apex:outputLink> 
+                </apex:column>
+                <apex:column headervalue="Team Role" value="{!Team.User.Rep_Type_Description__c}" />
+                <apex:column headervalue="Email" value="{!Team.User.Email}" />
+                <apex:column headervalue="Phone" value="{!Team.User.Phone}" />
+            </apex:pageBlockTable-->
+            
+            <!-- **To display show more and Go to list in detail view** --> 
+            <!--apex:outputpanel rendered="{!(listSalesTeamMember.size)>RowsToDisplay}">
+                <br/>
+                <apex:commandLink action="{!showMore}" 
+                rerender="blockSalesTeam"
+                rendered="{!RowsToDisplay<=80}">
+                    Show More &raquo;
+                </apex:commandlink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <apex:commandLink action="{!goToList}">
+                    Go To List ({!listSalesTeamMember.size }{!if(listSalesTeamMember.size=250,'+','')})&raquo;
+                </apex:commandlink>
+            </apex:outputpanel-->
+            
+            <!--apex:outputPanel layout="block"
+            rendered="{!listSalesTeamMember.size=0}"
+            style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel-->
+            
+        <!--/apex:pageBlock-->
+    <apex:pageMessage summary="{!$Label.ProspectCreationFailed}"  severity="warning" strength="1" id="custerror" rendered="{!isCustomerError}"/>
+    <apex:pageMessage summary="{!$Label.QuoteCreationFailed}"  severity="warning" strength="1" id="quoteerror" rendered="{!isQuoteError}"/>
+    <apex:pageMessage summary="{!$Label.Insufficient_Priviliges}"   severity="info" strength="1" id="portalerror" rendered="{!NOT(showPage)}"/>
+    
+	<apex:pageMessages id="pmsg"></apex:pageMessages>
+	<apex:detail id="pageDetail" subject="{!opportunity.Id}" inlineEdit="true" showChatter="true" relatedList="true" relatedListHover="true" rendered="{!showPage}" oncomplete="location.reload()"/>
+	
+	<apex:form id="formOpportunityDetail" rendered="{!showPage}">
+        <apex:actionFunction action="{!deleteAllRow}" name="deleteAllRow"/>
+        <apex:actionFunction action="{!deleteRow}" name="deleteRow" reRender="blockSalesTeam,messagesGlobal">
+            <apex:param name="firstParam" value="" assignTo="{!delRowId}"/>                
+        </apex:actionFunction> 
+        <apex:inputHidden value="{!opportunity.ownerid}"/>
+        <!-- cases related list (with new case button)-->        
+        <!--apex:pageBlock mode="" id="blockCases" title="{!$Label.Cases}" >
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="{!$Label.New_Case}" rendered="{!NOT(isLatAmSalesOrg )}" action="/500/e?retURL=%2F{!Opportunity.Id}&def_account_id={!Opportunity.AccountId}&{!$Setup.FieldId__c.OpportunityOnCase__c}_lkid={!Opportunity.Id}&{!$Setup.FieldId__c.OpportunityOnCase__c}={!Opportunity.Name}" />
+                <apex:commandButton value="{!$Label.New_Case}" rendered="{!isLatAmSalesOrg }" action="/500/e?retURL=%2F{!Opportunity.Id}&def_account_id={!Opportunity.AccountId}&{!$Setup.FieldId__c.OpportunityOnCase__c}_lkid={!Opportunity.Id}&{!$Setup.FieldId__c.OpportunityOnCase__c}={!Opportunity.Name}&{!$Setup.FieldId__c.SalesOrgOnCase__c}={!oSalesOrg}" />
+            </apex:pageBlockButtons>            
+            <apex:pageBlockTable value="{!listCases}" var="oCase" rows="{!CaseRowsToDisplay}" rendered="{!listCases.size!=0}">>
+                <apex:column >
+                    <apex:facet name="header">Action</apex:facet>
+                    <apex:outputlink value="/{!oCase.Id}/e?retURL=%2F{!Opportunity.Id}">Edit</apex:outputlink>
+                </apex:column>
+                <apex:column headerValue="Case">
+                    <apex:outputlink value="/{!oCase.Id}">{!oCase.CaseNumber}</apex:outputlink>
+                </apex:column>
+                
+                <apex:column headerValue="Opportunity Name" rendered="{!IF($Profile.Name == 'LatAm User' || $Profile.Name == 'System Administrator' , true, false)}"
+>
+                    <apex:outputlink value="/{!oCase.Opportunity__r.Id}" >{!oCase.Opportunity__r.Name}</apex:outputlink>
+                </apex:column>
+                
+                <apex:column headerValue="Contact" value="{!oCase.ContactId}"/>
+                <apex:column headerValue="Subject" value="{!oCase.Subject}"/>
+                <apex:column headerValue="Priority" value="{!oCase.Priority}"/>
+                <apex:column headerValue="CreatedDate" value="{!oCase.CreatedDate}"/>
+                <apex:column headerValue="Status" value="{!oCase.Status}"/>
+                <apex:column headerValue="Owner" value="{!oCase.OwnerId}"/>                
+            </apex:pageBlockTable>
+            
+            <apex:outputpanel rendered="{!(listCases.size)>CaseRowsToDisplay}">
+                <br/>
+                <apex:commandLink action="{!showMoreCases}" 
+                rerender="blockCases"
+                rendered="{!CaseRowsToDisplay<=20}">
+                    Show More &raquo;
+                </apex:commandlink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <apex:outputLink target="_self" value="/500?rlid=RelatedCaseList&id={!Opportunity.Id}">Go To List ({!listCases.size }{!if(listCases.size=50,'+','')})&raquo;</apex:outputLink>
+            </apex:outputpanel>
+            
+            <apex:outputPanel layout="block" rendered="{!listCases.size=0}"
+            style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>
+            
+        </apex:pageBlock>
+        
+        <!-- Strategy related list (with new button)-->        
+        
+        <!--apex:pageBlock mode="" id="blockStrtgy" title="Related Strategies" rendered="{!IsPO}">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="New Strategy" action="/apex/CreateStrategy?oppId={!Opportunity.Id}&accId={!Opportunity.AccountId}" />
+            </apex:pageBlockButtons>            
+            <apex:pageBlockTable value="{!listStrtgy}" var="ostgy" rows="{!StrgyRowsToDisplay}" rendered="{!listStrtgy.size!=0}">
+                <apex:column headerValue="Strategy">
+                    <apex:outputlink value="/{!ostgy.SFDC_Strategy__r.Id}?retURL=%2F{!Opportunity.Id}">{!ostgy.SFDC_Strategy__r.Name}</apex:outputlink>
+                </apex:column>
+                <apex:column headerValue="Account Plan">
+                    <apex:outputlink value="/{!ostgy.SFDC_Strategy__r.SFDC_Acct_Plan__r.Id}">{!ostgy.SFDC_Strategy__r.SFDC_Acct_Plan__r.Name}</apex:outputlink>
+                </apex:column>
+                <apex:column headerValue="Strategy Status" value="{!ostgy.SFDC_Strategy__r.Strategy_Status__c}"/>
+                <apex:column headerValue="Created Date" value="{!ostgy.SFDC_Strategy__r.CreatedDate}"/>                          
+           </apex:pageBlockTable>            
+            <apex:outputpanel rendered="{!(listStrtgy.size)>StrgyRowsToDisplay}">
+                <br/>
+                <apex:commandLink action="{!showMoreStrgy}" 
+                rerender="blockStrtgy"
+                rendered="{!StrgyRowsToDisplay<=80}">
+                    Show More &raquo;
+                </apex:commandlink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <apex:outputLink target="_self" value="/apex/OpportunityRelatedListView?id={!Opportunity.Id}&str=strg">Go To List ({!listStrtgy.size }{!if(listStrtgy.size=250,'+','')})&raquo;</apex:outputLink>
+            </apex:outputpanel>            
+            <apex:outputPanel layout="block" rendered="{!listStrtgy.size=0}"
+            style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>
+        </apex:pageBlock-->    
+    </apex:form>   
+    <!--
+    <apex:outputPanel layout="none" rendered="{!NOT(ISNULL($CurrentPage.parameters.isdtp))}">
+          <apex:includeScript value="/support/console/20.0/integration.js"/>
+    </apex:outputPanel>  
+    -->
+</apex:page>

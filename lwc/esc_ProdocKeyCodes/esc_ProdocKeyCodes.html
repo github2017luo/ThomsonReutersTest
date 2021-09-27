@@ -1,0 +1,42 @@
+<template>
+    <lightning-card title="Prodoc Key Code details" icon-name="standard:partners">
+        
+        <div if:true={errorMsg} >
+            <p style="color: red;">{errorMsg}</p>
+        </div>
+              <div if:true={data1} class="class1">
+                <lightning-datatable    data={data1} 
+                                columns={columns1} 
+                                key-field="Id" 
+                                class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                                id="table_id"
+                                hide-checkbox-column="true"
+                >
+                </lightning-datatable>
+              </div>
+        <div style="height:20px;"></div>
+                <div if:true={data1} class="class2">
+                <lightning-datatable    data={data2} 
+                                columns={columns2} 
+                                key-field="Id" 
+                                class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                                id="table1_id"
+                                hide-checkbox-column="true"
+                >
+                </lightning-datatable>
+              </div>
+          <div>
+              <lightning-card>
+                <div class="demo-only" style="height:6rem" if:true={displaySpinner}>
+               <div class="slds-spinner_container">
+                 <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                   <span class="slds-assistive-text">Loading</span>
+                   <div class="slds-spinner__dot-a"></div>
+                   <div class="slds-spinner__dot-b"></div>
+                 </div>
+               </div>
+             </div>
+            </lightning-card>
+        </div>
+    </lightning-card>  
+</template>

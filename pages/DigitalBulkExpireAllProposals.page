@@ -1,0 +1,18 @@
+<!--
+CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 
+* 2/7/2019   Preetham CN            Enabled lightningstylesheets attribute
+- 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+=================================================================================
+-->
+
+<apex:page standardController="Opportunity" recordSetVar="opportunities" extensions="Digital_BulkExpireAllProposalsController" showHeader="false" action="{!bulkExpireProposals}" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form >
+        <div align="center">
+            <apex:commandButton value="OK" onclick="window.location='/{!opp.id}'; return false;" action="{!bulkExpireProposals}" rendered="{!opp.id!=null}" />
+        </div>
+    </apex:form>
+</apex:page>

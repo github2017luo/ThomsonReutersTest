@@ -1,0 +1,28 @@
+<!-- Author : Akshay Mewada - 11/17/2016
+   ***************************************************************************************************
+   Modification Log:
+   *
+   *    Akshay Mewada, 11/17/2016 - Created APTS_CreateContactFromProposal.
+   *    
+   ***************************************************************************************************
+-->
+<apex:page controller="APTS_CreateContactFtomProposalCtrl" showHeader="true" sidebar="true" tabStyle="Contact" action="{!doAction}" lightningStylesheets="true" >   
+    <apex:sectionHeader title="Contact" subtitle="New Contact"/>
+    <apex:messages />
+    <apex:form >
+        <apex:pageBlock title="New Contact">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save" action="{!doSave}" rendered="{!NOT(isSaving)}"></apex:commandButton>
+                <apex:commandButton value="Cancel" action="{!doCancel}" immediate="true"></apex:commandButton>
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection columns="1">
+                <apex:inputField value="{!contactObj.Salutation}"/>
+                <apex:inputField value="{!contactObj.FirstName}"/>
+                <apex:inputField value="{!contactObj.LastName}"/>
+                <apex:inputField value="{!contactObj.Email}"/>
+                <apex:inputField value="{!contactObj.AccountId}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

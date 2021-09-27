@@ -1,0 +1,17 @@
+<apex:component controller="TrainingEventReminderController" access="global">
+You will be covering<br/>
+    <apex:attribute name="teId" assignTo="{! trainingEventId}" type="ID" description="It is the training event Id"/>
+    <apex:repeat value="{! products}" var="prod">
+        <apex:outputText value="{! prod.sNo}"/>
+        <apex:outputText value="{! prod.product.LCRM_Product__r.Name}"/>
+        <br/>
+    </apex:repeat>
+with {! ownerName}<br/><br/>
+
+The session will be covering the following learning objectives:<br/>
+    <apex:repeat value="{! learningObjectives}" var="obj">
+        <apex:outputText value="{! obj.sNo}"/>
+        <apex:outputText value="{! obj.lObj}"/>
+        <br/>
+    </apex:repeat>
+</apex:component>

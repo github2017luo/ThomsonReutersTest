@@ -1,0 +1,18 @@
+<!--
+ - This page is used from a button the Digital Subscription list view 
+ - This process is used by support to manage the Bypass Automation flag in bulk
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-07-31   Brenda Shields          Created  recordSetVar="digitalSubs"
+ - ==================================================================================================================================   
+-->
+<apex:page standardController="Product_Account_Detail__c" recordSetVar="Product_Account_Detail__c" extensions="Digital_DS_Mass_Update_Controller" showHeader="false" action="{!updateDSRecords}" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form >
+        <div align="center">
+            <apex:commandButton value="OK" action="{!returnToDSView}" rendered="{!not(isReturn)}"/>
+        </div> 
+       </apex:form>
+</apex:page>

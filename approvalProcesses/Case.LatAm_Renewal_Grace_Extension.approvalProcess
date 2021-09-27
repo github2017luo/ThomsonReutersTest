@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <submitter>Brazil_Sales_Admin</submitter>
+        <type>group</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>Dir_Comercial_Cono_Sur</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Account</field>
+        <field>Opportunity__c</field>
+        <field>Owner</field>
+        <field>Quote__c</field>
+        <field>CaseNumber</field>
+        <field>Grace_Period_Expiration_Date__c</field>
+        <field>Extended_Grace_Period__c</field>
+        <field>Opportunity_Renewal_Amount__c</field>
+        <field>Description</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <type>userHierarchyField</type>
+            </approver>
+        </assignedApprover>
+        <label>LatAm_Renewal_Grace_Extension_Mgr_App_Step</label>
+        <name>LatAm_Renewal_Grace_Extension_Mgr_App_Step</name>
+    </approvalStep>
+    <emailTemplate>LATAM_Mail/Grace_Period_Approval_Request</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND(OR($Profile.Name  = &apos;LatAm User&apos;,$Profile.Name  = &apos;System Administrator&apos;), 
+    (OR
+        ( 
+         ISPICKVAL($User.Sales_Org__c,&apos;DFCL&apos; ),
+         ISPICKVAL($User.Sales_Org__c,&apos;BEJE&apos;),
+         ISPICKVAL($User.Sales_Org__c,&apos;DFCL&apos;), 
+         ISPICKVAL($User.Sales_Org__c,&apos;LLEY&apos;), 
+         ISPICKVAL($User.Sales_Org__c,&apos;LLPA&apos;), 
+         ISPICKVAL($User.Sales_Org__c,&apos;LLUR&apos;), 
+         ISPICKVAL($User.Sales_Org__c,&apos;LPCL&apos;),
+         ISPICKVAL($User.Sales_Org__c,&apos;LPTC&apos;),
+         ISPICKVAL($User.Sales_Org__c,&apos;RV01&apos;), 
+         ISPICKVAL($User.Sales_Org__c,&apos;TSL&apos;))
+    ),
+    ISPICKVAL(Reason__c ,&apos;Grace Period Extension&apos; ),
+    ISPICKVAL( Origin, &apos;Created by System&apos; ),
+    ISNULL(Opportunity__c) = False ,
+    ISNULL(Quote__c) = False ,
+    Quote__r.Primary_Quote__c  = True ,
+    Opportunity__c= Quote__r.OpportunityId ,
+    Opportunity__r.Renewal_Flag__c = True,
+    NOT(ISPICKVAL( Approval_Status__c ,&apos;Approved&apos;)),
+    NOT(ISPICKVAL( Approval_Status__c ,&apos;Rejected&apos;)),
+    NOT(ISPICKVAL( Status ,&apos;Closed&apos;))
+    )</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Assign_to_OP_Queue</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Send_Email_To_Opportunity_Owner</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>update_Approval_Status_to_App</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Send_Email_to_Opportunity_Owner_rejection</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Update_Approval_Status_to_Rej</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Status_to_Closed</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Update_Approval_Status_to_Pen</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Status_to_Active</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>LatAm_Renewal_Grace_Extension</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>true</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>7</processOrder>
+    <recallActions>
+        <action>
+            <name>Recalled_Update_Approval_Status_to_Rec</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Recalled_Update_Status_to_Clo</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>send_Email_to_Case_Owner_Manger</name>
+            <type>Alert</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

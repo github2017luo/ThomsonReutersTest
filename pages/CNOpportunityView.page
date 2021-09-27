@@ -1,0 +1,1145 @@
+<!--
+* {Purpose} - Displays colleagues & contacts relationship information for any company. This VF page
+*       can be placed directly on any account page layout to make it functional.
+*
+* @author   Shah Kadirmohideen
+* @version  2011-11-10 
+*/
+    
+/**  
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                    Description
+* 2011-11-10    Shah Kadirmohideen      Created      
+* 2011-11-22    Mike Eaton              Added comment block and pageBlockSection
+* 2012-01-02    Shah Kadirmohideen      Renamed variable 'CNRelationship.toContact' as 'CNRelationship.contact'
+* 2012-01-09    Shah Kadirmohideen      Fixed issue - pipe symbol displayed on inner relationship table even though there were no data following that symbol.
+* 2012-01-20    Shah Kadirmohideen      Incorporated enhanced list (go to list) functionality related changes. 
+* 2012-07-12    Shah Kadirmohideen      Added support for calendar icon display
+* 2012-10-05    Shah Kadirmohideen      Added escape parameter to apex:pageMessages tag      
+* 2013-09-08    Mike Eaton              [CR-069] - Added support for Sensitive Data usage
+* 2014-08-27    David Sarbello          Added logEntry script which is specific to using this controller (doesn't work in CN_JS)
+*                                       Added additional remoting calls 
+* 2014-12-09    Mike Eaton              Adjustments to columns
+* 2014-12-10    Mike Eaton              Removed outputLink mailTo on drilldown contacts related to colleague if email is missing
+* 2016-09-15	Denis Mitropolsky		Fixed issue with empty lists (added additional check if relationships list is not empty)
+* =============================================================================
+--> 
+<apex:page standardController="Opportunity" extensions="CNOpportunityRelationshipViewController" showHeader="{!IF(IsEnhancedList, true, false)}"  sidebar="{!IF(IsEnhancedList, true, false)}" id="thePage" >
+<apex:stylesheet value="{!$Resource.CN_CSS}"/> 
+<style>
+.strengthItem.green.selected {
+    background-color: #65924c;
+    border: 1px solid #50743c;
+}
+.strengthItem.green {
+    background-color: #c9dacf;
+    border: 1px solid #8cb873;
+}
+.strengthItem {
+    float: left;
+    width: 8px;
+    height: 8px;
+    margin-right: 1px;
+}
+.strengthItem.blue.selected {
+    background-color: #369;
+    border: 1px solid #039;
+}
+.strengthItem.blue {
+    background-color: #e8e5f7;
+    border: 1px solid #69c;
+}
+.strengthItem {
+    float: left;
+    width: 8px;
+    height: 8px;
+    margin-right: 1px;
+}
+.tooltip-inner {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ed7b21;
+}
+.tooltip.bottom .tooltip-arrow {
+    top: 0;
+    left: 50%;
+    margin-top: -4px;
+    margin-left: -5px;
+    border-width: 0 5px 5px;
+    border-bottom-color: #ed7b21;
+}
+.tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+.tooltip.bottom {
+    margin-top: 4px;
+}
+.fade.in {
+    opacity: 1;
+}
+.tooltip {
+    position: absolute;
+    z-index: 1030;
+    display: block;
+    visibility: visible;
+    font-size: 11px!important;
+    font-weight: normal;
+    border: 1px,#bf631a;
+    line-height: normal;
+    -webkit-box-shadow: 2px 2px 1px 0 #6e6e6e;
+    box-shadow: 2px 2px 1px 0 #6e6e6e;
+}
+.fade {
+    opacity: 0;
+    -webkit-transition: opacity .15s linear;
+    -moz-transition: opacity .15s linear;
+    -o-transition: opacity .15s linear;
+    transition: opacity .15s linear;
+}
+.doubleArrowRightDark {
+    background: url("{!URLFOR($Resource.BDP_Images,'double_arrow_right_dark.png')}") no-repeat center;
+    border-radius: 50%;
+  width:  16px;
+  height: 16px; 
+  background-color: #EAEAEA;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.doubleArrowRightDark.hover {
+    background: url("{!URLFOR($Resource.BDP_Images,'double_arrow_right_dark.png')}") no-repeat center;
+    border-radius: 50%;
+  width: 16px;
+  height: 16px; 
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.doubleArrowRightDark.disabled {
+    background: url("{!URLFOR($Resource.BDP_Images,'double_arrow_right_dark.png')}") no-repeat center;
+    border-radius: 50%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+  width: 16px;
+  height: 16px; 
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.arrowLineRightDark {
+    background: url("{!URLFOR($Resource.BDP_Images,'arrow_line_right_dark.png')}") no-repeat center; 16px; height: 16px;
+    border-radius: 50%;
+  width: 16px;
+  height: 16px; 
+  background-color: #EAEAEA;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.arrowLineRightDark.hover {
+    background: url("{!URLFOR($Resource.BDP_Images,'arrow_line_right_dark.png')}") no-repeat center; 16px; height: 16px;
+    border-radius: 50%;    
+  width: 16px;
+  height: 16x;  
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.arrowLineRightDark.disabled {
+    background: url("{!URLFOR($Resource.BDP_Images,'arrow_line_right_dark.png')}") no-repeat center; 16px; height: 16px;
+    border-radius: 50%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+  width: 16px;
+  height: 16px;  
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.doubleArrowLeftDark {
+    background: url("{!URLFOR($Resource.BDP_Images,'double_arrow_left_dark.png')}") no-repeat center;
+    border-radius: 50%;
+  width: 16px;
+  height: 16px;  
+  background-color: #EAEAEA;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.doubleArrowLeftDark.hover {
+    background: url("{!URLFOR($Resource.BDP_Images,'double_arrow_left_dark.png')}") no-repeat center;
+    border-radius: 50%;
+  width: 16px;
+  height: 16px;  
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.doubleArrowLeftDark.disabled {
+    background: url("{!URLFOR($Resource.BDP_Images,'double_arrow_left_dark.png')}") no-repeat center;
+    border-radius: 50%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+  width: 16px;
+  height: 16px;  
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.arrowLineLeftDark {
+    background: url("{!URLFOR($Resource.BDP_Images,'arrow_line_left_dark.png')}") no-repeat center;
+    border-radius: 50%;
+  width: 16px;
+  height: 16px; 
+  background-color: #EAEAEA;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.arrowLineLeftDark.hover {
+    background: url("{!URLFOR($Resource.BDP_Images,'arrow_line_left_dark.png')}") no-repeat center;
+    border-radius: 50%;
+  width: 16px;
+  height: 16px;  
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.arrowLineLeftDark.disabled {
+    background: url("{!URLFOR($Resource.BDP_Images,'arrow_line_left_dark.png')}") no-repeat center;
+    border-radius: 50%;
+    opacity: 0.4;
+    filter: alpha(opacity=40);
+  width: 16px;
+  height: 16px;  
+  background-color: #CCCCCC;
+  color:#000000;
+  border:0px #A4A4A4 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:9px;
+  font-family:arial;
+  font-weight:bold;
+}
+.resultDetails .resultsSection .pagingDiv {
+    background: -webkit-gradient(linear,0% 0,0% 100%,from(#ebebeb),to(#fff));
+    background: -webkit-linear-gradient(top,#ebebeb,#fff);
+    border-top: 1px solid #aaa;
+    border-bottom: 2px solid #aaa;
+    height: 25px;
+    font-family: "Knowledge",Helvetica,Sans-Serif;
+    font-size: 12px;
+    color: #666;
+    text-decoration: none;
+}
+.circle {
+  border-radius: 50%;
+  width: 16px;
+  height: 16px; 
+  background-color: #EAEAEA;
+  color:##1A1A1A;
+  border:0px #666666 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:3px;
+  font-family:arial;
+  font-weight:bold;  
+  @include vertical-align;
+  text-align:center;
+}
+.circle.hover {
+  border-radius: 50%;
+  width: 16px;
+  height: 16px; 
+  background-color: #CCCCCC;
+  color:#0000000;
+  border:0px #666666 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:3px;
+  font-family:arial;
+  font-weight:bold;  
+  @include vertical-align;
+  text-align:center;
+}
+.circle.selected {
+  border-radius: 50%;
+ width: 16px;
+  height: 16px;  
+  background-color: #CC6600;
+  color:#ffffff;
+  border:0px #666666 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:3px;
+  font-family:arial;
+  font-weight:bold;  
+  @include vertical-align;
+  text-align:center;
+}
+.circle.selected.hover {
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;  
+  background-color: #B24700;
+  color:#ffffff;
+  border:0px #666666 solid; 
+  display:inline-block;
+  padding:2px 2px 2px 2px ;
+  margin:3px;
+  font-family:arial;
+  font-weight:bold;  
+  @include vertical-align;
+  text-align:center;
+}
+.vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.dataCell   {
+    border-width: 0px; 
+    border-style: tranparent; 
+    border-color:#B4B0B0;
+    pointer-events:auto;
+}
+.dataRow.odd {
+   pointer-events:none;
+}
+.pillButtonRight{
+
+/*basic styles*/ 
+width: 60px; 
+height: 25px;
+color: #1797c0; 
+background-color: #F3F3F3; 
+text-align: top; 
+font-size: 11px;
+font 
+/*gradient styles*/ 
+background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F3F3F3), to(#F9F9F9)); 
+background: -moz-linear-gradient(19% 75% 90deg,#F3F3F3, #F9F9F9);
+ /*border styles*/ 
+ border-left: solid 1px #C5C5C5; 
+ border-top: solid 1px #C5C5C5; 
+ border-right: solid 1px #C5C5C5; 
+ border-bottom: solid 1px #C5C5C5; 
+ //-moz-border-radius: 12px; 
+ //-webkit-border-radius: 12px; 
+ //border-radius: 12px; 
+ border-top-left-radius:12px;
+ border-top-right-radius:0px;
+ border-bottom-right-radius:0px;
+ border-bottom-left-radius:12px;
+ -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E2E2E2), to(#B1B1B1))
+ cursor: pointer; 
+ }
+ .pillButtonLeft{
+
+/*basic styles*/ 
+width: 60px; 
+height: 25px;
+color: #1797c0; 
+background-color: #F3F3F3; 
+text-align: top; 
+font-size: 11px;
+font 
+/*gradient styles*/ 
+background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F3F3F3), to(#F9F9F9)); 
+background: -moz-linear-gradient(19% 75% 90deg,#F3F3F3, #F9F9F9);
+ /*border styles*/ 
+ border-left: solid 1px #C5C5C5; 
+ border-top: solid 1px #C5C5C5; 
+ border-right: solid 1px #C5C5C5; 
+ border-bottom: solid 1px #C5C5C5; 
+ //-moz-border-radius: 12px; 
+ //-webkit-border-radius: 12px; 
+ //border-radius: 12px; 
+ border-top-left-radius:0px;
+ border-top-right-radius:12px;
+ border-bottom-right-radius:12px;
+ border-bottom-left-radius:0px;
+ -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E2E2E2), to(#B1B1B1))
+ cursor: pointer; 
+ }
+ .pillButton.hover{
+    background-color: #767676; 
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CBCBCB), to(#DCDCDC)); 
+    background: -moz-linear-gradient(19% 75% 90deg,#CBCBCB, #DCDCDC);
+    color: #0099CC; 
+    
+ }
+ .customPopup{
+    background-color: #ffff99;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #ff0000;
+    border-radius: 6px;
+    left: 50%;
+    padding:10px;
+    position: absolute;
+    z-index: 9999;
+    /* These are the 3 css properties you will need to tweak so the pop 
+    up displays in the center of the screen. First set the width. Then set 
+    margin-left to negative half of what the width is. You can also add 
+    the height property for a fixed size pop up.*/
+    width: 300px;
+    margin-left: -250px;
+    top:100px;
+}
+</style>
+
+<apex:includeScript value="{!$Resource.CN_JS}"/>
+
+<script language="javascript">
+
+var previousOnload = window.onload;
+window.onload = function() {
+    if (previousOnload) { 
+         previousOnload();
+    }
+    resizeWindow('Colleague');
+    resizeWindow('Contact');
+}
+ 
+
+ function removeHeaders(){
+    // due to what seems to be a bug in visualforce the column headers do not dissappear when the column is set to not rendered
+    //even though the data in the rows does. 
+    //it appears related to the hidden rows as the inside tables work as expected so to remove the column visually completely 
+    //we need to do this everytime the table is rendered
+    //need to go backwards through children as the location will change depending on how many columns are hidden
+    //alert('js fired');
+    
+    var el = document.getElementById('thePage:theForm:theBlock:contTableId');
+    //alert(el);
+    if(el!=null){        
+    //alert(el.children[1].children[0].children.length);
+            if({!ShowContactRecency}==false){               
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Recency')!=-1){
+                        el.children[1].children[0].children[x].outerHTML = '';//recency
+                    }
+                }
+            } 
+            if({!ShowContactSource}==false){
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Source')!=-1){
+                        el.children[1].children[0].children[x].outerHTML = '';
+                    } //source
+                }
+            }
+            if({!ShowContactEmailData}==false){
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Email Address')!=-1){  
+                        el.children[1].children[0].children[x].outerHTML = '';
+                    } //email
+                }
+            }
+            if({!ShowContactPhoneData}==false){
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Phone')!=-1){
+                        el.children[1].children[0].children[x].outerHTML = '';
+                    } //phone
+                }
+            }
+            if({!ShowContactTitle}==false){
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Title')!=-1){
+                        el.children[1].children[0].children[x].outerHTML = '';
+                    } //title
+                }
+            }
+            if({!ShowContactRelationshipStrength}==false){
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Relationship')!=-1){
+                        el.children[1].children[0].children[x].outerHTML = '';
+                    } //strength
+                }
+            }   
+            if({!enableContactActionColumn}==false){
+                for(x=0;x<el.children[1].children[0].children.length;x++){
+                    if(el.children[1].children[0].children[x].outerHTML.indexOf('Action')!=-1){
+                        el.children[1].children[0].children[x].outerHTML = '';
+                    } //action  
+                }    
+            }
+    }
+    var el1 = document.getElementById('thePage:theForm:theBlock:relTableId');
+    if(el1!=null){       
+            if({!ShowColleagueRecency}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Recency')!=-1){
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //recency
+                }
+            }
+            if({!ShowColleagueSource}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Source')!=-1){
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //source
+                }
+            }
+            if({!ShowColleagueLocation}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Location')!=-1){
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //location
+                }
+            }
+            if({!ShowColleagueEmailData}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Email')!=-1){
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //email
+                }
+            }
+            if({!ShowColleaguePhoneData}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Phone')!=-1){
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //phone
+                }
+            }
+            if({!ShowColleagueTitle}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Title')!=-1){
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //title
+                }
+            }
+            if({!ShowColleagueRelationshipStrength}==false){
+                for(x=0;x<el1.children[1].children[0].children.length;x++){
+                    if(el1.children[1].children[0].children[x].outerHTML.indexOf('Relationship')!=-1){      
+                        el1.children[1].children[0].children[x].outerHTML = '';
+                    } //strength
+                }
+            }        
+    } 
+    
+}
+//set cookie
+if('{!cookie}'!=''){
+    document.cookie="Cookie=.MVCAUTH={!cookie}";
+}
+</script>
+
+<apex:outputPanel rendered="{!IsEnhancedList}">
+  <apex:sectionHeader title="Relationships from Business Development Premier" subtitle="{!oAcct.Name}"/>
+  <a href="/{!oAcct.Id}" style="text-decoration: none; color:blue;">Account: {!oAcct.Name}</a>
+  <br/><br/>
+</apex:outputPanel>
+
+
+<apex:form id="theForm">
+<!-- POPUP PANEL -->
+<apex:outputPanel id="popup">
+            <apex:outputPanel styleClass="customPopup" layout="block" rendered="{!displayPopUp}">
+                <div>&nbsp;</div>
+                <apex:image id="theImage" value="{!$Resource.infoico}"/>
+                <div style="align: center;  margin-left: 100px;" > No Search Results</div> <br/><br/><br/>
+                <apex:commandButton value=" Close " action="{!closePopup}" style="margin-left: 130px;" rerender="popup"/>
+            </apex:outputPanel>
+        </apex:outputPanel>
+<!--  -->
+<c:CNDisplayPageLoadingMessage renderPage="{!showPageLoadingMsg && showOAuth==false}" pageLoadingMessage="Loading Colleagues & Contacts from Business Development Premier..." 
+                    vfPageName="CNOpportunityView" recordId="{!Opportunity.Id}" rendered="{!IsEnhancedList==false}"/>
+
+<apex:pageBlock id="theBlock" mode="mainDetail" rendered="{!showPageLoadingMsg==false}">
+<apex:pageMessages escape="false"/>
+
+ 
+<apex:tabPanel tabClass="tabHeaderStyle" contentClass="tabBodyStyle" value="{!sSelectedTab}" id="theTabPanel" rendered="{!errorsFound==false && showOAuth==false}" headerSpacing="2" switchType="client" activeTabClass="selectedTab">
+
+
+<!-- ***************  TAB ONE - CONTACTS -->
+
+<apex:tab label="Contacts {!contactPaginator.RecordsCountOnTabName}" name="contTab" id="tabTwo" ontabenter="resizeWindowToMostRecentHeight('Contact');"> 
+<!-- ***************  SEARCH PANEL CONTACTS -->
+<div style="display: {!IF(contactPaginator.relationships.size>0,'-moz-inline-box','none')}; display:{!IF(contactPaginator.relationships.size>0,'inline-block','none')}; word-spacing: -.30em; width:55%;" > 
+    <apex:outputPanel style="display: -moz-inline-box; display:inline-block; width:55%;"> 
+        <div style="display:inline-block; outline:none;" id="resetButtonContainer" onclick="children[1].click();">                
+           <input class="pillButtonRight"  value="Reset" id="phSearchButtonq" type="button" 
+           onmouseover="this.style.cursor='pointer';" style="outline:none;"/>
+           <apex:commandLink action="{!resetSearchCon}" value="" id="theCommandLinkq" rerender="contTableId,searchText,contactPaginationFooterId,popup,contMainPanel">   
+                <apex:param name="searchCurrentTab" value="Account" assignTo="{!searchCurrentTab}" />   
+                <apex:param name="searchType" value="Contact" assignTo="{!searchType}" />
+           </apex:commandLink>                    
+        </div>    
+        <div style="display:inline-block;outline:none; box-shadow: none; border-style:0px ; border-color:#C5C5C5 transparent #C5C5C5 transparent;">
+                <apex:inputText onchange="if(this.value=='No Results...'){alert('No Results');}" onkeyup="if(event.keyCode == 13){document.getElementById('searchButtonContainer').click();event.cancel();}" style="  background-color: white; height: 20px; width: 120px; "  id="searchText" value="{!searchText}" title="Input last name or title to search for..."/>
+        </div>   
+        <div style="display:inline-block; outline:none;" id="searchButtonContainer" onclick="children[1].click();document.getElementById('thePage:theForm:theBlock:searchTextColl').focus();">                
+                <input class="pillButtonLeft"  value="Search" id="phSearchButton" type="button" 
+                onmouseover="this.style.cursor='pointer';" style="outline:none;"/>
+                <apex:commandLink action="{!searchListsCon}" value="" id="theCommandLink" rerender="contTableId,searchText,contactPaginationFooterId,popup,contMainPanel">   
+                <apex:param name="searchCurrentTab" value="Account" assignTo="{!searchCurrentTab}" />   
+                <apex:param name="searchType" value="Contact" assignTo="{!searchType}" />
+                </apex:commandLink>                    
+        </div>   
+    </apex:outputPanel>
+</div>
+<div>&nbsp;</div>
+<apex:outputPanel rendered="{!contactPaginator.relationships.size==0 && errorsFound==false && IsEnhancedList==false}" id="contMsgPanel">
+<apex:pageMessage summary="No contact relationship is found for this account." severity="info" strength="2" />
+</apex:outputPanel>  
+<apex:outputPanel rendered="{!DisplayContactTable}" id="contMainPanel">
+<apex:pageBlockTable var="relationship" cellpadding="2px" value="{!contactPaginator.relationships}" 
+      columns="11"
+      style="border-width: 1px; border-style: solid; border-color:#B4B0B0;" id="contTableId"  
+      headerClass="tableHeader">
+<!-- ** Drilldown column ** --> 
+    <apex:column rendered="{!relationship.display}" headerValue="" id="contActionColId"  width="5%" >
+            <apex:commandLink action="{!loadColleaguesForSingleContact}" rerender="contOuterTempPanelId" onclick="showInnerTable('contTableId', '{!relationship.hiddenRowIndex}', this, 'contHiddenRelIconId', 'contVisRelIconId'); resizeWindow('Contact');" id="contVisRelIconId">
+                <apex:image value="{!URLFOR($Resource.TRimages,'leftarrow.png')}"  title="Show {!relationship.contact.RelationshipTitle}" width="8" height="8" />
+                <apex:param name="contactCNID" value="{!relationship.contact.CNID}" assignTo="{!contactCNID}" />
+            </apex:commandLink>  
+            <apex:outputPanel style="display:none" id="contHiddenRelIconId">                
+                <a href="javascript:void(0)" onclick="showInnerTable('contTableId', '{!relationship.hiddenRowIndex}',  null, 'contVisRelIconId', 'contHiddenRelIconId'); resizeWindow('Contact');" id="actionLink2">
+                    <apex:image value="{!URLFOR($Resource.TRimages,'openarrow.png')}" title="Hide {!relationship.contact.RelationshipTitle}" width="8" height="8" id="contRelImageId"/>
+                </a>                
+            </apex:outputPanel>            
+     </apex:column>                 
+<!-- ** Action column previous rendered={!relationship.display} {!relationship.enableContactActionColumn}** -->                      
+     <apex:column rendered="{!relationship.enableContactActionColumn}" headerValue="Action" width="5%" styleClass="actionColumn" > 
+            <apex:outputPanel rendered="{!relationship.enableContactSearchColumn}" >
+            <c:CNFindContact searchCriteria1="{!relationship.contact.FullNameOrEmail}" useGlobalSearch="{!IF(useGlobalSearch==true, true, false)}" 
+                    accountId="{!oAcct.Id}" rendered="{!relationship.enableContactSearchColumn}"/>
+            </apex:outputPanel>   
+            <font color="#A4A0A0">{!actionDelimiter}</font>
+            <apex:outputPanel rendered="{!relationship.enableContactAddColumn}">
+            <c:CNAddContact firstName="{!relationship.contact.firstName}" lastName="{!relationship.contact.lastName}" title="{!relationship.contact.title}"
+                    phone="{!relationship.contact.firstPhoneNumber}" mobile="{!relationship.contact.MobilePhoneNumber}" email="{!relationship.contact.firstEmail}" 
+                    accountId="{!oAcct.Id}" MailingCity="{!relationship.contact.Region}"  MailingPostalCode="{!relationship.contact.PostalCode}"  
+                    MailingState="{!relationship.contact.Locality}"  mailingAddress="{!relationship.contact.StreetAddress}" rendered="{!relationship.enableContactAddColumn}"/>
+            </apex:outputPanel>
+     </apex:column>
+<!-- ** Relationship Strength column ** -->
+     <apex:column rendered="{!IF(relationship.ShowContactRelationshipStrength==false,false,true)}"  width="120px" >            
+               <apex:facet name="header">                               
+                <apex:commandLink value="Relationship Strength{!IF(contactPaginator.sortBy='scoreDesc',' ▼','')}{!IF(contactPaginator.sortBy='scoreAsc',' ▲','')}" action="{!contactPaginator.sortDataBy}" rerender="contMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(contactPaginator.sortBy!='scoreDesc', 'scoreDesc', 'scoreAsc')}" assignTo="{!contactPaginator.sortBy}" />                                    
+                </apex:commandLink>                                
+              </apex:facet>      
+            <c:CNRelationshipGraph score="{!relationship.contact.score}"  con1="{!relationship.d1}"
+                         con2="{!relationship.d2}" con3="{!relationship.d3}" con4="{!relationship.d4}" con5="{!relationship.d5}"
+                         con6="{!relationship.d6}" con7="{!relationship.d7}"  colorClass="green" normalizedScore="{!relationship.contact.score}"/>
+     </apex:column>     
+<!-- ** Name column ** -->
+     <apex:column rendered="{!relationship.display}"  width="180px" >
+            <apex:facet name="header">
+                <apex:commandLink value="Name{!IF(contactPaginator.sortBy='nameDesc',' ▲','')}{!IF(contactPaginator.sortBy='nameAsc',' ▼','')}" action="{!contactPaginator.sortDataBy}" rerender="contMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(contactPaginator.sortBy!='nameDesc', 'nameDesc', 'nameAsc')}" assignTo="{!contactPaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!relationship.contact.FullNameOrEmail}" />
+     </apex:column> 
+<!-- ** Title column ** -->
+     <apex:column rendered="{!IF(relationship.ShowContactTitle==false,false,true)}" width="220px">
+            <apex:facet name="header">
+                <apex:commandLink value="Title{!IF(contactPaginator.sortBy='titleDesc',' ▲','')}{!IF(contactPaginator.sortBy='titleAsc',' ▼','')}" action="{!contactPaginator.sortDataBy}" rerender="contMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(contactPaginator.sortBy!='titleDesc', 'titleDesc', 'titleAsc')}" assignTo="{!contactPaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+        <apex:outputText value="{!IF(relationship.contact.title!='',relationship.contact.title,noDataMessage)}"/>
+     </apex:column>
+<!-- TEST INFORMATION COLUMN -->  
+<!-- <apex:column rendered="{!relationship.display}" width="220px" headerValue="Test data">
+        <apex:outputText value="{!relationship.contact.LastModificationTimeAlt}"/>   
+           <apex:outputText value="location={!relationship.}"/>
+        <apex:outputText value="phone={!relationship.ShowContactPhoneData}"/>
+        <apex:outputText value="recency={!relationship.ShowContactRecency}"/>
+        <apex:outputText value="strength={!relationship.ShowContactRelationshipStrength}"/>
+        <apex:outputText value="source={!relationship.ShowContactSource}"/>
+        <apex:outputText value="title={!relationship.ShowContactTitle}"/>
+     </apex:column>    -->
+<!-- ** Phone column **  -->   
+     <apex:column rendered="{!IF(relationship.ShowContactPhoneData==false,false,true)}" headerValue="Phone"  width="140px"> 
+                      
+            <apex:outputText value="{!IF(relationship.contact.FirstPhoneNumber!=''&&relationship.contact.FirstPhoneNumber!=' ',relationship.contact.FirstPhoneNumber,noDataMessage)}"/>
+     </apex:column> 
+<!-- ** Email column **  -->       
+     <apex:column rendered="{!IF(relationship.ShowContactEmailData==false,false,true)}">
+            <apex:facet name="header">
+             <apex:commandLink value="Email Address{!IF(contactPaginator.sortBy='emailDesc',' ▲','')}{!IF(contactPaginator.sortBy='emailAsc',' ▼','')}" action="{!contactPaginator.sortDataBy}" rerender="contMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(contactPaginator.sortBy!='emailDesc', 'emailDesc', 'emailAsc')}" assignTo="{!contactPaginator.sortBy}" />                                    
+                </apex:commandLink> 
+            </apex:facet>
+            <apex:outputText value="{!IF(relationship.contact.firstEmail!='',relationship.contact.firstEmail,noDataMessage)}"/>
+     </apex:column> 
+<!-- ** Source  column ** -->
+     <apex:column rendered="{!IF(relationship.ShowContactSource==false,false,true)}" headerValue="Source" width="120px" >            
+            <c:CNDisplayIcons score="{!relationship.contact.score}"  
+                 isEmailSource="{!relationship.IsEmailSource}" isAddressBookSource="{!relationship.IsAddressBookSource}"
+                 isPhoneSource="{!relationship.IsPhoneSource}" isBillingSource="{!relationship.IsBillingSource}"
+                 IsAccntMgr="{!relationship.IsAccntMgr}" isCalendarSource="{!relationship.IsCalendarSource}"
+                 isCRMSource="{!relationship.IsCRMSource}" isReferral="{!relationship.isReferral}"
+                 isSignatureSource="{!relationship.IsSignatureSource}" />
+     </apex:column>
+<!-- ** Last Update column ** -->
+     <apex:column rendered="{!IF(relationship.ShowContactRecency==false,false,true)}" width="100px">
+            <apex:facet name="header">
+                <apex:commandLink value="Recency{!IF(contactPaginator.sortBy='recencyDesc',' ▲','')}{!IF(contactPaginator.sortBy='recencyAsc',' ▼','')}" action="{!contactPaginator.sortDataBy}" rerender="contMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(contactPaginator.sortBy!='recencyDesc', 'recencyDesc','recencyAsc' )}" assignTo="{!contactPaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!relationship.contact.LastModificationTime} "/>
+     </apex:column>
+<!--  hidden row placeholder --> 
+     <apex:column headerValue="" rendered="{!relationship.display==false}" 
+        colspan="{!IF(contactPaginator.displayLastUpdateDate, 9,8)}" 
+        style="margin-left:100px;  height:0; width:0; border-color:#FFFCFC; background-color:#FFFCFC; display:none;" 
+        id="hiddenRow" >       
+    </apex:column>    
+</apex:pageBlockTable>    
+<script>removeHeaders();</script>
+<apex:outputPanel style=" display:none; height:0;" id="contOuterTempPanelId" >
+      <div style="margin-left:60px; border-width: 1px; border-style: solid; border-color:#B4B0B0; ">
+      <div style="background-color: #C6C2C2; padding:3px"> 
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <apex:outputText value="{!hiddenContactRelationshipExpanded.contact.RelationshipTitle} -" style="font-weight:bold;"/>
+      </div>
+      <div style="background-color: #FFFCFC;">
+<apex:outputPanel >
+<!-- hidden table goes here <apex:repeat value="{!relationshipsForContact}" var="innerRelationshipCont">-->
+       <apex:outputPanel id="innerColleagueTableWrapper" >          
+       <apex:pageBlockTable var="innerRelationshipCont" cellpadding="2px" value="{!relationshipsForContact}"
+                        columns="{!IF(contactPaginator.DisplayLastUpdateDate,10,9)}" 
+                        style=" border-width: 1px; border-style: solid; border-color:#B4B0B0;" id="innerrelTableId"  
+                        headerClass="tableHeader">
+                         <input type="hidden" value="{!hiddenContactRelationshipExpanded.contact.CNID}" id="hiddenCNID"/>
+                        <!-- ** Relationshp Strength column ** -->
+                         <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleagueRelationshipStrength}" width="120px" >            
+                                <apex:facet name="header">                                    
+                                    <apex:commandLink value="Relationship Strength{!IF(contactPaginator.innersortBy='innerscoreDesc',' ▼','')}{!IF(contactPaginator.innersortBy='innerscoreAsc',' ▲','')}" action="{!innersortDataBy}" rerender="innerrelTableId,innerColleagueTableWrapper">                                            
+                                        <apex:param name="innersortBy" value="{!IF(contactPaginator.innersortBy!='innerscoreDesc', 'innerscoreDesc', 'innerscoreAsc')}" assignTo="{!contactPaginator.innersortBy}" />
+                                        <apex:param name="contactCNID" value="{!hiddenContactRelationshipExpanded.contact.CNID}"  assignTo="{!contactCNID}"/>                               
+                                    </apex:commandLink>                                
+                                </apex:facet>           
+                                <c:CNRelationshipGraph score="{!innerRelationshipCont.colleague.score}"  con1="{!innerRelationshipCont.d1}"
+                                             con2="{!innerRelationshipCont.d2}" con3="{!innerRelationshipCont.d3}" con4="{!innerRelationshipCont.d4}" con5="{!innerRelationshipCont.d5}"
+                                             con6="{!innerRelationshipCont.d6}" con7="{!innerRelationshipCont.d7}"  colorClass="green" normalizedScore="{!innerRelationshipCont.colleague.score}"/>
+                         </apex:column>
+                    <!-- ** Name column ** -->
+                         <apex:column rendered="{!innerRelationshipCont.display}" width="180px">
+                                <apex:facet name="header">
+                                    <apex:commandLink value="Name{!IF(contactPaginator.innersortBy='innernameDesc',' ▲','')}{!IF(contactPaginator.innersortBy='innernameAsc',' ▼','')}" action="{!innersortDataBy}" rerender="innerrelTableId,innerColleagueTableWrapper">                                            
+                                        <apex:param name="innersortBy" value="{!IF(contactPaginator.innersortBy!='innernameDesc', 'innernameDesc', 'innernameAsc')}" assignTo="{!contactPaginator.innersortBy}" />                                    
+                                        <apex:param name="contactCNID" value="{!hiddenContactRelationshipExpanded.contact.CNID}"   assignTo="{!contactCNID}"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputText value="{!innerRelationshipCont.colleague.FullNameOrEmail}" />
+                         </apex:column>
+                    <!-- ** Title column ** -->
+                         <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleagueTitle}" width="220px">
+                            <apex:facet name="header">
+                                    <apex:commandLink value="Title{!IF(contactPaginator.innersortBy='innertitleDesc',' ▲','')}{!IF(contactPaginator.innersortBy='innertitleAsc',' ▼','')}" action="{!innersortDataBy}" rerender="innerrelTableId,innerColleagueTableWrapper">                                            
+                                        <apex:param name="innersortBy" value="{!IF(contactPaginator.innersortBy!='innertitleDesc', 'innertitleDesc', 'innertitleAsc')}" assignTo="{!contactPaginator.innersortBy}" />                                    
+                                        <apex:param name="contactCNID" value="{!hiddenContactRelationshipExpanded.contact.CNID}"   assignTo="{!contactCNID}"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                            <apex:outputText value="{!IF(innerRelationshipCont.colleague.title!='',innerRelationshipCont.colleague.title,noDataMessage)}"/>&nbsp;
+                         </apex:column>
+                    <!-- ** Phone column ** previous rendered={!innerRelationshipCont.display} {!showcolleaguePhone} -->   
+                         <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleaguePhoneData}" width="140px"> 
+                                <apex:facet name="header">Phone</apex:facet>             
+                                <apex:outputText value="{!IF(innerRelationshipCont.colleague.FirstPhoneNumber!='',innerRelationshipCont.colleague.FirstPhoneNumber,noDataMessage)}"/>&nbsp;
+                         </apex:column>
+                    <!-- ** Email column ** previous rendered={!innerRelationshipCont.display} {!showcolleagueEmail} -->    
+                         <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleagueEmailData}" width="220px">
+                                <apex:facet name="header">
+                                    <apex:commandLink value="Email Address{!IF(contactPaginator.innersortBy='inneremailDesc',' ▲','')}{!IF(contactPaginator.innersortBy='inneremailAsc',' ▼','')}" action="{!innersortDataBy}" rerender="innerrelTableId,innerColleagueTableWrapper">                                            
+                                        <apex:param name="innersortBy" value="{!IF(contactPaginator.innersortBy!='inneremailDesc', 'inneremailDesc', 'inneremailAsc')}" assignTo="{!contactPaginator.innersortBy}" />                                    
+                                        <apex:param name="contactCNID" value="{!hiddenContactRelationshipExpanded.contact.CNID}"   assignTo="{!contactCNID}"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputText value="{!IF(innerRelationshipCont.colleague.FirstEmail!='',innerRelationshipCont.colleague.FirstEmail,noDataMessage)}" />&nbsp;
+                    
+                         </apex:column> 
+                    <!--  ** Location column ** --> 
+                        <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleagueLocation}" >
+                                    <apex:facet name="header">
+                                        <apex:commandLink value="Location{!IF(contactPaginator.innersortBy='innerlocationDesc',' ▲','')}{!IF(contactPaginator.innersortBy='innerlocationAsc',' ▼','')}" action="{!innersortDataBy}" rerender="innerrelTableId,innerColleagueTableWrapper">                                            
+                                            <apex:param name="innersortBy" value="{!IF(contactPaginator.innersortBy!='innerlocationDesc', 'innerlocationDesc','innerlocationAsc' )}" assignTo="{!contactPaginator.innersortBy}" />                                    
+                                            <apex:param name="contactCNID" value="{!hiddenContactRelationshipExpanded.contact.CNID}"   assignTo="{!contactCNID}"/>
+                                        </apex:commandLink>
+                                    </apex:facet>
+                                    <apex:outputText value="{!IF(innerRelationshipCont.colleague.workingLocation!='',innerRelationshipCont.colleague.workingLocation,noDataMessage)}"/>
+                            </apex:column> 
+                    <!-- ** Source  column ** -->
+                         <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleagueSource}" width="120px" >
+                                <apex:facet name="header">
+                                    <c:CNSortableHeaderFacet clickAction="{!contactPaginator.oEListHandler}" columnHeaderLabel="Source" columnAPIName="Raw_Score__c" isSortable="{!IsEnhancedList}" 
+                                                                        rerenderPanel="{!$Component.theBlock}"/>
+                                </apex:facet>
+                                <c:CNDisplayIcons score="{!innerRelationshipCont.colleague.score}"  
+                                     isEmailSource="{!innerRelationshipCont.IsEmailSource}" isAddressBookSource="{!innerRelationshipCont.IsAddressBookSource}"
+                                     isPhoneSource="{!innerRelationshipCont.IsPhoneSource}" isBillingSource="{!innerRelationshipCont.IsBillingSource}"
+                                     IsAccntMgr="{!innerRelationshipCont.IsAccntMgr}" isCalendarSource="{!innerRelationshipCont.IsCalendarSource}"
+                                     isCRMSource="{!innerRelationshipCont.IsCRMSource}" isReferral="{!innerRelationshipCont.isReferral}"
+                                     isSignatureSource="{!innerRelationshipCont.IsSignatureSource}" />
+                         </apex:column>
+                    <!-- ** Last Update column ** -->
+                         <apex:column rendered="{! contactPaginator.relationships.size > 0 && contactPaginator.relationships[0].ShowColleagueRecency}" >
+                                <apex:facet name="header">
+                                    <apex:commandLink value="Recency{!IF(contactPaginator.innersortBy='innerrecencyDesc',' ▲','')}{!IF(contactPaginator.innersortBy='innerrecencyAsc',' ▼','')}" action="{!innersortDataBy}" rerender="innerrelTableId,innerColleagueTableWrapper">                                            
+                                        <apex:param name="innersortBy" value="{!IF(contactPaginator.innersortBy!='innerrecencyDesc', 'innerrecencyDesc','innerrecencyAsc' )}" assignTo="{!contactPaginator.innersortBy}" />                                    
+                                        <apex:param name="contactCNID" value="{!hiddenContactRelationshipExpanded.contact.CNID}"   assignTo="{!contactCNID}"/>
+                                    </apex:commandLink>
+                                </apex:facet>
+                                <apex:outputText value="{!innerRelationshipCont.colleague.LastModificationTime}"/> 
+                        </apex:column>
+             </apex:pageBlockTable>              
+              <c:CNInnerPaginationFooter rerenderId="innerColleagueTableWrapper,innerrelTableId"   tabName="Contact" componentSource="Account Component"
+           paginator="{!contactDetailPaginator}" accountId="{!oAcct.Id}" contactId=""
+            iTotalInnerPages="{!iTotalInnerPages}" iTotalInnerRecords="{!iTotalInnerRecords}" iCurrentInnerPage="{!iCurrentInnerPage}"
+            iStartInnerPage="{!iStartInnerPage}" iEndInnerPage="{!iEndInnerPage}" innerEndOfPages="{!innerEndOfPages}"  innerpageSize="{!innerpageSize}"/>
+           </apex:outputPanel>      
+       </apex:outputPanel>           
+                </div>    
+                </div>  
+                <script language="javascript">                    
+                    displayInnerTable('{!hiddenContactRelationshipExpanded.index}', 'contTableId', 'contOuterTempPanelId');
+                    resizeWindow('Contact');
+                </script>
+            
+        </apex:outputPanel>
+    
+         <c:CNPaginationFooter tabName="Contact" isDownloadMode="{!isDownloadMode}" paginator="{!contactPaginator}" rerenderId="contMainPanel" 
+                    feedbackToEmail="{!appSetting.Feedback_Notification_Email__c}" feedbackSubject="{!appSetting.Feedback_Notification_Subject__c}" 
+                    id="contactPaginationFooterId" rendered="{!IsEnhancedList==false}" gotoListURL="/apex/CNOpportunityView?id={!oAcct.Id}&mode=elist&t=contTab" 
+                    componentSource="Account Component" accountId="{!oAcct.Id}" contactId=""/>     
+
+</apex:outputPanel>
+</apex:tab>
+<!-- ***************  TAB TWO - RELATIONSHIPS -->
+
+<apex:tab label="Colleagues {!colleaguePaginator.RecordsCountOnTabName}" name="colTab" id="tabOne" ontabenter="resizeWindowToMostRecentHeight('Colleague');" > 
+ <!-- ***************  SEARCH PANEL CONTACTS -->
+ <div style="display: {!IF(colleaguePaginator.relationships.size>0,'-moz-inline-box','none')}; display:{!IF(colleaguePaginator.relationships.size>0,'inline-block','none')}; word-spacing: -.30em; width:55%;" > 
+    <apex:outputPanel style="display: -moz-inline-box; display:inline-block; width:55%;"> 
+        <div style="display:inline-block; outline:none;" id="resetButtonContainer1" onclick="children[1].click();">                
+           <input class="pillButtonRight"  value="Reset" id="phSearchButton1" type="button" 
+           onmouseover="this.style.cursor='pointer';" style="outline:none;"/>
+           <apex:commandLink action="{!resetSearchColl}" value="" id="theCommandLink1" rerender="relTableId,searchTextColl,colleaguePaginationFooterId,popup,colMainPanel">   
+                <apex:param name="searchCurrentTab" value="Account" assignTo="{!searchCurrentTab}" />   
+                <apex:param name="searchType" value="Colleague" assignTo="{!searchType}" />
+           </apex:commandLink>                    
+        </div>    
+        <div style="display:inline-block;outline:none; box-shadow: none; border-style:0px ; border-color:#C5C5C5 transparent #C5C5C5 transparent;">
+                <apex:inputText onchange="if(this.value=='No Results...'){alert('No Results');}" onkeyup="if(event.keyCode == 13){document.getElementById('searchButtonContainer1').click();event.cancel();}" style="outline:none; background-color: white; height: 20px; width: 120px; "  id="searchTextColl" value="{!searchTextColl}" title="Input last name or title to search for..."/>
+        </div>   
+        <div style="display:inline-block; outline:none;" id="searchButtonContainer1" onclick="children[1].click();document.getElementById('thePage:theForm:theBlock:searchTextColl').focus();">                
+                <input class="pillButtonLeft"  value="Search" id="phSearchButton" type="button" 
+                onmouseover="this.style.cursor='pointer';" style="outline:none;"/>
+                <apex:commandLink action="{!searchListsColl}" value="" id="theCommandLink2" rerender="relTableId,searchTextColl,colleaguePaginationFooterId,popup,colMainPanel">   
+                <apex:param name="searchCurrentTab" value="Account" assignTo="{!searchCurrentTab}" />   
+                <apex:param name="searchType" value="Colleague" assignTo="{!searchType}" />
+                </apex:commandLink>                    
+        </div>   
+    </apex:outputPanel>
+ </div>
+ <div>&nbsp;</div>   
+    <apex:outputPanel rendered="{!colleaguePaginator.relationships.size==0 && errorsFound==false && IsEnhancedList==false}" id="colMsgPanel">
+        <apex:pageMessage summary="No colleague relationship is found for this Account." severity="info" strength="2" />
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!DisplayColleagueTable}" id="colMainPanel">
+    <apex:pageBlockTable value="{!colleaguePaginator.relationships}" var="relationship" 
+    width="100%" cellpadding="2px"  columns="{!IF(colleaguePaginator.DisplayLastUpdateDate,11,10)}" 
+    style="border-width: 1px; border-style: solid; border-color:#B4B0B0;" id="relTableId"  
+    headerClass="tableHeader">
+   
+     <!-- ** Drilldown column ** --> 
+    <apex:column rendered="{!relationship.display}"   id="relActionColId"  width="5%">
+            <apex:commandLink action="{!loadContactsForSingleColleague}" rerender="colOuterTempPanelId" onclick="showInnerTable('relTableId', '{!relationship.hiddenRowIndex}', this, 'colHiddenRelIconId', 'colVisRelIconId'); resizeWindow('Colleague');" id="colVisRelIconId">
+                <apex:image value="{!URLFOR($Resource.TRimages,'leftarrow.png')}"  title="Show {!relationship.Colleague.RelationshipTitle}" width="8" height="8" />
+                <apex:param name="colleagueCNID" value="{!relationship.Colleague.CNID}"  assignTo="{!colleagueCNID}"/>
+            </apex:commandLink>           
+            <apex:outputPanel style="display:none" id="colHiddenRelIconId">
+                <a href="javascript:void(0)" onclick="showInnerTable('relTableId', '{!relationship.hiddenRowIndex}',  null, 'colVisRelIconId', 'colHiddenRelIconId'); resizeWindow('Colleague');" id="actionLink2">
+                    <apex:image value="{!URLFOR($Resource.TRimages,'openarrow.png')}" title="Hide {!relationship.Colleague.RelationshipTitle}" width="8" height="8" id="colRelImageId"/>                    
+                </a>                
+            </apex:outputPanel>                
+     </apex:column>   
+<!-- ** Relationshp Strength column ** -->
+     <apex:column rendered="{!relationship.ShowColleagueRelationshipStrength}" width="120px" >            
+            <apex:facet name="header">                                    
+                <apex:commandLink value="Relationship Strength{!IF(colleaguePaginator.sortBy='scoreDesc',' ▼','')}{!IF(colleaguePaginator.sortBy='scoreAsc',' ▲','')}" action="{!colleaguePaginator.sortDataBy}" rerender="colMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(colleaguePaginator.sortBy!='scoreDesc', 'scoreDesc', 'scoreAsc')}" assignTo="{!colleaguePaginator.sortBy}" />                                    
+                </apex:commandLink>                                
+            </apex:facet>           
+            <c:CNRelationshipGraph score="{!relationship.colleague.score}"  con1="{!relationship.d1}"
+                         con2="{!relationship.d2}" con3="{!relationship.d3}" con4="{!relationship.d4}" con5="{!relationship.d5}"
+                         con6="{!relationship.d6}" con7="{!relationship.d7}"  colorClass="green" normalizedScore="{!relationship.colleague.score}"/>
+     </apex:column>
+     
+<!-- ** Name column ** -->
+     <apex:column rendered="{!relationship.display}" width="180px">
+            <apex:facet name="header">
+                <apex:commandLink value="Name{!IF(colleaguePaginator.sortBy='nameDesc',' ▲','')}{!IF(colleaguePaginator.sortBy='nameAsc',' ▼','')}" action="{!colleaguePaginator.sortDataBy}" rerender="colMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(colleaguePaginator.sortBy!='nameDesc', 'nameDesc', 'nameAsc')}" assignTo="{!colleaguePaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!relationship.colleague.FullNameOrEmail}" />
+     </apex:column>                
+
+<!-- ** Title column ** -->
+     <apex:column rendered="{!relationship.ShowColleagueTitle}" width="220px">
+        <apex:facet name="header">
+                <apex:commandLink value="Title{!IF(colleaguePaginator.sortBy='titleDesc',' ▲','')}{!IF(colleaguePaginator.sortBy='titleAsc',' ▼','')}" action="{!colleaguePaginator.sortDataBy}" rerender="colMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(colleaguePaginator.sortBy!='titleDesc', 'titleDesc', 'titleAsc')}" assignTo="{!colleaguePaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+        <apex:outputText value="{!IF(relationship.colleague.title!='',relationship.colleague.title,noDataMessage)}"/>&nbsp;
+     </apex:column>                
+
+<!-- ** Phone column ** previous rendered={!relationship.display} {!showcolleaguePhone} -->   
+     <apex:column rendered="{!relationship.ShowColleaguePhoneData}" width="140px"> 
+            <apex:facet name="header">Phone</apex:facet>             
+            <apex:outputText value="{!IF(relationship.colleague.FirstPhoneNumber!='',relationship.colleague.FirstPhoneNumber,noDataMessage)}"/>&nbsp;
+     </apex:column>   
+      
+<!-- ** Email column ** previous rendered={!relationship.display} {!showcolleagueEmail} -->    
+     <apex:column rendered="{!relationship.ShowColleagueEmailData}" width="220px">
+            <apex:facet name="header">
+                <apex:commandLink value="Email Address{!IF(colleaguePaginator.sortBy='emailDesc',' ▲','')}{!IF(colleaguePaginator.sortBy='emailAsc',' ▼','')}" action="{!colleaguePaginator.sortDataBy}" rerender="colMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(colleaguePaginator.sortBy!='emailDesc', 'emailDesc', 'emailAsc')}" assignTo="{!colleaguePaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!IF(relationship.colleague.FirstEmail!='',relationship.colleague.FirstEmail,noDataMessage)}" />&nbsp;
+     </apex:column> 
+     
+<!--  ** Location column ** --> 
+    <apex:column rendered="{!relationship.ShowColleagueLocation}" >
+                <apex:facet name="header">
+                    <apex:commandLink value="Location{!IF(colleaguePaginator.sortBy='locationDesc',' ▲','')}{!IF(colleaguePaginator.sortBy='locationAsc',' ▼','')}" action="{!colleaguePaginator.sortDataBy}" rerender="colMainPanel">                                            
+                        <apex:param name="sortBy" value="{!IF(colleaguePaginator.sortBy!='locationDesc', 'locationDesc','locationAsc' )}" assignTo="{!colleaguePaginator.sortBy}" />                                    
+                    </apex:commandLink>
+                </apex:facet>
+                <apex:outputText value="{!IF(relationship.colleague.workingLocation!='',relationship.colleague.workingLocation,noDataMessage)}"/>
+        </apex:column> 
+<!-- ** Source  column ** -->
+     <apex:column rendered="{!relationship.ShowColleagueSource}" width="120px" >
+            <apex:facet name="header">
+                <apex:outputText value=" Source"/>
+            </apex:facet>     
+            <c:CNDisplayIcons score="{!relationship.colleague.score}"  rendered="{!relationship.ShowColleagueSource}"
+             isEmailSource="{!relationship.IsEmailSource}" isAddressBookSource="{!relationship.IsAddressBookSource}"
+             isPhoneSource="{!relationship.IsPhoneSource}" isBillingSource="{!relationship.IsBillingSource}"
+             IsAccntMgr="{!relationship.IsAccntMgr}" isCalendarSource="{!relationship.IsCalendarSource}"
+             isCRMSource="{!relationship.IsCRMSource}" isReferral="{!relationship.isReferral}"
+             isSignatureSource="{!relationship.IsSignatureSource}" />
+     </apex:column>  
+        
+<!-- ** Last Update column ** -->    
+     <apex:column rendered="{!relationship.ShowColleagueRecency}" width="100px">
+            <apex:facet name="header">
+                <apex:commandLink value="Recency{!IF(colleaguePaginator.sortBy='recencyDesc',' ▲','')}{!IF(colleaguePaginator.sortBy='recencyAsc',' ▼','')}" action="{!colleaguePaginator.sortDataBy}" rerender="colMainPanel">                                            
+                    <apex:param name="sortBy" value="{!IF(colleaguePaginator.sortBy!='recencyDesc', 'recencyDesc','recencyAsc' )}" assignTo="{!colleaguePaginator.sortBy}" />                                    
+                </apex:commandLink>
+            </apex:facet>
+            <apex:outputText value="{!relationship.colleague.LastModificationTime} "/>
+     </apex:column> 
+  
+ <!--  hidden row placeholder -->
+ <apex:column headerValue="" rendered="{!relationship.display==false}" 
+        colspan="{!IF(contactPaginator.displayLastUpdateDate, 10, 8)}" 
+        style="height:0; width:0; border-color:#FFFCFC; background-color:#FFFCFC; display:none;" 
+        id="hiddenRow"  onmouseover="null;">       
+    </apex:column>    
+</apex:pageBlockTable>
+<script>removeHeaders();</script>
+<apex:outputPanel style="display:none" id="colOuterTempPanelId">
+    <div style="margin-left:60px; border-width: 0px; border-style: solid; border-color:#B4B0B0;">
+        <div style="background-color: #C6C2C2; padding:3px">
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <apex:outputText value="{!hiddenColleagueRelationshipExpanded.colleague.RelationshipTitle} -" style="font-weight:bold;"/>
+        </div>
+        <div style="background-color: #FFFCFC;">
+ <apex:outputPanel id="collInnerWrapper" >
+<!-- hidden table goes here <apex:repeat value="{!relationshipsForColleague}" var="innerRelationshipCont">-->
+                <apex:outputPanel id="innercolTableId">
+                <apex:pageBlockTable value="{!relationshipsForColleague}" var="innerRelationshipCont" width="100%" cellpadding="2px" 
+                       columns="{!IF(colleaguePaginator.DisplayLastUpdateDate,9,8)}" 
+                       style="border-width: 1px; border-style: solid; border-color:#B4B0B0;" id="innercontTableId"  
+                       headerClass="tableHeader">
+                <!-- ** Relationshp Strength column ** -->
+                     <apex:column rendered="{! colleaguePaginator.relationships.size > 0 && colleaguePaginator.relationships[0].ShowContactRelationshipStrength}" width="120px" >            
+                            <apex:facet name="header">                                    
+                                <apex:commandLink value="Relationship Strength{!IF(colleaguePaginator.innersortBy='innerscoreDesc',' ▼','')}{!IF(colleaguePaginator.innersortBy='innerscoreAsc',' ▲','')}" action="{!innersortDataBycoll}" rerender="innercolTableId">                                            
+                                    <apex:param name="innersortBy" value="{!IF(colleaguePaginator.innersortBy!='innerscoreDesc', 'innerscoreDesc', 'innerscoreAsc')}" assignTo="{!colleaguePaginator.innersortBy}" />                                    
+                                    <apex:param name="colleagueCNID" value="{!hiddenColleagueRelationshipExpanded.colleague.CNID}"   assignTo="{!colleagueCNID}"/>
+                                </apex:commandLink>                                
+                            </apex:facet>           
+                            <c:CNRelationshipGraph score="{!innerRelationshipCont.contact.score}"  con1="{!innerRelationshipCont.d1}"
+                                         con2="{!innerRelationshipCont.d2}" con3="{!innerRelationshipCont.d3}" con4="{!innerRelationshipCont.d4}" con5="{!innerRelationshipCont.d5}"
+                                         con6="{!innerRelationshipCont.d6}" con7="{!innerRelationshipCont.d7}"  colorClass="green" normalizedScore="{!innerRelationshipCont.contact.score}"/>
+                     </apex:column>
+                     
+                <!-- ** Name column ** -->
+                     <apex:column rendered="{!innerRelationshipCont.display}"  width="180px" >
+                            <apex:facet name="header">
+                                <apex:commandLink value="Name{!IF(colleaguePaginator.innersortBy='innernameDesc',' ▲','')}{!IF(colleaguePaginator.innersortBy='innernameAsc',' ▼','')}" action="{!innersortDataBycoll}" rerender="innercolTableId">                                            
+                                    <apex:param name="innersortBy" value="{!IF(colleaguePaginator.innersortBy!='innernameDesc', 'innernameDesc', 'innernameAsc')}" assignTo="{!colleaguePaginator.innersortBy}" />                                    
+                                    <apex:param name="colleagueCNID" value="{!hiddenColleagueRelationshipExpanded.colleague.CNID}"  assignTo="{!colleagueCNID}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputText value="{!innerRelationshipCont.contact.FullNameOrEmail}" />
+                     </apex:column>                
+                
+                <!-- ** Title column ** -->
+                     <apex:column rendered="{! colleaguePaginator.relationships.size > 0 && colleaguePaginator.relationships[0].ShowContactTitle}" width="220px">
+                        <apex:facet name="header">
+                                <apex:commandLink value="Title{!IF(colleaguePaginator.innersortBy='innertitleDesc',' ▲','')}{!IF(colleaguePaginator.innersortBy='innertitleAsc',' ▼','')}" action="{!innersortDataBycoll}" rerender="innercolTableId">                                            
+                                    <apex:param name="innersortBy" value="{!IF(colleaguePaginator.innersortBy!='innertitleDesc', 'innertitleDesc', 'innertitleAsc')}" assignTo="{!colleaguePaginator.innersortBy}" />                                    
+                                    <apex:param name="colleagueCNID" value="{!hiddenColleagueRelationshipExpanded.colleague.CNID}"  assignTo="{!colleagueCNID}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                        <apex:outputText value="{!IF(innerRelationshipCont.contact.title!='',innerRelationshipCont.contact.title,noDataMessage)}"/>&nbsp;
+                     </apex:column>                
+                
+                <!-- ** Phone column ** previous rendered={!innerRelationshipCont.display} {!showContactPhone} -->   
+                     <apex:column rendered="{! colleaguePaginator.relationships.size > 0 && colleaguePaginator.relationships[0].ShowContactPhoneData}" width="140px"> 
+                            <apex:facet name="header">Phone</apex:facet>             
+                            <apex:outputText value="{!IF(innerRelationshipCont.contact.FirstPhoneNumber!='',innerRelationshipCont.contact.FirstPhoneNumber,noDataMessage)}"/>&nbsp;
+                     </apex:column>   
+                      
+                <!-- ** Email column ** previous rendered={!innerRelationshipCont.display} {!showContactEmail} -->      
+                     <apex:column rendered="{! colleaguePaginator.relationships.size > 0 && colleaguePaginator.relationships[0].ShowContactEmailData}" width="220px">
+                            <apex:facet name="header">
+                                <apex:commandLink value="Email Address{!IF(colleaguePaginator.innersortBy='inneremailDesc',' ▲','')}{!IF(colleaguePaginator.innersortBy='inneremailAsc',' ▼','')}" action="{!innersortDataBycoll}" rerender="innercolTableId">                                            
+                                    <apex:param name="innersortBy" value="{!IF(colleaguePaginator.innersortBy!='inneremailDesc', 'inneremailDesc', 'inneremailAsc')}" assignTo="{!colleaguePaginator.innersortBy}" />                                    
+                                    <apex:param name="colleagueCNID" value="{!hiddenColleagueRelationshipExpanded.colleague.CNID}"  assignTo="{!colleagueCNID}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputText value="{!IF(innerRelationshipCont.contact.firstEmail!='',innerRelationshipCont.contact.firstEmail,noDataMessage)}"/>&nbsp;
+                
+                     </apex:column> 
+                <!-- ** Source  column ** -->
+                     <apex:column rendered="{! colleaguePaginator.relationships.size > 0 && colleaguePaginator.relationships[0].ShowContactSource}" width="120px" >
+                            <apex:facet name="header">
+                                <c:CNSortableHeaderFacet clickAction="{!colleaguePaginator.oEListHandler}" columnHeaderLabel="Source" columnAPIName="Raw_Score__c" isSortable="{!IsEnhancedList}" 
+                                                                    rerenderPanel="{!$Component.theBlock}"/>
+                            </apex:facet>
+                            <c:CNDisplayIcons score="{!innerRelationshipCont.contact.score}"   
+                             isEmailSource="{!innerRelationshipCont.IsEmailSource}" isAddressBookSource="{!innerRelationshipCont.IsAddressBookSource}"
+                             isPhoneSource="{!innerRelationshipCont.IsPhoneSource}" isBillingSource="{!innerRelationshipCont.IsBillingSource}"
+                             IsAccntMgr="{!innerRelationshipCont.IsAccntMgr}" isCalendarSource="{!innerRelationshipCont.IsCalendarSource}"
+                             isCRMSource="{!innerRelationshipCont.IsCRMSource}" isReferral="{!innerRelationshipCont.isReferral}"
+                             isSignatureSource="{!innerRelationshipCont.IsSignatureSource}" />
+                     </apex:column>  
+                        
+                <!-- ** Last Update column ** -->     
+                    
+                     <apex:column rendered="{! colleaguePaginator.relationships.size > 0 && colleaguePaginator.relationships[0].ShowContactRecency}">
+                            <apex:facet name="header">
+                                <apex:commandLink value="Recency{!IF(colleaguePaginator.innersortBy='innerrecencyDesc',' ▲','')}{!IF(colleaguePaginator.innersortBy='innerrecencyAsc',' ▼','')}" action="{!innersortDataBycoll}" rerender="innercolTableId">                                            
+                                    <apex:param name="innersortBy" value="{!IF(colleaguePaginator.innersortBy!='innerrecencyDesc', 'innerrecencyDesc','innerrecencyAsc' )}" assignTo="{!colleaguePaginator.innersortBy}" />                                    
+                                    <apex:param name="colleagueCNID" value="{!hiddenColleagueRelationshipExpanded.colleague.CNID}"  assignTo="{!colleagueCNID}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputText value="{!innerRelationshipCont.contact.LastModificationTime}"/>
+                     
+                    </apex:column>         
+                </apex:pageBlockTable>
+                <apex:outputPanel id="pagerWrapper">
+                <c:CNInnerPaginationColleague rerenderId="innercolTableId,pagerWrapper"  
+                tabName="Colleague" componentSource="Account Component"
+           paginator="{!colleagueDetailPaginator}" accountId="" contactId="{!oAcct.Id}"
+            iTotalInnerPagescoll="{!iTotalInnerPagescoll}" iTotalInnerRecordscoll="{!iTotalInnerRecordscoll}" 
+            iCurrentInnerPagecoll="{!iCurrentInnerPagecoll}"
+            iStartInnerPagecoll="{!iStartInnerPagecoll}" iEndInnerPagecoll="{!iEndInnerPagecoll}" 
+            innerEndOfPagescoll="{!innerEndOfPagescoll}" innerpageSize="{!innerpageSize}"/> 
+             </apex:outputPanel>
+             </apex:outputPanel>   
+        </apex:outputPanel>          
+                </div>  
+                </div>  
+                <script language="javascript">
+                    displayInnerTable('{!hiddenColleagueRelationshipExpanded.index}', 'relTableId', 'colOuterTempPanelId');
+                    resizeWindow('Colleague');
+                </script>
+                
+        </apex:outputPanel>
+  
+        <c:CNPaginationFooter tabName="Colleague" isDownloadMode="{!isDownloadMode}" paginator="{!colleaguePaginator}" rerenderId="colMainPanel" 
+                    feedbackToEmail="{!appSetting.Feedback_Notification_Email__c}" feedbackSubject="{!appSetting.Feedback_Notification_Subject__c}" 
+                    id="colleaguePaginationFooterId" rendered="{!IsEnhancedList==false}" gotoListURL="/apex/CNOpportunityView?id={!oAcct.Id}&mode=elist&t=colTab" componentSource="Account Component" accountId="{!oAcct.Id}" contactId=""/>        
+
+</apex:outputPanel>
+
+</apex:tab>
+
+
+
+</apex:tabPanel>
+</apex:pageBlock>
+</apex:form> 
+<script>
+    if('{!redirectURL}' != ''){
+        window.location = '{!redirectURL}';
+    }
+</script> 
+</apex:page>

@@ -1,0 +1,14 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" >
+    <aura:attribute name="fieldsDigiAssets" type="String[]" default="['Table_of_Contents__c','Sales_Collateral_Documentation__c','Index__c','Product_Images__c','Author_Listing__c','Release_Notes__c']" />
+    <aura:attribute name="fieldsCustomerService" type="String[]" default="['Filing_Shipping_Information__c','Internal_Product_Communications__c']" />
+    
+    <lightning:accordion aura:id="accordion" activeSectionName="Digital Assets">
+        <lightning:accordionSection name="Digital Assets" label="Digital Assets">
+            <lightning:recordForm aura:id="DigitalAssetsForm" recordId="{!v.recordId}" objectApiName="Product2" fields="{!v.fieldsDigiAssets}" columns="2" mode="view" />
+        </lightning:accordionSection>
+        <lightning:accordionSection name="Customer Service" label="Customer Service">
+            <lightning:recordForm aura:id="CustomerServiceForm" recordId="{!v.recordId}" objectApiName="Product2" fields="{!v.fieldsCustomerService}" columns="2" mode="view" />
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>

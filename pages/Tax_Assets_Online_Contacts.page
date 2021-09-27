@@ -1,0 +1,18 @@
+<apex:page controller="Tax_Assets_Online_Contacts" showHeader="false" sidebar="false">
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockSection title="Online Contacts">
+                <apex:pageBlockTable value="{!listdisplay}" var="a" rendered="{!NOT(ISNULL(listdisplay))}">
+                    <apex:column headerValue="FirstName" value="{!a.first_name}"/>
+                    <apex:column headerValue="LastName" value="{!a.last_name}"/>
+                    <apex:column headerValue="Email" value="{!a.email}"/>
+                    <apex:column headerValue="Contact Type" value="{!a.contactType}"/>
+                    <apex:column headerValue="Contact Number"  value="{!a.contactNumber}"/>
+                    <apex:column headerValue="Status"  value="{!a.status}"/>
+                    
+               </apex:pageBlockTable>
+               <apex:outputLabel value="No online contacts to display" rendered="{!(ISNULL(listdisplay))}" styleClass="noRowsHeader"></apex:outputLabel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

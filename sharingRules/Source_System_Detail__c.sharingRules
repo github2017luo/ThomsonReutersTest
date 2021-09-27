@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Account_SSD_for_Elite_With_Partner</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Account SSD for Elite With Partner</label>
+        <sharedTo>
+            <roleAndSubordinates>GLI</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>ELITE</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>LOTUS_isGLI_SSD_Read_Only</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Based on DPS-14002</description>
+        <label>LOTUS-isGLI SSD Read Only</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>notEqual</operation>
+            <value>null</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>notEqual</operation>
+            <value>null</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

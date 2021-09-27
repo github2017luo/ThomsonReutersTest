@@ -1,0 +1,10 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,lightning:actionOverride,lightning:hasPageReference" access="global">
+    <aura:handler name="init" value="{!this }" action="{! c.init }"/>
+    <aura:attribute name="parentRecordId" type="String" />
+    <aura:attribute name="errors" type="string"/>
+    <aura:if isTrue="{! !empty(v.errors)}">
+        <ui:message title="Error" severity="error" closable="false">
+           {!v.errors}
+        </ui:message>
+    </aura:if>
+</aura:component>

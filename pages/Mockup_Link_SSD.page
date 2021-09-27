@@ -1,0 +1,27 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2017-09-21     Harika Devi Kalidindi      Restrict visiblity of Links to USL users
+2018-03-09     Arti Choudhari             Modified the FL Performance Console & FL Insight
+2018-06-28     Sakshi                     Added COB link and FL Resource Center Link
+===============================================================================
+-->
+<apex:page standardController="Source_System_Detail__c"  lightningStylesheets="true" rendered="{!IF($Profile.Name='System Administrator'||(($Profile.Name='GLI Sales User' || $Profile.Name='GLI Sales Ops User') && (ISPICKVAL($User.Sub_Bu__c,'USL') || ISPICKVAL($User.Sub_Bu__c,'LMS') || ISPICKVAL($User.Sub_Bu__c,'FindLaw'))) ,true,false)}">
+    <apex:form >
+       <!--Jira Story - CRM -6485-->
+        <apex:commandLink value="FL SAM Portal" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.FL_SAM_Portal__c)}{!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}','_blank',height=600,width=700)" style="margin-left: 10px;" />
+         <!--Jira Story - CRM -6302-->
+        <apex:commandLink value="FL Performance Console" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.FL_Performance_Console__c)}{!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}','_blank',height=600,width=700)" style="margin-left: 10px;" />
+        <!--Jira Story - CRM -6300-->
+        <apex:commandLink value="FL Insight" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.FL_Insight__c)}{!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}{!JSENCODE($Setup.LCRM_SSD_Links__c.FL_Insight_1__c)}','_blank',height=600,width=700)" style="margin-left: 10px;" />
+        <!--Jira Story - SOC- 7085-->
+        <apex:commandLink value="FindLaw Resource Center" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.FindLaw_Resource_Center__c)}')" style="margin-left: 10px;"/>
+        <!--Jira Story - SOC- 2500-->
+        <apex:commandLink value="Client Order Brief (COB)" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.Client_Order_Brief__c)}')" style="margin-left: 10px;"/>
+        <!--Jira Story - MCL-2213 -->
+        <apex:commandLink value="Small Law Account Insights" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.Small_Law_Account_Insights__c)}{!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}{!JSENCODE($Setup.LCRM_SSD_Links__c.Small_Law_Account_Insights1__c)}','_blank',height=600,width=700)" style="margin-left: 10px;" />
+        <!--Jira Story - MCL-2273 -->
+        <apex:commandLink value="Clear Usage Analytics" onclick="window.open('{!JSENCODE($Setup.LCRM_SSD_Links__c.Clear_Usage_Analytics__c)}{!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}','_blank',height=600,width=700)" style="margin-left: 10px;" />
+ </apex:form>           
+</apex:page>

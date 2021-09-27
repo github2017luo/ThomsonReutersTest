@@ -1,0 +1,89 @@
+<apex:page standardController="TR_Retention__Retention_Parent_Criteria__c" extensions="TR_Retention.RetentionContractDynamicListController" showHeader="false" id="thePage">
+
+ <apex:form id="myform">
+    <apex:pageblock id="pb1" title="Retention Dynamic Rules" >
+        
+         <apex:pageBlockButtons location="top" >
+             <apex:commandbutton value="New Retention Dynamic Rule" action="{!createNewDynamicRule}" rerender="pb2 ,pb1" style="height:18px;font-size: .9em;display: inline;padding: 2px 3px;margin: 1px;"/>    
+         </apex:pageBlockButtons>
+         
+        <apex:pageBlockSection id="dynamicRecords" columns="1" rendered="{!if(flagToRenderDynamicList && listOfDynamicRecords.size>0, true, false)}">
+            <apex:pageMessages id="showmsg" rendered="{!flagMessageOnPageLevel}"></apex:pageMessages>        
+            <apex:pageblockTable value="{!listOfDynamicRecords }" var="rec" >
+                <apex:column headerValue="Action">
+                <apex:commandLink value="Edit" action="{!EditRecord}" reRender="pb2" style="text-decoration:none;color:#015ba7!important" onmouseover="changeStyle(this)" onmouseout="removeLine(this)">
+                    <apex:param value="{!rec.Id}" assignTo="{!editRecId}" name="rec.Id" />
+                </apex:commandLink>&nbsp;|&nbsp;
+                <apex:commandLink value="Del" action="{!DeleteRecord}" reRender="pb1" onclick="if(!confirm('Are you sure?')){return false};" style="text-decoration:none;color:#015ba7!important" onmouseover="changeStyle(this)" onmouseout="removeLine(this)">
+                    <apex:param value="{!rec.Id}" assignTo="{!deleteRecId}" name="rec.Id" />
+                </apex:commandLink>
+                
+                </apex:column>                
+                <apex:column headerValue="{!$ObjectType.TR_Retention__Retention_Dynamic_Criteria__c.fields.Name.Label}">
+                    <apex:outputLink value="/{!rec.Id}" title="DynamicRuleName" target="_blank">{!rec.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.TR_Retention__Retention_Dynamic_Criteria__c.fields.TR_Retention__Rule_Group__c.Label}" value="{!rec.TR_Retention__Rule_Group__c}" title="Rule Group"/>
+                <apex:column headerValue="{!$ObjectType.TR_Retention__Retention_Dynamic_Criteria__c.fields.TR_Retention__Object__c.Label}" value="{!rec.TR_Retention__Object__c}" title="Object Name"/>                
+                <apex:column headerValue="{!$ObjectType.TR_Retention__Retention_Dynamic_Criteria__c.fields.TR_Retention__Field__c.Label}" value="{!rec.TR_Retention__Field__c}" title="Field"/>
+                <apex:column headerValue="{!$ObjectType.TR_Retention__Retention_Dynamic_Criteria__c.fields.TR_Retention__Operator__c.Label}" value="{!rec.TR_Retention__Operator__c}" title="Operator"/>
+                <apex:column headerValue="{!$ObjectType.TR_Retention__Retention_Dynamic_Criteria__c.fields.TR_Retention__Value__c.Label}" value="{!rec.TR_Retention__Value__c}" title="Value"/>
+            </apex:pageblockTable>           
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockSection rendered="{!if(listOfDynamicRecords.size==0, true, false)}">
+            No records to display.
+        </apex:pageBlockSection>
+        
+      </apex:pageblock>
+          
+         <apex:pageblock id="pb2" mode="maindetail">
+                  
+             <apex:pageBlockTable value="{!listOfInnerClass}" var="newRecord" rendered="{!IF(flagToRenderDynamicNewRecord && listOfInnerClass.size>0, true,false )}" >
+                 <apex:column headerValue="Rule Group" >
+                       <apex:inputField value="{!newRecord.con.TR_Retention__Rule_Group__c}" />
+                  </apex:column>
+                  
+                 <apex:column headerValue="Object">
+                     <apex:selectList value="{!objectValue }" size="1" multiselect="false" >
+                     <apex:selectOptions value="{!Objects}"/>
+                     <apex:actionSupport event="onchange" reRender="fieldblock"/>
+                     </apex:selectList>                     
+                 </apex:column>
+                 
+                 <apex:column headerValue="Field">
+                      <apex:selectList value="{!fieldValue}" multiselect="false" size="1" id="fieldblock">
+                      <apex:selectOptions value="{!FieldsForSelectedObject}"/>
+                      <apex:actionSupport event="onchange" rerender="valuecolumn"/>                    
+                      </apex:selectList>                   
+                  </apex:column>
+                  
+                  <apex:column headerValue="Operator" >
+                       <apex:inputField value="{!newRecord.con.TR_Retention__Operator__c}" />
+                  </apex:column>
+                  
+                  
+                  <apex:column headerValue="Value"  id="valuecolumn">
+                     <apex:inputField value="{!newRecord.con.TR_Retention__Value__c}" id="valueblock" />                  
+                  </apex:column>
+                  
+             </apex:pageBlockTable>
+             
+             <apex:pageBlockButtons location="bottom">
+              
+              <apex:actionStatus startText=" Saving the stuff " stopText=" Done " id="counterStatus" > 
+                  <apex:facet name="start" >Saving... <img src="/apexpages/devmode/img/saveStatus.gif" /> </apex:facet> 
+                      <apex:facet name="stop">
+                          <apex:commandButton value="Save" action="{!SaveRecord}" reRender="pb1, pb2,counterStatus" rendered="{!flagToRenderDynamicNewRecord}" status="counterStatus" />
+                      </apex:facet> 
+              </apex:actionStatus>
+              
+              <apex:actionStatus startText=" Cancelling the stuff " stopText=" Done " id="cancelStatus" > 
+                  <apex:facet name="start" >Cancelling... <img src="/apexpages/devmode/img/saveStatus.gif" /> </apex:facet> 
+                      <apex:facet name="stop">
+                          <apex:commandButton value="Cancel" action="{!CancelRecord}" reRender="pb2, cancelStatus" rendered="{!flagToRenderDynamicNewRecord}" status="cancelStatus"/>
+                     </apex:facet> 
+              </apex:actionStatus>
+             </apex:pageBlockButtons>             
+         </apex:pageblock>          
+</apex:form>  
+</apex:page>

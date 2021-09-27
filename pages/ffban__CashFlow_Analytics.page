@@ -1,0 +1,34 @@
+<apex:page controller="ffban.CashFlowAnalyticsController" action="{!init}">
+	<c:ffui_slds />
+	<apex:includeScript value="/lightning/lightning.out.js" />
+	<div id="CashFlowAnalyticsContainerId" style="height:100vh; display:block;"/>
+
+	<script>
+		/**
+		 * hack slds-scope class so that we get LEX background on VF iFrame
+		 */
+		(function () {
+			var scopeCls = 'slds-scope';
+			//remove sldsScope class that salesforce creates
+			var nodeList = document.querySelectorAll('.' + scopeCls);
+			for (let i = 0; i < nodeList.length; i++) {
+				nodeList[i].classList.remove(scopeCls);
+			}
+			//apply slds classes to body
+			document.body.classList.add('slds-brand-band', 'slds-brand-band_cover', 'slds-brand-band_medium');
+			//apply scope class to HTML
+			document.body.parentElement.classList.add(scopeCls);
+		}());
+	</script>
+
+	<script>
+		$Lightning.use('{!IF(ISBLANK(namespace), "c", namespace)}:CashFlowAnalyticsApp', function () {
+			$Lightning.createComponent('{!IF(ISBLANK(namespace), "c", namespace)}:CashFlowAnalytics',
+				{
+					query: '{!JSENCODE(FinalQuery)}'
+				},
+				"CashFlowAnalyticsContainerId"
+			);
+		});
+	</script>
+</apex:page>

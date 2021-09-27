@@ -1,0 +1,201 @@
+<!--
+
+Name           Description                                                                                              Date
+Samarpreet Singh    JIRA NO: Enabling Lightning as part of Sales Lightning Project..added lightning stylesheet              14-Feb-2019
+-->
+<apex:page id="PDA" standardController="Account" extensions="PrintDiscountAnalysisController" sidebar="false" lightningStylesheets="true">
+<apex:includeScript value="/support/console/22.0/integration.js"/>
+<apex:form id="form">
+<apex:outputText value="{!oAccount.BillingStreet}" rendered="false"/>
+<apex:outputText value="{!oAccount.BillingCity}" rendered="false"/>
+<apex:outputText value="{!oAccount.BillingPostalCode}" rendered="false"/>
+<apex:outputText value="{!oAccount.BillingState}" rendered="false"/>
+
+<script type="text/javascript" src="https://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+<script>
+function testOpenSubtab(){
+    if (sforce.console.isInConsole()) { 
+        var url = '/{!Account.Id}?isdtp=vw'; 
+        srcSelf(url); 
+    } else { 
+        var url = '/{!Account.Id}';
+        window.open(url,'_top'); 
+    } 
+ }
+ </script>
+<style>
+.linkClass {
+            color:blue;
+            font-size:11px;
+        }
+</style>
+<apex:sectionHeader id="pageTitle" title="Print Discount Analysis" subtitle="{!Account.Name}" />
+&nbsp;&nbsp;&nbsp;<a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">Back to {!Account.Name}</a> <!--SFD-16-->
+<!--<apex:outputLink styleClass="linkClass" target="" value="/{!Account}">
+                    Back to {!Account.Name}</apex:outputLink><br/>-->&nbsp;<br/>
+<apex:pageMessages id="pageMessages"/>                    
+<apex:outputPanel id="MultipleAccounts" rendered="{!bRenderPage}">
+<table><tr>
+<td><apex:commandButton value="Multiple Accounts" title="Show active subscriptions for multiple Accounts" disabled="{!bMultipleAccounts}" action="{!showMultipleAccounts}" reRender="MultipleAccounts" status="PartnerFunctionStatus"/></td>
+<td><apex:commandButton value="Single Account" title="Show active subscriptions only for current Account" disabled="{!NOT(bMultipleAccounts)}" action="{!hideMultipleAccounts}" reRender="MultipleAccounts,ActiveSubscriptions,pageMessages" status="PartnerFunctionStatus"/></td>
+<td><apex:actionStatus id="PartnerFunctionStatus">
+  <apex:facet name="start">
+    <div><img class="waitingImage" src="/img/loading.gif" title="Please Wait..."/>Please Wait...</div>
+  </apex:facet>
+</apex:actionStatus></td>
+</tr></table>         
+<apex:pageBlock title="Partner Function Accounts" rendered="{!bMultipleAccounts}">
+<script>
+      j$ = jQuery.noConflict();
+      j$(document).ready(function()
+      {
+        j$("[id$=parentCheckboxforAccounts]").click(function()
+        {
+          if(j$("[id$=parentCheckboxforAccounts]").attr('checked'))
+          {
+            j$("[id$=childCheckboxforAccounts]").attr('checked',true);
+          }
+          else
+          {
+            j$("[id$=childCheckboxforAccounts]").attr('checked',false);
+          }
+        });
+      });
+    </script>
+<apex:pageBlockButtons location="top">
+<table><tr>
+<td style="width:115px"><apex:commandButton rendered="{!oPartnerFunctions.size>0}" value="Get Subscriptions" title="Get Subscriptions for selected accounts" action="{!getlistPDASubItems}" rerender="ActiveSubscriptions,pageMessages" status="GetSubscriptionsStatus"/></td>
+<td>  <apex:actionStatus id="GetSubscriptionsStatus">
+  <apex:facet name="start">
+    <div><img class="waitingImage" src="/img/loading.gif" title="Please Wait..."/>Please Wait...</div>
+  </apex:facet>
+</apex:actionStatus></td>
+</tr></table>
+</apex:pageBlockButtons>
+<apex:pageBlockTable value="{!oPartnerFunctions}" var="PartnerFunction" rendered="{!oPartnerFunctions.size>0}">
+    <apex:column >
+      <apex:facet name="header">
+        <apex:inputCheckbox id="parentCheckboxforAccounts" title="Select/Deselect All"/>
+      </apex:facet>
+      <apex:inputCheckbox id="childCheckboxforAccounts" value="{!PartnerFunction.bPFSelected}"/>
+    </apex:column>
+    <apex:column headerValue="SAP Account Number" value="{!PartnerFunction.oPartnerFunction.Account_SAP_Number__c}"/>
+    <apex:column headerValue="Name" value="{!PartnerFunction.oPartnerFunction.Related_Account__r.Name}"/>
+    <apex:column headerValue="Name2" value="{!PartnerFunction.oPartnerFunction.Related_Account__r.NameTwo__c}"/>
+    <apex:column headerValue="Name3" value="{!PartnerFunction.oPartnerFunction.Related_Account__r.NameThree__c}"/>
+    <apex:column headerValue="Address1" value="{!PartnerFunction.oPartnerFunction.Street__c}"/>
+    <apex:column headerValue="Address2" value="{!PartnerFunction.oPartnerFunction.Related_Account__r.Street_Address_2__c}"/>
+    <apex:column headerValue="City" value="{!PartnerFunction.oPartnerFunction.City__c}"/>
+    <apex:column headerValue="State" value="{!PartnerFunction.oPartnerFunction.State__c}"/>
+    <apex:column headerValue="Zip" value="{!PartnerFunction.oPartnerFunction.Zip__c}"/>
+</apex:pageBlockTable>
+<apex:outputPanel layout="block" rendered="{!oPartnerFunctions.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>
+</apex:pageBlock>
+</apex:outputPanel>
+<apex:outputPanel id="ActiveSubscriptions" rendered="{!bRenderPage}">
+<apex:pageBlock id="SubsBlock" title="Active Subscriptions">
+  <apex:pageBlockSection title="Calculate" columns="3" collapsible="false">
+    <apex:pageBlockSectionItem >
+      <apex:panelGrid columns="4">
+        <apex:outputLabel for="Discount" style="font-weight:bold" >Discount</apex:outputLabel>
+        <!--<apex:inputText id="Discount" value="{!sDiscount}"/>-->
+        <apex:selectList size="1" value="{!sDiscount}">
+            <apex:selectOptions value="{!listDiscountValues}"/>
+        </apex:selectList>
+        <apex:commandButton title="Calculate PDA" value="Calculate" action="{!CalculatePDA}" rerender="GrandTotals,ActiveSubscriptions,pageMessages" status="Calculate_Status"/>
+        <apex:actionStatus id="Calculate_Status">
+          <apex:facet name="start">
+            <div><img class="waitingImage" src="/img/loading.gif" title="calculating"/>Calculating...</div>
+          </apex:facet>
+        </apex:actionStatus>
+      </apex:panelGrid>      
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+        <apex:panelGrid columns="2"> 
+        <apex:commandButton title="Clears all selections and PDA calculations" value="Clear" id="btnClear" action="{!clearSelections}" rerender="ActiveSubscriptions,pageMessages" status="Clear_Status" oncomplete="clearParentCheckbox()"/>
+        <apex:actionStatus id="Clear_Status">
+          <apex:facet name="start">
+            <div><img class="waitingImage" src="/img/loading.gif" title="Please Wait..."/>Please Wait...</div>
+          </apex:facet>
+        </apex:actionStatus>
+        </apex:panelGrid> 
+    </apex:pageBlockSectionItem>
+    <apex:pageBlockSectionItem >
+      <apex:panelGroup >
+        <apex:selectList size="1" value="{!sExportFormat}">
+          <apex:selectOption itemValue="PDF" itemLabel="PDF"/>
+          <apex:selectOption itemValue="Excel" itemLabel="Excel"/>
+          <apex:selectOption itemValue="Word" itemLabel="Word"/>
+        </apex:selectList>
+        <apex:commandLink styleClass="btn" value="Export" action="{!Export}" target="_blank" style="text-decoration:none"/>
+        <apex:image url="/s.gif" styleClass="infoIcon" title="Please make sure to click Calculate before exporting."/>
+      </apex:panelGroup>
+    </apex:pageBlockSectionItem>
+  </apex:pageBlockSection>
+  <apex:pageBlockSection id="SubsSection" columns="1">
+    <script>
+      j$ = jQuery.noConflict();
+      j$(document).ready(function()
+      {
+        j$("[id$=parentCheckbox]").click(function()
+        {
+          if(j$("[id$=parentCheckbox]").attr('checked'))
+          {
+            j$("[id$=childCheckbox]").attr('checked',true);
+          }
+          else
+          {
+            j$("[id$=childCheckbox]").attr('checked',false);
+          }
+        });
+      });
+      function clearParentCheckbox(){
+          document.getElementById('PDA:form:SubsBlock:SubsSection:SubsTable:parentCheckbox').checked = false;
+        }
+    </script>
+      <apex:pageBlockTable id="SubsTable" value="{!listPDASubItems}" var="PDASubItem" rendered="{!listPDASubItems.size>0}">
+        <apex:column >
+          <apex:facet name="header">
+            <apex:inputCheckbox id="parentCheckbox" title="Select/Deselect All"/>
+          </apex:facet>
+          <apex:inputCheckbox id="childCheckbox" value="{!PDASubItem.bPDAselected}"/>
+        </apex:column>
+        <apex:column headerValue="Material Number" value="{!PDASubItem.oPDASubItem.MaterialNumber}"/>
+        <apex:column headerValue="Description" value="{!PDASubItem.oPDASubItem.MaterialDesc}"/>
+        <!--<apex:column headerValue="WestPack Eligible">
+          <apex:image url="/img/checkbox_checked.gif" rendered="{!PDASubItem.oPDASubItem.WestpackFlag}"/>
+          <apex:image url="/img/checkbox_unchecked.gif" rendered="{!NOT(PDASubItem.oPDASubItem.WestpackFlag)}"/>
+        </apex:column>-->
+        <apex:column headerValue="Details" value="{!PDASubItem.oPDASubItem.ProgramDiscountDesc}"/>
+        <apex:column headerValue="Deal Id" value="{!PDASubItem.oPDASubItem.DealId}"/>
+        <apex:column headerValue="Current Program Discount" value="{!PDASubItem.oPDASubItem.ProgramDiscountPercent}"/>
+        <apex:column headerValue="Start Date" value=" {!PDASubItem.oPDASubItem.ContractStartDt}"/>
+        <apex:column headerValue="Format" value="{!PDASubItem.oPDASubItem.MediaHighLevelDesc}"/>
+        <apex:column headerValue="Quantity Total" value="{!PDASubItem.oPDASubItem.Quantity}"/>
+        <apex:column headerValue="Quantity Program Discount" value="{!PDASubItem.oPDASubItem.DiscountQuantity}" />
+        <apex:column headerValue="Estimated Upkeep per Unit" value="{!PDASubItem.oPDASubItem.EstimatedUnitUpKeep}"/>
+        <apex:column headerValue="Total Estimated Upkeep" value="{!PDASubItem.oPDASubItem.TotalEstimatedUpkeep}"/>
+        <apex:column headerValue="Discount Per Unit" value="{!PDASubItem.oPDASubItem.DiscountPerUnit}"/>
+        <apex:column headerValue="Total Print Discount" value="{!PDASubItem.oPDASubItem.TotalPrintDiscount}"/>
+        <apex:column headerValue="Total Upkeep After Discount" value="{!PDASubItem.oPDASubItem.TotalUpkeepAfterDiscount}"/>
+        <apex:column headerValue="Contract #" value="{!PDASubItem.oPDASubItem.ContractNumber}"/>
+        <apex:column headerValue="Minimum Incremental" value="{!PDASubItem.oPDASubItem.MinimumIncremental}"/>
+        <!--<apex:column headerValue="" value="{!PDASubItem.oPDASubItem.}"/>-->
+        
+      </apex:pageBlockTable>
+      <apex:outputPanel layout="block" rendered="{!listPDASubItems.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="Active Subscriptions Total" collapsible="false"></apex:pageBlockSection>
+    <apex:outputPanel id="GrandTotals">    
+      <table style="width:100%"><tr>
+        <td><apex:outputLabel value="Total Estimated UpKeep" style="font-weight:bold"/>&nbsp;<apex:outputText value="{!oPdaItem.TotalEstimatedUpKeep}"/></td>
+        <td><apex:outputLabel value="Total Print Discount" style="font-weight:bold"/>&nbsp;<apex:outputText value="{!oPdaItem.TotalDiscount}"/></td>        
+        <td><apex:outputLabel value="Total UpKeep After Discount" style="font-weight:bold"/>&nbsp;<apex:outputText value="{!oPdaItem.TotalUpKeepAfterDiscount}"/></td>
+        <td><apex:outputLabel value="Estimated Average Monthly Print Savings" style="font-weight:bold"/>&nbsp;<apex:outputText value="{!oPdaItem.TotalMonthlySavings}"/></td>
+        <td><apex:outputLabel value="Minimum Annual Incremental Required" style="font-weight:bold"/>&nbsp;<apex:outputText value="{!oPdaItem.TotalMinimumIncremental}"/></td>
+      </tr></table>    
+    </apex:outputPanel>
+</apex:pageBlock>
+</apex:outputPanel>
+</apex:form>
+</apex:page>

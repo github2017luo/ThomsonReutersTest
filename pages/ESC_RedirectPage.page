@@ -1,0 +1,42 @@
+<apex:page standardcontroller="Case" extensions="ESC_CaseClosedController" lightningStylesheets="true">
+    <apex:includescript value="/support/console/40.0/integration.js">
+        <apex:outputpanel id="thePanel" layout="block">
+            <script type="text/javascript">
+                try {
+                   
+                    sforce.console.getFocusedSubtabId(function(result) {
+                        OPENEDTAB = result.id;
+                    sforce.console.getFocusedPrimaryTabId(function(result) {
+                        PRIMARYTAB = result.id;
+                        sforce.console.refreshPrimaryTabById(PRIMARYTAB, true,
+                         refreshSuccess, true); 
+                         sforce.console.getSubtabIds(PRIMARYTAB, showTabId);
+                    });
+                    var showTabId = function showTabId(result) {
+                        var count = result.ids.length;
+                        
+                         if(count >1){
+                         sforce.console.closeTab(OPENEDTAB);
+                        
+                         }
+                        
+                         
+                    };
+                    
+                  
+                  
+                    var refreshSuccess = function refreshSuccess(result) {
+                        //Report whether refreshing the primary tab was successful
+
+                    };
+ });
+                } 
+                catch(ex) {
+                    alert(ex);
+                }
+
+            </script>
+        </apex:outputpanel>
+    </apex:includescript>
+
+</apex:page>

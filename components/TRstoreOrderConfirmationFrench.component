@@ -1,0 +1,167 @@
+<apex:component controller="TRstoreOrderConfirmationFrenchCon" access="global">
+   <apex:attribute type="id" name="ProposalId" assignTo="{!proposalRecId}" description="This is the Id for Apttus Quote ID and based on this we will query products and related translations" />
+
+<html>
+    <head>
+        <title>Email Template</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td colspan="3" style="padding: 10px;">
+                    <img src="{!URLFOR($Resource.TRStoreLogo)}" alt="logo" style="width:260px;"/>
+                </td>
+            </tr>
+            <tr height="60px"></tr>
+            <tr>
+                <td colspan="3" style="padding: 10px;">
+                  <p style="font-weight: 400;font-size: 35px;color: #4D4D4D;
+                   text-align: left;">Merci pour votre commande </p>
+                </td>
+            </tr>
+            <tr height="10px"><td colspan="3" ></td></tr>
+            <tr>
+                <td style="padding: 10px;font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;font-size: 21px;color: #4D4D4D" colspan="3">
+                   <span>Numéro de commande</span><br/>
+                   <span style="font-size:15px">{!quote.Name}</span>
+                </td>
+            </tr>
+            <tr height="10px"><td colspan="3"></td></tr>
+            <tr>
+                <td style="padding: 10px;font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;font-size: 21px;color: #4D4D4D" colspan="3">
+                   <span>Mode d’expédition</span><br/>
+                   <span style="font-size:15px;font-weight: 100;">{!shippingMethod}</span>
+                </td>
+            </tr>
+            <tr height="60px"><td colspan="3" style="color: #4D4D4D"><hr/></td></tr>
+            <tr>
+                <td style="padding: 10px;font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;font-size: 21px;;color: #4D4D4D;width:315px" >
+                   <span>Numéro de compte</span><br/>
+                   <span style="font-size:15px;">{!quote.APTS_SSD_bill_to__r.Source_System_Account_Number__c}</span>
+                </td>
+                <td style="padding: 10px;font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;font-size: 21px;;color: #4D4D4D;width:315px" >                    
+                    <span>Adresse de livraison</span><br/><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_Order_Confirmation_Contact__r.Name}</span><br/><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_SSD_ship_to__r.Name}</span><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_SSD_ship_to__r.Number_Street__c},{!quote.APTS_SSD_ship_to__r.City__c}</span><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_SSD_ship_to__r.State__c} {!quote.APTS_SSD_ship_to__r.Postal_Code__c}</span>
+                 </td>
+                 <td style="padding: 10px;font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;font-size: 21px;;color: #4D4D4D;width:315px" >                    
+                    <span>Détails de la facturation</span><br/><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!IF(quote.APTS_Payment_Option__c="Bill to Account","Bill to Account", quote.APTS_Card_Type__c +" ******* "+quote.CreditCard_LastFourDigits__c)}</span><br/><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_SSD_bill_to__r.Name}</span><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_SSD_bill_to__r.Number_Street__c},{!quote.APTS_SSD_bill_to__r.City__c}</span><br/>
+                    <span style="font-size:15px;font-weight: 100;">{!quote.APTS_SSD_bill_to__r.State__c} {!quote.APTS_SSD_bill_to__r.Postal_Code__c}</span>
+                 </td> 
+                </tr>
+                <tr height="24px"><td colspan="3" style="color: #4D4D4D"><hr/></td></tr>
+                <tr style="font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;font-size: 21px;;color: #4D4D4D;">
+                    <td style="padding: 10px;">Articles</td>
+                    <td style="padding: 10px;" align="right">Quantité</td>
+                    <td style="padding: 10px;" align="right">Prix</td>
+                </tr>
+                <tr height="16px"><td colspan="3" style="color: #4D4D4D"><hr/></td></tr>
+                <apex:repeat var="oli" value="{!productsWithFrTrans}">
+                <tr style="font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-weight: bold;font-style: normal;color: #4D4D4D;">
+                    <td style="padding: 10px;font-size: 16px" >
+                        <a href="{!oli.qli.Product_URL__c}" style="text-decoration:none;color:#027DB4"><span>{!oli.qli.APTS_Product_Name__c}</span></a><br/>
+                        <span style="font-size:14px;font-weight:200;">
+                            <apex:outputPanel rendered="{!(NOT(ISBLANK(oli.pdt.DC_Short_Description__c))) }" > ( {!oli.pdt.DC_Short_Description__c}) </apex:outputPanel>
+                        </span>
+                    </td>
+                    <td style="padding: 10px;font-size: 14px;" align="right">                    
+                        <span>
+                            <apex:outputText rendered="{!NOT(ISNULL(oli.qli.APTPS_Quantity_Display__c))}">
+                                        {!Round(oli.qli.APTPS_Quantity_Display__c,0)}
+                            </apex:outputText>
+                        </span><br/>
+                     </td>
+                     <td style="padding: 10px;font-size: 20px;" align="right">                    
+                        <span>
+                            <apex:outputText rendered="{!NOT(ISNULL(oli.qli.Apttus_QPConfig__NetPrice__c))}">
+                                        $ {!Round(oli.qli.Apttus_QPConfig__NetPrice__c,2)}
+                            </apex:outputText>
+                        </span><br/>
+                        <span style="font-size: 15px;">
+                            <apex:outputPanel rendered="{!(oli.qli.Apttus_QPConfig__NetPrice__c != oli.qli.Apttus_QPConfig__BaseExtendedPrice__c)}" > 
+                                        était de
+                                        <apex:outputText rendered="{!NOT(ISNULL(oli.qli.Apttus_QPConfig__BaseExtendedPrice__c))}">
+                                        $ {!Round(oli.qli.Apttus_QPConfig__BaseExtendedPrice__c,2)}
+                                        </apex:outputText>
+                                          
+                            </apex:outputPanel>
+                        </span>                        
+                    </td> 
+                </tr> 
+                </apex:repeat>
+                <tr height="20px"><td colspan="3"></td></tr>
+                
+                <tr height="40px"><td colspan="3" style="color: #4D4D4D"><hr/></td></tr>   
+                <tr height="50px" style="font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-style: normal;color: #4D4D4D;font-size: 22px;">                   
+                    <td colspan="2" align="right">                    
+                        <span>Sous-total ({!lineItemCount} {!IF(productsWithFrTrans.size > 1,"articles","article")}):</span>
+                     </td>
+                     <td align="right" style="font-size:20px">                    
+                        <span>
+                            <apex:outputText rendered="{!NOT(ISNULL(quote.Total_One_Time_Net_Price__c))}">
+                                    $ {!Round(quote.Total_One_Time_Net_Price__c,2)}
+                            </apex:outputText>
+                        </span>                       
+                    </td> 
+                </tr> 
+                <tr height="50px" style="font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-style: normal;color: #4D4D4D;font-size: 22px;">                   
+                    <td colspan="2" align="right">                    
+                        <span>Expédition: </span>
+                     </td>
+                     <td align="right"  style="font-size:20px">                    
+                        <span>{!shippingValue} </span>                       
+                    </td> 
+                </tr>  
+                <tr height="50px" style="font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-style: normal;color: #4D4D4D;font-size: 22px;">                   
+                    <td colspan="2" align="right">                    
+                        <span>Taxes: </span>
+                     </td>
+                     <td align="right"  style="font-size:20px">                    
+                        <span>En attente</span>                       
+                    </td> 
+                </tr> 
+                <tr height="50px" style="font-weight:bold;font-family: 'Knowledge2017-Medium', 'Knowledge2017 Medium', 'Knowledge2017';font-style: normal;color: #4D4D4D;font-size: 22px;">                   
+                    <td colspan="2" align="right">                    
+                        <span>Estimation du total de la commande </span>
+                     </td>
+                     <td align="right"  style="font-size:20px">                    
+                        <span>
+                            <apex:outputText rendered="{!NOT(ISNULL(quote.Total_One_Time_Net_Price__c))}">
+                                    $ {!Round(quote.Total_One_Time_Net_Price__c,2)}
+                            </apex:outputText>
+                        </span>                       
+                    </td> 
+                </tr>  
+                <tr height="40px"><td colspan="3"></td></tr>
+                <apex:outputPanel rendered="{!quote.APTS_Payment_Option__c='Credit Card'}">
+                <tr style="font-weight:400;font-size: 17px;">                   
+                    <td colspan="3" style="padding:15px;">                    
+                        <span>Pour autoriser le paiement, votre carte de crédit est débitée de 1 $.</span><br />
+                        <span>Le prix total de l’achat, y compris les taxes ou les frais d’expédition, sera facturé séparément.</span><br />
+                        <span>Vous serez remboursé du montant initial de 1 $ dans un délai de 7 jours.</span>
+                     </td>
+                </tr>
+                </apex:outputPanel>
+                <tr height="40px"><td colspan="3"></td></tr>
+                <tr style="font-weight:bold;font-size: 29px;color:#4D4D4D" bgcolor="#f8f8f8">                   
+                    <td colspan="3" style="padding:15px;">                    
+                        <span>Vous avez besoin d’aide avec votre commande?</span><br /><br />
+                        <span style="font-size:20px;">Appel {!$Label.storeCallHelpNum}</span><br />
+                        <span class="footer-links" style="font-size:15px;">
+                            <a href="{!$label.TRStore_Return_policy}" style="color:#027DB4">Politique de retour</a>&nbsp;&nbsp;
+                            <a href="{!$label.TRStore_Shipping_Information}" style="color:#027DB4">Informations sur l’expédition</a>&nbsp;&nbsp;
+                            <a href="{!$label.TRStore_Privacy_Security}" style="color:#027DB4">Confidentialité et sécurité </a>
+                        </span>
+                     </td>
+                </tr>     
+        </table>
+
+    </body>
+
+</html>
+</apex:component>

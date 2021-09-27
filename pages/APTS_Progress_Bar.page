@@ -1,0 +1,36 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c">
+    <div align="center">
+    	<apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Draft'}" layout="block">
+    		<apex:image id="theImage1" value="{!$Resource.Proposal_Chevron_Draft}" width="700" height="45" alt="Description of image here"/>
+		</apex:outputPanel>
+         <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme4d'}">
+     <apex:slds />
+     <div class="slds-scope" align="left">
+         <div class="slds-page-header">
+             Information
+         </div>
+     </div>
+ </apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Generated'}">
+    	<apex:image id="theImage2" value="{!$Resource.Proposal_Chevron_Generated}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Approved'}">
+    	<apex:image id="theImage3" value="{!$Resource.Proposal_Chevron_Approved}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Approval Required'}">
+    	<apex:image id="theImage4" value="{!$Resource.Proposal_Chevron_AppReq}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'In Review'}">
+    	<apex:image id="theImage5" value="{!$Resource.Proposal_Chevron_InRev}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Presented'}">
+    	<apex:image id="theImage6" value="{!$Resource.Proposal_Chevron_Presented}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Denied'}">
+    	<apex:image id="theImage7" value="{!$Resource.Proposal_Chevron_Denied}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+    <apex:outputPanel rendered="{!$User.UIThemeDisplayed == 'Theme3' && Apttus_Proposal__Proposal__c.Apttus_Proposal__Approval_Stage__c == 'Accepted'}">
+    	<apex:image id="theImage8" value="{!$Resource.Proposal_Chevron_Accepted}" width="700" height="45" alt="Description of image here"/>
+	</apex:outputPanel>
+   </div>
+</apex:page>

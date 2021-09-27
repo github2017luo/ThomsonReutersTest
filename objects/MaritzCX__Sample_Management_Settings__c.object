@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>This setting stores all the configurations related to Sample Management module.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>MaritzCX__API_Frequency__c</fullName>
+        <defaultValue>60</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This field stores the time interval between two successive MaritzCX real-time API call for a Survey in seconds.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field specifies the minimum time interval between two successive Invitation API calls for a Survey.</inlineHelpText>
+        <label>Min Interval Between API Calls (Seconds)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Disable_Sending_Invitations__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This flag is used to stop Sample Management operations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This flag is used to stop Sample Management operations.</inlineHelpText>
+        <label>Disable Sending Invitations</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Number_Of_Recipients__c</fullName>
+        <defaultValue>500</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This stored the maximum number of recipients that can be sent over to MaritzCX Sample Management API in a single API call.</description>
+        <externalId>false</externalId>
+        <label>Number Of Recipients</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Retry_Limit__c</fullName>
+        <defaultValue>3</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Retry Limit</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Sample_Error_Handling_Rule__c</fullName>
+        <defaultValue>1</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This field determines behavior of Error Handling while sending Survey Invitations. 
+Supported Values: 0 and 1.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field determines behavior of error handling while sending survey invitations.
+0 - Import recipient with valid prepopulation data, discards only invalid prepop data
+1 [Recommended] – Imports recipient without any error, rejects in case of any error</inlineHelpText>
+        <label>Sample Error Handling Rule</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Service_Endpoint__c</fullName>
+        <defaultValue>&apos;sampleapi.allegiancetech.com&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This field stores the endpoint for calling Sample Management APIs.</description>
+        <externalId>false</externalId>
+        <label>Service Endpoint</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>6. Sample Management Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

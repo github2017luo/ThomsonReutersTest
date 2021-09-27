@@ -1,0 +1,108 @@
+<apex:page standardController="OpportunityProductDetail__c" extensions="loadOppProductDetailController" tabStyle="Opportunity" >
+<apex:includeScript value="/support/console/20.0/integration.js"/>
+<apex:form id="Form1">
+<apex:pageMessages />
+<script type="text/javascript">
+
+    var pageLoad = window.onload;
+     window.onload = function(){
+          // alert(pageLoad);
+           if (pageLoad) {
+                pageLoad();
+           }
+           OpenSubtab_IP();
+        };
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Opportunity Product Detail');
+        };
+        
+    
+</script>
+
+<apex:sectionHeader id="pageTitle" title="{!$Label.Opp_Prod_Details}" subtitle="{!oOpportunity.Name}" description="{!$Label.Entitle_Prod_Add_Prod_Page_Msg}"/>
+
+    <apex:pageBlock title="{!$Label.Product_Detail}" mode="detail">
+  
+        <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!tableDataList}" var="wpDetail" id="Form1">
+                   <apex:column headerClass="hiddenHeader" style="padding:0px">
+                                <apex:pageBlockTable value="{!wpDetail.wrapDetailContactList}" var="wrpDetailContact"  style="width:100%" id="PBT2">
+                                   <apex:column headerClass="{!IF(wpDetail.header,'showHeader','hiddenHeader')}" headerValue="{!$Label.Product}" style="padding:5px;width:30%;" value="{!wrpDetailContact.opdetail.Product__c}">
+
+                                   </apex:column>
+                                   <apex:column headerClass="{!IF(wpDetail.header,'showHeader','hiddenHeader')}" headerValue="{!$Label.Contact}" style="padding:5px;width:25%" id="contact_column">
+                                        <apex:selectList value="{!wrpDetailContact.opdc.Contact__c}" multiselect="false" size="1" style="width:200px;margin-right:50px;" >                                    
+                                            <apex:actionSupport event="onchange" action="{!handleContactChange}" rerender="PBT2">
+                                              <apex:param name="selectedProd" value="{!wpDetail.rowNumber}" assignTo="{!selectedProd}"/>
+                                              <apex:param name="selectedCon" value="{!wrpDetailContact.rowNumber}" assignTo="{!selectedCon}"/>
+                                            </apex:actionSupport>
+                                            <apex:selectOptions value="{!ContactSelectOptions}"/>                                  
+                                        </apex:selectList>                                        
+                                    </apex:column>
+                                    <apex:column headerClass="{!IF(wpDetail.header,'showHeader','hiddenHeader')}" headerValue="{!$Label.E_mail}" style="padding:5px;width:25%" id="email_column">
+                                     
+                                     <!--<apex:inputText rendered="{!AND(wrpDetailContact.opdc.Contact__c != null, mapContacts[wrpDetailContact.opdc.Contact__c].Email == null)}" value="{!wrpDetailContact.email}"/>                                          
+                                    <apex:inputText rendered="{!AND(wrpDetailContact.opdc.Contact__c != null,mapContacts[wrpDetailContact.opdc.Contact__c].Email != null)}" value="{!mapContacts[wrpDetailContact.opdc.Contact__c].Email}"/>-->
+                                         <apex:outputPanel layout="block" styleClass="requiredInput">
+                                            <div class="requiredBlock"></div>
+                                             <apex:inputField rendered="{!wrpDetailContact.opdc.Contact__c!=null}" value="{!wrpDetailContact.opdc.Email__c}"/>
+                                          </apex:outputPanel>
+                                    </apex:column>                                    
+                                    <apex:column headerClass="{!IF(wpDetail.header,'showHeader','hiddenHeader')}" headerValue="{!$Label.SAP_Contact_ID}" style="padding:5px;width:20%"  id="sapid_column">
+                                        <apex:outputLabel style="margin-left:50px;" rendered="{!wrpDetailContact.opdc.Contact__c!=null}" value="{!mapContacts[wrpDetailContact.opdc.Contact__c].SAP_Contact_ID__c}"/>
+                                    </apex:column>                                    
+                                </apex:pageBlockTable> 
+                                
+                                <apex:outputPanel style="margin-left:194px">
+                                    <apex:image url="{!URLFOR($Resource.geopointe__images, 'blackplus24.png')}" style="margin-left:190px;" width="10" height="10"/>
+                                    <apex:commandLink action="{!addContact}" value="{!$Label.Add_Contact}" id="theCommandLink" style="margin-left:3px;" reRender="Form1">
+                                     <apex:param name="selectedProd" value="{!wpDetail.rowNumber}" assignTo="{!selectedProd}"/>
+                                    </apex:commandLink>
+                                </apex:outputPanel> 
+                                <div style="margin:5px 0px 0px 0px;border-bottom:5px solid #e0e3e5;width:100%"/>                                   
+                    </apex:column>
+                 </apex:pageBlockTable>
+        </apex:pageBlockSection>
+        
+        
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="{!$Label.Save_Close}"/>
+            <apex:commandButton action="{!quickSave}" value="{!$Label.Save}" reRender="Form1" status="sts"/>            
+            <apex:commandButton action="{!cancel}" value="{!$Label.Cancel}"/>
+            <!--<apex:commandLink action="{!Cancel}" value="{!$Label.Cancel}" id="theCommandLink"/>-->
+            <!--<A HREF="{!oppRedirectURl}" onClick="testCloseTab();return false">-->
+            
+            
+            <!--<apex:commandLink action="{!Cancel}" value="{!$Label.Cancel}" id="theCommandLink" oncomplete="javascript:testCloseTab(); return false;"/>-->
+            
+            
+            <!--<apex:commandButton onclick="javascript:testCloseTab();" value="{!$Label.Cancel}" id="theCommandButton"/>-->
+            <!--input type = "button" onclick="javascript:testCloseTab();" value="{!$Label.Cancel}" id="theCommandButton" class="btn"/-->
+            
+            <!--</A>-->
+            <apex:includeScript value="/support/console/36.0/integration.js"/>
+                
+            <apex:actionStatus startText="{!$Label.Please_Wait}" id="sts"></apex:actionStatus>
+        </apex:pageBlockButtons>
+        
+        <!--apex:actionFunction name="CallAF" action="{!cancel}" /-->
+    </apex:pageBlock>
+</apex:form>
+
+
+    <style type="text/css">
+         .hiddenHeader{
+             display:none;
+         }    
+         .showHeader{
+             border-left:1px solid #e0e3e5;
+         }
+         
+     </style> 
+</apex:page>

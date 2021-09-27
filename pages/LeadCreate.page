@@ -1,0 +1,353 @@
+<!--
+ * Lead Create VF page.
+ *
+ * @author  Srikanth Kuruva
+ * @version 2014-03-20
+ */
+ 
+/**
+ * CHANGE HISTORY
+ * =============================================================================
+ * Date         Name                    Description
+ * 2014-03-20   Srikanth Kuruva         Created                                                                   
+ * =============================================================================
+ */
+ 
+ /**
+ * CHANGE HISTORY
+ * =============================================================================
+ * Date         Name                    Description
+ * 2019-02-06   Ankit Raj               Enabled LightningStylesheets as part of Sales Lightning                                                              
+ * =============================================================================
+ -->
+ 
+<apex:page standardController="Lead" extensions="LeadCreateController" lightningStylesheets="true" id="thePage" action="{!userProfileName}">
+<apex:includeScript value="/support/console/36.0/integration.js"/>
+ 
+    <apex:form id="formEdit">
+    <!--<body onload="init();"/>-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>
+    <script type="text/javascript">
+    function redirectOnSave(){
+        if((typeof sforce != 'undefined') ){
+            //sforce.one.navigateToURL('/00Q/e?retURL=%2Fhome%2Fhome.jsp&nooverride=true');
+            sforce.one.createRecord(Lead);
+        }
+    }
+    </script>
+    
+   
+        <apex:sectionHeader id="pageTitle" title="Create Lead" subtitle="New Lead" />
+        <apex:pageMessages id="globalMessages" escape="false" />
+        
+        <apex:actionStatus id="statusValidateLead">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating lead please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+         
+        <apex:pageBlock id="blockLead" title="Lead Edit" mode="edit">
+            <apex:pageBlockButtons >
+                <!--apex:commandButton id="buttonSave" value="Save" action="{!save}" rendered="{!NOT(HasServiceErrors)}" rerender="formEdit" status="statusValidateLead" oncomplete="setResult();"/-->
+                <input type = "button" id ="buttonSave" value="Save" onclick="javascript:saveTab();" rendered="{!NOT(HasServiceErrors)}" rerender="formEdit" status="statusValidateLead" oncomplete="setResult();" class="btn"/> <!--[SFD16-Snehajit]-->
+                <apex:commandButton id="buttonRetry" value="Retry" action="{!save}" rendered="{!HasServiceErrors}" rerender="formEdit" status="statusValidateLead" />
+                <apex:commandButton id="buttonContinue" value="Continue" action="{!continueSave}" rendered="{!HasServiceErrors}"/>
+                <!--apex:commandButton id="buttonCancel" value="Cancel" action="{!cancel}" /-->
+                <input type = "button" onclick="javascript:cancelTab();" value="{!$Label.Cancel}" id="theCommandButton" class="btn"/> <!--[SFD16-Snehajit]-->
+                
+                <script type="text/javascript">                    
+                    function cancelTab() {                       
+                       if(sforce.console.isInConsole()){                         
+                        //First find the ID of the current tab to close it
+                        sforce.console.getEnclosingTabId(closeSubtab);                    
+                        redirectToCamp();
+                       }else{                        
+                           redirectToCamp();
+                       }
+                    }
+                    var closeSubtab = function closeSubtab(result) {
+                        //Now that we have the tab ID, we can close it
+                        var tabId = result.id;
+                        sforce.console.closeTab(tabId);
+                    };
+                    
+                    function redirectToCamp(){
+                        callCancel();
+                    }                    
+                    function saveTab() { 
+                        if(sforce.console.isInConsole()){ 
+                            
+                            callSave();
+                            //alert('print lead name');
+                            var firstName = document.getElementById('thePage:formEdit:blockLead:theSection:j_id43:leadFirstName').value; 
+                            //alert(firstName);
+                            var lastName = document.getElementById('thePage:formEdit:blockLead:theSection:leadLastName').value; 
+                            //alert(lastName);                                                      
+                            sforce.console.setTabTitle('Lead:' + firstName + ' ' + lastName);
+                            
+                        }
+                        else{
+                            callSave();
+                        }
+                    }                    
+                </script>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="theSection" >
+                <apex:inputField value="{!Lead.Company}"/>
+                <apex:outputField value="{!Lead.OwnerId}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Tax_Number_Type__c}" rendered="{!$Profile.Name = 'Partner Portal User'}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Lead.fields.FirstName.Label}</apex:outputLabel>
+                    <apex:panelGroup >
+                        <apex:inputField value="{!Lead.salutation}"/>
+                        <apex:inputField value="{!Lead.FirstName}" id="leadFirstName"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.Tax_Number__c}" rendered="{!$Profile.Name = 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Status}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.LastName}" id="leadLastName"/>
+                <apex:inputField value="{!Lead.Tax_3__c}" rendered="{!$Profile.Name = 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Phone}" rendered="{!$Profile.Name = 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Email}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Tax_4__c}" rendered="{!$Profile.Name = 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Phone}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Email}" rendered="{!$Profile.Name = 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Tax_Number_Type__c}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Type__c}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Tax_Number__c}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Description}" style="width:250px;" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Tax_3__c}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!$Profile.Name <> 'Partner Portal User'}">
+                <apex:outputLabel value="{!$ObjectType.Lead.Fields.Tax_4__c.Label}" rendered="{!$ObjectType.Lead.Fields.Tax_4__c.Accessible}"/>
+                <apex:inputField value="{!Lead.Tax_4__c}" />
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.Sales_Org__c}"  onchange="setTimeout(defaultCustomerType(this,'{!$Component.CustomerType}'),10000000);" id="SalesOrg" />
+                <apex:inputField value="{!Lead.Business_Unit_LatAm__c}"  onchange="setTimeout(defaultCustomerType(this,'{!$Component.CustomerType}'),10000000);" id="BusinessUnit" rendered="{!($Profile.Name == $Label.LatAmPartnerCommunityProfile)}" />
+                <!--<apex:inputField value="{!Lead.Sales_Org__c}"  onchange="setTimeout(defaultCustomerType(this,'{!$Component.CustomerType}'),10000000);" id="SalesOrg" rendered="{!salesOrgSection}"/>-->
+               
+                <!--  <apex:inputField value="{!Lead.Industry}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>  Harshitha commented this line for Latam Segmentation Project>>SCL 7-->
+                <apex:inputField value="{!Lead.Customer_Type__c}"  id="CustomerType1" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                <!--<apex:inputField value="{!Lead.LeadSource}" id="LeadSource1" rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                <!-- Harshitha adding new field "Customer-Sub Type" for Latam Segmentation Project>> SCl 2-->
+                <apex:inputField value="{!Lead.Vertical__c}" rendered="{!($Profile.Name == $Label.LatAmPartnerCommunityProfile)}"/>
+                <apex:inputField value="{!Lead.Customer_Sub_Type__c}" required="true" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                <apex:inputField value="{!Lead.Solution__c}" rendered="{!($Profile.Name == $Label.LatAmPartnerCommunityProfile)}"/>
+                <!--<apex:inputField value="{!Lead.Customer_Group__c}" id="CustomerGroup1" rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 <!--<apex:inputField value="{!Lead.Source_Desc__c}" style="width:200px;" rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 <!--<apex:inputField value="{!Lead.Customer_Class__c}"  id="CustomerType2" rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 <!--<apex:pageBlockSectionItem rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 <!--<apex:inputfield value="{!Lead.Industry_LatAm__c}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 <!--<apex:pageBlockSectionItem rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 <!--<apex:inputfield value="{!Lead.Sub_Industry_LatAm__c}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>-->
+                 
+                  
+                 <!--   <apex:inputfield value="{!Lead.Practice_Areas__c}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>   Harshitha adding new filed "Sub-Industry LatAm" in the place of "Practice Areas" field for Latam Segmentation Project>>SCL 21-->
+                <apex:inputField value="{!Lead.LeadSource}" id="LeadSource2" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Type__c}"  id="CustomerType3" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Source__c}" id="LeadSource3" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <!-- Harshitha adding new field "Customer-Sub Type" for Latam Segmentation Project>> SCl 2  -->
+                <apex:inputField value="{!Lead.Customer_Sub_Type__c}" required="true" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Group__c}" id="CustomerGroup2" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputField value="{!Lead.Source_Desc__c}" style="width:200px;" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputField value="{!Lead.Customer_Class__c}"  id="CustomerType4" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputfield value="{!Lead.Industry_LatAm__c}" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:pageBlockSectionItem rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputfield value="{!Lead.Sub_Industry_LatAm__c}" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                  <apex:pageBlockSection />
+                 <!-- <apex:inputfield value="{!Lead.Industry}" rendered="{!($Profile.Name == 'LatAm User') }" html-disabled="true"/> Harshitha commented this line for Latam Segmentation Project>>SCL 7-->
+          
+               
+                <apex:inputField value="{!Lead.Customer_Group__c}" id="CustomerGroup" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Type__c}"  id="CustomerType" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Class__c}" id="CustomerClass" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Sub_Type__c}" required="true" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.LeadSource}" id="LeadSource" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+                <apex:inputfield value="{!Lead.Industry_LatAm__c}" rendered="{!OR($Profile.Name == 'TR Business Administrator' , $Profile.Name == 'System Administrator')}"/>
+                <apex:inputfield value="{!Lead.Sub_Industry_LatAm__c}" rendered="{!OR($Profile.Name == 'TR Business Administrator' , $Profile.Name == 'System Administrator')}"/>
+                <apex:inputField value="{!Lead.Industry}" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Source__c}" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/><apex:pageBlockSectionItem rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}" />
+                <apex:inputField value="{!Lead.Source_Desc__c}" style="width:200px;" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection title="Address Information" columns="2">
+                <apex:inputField value="{!Lead.SAPAccountNumber__c}" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User')}"/><apex:pageBlockSectionItem rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Billing_Street__c}" />
+                <apex:inputText value="{!Lead.Billing_Street_2__c}" maxlength="35" rendered="{!$Profile.Name == 'Partner Portal User'}"/>
+                <apex:inputField value="{!Lead.Billing_City__c}" />
+                <apex:pageBlockSectionItem id="sectionItemState" rendered="{!$Profile.Name == 'Partner Portal User'}">
+                    <apex:outputLabel for="selectBillingState" value="{!$ObjectType.Lead.Fields.Billing_State__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <apex:selectList id="selectBillingState" 
+                            value="{!Lead.Billing_State__c}" 
+                            size="1"
+                            multiselect="false">
+                            
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="sectionItemCountry" rendered="{!$Profile.Name <> 'Partner Portal User'}">
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$ObjectType.Lead.Fields.Billing_Country__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" 
+                                value="{!Lead.Billing_Country__c}" 
+                                size="1"
+                                multiselect="false" required="true">
+                                
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                    event="onchange"
+                                    action="{!addressCountryChanged}"
+                                    rerender="selectBillingState11"
+                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <!--</div>-->
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem id="sectionItemState1" rendered="{!$Profile.Name <> 'Partner Portal User'}">
+                    <apex:outputLabel for="selectBillingState11" value="{!$ObjectType.Lead.Fields.Billing_State__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <apex:selectList id="selectBillingState11" 
+                            value="{!Lead.Billing_State__c}" 
+                            size="1"
+                            multiselect="false">
+                            
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.Billing_Zip__c}"/>
+                <apex:pageBlockSectionItem id="sectionItemCountry1" rendered="{!$Profile.Name == 'Partner Portal User'}">
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$ObjectType.Lead.Fields.Billing_Country__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" 
+                                value="{!Lead.Billing_Country__c}" 
+                                size="1"
+                                multiselect="false" required="true">
+                                
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                    event="onchange"
+                                    action="{!addressCountryChanged}"
+                                    rerender="selectBillingState"
+                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <!--</div>-->
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.County__c}"/>
+                <apex:inputField value="{!Lead.PO_Box__c}" rendered="{!$Profile.Name <> 'Partner Portal User'}"/>
+            </apex:pageBlockSection>
+             <apex:actionFunction name="callCancel" action="{!cancel}" /> <!--[SFD16-Snehajit]-->
+             <apex:actionFunction name="callSave" action="{!save}" /> <!--[SFD16-Snehajit]-->
+        </apex:pageBlock>
+        
+         <script type="text/javascript">
+           function defaultCustomerType(input,output){
+            
+           if(input.value == "WEST"){
+              CustomerType = document.getElementById(output);
+              CustomerType.options[CustomerType.options.length] = new Option('Organization', 'Organization');
+              document.getElementById(output).value = 'Organization';
+           
+           }
+    }
+    
+      function setResultforLLM(){
+        document.getElementById('thePage:formEdit:blockLead:theSection:SalesOrg').disabled= true;
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerType').disabled= true;
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerGroup').disabled= true;
+        
+      }
+      
+      function setResultforNonLLM(){
+        
+        //DPS-17693 - Sales Org should be not editable if profile is Partner Portal User
+        var isPartnerPortalProfile = '{!strProfileName}';
+        var profileNameFromLabel = '{!JSENCODE($Label.LatAmPartnerCommunityProfile)}';
+        if(isPartnerPortalProfile == profileNameFromLabel){
+            document.getElementById('thePage:formEdit:blockLead:theSection:SalesOrg').disabled= true;
+            document.getElementById('thePage:formEdit:blockLead:theSection:BusinessUnit').disabled= true;
+        }
+        else
+        {
+            document.getElementById('thePage:formEdit:blockLead:theSection:SalesOrg').disabled= false;// SFD-16
+        }
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerType3').disabled= false;// SFD-16
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerGroup2').disabled= false;// SFD-16
+        
+      }
+      
+      //Sales org section will be disable for LLM profile, enable for non LLM Profile : Production Issue : MCL-1279
+      var LLMProfile = '{!salesOrgSection}';     
+        
+        if(LLMProfile == 'true'){
+          // window.onload = setResultforLLM; [SFD-16] Commented this and have included this below [Rajashree]
+           var pageLoad = window.onload;
+           window.onload = function(){
+           setResultforLLM();
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+           };
+        }
+        else if(LLMProfile == 'false') {
+           // window.onload = setResultforNonLLM; [SFD-16] Commented this and have included this below [Rajashree]
+           var pageLoad = window.onload;
+           window.onload = function(){
+           setResultforNonLLM();
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+           };
+        }
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+             var primaryTabId = result.id;
+            sforce.console.setTabTitle('New Lead');
+        };
+    </script>
+
+    </apex:form>
+</apex:page>

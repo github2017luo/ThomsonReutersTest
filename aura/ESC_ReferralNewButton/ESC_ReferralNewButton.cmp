@@ -1,0 +1,16 @@
+<aura:component implements="lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome" access="global" >
+    <lightning:workspaceAPI aura:id="workspace"/>       
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p> <b> {!$Label.c.ESC_ReferralButton}</b></p>
+                    </div> 
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="OK"
+                                          onclick="{! c.closeModel }"></lightning:button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+</aura:component>

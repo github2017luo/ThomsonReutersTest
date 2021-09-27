@@ -1,0 +1,278 @@
+<apex:page controller="USL_WriteofController" tabStyle="Case" doctype="html-5.0" title="{!Formtitle}">
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+    <script>
+    function setFocusOnLoad() {}
+    $(document).ready(function() {
+            setDataTables1();
+            
+        } );   
+        function setDataTables1(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],
+             "info":false,             
+             "scrollX":false
+             } );
+        }
+        function setDataTables2(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],             
+             "info":false,
+             "scrollX":false             
+             } );
+        }
+    </script>
+    <apex:slds />
+    
+    <apex:form >
+        <apex:actionFunction name="saveselectedopen" action="{!saveselectedopen}" status="fetchStatus2" rerender=""/>
+        <apex:actionStatus id="fetchStatus2">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                    <img src="/img/loading.gif" />
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:outputPanel id="formpanel">
+            <apex:pageBlock id="formblock" rendered="{!ispreview}">
+                <apex:pagemessages id="msg1"></apex:pagemessages>
+                <apex:pageBlockSection title="Write Off Form" rendered="{!(formname == 'Write Off Form')}" columns="1">
+                    <apex:inputField required="true" value="{!formext.USL_CSSWriteOffFormTypeID__c}"/> 
+                    <apex:inputField required="true" value="{!formext.ESC_Form_BU__c}"/>
+                    <apex:outputField value="{!caseacc.USL_SAP_Account_Number__c}"/>             
+                    <apex:outputField value="{!caseacc.Contactid}"/> 
+                    <apex:outputField value="{!caseacc.Contactphone}"/>             
+                    <apex:inputField value="{!formext.ESC_Instructions__c}" label="Notes"/>
+                    
+                </apex:pageblockSection>
+                <apex:pageBlockSection columns="1" id="openpre" title="{!$Label.AccountRec_SOOpen} {!$Label.AccountRec_ItemsTrans}"
+                                       rendered="{!(openitemlist.size>0)}" >
+                    <apex:pageBlockTable value="{!openitemlist}" var="Olist" id="tableARInfo">
+                        
+                        <apex:column >
+                            <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet> 
+                            <apex:outputField value="{!Olist.ESC_Billing_Doc__c}" />
+                        </apex:column>
+                        <apex:column rendered="{!showLineNumber}">
+                            <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet> 
+                            <apex:outputField value="{!Olist.ESC_Line__c}" />
+                        </apex:column> 
+                        <!-- Added as part of DSS-9306-->
+                        <apex:column >
+                                <apex:facet name="header">Currency Code</apex:facet>
+                                <apex:outputText value="{!Olist.ESC_Currency_Code__c}" />
+                            </apex:column> 
+                        <apex:column >
+                            <apex:facet name="header">Amount to Pay</apex:facet>   
+                            <apex:actionRegion >
+                            <apex:inputField value="{!Olist.USL_Input_Amount__c}" >
+                             <apex:actionSupport event="onchange" action="{!validateAmount}" reRender="msg1" rendered="{!showlineNumber}"/> 
+                            </apex:inputField> 
+                            </apex:actionRegion> 
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Category</apex:facet>   
+                            <apex:inputField value="{!Olist.Category__c}" />
+                        </apex:column>
+                        <apex:column rendered="{!showErrorMsg}">
+                            <apex:facet name="header">Error Message</apex:facet>   
+                            <apex:outputField value="{!Olist.ESC_Error_Message__c}" /> 
+                        </apex:column>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection collapsible="false" columns="1" id="clinelist" title="Custom Line Item Section" rendered="{! ISPreview}">
+                <apex:pageBlockTable value="{!customLineList}" var="li" id="linetable">                     
+                    <apex:variable var="rowNumber" value="{!0}"/>                                        
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet> 
+                        <apex:inputField required="true" value="{!li.ESC_Billing_Doc__c}" />
+                    </apex:column> 
+                    <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:inputField required="true" value="{!li.ESC_Line__c}" />
+                    </apex:column>               
+                    <apex:column >
+                         <apex:facet name="header">Amount to Pay</apex:facet>
+                         <apex:inputField value="{!li.USL_Input_Amount__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Category</apex:facet>   
+                        <apex:inputField value="{!li.Category__c}" />
+                    </apex:column>
+                    <apex:column >
+                    <apex:commandLink value="{!$Label.USL_Delete}" reRender="linetable" immediate="true" action="{!deleteRow}">
+                        <apex:param name="rn" value="{!rowNumber}"/>
+                    </apex:commandLink> 
+                    <apex:variable var="rowNumber" value="{!rowNumber+1}" />                                    
+                    </apex:column>                        
+                </apex:pageBlockTable>
+                <apex:commandlink value="{!$Label.USL_AddRow}" style="margin-left: 30%;" rerender="linetable" action="{!addRow}" />
+                                
+            </apex:pageBlockSection> 
+                <apex:outputPanel id="calpanel">
+                    <apex:outputText value="Total Amount" style="font-weight:bold"/>&nbsp;&nbsp;
+                    <apex:commandButton value="Calculate" action="{!calculate}" reRender="calpanel,msg,msg1" status="actStatusId"/>&nbsp;&nbsp;
+                    <apex:actionStatus id="actStatusId" >
+                        <apex:facet name="start" >
+                            <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus>
+                    <apex:input value="{!TotalAmount}"/>   
+                </apex:outputPanel>
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Save" action="{!savecomponent}" reRender="msg,msg1" status="actStatusId2"/>
+                    <apex:actionStatus id="actStatusId2" >
+                        <apex:facet name="start" >
+                            <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus>
+                    <apex:commandButton immediate="true" action="{!goback}" value="Back" reRender="mainpanel,pageBlock,formpanel,msg,msg1" status="actStatusId2" oncomplete="setDataTables2();"/>
+                </apex:pageBlockButtons>
+            </apex:pageblock>
+        </apex:outputPanel>
+        <apex:actionFunction name="rerenderInvoice" reRender="pbpanel" status="statusInvoice" action="{!setInvoiceDateRange}" />
+        <apex:pagemessages id="msg"></apex:pagemessages>
+        <apex:actionFunction name="rerenderInvoice1" reRender="pbpanel" status="statusInvoice" action="{!dummymethods}"/>
+        <apex:outputPanel id="mainpanel">
+            <apex:outputPanel id="pbpanel" rendered="{!(NOT(isPreview) )}">
+                
+                <apex:selectList value="{!sSelectedOption}" size="1" id="i" onchange="rerenderInvoice1();" >
+                    <apex:selectOptions value="{!ARItemType}" />
+                </apex:selectList><br/><br/>
+                <apex:actionStatus id="statusInvoice">
+                    <apex:facet name="start">
+                        <apex:outputPanel layout="block" styleClass="message infoM4">
+                            <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell"
+                                            style="padding:0px;margin:0px;">
+                                <apex:panelGroup >
+                                    <img class="loadingIcon" src="/s.gif" />
+                                </apex:panelGroup>
+                                <apex:panelGroup >
+                                    <div class="messageText">{!$Label.AccountRec_LoadingInv}</div>
+                                </apex:panelGroup>
+                            </apex:panelGrid>
+                        </apex:outputPanel>
+                    </apex:facet>
+                </apex:actionStatus>
+                
+                <apex:pageBlock id="pageBlock" >
+                    <apex:pageBlockSection columns="6" id="sectionFilters" collapsible="false" title="{!$Label.AccountRec_DateRangeSecTitle}" >
+                        <apex:input type="date" id="BeginDate" value="{!BeginDt}" 
+                                        label="{!$Label.AccountRec_BeginDate}" />
+                        <apex:input type="date" id="EndDate" value="{!EndDt}" 
+                                        label="{!$Label.AccountRec_EndDate}" />
+                        <apex:commandButton value="{!$Label.AccountRec_DateRangeSecButton}" reRender="pageBlock,msg"
+                                            status="statusInvoice" action="{!setInvoiceDateRange}" oncomplete="setDataTables2();"/>
+                    </apex:pageBlockSection>
+                    
+                    
+                    <apex:pageBlockSection columns="1" id="bPageBlockSectionOpenItems" title="{!$Label.AccountRec_SOOpen} {!$Label.AccountRec_ItemsTrans}"
+                                           rendered="{!(sSelectedOption == $Label.AccountRec_SOOpen||sSelectedOption == $Label.AccountRec_SOAll)&& !IsError  && !isPreview}"
+                                           collapsible="false">
+                        <apex:dataTable value="{!openwrapperlist2}" rendered="{! openwrapperlist2!=null && openwrapperlist2.size>0}" var="Olist" styleclass="tableARInfo">
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:inputCheckbox value="{!SelectAll}" onchange="sainv();return false;" />
+                                </apex:facet>
+                                <apex:inputCheckbox value="{!Olist.isselected}" onchange="saveselectedopen();"/>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.document.docNumber}" />
+                            </apex:column> 
+                            <!-- added for Tax Hana-->
+                            <apex:column rendered="{!showLineNumber}">
+                                <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.lineNumber}" />
+                            </apex:column>              
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.amount}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Debit Credit Indicator</apex:facet>
+                                <apex:outputText value="{!IF(Olist.openlist.debitCreditInd == 'H','C', IF(Olist.openlist.debitCreditInd == 'S','D',Olist.openlist.debitCreditInd))}" />
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.netArrers}" />
+                            </apex:column>  
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.document.type}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.shortDescription}" />
+                            </apex:column>
+                            <!-- Added as part of DSS-9306-->
+                              <apex:column >
+                                <apex:facet name="header">Currency Code</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.currencycode}" />
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.baselineDate}" />
+                            </apex:column> 
+                             <apex:column >
+                                <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                                <apex:outputText value="{!Olist.openlist.document.additionalPdfDocumentId}" />
+                            </apex:column>   
+                        </apex:dataTable>
+                        <apex:outputPanel rendered="{!AND(IF(paginater.isAll, false, true), IF(paginater.totalPage == 1, false, true))}">
+                            <apex:commandButton value="Previous" rerender="pageBlock" action="{!previousPage}" rendered="{!paginater.showPrevious}" status="fetchStatus1" oncomplete="setDataTables2();"/>
+                            &nbsp;&nbsp;&nbsp;
+                            <apex:repeat value="{!paginater.pageList}" var="pl">
+                                <apex:outputText rendered="{!!pl.isActive}" value="">
+                                    <apex:commandLink action="{!updatePage}" rerender="pageBlock" status="fetchStatus1" oncomplete="setDataTables2();">
+                                        {!pl.pageNum}                                
+                                        <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!paginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                                    </apex:commandLink>
+                                </apex:outputText>
+                                <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                            </apex:repeat>
+                            &nbsp;&nbsp;&nbsp;
+                            <apex:commandButton value="Next" rerender="pageBlock" action="{!nextPage}" rendered="{!paginater.showNext}" status="fetchStatus1" oncomplete="setDataTables2();"/>
+                        </apex:outputPanel>
+                        <apex:actionStatus id="fetchStatus1">
+                            <apex:facet name="start">
+                                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                                    &nbsp;
+                                </div>
+                                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                                    <img src="/img/loading.gif" />
+                                </div>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:pageBlockSection>
+                    <apex:actionFunction status="actStatusId" name="sainv" reRender="bPageBlockSectionOpenItems" action="{!selectalllineitem}" oncomplete="setDataTables2();"/>
+                    <apex:pageBlockButtons >
+                        <apex:commandButton action="{!showpreview}" status="actStatusId1" value="Preview" reRender="contintable,mainpanel,pageBlock,formpanel,msg,msg1" rendered="{!(NOT(isPreview))}" oncomplete="setDataTables2();"/>
+                        <apex:actionStatus id="actStatusId1" >
+                            <apex:facet name="start" >
+                                <img src="/img/loading.gif" />                    
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:pageblockButtons>
+                </apex:pageblock>                         
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,143 @@
+<aura:component controller = "ESC_UpdateCaseltng" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:attribute name="render" type="boolean" default="false"/>
+    <aura:attribute name="isOpen" type="boolean"/>
+    <aura:attribute name="rType" type="string"/>
+    <aura:attribute name="rTypeName" type="string"/>
+    <lightning:workspaceAPI aura:id="workspace" />
+    <!--<aura:handler name="init" action="{!c.doInit}" value="{!this}"/>-->
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    <lightning:button aura:id="close" variant="brand" label="Close Case" onclick="{!c.handleClick}" />
+    <aura:if isTrue="{!v.isOpen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-modal_medium slds-fade-in-open">
+            <div class="slds-modal__container" style="width:432px">
+                <header class="slds-modal__header" style="width:432px">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{! c.closeModel }"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Close Case</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="width:432px">
+                    <aura:if isTrue="{!v.render}">
+                        <lightning:recordEditForm
+                                                  aura:id="editForm"
+                                                  onsubmit="{!c.handleSubmit}"
+                                                  onsuccess="{!c.handleSuccess}"
+                                                  onerror="{!c.handleError}"
+                                                  recordId="{!v.recordId}"
+                                                  recordTypeId ="{!v.rType}"
+                                                  objectApiName="Case"
+                                                  > 
+                            
+                            <lightning:messages />
+                            <aura:if isTrue="{!v.Spinner}">
+                                <div aura:id="spinnerId" class="slds-spinner_container">
+                                    <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </div>
+                            </aura:if>
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Status" value = "Closed" disabled = "true"/>
+                            </div>
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Subject" />
+                            </div>
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Description" />
+                            </div>
+                            <aura:if isTrue="{!(v.rTypeName == 'ESC_RequestForService')|| (v.rTypeName == 'ESC_Enhancement')}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Actual_Delivery_Date__c" />
+                                </div>
+                            </aura:if>	
+                            <aura:if isTrue="{!(v.rTypeName == 'ESC_Feedback')|| (v.rTypeName == 'ESC_Request_for_Action')}" >
+                                <div class="slds-p-bottom_small">  
+                                    <lightning:inputField fieldName="ESC_Case_Type__c" disabled="true" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!(v.rTypeName == 'ESC_Feedback')|| (v.rTypeName == 'ESC_Request_for_Action')}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Case_Sub_Type__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!(v.rTypeName == 'ESC_Feedback')|| (v.rTypeName == 'ESC_Request_for_Action')}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_EnquiryType__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!(v.rTypeName == 'ESC_HotTopic')|| (v.rTypeName == 'ESC_Incident')}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Severity__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Incident'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Customer_Symptom__c" />
+                                </div>
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_UserDivision__c" />
+                                </div>
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Diagnosis_Summary__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Incident'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Impact__c" />
+                                </div>
+                            </aura:if> 
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Feedback'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Sub_Type__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName != 'ESC_Enhancement'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Resolution_Comment__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Feedback'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Disposition__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Enhancement'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Business_Rationale__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Enhancement'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Decision__c" />
+                                </div>
+                            </aura:if>
+                            <aura:if isTrue="{!v.rTypeName == 'ESC_Enhancement'}" >
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="ESC_Justification__c" />
+                                </div>
+                            </aura:if>
+                            <div class="slds-m-top_medium">
+                                <lightning:button variant="brand" type="submit" name="save" label="Close Case" />
+                            </div>
+                            
+                        </lightning:recordEditForm>
+                    </aura:if>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

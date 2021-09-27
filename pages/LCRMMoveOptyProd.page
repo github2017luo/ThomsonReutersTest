@@ -1,0 +1,432 @@
+<apex:page id="mainPage" standardController="Opportunity" extensions="LCRMMoveOptyProdCtrl" sidebar="false">
+    <apex:sectionHeader id="title" title="{!$Label.LCRM_MergeOppPageTitle}" subtitle="{!opp.Name}"/> 
+    <apex:outputPanel rendered="{!NOT(opp=NULL)}">
+        <div class="ptBreadcrumb" style="">
+            &laquo;
+            <apex:outputLink value="/{!opp.Id}" style="color:#015BA7;">{!$Label.LCRM_MergeOppPageBackLink}&nbsp;{!opp.Name}</apex:outputLink>         
+        </div>
+    </apex:outputPanel>
+    <br/>
+    <apex:form id="mainForm">
+        <apex:Pagemessages id="errorMsg"/>
+        
+        <apex:outputPanel id="productPanel">
+            <apex:pageBlock id="pageBlockProduct" rendered="{!AND(OppProdList<> NULL,OppProdList.size>0,showProducts=TRUE)}">
+                <apex:pageBlockSection columns="1" id="pageBlockSectionProducts" title="{!$Label.LCRM_MergeOppPageProdSecTitle} {!opp.Name}" collapsible="true">
+                    <apex:pageblocktable value="{!OppProdList}" var="prod" id="tableProductInfo">
+                        <apex:column value="{!prod.Product2.Name}"/>
+                        <apex:column value="{!prod.LCRM_Product_Category__c}"/>
+                        <apex:column value="{!prod.LCRM_Product_Type__c}"/>
+                        <apex:column value="{!prod.LCRM_Action__c}"/>
+                        <apex:column value="{!prod.LCRM_Units__c}"/>
+                        <apex:column value="{!prod.LCRM_Current_ACV__c}"/>
+                        <apex:column value="{!prod.LCRM_New_ACV_SalesPrice__c}"/>
+                        <apex:column value="{!prod.LCRM_Incremental_Amount__c}"/>
+                        <apex:column value="{!prod.LCRM_Source_Opportunity__c}"/>
+                    </apex:pageblocktable>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:pageBlock id="pageBlockOpps" title="{!$Label.LCRM_MergeOppPageOppSelSec}" rendered="{!AND(OppProdList<> NULL,OppProdList.size>0,showOpps=TRUE)}">
+                <apex:pageBlockButtons >
+                    <apex:commandButton action="{!showProducts}" value="{!$Label.LCRM_MergeOppPageShowProdBtn}" status="loadStatus" reRender="productPanel"/>
+                    <apex:commandButton action="{!transferProds}" value="{!$Label.LCRM_MergeOppPageMoveProdBtn}" onclick="return confirmMove();" status="loadStatus" reRender="mainForm"/>
+                </apex:pageBlockButtons>
+                
+                <apex:outputPanel layout="block" rendered="{!OR(pagOppObj.oppWrapList=NULL,pagOppObj.oppWrapList.size<=0)}"
+                                style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.LCRM_MergeOppPageNoOppFound}
+                </apex:outputPanel>
+                
+                <apex:outputPanel layout="block" styleClass="listViewport"  rendered="{!AND(pagOppObj.oppWrapList<>NULL,pagOppObj.oppWrapList.size>0)}">
+                    <div class="bottomNav">
+                        <div class="paginator">
+                            <apex:panelGrid id="gridPaging" columns="3" width="100%" columnclasses="left, center, right">
+                                    
+                                <apex:panelGroup >
+                                    <span class="selectorTarget"><strong>{!$Label.LCRM_MergeOppPagePageMsg} {!pagOppObj.pageNumber} {!$Label.LCRM_MergeOppPagePageOfMsg} {!pagOppObj.totalPages}</strong></span>
+                                    <span>&nbsp;&nbsp;</span>
+                                    <apex:actionStatus id="statusPaging">
+                                        <apex:facet name="start">
+                                            <img src="/img/loading.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                        
+                                        <apex:facet name="stop">
+                                            <img src="/img/s.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                    </apex:actionStatus>
+                                </apex:panelGroup>
+                                
+                                
+                                <apex:panelGroup >
+                                    <span class="prevNextLinks">
+                                        <span class="prevNext">  <!--immediate="{!immediate}" removed from command link--> 
+                                            <apex:commandLink id="linkMoveFirst" status="loadStatus" 
+                                                action="{!pagOppObj.first}" rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMovePrev}">
+                                                
+                                                <img src="/s.gif" title="First Page" alt="First Page" class="first" />
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMovePrev)}">
+                                                <apex:image url="/s.gif" title="First Page" alt="First Page" styleclass="firstoff" />
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                        <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                            <apex:commandLink id="linkMovePrev" title="Previous" status="loadStatus" 
+                                                action="{!pagOppObj.previous}" rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMovePrev}">
+                                                
+                                                <img src="/s.gif" title="Previous" alt="Previous" class="prev" />
+                                                <span>{!$Label.LCRM_MergeOppPagePreviousMsg}</span>
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMovePrev)}">
+                                                <apex:image url="/s.gif" title="Previous" alt="Previous" styleclass="prevoff" />
+                                                <span>{!$Label.LCRM_MergeOppPagePreviousMsg}</span>
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                        <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                            <apex:commandLink id="linkMoveNext" title="Next" status="loadStatus" action="{!pagOppObj.next}"
+                                                rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMoveNext}">
+                                                
+                                                <span>{!$Label.LCRM_MergeOppPageNextMsg}</span>
+                                                <img src="/s.gif" title="Next" alt="Next" class="next" />
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMoveNext)}">
+                                                <span>{!$Label.LCRM_MergeOppPageNextMsg}</span>
+                                                <apex:image url="/s.gif" title="Next" alt="Next" styleclass="nextoff" />
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                        <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                            <apex:commandLink id="linkMoveLast" status="loadStatus" action="{!pagOppObj.Last}"
+                                                rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMoveNext}">
+                                                
+                                                <img src="/s.gif" title="Last Page" alt="Last Page" class="last" />
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMoveNext)}">
+                                                <apex:image url="/s.gif" title="Last Page" alt="Last Page" styleclass="lastoff" />
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                    </span>
+                                </apex:panelGroup>
+                                
+                                <apex:panelGroup >
+                                    <span class="selectorTarget"><strong>{!$Label.LCRM_MergeOppPageTotalRecordMsg} {!pagOppObj.totalRecords}</strong></span>
+                                </apex:panelGroup>
+                                
+                            </apex:panelGrid>   
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                
+                
+                <apex:pageblocktable value="{!pagOppObj.oppWrapList}" var="oppty" id="tableOppInfo" rendered="{!AND(pagOppObj.oppWrapList<>NULL,pagOppObj.oppWrapList.size>0)}">
+                    <apex:column headervalue="{!$Label.LCRM_MergeOppPageOppSecSelTitle}">
+                        <!--<apex:actionsupport action="{!pagOppObj.selectOpp}" event="onclick" rerender="tableOppInfo" status="loadStatus">
+                            <input type="radio" name="selectRadio" id="{!oppty.opp.Id}"/>
+                            <apex:param name="oppid" value="{!oppty.opp.Id}"/>
+                        </apex:actionsupport>-->
+                        <input type="radio" name="selectRadio" id="{!oppty.Id}" onchange="handleClick(this);"/>
+                        <script>
+                            function handleClick(myRadio) {
+                                //alert('New value: ' + myRadio.id);
+                                currentValue = myRadio.id;
+                                selectOpportunity(currentValue);
+                            }
+                        </script>               
+                    </apex:column>
+                    <apex:column value="{!oppty.Name}"/>
+                    <apex:column value="{!oppty.StageName}"/>
+                    <apex:column value="{!oppty.LCRM_Transaction_Type__c}"/>
+                    <apex:column value="{!oppty.Expected_Start_Date__c}"/>
+                    <apex:column value="{!oppty.Expected_End_Date__c}"/>
+                    <apex:column value="{!oppty.LCRM_Total_New_ACV_Sales_Price__c}"/>
+                    <apex:column value="{!oppty.Renewal_Flag__c}"/>
+                    <apex:column value="{!oppty.LCRM_Sub_BU__c}"/>
+                </apex:pageblocktable>
+                   
+                <apex:outputPanel layout="block" styleClass="listViewport"  rendered="{!AND(pagOppObj.oppWrapList<>NULL,pagOppObj.oppWrapList.size>0)}">
+                    <div class="bottomNav">
+                        <div class="paginator">
+                            <apex:panelGrid id="gridPagings" columns="3" width="100%" columnclasses="left, center, right">
+                                    
+                                <apex:panelGroup >
+                                    <span class="selectorTarget"><strong>{!$Label.LCRM_MergeOppPagePageMsg} {!pagOppObj.pageNumber} {!$Label.LCRM_MergeOppPagePageOfMsg} {!pagOppObj.totalPages}</strong></span>
+                                    <span>&nbsp;&nbsp;</span>
+                                    <apex:actionStatus id="statusPaging1">
+                                        <apex:facet name="start">
+                                            <img src="/img/loading.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                        
+                                        <apex:facet name="stop">
+                                            <img src="/img/s.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                    </apex:actionStatus>
+                                </apex:panelGroup>
+                                
+                                
+                                <apex:panelGroup >
+                                    <span class="prevNextLinks">
+                                        <span class="prevNext">  <!--immediate="{!immediate}" removed from command link--> 
+                                            <apex:commandLink id="linkMoveFirst1" status="loadStatus" 
+                                                action="{!pagOppObj.first}" rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMovePrev}">
+                                                
+                                                <img src="/s.gif" title="First Page" alt="First Page" class="first" />
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMovePrev)}">
+                                                <apex:image url="/s.gif" title="First Page" alt="First Page" styleclass="firstoff" />
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                        <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                            <apex:commandLink id="linkMovePrev1" title="Previous" status="loadStatus" 
+                                                action="{!pagOppObj.previous}" rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMovePrev}">
+                                                
+                                                <img src="/s.gif" title="Previous" alt="Previous" class="prev" />
+                                                <span>{!$Label.LCRM_MergeOppPagePreviousMsg}</span>
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMovePrev)}">
+                                                <apex:image url="/s.gif" title="Previous" alt="Previous" styleclass="prevoff" />
+                                                <span>{!$Label.LCRM_MergeOppPagePreviousMsg}</span>
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                        <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                            <apex:commandLink id="linkMoveNext1" title="Next" status="loadStatus" action="{!pagOppObj.next}"
+                                                rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMoveNext}">
+                                                
+                                                <span>{!$Label.LCRM_MergeOppPageNextMsg}</span>
+                                                <img src="/s.gif" title="Next" alt="Next" class="next" />
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMoveNext)}">
+                                                <span>{!$Label.LCRM_MergeOppPageNextMsg}</span>
+                                                <apex:image url="/s.gif" title="Next" alt="Next" styleclass="nextoff" />
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                        <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                            <apex:commandLink id="linkMoveLast1" status="loadStatus" action="{!pagOppObj.Last}"
+                                                rerender="mainForm, gridPaging" rendered="{!pagOppObj.allowMoveNext}">
+                                                
+                                                <img src="/s.gif" title="Last Page" alt="Last Page" class="last" />
+                                            </apex:commandLink>
+                                            
+                                            <apex:outputPanel layout="none" rendered="{!NOT(pagOppObj.allowMoveNext)}">
+                                                <apex:image url="/s.gif" title="Last Page" alt="Last Page" styleclass="lastoff" />
+                                            </apex:outputPanel>
+                                        </span>
+                                        
+                                    </span>
+                                </apex:panelGroup>
+                                
+                                <apex:panelGroup >
+                                    <span class="selectorTarget"><strong>{!$Label.LCRM_MergeOppPageTotalRecordMsg} {!pagOppObj.totalRecords}</strong></span>
+                                </apex:panelGroup>
+                                
+                            </apex:panelGrid>   
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                
+                
+        </apex:pageBlock>
+        
+        <apex:outputPanel id="popupBox" style="display:none;">
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span></span>
+                    <!--<p>&nbsp;</p>-->
+                    <p></p>
+                    <apex:outputPanel >
+                        <p>
+                            <table border="0px" width="100%">
+                                <tr>
+                                    <td colspan="4"><b><center><u>{!$Label.LCRM_MergeOppPageOppSelPopupTitle}</u> :</center></b></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">&nbsp;</td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.Name.Label}</b></td>
+                                    <td width="30%">{!SelOppDetails.Name}</td>
+                                    <td width="20%" align="right" style="padding-right: 10px;"><b>{!$ObjectType.Account.fields.Name.Label}</b></td>
+                                    <td width="30%">{!SelOppDetails.Account.Name}</td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.StageName.Label}</b></td>
+                                    <td>{!SelOppDetails.StageName}</td>
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.LCRM_Transaction_Type__c.Label}</b></td>
+                                    <td>{!SelOppDetails.LCRM_Transaction_Type__c}</td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.Expected_Start_Date__c.Label}</b></td>
+                                    <td>{!SelOppDetails.Expected_Start_Date__c}</td>
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.Expected_End_Date__c.Label}</b></td>
+                                    <td>{!SelOppDetails.Expected_End_Date__c}</td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.LCRM_Total_New_ACV_Sales_Price__c.Label}</b></td>
+                                    <td>{!SelOppDetails.LCRM_Total_New_ACV_Sales_Price__c}</td>
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.Renewal_Flag__c.Label}</b></td>
+                                    <td>{!SelOppDetails.Renewal_Flag__c}</td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td align="right" style="padding-right: 10px;"><b>{!$ObjectType.Opportunity.fields.LCRM_Sub_BU__c.Label}</b></td>
+                                    <td>{!SelOppDetails.LCRM_Sub_BU__c}</td>
+                                    <td colspan="2">&nbsp;</td>
+                                </tr>
+                                <!--<tr class="border_bottom">
+                                    <td align="right" style="padding-right: 10px;"><b>{!$Label.LCRM_MergeOppPageOppSelPopupProdMsg}</b></td>
+                                    <td>{!SelOppProdDetails.size}</td>
+                                </tr>-->
+                                <tr>
+                                    <td colspan="4">
+                                        <apex:pageBlock title="{!$Label.LCRM_MergeOppPageTarProdSecTitle} {!SelOppDetails.Name}">
+                                            <!--<apex:pageBlockSection columns="1" title="{!$Label.LCRM_MergeOppPageTarProdSecTitle} {!SelOppDetails.Name}" collapsible="true">-->
+                                            <div style="overflow: scroll; height: 200px;"> 
+                                                <apex:pageBlockTable value="{!SelOppProdDetails}" var="prod">
+                                                    <apex:column value="{!prod.Product2.Name}"/>
+                                                    <apex:column value="{!prod.LCRM_Product_Category__c}"/>
+                                                    <apex:column value="{!prod.LCRM_Product_Type__c}"/>
+                                                    <apex:column value="{!prod.LCRM_Action__c}"/>
+                                                    <apex:column value="{!prod.LCRM_Units__c}"/>
+                                                    <apex:column value="{!prod.LCRM_Current_ACV__c}"/>
+                                                    <apex:column value="{!prod.LCRM_New_ACV_SalesPrice__c}"/>
+                                                    <apex:column value="{!prod.LCRM_Incremental_Amount__c}"/>
+                                                    <apex:column value="{!prod.LCRM_Source_Opportunity__c}"/>
+                                                </apex:pageBlockTable>
+                                            </div>
+                                            <!--</apex:pageBlockSection>-->
+                                        </apex:pageBlock>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><center><b>{!$Label.LCRM_MergeOppPageOppSelPopupConfirmMsg}</b></center></td>
+                                </tr>
+                            </table>
+                        </p>
+                        <center>
+                            <apex:commandButton id="yesBtn" value="{!$Label.LCRM_MergeOppPageOppSelPopupYesBtn}" onclick="this.disabled = true;transferProds();" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            <apex:commandButton id="cancelBtn" value="{!$Label.LCRM_MergeOppPageOppSelPopupNoBtn}" onclick="return closePopupBox()" reRender="mainForm" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                        </center>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </apex:outputPanel>
+        <apex:outputPanel id="alertBox" style="display:none;">
+            <div id="myModal1" class="modal">
+                <div class="modal-content">
+                    <span></span>
+                    <p>&nbsp;</p>
+                    <p></p>
+                    <apex:outputPanel >
+                        <p>
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td><center><b>{!$Label.LCRM_MergeOppPageOppSelPopupErrMsg}</b></center></td>
+                                </tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </table>
+                        </p>
+                        <center>
+                            <p>
+                                <apex:commandButton id="cancelBtn1" value="{!$Label.LCRM_MergeOppPageOppSelPopupReturnBtn}" onclick="return closePopupBox()" reRender="mainForm" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            </p>
+                        </center>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </apex:outputPanel>
+        
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">{!$Label.LCRM_MergeOppPageLoadingMsg}</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+        <apex:inputHidden id="selectOppty" value="{!pagOppObj.selectOpp}"/>
+        <apex:actionFunction name="selectOpportunity" action="{!pagOppObj.selectOpp}" rerender="selectOppty,popupBox" status="loadStatus">
+            <apex:param name="oppid" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="transferProds" action="{!transferProds}" status="loadStatus"/>
+    </apex:form>
+    <script>
+        function confirmMove(){
+            var popUpComp = document.getElementById('mainPage:mainForm:popupBox');
+            var alertBoxComp = document.getElementById('mainPage:mainForm:alertBox');
+            var selectOpty = document.getElementById('mainPage:mainForm:selectOppty').value;
+            if(selectOpty == null || selectOpty == ''){
+                alertBoxComp.style.display = 'block';
+                //alert('Please select target Opportunity before clicking move button.');
+            }else{
+                popUpComp.style.display = 'block';
+            }
+            return 'false';
+        }
+        
+        function closePopupBox(){
+            var popUpComp = document.getElementById('mainPage:mainForm:popupBox');
+            popUpComp.style.display = 'none';
+            var alertBoxComp = document.getElementById('mainPage:mainForm:alertBox');
+            alertBoxComp.style.display = 'none';
+        }
+    </script>
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 15% from the top and centered */
+            padding: 10px;
+            border: 1px solid #888;
+            width: 75%; /* Could be more or less, depending on screen size */
+        }
+        
+        tr.border_bottom td {
+            border-bottom:1pt solid #e0e3e5;
+        }
+        
+        /* The Close Button 
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }*/
+    </style>
+</apex:page>

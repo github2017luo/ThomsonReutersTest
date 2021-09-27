@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Update Contact on Case</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A3</name>
+        <label>Case Contact association</label>
+        <locationX>100</locationX>
+        <locationY>400</locationY>
+        <actionName>ESC_CaseContactAssociation</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>myDecision5</targetReference>
+        </connector>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>cases</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>cases</name>
+            <value>
+                <elementReference>myVariable_current.Parent</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>USL_CaseRouting</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_8_A1</name>
+        <label>CDN CaseRouting</label>
+        <locationX>800</locationX>
+        <locationY>200</locationY>
+        <actionName>ESC_CaseRouting</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>newEmailMessageList</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>EmailMessage</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>newEmailMessageList</name>
+            <value>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision5</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Update Status and Associate contact</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision5</name>
+        <label>myDecision5</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision7</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_6</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_6</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_6_A1</targetReference>
+            </connector>
+            <label>Populate Case origin</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision7</name>
+        <label>myDecision7</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_8</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Parent.LCRM_Sub_BU__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canada</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Picklist</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Parent.Origin</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Email</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideReferenceTo</name>
+                    <value>
+                        <stringValue>Case</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>String</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>ID</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.ParentId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>500</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <processMetadataValues>
+                    <name>inputDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>leftHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>operatorDataType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <processMetadataValues>
+                    <name>rightHandSideType</name>
+                    <value>
+                        <stringValue>Boolean</stringValue>
+                    </value>
+                </processMetadataValues>
+                <leftValueReference>myVariable_current.Incoming</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_8_A1</targetReference>
+            </connector>
+            <label>CDN Updates</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId1__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId6__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId8__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId10__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId11__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId12__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId13__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId14__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId15__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId16__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId17__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId19__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId20__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId21__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId23__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId24__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId25__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId27__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId18__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId4__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId5__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId9__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId19__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId7__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId20__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId28__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId22__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId29__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId23__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId18__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId21__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId2__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId3__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId14__c,
+if(([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId22__c )
+	|| ([EmailMessage].Parent.Owner:Queue.DeveloperName =$Setup.CDN_Queues__c.QueueId26__c ),
+	$Setup.USL_Business_Hours__c.BusinessHoursId15__c,[EmailMessage].Parent.BusinessHoursId ))))))))</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_2_myRule_1_A2_9102642079</name>
+        <dataType>String</dataType>
+        <expression>if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId1__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId6__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId8__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId10__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId11__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId12__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId13__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId14__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId15__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId16__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId17__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId19__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId20__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId21__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId23__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId24__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId25__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId27__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId18__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId4__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId5__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId9__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId19__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId7__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId20__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId28__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId22__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId29__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId23__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId18__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId21__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId2__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId3__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId14__c},
+if(({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId22__c} )
+	|| ({!myVariable_current.Parent.Owner:Queue.DeveloperName} ={!$Setup.CDN_Queues__c.QueueId26__c} ),
+	{!$Setup.USL_Business_Hours__c.BusinessHoursId15__c},{!myVariable_current.Parent.BusinessHoursId} ))))))))</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>[EmailMessage].Parent.Owner:Queue.DeveloperName </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_3_myRule_1_A2_4997100651</name>
+        <dataType>String</dataType>
+        <expression>{!myVariable_current.Parent.Owner:Queue.DeveloperName}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF(CONTAINS([EmailMessage].HtmlBody ,&apos;ref:_00D&apos;) || CONTAINS([EmailMessage].Subject,&apos;ref:_00D&apos;),TEXT([EmailMessage].Parent.Status),&apos;New&apos;)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_4_myRule_1_A1_4794482457</name>
+        <dataType>String</dataType>
+        <expression>IF(CONTAINS({!myVariable_current.HtmlBody} ,&apos;ref:_00D&apos;) || CONTAINS({!myVariable_current.Subject},&apos;ref:_00D&apos;),TEXT({!myVariable_current.Parent.Status}),&apos;New&apos;)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+	NOT($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c) ,
+	[EmailMessage].Incoming,
+	BEGINS([EmailMessage].ParentId, &apos;500&apos;),
+	ISPICKVAL([EmailMessage].Parent.Origin, &apos;Email&apos;),
+	BEGINS([EmailMessage].Parent.OwnerId , &apos;00G&apos;),
+	[EmailMessage].Parent.LCRM_Sub_BU__c  = &quot;Canada&quot;,	
+	OR(
+		NOT(CONTAINS([EmailMessage].TextBody, &quot;ref:_00D&quot;)),
+		NOT(CONTAINS([EmailMessage].Subject, &quot;ref:_00D&quot;))
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+	NOT({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c}) ,
+	{!myVariable_current.Incoming},
+	BEGINS({!myVariable_current.ParentId}, &apos;500&apos;),
+	ISPICKVAL({!myVariable_current.Parent.Origin}, &apos;Email&apos;),
+	BEGINS({!myVariable_current.Parent.OwnerId} , &apos;00G&apos;),
+	{!myVariable_current.Parent.LCRM_Sub_BU__c}  = &quot;Canada&quot;,	
+	OR(
+		NOT(CONTAINS({!myVariable_current.TextBody}, &quot;ref:_00D&quot;)),
+		NOT(CONTAINS({!myVariable_current.Subject}, &quot;ref:_00D&quot;))
+	)
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+	NOT($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c),
+	[EmailMessage].Parent.LCRM_Sub_BU__c == &quot;Canada&quot;,
+	OR(
+		(CONTAINS([EmailMessage].Subject,&apos;MyAccount - Address Change&apos;))		
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_6</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+	NOT({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c}),
+	{!myVariable_current.Parent.LCRM_Sub_BU__c} == &quot;Canada&quot;,
+	OR(
+		(CONTAINS({!myVariable_current.Subject},&apos;MyAccount - Address Change&apos;))		
+	)
+)</expression>
+    </formulas>
+    <interviewLabel>CAN_Email2Case_Updates-56_InterviewLabel</interviewLabel>
+    <label>CDN Email2Case Updates</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>EmailMessage</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onCreateOnly</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[EmailMessage].Case ID</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Update Status</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myRule_1_A2</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <elementReference>formula_4_myRule_1_A1_4794482457</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[EmailMessage].Case ID</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_1_A2</name>
+        <label>Set BH &amp; Queue Name</label>
+        <locationX>100</locationX>
+        <locationY>300</locationY>
+        <connector>
+            <targetReference>myRule_1_A3</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Business Hours ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>BusinessHours</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>BusinessHoursId</field>
+            <value>
+                <elementReference>formula_2_myRule_1_A2_9102642079</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>USL Queue Name</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>USL_Queue_Name__c</field>
+            <value>
+                <elementReference>formula_3_myRule_1_A2_4997100651</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>extraTypeInfo</name>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[EmailMessage].Case ID</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>referenceTargetField</name>
+        </processMetadataValues>
+        <name>myRule_6_A1</name>
+        <label>Update case origin</label>
+        <locationX>600</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision7</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.ParentId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Case Origin</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Origin</field>
+            <value>
+                <stringValue>Web</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>EmailMessage</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>EmailMessage</objectType>
+    </variables>
+</Flow>

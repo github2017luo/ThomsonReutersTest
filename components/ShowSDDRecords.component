@@ -1,0 +1,305 @@
+<apex:component controller="ShowSDDRecords" id="theComponent">
+
+    <apex:stylesheet value="/sCSS/25.0/sprites/1342034628000/Theme3/default/gc/versioning.css" />
+    <apex:stylesheet value="/sCSS/25.0/sprites/1342034628000/Theme3/default/gc/extended.css" />
+    <apex:attribute name="vfpageName" description="This is Salesforce Vfpage API Name."  assignTo="{!pageNameVal}" type="String" required="true"/>
+    <apex:attribute name="passRecordID" description="This is Salesforce Account Record ID."  assignTo="{!recordId}" type="String" required="true"/>
+
+    <apex:form >
+        <apex:outputText >
+            <apex:actionStatus id="myStatus" >
+                <apex:facet name="start" >
+                    <div id="loadingDivStatus"/>                   
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputText>  
+    </apex:form>
+    
+    <script>
+        window.onload = function() {
+           // alert('on load');
+           var opp = '{!selectedOpptyId}';
+           
+         // alert('opp'+opp);
+            if(opp != null && opp != ''){
+                    fecthSelectedOppID(opp);
+            }
+        };
+    </script>
+    
+    
+    <apex:actionStatus id="myStatus" >
+        <apex:facet name="start" >
+          <div id="loadingDiv"/>                   
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <apex:form >
+        <apex:actionFunction name="cancelfromJS" reRender="SelectedSSDBox" Status="myStatus"/>
+        <apex:actionFunction name="redirectToNCJ" reRender="SelectedSSDBox" Status="myStatus" action="{!newCustomerRedirect}"/>
+    </apex:form>
+    
+    <apex:outputPanel id="SelectedSSDBox">
+        <apex:form rendered="{!NOT(SSDrecPopupBool)}">
+           <apex:pageBlock mode="maindetail">
+               <apex:pageBlockSection columns="3" >
+                   <apex:outputLabel > <b>Account Name: </b> <apex:outputLink value="/{!selectedSDDRecord.Id}" target="_blank">{!selectedSDDRecord.Name}</apex:outputLink></apex:outputLabel>
+                   <apex:outputLabel ><b>SAP Account Number: </b>{!selectedSDDRecord.Source_System_Account_Number__c}</apex:outputLabel>
+                   <apex:commandButton action="{!changeToSDD}" value="Change SAP Account"  id="changeSDD" Status="myStatus" reRender="theText"/>
+               </apex:pageBlockSection>
+           </apex:pageBlock>
+           
+           <apex:pageBlock rendered="{!If(selectedOppRecord.ID != null, true, false)}" mode="maindetail">    
+               <apex:pageBlockSection columns="3" >
+                   <apex:outputLabel > <b>Opportunity Name: </b> <apex:outputLink value="/{!selectedOppRecord.Id}" target="_blank">{!selectedOppRecord.Name}</apex:outputLink></apex:outputLabel>
+                   <apex:outputLabel ><b>Stage: </b>{!selectedOppRecord.StageName}</apex:outputLabel>
+                   <apex:outputLabel ><b>Type: </b>{!selectedOppRecord.Type}</apex:outputLabel>
+               </apex:pageBlockSection>
+           </apex:pageBlock>
+           
+        </apex:form>
+        
+    </apex:outputPanel>
+    
+    <apex:outputPanel id="theText">
+    
+        <apex:form id="myform" rendered="{!SSDrecPopupBool}">
+        
+            <apex:outputPanel id="tstpopup" >
+            <apex:outputPanel styleClass="popupBackgroundcomp" layout="block"/>
+            <apex:outputPanel styleClass="custPopupcomp" layout="block"> 
+                <apex:commandLink value="Back To Initial Trial Page" action="{!isClosedPopup}"  styleClass="linkClass" status="myStatus"  reRender="theText" rendered="{!isLoading}"><br/><br/> </apex:commandLink> 
+                <apex:pageBlock title="Select SAP Account" >
+                 <apex:pageBlockSection columns="1" rendered="{!If(SDDList !=null && SDDList.size>0,true,false)}"  >
+                        <apex:pageBlockTable value="{!SDDList}" var="sdd"  width="100%" id="accTable">
+                            <apex:column headerValue="Select">
+                                <input type="radio" name="<strong>selectRadio</strong>" id= "radio" onclick="fecthSelectedID('{!sdd.Id}');">
+                                </input>
+                                <apex:actionSupport event="onclick"  ReRender="createExistingRadio,oppRecords,btnblck" action="{!blankOptionVal}" rendered="{!If(pageNameVal=='contactsList',true, false)}">
+                                    <apex:param assignTo="{!ssdSelectedId}" name="ssdSelectedId" value="{!sdd.id}"/>
+                                </apex:actionSupport>
+                            </apex:column>
+                            <apex:column headerValue="Source System Account Name" style="width:220px">
+                                <apex:outputLink value="/{!sdd.Id}" target="_blank">{!sdd.Name}</apex:outputLink>
+                            </apex:column>
+                            <apex:column value="{!sdd.Source_System_Account_Number__c}" headerValue="Account Number"/>
+                            <apex:column value="{!sdd.Trial_Status__c}"/>
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                    
+            <!--    <apex:pageBlockSection >
+                    <apex:outputLabel rendered="{!IF(SDDList.size > 0 , false , true)}">
+                        <b>No records to display</b>
+                    </apex:outputLabel> 
+                </apex:pageBlockSection> -->
+                       
+                <apex:outputLabel rendered="{!IF(SDDList.size > 0 , false , true)}">
+                       {!$Label.ODT_NCJ_Error}  
+                </apex:outputLabel>
+                
+            </apex:pageBlock>
+                
+            <apex:pageBlock id="createExistingRadio" rendered="{!displayOppSection}" mode="maindetail">
+                <apex:pageBlockSection columns="1"  rendered="{!If(ssdSelectedId != '', true, false)}">
+                    <b> Please Select Opportunity Creation Option </b>
+                    <apex:selectRadio value="{!selectedOptionVal}" >
+                         <apex:selectOption itemValue="new" itemlabel="Create New Opportunity"   /> <br/>
+                         <apex:selectOption itemValue="existing" itemlabel="Existing Opportunity"   />
+                         <apex:actionSupport event="onchange"  action="{!getOpportunities}" reRender="oppRecords,btnblck"  onsubmit="makeOppIdBlank()"/>
+                    </apex:selectRadio>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            
+            <apex:pageblock id="oppRecords" mode="maindetail" >
+                <apex:pageblockSection columns="1" >
+                    <apex:pageblockTable value="{!listOpp}" var="opp" width="100%" rendered="{!IF(AND(listOpp.size > 0, selectedOptionVal == 'existing' ), true , false)}">
+                        <apex:column headerValue="Select" >
+                            <input type="radio" name="radioOpp" id= "radioOpp" onclick="fecthSelectedOppID('{!opp.Id}');"/>
+                        </apex:column>
+                        <apex:column headerValue="Opportunity Name" style="width:220px">
+                            <apex:outputLink value="/{!opp.Id}" target="_blank">{!opp.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!opp.StageName}"/>
+                        <apex:column value="{!opp.Probability}" />
+                        <apex:column value="{!opp.closedate}" />
+                    </apex:pageblockTable> 
+                    <input name="selectedOptionValue" type="text" id="selectedOptionValue" value="{!selectedOptionVal}" style="display:none;"/>
+                    <input name="isListOppNull" type="text" id="isListOppNull" value="{!isListOppNull}" style="display:none;"/>
+                </apex:pageblockSection>
+                
+                <apex:pageBlockSection >
+                    <apex:outputLabel rendered="{!IF(AND(listOpp.size <= 0, selectedOptionVal == 'existing' ) , TRUE , false)}">
+                        <b>No records to display</b>
+                    </apex:outputLabel>
+                </apex:pageBlockSection>
+            </apex:pageblock>  
+             
+            <apex:pageBlock id="btnblck" mode="maindetail"> 
+                 <apex:pageBlockSection rendered="{!If(OR(pageNameVal != 'contactsList',selectedOptionVal != '',SDDList.size <= 0), true, false)}">
+                        <apex:outputText rendered="{!IF(SDDList.size > 0, TRUE , false)}">
+                    <input type="button" onclick="passSelectedID();" value="Proceed" id="saveDetail"/>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF(SDDList.size == 0, TRUE , false)}">
+                            <input type="button" onclick="callNewCustomerJourney();" value="New Customer Trial" id="NCJDetail"/>
+                        </apex:outputText>
+                    <input type="button" onclick="cancel();" value="Cancel" id="cancelbtn"/>
+                </apex:pageBlockSection>
+                
+           <!-- <div id="btnDiv">
+                <apex:outputPanel id="saveDetail" rendered="{!If(OR(pageNameVal != 'contactsList', selectedOptionVal != ''), true, false)}">
+                    <input type="button" onclick="passSelectedID();" value="Proceed" />
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="cancelbtn" rendered="{!If(AND(isLoadingText == 'TRUE', OR(pageNameVal != 'contactsList', selectedOptionVal != '')), true, false)}">
+                    <input type="button" onclick="cancel();" value="Cancel" />
+                </apex:outputPanel>
+                
+                <apex:outputPanel id="closebtn" rendered="{!If(AND(isLoadingText == 'FALSE' ,OR(pageNameVal != 'contactsList', selectedOptionVal != '')), true, false)}">
+                    <input type="button" onclick="isClosedPopupJS();" value="CancelPop" />
+                </apex:outputPanel>
+                </div> -->
+            </apex:pageBlock>
+            
+        </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel id="cntblock">
+             <input name="searchTxt" type="text" id="searchTxt" style="display:none;"/>
+             <input name="selectedOppId" value="{!selectedOpptyId}" type="text" id="selectedOppId" style="display:none;"/>
+        </apex:outputPanel>
+        </apex:form>
+    </apex:outputPanel>
+    <apex:form >
+        
+        <apex:actionFunction name="sendToControllerValue" action="{!getSelected}" reRender="theText,SelectedSSDBox" status="myStatus">
+            <apex:param name="accid" value="" assignTo="{!selectedSDDId}"/>
+            <apex:param name="oppid" value="" assignTo="{!selectedOppId}"/>
+        </apex:actionFunction>
+        
+        <!-- apex:actionFunction name="isClosedPopupApex" action="{!isClosedPopup}" reRender="theText" status="myStatus"/ -->
+        
+    </apex:form>
+    <style type="text/css">
+        .custPopupcomp{
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9999;
+            left: 40%;
+            padding:10px;
+            position: absolute;
+            width: 500px;
+            margin-left: -250px;
+            top:2px;
+            overflow:auto;
+            width:700px;
+            height:400px;
+        }
+        .popupBackgroundcomp{
+             background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 70);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        
+        #loadingDiv{
+            position:fixed;
+            top:0px;
+            left:0px;
+            width:100%;
+            height:100%;
+            //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)}) 50% 50% no-repeat #666;
+            
+            z-index:99999;
+            opacity: 0.4; /* You can adjust the opacity */
+            filter: alpha(opacity=40); /* For IE8 and earlier */
+        }
+
+     </style>
+
+     <script>
+        
+        //function isClosedPopupJS(){
+        //    isClosedPopupApex();
+        //}
+        
+        function fecthSelectedOppID(selectedOppIdJS){
+            document.getElementById('selectedOppId').value = selectedOppIdJS;
+        } 
+        
+        // for validation make it blank
+        function makeOppIdBlank(){
+            document.getElementById('selectedOppId').value = '';
+        }
+        
+        function fecthSelectedID(selectedIDFromRadio){
+            document.getElementById('searchTxt').value = selectedIDFromRadio;
+        }
+        
+        function passSelectedID(){
+            var selectedID = document.getElementById('searchTxt').value; //contain SSD record Id
+            
+            //Logic for contactslIst Vfpage fetch Opportunity Id
+            var selectedOppIdJS = '';
+            if(document.getElementById("selectedOppId") && document.getElementById("selectedOppId").value){
+                selectedOppIdJS = document.getElementById('selectedOppId').value; //Opp Id
+            }
+            
+            //*** start validation for ContactsList Page
+            var OptionVal = ''; //whether new or existing
+           
+            if(document.getElementById("selectedOptionValue") && document.getElementById("selectedOptionValue").value){
+                OptionVal = document.getElementById('selectedOptionValue').value;
+            }
+            
+            
+            var vfPageName = "{!pageNameVal}";
+            var actualpageName = 'contactsList';
+            var areEqualPages = vfPageName.toUpperCase() === actualpageName.toUpperCase();
+            
+            if (selectedID == "" || (areEqualPages && OptionVal === 'existing' && selectedOppIdJS === '')) {
+                alert("Please select radio button");
+                return false;
+            }
+            
+            var isListNull = ''; //check List Of Opportunities is null or not
+            if(document.getElementById("isListOppNull") && document.getElementById("isListOppNull").value){
+                isListNull = document.getElementById('isListOppNull').value;
+            }
+            
+            if(OptionVal !== 'existing' || isListNull !== 'true'){
+                selectedOppIdJS = ''; //null if option is new opportunity creation
+            }
+            //***** end validation for ContactsList Page
+            //document.getElementById('btnDiv').style.display = 'none';
+            document.getElementById('saveDetail').style.visibility = 'hidden';
+            document.getElementById('cancelbtn').style.visibility = 'hidden';
+            //document.getElementById('closebtn').style.visibility = 'hidden';
+            sendToControllerValue(selectedID, selectedOppIdJS); //condition todo
+            
+            getSelectedID(selectedID, selectedOppIdJS);    // javascript method to get the selected value ** Dont delete it **
+        }
+        
+        function cancel(){
+            
+            var url = "../"+"{!selectedRecordId}";
+            window.location.href = "../"+url;  
+            cancelfromJS();
+            
+            //document.getElementById('btnDiv').style.display = 'none';
+            
+            document.getElementById('saveDetail').style.visibility = 'hidden';
+            document.getElementById('cancelbtn').style.visibility = 'hidden';
+            //document.getElementById('closebtn').style.visibility = 'hidden';
+        }
+
+        function callNewCustomerJourney(){
+            redirectToNCJ();
+        }
+    </script>
+</apex:component>

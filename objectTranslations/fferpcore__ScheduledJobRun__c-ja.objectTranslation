@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>スケジュールされたジョブ実行</value>
+    </caseValues>
+    <fields>
+        <label><!-- Apex Job Id --></label>
+        <name>fferpcore__ApexJobId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process Status --></label>
+        <name>fferpcore__BatchProcessStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process --></label>
+        <name>fferpcore__BatchProcess__c</name>
+        <relationshipLabel><!-- Scheduled Job Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>バッチ制御が成功したかどうかを示します。</help>
+        <label><!-- Notification --></label>
+        <name>fferpcore__NotificationType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled Job --></label>
+        <name>fferpcore__Process__c</name>
+        <relationshipLabel><!-- Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>fferpcore__Status__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation>コンプリート</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Error</masterLabel>
+            <translation>エラー</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Processing</masterLabel>
+            <translation>処理</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>ログタイプAbortを含むバッチログの数に基づく、中止されたバッチの総数。</help>
+        <label><!-- Total Aborted Batches --></label>
+        <name>fferpcore__TotalNumberOfAborts__c</name>
+    </fields>
+    <fields>
+        <help>ログタイプがErrorのバッチログの数に基づく、エラーのあるレコードの総数。</help>
+        <label><!-- Total Errors --></label>
+        <name>fferpcore__TotalNumberOfErrors__c</name>
+    </fields>
+    <fields>
+        <help>Salesforceガバナーの制限を超えた、または他の問題を含んでいるバッチの総数。</help>
+        <label><!-- Total Number of Batches Exceeding Limits --></label>
+        <name>fferpcore__TotalNumberOfExternal__c</name>
+    </fields>
+    <fields>
+        <help>このバッチコントロールのバッチログの総数。</help>
+        <label><!-- Total Logs --></label>
+        <name>fferpcore__TotalNumberOfLogs__c</name>
+    </fields>
+    <nameFieldLabel>実行番号</nameFieldLabel>
+</CustomObjectTranslation>

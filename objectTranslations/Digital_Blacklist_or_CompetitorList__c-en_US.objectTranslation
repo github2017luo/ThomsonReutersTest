@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Digital Blacklist or CompetitorList</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Digital Blacklist or CompetitorLists</value>
+    </caseValues>
+    <fields>
+        <label><!-- Email Domains --></label>
+        <name>Email_Domains__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email --></label>
+        <name>Email__c</name>
+    </fields>
+    <fields>
+        <label><!-- Other Reason --></label>
+        <name>Other_Reason__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reason --></label>
+        <name>Reason__c</name>
+        <picklistValues>
+            <masterLabel>Bad Credit</masterLabel>
+            <translation><!-- Bad Credit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>By Request of Account Primary Contact</masterLabel>
+            <translation><!-- By Request of Account Primary Contact --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Competitor</masterLabel>
+            <translation><!-- Competitor --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Trial Abuser</masterLabel>
+            <translation><!-- Trial Abuser --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Blocked</masterLabel>
+            <translation><!-- Blocked --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Unblocked</masterLabel>
+            <translation><!-- Unblocked --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Whitelisted</masterLabel>
+            <translation><!-- Whitelisted --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Blacklist</masterLabel>
+            <translation><!-- Blacklist --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Competitor</masterLabel>
+            <translation><!-- Competitor --></translation>
+        </picklistValues>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- If Status is &apos;Blocked&apos;, Reason should be provided --></errorMessage>
+        <name>Omni_Blocked_Reason_Check</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- When Reason is &apos;Other&apos;, please provide Other Reason --></errorMessage>
+        <name>Omni_Other_Reason_Check</name>
+    </validationRules>
+</CustomObjectTranslation>

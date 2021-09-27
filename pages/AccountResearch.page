@@ -1,0 +1,23 @@
+<apex:page id="obiPage" standardController="Account" tabStyle="Report" title="OBI Reports" lightningStylesheets="true">
+  <apex:includeScript value="/support/console/22.0/integration.js"/>
+ <script>
+             function testOpenSubtab(){
+                if (sforce.console.isInConsole()) {               
+                    var url = '/{!Account.Id}?isdtp=vw'; 
+                    //alert(url);
+                    srcSelf(url); 
+                } else {                    
+                    var url = '/{!Account.Id}';
+                    window.open(url,'_top'); 
+                } 
+             }
+          </script>
+ <apex:sectionHeader id="title" title="OBI Reporting" subtitle="Account Research"/>
+<div class="ptBreadcrumb" style="padding-top: 5px; padding-bottom: 20px;">
+        &nbsp;&laquo;&nbsp;
+   <!--     <a href="/{!Account.Id}" style="color:#015BA7;">Back to Account: {!Account.Name}</a> -->
+        <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_to_Account}: {!Account.Name}</a> <!--SFD-16-->
+        <!--<apex:outputLink value="/{!Account.Id}" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Account.Name}</apex:outputLink>-->
+    </div>
+     <apex:iframe src="https://tr-obi.thomsonreuters.com/analytics/saw.dll?Dashboard&PortalPath=/shared/Thomson%20West/_Portal/Account%20Intelligence&Action=Navigate&Page=Subscriptions&P0=1&P1=eq&P2=%22Customer%20(Training%20Actual)%22.%22Customer%20Number%22&P3={!Account.SAPAccountNumber__c}" frameborder="true" scrolling="true" height="600px" width="100%"></apex:iframe>
+</apex:page>

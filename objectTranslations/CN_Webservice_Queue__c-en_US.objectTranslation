@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>CN Webservice Queue</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>CN Webservice Queues</value>
+    </caseValues>
+    <fields>
+        <help><!-- Identifies the account for which the contact &amp; colleague retrieval API was invoked --></help>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- CN Webservice Queues --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Tracks the progression of CN Web service API which pulls colleague information for a Salesforce contact or account record. --></help>
+        <label><!-- Colleague Status --></label>
+        <name>Colleague_Status__c</name>
+        <picklistValues>
+            <masterLabel>All Data Received</masterLabel>
+            <translation><!-- All Data Received --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Failed</masterLabel>
+            <translation><!-- Failed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Initial Data Received</masterLabel>
+            <translation><!-- Initial Data Received --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Unique Id assigned to each company by CN. --></help>
+        <label><!-- Company CNID --></label>
+        <name>Company_CNID__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tracks the progression of CN Web service API which pulls contacts for a Salesforce account record --></help>
+        <label><!-- Contact Status --></label>
+        <name>Contact_Status__c</name>
+        <picklistValues>
+            <masterLabel>All Data Received</masterLabel>
+            <translation><!-- All Data Received --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Failed</masterLabel>
+            <translation><!-- Failed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Initial Data Received</masterLabel>
+            <translation><!-- Initial Data Received --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Identifies the contact for which the colleague retrieval API was invoked --></help>
+        <label><!-- Contact --></label>
+        <name>Contact__c</name>
+        <relationshipLabel><!-- CN Webservice Queues --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicates when the current record should be deleted from Salesforce so that it can be pulled again from CN when the user revisits the relationship --></help>
+        <label><!-- Expiration Date --></label>
+        <name>Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Expired --></label>
+        <name>Expired__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sum of colleagues who have relationship to Salesforce account or contact --></help>
+        <label><!-- Total Colleagues --></label>
+        <name>Total_Colleague_Relationships__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sum of contacts who have relationships to Salesforce account --></help>
+        <label><!-- Total Contacts --></label>
+        <name>Total_Contact_Relationships__c</name>
+    </fields>
+    <fields>
+        <help><!-- Carries either account id or contact as the unique identifier to prevent duplicate records. --></help>
+        <label><!-- Unique Id --></label>
+        <name>Unique_Id__c</name>
+    </fields>
+    <recordTypes>
+        <description><!-- Represents Webservice calls that pulls colleagues &amp; contacts from ContactNet --></description>
+        <label><!-- Account --></label>
+        <name>Account</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- Represents Webservice call that pulls contacts from ContactNet --></description>
+        <label><!-- Contact --></label>
+        <name>Contact</name>
+    </recordTypes>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

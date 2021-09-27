@@ -1,0 +1,173 @@
+<apex:page standardcontroller="Case" id="mypage" extensions="GGO_WebtoCaseController" docType="html-5.0" showHeader="false" language="{!strlancode}">
+    <c:GGO_WebForm_Header />
+    <div style ="font-family: Arial;color:#ff8000;font-size: 32px;margin-left: 1em;margin-top: 1em;margin-bottom: 0.5em;">{!$Label.GGO_WebForm_ContactUS}</div>
+    <apex:slds />
+    <script type="text/javascript">
+        var RecaptchaOptions = {theme : 'clean'};        
+    </script>    
+    <apex:pageMessages rendered="{!(!displayform)}" />
+    <table border="0"><tr><td>
+    <apex:form id="myform" rendered="{!displayform}" >
+        <div class="slds-scope">
+            <div style="float: left;width:550px; margin-left: 5em;">
+                <apex:pageMessages />
+                <div class="slds-grid slds-wrap slds-box">
+                    <div class="slds-grid slds-wrap ">
+                        <div class="slds-form--stacked">
+                            <div class="slds-form-element"><font face="Arial"> <apex:outputText value="{!$Label.GGO_WebForm_InstructionsMessage}" escape="false" /></font> </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_Question}</font></label><font size="3" color="red">*</font>
+                                <div class="slds-form-element__control" style="width:550px;"><font face="Arial">
+                                    <apex:selectRadio value="{!qcaseRecType}">
+                                        <apex:selectOptions value="{!items}"/>
+                                        </apex:selectRadio></font>
+                                </div>
+                            </div>
+                            <div class="slds-form-element"><label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_FullName}</font></label>
+                                <div class="slds-form-element__control"><apex:inputText style="width:300px"  value="{!c.SuppliedName}"/></div>
+                            </div>
+                            <div class="slds-form-element"><label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_CompanyName}</font></label>
+                                <div class="slds-form-element__control">
+                                <apex:inputText style="width:300px"  value="{!c.SuppliedCompany}" rendered="{!!isBejerman}"/>
+                                <apex:inputText disabled="true" style="width:300px"  value="{!c.SuppliedCompany}" rendered="{!isBejerman}"/>
+                                </div>
+                            </div>   
+                            <div class="slds-form-element"><label class="slds-formelement__label"><font face="Arial">{!$ObjectType.Case.fields.GGO_Tax_Number_Type__c.Label}</font></label><font size="3" color="red">*</font>
+                                <img src="/s.gif" Class="infoIcon" title="{!$Label.GGO_WebForm_TaxType_HelpText}" />
+                                <div class="slds-form-element__control"><font face="Arial">
+                                    <apex:inputText disabled="true" style="width:300px"  value="{!taxNumberType}" rendered="{!isBejerman}"/>
+                                    <apex:selectList value="{!taxNumberType}" size="1" style="width:300px"  id="valuestax2" rendered="{!!isBejerman}">
+                                        <apex:selectOptions value="{!taxtypes}"/>
+                                    </apex:selectList>
+                                    </font>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$ObjectType.Case.fields.GGO_Tax_Number__c.Label}</font></label><font size="3" color="red">*</font>
+                                <img src="/s.gif" Class="infoIcon" title="{!$Label.GGO_WebForm_TaxNo_HelpText}" />
+                                <div class="slds-form-element__control">
+                                    <apex:inputText style="width:300px" value="{!taxNumber}" rendered="{!!isBejerman}"/>
+                                     <apex:inputText disabled="true" style="width:300px" value="{!taxNumber}" rendered="{!isBejerman}"/>
+                                    
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$ObjectType.Case.fields.SuppliedEmail.Label}</font></label><font size="3" color="red">*</font>
+                                <div class="slds-form-element__control">
+                                    <apex:inputText style="width:300px" value="{!c.SuppliedEmail}" />
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_PhoneNumber}</font></label>
+                                <div class="slds-form-element__control">
+                                    <apex:inputText style="width:300px" value="{!phNumber}"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_Product}</font></label>
+                                <div class="slds-form-element__control"><font face="Arial">
+                                    <apex:selectList value="{!c.Product__c}" size="1" style="width:300px"  id="values1">
+                                        <apex:selectOptions value="{!Productlist}"/>
+                                    </apex:selectList></font>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_ProductComplement}</font></label>
+                                <img src="/s.gif" Class="infoIcon" title="{!$Label.GGO_WebForm_ProdComp_HelpText}" />
+                                <div class="slds-form-element__control">
+                                    <apex:inputText style="width:300px" value="{!c.GGO_Product_Complement__c}"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"><font face="Arial">{!$Label.GGO_WebForm_Query}</font></label><font size="3" color="red">*</font>
+                                <img src="/s.gif" Class="infoIcon" title="{!$Label.GGO_WebForm_Query_HelpText}" />
+                                <div class="slds-form-element__control">
+                                    <apex:inputTextArea style="width:300px;height:100px;resize: none;" value="{!inquiry}"/>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <apex:outputPanel rendered="{!if(strBU=='Bejerman',false,true)}">
+                                        <!--<div class="g-recaptcha" data-sitekey="{!publicKey}" data-callback="onSubmit"></div>--><!-- Commented recaptha V2 GGD 969-->
+                                        <button class="g-recaptcha slds-button slds-button_brand" style="font-weight:bold; border-radius: 6px;background-color:#ff8000;border-color:#ff8000;" data-sitekey="{!publicKey}"
+                                                data-callback="onSubmit">{!$Label.ESC_paginateNext}</button>                                                
+                                    </apex:outputPanel>
+                                     <apex:commandButton value="{!$Label.GGO_WebForm_Submit_btn}" action="{!submitCase}" rendered="{!if(strBU=='Bejerman',true,false)}"/>
+                                </div>
+                                <script src="https://www.google.com/recaptcha/api.js?hl={!strlancode}"></script>
+                                <apex:actionFunction action="{!reCAPTCHASucess}" name="onSubmit" />                                                                                                                                 
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+        
+    <!--Attachment section-->
+    <apex:form rendered="{!EnableSection}">     
+        <div class="slds-scope">
+            <div style="float: left;width:500px; margin-left: 5em;">
+                <div class="slds-grid slds-wrap slds-box">
+                    <div class="slds-grid slds-wrap ">
+                        <div class="slds-form--stacked">
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label" ></label>
+                                <div class="slds-form-element__control" id="Attachament_Blank">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td>
+                                                <apex:outputLabel for="file" style="font-weight:bold;float:left;padding:5px "  value="{!$Label.GGO_WebForm_Attachment_Title}" />
+                                                <img src="/s.gif" Class="infoIcon" title="{!$Label.GGO_WebForm_Attachment_HelpText}" />
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <apex:inputFile value="{!attachment.body}"  filename="{!attachment.name}" fileSize="{!attachment.BodyLength}" rendered="{!if(att.size==3,false,true)}" / >
+                                                <span class="button_round">
+                                                    <apex:commandButton value="{!$Label.GGO_WebForm_Attachment_Uploadbtn}" action="{!attachfile}"  rendered="{!if(att.size==3,false,true)}"/>
+                                                </span><br/><br/>
+                                                <apex:outputPanel layout="block"  rendered="{!Isattach=false}">
+                                                    {!$Label.GGO_WebForm_Attachment_Nofilechosen}<br/><br/>
+                                                    <span class="button_round"><span>
+                                                        <apex:commandButton value="{!$Label.GGO_WebForm_Submit_btn}" action="{!SubmitWithAttachment}" />
+                                                    </span></span><br/>
+                                                    <b>{!$Label.GGO_WebForm_Attachment_Note}</b></apex:outputPanel>
+                                            </td>
+                                        </tr> 
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"> </label>
+                                <div class="slds-form-element__control">
+                                    <apex:outputPanel layout="block"  rendered="{!Isattach}">
+                                        <apex:outputLabel for="file" style="font-family:Arial;font-weight:bold;float:left;padding:5px "  value="{!$Label.GGO_WebForm_Attachment_Removehdr}" rendered="{!Isattach}"> </apex:outputLabel>          
+                                        <table border="1" cellpadding="2" cellspacing="2" style="padding: 5px; width: 85%">
+                                            <apex:repeat value="{!att}" var="a">
+                                                <tr>
+                                                    <td align="left" width="50%"><font face="Arial">
+                                                        <apex:outputText value="{!a.Name}"/></font>
+                                                    </td>
+                                                    <td align="center" width="20%">
+                                                        <apex:commandLink action="{!Removeattachment}" onclick="if(!confirm('{!$Label.GGO_WebForm_Attachment_DeleteMsg}')) return false;">{!$Label.GGO_WebForm_Attachment_RemoveDoc}
+                                                            <apex:param value="{!a.Id}" name="idToDel" assignTo="{!recid}"/>
+                                                        </apex:commandLink>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </table><br/>
+                                        <span class="button_round"><span>
+                                            <apex:commandButton value="{!$Label.GGO_WebForm_Submit_btn}" action="{!SubmitWithAttachment}" />
+                                        </span></span>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </apex:form>
+        </td></tr><tr><td><c:GGO_WebForm_Footer /></td></tr></table> 
+</apex:page>

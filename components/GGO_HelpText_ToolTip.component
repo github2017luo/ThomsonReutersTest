@@ -1,0 +1,9 @@
+<apex:component selfClosing="true">
+    <apex:attribute name="helpText" description="Help Text." type="String" required="true"/>
+    <div class="mouseOverInfoOuter" id="searchInvoiceHelper" onfocus="addMouseOver(this)" onmouseover="addMouseOver(this)" tabindex="0">
+        <img src="/s.gif" alt="" class="infoIcon" title="" />
+        <div class="mouseOverInfo" id="web2Case_Form" style="display: none; opacity: -0.19999999999999996;">
+            <div class="body">{!helpText}</div>
+        </div>
+    </div>
+</apex:component>

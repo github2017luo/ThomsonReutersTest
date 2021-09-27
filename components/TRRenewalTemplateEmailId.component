@@ -1,0 +1,6 @@
+<apex:component controller="RenewalTemplateAddressPopulation" access="global">
+    <apex:attribute name="optyId" type="Id" description="Id of the opty" assignTo="{!opportunityId}"/>
+        <apex:repeat value="{!addressMapping}" var="o">
+            {!o.Renewal_email__c}
+        </apex:repeat> 
+</apex:component>

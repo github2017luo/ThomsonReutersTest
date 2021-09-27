@@ -1,0 +1,1176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Additional_Fields__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Additional Fields</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Allow_Zero_Entry__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, users are able to save task time records with zero hours. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, in the Time Entry page, when users click or tab out of task time cells or manually enter zero, the project/assignment value is updated to zero. The default value is false. Task Time Entry Mode must be set to Calculated.</inlineHelpText>
+        <label>Allow Zero Entry</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_project_editable_after_save__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true the project or assignment can be changed as long as the timecard &apos;s status is one of the &quot;timecard-edit-status-values/Timecard_edit_status_values__c&quot; values.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true the project or assignment can be changed as long as the timecard &apos;s status is one of the &quot;timecard-edit-status-values/Timecard_edit_status_values__c&quot; values.</inlineHelpText>
+        <label>Assignment project editable after save</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_tooltip_fields__c</fullName>
+        <defaultValue>&quot;Percent_Allocated__c, Description__c,CreatedDate&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The fields to use as tooltip for assignments. Fully-qualified (with namespace if applicable), case-sensitive field names are required</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The fields to use as tooltip for assignments. Fully-qualified (with namespace if applicable), case-sensitive field names are required</inlineHelpText>
+        <label>Assignment tooltip fields</label>
+        <length>60</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Billable_Header_Field_Position_Is_Left__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If the Billable field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Billable field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</inlineHelpText>
+        <label>Billable Header Field Position Is Left</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Combine_Similar_Timecards__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether timecards with exactly the same combination of week, project, assignment, resource, billable, project, methodology, location, travel are combined on the Timecard Entry page. When this occurs, hours and notes fields are combined and other day-based fields are set to the values of the first timecard row included in an aggregated timecard line.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether timecards with exactly the same combination of week, project, assignment, resource, billable, project, methodology, location, travel are combined on the Timecard Entry page.</inlineHelpText>
+        <label>Combine Similar Timecards</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_AdditionalFields_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Additional Fields will be copied from previous week timecards.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Additional Fields will be copied from previous week timecards.</inlineHelpText>
+        <label>Copy AdditionalFields From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_ETC_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked ETC field  will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked ETC field  will be copied from previous week timecards</inlineHelpText>
+        <label>Copy ETC From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Hours_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Hour fields like Monday Hours, Tuesday Hours etc  will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Hour fields like Monday Hours, Tuesday Hours etc  will be copied from previous week timecards</inlineHelpText>
+        <label>Copy Hours From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Locations_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Location Information fields like Location Mon etc  will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Location Information fields like Location Mon etc  will be copied from previous week timecards</inlineHelpText>
+        <label>Copy Locations From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Methodology_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Methodology field  will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Methodology field  will be copied from previous week timecards</inlineHelpText>
+        <label>Copy Methodology From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Milestone_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Milestones will be copied from previous week&apos;s timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Milestones will be copied from previous week&apos;s timecards</inlineHelpText>
+        <label>Copy Milestone From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Notes_From_Previous_Week__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Notes will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Notes will be copied from previous week timecards</inlineHelpText>
+        <label>Copy Notes From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Phase_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Phase field  will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Phase field  will be copied from previous week timecards</inlineHelpText>
+        <label>Copy Phase From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Schedule_Assignment_Daily_Notes__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If set to true, the Copy From Schedule functionality populates the Notes fields for each day on the Timecard if it finds Assignment Daily Notes child records on the Assignment for that day. (default false)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If set to true, the Copy From Schedule functionality populates the Notes fields for each day on the Timecard if it finds Assignment Daily Notes child records on the Assignment for that day. (default false)</inlineHelpText>
+        <label>Copy Schedule Assignment Daily Notes</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Task_Hours_From_Previous_Week__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, project task hours are copied from the previous week&apos;s timecard lines.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When selected, task hours are copied from the previous week&apos;s timecard.</inlineHelpText>
+        <label>Copy Task Hours From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Tasks_From_Previous_Week__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, project task information is copied from the previous week&apos;s timecard lines.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When selected, task information is copied from the previous week&apos;s timecard.</inlineHelpText>
+        <label>Copy Tasks From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Travel_From_Previous_Week__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked Travel Information fields like Travel Week, Travel Mon etc  will be copied from previous week timecards</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked Travel Information fields like Travel Week, Travel Mon etc  will be copied from previous week timecards</inlineHelpText>
+        <label>Copy Travel From Previous Week</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Single_Resource_Search_Result__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true and the Resource Lookup popup on the new timecard UI returns only one result, the Resource Lookup popup is automatically closed and the resource field is set to returned resource.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true and the Resource Lookup popup on the new timecard UI returns only one result, the Resource Lookup popup is automatically closed and the resource field is set to returned resource.</inlineHelpText>
+        <label>Default Single Resource Search Result</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Week_Offset__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Default Week Offset</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_billable__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, billable drop down field on timecard ui will be shown as disabled i.e non-editable by user .</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, billable drop down field on timecard ui will be shown as disabled i.e non-editable by user .</inlineHelpText>
+        <label>Default billable</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Disable_cache__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>TC UI cache the all assigned assignments/project along with the milestones while it loads. This may lead to salesforce&apos;s viewstate limit, if user have many assignments/projects. Setting this config value to true will minimize this cache.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>TC UI cache the all assigned assignments/project along with the milestones while it loads. This may lead to salesforce&apos;s viewstate limit, if user have many assignments/projects. Setting this config value to true will minimize this cache.</inlineHelpText>
+        <label>Disable cache</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Empty_lines_to_append_on_add_lines__c</fullName>
+        <defaultValue>3</defaultValue>
+        <deprecated>false</deprecated>
+        <description>These many empty timecard lines will be added, when add lines button will be clicked.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>These many empty timecard lines will be added, when add lines button will be clicked.</inlineHelpText>
+        <label>Empty lines to append on add lines</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Empty_timecard_lines_to_append_by_def__c</fullName>
+        <defaultValue>5</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This is the minimum no of lines that will be always available for new timecard entry.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is the minimum no of lines that will be always available for new timecard entry.</inlineHelpText>
+        <label>Empty timecard lines to append by def</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Billable_Column__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the billable column on the Timecard Entry page is hidden. When true, the column is hidden and the billable checkbox defaults to selected. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the billable column on the Timecard Entry page is hidden. When true, the column is hidden and the billable checkbox defaults to selected. The default value is false.</inlineHelpText>
+        <label>Hide Billable Column</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Copy_From_Previous_Week_Button__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the Copy From Previous Week button on the new timecard UI is hidden. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the Copy From Previous Week button on the new timecard UI is hidden. The default value is false.</inlineHelpText>
+        <label>Hide Copy From Previous Week Button</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Copy_Previous_Week_Button__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This setting is a duplicate and may be removed in a future release. Please edit the &quot;Hide Copy From Previous Week Button&quot; setting instead.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting is a duplicate and may be removed in a future release. Please edit the &quot;Hide Copy From Previous Week Button&quot; setting instead.</inlineHelpText>
+        <label>Deprecated:HideCopy Previous Week Button</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Copy_Schedules_Button__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the Copy Schedules button on the new timecard UI is hidden. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the Copy Schedules button on the new timecard UI is hidden. The default value is false.</inlineHelpText>
+        <label>Hide Copy Schedules Button</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Expand_Tasks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, the Expand Tasks or Collapse Tasks link is hidden in the Time Entry page. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, the Expand Tasks or Collapse Tasks link is hidden in the Time Entry page. The default value is false.</inlineHelpText>
+        <label>Hide Expand Tasks</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Notes_Column__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, the Notes column that normally appears on the Timecard Entry page is hidden. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, the Notes column that normally appears on the Timecard Entry page is hidden. The default value is false.</inlineHelpText>
+        <label>Hide Notes Column</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Save_Button__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the Save button on the new timecard UI is hidden. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the Save button on the new timecard UI is hidden. The default value is false.</inlineHelpText>
+        <label>Hide Save Button</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Show_All_Tasks_My_Tasks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, the &apos;All Tasks&apos; and &apos;My Tasks&apos; buttons are hidden on the Add Tasks popup in the Time Entry page. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, the &apos;All Tasks&apos; and &apos;My Tasks&apos; buttons are hidden on the Add Tasks popup in the Time Entry page. The default value is false.</inlineHelpText>
+        <label>Hide Show All Tasks/My Tasks</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Submit_Button__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the Submit button on the new timecard UI is hidden. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the Submit button on the new timecard UI is hidden. The default value is false.</inlineHelpText>
+        <label>Hide Submit Button</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_Timecard_Hours_in_Calculated_Mode__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected and Task Time Entry Mode is set to Calculated,  only one row of task hours is displayed. The default value of the checkbox is clear.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected and Task Time Entry Mode is set to Calculated,  only one row of task hours is displayed. The default value of the checkbox is clear.</inlineHelpText>
+        <label>Hide Timecard Hours in Calculated Mode</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Hide_View_Edit_Details_Link__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true and Task Time Entry Mode is Current, the View or Edit Details links shown when hovering over a timecard line are hidden. If true and Task Time Entry Mode is not Current, the Notes tab is hidden on the links. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true and Task Time Entry Mode is Current, the View or Edit Details links shown when hovering over a timecard line are hidden. If true and Task Time Entry Mode is not Current, the Notes tab is hidden on the links. The default value is false</inlineHelpText>
+        <label>Hide View Edit Details Link</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Holiday_Color_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The given field/config is used to color-code the date-column-heading for a Work Calendar Holiday for the selected Resource on the Timecard. Config would allow customer to choose color so that they could, for example, have the date column heading &quot;Mon (9/5)&quot; be an alternate color (config could contain color). In this example, Mon. Sept. 5th 2011 is Labor Day, a holiday in most US Work Calendars, so a Resource with the US Work Calendar would see this color feature.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The given field/config is used to color-code the date-column-heading for a Work Calendar Holiday for the selected Resource on the Timecard UI.</inlineHelpText>
+        <label>Holiday Color Code</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Hours_cell_pixel_width__c</fullName>
+        <defaultValue>65</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the pixel width of timecard hours cells in the Timecard V15 Entry page.</inlineHelpText>
+        <label>Hours Cell Pixel Width</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Max_Resource_Hours_Per_Day__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Maximum number of hours a resource can enter on a single timecard day. If the total number of hours for a resource exceeds this amount on a single timecard day, an error message is displayed.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of hours a resource can enter on a single timecard day. If the total number of hours for a resource exceeds this amount on a single timecard day, an error message is displayed.</inlineHelpText>
+        <label>Max Resource Hours Per Day</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Maximum_Resource_Hours_Per_Week__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Maximum number of hours a resource can enter for a timecard week. If exceeded, an error message is displayed. Enter a percentage value and symbol, eg. 90%, to specify a maximum percentage of work calendar hours.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of hours a resource can enter for a timecard week. If exceeded, an error message is displayed. Enter a percentage value and symbol, eg. 90%, to specify a maximum percentage of work calendar hours.</inlineHelpText>
+        <label>Maximum Resource Hours Per Week</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Methodology_HeaderField_Position_Is_Left__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If the Methodology field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Methodology field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</inlineHelpText>
+        <label>Methodology HeaderField Position Is Left</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Methodology_field_position_is_popup__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This config flag determines whether methodology field should be display on notes popup or at front page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This config flag determines whether methodology field should be display on notes popup or at front page.</inlineHelpText>
+        <label>Methodology field position is popup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Milestone_Header_Field_Position_Is_Left__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If the Milestone field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Milestone field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</inlineHelpText>
+        <label>Milestone Header Field Position Is Left</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Milestone_field_position_is_popup__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This config flag determines whether milestone field should be display on notes popup or at front page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This config flag determines whether milestone field should be display on notes popup or at front page.</inlineHelpText>
+        <label>Milestone field position is popup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Minimum_Resource_Hours_Per_Week__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Minimum number of hours a resource can enter for a timecard week. If weekly hours are lower than this amount, an error message is displayed. Enter a percentage value and symbol, eg. 30%, to specify a minimum percentage of work calendar hours.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Minimum number of hours a resource can enter for a timecard week. If weekly hours are lower than this amount, an error message is displayed. Enter a percentage value and symbol, eg. 30%, to specify a minimum percentage of work calendar hours.</inlineHelpText>
+        <label>Minimum Resource Hours Per Week</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Nickname_Editable__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true then assignment nickname is editable else not.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true then assignment nickname is editable else not.</inlineHelpText>
+        <label>Nickname Editable</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Note_location_allowed__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, location field will be shown in timacard entry note popup dialog</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, location field will be shown in timacard entry note popup dialog</inlineHelpText>
+        <label>Note location allowed</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Note_primary_location_allowed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, then primary Location drop-down will be displayed on TC UI.
+And &quot;Use Project Location Records&quot; setting will configure whether it will bind to Primary Location picklist or Project Location object.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, then primary Location drop-down will be displayed on TC UI.</inlineHelpText>
+        <label>Note primary location allowed</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Phase_Header_Field_Position_Is_Left__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If the Phase field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Phase field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</inlineHelpText>
+        <label>Phase Header Field Position Is Left</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Phase_field_position_is_popup__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This config flag determines whether phase field should be display on notes popup or at front page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This config flag determines whether phase field should be display on notes popup or at front page.</inlineHelpText>
+        <label>Phase field position is popup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Pre_Populate_Task__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, tasks are pre populated for the selected user and project. The default value of the checkbox is clear.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, tasks are pre populated for the selected user and project. The default value of the checkbox is clear.</inlineHelpText>
+        <label>Pre Populate Task</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Primary_Loc_HeaderField_Position_Is_Left__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If the Primary Location field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If the Primary Location field is configured to be displayed, determines whether it should be displayed to the left or the right of Hours in the timecard header line of the Timecard UI.</inlineHelpText>
+        <label>Primary Loc HeaderField Position Is Left</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Primary_Location_field_position_is_popup__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When Note primary location allowed is set to true, determines whether the Primary Location field appears in the Notes section or the timecard line.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When Note primary location allowed is set to true, determines whether the Primary Location field appears in the Notes section or the timecard line.</inlineHelpText>
+        <label>Primary Location field position is popup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Proj_assig_dropdown_account_custom_field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>timecard project/Assignment account drop down display value</description>
+        <externalId>false</externalId>
+        <inlineHelpText>timecard project/Assignment account drop down display value</inlineHelpText>
+        <label>Proj assig dropdown account custom field</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Task_Tooltip_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Fields in this field set define the fields shown in the tooltip for the Project Task line in the Log a Timecard with Task Time UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Fields in this field set define the fields shown in the tooltip for the Project Task line in the Log a Timecard with Task Time UI.</inlineHelpText>
+        <label>Project Task Tooltip Fieldset Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_editable_after_save_audit_Notes__c</fullName>
+        <defaultValue>&apos;User &lt;user&gt; changed the Project from &lt;oldproject&gt; to &lt;newproject&gt; on &lt;date&gt;&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The &quot;Assignment project editable after save&quot; gives user access to change the project/assignment for the saved timecards but this require audit note to be set for timecard.
+Audit notes can be set by this config. This config contains four tokens, which will be replaced during update.
+
+The valid token names are as follows:-
+&lt;user&gt; - the current user who is performing the action in the TC UI
+&lt;date&gt; - today&apos;s date
+&lt;oldproject&gt; - the original project name
+&lt;newproject&gt; - the new project name
+
+Default value:- User &lt;user&gt; changed the Project from &lt;oldproject&gt; to &lt;newproject&gt; on &lt;date&gt;.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The &quot;Assignment project editable after save&quot; gives user access to change the project/assignment for the saved timecards but this require audit note to be set for timecard. Audit notes can be set by this config.</inlineHelpText>
+        <label>Project editable after save audit Notes</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_tooltip_fields__c</fullName>
+        <defaultValue>&quot;Project_Status__c,Billable_Internal_Hours__c&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>List of project fields to be shown as tooltip on timecard entry ui.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of project fields to be shown as tooltip on timecard entry ui.</inlineHelpText>
+        <label>Project tooltip fields</label>
+        <length>60</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Task_Based_On_Assignment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When selected, the tasks that are pre-populated are based on the selected assignment. The &quot;Limit To Tasks with Matching Assignment&quot; field in the Select Tasks popup is then checked by default. Restrict Task Based On Assignment is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When selected, the tasks that are pre-populated are based on the selected assignment. The &quot;Limit To Tasks with Matching Assignment&quot; field in the Select Tasks popup is then checked by default. Restrict Task Based On Assignment is deselected by default.</inlineHelpText>
+        <label>Restrict Task Based On Assignment</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Task_Based_On_Milestone__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When selected, the tasks that are pre-populated are based on the selected milestone. The &quot;Limit To Tasks with Matching Milestone&quot; field in the Select Tasks popup is then checked by default. Restrict Task Based On Milestone is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When selected, the tasks that are pre-populated are based on the selected milestone. The &quot;Limit To Tasks with Matching Milestone&quot; field in the Select Tasks popup is then checked by default. Restrict Task Based On Milestone is deselected by default.</inlineHelpText>
+        <label>Restrict Task Based On Milestone</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Save_Column_Preferences__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, customizations to width, order, and visibility of columns in Time Entry will be remembered per user.</inlineHelpText>
+        <label>Save Column Preferences</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Schedule_assignment_tooltip_fields__c</fullName>
+        <defaultValue>&quot;Percent_Allocated__c, Description__c,CreatedDate&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API names of assignment fields to be shown when hovering over the tooltip icon in the Schedule section of a timecard.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API names of assignment fields to be shown when hovering over the tooltip icon in the Schedule section of a timecard.</inlineHelpText>
+        <label>Schedule Assignment Tooltip Fields</label>
+        <length>60</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Schedule_grid_weekend_delta__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Config value will be used to show the schedules for no of weeks ahead of timecard weekend. Possible value for config will be 0, 1, 2 so on. If value = 0, Schedule grid will show schedules zero week ahead of timecard i.e current week and next week.</description>
+        <externalId>false</externalId>
+        <label>Schedule grid weekend delta</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Schedule_project_tooltip_fields__c</fullName>
+        <defaultValue>&quot;Project_Status__c,Billable_Internal_Hours__c&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API names of project fields to be shown when hovering over the tooltip icon in the Schedule section of a timecard.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API names of project fields to be shown when hovering over the tooltip icon in the Schedule section of a timecard.</inlineHelpText>
+        <label>Schedule Project Tooltip Fields</label>
+        <length>60</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Alert_For_NonZero_HolidayHours__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Given config is used to show alert if non zero value in entered on the timecard section for the day marked as holiday (having zero hours) in the selected Resource work calendar.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Given config is used to show alert if non zero value in entered on the timecard section for the day marked as holiday (having zero hours) in the selected Resource work calendar.</inlineHelpText>
+        <label>Show Alert For NonZero HolidayHours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Alert_For_NonZero_WeekendHours__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Given config is used to show alert if non zero value in entered on the schedule grid section for the day having zero hours in the selected Resource work calendar days pattern.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Given config is used to show alert if non zero value in entered on the schedule grid section for the day having zero hours in the selected Resource work calendar days pattern.</inlineHelpText>
+        <label>Show Alert For NonZero WeekendHours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Billable_NonBillable_Hours__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, billable non-billable hours will show via hover text on each total in the totals row for all the daily columns and sum column on timecard in Time Entry.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, billable non-billable hours will show via hover text on each total in the totals row for all the daily columns and sum column on timecard in Time Entry.</inlineHelpText>
+        <label>Show Billable NonBillable Hours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Easy_Entry_Popup__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the easy entry popup appears on the Time Entry page when you double-click an editable hour cell on a timecard row or press the DOWN ARROW key while that cell is selected.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the easy entry popup appears on the Time Entry page when you double-click an editable hour cell on a timecard row or press the DOWN ARROW key while that cell is selected.</inlineHelpText>
+        <label>Show Easy Entry Popup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Milestone_As_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Contains field whose value will be shown on timecard UI milestone drop down list.   If these are missing/null, the TC UI just continues to show the Milestone name fields of the available Milestones in the drop-down list.  No lookup __r references are supported, only fields directly on the Milestone can be used.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contains field whose value will be shown on TC UI milestone drop down list.   If these are missing/null, the TC UI just continues to show the Milestone name fields of the available Milestones in the drop-down list.  No lookup __r references are supp</inlineHelpText>
+        <label>Show Milestone As Field</label>
+        <length>60</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Show_ProjectName_Assignment_Dropdown__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Used to control the display of assignment project name value in the assignment display name on TC project/assignment overlay.</description>
+        <externalId>false</externalId>
+        <label>Show ProjectName Assignment Dropdown</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Recall_On_Timecards__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Config is used to control the display recall link on each submitted timecard. On click it, a recall overlay will be open, where we need to enter the comment and recall the approval request for timecard.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Config is used to control the display recall link on each submitted timecard. On click it, a recall overlay will be open, where we need to enter the comment and recall the approval request for timecard.</inlineHelpText>
+        <label>Show Recall On Timecards</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Schedule_Grid_Expanded_By_Default__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Checked, means schedule grid will be shown expanded on Timecard entry by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Checked, means schedule grid will be shown expanded on Timecard entry by default.</inlineHelpText>
+        <label>Show Schedule Grid Expanded By Default</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Travel__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the Travel checkboxes on the new timecard UI are to be displayed. The default value is true.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the Travel checkboxes on the new timecard UI are to be displayed. The default value is true.</inlineHelpText>
+        <label>Show Travel</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_schedule_grid__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, schedule grid section will show on timecard ui else not</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, schedule grid section will show on timecard ui else not</inlineHelpText>
+        <label>Show schedule grid</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_schedule_tooltips__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If set to true, shows the tooltip icon next to assignment name on Schedule section of TC UI.Default false (existing behavior, no tooltip column)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If set to true, shows the tooltip icon next to assignment name on Schedule section of TC UI.Default false (existing behavior, no tooltip column)</inlineHelpText>
+        <label>Show Schedule Tooltips</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_timecard_etc__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>config to show or hide etc field</description>
+        <externalId>false</externalId>
+        <inlineHelpText>config to show or hide etc field</inlineHelpText>
+        <label>Show timecard etc</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_timecard_methodology__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, timecard methodology field will be show on timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, timecard methodology field will be show on timecard UI.</inlineHelpText>
+        <label>Show timecard methodology</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_timecard_milestone__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>config to show or hide milestone select list</description>
+        <externalId>false</externalId>
+        <inlineHelpText>config to show or hide milestone select list</inlineHelpText>
+        <label>Show timecard milestone</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_timecard_phase__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, timecard Phase field will be show on timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, timecard Phase field will be show on timecard UI.</inlineHelpText>
+        <label>Show timecard phase</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Status_Recall_Column_Not_Fixed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When false, the Status/recall column will display immediately to the right of the Notes column. When true, Status/recall will display to the right of any additional fields.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When false, the Status/recall column will display immediately to the right of the Notes column. When true, Status/recall will display to the right of any additional fields.</inlineHelpText>
+        <label>Status/Recall Column Not Fixed</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__TC_HeaderRow_Left_Editable_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>API name of a field set used by the Timecard object. Fields in this field set define the editable fields shown to the left of Hours in the timecard header line of the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used by the Timecard object. Fields in this field set define the editable fields shown to the left of Hours in the timecard header line of the Timecard UI.</inlineHelpText>
+        <label>TC HeaderRow Left Editable Fieldset Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Header_Row_Editable_Fieldset_Name__c</fullName>
+        <defaultValue>&apos;TimeCard_Header_Row_Editable&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API name of a field set used by the Timecard object. Fields in this field set define the editable fields in the timecard header line in the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used by the Timecard object. Fields in this field set define the editable fields in the timecard header line in the Timecard UI.</inlineHelpText>
+        <label>TC Header Row Editable Fieldset Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Header_Row_Readonly_Fieldset_Name__c</fullName>
+        <defaultValue>&apos;TimeCard_Header_Row_Readonly&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API name of a field set used by the Timecard object. Fields in this field set define read-only fields in the timecard header line in the Timecard UI</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used by the Timecard object. Fields in this field set define read-only fields in the timecard header line in the Timecard UI</inlineHelpText>
+        <label>TC Header Row Readonly Fieldset Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Hour_Fields_To_Copy_From_Schedule__c</fullName>
+        <defaultValue>&quot;Monday_Hours__c,Tuesday_Hours__c,Wednesday_Hours__c,Thursday_Hours__c,Friday_Hours__c ,Saturday_Hours__c,Sunday_Hours__c&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Specify Timecard Hour fields to copy from schedule. Only these hour fields are valid for this config
+ &quot;Monday_Hours__c,Tuesday_Hours__c ,Wednesday_Hours__c ,Thursday_Hours__c,Friday_Hours__c ,Saturday_Hours__c,Sunday_Hours__c&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>CSV to specify Timecard Header fields to copy from schedule. Only these hour fields are valid for this config
+ &quot;Monday_Hours__c,Tuesday_Hours__c ,Wednesday_Hours__c ,Thursday_Hours__c,Friday_Hours__c ,Saturday_Hours__c,Sunday_Hours__c&quot;</inlineHelpText>
+        <label>TC Hour Fields To Copy From Schedule</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Notes_Field_Editable_Fieldset_Name__c</fullName>
+        <defaultValue>&apos;TimeCard_Notes_Field_Editable&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API name of a field set used by the Timecard object. Fields in this field set define editable fields in the Notes section in timecard lines in the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used by the Timecard object. Fields in this field set define editable fields in the Notes section in timecard lines in the Timecard UI.</inlineHelpText>
+        <label>TC Notes Field Editable Fieldset Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Notes_Field_Readonly_Fieldset_Name__c</fullName>
+        <defaultValue>&apos;TimeCard_Notes_Field_Readonly&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API name of a field set used by the Timecard object. Fields in this field set define read-only fields in the Notes section in timecard lines in the Timecard UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used by the Timecard object. Fields in this field set define read-only fields in the Notes section in timecard lines in the Timecard UI.</inlineHelpText>
+        <label>TC Notes Field Readonly Fieldset Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Status_To_Hide__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Field is used to hold coma (,) separated list of timecard status values that will be hide on the TC UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field is used to hold coma (,) separated list of timecard status values that will be hide on the TC UI.</inlineHelpText>
+        <label>TC Status To Hide</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Task_Statuses_To_Hide__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies tasks to hide when pre-populating in Timecards unless they have associated time logged.  The value is a comma-separated list of statuses.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies tasks to hide when pre-populating in Timecards unless they have associated time logged.  The value is a comma-separated list of statuses.</inlineHelpText>
+        <label>Task Statuses To Hide</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Task_Time_Entry_Assignment_Filter__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the resource can only select tasks that they have an assignment for when entering time against project tasks. When this option is not selected, users can enable this feature on the Time Entry page.</inlineHelpText>
+        <label>Task Time: Only show assigned tasks.</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Task_Time_Entry_Date_Filter__c</fullName>
+        <defaultValue>&quot;None&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the filtering behavior on task dates when choosing tasks to enter time against. Set to None or Overlap. If None, no filtering occurs. If Overlap, tasks are listed only when the timecard and selectable tasks have some overlap on dates.</inlineHelpText>
+        <label>Task Time: Filter task dates</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Task_Time_Entry_Mode__c</fullName>
+        <defaultValue>&quot;Current&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The time entry mode to use when entering task time for a timecard row. You can choose one of these values: Adjust up, Current, Calculated, or Freeform. The default value is Current.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The time entry mode to use when entering task time for a timecard row. You can choose one of these values: Adjust up, Current, Calculated, or Freeform. The default value is Current.</inlineHelpText>
+        <label>Task Time Entry Mode</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Top_assignment_to_show_count__c</fullName>
+        <defaultValue>10</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Number of top assignments to be loaded to show on Project/assignment overlay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of top assignments to be loaded to show on Project/assignment overlay</inlineHelpText>
+        <label>Top assignment to show count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Top_assignment_week_load_limit__c</fullName>
+        <defaultValue>4</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Number of weeks for which top assignments/projects to loaded to show on project/assignment overlay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of weeks for which top assignments/projects to loaded to show on project/assignment overlay</inlineHelpText>
+        <label>Top_assignment_week_load_limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Top_project_to_show_count__c</fullName>
+        <defaultValue>10</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Number of top projects to be loaded to show on Project/assignment overlay</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of top projects to be loaded to show on Project/assignment overlay</inlineHelpText>
+        <label>Top project to show count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Field_Set_for_Timecard_UI__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Allows you to switch your preferred method of managing visible fields on the Timecard Entry page. If False, PSA will use configuration options or custom settings to configure the UI. If True, PSA will use field sets to configure the UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Allows you to switch your preferred method of managing visible fields on the Timecard Entry page. If False, PSA will use configuration options or custom settings to configure the UI. If True, PSA will use field sets to configure the UI.</inlineHelpText>
+        <label>Use Field Set for Timecard UI</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_assignment_id__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates if an assignment id should be used while displaying assignments on the time card page</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates if an assignment id should be used while displaying assignments on the time card page</inlineHelpText>
+        <label>Use assignment id</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Weekend_Color_Code__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Given field/config is used to color code Scheduled 0-hour days. On a typical 8-hour/5-day schedule, this would be the weekend days, Saturday and Sunday, but this would work for any days that are explicitly 0 hours in the Schedule Pattern (not Holidays) on the selected Resource&apos;s Work Calendar. Customers could set this to a color (could be different than any color chosen for Holidays) and the date-column heading would be color-coded in the same way, with a legend off to the right showing.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Given field/config is used to color code the date-column heading for Scheduled 0-hour days as per the Schedule Pattern (not Holidays) on the selected Resource&apos;s Work Calendar.</inlineHelpText>
+        <label>Weekend Color Code</label>
+        <length>40</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Width_px_for_milestone_drop_down__c</fullName>
+        <defaultValue>80</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Controls the pixel width for Milestone dropdown on Timecard Entry UI. Please specify a whole number for this value, as this will directly go into width. 
+For ex a value 300 will set the dropdown width to 300px.  Value specified for this config will override the default 80 pixel width of the dropdown.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Controls the pixel width for Milestone dropdown on Timecard Entry UI. Please specify a whole number for this value, as this will directly go into width.</inlineHelpText>
+        <label>Width_px_for_milestone_drop_down</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Width_px_for_project_assig_drop_down__c</fullName>
+        <defaultValue>200</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Controls the pixel width for Project/Assignment dropdown on Timecard Entry UI. Please specify a whole number for this value, as this will directly go into width. For ex a value 300 will set the dropdown width to 300px.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Controls the pixel width for Project/Assignment dropdown on Timecard Entry UI. Please specify a whole number for this value, as this will directly go into width. For ex a value 300 will set the dropdown width to 300px.</inlineHelpText>
+        <label>Width px for project assig drop down</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Timecard Entry UI Personal</label>
+    <visibility>Public</visibility>
+</CustomObject>

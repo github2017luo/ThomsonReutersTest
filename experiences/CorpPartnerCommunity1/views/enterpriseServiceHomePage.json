@@ -1,0 +1,153 @@
+{
+  "appPageId" : "32ca75e4-69af-4463-9bec-d63daea6ef27",
+  "componentName" : "siteforce:sldsOneColLayout",
+  "id" : "3ded6ab1-a6f3-495b-a2d8-b6af2908c6a9",
+  "label" : "Enterprise Service Home Page",
+  "regions" : [ {
+    "id" : "c23b57e7-cff0-4ade-b029-622e22acb31b",
+    "regionName" : "header",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "tabsetConfig" : {
+          "UUID" : "e75af317-a369-4b89-9c9f-ae13d82be067",
+          "activeTab" : "",
+          "tabs" : [ {
+            "UUID" : "dd15f549-acd2-4279-90d5-1a7beb30a2b1",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "1",
+            "tabName" : "My Queue Cases"
+          }, {
+            "UUID" : "cc5f8bd2-ab36-42b2-8969-28842fb769eb",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "2",
+            "tabName" : "My Cases"
+          }, {
+            "UUID" : "bb5b6439-2e50-496d-8c4e-10126f4cf875",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "3",
+            "tabName" : "Cases Referred to My Queue"
+          }, {
+            "UUID" : "db07eeaa-cab9-4841-bc93-95002b3aec31",
+            "allowGuestUser" : false,
+            "locked" : false,
+            "seedComponents" : [ ],
+            "tabKey" : "e8545",
+            "tabName" : "Cases Referred to Me"
+          } ],
+          "useOverflowMenu" : false
+        }
+      },
+      "componentName" : "forceCommunity:tabset",
+      "id" : "e75af317-a369-4b89-9c9f-ae13d82be067",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "isQueue" : true,
+            "listViewName" : "",
+            "objectName" : "Case",
+            "showMyListView" : false
+          },
+          "componentName" : "c:ESC_MyCasesListViewComponent",
+          "id" : "cef90691-e199-43b7-98e6-c8ec790283cb",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "dd15f549-acd2-4279-90d5-1a7beb30a2b1",
+        "regionLabel" : "My Queue Cases",
+        "regionName" : "1",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "isQueue" : false,
+            "listViewName" : "My_Cases_Section",
+            "objectName" : "Case",
+            "showMyListView" : false
+          },
+          "componentName" : "c:ESC_MyCasesListViewComponent",
+          "id" : "cb10960a-c583-4afa-8d73-74e7add2735a",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "cc5f8bd2-ab36-42b2-8969-28842fb769eb",
+        "regionLabel" : "My Cases",
+        "regionName" : "2",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "isQueue" : true,
+            "listViewName" : "",
+            "objectName" : "ESC_Case_Collaborator__c",
+            "showMyListView" : false
+          },
+          "componentName" : "c:ESC_MyCasesListViewComponent",
+          "id" : "204c0e06-7b64-4926-b807-8fdff49b3a8b",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "bb5b6439-2e50-496d-8c4e-10126f4cf875",
+        "regionLabel" : "Cases Referred to My Queue",
+        "regionName" : "3",
+        "renditionMap" : { },
+        "type" : "region"
+      }, {
+        "components" : [ {
+          "componentAttributes" : {
+            "isQueue" : false,
+            "listViewName" : "Cases_Referred_To_Me",
+            "objectName" : "ESC_Case_Collaborator__c",
+            "showMyListView" : false
+          },
+          "componentName" : "c:ESC_MyCasesListViewComponent",
+          "id" : "12722666-91b6-4243-be46-8e5ce1a5c486",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "db07eeaa-cab9-4841-bc93-95002b3aec31",
+        "regionLabel" : "Cases Referred to Me",
+        "regionName" : "e8545",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "113d26aa-585c-44b1-b65f-9b33fe5f51cc",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "id" : "e3402a47-cff9-4988-9978-96ebc9eb6fc4",
+    "regionName" : "footer",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "title" : "Home"
+      },
+      "componentName" : "forceCommunity:seoAssistant",
+      "id" : "01557297-d3b1-4f41-bf38-d5c7dce42f75",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "d759bdc6-949b-4e14-8e21-26dcb7e4b69d",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "home"
+}

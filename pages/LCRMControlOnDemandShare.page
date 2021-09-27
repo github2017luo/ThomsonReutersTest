@@ -1,0 +1,31 @@
+<!--
+
+Name               Description                                                                                        Date
+Vaishali Gayatri   JIRA NO: Enabling Lightning as part of Sales Lightning Project..just added lightning stylesheet    30-Jan-2019
+Surendra Kamma	   commented this page as part of DPS-14173
+-->
+<apex:page Controller="LCRMOnDemandShare" lightningStylesheets="True">
+    <script>
+    /* START: DPS-14173 - Commented this page.
+        window.onload = function() {
+            controlShare();
+        };
+        
+        function controlShare(){
+            //var operat = '{!JSENCODE($CurrentPage.parameters.Operation)}';
+            var operat = '{!$CurrentPage.parameters.Operation}';
+            if(operat == 'share'){
+                ShareAcctChildRecords();
+            }else{
+                RemoveShareAcctChildRecords();
+            }
+        }
+       END: DPS-14173 - Commented this page. */
+    </script>
+    <apex:form >
+        <!--START: DPS-14173 - Commented this page.
+        <apex:actionFunction name="ShareAcctChildRecords" action="{!ShareAcctChildRecords}"/>
+        <apex:actionFunction name="RemoveShareAcctChildRecords" action="{!RemoveShareAcctChildRecords}"/>
+		END: DPS-14173 - Commented this page.-->
+    </apex:form>
+</apex:page>

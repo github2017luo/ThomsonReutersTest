@@ -1,0 +1,308 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+31-Jan-2019	   Kumar Shubham   		JIRA NO: Enabling Lightning as part of Sales Lightning Project..need to include lightning stylesheet    
+2019-02-12       Tejasree                  DPS-1836 : Added custom labels instead of Hard Coded values
+===============================================================================
+-->
+<apex:page docType="html-5.0" id="page" standardController="Training_Event_Contact__c" recordSetVar="Training Event Contacts" extensions="LCRMMassEditTrainingContacts"  lightningStylesheets="true">
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" /> 
+    <apex:stylesheet value="{!$Resource.CalendarControl}"/>
+    <apex:includeScript value="{!$Resource.Datepicker}"/>
+    <apex:includeScript value="{!URLFOR($Resource.jQueryPopup, 'popbox.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryPopup, 'popbox.css')}" />
+       
+    <style>
+        .linkClass {
+                    color:blue;
+                    font-size:11px;                    
+                }
+    </style>
+    
+    <br/>
+    
+    <apex:sectionHeader id="pageTitle" title="Manage Delegates" subtitle="{!tEventName}" />
+    <div>&nbsp;</div>
+    <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 2px;">
+            &nbsp;&laquo;&nbsp;<a href="/{!TrngEvntId}" style="color:#015BA7;">Back to Training Event: {!tEventName} </a>
+    </div>
+    <div>&nbsp;</div>
+
+    <apex:form id="formnorecs" rendered="{!NOT(IsRecords)}">
+        <apex:pageBlock >
+            <apex:pageMessage summary="{!$Label.No_Contacts_Associated}" 
+            severity="info" id="mupmst"/>
+            <!--<apex:pageMessages id="messagesGlobal" escape="false" />-->
+        </apex:pageBlock>    
+    </apex:form>
+
+    <apex:form id="form" rendered="{!IsRecords}"> 
+        
+        
+        <apex:outputPanel id="ErrorBlock">
+                <apex:pageMessages id="messagesGlobal" escape="false" />
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="thePanel">
+            <apex:pageBlock mode="detail" id="theBlock">
+                <apex:pageBlockSection columns="1" id="theSection">
+                    <strong>{!$Label.User_Training_Date}</strong><br/>
+                        <apex:input type="date" value="{!dTrainedDate}"/>
+                        <br/>
+                        <apex:commandButton value="{!$Label.Update_Selected_Contacts}" id="updateTrainedDate" action="{!SaveMassDate}" reRender="contactsTable" status="refreshStat"/>                    
+                        <!--Harika 29 Dec 2017  changed the action as part of CRM -10938-->
+                        <apex:commandButton value="{!$Label.Send_Survey}" action="{!sendSurvey}" id="sendSurveyBtn" reRender="contactsTable" status="refreshStat"/>
+                        <!--Harika 29 Dec 2017  changed the action as part of CRM -10938-->
+                        <apex:commandButton value="{!$Label.Send_Reminder}" action="{!sendReminder}" id="sendReminderBtn" reRender="contactsTable" status="refreshStat"/>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:outputPanel> 
+        
+        <apex:actionFunction name="removeChecked" action="{!RemoveSelected}" reRender="contactsTable" status="refreshStat"/>
+        <apex:actionStatus startText="{!$Label.Refreshing_Please_Wait}" id="refreshStat" startStyle="color:red;font-weight:bold"/>
+        <apex:pageBlock id="blockContacts" mode="edit" title="Contacts({! rSize}) ">        
+            <apex:pageBlockButtons id="pgbtns">
+                <apex:commandButton value="{!$Label.Save}" action="{!Save}" reRender="contactsTable" id="saveDate" status="refreshStat"/>
+                <apex:commandButton value="{!$Label.Save_and_Return}" action="{!SaveAndReturn}" id="saveDateReturn"/>
+                <apex:commandButton value="{!$Label.Remove_Selected}" id="removeBtn" reRender="contactsTable" status="refreshStat"/>
+            </apex:pageBlockButtons>         
+            <apex:outputPanel layout="block" styleClass="scrollableContainer" id="contactsTable">
+                <apex:pageBlockSection id="sectionContacts" title="Contacts" columns="1" collapsible="false">
+                    <apex:variable value="{!1}" var="rowNum"/> 
+                    <apex:pageBlockTable value="{!oPagingContacts.listTrainingEventCons}" var="tec" styleClass="scrollableContent"
+                                            first="{!oPagingContacts.Offset}"
+                                            rows="{!oPagingContacts.PageSize}" id="table1">
+                        <apex:column >
+                            <apex:facet name="header">
+                                                        <apex:inputCheckbox id="parentCheckbox" 
+                                                            title="{!$Label.Select_Deselect_All}"
+                                                            onclick="javascript:toggleSelectAll(this);" />
+                                                    </apex:facet>
+                            <apex:inputCheckbox id="childCheckbox" value="{!tec.bSelected}" styleClass="rowSelector"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                             <apex:facet name="header">
+                                 <apex:commandLink value="{!$Label.First_Name}" action="{!toggleSort}" rerender="contactsTable" status="refreshStat">
+                                     <apex:param name="sortField" value="First_Name__c" assignTo="{!sortField}"/>
+                                 </apex:commandLink>
+                              </apex:facet>
+                              <apex:outputField id="firstName" value="{!tec.oTrainingEventContact.First_Name__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="{!$Label.Last_Name}" action="{!toggleSort}" rerender="contactsTable" status="refreshStat">
+                                    <apex:param name="sortField" value="Last_Name__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField id="lastName" value="{!tec.oTrainingEventContact.Last_Name__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="{!$Label.Account_NameN}" action="{!toggleSort}" rerender="contactsTable">
+                                    <apex:param name="sortField" value="Account_Name__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.Account_Name__c}"/>
+                        </apex:column>   
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="{!$Label.Contact_Email}" action="{!toggleSort}" rerender="contactsTable">
+                                    <apex:param name="sortField" value="LCRM_Email__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.LCRM_Email__c}"/>
+                        </apex:column> 
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="{!$Label.Job_Function}" action="{!toggleSort}" rerender="contactsTable">
+                                    <apex:param name="sortField" value="Job_Function__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.Job_Function__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="{!$Label.Trained}" action="{!toggleSort}" rerender="contactsTable">
+                                    <apex:param name="sortField" value="Trained__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <!--Harika 29 Dec 2017  changed trained column as input field part of CRM -10938-->
+                            <apex:inputField value="{!tec.oTrainingEventContact.Trained__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                             <apex:facet name="header">
+                                 <apex:commandLink value="{!$Label.User_Trained_Date}" action="{!toggleSort}" rerender="contactsTable">
+                                     <apex:param name="sortField" value="User_trained_Date__c" assignTo="{!sortField}"/>
+                                 </apex:commandLink>
+                             </apex:facet>
+                             <!--Harika 29 Dec 2017  changed user trained date column as input field part of CRM -10938-->
+                             <apex:inputField value="{!tec.oTrainingEventContact.User_trained_Date__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                             <apex:facet name="header">
+                                 <apex:outputPanel layout="none">
+                                     
+                                     <apex:outputText value="{!$Label.Survey_Sent}" />
+                                 </apex:outputPanel>
+                             </apex:facet>
+                             <!--Harika 29 Dec 2017  changed Send survey column as output field part of CRM -10938-->
+                             <apex:outputField id="surveyCheckbox" value="{!tec.oTrainingEventContact.LCRM_Send_Survey__c}" styleClass="rowSelectorSurvey"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                             <apex:facet name="header">
+                                 <apex:outputPanel layout="none">
+                                     
+                                     <apex:outputText value="{!$Label.Reminder_Sent}" />
+                                 </apex:outputPanel>       
+                             </apex:facet>
+                             <!--Harika 29 Dec 2017  changed Send Reminder column as output field part of CRM -10938-->
+                             <apex:outputField id="reminderCheckbox" value="{!tec.oTrainingEventContact.LCRM_Send_Reminder__c}" styleClass="rowSelectorReminder"/>
+                        </apex:column>
+                        
+                        
+                    </apex:pageBlockTable>
+                    <c:PagingToolbar rerender="contactsTable" paging="{!oPagingContacts}" immediate="false"/>
+                </apex:pageBlockSection>
+                
+            </apex:outputPanel>
+            <script type='text/javascript'>
+                                jQuery.noConflict();
+                        
+                                jQuery(document).ready(function($){                                    
+                                  j$("[id$=removeBtn]").click(function()
+                                  {
+                                    var del= false;                        
+                                    j$("[id$=childCheckbox]").each(function()
+                                    {
+                                        if(j$(this).attr('checked'))
+                                        {
+                                          del= true;
+                                        }
+                                        
+                                    });
+                                    if(!del){
+                                        window.$Label = window.$Label || {};
+                                    $Label.Please_select_at_least_one_row_to_be_removed= '{!($Label.Please_select_at_least_one_row_to_be_removed)}'; // assigning the label to the JS variable.
+                            
+                                        var leastoneRowTORemove = $Label.Please_select_at_least_one_row_to_be_removed;
+                                    alert(leastoneRowTORemove);
+                                       //alert({!$Label.Please_select_at_least_one_row_to_be_removed}); 
+                                    }
+                                    else
+                                    {
+                                        //alert('Confirm Deletion?');
+                                        var r=confirm("{!$Label.Selected_Contact_s_will_be_removed_from_Training_Event}");
+                                        if (r==true)
+                                        {
+                                           removeChecked();
+                                        }                           
+                                    }       
+                                  });
+                                });
+                            </script>   
+        </apex:pageBlock>
+    </apex:form>
+    
+    <script>
+                    j$ = jQuery.noConflict();
+                    j$(document).ready(function()
+                    {
+                      
+                      j$("[id$=updateTrainedDate]").click(function()
+                      {
+                        var checked = false;
+                        j$("[id$=childCheckbox]").each(function()
+                        {
+                            if(j$(this).attr('checked'))
+                            {
+                              checked = true;                              
+                            }
+                        });
+                        if(!checked){
+                            window.$Label = window.$Label || {};
+                            $Label.Please_select_at_least_one_row= '{!($Label.Please_select_at_least_one_row)}'; // assigning the label to the JS variable.
+                            var leastoneRow = $Label.Please_select_at_least_one_row;
+                                    alert(leastoneRow);
+                             //alert({!$Label.Please_select_at_least_one_row});
+                        }
+                         
+                      });
+                      });
+                      
+                      j$(document).ready(function()
+                    {
+                      
+                      j$("[id$=sendSurveyBtn]").click(function()
+                      {
+                        var checked = false;
+                        j$("[id$=childCheckbox]").each(function()
+                        {
+                            if(j$(this).attr('checked'))
+                            {
+                              checked = true;                              
+                            }
+                        });
+                        if(!checked){
+                            window.$Label = window.$Label || {};
+                            $Label.Please_select_at_least_one_row= '{!($Label.Please_select_at_least_one_row)}'; // assigning the label to the JS variable.
+                            
+                            var leastoneRow = $Label.Please_select_at_least_one_row;
+                                    alert(leastoneRow);
+                             //alert({!$Label.Please_select_at_least_one_row});
+                        }
+                         
+                      });
+                      }); 
+                      
+                      j$(document).ready(function()
+                    {
+                      
+                      j$("[id$=sendReminderBtn]").click(function()
+                      {
+                        var checked = false;
+                        j$("[id$=childCheckbox]").each(function()
+                        {
+                            if(j$(this).attr('checked'))
+                            {
+                              checked = true;                              
+                            }
+                        });
+                        if(!checked){
+                            window.$Label = window.$Label || {};
+                            $Label.Please_select_at_least_one_row= '{!($Label.Please_select_at_least_one_row)}'; // assigning the label to the JS variable.
+                            
+                            var leastoneRow = $Label.Please_select_at_least_one_row;
+                                    alert(leastoneRow);
+                            //alert({!$Label.Please_select_at_least_one_row});
+                        }
+                          
+                      });      
+                  
+                    });
+                    
+                    
+                    
+                    
+      function toggleSelectAll(element) {
+          var elCheckbox = jQuery(element);
+          var elTable = elCheckbox.closest('table');
+          
+          var isChecked = elCheckbox.is(':checked');
+          elTable.find('*:checkbox.rowSelector').each(function(){
+            jQuery(this).attr('checked', isChecked);
+          });
+      }
+      
+      
+                </script>
+</apex:page>

@@ -1,0 +1,540 @@
+<apex:page standardController="ESC_HomePageQuery__c" extensions="ESC_HPQ_SOQLBuilderController"
+    deferLastCommandUntilReady="true" sidebar="false">
+
+    <apex:form >
+
+        <apex:pageBlock >
+
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Validate" action="{!Validate}" rerender="preview"
+                    status="fetchStatus" style="border-radius: 12px; width:66px;" />
+                <apex:commandButton value="Save"  style="border-radius: 12px; width:66px"
+                    rerender="soqlTable" status="fetchStatus" oncomplete="fordatatables();" onclick="return confirmFun();"
+                />
+                
+
+                <apex:outputPanel id="myP">
+                    <apex:commandButton value="Save Successful, Refresh Now!!" action="{!refreshNow}"
+                        rendered="{!showRefresh}" style="border-radius: 12px; width:190px"
+                    />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+
+            <apex:outputPanel id="msg">
+                <apex:inputText value="{!sortCriteria}" styleClass="result" style="display:none"></apex:inputText>
+
+            </apex:outputPanel>
+            <table border="0" class="ex2">
+                <tr>
+                    <td width="60%" valign="top">
+                        <div style="background-color:#5e82a3;color:white;padding:4px 3px;font-size:1.0em;font-weight:bold">
+                            <h3>Selected Fields</h3>
+                        </div>
+
+                        <apex:outputPanel id="soqlTable" style="height:250px;overflow:Auto">
+                            <apex:dataTable value="{!selectedFields}" var="var" styleClass="dataTable_mainTables ,display" id="dt"
+                                style="width:100%;" rowClasses="myRow,myRow">
+                                <apex:column >
+                                    <apex:facet name="header">Seq.</apex:facet>
+                                    <h1>{!var.sequenceValue}</h1>
+                                </apex:column>
+
+                                <apex:column >
+                                    <apex:facet name="header">Field Name</apex:facet>
+                                    
+                                    <b sequence="{!var.sequenceValue}">{!var.fieldDisplayName}</b>                                    ({!var.fieldAPI})
+
+                                </apex:column>
+                                <apex:column styleClass="selector" id="override">
+                                    <apex:facet name="header">Override Label</apex:facet>
+                                    <apex:inputText value="{!var.overrideLabel}" />
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Truncation Limit</apex:facet>
+                                    <apex:inputText value="{!var.truncateValue}" maxlength="3" size="5" />
+                                </apex:column>
+                                <apex:column >
+                                     <apex:facet name="header">SortDef</apex:facet>
+                                     <input type="radio" name="sortby" id="myRad" default="{!var.defaultSortBy}" onclick="defaultSortByWatch('{!JSENCODE(var.fieldAPI)}');"></input>
+                                     
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Show In Mini Layout?</apex:facet>
+                                    <apex:inputCheckbox value="{!var.showInMiniLayout}" />
+                                </apex:column>
+                              
+                                <apex:column headerValue="Delete">
+                                    <apex:outputPanel id="myOpns">
+                                        <apex:commandLink value="Remove" action="{!toggleDel}" rerender="myOpns,preview"
+                                            immediate="true" oncomplete="changeStyle(this ,'cu');fordatatables(); "
+                                            rendered="{! var.showRemove}" html-rowID="{!var.sequenceValue}"
+                                            status="fetchStatus">
+                                            <apex:param value="{!var.fieldAPI}" name="index" />
+                                        </apex:commandLink>
+
+                                        <apex:commandLink styleClass="undoBTN" value="Undo" action="{!toggleDel}" rerender="myOpns,preview"
+                                            immediate="true" oncomplete="changeStyle(this ,'cr');fordatatables();"
+                                            rendered="{! !var.showRemove}" html-rowID="{!var.sequenceValue}"
+                                            status="fetchStatus">
+                                            <apex:param value="{!var.fieldAPI}" name="index" />
+                                        </apex:commandLink>
+                                    </apex:outputPanel>
+                                </apex:column>
+                            </apex:dataTable>
+                        </apex:outputPanel>
+
+
+                    </td>
+                    <td valign="top">
+                        <apex:pageBlockSection id="fieldAidSec" collapsible="false" showHeader="true" title="Field Aid" columns="1">
+                       
+
+                                 <select id="parentList" class="myPick"></select> <br></br>
+                            <div id="childList" class="myPick"></div><br></br><br></br>
+                            <apex:commandButton value="Add To Selected Fields" action="{!addRecords}" 
+                                rerender="fieldAidSec,errors" oncomplete=" fordatatables();moveFocus();makePicklist();"
+                            />
+                            <apex:outputPanel id="previewFieldPnl" styleClass="mainPNL invisible">
+                                
+                                 <h3>***Copy Below To Add/Modify Filter Criteria***</h3>
+                                    <br></br><br></br>
+                                    <apex:inputText value="{!selectedField}" disabled="true" styleClass="myPrim"></apex:inputText>
+                                     <apex:inputText value="{!selectedField}" styleClass="myPrim invisible"></apex:inputText>
+                                <apex:outputPanel styleClass="pnl invisible">
+                                   
+                                
+                                <br></br>
+                                <apex:inputText value="{!relatedField}" disabled="true" styleClass="mySec" ></apex:inputText>
+                                <apex:inputText value="{!relatedField}" styleClass="mySec invisible" ></apex:inputText>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+
+
+
+                        </apex:pageBlockSection>
+                     
+                        <apex:pageBlockSection collapsible="false" showHeader="true" title="Default Sort Order For First Time"
+                            columns="1">
+                            <apex:outputPanel id="myID">
+                           Field Name: <apex:inputField styleClass="myCol" value="{!thisRecord.ESC_DefaultSortCol__c}"
+                            /><br></br>
+                             Is Ascending? <apex:inputField styleClass="myCol2" value="{!thisRecord.ESC_DefOrder__c}"
+                            />
+                            </apex:outputPanel>
+                        </apex:pageBlockSection>
+                   
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <apex:pageBlockSection collapsible="false" showHeader="true" title="Filter Criteria"
+                            columns="1">
+                            <apex:inputField style="align:left;valign:top;width:900px" value="{!thisRecord.ESC_FilterCriteria__c}"
+                                styleClass="pdctBox" />
+                            <apex:outputPanel id="preview" style="padding-left:140px">
+                                <apex:outputLabel style="padding-right:20px" value="Sample Query" for="myP"></apex:outputLabel>
+                                <apex:inputTextarea rows="4" id="myP" disabled="true" styleClass="{! isValidQuery}"
+                                    style="align:right;width:64%;position:Relative;padding:18px"
+                                    value="{!previewQuery}" />
+                            </apex:outputPanel>
+                        </apex:pageBlockSection>
+
+
+
+
+                    </td>
+                </tr>
+            </table>
+           
+                <apex:pageMessages id="errors" />
+          
+        </apex:pageBlock>
+        <apex:actionStatus id="fetchStatus">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                    <img src="/img/loading.gif" />
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:actionFunction action="{!Validate}" name="validateFunc" rerender="preview"></apex:actionFunction>
+        <apex:actionFunction action="{!formQuery}" name="fetchQuery" rerender="soqlTable,msg,preview"
+            status="fetchStatus" oncomplete="fordatatables(); "></apex:actionFunction>
+        <apex:actionFunction action="{!formQuery2}" name="fetchQuery2" rerender="preview,errors"
+            status="fetchStatus"></apex:actionFunction>
+        <apex:actionFunction action="{!SaveFinal}" name="saveNow" rerender="soqlTable,myID,errors"
+            oncomplete=" fordatatables();"></apex:actionFunction>
+             <apex:actionFunction name="refreshErrors" rerender="errors"
+            ></apex:actionFunction>
+
+        <apex:actionFunction name="secondaryPickListReset" rerender="previewFieldPnl"></apex:actionFunction>
+
+        <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/AutoSuggestion/jquery-ui.min.css')}"
+        />
+
+
+        <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}"
+        />
+        <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-ui.min.js')}"
+        />
+        <apex:stylesheet value="{!URLFOR($Resource.ESC_UniversalResource, 'RowReorder/datatables.min.css')}"
+        />
+        <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/RowReorder/datatables.min.js')}"
+        />
+        <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/AutoSuggestion/jquery.typewatch.js')}"
+        />
+
+        <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/EditablePickList/jquery-editable-select.js')}"
+        />
+        <apex:stylesheet value="{!URLFOR($Resource.ESC_UniversalResource, 'EditablePickList/jquery-editable-select.css')}"
+        />
+    </apex:form>
+
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+        var table;
+        var formedNew = {};
+        var one = document.getElementById("parentList");
+        var values = JSON.parse(`{!AllPickListOptions}`);
+        var languageATT = eval({!DataTableEntity});
+        var language = [];
+   
+        language.push(({
+            "processing": languageATT[0].ESC_processing,
+            "search": languageATT[0].ESC_search,
+            "lengthMenu": languageATT[0].ESC_lengthMenu,
+            "info": languageATT[0].ESC_info,
+            "infoEmpty": languageATT[0].ESC_infoEmpty,
+            "infoFiltered": languageATT[0].ESC_infoFiltered,
+            'infoPostFix': "",
+            'loadingRecords': languageATT[0].ESC_loadingRecords,
+            'zeroRecords': languageATT[0].ESC_zeroRecords,
+            'emptyTable': languageATT[0].ESC_emptyTable,
+            'paginate': {
+                'first': languageATT[0].ESC_paginateFirst,
+                'previous': languageATT[0].ESC_paginatePrevious,
+                'next': languageATT[0].ESC_paginateNext,
+                'last': languageATT[0].ESC_paginateLast
+            },
+            'aria': {
+                'sortAscending': languageATT[0].ESC_sortAscending,
+                'sortDescending': languageATT[0].ESC_sortDescending
+            }
+        }));
+        
+          function confirmFun(){
+              window.$Label = window.$Label || {};
+             $Label.customLabel= '{!($Label.ESC_ConfirmMessage)}';
+                     var jelements = j$(".selector").find("input");
+                      var hasLabels = false;
+                      jelements.each(function(index){
+                         if(j$(jelements[index]).val()){
+                          hasLabels = true;
+                           return false; 
+                         }
+                      });
+                      
+                      if(hasLabels){
+                           var r= confirm($Label.customLabel);
+                           if(r==true){
+                                saveNow();
+                            }
+                            else{
+                             return false;
+                             console.log(r);
+                            }
+                      }
+                      else{
+                          saveNow();
+                          return false;
+                      }
+                      
+         }
+        function setDefaultRadio(){
+             j$("[default='true']").prop('checked', true);
+        }
+
+        function fordatatables() {
+            formTheOrder();
+           
+            initTypeWatch();
+
+            var j$ = jQuery.noConflict();
+
+
+            j$(".slds-col").css({
+                "display": "inline-block",
+                "overflow": "auto"
+            });
+            if (j$('.dataTable_mainTables').length > 0) {
+                table = j$('.dataTable_mainTables').DataTable({
+
+                    "bFilter": true, // Make Filer True/False
+                    // Make sorting True/False
+                    "bPaginate": false, // Make pagination true/false
+                    "bLengthChange": false, // hide length change dropdown
+                    "bInfo": false,
+                    "destroy": true,
+                    "iDisplayLength": 10,
+                    "sScrollY": 200,
+                    "scrollX": true,
+                    "bAutoWidth": true,
+                    "language": language[0],
+                    "bStateSave": false,
+                    "rowReorder": true,
+                    columnDefs: [{
+                        orderable: true,
+                        className: 'reorder',
+                        visible: false,
+                        targets: 0
+                    }, {
+                        orderable: false,
+                        targets: '_all'
+                    }]
+
+
+                });
+
+                table.on('row-reorder', function(e, diff, edit) {
+                    try {
+                        if (diff == null || diff.length == 0)
+                            return;
+                        var result = 'Reorder started on row: ' + edit.triggerRow
+                            .data()[1] + '<br>';
+                        table.on('order.dt search.dt', function() {
+                            table.column(0, {
+                                search: 'applied',
+                                order: 'applied'
+                            }).nodes().each(function(cell,
+                                i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+                        console.log('table');
+                        console.log(table);
+                        for (var i = 0, ien = diff.length; i < ien; i++) {
+                            console.log('diff[i].node');
+                            console.log(diff[i].node);
+                            var rowData = table.row(diff[i].node).data();
+
+                            var rCurr = j$(rowData[1]).attr('sequence');
+                            var rNew = j$(diff[i].newData).text();
+                            console.log(j$(rowData[1]).text());
+                            console.log('rCurr' + rCurr);
+                            console.log(j$(rowData[1]));
+                            console.log('rNew ' + rNew);
+                            result += rowData[1] +
+                                ' updated to be in position ' +
+                                diff[i].newData + ' (was ' + diff[i].oldData +
+                                ')<br>';
+                            formedNew[rCurr] = rNew;
+                        }
+                        var wr = JSON.stringify(formedNew);
+                        //  console.log(formedNew);
+                        /// console.log(wr);
+
+                        j$('.result').val(wr);
+                        if (diff.length)
+                            fetchQuery();
+
+
+                    } catch (e) {
+                        console.log('error thrown while ordering' + e);
+                        fetchQuery();
+                    }
+                });
+
+                j$('.undoBTN').closest('tr').css('background-color', '#ffcccc');
+
+                setTimeout(function() {
+
+                    table.columns.adjust().draw();
+                    setDefaultRadio();
+
+
+
+                }, 200);
+
+            }
+        }
+
+        j$(document).ready(function() {
+            fordatatables();
+            formTheOrder();
+ 
+
+        });
+
+        function formTheOrder() {
+            formedNew = {};
+            var countOf = '{!selectedFields.size}';
+            for (i = 0; i < countOf; i++) {
+                formedNew[i] = String(i);
+            }
+            console.log(formedNew);
+        }
+
+        var options = {
+            callback: function(value) {
+                console.log('calling' + value);
+                fetchQuery2();
+            },
+            wait: 2300,
+            highlight: true,
+            allowSubmit: false,
+            captureLength: 4
+        };
+
+        function initTypeWatch() {
+            j$('.pdctBox').typeWatch(options);
+        }
+        
+        function defaultSortByWatch(data){
+           console.log(data);  
+           j$(".myCol").val(data);
+           j$(".myCol2").prop('checked', false);
+           
+        }
+        function makePickListEnhanced(selectedPickList, primary) {
+            if (primary) {
+                selectedPickList.editableSelect({
+                    effects: 'fade'
+
+                }).on('select.editable-select', function(e, li) {
+                    /*secondaryPickListReset();
+               
+                setTimeout(function(){
+                populatechild(j$(li[0]).attr("value"));
+                },100); */
+                    console.log('currValue' + li.text());
+                    j$(".mainPNL").fadeIn();
+                    j$(".myPrim").val(j$(li[0]).attr("value"));
+                     j$(".pnl").fadeOut();
+                    populatechild(j$(li[0]).attr("value"), li.text());
+                   // secondaryPickListReset();
+                });
+            } else {
+                selectedPickList.editableSelect({
+                    effects: 'fade'
+
+                }).on('select.editable-select', function(e, li) {
+                    j$(".mySec").val(j$(li[0]).attr("value"));
+                     j$(".pnl").fadeIn();
+                    //secondaryPickListReset();
+                });
+            }
+        }
+
+        function moveFocus() {
+            console.log('change focus fuires');
+            var newRow = j$(".selector:last").closest("tr");
+            var newRow = j$(".selector:last").closest("tr");
+
+            newRow.closest("tr").css("background-color", "#ffffe6");
+            var selectedDiv = j$(".dataTables_scrollBody");
+            console.log(selectedDiv);
+            selectedDiv.scrollTop(j$('.dataTables_scrollBody')[0].scrollHeight);
+            fetchQuery();
+        }
+
+        function changeStyle(objectI, choice) {
+            console.log('changeStyle called');
+            console.log(choice);
+            var count = j$(objectI).attr('rowID');
+            var row = j$('.myRow')[count];
+            // console.log(j$('.myRow')[count]);
+            if (choice == 'cu') {
+                // j$(row).prop('disabled', true);
+                setTimeout(function() {
+                    j$(row).addClass("mystyle");
+                }, 3000);
+                j$(row).css('background-color', '#ffcccc');
+
+                //  console.log('disabling');
+            } else {
+                // j$(row).prop('disabled', false)
+                j$(row).removeClass("mystyle");
+                j$(row).css('background-color', 'white');
+                //   console.log('enabling');
+            }
+            fetchQuery2();
+
+        }
+
+        makePicklist();
+
+        function makePicklist() {
+
+            console.log('Picklist');
+
+            var parentPickList = j$("#parentList");
+            var childPickList = j$("#childList");
+            getOptions(values[".currObj"], parentPickList);
+            getOptions(values[".currObjR"], parentPickList)
+
+            makePickListEnhanced(parentPickList, true);
+
+
+        }
+
+        function populatechild(value, title) {
+
+            console.log('ppc called' + value);
+            var two = document.getElementById("childList");
+
+            console.log(values[value]);
+            //append items to the second
+            j$("#childList").empty();
+            if (title.indexOf('>>') != -1) {
+                j$("#childList").append('<select id="myCH"></select>')
+                getOptions(values[value], j$("#myCH"));
+
+                makePickListEnhanced(j$("#myCH"));
+            }
+        }
+
+        function getOptions(objs, pickList) {
+            var listOfOpns = [];
+            console.log(pickList);
+
+
+            for (var prop in objs) {
+                //console.log(objs[prop]);
+                var optionV = new Option(objs[prop].opnLabel, objs[
+                    prop].opnValue);
+                console.log(optionV);
+                pickList.append(optionV);
+            }
+            console.log(pickList);
+
+            return listOfOpns;
+        }
+
+    </script>
+    <style>
+        table.ex2 {
+            table-layout: fixed;
+        }
+        
+        .mystyleValid {
+            background-color: #d6f5d6;
+        }
+        
+        .mystyleInvalid {
+            background-color: #ffcccc;
+        }
+        
+        .myPick {
+            width: 150px;
+            background-color: white;
+        }
+        
+        .invisible {
+            display: none;
+        }
+
+    </style>
+
+</apex:page>

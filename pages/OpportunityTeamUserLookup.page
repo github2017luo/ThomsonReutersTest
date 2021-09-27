@@ -1,0 +1,109 @@
+<!--
+CHANGE HISTORY
+==========================================================================================================
+   Date             Name                      Description
+ 2019-01-28      Lovedeep Singh                Added the lightningStylesheets tag to enable lightning for this VF page.
+==========================================================================================================
+-->
+<apex:page controller="OpportunityTeamUserLookup" title="Search" tabStyle="User" id="pageLookup" action="{!OnLoadUser}" lightningStylesheets="true">
+    <apex:includeScript value="/support/console/26.0/integration.js"/>
+    <script type="text/javascript">
+        var pageLoad = window.onload;
+        window.onload = function(){
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+        };
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Opportunity Team Members');
+        };
+        
+   </script>
+  
+    <apex:form >
+       <br/> Back to&nbsp;<apex:outputlink value="/{!oOpportunity.id}">{!oOpportunity.name}</apex:outputlink><br/>
+       
+        <apex:outputPanel id="ErrorBlock" rendered="{!Not(LoggedInUser)}">
+            <apex:pageMessages id="messagesGlobal1" escape="false" />
+        </apex:outputPanel>
+        
+        <apex:actionRegion rendered="{!LoggedInUser}">
+            <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+                <apex:outputLabel value="{!$Label.Searchs}" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+                <apex:inputText id="txtSearch" value="{!searchString}"/>
+                <span style="padding-left:5px"><apex:commandButton id="btnGo" value="Go" action="{!Search}" rerender="searchResults,messagesGlobal"></apex:commandButton></span> 
+            </apex:outputPanel>            
+            <apex:pageMessages id="messagesGlobal" /> 
+            
+            <apex:outputPanel layout="block" style="margin:5px;padding:10px;padding-top:2px;"> 
+                <apex:inputCheckbox value="{!bAcctTerritory}" id="checkAccount"/>
+                <apex:outputLabel for="checkAccount">{!$Label.Search_Account_Territory_Members_Only}</apex:outputLabel>
+            </apex:outputPanel>
+               
+           <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+                <apex:pageBlock id="searchResults" title="{!pageHeader}">
+                    <center><apex:commandButton action="{!addSalesTeam}" value="Add" rendered="{!results.size<>0}" rerender="searchResults,messagesGlobal" /></center>
+                    <apex:pageBlockTable value="{!TeamMemberResults}" var="Member" id="tblResults" rendered="{!results.size<>0}">
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:inputCheckbox onclick="checkAll(this,'checkedone')"/>
+                            </apex:facet>
+                            <apex:inputCheckbox value="{!Member.isSelected}" id="checkedone"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$Label.Namess}">
+                            <apex:outputLink value="/{!Member.TeamMember.user}">{!Member.TeamMember.user.name}</apex:outputLink>                            
+                        </apex:column>
+                        <apex:column headerValue="{!$Label.Rep_Type_Description}" value="{!Member.TeamMember.user.Rep_Type_Description__c}" rendered="{!IF(OR($Profile.Name='LatAm User',$Profile.Name='System Administrator'),FALSE,TRUE)}"/>
+                        <apex:column headerValue="{!$Label.Rep_Type_Description}" value="{!Member.TeamMember.TeamMemberRole}" rendered="{!IF(OR($Profile.Name='LatAm User',$Profile.Name='System Administrator'),TRUE,FALSE)}"/>
+                        <apex:column headerValue="{!$Label.Phones}" value="{!Member.TeamMember.user.Phone}"/>
+                        <apex:column headerValue="{!$Label.Emails}" value="{!Member.TeamMember.user.Email}"/>
+                        <apex:column headerValue="{!$ObjectType.OpportunityTeamMember.fields.Partner_Role__c.label}" rendered="{!IF(AND(partnerFlag=TRUE, OR($Profile.Name='LatAm User',$Profile.Name='System Administrator')),TRUE,FALSE)}">
+                            <apex:inputfield value="{!Member.TeamMember.Partner_Role__c}" rendered="{!IF(Member.TeamMember.TeamMemberRole='LatAm Partner', TRUE, FALSE)}"/>
+                        </apex:column>
+                         <apex:column headerValue="">
+                            <div style="display:none">
+                            <!-- included this as OpportunityAccessLevel field of opportunityteammember is writeable only in page and not in class -->
+                               <apex:selectList size="1" value="{!Member.TeamMember.OpportunityAccessLevel}">
+                                    <apex:selectOptions value="{!access}" />
+                                </apex:selectList>
+                            </div>
+                        </apex:column> 
+                    </apex:pageBlockTable>
+                    <center><apex:commandButton action="{!addSalesTeam}" value="Add" rendered="{!results.size<>0}" rerender="searchResults,messagesGlobal" /></center>
+                    <apex:outputPanel rendered="{!results.size==0}">
+                        <table class="list" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <tr>
+                                    <td class="noRows" colspan="7">{!$Label.No_records_found_due_to_one_of_the_following}
+
+                                    <ul><li>{!$Label.There_are_no_records_of_this_type}</li><li>{!$Label.You_dont_have_permission_to_see_any_of_the_records}</li></ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </apex:outputPanel> 
+        </apex:actionRegion>
+    </apex:form>
+    <script>
+        function checkAll(cb,cbId){
+            try {
+                var inputElem = document.getElementsByTagName("input");          
+                for(var i=0; i<inputElem.length; i++)
+                {   
+                  if(inputElem[i].id.indexOf(cbId)!=-1)                         
+                    inputElem[i].checked = cb.checked;
+                }
+            }
+            catch (e) { alert(e); }
+        }
+    </script>    
+</apex:page>

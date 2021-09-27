@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>false</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Discount_Pricing_Notes__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <type>userHierarchyField</type>
+            </approver>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Quote.Price_Increase_Discount_variance__c</field>
+                <operation>greaterThan</operation>
+                <value>30</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>10</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Manager - Partner</label>
+        <name>Manager_Partner</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>menotti.franceschini@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>vitorio.martini@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Quote.Price_Increase_Discount_variance__c</field>
+                <operation>greaterThan</operation>
+                <value>50</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>20</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Com Director Approval</label>
+        <name>Com_Director_Approval</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>ricardo.tommasi@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>santiago.ayerza@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>30</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Local CFO and Local MD Approval</label>
+        <name>Local_CFO_and_Local_MD_Approval</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>david.shaw@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>40</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>CFO Approval</label>
+        <name>CFO_Approval</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>This is the approval processes that need to be created to ensure the correct steps are taken for Renewals Discount pricing approvals for GTM pricing discounts for partner users.</description>
+    <emailTemplate>LATAM_Mail/Renewal_Quote_Sent_for_Approval_Partners</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND 
+( 
+$Profile.Name = &quot;Partner Portal User&quot;, 
+$RecordType.Name = &quot;LATAM Renewal Quote&quot;, Renewal_Flag_Formula__c= true, Product_Count__c &gt;0, 
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;GTM&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;TSL&quot;), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;EDIC&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;SCSI&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;SFWS&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;TSCE&quot;)), 
+NOT(OR(ISPICKVAL(Opportunity.StageName,&quot;0%&quot;),ISPICKVAL(Opportunity.StageName,&quot;1%&quot;),ISPICKVAL(Opportunity.StageName,&quot;5%&quot;),ISPICKVAL(Opportunity.StageName,&quot;10%&quot;))),
+OR( 
+ISPICKVAL(Opportunity.StageName,&quot;50%&quot;), 
+ISPICKVAL(Opportunity.StageName,&quot;75%&quot;), 
+ISPICKVAL(Opportunity.StageName,&quot;90%&quot;) 
+),	
+Primary_Quote__c =True, 
+Is_Child_Quote_MSaf__c &lt;&gt;True, Opportunity.Is_Child_Opportunity__c &lt;&gt; true, 
+Pricing_Approval_Required__c = True, 
+Pricing_Approval_Complete__c = False, 
+OR(ISPICKVAL(Approval_Status__c,&quot;Pricing Approval Rejected&quot;),ISPICKVAL(Approval_Status__c,&quot;&quot;)), 
+NOT(ISPICKVAL(Approval_Status__c,&quot;Pending Manager Approval&quot;)), 
+NOT(ISPICKVAL(Approval_Status__c,&quot;Pricing Approved&quot;)), 
+NOT(ISPICKVAL(Approval_Status__c,&quot;Quote Approved&quot;)), 
+NOT(ISPICKVAL(Approval_Status__c,&quot;Quote Rejected&quot;)), 
+NOT(ISPICKVAL(Approval_Status__c,&quot;Pending Pricing Approval&quot;)) 
+
+)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Price_Approval_Complete</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>TdApproval_status_to_Pricing_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>TdQuote_status_to_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>TdApproval_Status_to_PAR</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>TdQuote_status_to_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>TdUpdate_Approval_Status_to_PPA</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>TdUpdate_QuoteStatus_to_InReview</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>RenPricingApproval-ComexData-Partner</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>1</processOrder>
+    <recallActions>
+        <action>
+            <name>Td_Final_QuoteStatus_to_In_Review</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>TdFinal_Approval_Status_to</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

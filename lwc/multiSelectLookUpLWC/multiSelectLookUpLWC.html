@@ -1,0 +1,74 @@
+<template>
+    <lightning-card variant="narrow" >
+       
+        <h1 slot="title">
+            <lightning-icon icon-name="standard:multi_picklist" size="small"></lightning-icon>
+           <span> Additional Clauses</span>
+        </h1>
+        <lightning-button variant="brand" label="Save" title="Primary action" onclick={handleSave} class="slds-m-left_x-small slds-text-align_right" slot="actions" ></lightning-button>
+        <lightning-button  label="Cancel" title="Non-Primary action" onclick={handleClose} class="slds-m-left_x-small slds-text-align_right" slot="actions" ></lightning-button>
+        
+        <div class="slds-card__body divbody">
+            <template if:true={showtopspinner}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template>
+        
+        
+            <div class="slds-form-element">
+                            <!-- Search bar -->
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right" role="none">
+                                <lightning-input required={required} data-id="userinput" label={Label} name="searchText" onchange={searchField} class="leftspace" type="search" placeholder="Search Clauses"></lightning-input>
+                           <!--  <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right iconheight">
+                                    <lightning-icon class="slds-icon slds-icon slds-icon_small slds-icon-text-default" icon-name="utility:search" size="x-small" alternative-text="icon" ></lightning-icon>
+                                </span>-->
+                            </div>
+                            <!-- pill area where selected clauses will appear -->
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon slds-input-has-icon_left-right" role="none">
+                                <template for:each={selectedRecords} for:item="serecord">
+                                    <span key={serecord.recId}>
+                                    <lightning-pill label={serecord.recName} name={serecord.recId} onremove={removeRecord}>
+                                            <lightning-icon icon-name={iconName} variant="circle" alternative-text={serecord.recName} class="slds-icon_small"></lightning-icon>
+                                        </lightning-pill>
+                                    </span>
+                                </template>
+                            </div>
+                        
+                            <!-- Second part display result -->
+                            
+                            <lightning-card>
+                                
+                                <template if:true={isDialogDisplay}>
+                                    <div id="listbox-id-1" class="slds-dropdown_length-with-icon-10 slds-box" >
+                                        <ul class="slds-listbox slds-listbox_vertical" >
+                                            <template for:each={searchRecords} for:item="serecord">
+                                                <li  class="slds-listbox__item" key={serecord.recId}>
+                                                    
+                                                    <div data-id={serecord.recId} data-name={serecord.recName} onclick={setSelectedRecord} class="slds-media slds-media_center slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta">
+                                                        <span class="slds-media__figure">
+                                                            
+                                                                <lightning-icon icon-name={iconName} class="slds-icon slds-icon slds-icon_small slds-icon-text-default" size="x-small"></lightning-icon>
+                                                           
+                                                        </span>
+                                                        <span class="slds-media__body">
+                                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity">{serecord.recName}</span>
+                                                         <!--  <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{objectName} â€¢ {serecord.recName}</span> -->
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                        </template>
+                            <div if:true={messageFlag}>
+                                No result found.
+                            </div>
+                            <div if:true={LoadingText}>
+                                Loading...
+                            </div>
+                        </lightning-card>
+                        
+                        </div>  
+            </div>
+        
+    </lightning-card>
+</template>

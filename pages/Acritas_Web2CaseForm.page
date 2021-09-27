@@ -1,0 +1,590 @@
+<!-- /*************************************************************
+Class Name: GLI_Web2CaseForm
+Purpose:Web2CaseForm which is used in Web2Case for GLI users.
+JIRA: UKD-128/UKD-161
+Author: Karthi G
+Date Created:08/09/2017
+--------------------------------------------------------------------
+Name         - Date Updated
+
+Sumit Mishra - 21-10-2017   
+********************************************************************/   -->
+<apex:page standardController="Case" extensions="Acritas_Web2CaseFormController,Acritas_Utility" docType="html-5.0"
+    showHeader="false" lightningStylesheets="true">
+ <title escape="false">{!$Label.Acritas_SupportRequest}</title>
+ <!--    <title>{!$Label.GLI_W2C_FormHelpText1}{!(if((ISDiffForm), (If((IsMPForm),
+ 'Missing pages form',(If((IsICRForm),'Inspection copies request','Checklists and filing instructions')))),
+ 'Contact Us'))}</title> -->
+    <apex:slds />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}"
+    />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-ui.min.js')}"
+    />
+    <script type='text/javascript'>
+        var j$ = jQuery.noConflict();
+        var countOfErrors = 0;
+
+        function addmore() {
+            j$(".myDivs[style*='none']").first().fadeIn();
+            return false;
+        }
+
+        function removeRow(referenced) {
+            var trObj = j$(referenced).closest("tr");
+            var childObj = trObj.children().first().children().first();
+            trObj.children().first().next().css('color', 'black');
+            removeContentOnly(childObj, trObj);
+            trObj.fadeOut();
+            return false;
+        }
+
+        function removeData(referenced) {
+            var trObj = j$(referenced).closest("tr");
+            j$(referenced).fadeOut();
+            var childObj = trObj.children().first().children().first();
+            trObj.children().first().next().css('color', 'black');
+            return removeContentOnly(childObj, trObj);
+        }
+
+        function removeContentOnly(childObj, trObj) {
+
+            var value = trObj.children(".MyLabelCls").text().trim();
+            if ((value != "File" && value.indexOf('File size:') == -1) &&
+                countOfErrors > 0) {
+                countOfErrors -= 1;
+            }
+            childObj.val("");
+            showFileSize(childObj, false);
+            if (countOfErrors == 0) {
+                document.getElementById('recaptchaInvbtn').style.backgroundColor ='#ff8000';
+                document.getElementById('recaptchaInvbtn').style.borderColor ='#ff8000';
+                document.getElementById('recaptchaInvbtn').disabled = false;
+            }
+            return false;
+        }
+
+        function showFileSize(referenced, opn) {
+            var input, file;
+            var maxFileSIzeInBytes = 1048576 * 5;
+            if (!window.FileReader) {
+                //bodyAppend("p", "The file API isn't supported on this browser yet.");
+                return;
+            }
+            var input = j$(referenced);
+            
+            var maxSIzeError = "{!$Label.GLI_W2C_FileSizeWarning}";
+            file = input.first().prop("files")[0];
+            if (input.first().val() == '') {
+                input.parent().next().text("File");
+                return;
+            } else if (file.size >= maxFileSIzeInBytes) {
+                input.parent().nextAll().last().children("input.clr").fadeIn();
+                var er=input.parent().next().text().trim();
+                if (er.indexOf('greater than 5 MB') == -1) {
+                countOfErrors += 1;
+            }
+                input.parent().next().text(maxSIzeError + formatSizeUnits(file.size));
+                document.getElementById('recaptchaInvbtn').disabled = true;
+                document.getElementById('recaptchaInvbtn').style.backgroundColor ='#edc39a';
+                document.getElementById('recaptchaInvbtn').style.borderColor ='#edc39a';
+                input.parent().next().css('color', 'red');
+                return;
+            }
+            input.parent().nextAll().last().children("input.clr").fadeIn();
+            var value = input.parent().next().text().trim();
+            input.parent().next().text("File size: " + formatSizeUnits(file.size));
+            input.parent().next().css('color', 'black');
+
+
+            if ((value.indexOf('File size:') == -1) && countOfErrors > 0) {
+                countOfErrors -= 1;
+            }
+            if (value.indexOf('greater than 5 MB') == -1 && opn) {
+                countOfErrors = 0;
+            }
+
+            if (countOfErrors == 0) {
+                document.getElementById('recaptchaInvbtn').style.backgroundColor ='#ff8000';
+                document.getElementById('recaptchaInvbtn').style.borderColor ='#ff8000';
+                document.getElementById('recaptchaInvbtn').disabled = false;
+            }
+        }
+
+        function formatSizeUnits(bytes) {
+            if (bytes >= 1073741824) {
+                bytes = (bytes / 1073741824).toFixed(2) + ' GB';
+            } else if (bytes >= 1048576) {
+                bytes = (bytes / 1048576).toFixed(2) + ' MB';
+            } else if (bytes >= 1024) {
+                bytes = (bytes / 1024).toFixed(2) + ' KB';
+            } else if (bytes > 1) {
+                bytes = bytes + ' bytes';
+            } else if (bytes == 1) {
+                bytes = bytes + ' byte';
+            } else {
+                bytes = '0 byte';
+            }
+            return bytes;
+        }
+
+        function bodyAppend(tagName, innerHTML) {
+            var elm;
+
+            elm = document.createElement(tagName);
+            elm.innerHTML = innerHTML;
+            document.body.appendChild(elm);
+        }
+        j$(document).ready(function() {
+
+
+
+            j$('tr.myDivs').each(function(i) {
+
+                var idobj = "flashDiv" + i;
+                j$(this).attr({
+                    id: idobj
+                });
+            });
+            j$(".rem").first().fadeOut();
+            j$(".clr").fadeOut();
+            j$("#flashDiv0").fadeIn();
+
+        });
+
+    </script>
+    <script type="text/javascript">
+        var RecaptchaOptions = {
+            theme: 'clean'
+        };
+
+        function onSubmit(response) {
+            document.getElementById('buttondivV2').style.display = 'inline';
+        }
+
+        function submit(response) {
+            submitForm();
+        }
+
+        function IeVersion() {
+            //Set defaults
+            var value = {
+                IsIE: false,
+                TrueVersion: 0,
+                ActingVersion: 0,
+                CompatibilityMode: false
+            };
+
+            //Try to find the Trident version number
+            var trident = navigator.userAgent.match(/Trident\/(\d+)/);
+            if (trident) {
+                value.IsIE = true;
+                //Convert from the Trident version number to the IE version number
+                value.TrueVersion = parseInt(trident[1], 10) + 4;
+            }
+
+            //Try to find the MSIE number
+            var msie = navigator.userAgent.match(/MSIE (\d+)/);
+            if (msie) {
+                value.IsIE = true;
+                //Find the IE version number from the user agent string
+                value.ActingVersion = parseInt(msie[1]);
+            } else {
+                //Must be IE 11 in "edge" mode
+                value.ActingVersion = value.TrueVersion;
+            }
+
+            //If we have both a Trident and MSIE version number, see if theyre different
+            if (value.IsIE && value.TrueVersion > 0 && value.ActingVersion > 0) {
+                //In compatibility mode if the trident number doesnt match up with the MSIE number
+                value.CompatibilityMode = value.TrueVersion != value.ActingVersion;
+            }
+            return value;
+        }
+        // this defines these functions if they dont exist.
+        if (!document.querySelectorAll) {
+            document.querySelectorAll = function(selectors) {
+                var style = document.createElement('style'),
+                    elements = [],
+                    element;
+                document.documentElement.firstChild.appendChild(style);
+                document._qsa = [];
+
+                style.styleSheet.cssText = selectors +
+                    '{x-qsa:expression(document._qsa && document._qsa.push(this))}';
+                window.scrollBy(0, 0);
+                style.parentNode.removeChild(style);
+
+                while (document._qsa.length) {
+                    element = document._qsa.shift();
+                    element.style.removeAttribute('x-qsa');
+                    elements.push(element);
+                }
+                document._qsa = null;
+                return elements;
+            };
+        }
+
+        if (!document.querySelector) {
+            document.querySelector = function(selectors) {
+                var elements = document.querySelectorAll(selectors);
+                return (elements.length) ? elements[0] : null;
+            };
+        }
+
+        var onloadCallback = function() {
+            var brCheck = IeVersion();
+            if (brCheck.IsIE && brCheck.ActingVersion < 9) {
+                unsupportedBrowser();
+
+                // document.getElementById("unSupported").style.display = "block";
+            } else {
+                grecaptcha.render('recaptchaInvbtn', {
+                    'sitekey': '{!publicKey}',
+                    'callback': 'submit'
+                });
+                document.getElementById('recaptchaInvbtn').style.display =
+                    'inline';
+
+                document.getElementById("Supported").style.display =
+                    "block";
+            }
+        };
+
+    </script>
+
+    <style type="text/css">
+        .footer {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            padding: 0rem;
+            text-align: center;
+        }
+        
+        .container {
+            background-color: #ffffff;
+            min-height: 100%;
+            position: relative;
+            padding-left: 5em;
+        }
+        
+        .formintro {
+            font-family: Arial;
+            color: #ff8000;
+            font-size: 30px;
+        }
+        .formsubHead {
+            font-family: Arial;
+            color: #ff8000;
+            font-size: 17px;
+        }
+        .theImage
+        {
+        float:left;
+        padding-top:1%;
+        padding-bottom:1%;
+        }
+        
+    </style>
+
+    <div id="support" class="container">
+        <table border="0" style="float:center;">
+            <tr>
+                <td >
+                    <div class="theImage">
+                    <img src="{!$Resource.GGO_W2C_Logo}" height="110px" width="440px"/>
+                    </div>
+                    <!--<c:GGO_WebForm_Header />-->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div height="80%" style="float:center;margin-right: 5em;">
+                        <apex:outputPanel rendered="{! SuccessPage || IsNotSupported}">
+                            <apex:pageMessages escape="false" />
+                            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                            <apex:outputText rendered="{! SuccessPage}">
+                                <br/><br/></apex:outputText>
+                        </apex:outputPanel>
+                    </div>
+                    <div style="display:none" id="Supported">
+                        <apex:form rendered="{!displayform}" enctype="multipart/form-data" id="mainpage">
+                            <div class="slds-scope">
+                                <div style="width:650px; margin: auto;">
+                                    <div class="slds-grid slds-wrap slds-hide_box">
+                                        <apex:outputText styleclass="formintro" value="{!$Label.Acritas_SupportRequest}" />
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-hide_box" style="font-family: Arial;font-size: 13px;">
+                                        <br/><br/>
+                                        <apex:pageMessages escape="false" />
+                                        <div class="slds-form slds-form_stacked">
+                                            <apex:outputPanel >
+                                                <div style="font-weight:normal; font-family:Arial;">
+                                                    <apex:outputPanel id="otherPanel11">
+                                                    <apex:actionregion >
+                                                        <div class="slds-form-element">
+                                                            <apex:outputLabel styleClass="slds-formelement__label">{!$Label.Nature_of_Query}<br/></apex:outputLabel>
+                                                            <apex:selectList style="width:400px;border: 1px solid black;" size="1" multiselect="False" value="{!prodWrapper.oProdSection}" >
+                                                                <apex:selectOptions value="{!prodWrapper.OProdSections}"/>  
+                                                                <apex:actionSupport event="onchange" reRender="otherPanel12"  action="{!sectionchanged}" /> 
+                                                            </apex:selectList> 
+                                                    </div> <br/>
+                                                    </apex:actionregion>
+                                                      </apex:outputpanel>
+                                                      <apex:outputPanel id="otherPanel12">
+                                                       <apex:actionregion >
+                                                        <div class="slds-form-element">
+                                                            <apex:outputLabel styleClass="slds-formelement__label" rendered="{!tempsectionchanged}">{!$Label.GLI_W2C_Query_type}<br/></apex:outputLabel>
+                                                             <apex:selectList style="width:400px;border: 1px solid black;" size="1" value="{!prodWrapper.oProditem}" rendered="{!tempsectionchanged}">
+                                                                 <apex:selectOptions value="{!prodWrapper.OProdItemTitles}"/>  
+                                                               <apex:actionSupport event="onchange" reRender="otherPane13"  action="{!itemchanged}" /> 
+                                                            </apex:selectList>
+                                                    </div> <br/>
+                                                    </apex:actionregion>
+                                                      </apex:outputpanel>
+                                                      <apex:outputPanel id="otherPane13">
+                                                       <apex:actionregion rendered="{!temprenewalchanged}">
+                                                        <div class="slds-form-element">
+                                                            <apex:outputLabel styleClass="slds-formelement__label" rendered="{!temprenewalchanged}">{!$Label.GLI_W2C_Cancellation_reason}<br/></apex:outputLabel>
+                                                            <apex:selectList style="width:400px;border: 1px solid black;" size="1" value="{!prodWrapper.oProdRenewal}" rendered="{!temprenewalchanged}">
+                                                                <apex:selectOptions value="{!prodwrapper.OProdRenewals}"/> 
+                                                            </apex:selectList>
+                                                    </div> <br/>
+                                                    </apex:actionregion>
+                                                      <apex:actionregion rendered="{!tempitemchanged}">
+                                                    <div class="slds-grid slds-wrap slds-hide_box">
+                                                     <apex:outputLabel styleclass="formsubHead">{!$Label.GLI_W2C_Your_details}</apex:outputLabel>
+                                                    </div>
+                                                    <br/>
+                                                    <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label" id="test11">
+                                                        <font size="3" color="red">*</font>{!$Label.First_Names}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'firstname'),'slds-input slds-has-error','slds-input')}"
+                                                            value="{!csWrapper.firstname}"/>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'firstname'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.First_Name_is_required}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">
+                                                        <font size="3" color="red">*</font>{!$Label.Surnames}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'surname'),'slds-input slds-has-error','slds-input')}"
+                                                            value="{!csWrapper.surname}" />
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'surname'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Surname_is_required}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">{!$Label.Organisations}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText label="" style="width:400px;border: 1px solid black;" styleclass="slds-input" value="{!c.SuppliedCompany}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                        <apex:outputLabel styleClass="slds-formelement__label"><font size="3" color="red">*</font>{!$Label.GLI_W2C_Address}</apex:outputLabel>
+                                                        <div class="slds-form-element__control">
+                                                        <apex:inputText value="{!csWrapper.address}" style="width:400px;border: 1px solid black;"  styleclass="{! If(CONTAINS(ErrorFields,'address'),'slds-input slds-has-error','slds-input')}"/>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! (If(CONTAINS(ErrorFields,'address'),True,False))}"><br/>
+                                                            <font color="red">{!$Label.GLI_W2C_Address_required}</font>
+                                                        </apex:outputLabel>
+                                                </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                        <apex:outputLabel styleClass="slds-formelement__label"><font size="3" color="red">*</font>{!$Label.Town_City}</apex:outputLabel>
+                                                        <div class="slds-form-element__control">
+                                                        <apex:inputText value="{!csWrapper.town}" style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'town'),'slds-input slds-has-error','slds-input')}" />
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'town'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Town_City_is_required}</font>
+                                                        </apex:outputLabel>
+                                                </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                        <apex:outputLabel styleClass="slds-formelement__label"><font size="3" color="red">*</font>{!$Label.PostCode}</apex:outputLabel>
+                                                        <div class="slds-form-element__control">
+                                                        <apex:inputText value="{!csWrapper.postcode}" style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'postcode'),'slds-input slds-has-error','slds-input')}"/>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'postcode'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Postcode_is_required}</font>
+                                                        </apex:outputLabel>
+                                                </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                        <apex:outputLabel styleClass="slds-formelement__label"><font size="3" color="red">*</font> {!$Label.Countrys}</apex:outputLabel>
+                                                        <div class="slds-form-element__control">
+                                                        <apex:inputText value="{!csWrapper.Country}" style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'country'),'slds-input slds-has-error','slds-input')}"/>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'country'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Country_is_required}</font>
+                                                        </apex:outputLabel>
+                                                </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">
+                                                        <font size="3" color="red">*</font>{!$Label.Email_Addresss}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText label="" style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'email')||CONTAINS(ErrorFields,'invalid'),'slds-input slds-has-error','slds-input')}"
+                                                            value="{!c.SuppliedEmail}"
+                                                        />
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'email'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Email_Address_is_required}</font>
+                                                        </apex:outputLabel>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'invalid'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Email_Address_is_not_valid}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label"><font size="3" color="red">*</font> {!$Label.Telephone_numbers}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText label="" style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'telePhone'),'slds-input slds-has-error','slds-input')}" value="{!c.SuppliedPhone}"/>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! (If(CONTAINS(ErrorFields,'telePhone'),True,False))}"><br/>
+                                                            <font color="red">{!$Label.Telephone_Number_is_required}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">Internal Contact Email Address</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText label="" style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'email')||CONTAINS(ErrorFields,'incorrect'),'slds-input slds-has-error','slds-input')}" value="{!c.ESC_UKI_WebForm_Rep_Email__c}"/>
+                                                    <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'incorrect contact'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Internal_Contact_Email_Address_is_not_valid}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                                 <div class="slds-grid slds-wrap slds-hide_box">
+                                                     <apex:outputLabel styleclass="formsubHead">{!$Label.GLI_W2C_Account_Details}</apex:outputLabel>
+                                                 </div>
+                                                 <br/>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">{!$Label.Account_Numbers}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText style="width:400px;border: 1px solid black;" styleclass="slds-input" value="{!csWrapper.AcctNum}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">{!$Label.Invoice_Numbers}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText style="width:400px;border: 1px solid black;" styleclass="slds-input"  value="{!csWrapper.invoicenumber}"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">Product Brand</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:outputText style="width:400px;border: 1px solid black;" styleclass="slds-input"  value="Acritas"/>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">{!$Label.Product_Name} </apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText style="width:400px;border: 1px solid black;" styleclass="slds-input" 
+                                                            value="{!csWrapper.productname}"/>
+                                                        </div>
+                                                </div>
+                                                    <br/>
+                                                <div class="slds-grid slds-wrap slds-hide_box">
+                                                     <apex:outputLabel styleclass="formsubHead">{!$Label.GLI_W2C_Your_query}</apex:outputLabel>
+                                                </div>
+                                                <br/>  
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">
+                                                        <font size="3" color="red">*</font>{!$Label.Query_Subject}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputText style="width:400px;border: 1px solid black;" styleclass="{! If(CONTAINS(ErrorFields,'querySubject'),'slds-input slds-has-error','slds-input')}"
+                                                            value="{!c.Subject}"/>
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'querySubject'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Query_Subject_is_required}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                                <div class="slds-form-element">
+                                                    <apex:outputLabel styleClass="slds-formelement__label">
+                                                        <font size="3" color="red">*</font>{!$Label.Query_Details}</apex:outputLabel>
+                                                    <div class="slds-form-element__control">
+                                                        <apex:inputTextArea label="" styleclass="{! If(CONTAINS(ErrorFields,'Query'),'slds-textarea slds-has-error','slds-textarea')}"
+                                                            style="width:400px;height:100px;border: 1px solid black;resize: none;"
+                                                            value="{!c.Description}"
+                                                        />
+                                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{! If(CONTAINS(ErrorFields,'Query'),True,False)}"><br/>
+                                                            <font color="red">{!$Label.Query_Details_is_required}</font>
+                                                        </apex:outputLabel>
+                                                    </div>
+                                                </div>
+                                             </apex:actionregion>
+                                            </apex:outputPanel> 
+                                            </div>
+                                            </apex:outputPanel> 
+                                            <br/>
+                                            <font size="3" color="red">*</font>{!$Label.Denotes_required_fields}<br/><br/>
+                                            <apex:outputLabel for="file" style="font-weight:bold;float:left;padding:5px " value="{!$Label.GGO_WebForm_Attachment_Title}"
+                                            />
+                                            <img src="/s.gif" Class="infoIcon" title="{!$Label.GLI_W2C_FileHelpText}" />
+                                            <br/><br/>
+                                            <apex:actionRegion >
+                                                <table width="700px">
+                                                    <apex:repeat value="{!newAttachments}" var="newAtt">
+                                                        <tr style="display:none" class="myDivs">
+                                                            <td width="20%">
+
+                                                                <apex:inputFile value="{!newAtt.body}" filename="{!newAtt.name}" onchange="showFileSize(this,true)"
+                                                                />
+                                                            </td>
+                                                            <td width="40%" class="MyLabelCls">
+                                                                File
+                                                            </td>
+                                                            <td width="40%">
+                                                                <input type="image" src="{!URLFOR($Resource.jQueryDataTables, 'images/details_open.png')}"
+                                                                    alt="Add More" title="Add Attachment"
+                                                                    onclick="return addmore();" class="addr"
+                                                                    style="float:left"
+                                                                />
+                                                                <input type="image" src="{!URLFOR($Resource.jQueryDataTables, 'images/details_close.png')}"
+                                                                    alt="Remove" title="Remove Attachment"
+                                                                    class="rem" onclick="return removeRow(this);"
+                                                                    style="float:left"
+                                                                />
+                                                                <input type="image" src="{!URLFOR($Resource.jQueryDataTables, 'images/delete.png')}"
+                                                                    width="20" height="20"
+                                                                    title="Clear" alt="Delete"
+                                                                    class="clr" onclick=" return removeData(this);"
+                                                                    style="float:left"
+                                                                />
+                                                            </td>
+
+                                                        </tr>
+                                                    </apex:repeat>
+                                                </table>
+                                            </apex:actionRegion>
+                                            <br/><br/>
+                                            <div class="slds-grid slds-grid--align-center ">
+                                                <div class="slds-button-group" role="group" id="buttondivInv">
+                                                    <button id="recaptchaInvbtn" class="slds-button slds-button_brand" style="font-weight:bold; border-radius: 6px;background-color:#ff8000;border-color:#ff8000;">{!$Label.Submits}</button>
+
+                                                    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"></script>
+                                                    <apex:actionfunction id="submitForm" name="submitForm" action="{!submitCase}"/>
+                                                    <apex:actionfunction id="unsupportedBrowser" name="unsupportedBrowser" action="{!unsupportedBrowser}"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div><br/>
+                                </div>
+                            </div>
+                            <br/>
+                        </apex:form>
+
+                    </div>
+                </td>
+            </tr>
+        </table><br/><br/><br/><br/>
+        <div class="footer">
+            <c:GGO_WebForm_Footer />
+        </div>
+
+    </div>
+
+</apex:page>

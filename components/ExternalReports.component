@@ -1,0 +1,109 @@
+<apex:component controller="ReportsGenerator">
+<script type='text/javascript'>
+function openNewWindow(url,fileSystem,errorMessage) {
+    // alert(url);
+if(url==''){
+alert(Label.Please_select_a_report);
+}
+else if(errorMessage!=''){
+alert(errorMessage);
+}
+else if(fileSystem=='true'){
+if(navigator.appName != 'Microsoft Internet Explorer'){
+alert(Label.Please_open_this_report);
+}
+else{
+try{
+    popupWin = '';
+    newWindow = '';
+    //alert(url);
+
+        console.log('INSIDE');
+        popupWin = window.open(url,'Report')
+       
+        
+       
+    
+}
+catch(err){
+alert(Label.Report_Unavailable);
+}
+}
+}
+else {
+    //alert(url);
+     popupWin = '';
+   
+        //alert(url);
+         console.log('INSIDE');
+        popupWin = window.open(url,'Report')  
+        
+    
+}
+}
+</script>
+<apex:attribute name="accountId" type="Id" description="It holds account Id for Account reports" assignTo="{!accountId}"/>
+<apex:attribute name="SSDId" type="Id" description="It holds SSDId for Source System Detail reports" assignTo="{!SSDId}"/>
+ <apex:form >
+        <!--   Start S2E Optimisation [Rajashree]    -->
+          <apex:outputPanel rendered="{!(!seeBtn)}"> 
+          <apex:pageMessage severity="info" strength="0" > 
+          <apex:image value="/img/msg_icons/info16.png" style="vertical-align:middle" />
+          <apex:outputLabel value="{!$Label.s2eOptiAccRep1}" rendered="{!!seeBtn}" > </apex:outputLabel>          
+          <apex:commandLink action="{!repDisplay}" value="{!$Label.Click_Here}" style="font-weight: bold;"/>
+          <apex:outputLabel value="{!$Label.s2eOptiAccRep2}"> </apex:outputLabel>
+          <br/>
+          <br/>
+          </apex:pageMessage>
+          </apex:outputPanel> 
+     
+     
+          <apex:outputPanel rendered="{!(linkDisplay)}"> 
+          <apex:pageMessage severity="info" strength="0" > 
+          <apex:image value="/img/msg_icons/info16.png" style="vertical-align:middle"/>          
+          <apex:outputLabel value="{!$Label.SSDOptiAccRep1}" rendered="{!(linkDisplay)}"> </apex:outputLabel>
+          <apex:commandLink action="{!repDisplay}" value="{!$Label.Click_Here}" style="font-weight: bold;"/>
+          <apex:outputLabel value="{!$Label.s2eOptiAccRep2}"> </apex:outputLabel>
+          <br/>
+          <br/>
+          </apex:pageMessage>
+          </apex:outputPanel>         
+          
+
+           <!--   Start S2E Optimisation [Rajashree]      
+          <apex:outputPanel rendered="{!(!seeBtn)}"> 
+          <apex:pageMessage severity="info" strength="1" summary="This is the Account Reports section. If you want to see the reports please click on the below link. " > 
+          <br/>
+          <apex:commandLink action="{!repDisplay}" value="See the Reports" style="font-weight:bold;" />
+          <br/>
+          </apex:pageMessage>
+          </apex:outputPanel>
+           <!--  END  -->  
+       <apex:pageBlock rendered="{!accountLinkPage}">
+       <apex:outputPanel id="searchOutputPanel">
+           <apex:commandButton action="{!showSearch}" value="{!$Label.Search}" rendered="{!bSearchFlag = false}" reRender="searchOutputPanel"/>
+           <apex:outputPanel rendered="{!bSearchFlag}" >
+               <apex:inputText value="{!searchText}"/>               
+        <apex:commandButton value="{!$Label.Find}" reRender="table"/>
+        </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:pageBlockSection columns="1" id="table">        
+        <apex:pageblocktable value="{!listWrapReportsObj}" var="link"> 
+        <apex:column headervalue="{!$Label.Report_Name}" styleClass="dataCol col02 inlineEditLock">                     
+        <apex:outputlink value="javascript:openNewWindow('{!link.surl}','{!link.bIsFileSystem}','{!link.sErrorMessage}')">
+        {!link.oReport.name}
+        </apex:outputlink>
+        </apex:column>
+        </apex:pageblockTable>
+        <apex:pageMessage rendered="{!bErrorFlag}" severity="Warning" strength="1"  summary="{!$Label.There_are_no_reports}" ></apex:pageMessage>
+        </apex:pageBlockSection> 
+        </apex:pageBlock>
+         <apex:pageBlock rendered="{!accountLinkPage}">
+         <apex:pageBlockSection title="{!$Label.LCRM_Payment_Report_SectionName}">
+         <apex:outputLink value="{!$Label.LCRM_Payment_Reporting_Link}" id="thePaymentLink" target="_blank" rendered="{!modelFlag = false}">{!$Label.LCRM_Payment_Reporting_LinkName}</apex:outputLink>
+         <apex:outputLink value="{!$Label.LCRM_Payment_Reporting_Link2}" id="thePaymentLink2" target="_blank" rendered="{!modelFlag = true}">{!$Label.LCRM_Payment_Reporting_LinkName}</apex:outputLink>
+         </apex:pageBlockSection>
+         </apex:pageBlock>
+         
+   </apex:form>
+</apex:component>

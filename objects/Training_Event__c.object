@@ -1,0 +1,4558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>TrainingEventfromAccount</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <content>TrainingEventDetail</content>
+        <skipRecordTypeSelect>false</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>TR_Training_Event_Compact_Layout</fullName>
+        <fields>Training_Name__c</fields>
+        <fields>Account__c</fields>
+        <fields>OwnerId</fields>
+        <fields>LCRM_Start_Time__c</fields>
+        <fields>Status__c</fields>
+        <label>TR Training Event Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>This is the object for Training Event.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>AMI_Territory__c</fullName>
+        <externalId>false</externalId>
+        <formula>/*Account__r.AMI_Territory__c*/ 
+Account__r.Account_Territory__r.AMI_Territory__r.TMS_Territory_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>AMi Territory</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AM_Territory__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Account_Territory__r.AM_Territory__r.TMS_Territory_Number__c 
+
+/*Account__r.AMTerritory__c*/</formula>
+        <label>AM Territory</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AR_Territory__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.ARTerritory__c</formula>
+        <label>AR Territory</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Level__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Account Level</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account Name</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Training Events</relationshipLabel>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>BU_Segment__c</fullName>
+        <description>Created as part of data segmentation for LOTUS, should hold different Business Segments. DPS-2199</description>
+        <externalId>false</externalId>
+        <label>BU Segment</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CLE_Training__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>CLE Training</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Campaign_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Campaign Code</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Campaign_Name__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Campaign Name</label>
+        <referenceTo>Campaign</referenceTo>
+        <relationshipLabel>Training Events</relationshipLabel>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Field_Sales_Territory__c</fullName>
+        <externalId>false</externalId>
+        <formula>/*Account__r.Field_Sales_Territory__c */
+
+Account__r.Account_Territory__r.Field_Sales_Territory__r.TMS_Territory_Number__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Field Sales Territory</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Incentive_Password__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Indicates whether incentive passwords have been generated for a training event record.Renamed the Field as per CRM -11169</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If this box is checked, Incentive Passwords have been generated for Contacts within this Training Event</inlineHelpText>
+        <label>Non-Trial Password</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Inside_Sales_Territory__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Inside_Sales_Territory__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Inside Sales Territory</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM2_business_days_from_record_creation__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE( 
+MOD(  DATEVALUE(CreatedDate)   -  DATE( 1900, 1, 7 ), 7 ), 
+4, CreatedDate + 2 + 2, 
+5, CreatedDate + 2 + 2, 
+6, CreatedDate + 2 + 1, 
+CreatedDate + 2 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>2 business days from record creation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_5_Business_Days_from_training_date__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE( 
+  MOD(  Training_Date__c  - DATE( 1900, 1, 7 ), 7 ),
+  1, Training_Date__c + 2 + 5,
+  2, Training_Date__c + 2 + 5,
+  3, Training_Date__c + 2 + 5,
+  4, Training_Date__c + 2 + 5,
+  5, Training_Date__c + 2 + 5,
+  6, Training_Date__c + 1 + 5,
+  Training_Date__c + 5
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>5 Business Days from training date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Address_1__c</fullName>
+        <externalId>false</externalId>
+        <label>Address 1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Address_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Address 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Approved_for_Recording__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Approved for Recording</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Bespoke_Materials_Created__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Bespoke Materials Created</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Cancelled_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Cancelled Reason</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Status__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Three contact attempts with no response</fullName>
+                    <default>false</default>
+                    <label>Three contact attempts with no response</label>
+                </value>
+                <value>
+                    <fullName>Scheduled session cancelled for other reason</fullName>
+                    <default>false</default>
+                    <label>Scheduled session cancelled for other reason</label>
+                </value>
+                <value>
+                    <fullName>Cancelled by Client</fullName>
+                    <default>false</default>
+                    <label>Cancelled by Client</label>
+                </value>
+                <value>
+                    <fullName>Cancelled by TR</fullName>
+                    <default>false</default>
+                    <label>Cancelled by TR</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Cancelled</controllingFieldValue>
+                <valueName>Three contact attempts with no response</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Cancelled</controllingFieldValue>
+                <valueName>Scheduled session cancelled for other reason</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Cancelled</controllingFieldValue>
+                <valueName>Cancelled by Client</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Cancelled</controllingFieldValue>
+                <valueName>Cancelled by TR</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Cancelled</controllingFieldValue>
+                <valueName>Other</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LCRM_City__c</fullName>
+        <externalId>false</externalId>
+        <label>City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Converted_from_Case__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Converted from Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Training Events</relationshipLabel>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Copyright_Approval_Agreed__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Copyright Approval Agreed</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Country__c</fullName>
+        <externalId>false</externalId>
+        <label>Country</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Created_from_Opportunity__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Created from Opportunity</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_DaysOld__c</fullName>
+        <externalId>false</externalId>
+        <formula>(5 * ( FLOOR( ( TODAY() - DATE( 1900, 1, 8) ) / 7 ) ) + MIN( 5, MOD( TODAY() - DATE( 1900, 1, 8), 7 ) ) )
+-
+(5 * ( FLOOR( (  DATEVALUE(CreatedDate)  -  DATE( 1900, 1, 8) ) / 7 ) ) + MIN( 5, MOD( DATEVALUE(CreatedDate) - DATE( 1900, 1, 8), 7 ) ) )</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>DaysOld</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Delivery_Method__c</fullName>
+        <externalId>false</externalId>
+        <label>Delivery Method</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>On-Site/In Person</fullName>
+                    <default>false</default>
+                    <label>On-Site/In Person</label>
+                </value>
+                <value>
+                    <fullName>WebEx/Webinar</fullName>
+                    <default>false</default>
+                    <label>WebEx/Webinar</label>
+                </value>
+                <value>
+                    <fullName>Telepresence</fullName>
+                    <default>false</default>
+                    <label>Telepresence</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LCRM_End_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>End Time</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_End_Time_in_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>MID( TEXT(  LCRM_End_Time__c  ) , 11, 5)&amp;&quot;0 GMT&quot;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>End Time in Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Event_exists__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Event exists</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Is_GLI__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is GLI</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Mute_Reassignment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Mute Reassignment</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_New_Training_Duration__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Duration in minutes, like 15,30,45,60,75,90 etc.</inlineHelpText>
+        <label>Training Duration</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Number_of_Accounts__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Accounts</label>
+        <summaryForeignKey>Training_Event_Account__c.Training_Event__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Opportunity_Owner_s_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Opportunity Owner&apos;s Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Opportunity__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Opportunity</label>
+        <referenceTo>Opportunity</referenceTo>
+        <relationshipLabel>Training Events</relationshipLabel>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Owner__c</fullName>
+        <externalId>false</externalId>
+        <formula>Owner:User.FirstName + &quot; &quot; +  Owner:User.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Owner</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Owner_s_Manager_s_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Owner&apos;s Manager&apos;s Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Postcode_Zip__c</fullName>
+        <externalId>false</externalId>
+        <label>Postcode/Zip</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Primary_Contact_First_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>LCRM_Primary_Contact__r.FirstName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Primary Contact First Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Primary_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Primary Contact</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Contact.AccountId</field>
+                <operation>equals</operation>
+                <valueField>$Source.Account__c</valueField>
+            </filterItems>
+            <isOptional>false</isOptional>
+        </lookupFilter>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Training Events</relationshipLabel>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Rep_Type__c</fullName>
+        <description>CRM-15810: RepType field on Training Event
+This field is created for Data Migration team to update when UNICA flow will load GLI training Event in BAU</description>
+        <externalId>false</externalId>
+        <label>Rep Type</label>
+        <length>2048</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LCRM_Source_System_Created_By__c</fullName>
+        <externalId>false</externalId>
+        <label>Source System Created By</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Source_System_Modified_By__c</fullName>
+        <externalId>false</externalId>
+        <label>Source System Modified By</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Standing_Recurring_Session__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Standing/Recurring Session</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Start_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Training Date/Start Time</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Start_Time_in_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(DAY( DATEVALUE(LCRM_Start_Time__c) ))&amp;&quot; &quot;&amp; 
+CASE(MONTH(DATEVALUE(LCRM_Start_Time__c)), 
+1, &quot;January&quot;, 
+2, &quot;February&quot;, 
+3, &quot;March&quot;, 
+4, &quot;April&quot;, 
+5, &quot;May&quot;, 
+6, &quot;June&quot;, 
+7, &quot;July&quot;, 
+8, &quot;August&quot;, 
+9, &quot;September&quot;, 
+10, &quot;October&quot;, 
+11, &quot;November&quot;, 
+12, &quot;December&quot;, 
+&quot;None&quot;)&amp;&quot; &quot;&amp;TEXT(YEAR(DATEVALUE(LCRM_Start_Time__c)))&amp;&quot; &quot;&amp;MID( TEXT( LCRM_Start_Time__c ) , 11, 5)&amp;&quot;0 GMT&quot;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Start Time in Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Sub_Bu__c</fullName>
+        <description>Renamed from ‘Sub-BU’ to ‘BU Region’ as part of data segmentation for LOTUS. DPS-2199</description>
+        <externalId>false</externalId>
+        <label>BU Region</label>
+        <length>32</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Subscription_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Subscription Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Demo/Pre-Sale</fullName>
+                    <default>false</default>
+                    <label>Demo/Pre-Sale</label>
+                </value>
+                <value>
+                    <fullName>Trial</fullName>
+                    <default>false</default>
+                    <label>Trial</label>
+                </value>
+                <value>
+                    <fullName>Purchased</fullName>
+                    <default>false</default>
+                    <label>Purchased</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LCRM_Suitable_for_Shadowing__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Suitable for Shadowing</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Time_Zone__c</fullName>
+        <externalId>false</externalId>
+        <label>Trainer&apos;s Time Zone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>(GMT+14:00) Line Is. Time (Pacific/Kiritimati)</fullName>
+                    <default>false</default>
+                    <label>(GMT+14:00) Line Is. Time (Pacific/Kiritimati)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+13:00) Phoenix Is. Time (Pacific/Enderbury)</fullName>
+                    <default>false</default>
+                    <label>(GMT+13:00) Phoenix Is. Time (Pacific/Enderbury)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+13:00) Tonga Time (Pacific/Tongatapu)</fullName>
+                    <default>false</default>
+                    <label>(GMT+13:00) Tonga Time (Pacific/Tongatapu)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+12:45) Chatham Standard Time (Pacific/Chatham)</fullName>
+                    <default>false</default>
+                    <label>(GMT+12:45) Chatham Standard Time (Pacific/Chatham)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+12:00) Petropavlovsk-Kamchatski Time (Asia/Kamchatka)</fullName>
+                    <default>false</default>
+                    <label>(GMT+12:00) Petropavlovsk-Kamchatski Time (Asia/Kamchatka)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+12:00) New Zealand Standard Time (Pacific/Auckland)</fullName>
+                    <default>false</default>
+                    <label>(GMT+12:00) New Zealand Standard Time (Pacific/Auckland)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+12:00) Fiji Time (Pacific/Fiji)</fullName>
+                    <default>false</default>
+                    <label>(GMT+12:00) Fiji Time (Pacific/Fiji)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+11:00) Solomon Is. Time (Pacific/Guadalcanal)</fullName>
+                    <default>false</default>
+                    <label>(GMT+11:00) Solomon Is. Time (Pacific/Guadalcanal)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+11:00) Norfolk Time (Pacific/Norfolk)</fullName>
+                    <default>false</default>
+                    <label>(GMT+11:00) Norfolk Time (Pacific/Norfolk)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+10:30) Lord Howe Standard Time (Australia/Lord_Howe)</fullName>
+                    <default>false</default>
+                    <label>(GMT+10:30) Lord Howe Standard Time (Australia/Lord_Howe)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+10:00) Australian Eastern Standard Time (Queensland) (Australia/Brisbane)</fullName>
+                    <default>false</default>
+                    <label>(GMT+10:00) Australian Eastern Standard Time (Queensland) (Australia/Brisbane)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+10:00) Australian Eastern Standard Time (New South Wales) (Australia/Sydney)</fullName>
+                    <default>false</default>
+                    <label>(GMT+10:00) Australian Eastern Standard Time (New South Wales) (Australia/Sydney)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+09:30) Australian Central Standard Time (South Australia) (Australia/Adelaide)</fullName>
+                    <default>false</default>
+                    <label>(GMT+09:30) Australian Central Standard Time (South Australia) (Australia/Adelaide)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+09:30) Australian Central Standard Time (Northern Territory) (Australia/Darwin)</fullName>
+                    <default>false</default>
+                    <label>(GMT+09:30) Australian Central Standard Time (Northern Territory) (Australia/Darwin)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+09:00) Korea Standard Time (Asia/Seoul)</fullName>
+                    <default>false</default>
+                    <label>(GMT+09:00) Korea Standard Time (Asia/Seoul)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+09:00) Japan Standard Time (Asia/Tokyo)</fullName>
+                    <default>false</default>
+                    <label>(GMT+09:00) Japan Standard Time (Asia/Tokyo)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) Hong Kong Time (Asia/Hong_Kong)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) Hong Kong Time (Asia/Hong_Kong)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) Malaysia Time (Asia/Kuala_Lumpur)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) Malaysia Time (Asia/Kuala_Lumpur)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) Philippines Time (Asia/Manila)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) Philippines Time (Asia/Manila)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) China Standard Time (Asia/Shanghai)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) China Standard Time (Asia/Shanghai)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) Singapore Time (Asia/Singapore)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) Singapore Time (Asia/Singapore)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) China Standard Time (Asia/Taipei)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) China Standard Time (Asia/Taipei)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+08:00) Australian Western Standard Time (Australia/Perth)</fullName>
+                    <default>false</default>
+                    <label>(GMT+08:00) Australian Western Standard Time (Australia/Perth)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+07:00) Indochina Time (Asia/Bangkok)</fullName>
+                    <default>false</default>
+                    <label>(GMT+07:00) Indochina Time (Asia/Bangkok)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+07:00) Indochina Time (Asia/Ho_Chi_Minh)</fullName>
+                    <default>false</default>
+                    <label>(GMT+07:00) Indochina Time (Asia/Ho_Chi_Minh)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+07:00) West Indonesia Time (Asia/Jakarta)</fullName>
+                    <default>false</default>
+                    <label>(GMT+07:00) West Indonesia Time (Asia/Jakarta)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+06:30) Myanmar Time (Asia/Rangoon)</fullName>
+                    <default>false</default>
+                    <label>(GMT+06:30) Myanmar Time (Asia/Rangoon)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+06:00) Bangladesh Time (Asia/Dhaka)</fullName>
+                    <default>false</default>
+                    <label>(GMT+06:00) Bangladesh Time (Asia/Dhaka)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+05:45) Nepal Time (Asia/Kathmandu)</fullName>
+                    <default>false</default>
+                    <label>(GMT+05:45) Nepal Time (Asia/Kathmandu)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+05:30) India Standard Time (Asia/Colombo)</fullName>
+                    <default>false</default>
+                    <label>(GMT+05:30) India Standard Time (Asia/Colombo)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+05:30) India Standard Time (Asia/Kolkata)</fullName>
+                    <default>false</default>
+                    <label>(GMT+05:30) India Standard Time (Asia/Kolkata)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+05:00) Pakistan Time (Asia/Karachi)</fullName>
+                    <default>false</default>
+                    <label>(GMT+05:00) Pakistan Time (Asia/Karachi)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+05:00) Uzbekistan Time (Asia/Tashkent)</fullName>
+                    <default>false</default>
+                    <label>(GMT+05:00) Uzbekistan Time (Asia/Tashkent)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+05:00) Yekaterinburg Time (Asia/Yekaterinburg)</fullName>
+                    <default>false</default>
+                    <label>(GMT+05:00) Yekaterinburg Time (Asia/Yekaterinburg)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+04:30) Afghanistan Time (Asia/Kabul)</fullName>
+                    <default>false</default>
+                    <label>(GMT+04:30) Afghanistan Time (Asia/Kabul)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+04:30) Iran Daylight Time (Asia/Tehran)</fullName>
+                    <default>false</default>
+                    <label>(GMT+04:30) Iran Daylight Time (Asia/Tehran)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+04:00) Azerbaijan Time (Asia/Baku)</fullName>
+                    <default>false</default>
+                    <label>(GMT+04:00) Azerbaijan Time (Asia/Baku)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+04:00) Gulf Standard Time (Asia/Dubai)</fullName>
+                    <default>false</default>
+                    <label>(GMT+04:00) Gulf Standard Time (Asia/Dubai)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+04:00) Georgia Time (Asia/Tbilisi)</fullName>
+                    <default>false</default>
+                    <label>(GMT+04:00) Georgia Time (Asia/Tbilisi)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+04:00) Armenia Time (Asia/Yerevan)</fullName>
+                    <default>false</default>
+                    <label>(GMT+04:00) Armenia Time (Asia/Yerevan)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Eastern African Time (Africa/Nairobi)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Eastern African Time (Africa/Nairobi)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Arabia Standard Time (Asia/Baghdad)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Arabia Standard Time (Asia/Baghdad)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Eastern European Summer Time (Asia/Beirut)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Eastern European Summer Time (Asia/Beirut)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Israel Daylight Time (Asia/Jerusalem)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Israel Daylight Time (Asia/Jerusalem)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Arabia Standard Time (Asia/Kuwait)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Arabia Standard Time (Asia/Kuwait)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Arabia Standard Time (Asia/Riyadh)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Arabia Standard Time (Asia/Riyadh)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Eastern European Summer Time (Europe/Athens)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Eastern European Summer Time (Europe/Athens)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Eastern European Summer Time (Europe/Bucharest)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Eastern European Summer Time (Europe/Bucharest)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Eastern European Summer Time (Europe/Helsinki)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Eastern European Summer Time (Europe/Helsinki)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Eastern European Time (Europe/Istanbul)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Eastern European Time (Europe/Istanbul)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Moscow Standard Time (Europe/Minsk)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Moscow Standard Time (Europe/Minsk)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+03:00) Moscow Standard Time (Europe/Moscow)</fullName>
+                    <default>false</default>
+                    <label>(GMT+03:00) Moscow Standard Time (Europe/Moscow)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Eastern European Time (Africa/Cairo)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Eastern European Time (Africa/Cairo)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) South Africa Standard Time (Africa/Johannesburg)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) South Africa Standard Time (Africa/Johannesburg)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Central European Summer Time (Europe/Amsterdam)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Central European Summer Time (Europe/Amsterdam)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Central European Summer Time (Europe/Berlin)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Central European Summer Time (Europe/Berlin)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Central European Summer Time (Europe/Brussels)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Central European Summer Time (Europe/Brussels)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Central European Summer Time (Europe/Paris)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Central European Summer Time (Europe/Paris)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Central European Summer Time (Europe/Prague)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Central European Summer Time (Europe/Prague)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+02:00) Central European Summer Time (Europe/Rome)</fullName>
+                    <default>false</default>
+                    <label>(GMT+02:00) Central European Summer Time (Europe/Rome)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+01:00) Central European Time (Africa/Algiers)</fullName>
+                    <default>false</default>
+                    <label>(GMT+01:00) Central European Time (Africa/Algiers)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+01:00) Irish Summer Time (Europe/Dublin)</fullName>
+                    <default>false</default>
+                    <label>(GMT+01:00) Irish Summer Time (Europe/Dublin)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+01:00) Western European Summer Time (Europe/Lisbon)</fullName>
+                    <default>false</default>
+                    <label>(GMT+01:00) Western European Summer Time (Europe/Lisbon)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+01:00) British Summer Time (Europe/London)</fullName>
+                    <default>false</default>
+                    <label>(GMT+01:00) British Summer Time (Europe/London)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+00:00) Western European Time (Africa/Casablanca)</fullName>
+                    <default>false</default>
+                    <label>(GMT+00:00) Western European Time (Africa/Casablanca)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+00:00) Eastern Greenland Summer Time (America/Scoresbysund)</fullName>
+                    <default>false</default>
+                    <label>(GMT+00:00) Eastern Greenland Summer Time (America/Scoresbysund)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+00:00) Azores Summer Time (Atlantic/Azores)</fullName>
+                    <default>false</default>
+                    <label>(GMT+00:00) Azores Summer Time (Atlantic/Azores)</label>
+                </value>
+                <value>
+                    <fullName>(GMT+00:00) Greenwich Mean Time (GMT)</fullName>
+                    <default>false</default>
+                    <label>(GMT+00:00) Greenwich Mean Time (GMT)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-01:00) Cape Verde Time (Atlantic/Cape_Verde)</fullName>
+                    <default>false</default>
+                    <label>(GMT-01:00) Cape Verde Time (Atlantic/Cape_Verde)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-02:00) South Georgia Standard Time (Atlantic/South_Georgia)</fullName>
+                    <default>false</default>
+                    <label>(GMT-02:00) South Georgia Standard Time (Atlantic/South_Georgia)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-02:30) Newfoundland Standard Time (America/St_Johns)</fullName>
+                    <default>false</default>
+                    <label>(GMT-02:30) Newfoundland Standard Time (America/St_Johns)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-03:00) Argentine Time (America/Argentina/Buenos_Aires)</fullName>
+                    <default>false</default>
+                    <label>(GMT-03:00) Argentine Time (America/Argentina/Buenos_Aires)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-03:00) Atlantic Standard Time (America/Halifax)</fullName>
+                    <default>false</default>
+                    <label>(GMT-03:00) Atlantic Standard Time (America/Halifax)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-03:00) Brasilia Time (America/Sao_Paulo)</fullName>
+                    <default>false</default>
+                    <label>(GMT-03:00) Brasilia Time (America/Sao_Paulo)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-03:00) Atlantic Standard Time (Atlantic/Bermuda)</fullName>
+                    <default>false</default>
+                    <label>(GMT-03:00) Atlantic Standard Time (Atlantic/Bermuda)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-04:00) Venezuela Time (America/Caracas)</fullName>
+                    <default>false</default>
+                    <label>(GMT-04:00) Venezuela Time (America/Caracas)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-04:00) Eastern Standard Time (America/Indiana/Indianapolis)</fullName>
+                    <default>false</default>
+                    <label>(GMT-04:00) Eastern Standard Time (America/Indiana/Indianapolis)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-04:00) Eastern Standard Time (America/New_York)</fullName>
+                    <default>false</default>
+                    <label>(GMT-04:00) Eastern Standard Time (America/New_York)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-04:00) Atlantic Standard Time (America/Puerto_Rico)</fullName>
+                    <default>false</default>
+                    <label>(GMT-04:00) Atlantic Standard Time (America/Puerto_Rico)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-04:00) Chile Time (America/Santiago)</fullName>
+                    <default>false</default>
+                    <label>(GMT-04:00) Chile Time (America/Santiago)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-05:00) Colombia Time (America/Bogota)</fullName>
+                    <default>false</default>
+                    <label>(GMT-05:00) Colombia Time (America/Bogota)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-05:00) Central Standard Time (America/Chicago)</fullName>
+                    <default>false</default>
+                    <label>(GMT-05:00) Central Standard Time (America/Chicago)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-05:00) Peru Time (America/Lima)</fullName>
+                    <default>false</default>
+                    <label>(GMT-05:00) Peru Time (America/Lima)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-05:00) Central Standard Time (America/Mexico_City)</fullName>
+                    <default>false</default>
+                    <label>(GMT-05:00) Central Standard Time (America/Mexico_City)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-05:00) Eastern Standard Time (America/Panama)</fullName>
+                    <default>false</default>
+                    <label>(GMT-05:00) Eastern Standard Time (America/Panama)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-06:00) Mountain Standard Time (America/Denver)</fullName>
+                    <default>false</default>
+                    <label>(GMT-06:00) Mountain Standard Time (America/Denver)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-06:00) Central Standard Time (America/El_Salvador)</fullName>
+                    <default>false</default>
+                    <label>(GMT-06:00) Central Standard Time (America/El_Salvador)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-06:00) Mountain Standard Time (America/Mazatlan)</fullName>
+                    <default>false</default>
+                    <label>(GMT-06:00) Mountain Standard Time (America/Mazatlan)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-07:00) Pacific Standard Time (America/Los_Angeles)</fullName>
+                    <default>false</default>
+                    <label>(GMT-07:00) Pacific Standard Time (America/Los_Angeles)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-07:00) Mountain Standard Time (America/Phoenix)</fullName>
+                    <default>false</default>
+                    <label>(GMT-07:00) Mountain Standard Time (America/Phoenix)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-07:00) Pacific Standard Time (America/Tijuana)</fullName>
+                    <default>false</default>
+                    <label>(GMT-07:00) Pacific Standard Time (America/Tijuana)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-08:00) Alaska Daylight Time (America/Anchorage)</fullName>
+                    <default>false</default>
+                    <label>(GMT-08:00) Alaska Standard Time (America/Anchorage)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-08:00) Pitcairn Standard Time (Pacific/Pitcairn)</fullName>
+                    <default>false</default>
+                    <label>(GMT-08:00) Pitcairn Standard Time (Pacific/Pitcairn)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-09:00) Hawaii-Aleutian Standard Time (America/Adak)</fullName>
+                    <default>false</default>
+                    <label>(GMT-09:00) Hawaii-Aleutian Standard Time (America/Adak)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-09:00) Gambier Time (Pacific/Gambier)</fullName>
+                    <default>false</default>
+                    <label>(GMT-09:00) Gambier Time (Pacific/Gambier)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-09:30) Marquesas Time (Pacific/Marquesas)</fullName>
+                    <default>false</default>
+                    <label>(GMT-09:30) Marquesas Time (Pacific/Marquesas)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-10:00) Hawaii-Aleutian Standard Time (Pacific/Honolulu)</fullName>
+                    <default>false</default>
+                    <label>(GMT-10:00) Hawaii-Aleutian Standard Time (Pacific/Honolulu)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-11:00) Niue Time (Pacific/Niue)</fullName>
+                    <default>false</default>
+                    <label>(GMT-11:00) Niue Time (Pacific/Niue)</label>
+                </value>
+                <value>
+                    <fullName>(GMT-11:00) Samoa Standard Time (Pacific/Pago_Pago)</fullName>
+                    <default>false</default>
+                    <label>(GMT-11:00) Samoa Standard Time (Pacific/Pago_Pago)</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_Effectively_to_Find_Content__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Search Effectively to Find Content</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_archive_content__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Bookmark Commonly Used Content</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_better_know_the_legal_steps__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Understand the Legal Steps in a Task</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_better_understand_news__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Collate and Analyze News And Updates</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_create_an_email_update__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Create and Manage an Email Update</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_find_narrative_on_a_case__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Effectively Find Narrative on a Case</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_find_on_point_content__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Effectively Find ‘On Point’ Content</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_improve_searching_on_TR__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Improve Searching on our Services</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_interpret_Acts_well__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Interpret Statutes Using Annotations</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_know_how_a_case_has_been__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Understand How Cases Have Been Cited</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_know_the_law_outside__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Find International Legal Overviews</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_learn_to_use_Fastdraft__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Learn to Use Our Drafting Tools</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_locate_expert_commentary__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Quickly Locate Expert Commentary</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_make_workflow_efficient__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Make Your Workflow More Efficient</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_manage_search_results__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Efficiently Manage Search Results</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_refine_my_search_results__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Effectively Refine Search Results</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_send_content_to_others__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Send and Share Content with Others</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_use_alerts__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Use Alerts to Stay Up to Date</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_use_checklists__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Use Checklists to Minimize Risk</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_use_global_materials__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Effectively Utilize Global Materials</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_To_use_overviews_to_know_more__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>To Use Overviews to Develop Knowledge</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Training_Date_in_Email__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(DAY( DATEVALUE(LCRM_Start_Time__c) ))&amp;&quot; &quot;&amp;
+CASE(MONTH(DATEVALUE(LCRM_Start_Time__c)),
+1, &quot;January&quot;,
+2, &quot;February&quot;,
+3, &quot;March&quot;, 
+4, &quot;April&quot;, 
+5, &quot;May&quot;, 
+6, &quot;June&quot;,
+7, &quot;July&quot;,
+8, &quot;August&quot;,
+9, &quot;September&quot;,
+10, &quot;October&quot;,
+11, &quot;November&quot;,
+12, &quot;December&quot;,
+&quot;None&quot;)&amp;&quot; &quot;&amp;TEXT(YEAR(DATEVALUE(LCRM_Start_Time__c)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Training Date in Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Training_Duration__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF ((LCRM_End_Time__c - LCRM_Start_Time__c) &gt; 0, 
+TEXT( FLOOR( 24 * ((LCRM_End_Time__c - LCRM_Start_Time__c) - FLOOR(LCRM_End_Time__c - LCRM_Start_Time__c) ))) &amp; &quot; hours &quot; &amp; 
+TEXT( ROUND(60 * (ROUND( 24 * ((LCRM_End_Time__c - LCRM_Start_Time__c) - FLOOR(LCRM_End_Time__c - LCRM_Start_Time__c) ),8) - FLOOR( 
+ROUND( 24 * ((LCRM_End_Time__c - LCRM_Start_Time__c) - FLOOR(LCRM_End_Time__c - LCRM_Start_Time__c) ),8)) ),0)) &amp; &quot; mins &quot; 
+, &quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Training Duration</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Use_personalization_tool__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Effective Use of Personalization Tools</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Notes__c</fullName>
+        <externalId>false</externalId>
+        <label>Notes</label>
+        <length>131072</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Number_Trained__c</fullName>
+        <externalId>false</externalId>
+        <label>Number Trained</label>
+        <summaryFilterItems>
+            <field>Training_Event_Contact__c.Trained__c</field>
+            <operation>equals</operation>
+            <value>true</value>
+        </summaryFilterItems>
+        <summaryForeignKey>Training_Event_Contact__c.Training_Event__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Candidates__c</fullName>
+        <externalId>false</externalId>
+        <label>Number of Candidates</label>
+        <summaryForeignKey>Training_Event_Contact__c.Training_Event__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Offer_Code__c</fullName>
+        <description>Populating Offer Code field based on selected Campaign Name.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Offer Code populates based on the selected Campaign Name.</inlineHelpText>
+        <label>Offer Code</label>
+        <length>250</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Original_System_Created_Date__c</fullName>
+        <description>The &quot;Original System Created Date&quot; on the Training Event Detail would be needed as we are using this field to capture data from external systems (ex. Siebel, etc) as part of the data conversion process.</description>
+        <externalId>false</externalId>
+        <label>Original System Created Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Phone_Number__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.Phone</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Phone Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Points__c</fullName>
+        <externalId>false</externalId>
+        <label>Points</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+                <value>
+                    <fullName>6</fullName>
+                    <default>false</default>
+                    <label>6</label>
+                </value>
+                <value>
+                    <fullName>7</fullName>
+                    <default>false</default>
+                    <label>7</label>
+                </value>
+                <value>
+                    <fullName>8</fullName>
+                    <default>false</default>
+                    <label>8</label>
+                </value>
+                <value>
+                    <fullName>9</fullName>
+                    <default>false</default>
+                    <label>9</label>
+                </value>
+                <value>
+                    <fullName>10</fullName>
+                    <default>false</default>
+                    <label>10</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SAPAccountNumber__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account__r.SAPAccountNumber__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>SAP Account Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <description>This field will display the State in which the account is located.</description>
+        <externalId>false</externalId>
+        <formula>Account__r.BillingState</formula>
+        <inlineHelpText>This field will display the State in which the account is located.</inlineHelpText>
+        <label>State</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Completed</fullName>
+                    <default>false</default>
+                    <label>Completed</label>
+                </value>
+                <value>
+                    <fullName>Completed-Duplicate</fullName>
+                    <default>false</default>
+                    <label>Completed-Duplicate</label>
+                </value>
+                <value>
+                    <fullName>Contacting</fullName>
+                    <default>false</default>
+                    <label>Contacting</label>
+                </value>
+                <value>
+                    <fullName>Discarded</fullName>
+                    <default>false</default>
+                    <label>Discarded</label>
+                </value>
+                <value>
+                    <fullName>Pending</fullName>
+                    <default>false</default>
+                    <label>Pending</label>
+                </value>
+                <value>
+                    <fullName>Contacted</fullName>
+                    <default>false</default>
+                    <label>Contacted</label>
+                </value>
+                <value>
+                    <fullName>Scheduled</fullName>
+                    <default>false</default>
+                    <label>Scheduled</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <label>Cancelled</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Strategy__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Strategy</label>
+        <referenceTo>SFDC_Strategy__c</referenceTo>
+        <relationshipLabel>Training Events</relationshipLabel>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Tracking_Code__c</fullName>
+        <description>used to store the campaign</description>
+        <externalId>false</externalId>
+        <label>Tracking Code</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Training_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Training Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Training_Duration__c</fullName>
+        <description>Training Duration in no.of hours</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Training Duration in no.of hours</inlineHelpText>
+        <label>Training Duration</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Training_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Training Name</label>
+        <length>100</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Training_Rep_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Training Rep 2</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Training_Events</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Training_Rep_3__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Training Rep 3</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Training_Events1</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Training_Rep_4__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Training Rep 4</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>Training_Events2</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Training_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Training Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Advanced</fullName>
+                    <default>false</default>
+                    <label>Advanced</label>
+                </value>
+                <value>
+                    <fullName>At Risk</fullName>
+                    <default>false</default>
+                    <label>At Risk</label>
+                </value>
+                <value>
+                    <fullName>Certification</fullName>
+                    <default>false</default>
+                    <label>Certification</label>
+                </value>
+                <value>
+                    <fullName>Client Meeting</fullName>
+                    <default>false</default>
+                    <label>Client Meeting</label>
+                </value>
+                <value>
+                    <fullName>Combined Scenario Training</fullName>
+                    <default>false</default>
+                    <label>Combined Scenario Training</label>
+                </value>
+                <value>
+                    <fullName>Content Specific</fullName>
+                    <default>false</default>
+                    <label>Content Specific</label>
+                </value>
+                <value>
+                    <fullName>Internal</fullName>
+                    <default>false</default>
+                    <label>Internal</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Post-Sale</fullName>
+                    <default>false</default>
+                    <label>Post-Sale</label>
+                </value>
+                <value>
+                    <fullName>Pre-Sale</fullName>
+                    <default>false</default>
+                    <label>Pre-Sale</label>
+                </value>
+                <value>
+                    <fullName>Project</fullName>
+                    <default>false</default>
+                    <label>Project</label>
+                </value>
+                <value>
+                    <fullName>Refresher</fullName>
+                    <default>false</default>
+                    <label>Refresher</label>
+                </value>
+                <value>
+                    <fullName>Renewal</fullName>
+                    <default>false</default>
+                    <label>Renewal</label>
+                </value>
+                <value>
+                    <fullName>Retention</fullName>
+                    <default>false</default>
+                    <label>Retention</label>
+                </value>
+                <value>
+                    <fullName>Rollout/On boarding</fullName>
+                    <default>false</default>
+                    <label>Rollout/On boarding</label>
+                </value>
+                <value>
+                    <fullName>Scenario (WAYWO)</fullName>
+                    <default>false</default>
+                    <label>Scenario (WAYWO)</label>
+                </value>
+                <value>
+                    <fullName>Seminar/Open House</fullName>
+                    <default>false</default>
+                    <label>Seminar/Open House</label>
+                </value>
+                <value>
+                    <fullName>Standing</fullName>
+                    <default>false</default>
+                    <label>Standing</label>
+                </value>
+                <value>
+                    <fullName>Student Gratis Training</fullName>
+                    <default>false</default>
+                    <label>Student Gratis Training</label>
+                </value>
+                <value>
+                    <fullName>Trade Show</fullName>
+                    <default>false</default>
+                    <label>Trade Show</label>
+                </value>
+                <value>
+                    <fullName>Trained - Training Referral</fullName>
+                    <default>false</default>
+                    <label>Trained - Training Referral</label>
+                </value>
+                <value>
+                    <fullName>Unknown</fullName>
+                    <default>false</default>
+                    <label>Unknown</label>
+                </value>
+                <value>
+                    <fullName>Usage/Business Review</fullName>
+                    <default>false</default>
+                    <label>Usage/Business Review</label>
+                </value>
+                <value>
+                    <fullName>Usage Training</fullName>
+                    <default>false</default>
+                    <label>Usage Training</label>
+                </value>
+                <value>
+                    <fullName>Elite User Group Meeting</fullName>
+                    <default>false</default>
+                    <label>User Group Meeting</label>
+                </value>
+                <value>
+                    <fullName>Virtual Standing</fullName>
+                    <default>false</default>
+                    <label>Virtual Standing</label>
+                </value>
+                <value>
+                    <fullName>Webinar</fullName>
+                    <default>false</default>
+                    <label>Webinar</label>
+                </value>
+                <value>
+                    <fullName>West Info Center</fullName>
+                    <default>false</default>
+                    <label>West Info Center</label>
+                </value>
+                <value>
+                    <fullName>Workflow/Task Based Training</fullName>
+                    <default>false</default>
+                    <label>Workflow/Task Based Training</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Training Event</label>
+    <listViews>
+        <fullName>Andrea_Hoyt_s_Low_no_usage_trainings</fullName>
+        <columns>Campaign_Name__c</columns>
+        <columns>Account__c</columns>
+        <columns>SAPAccountNumber__c</columns>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>AM_Territory__c</columns>
+        <columns>LCRM_Owner__c</columns>
+        <columns>Status__c</columns>
+        <columns>Tracking_Code__c</columns>
+        <columns>Account_Level__c</columns>
+        <columns>LCRM_Subscription_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>LCRM_Owner__c</field>
+            <operation>contains</operation>
+            <value>Hoyt</value>
+        </filters>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>Low/no usage training</value>
+        </filters>
+        <label>Hoyt Low/no usage trainings</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Batch_Training_Queue_Training_Event</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Batch Training Queue</label>
+        <queue>Batch_Training_Queue</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>CM_Brandon_Call</fullName>
+        <columns>SAPAccountNumber__c</columns>
+        <columns>Training_Name__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Training_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Number_of_Candidates__c</columns>
+        <columns>Number_Trained__c</columns>
+        <columns>Campaign_Name__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>Tracking_Code__c</columns>
+        <columns>LCRM_Mute_Reassignment__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>731509,731623,731619,674596,731675,731949,719256,719213</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>greaterThan</operation>
+            <value>3/31/2017 12:00 AM</value>
+        </filters>
+        <label>CMI - All Campaigns</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Copy_of_Hoyt_Low_no_usage_trainings</fullName>
+        <columns>Campaign_Name__c</columns>
+        <columns>Account__c</columns>
+        <columns>SAPAccountNumber__c</columns>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>AM_Territory__c</columns>
+        <columns>LCRM_Owner__c</columns>
+        <columns>Status__c</columns>
+        <columns>Tracking_Code__c</columns>
+        <columns>Account_Level__c</columns>
+        <columns>LCRM_Subscription_Type__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>Low/no usage training</value>
+        </filters>
+        <label>Copy of Hoyt Low/no usage trainings</label>
+    </listViews>
+    <listViews>
+        <fullName>Customer_Connects3</fullName>
+        <booleanFilter>1 AND 2 AND (3 OR 4)</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Campaign_Name__c</columns>
+        <columns>Status__c</columns>
+        <columns>Account__c</columns>
+        <columns>Notes__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>OWNER.ALIAS</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>774264</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>greaterOrEqual</operation>
+            <value>8/1/2020 12:00 AM</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Completed,Completed-Duplicate,Contacting,Discarded,Pending,Contacted</value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Cancelled</value>
+        </filters>
+        <label>Customer Connects</label>
+        <language>en_US</language>
+        <sharedTo/>
+    </listViews>
+    <listViews>
+        <fullName>DRS_Month_Of_Campaign</fullName>
+        <columns>Field_Sales_Territory__c</columns>
+        <columns>NAME</columns>
+        <columns>LCRM_Owner__c</columns>
+        <columns>Account__c</columns>
+        <columns>Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>LCRM_Opportunity__c</columns>
+        <columns>SAPAccountNumber__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>772281</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>greaterThan</operation>
+            <value>8/1/2019 12:00 AM</value>
+        </filters>
+        <label>DRS Month Of Campaign</label>
+        <language>en_US</language>
+        <sharedTo>
+            <roleAndSubordinatesInternal>SLF_Digi_Renewal_Lead</roleAndSubordinatesInternal>
+            <roleAndSubordinatesInternal>SLF_Digi_Renewal_Mgr_1</roleAndSubordinatesInternal>
+            <roleAndSubordinatesInternal>SLF_Digi_Renewal_Mgr_2</roleAndSubordinatesInternal>
+            <roleAndSubordinatesInternal>SLF_Digi_Renewal_Rep_1</roleAndSubordinatesInternal>
+            <roleAndSubordinatesInternal>SLF_Digi_Renewal_Rep_2</roleAndSubordinatesInternal>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Field_Sales_Territory_View</fullName>
+        <columns>NAME</columns>
+        <columns>AMI_Territory__c</columns>
+        <columns>AM_Territory__c</columns>
+        <columns>Field_Sales_Territory__c</columns>
+        <columns>Campaign_Name__c</columns>
+        <columns>LCRM_Cancelled_Reason__c</columns>
+        <columns>Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Field_Sales_Territory__c</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>Field Sales Territory View</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Ganhewa_low_no_usage_trainings</fullName>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Training_Date__c</columns>
+        <columns>Number_Trained__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>LCRM_Owner__c</field>
+            <operation>contains</operation>
+            <value>Ganhewa</value>
+        </filters>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>Low/no usage training</value>
+        </filters>
+        <label>Ganhewa low/no usage trainings</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Low_WL_Usage</fullName>
+        <columns>CREATED_DATE</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Offer_Code__c</columns>
+        <columns>SAPAccountNumber__c</columns>
+        <columns>Training_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Training_Date__c</columns>
+        <columns>Training_Type__c</columns>
+        <columns>Status__c</columns>
+        <columns>Number_of_Candidates__c</columns>
+        <columns>Number_Trained__c</columns>
+        <columns>Campaign_Name__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Campaign_Name__c</field>
+            <operation>equals</operation>
+            <value>Low WL Usage</value>
+        </filters>
+        <label>Low WL Usage</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>My_Training_Events</fullName>
+        <columns>Training_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Account__c</columns>
+        <columns>Training_Type__c</columns>
+        <columns>Status__c</columns>
+        <columns>Incentive_Password__c</columns>
+        <columns>Training_Date__c</columns>
+        <columns>Number_of_Candidates__c</columns>
+        <columns>Number_Trained__c</columns>
+        <columns>Campaign_Name__c</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <filterScope>Mine</filterScope>
+        <label>My Training Events</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>New_Account_or_Location_CMI</fullName>
+        <columns>CREATED_DATE</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>OWNER.FIRST_NAME</columns>
+        <columns>Offer_Code__c</columns>
+        <columns>SAPAccountNumber__c</columns>
+        <columns>Training_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Account__c</columns>
+        <columns>Training_Date__c</columns>
+        <columns>Training_Type__c</columns>
+        <columns>Status__c</columns>
+        <columns>Number_of_Candidates__c</columns>
+        <columns>Number_Trained__c</columns>
+        <columns>Campaign_Name__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Offer_Code__c</field>
+            <operation>equals</operation>
+            <value>741770</value>
+        </filters>
+        <label>New Account or Location CMI</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>No_Low_usage_campaign</fullName>
+        <columns>NAME</columns>
+        <columns>AM_Territory__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_ACTIVITY</columns>
+        <columns>OWNER.LAST_NAME</columns>
+        <columns>Campaign_Name__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>LCRM_Owner__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Tracking_Code__c</field>
+            <operation>contains</operation>
+            <value>770629K63923</value>
+        </filters>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>11/19/2020 12:00 AM</value>
+        </filters>
+        <label>No/Low usage campaign- Gov CM *new*</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Training_Training_Event</fullName>
+        <filterScope>Queue</filterScope>
+        <label>Training</label>
+        <queue>Training</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Unassigned_USL_Training_Queue_Training_Event</fullName>
+        <columns>CREATED_DATE</columns>
+        <columns>Status__c</columns>
+        <columns>LCRM_Sub_Bu__c</columns>
+        <columns>NAME</columns>
+        <columns>Field_Sales_Territory__c</columns>
+        <columns>AMI_Territory__c</columns>
+        <columns>AM_Territory__c</columns>
+        <columns>LCRM_Is_GLI__c</columns>
+        <columns>LCRM_Number_of_Accounts__c</columns>
+        <columns>LCRM_Owner__c</columns>
+        <filterScope>Queue</filterScope>
+        <label>Unassigned Training Event Queue</label>
+        <language>en_US</language>
+        <queue>Unassigned_USL_Training_Queue</queue>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+    </listViews>
+    <nameField>
+        <displayFormat>T-{000000}</displayFormat>
+        <label>Training Event Identifier</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Training Events</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Campaign</fullName>
+        <active>true</active>
+        <description>This is for Training Events coming in as Campaigns</description>
+        <label>Campaign</label>
+        <picklistValues>
+            <picklist>LCRM_Cancelled_Reason__c</picklist>
+            <values>
+                <fullName>Cancelled by Client</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancelled by TR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled session cancelled for other reason</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Three contact attempts with no response</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Delivery_Method__c</picklist>
+            <values>
+                <fullName>On-Site%2FIn Person</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telepresence</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WebEx%2FWebinar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Subscription_Type__c</picklist>
+            <values>
+                <fullName>Demo%2FPre-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchased</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trial</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Time_Zone__c</picklist>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Azores Summer Time %28Atlantic%2FAzores%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Eastern Greenland Summer Time %28America%2FScoresbysund%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Greenwich Mean Time %28GMT%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Western European Time %28Africa%2FCasablanca%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 British Summer Time %28Europe%2FLondon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Central European Time %28Africa%2FAlgiers%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Irish Summer Time %28Europe%2FDublin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Western European Summer Time %28Europe%2FLisbon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FAmsterdam%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FBerlin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FBrussels%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FParis%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FPrague%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FRome%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Eastern European Time %28Africa%2FCairo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 South Africa Standard Time %28Africa%2FJohannesburg%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FBaghdad%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FKuwait%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FRiyadh%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern African Time %28Africa%2FNairobi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Asia%2FBeirut%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FAthens%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FBucharest%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FHelsinki%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Time %28Europe%2FIstanbul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Israel Daylight Time %28Asia%2FJerusalem%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Moscow Standard Time %28Europe%2FMinsk%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Moscow Standard Time %28Europe%2FMoscow%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Armenia Time %28Asia%2FYerevan%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Azerbaijan Time %28Asia%2FBaku%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Georgia Time %28Asia%2FTbilisi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Gulf Standard Time %28Asia%2FDubai%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A30%29 Afghanistan Time %28Asia%2FKabul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A30%29 Iran Daylight Time %28Asia%2FTehran%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Pakistan Time %28Asia%2FKarachi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Uzbekistan Time %28Asia%2FTashkent%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Yekaterinburg Time %28Asia%2FYekaterinburg%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A30%29 India Standard Time %28Asia%2FColombo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A30%29 India Standard Time %28Asia%2FKolkata%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A45%29 Nepal Time %28Asia%2FKathmandu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B06%3A00%29 Bangladesh Time %28Asia%2FDhaka%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B06%3A30%29 Myanmar Time %28Asia%2FRangoon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 Indochina Time %28Asia%2FBangkok%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 Indochina Time %28Asia%2FHo_Chi_Minh%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 West Indonesia Time %28Asia%2FJakarta%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Australian Western Standard Time %28Australia%2FPerth%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 China Standard Time %28Asia%2FShanghai%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 China Standard Time %28Asia%2FTaipei%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Hong Kong Time %28Asia%2FHong_Kong%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Malaysia Time %28Asia%2FKuala_Lumpur%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Philippines Time %28Asia%2FManila%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Singapore Time %28Asia%2FSingapore%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A00%29 Japan Standard Time %28Asia%2FTokyo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A00%29 Korea Standard Time %28Asia%2FSeoul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A30%29 Australian Central Standard Time %28Northern Territory%29 %28Australia%2FDarwin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A30%29 Australian Central Standard Time %28South Australia%29 %28Australia%2FAdelaide%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A00%29 Australian Eastern Standard Time %28New South Wales%29 %28Australia%2FSydney%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A00%29 Australian Eastern Standard Time %28Queensland%29 %28Australia%2FBrisbane%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A30%29 Lord Howe Standard Time %28Australia%2FLord_Howe%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B11%3A00%29 Norfolk Time %28Pacific%2FNorfolk%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B11%3A00%29 Solomon Is%2E Time %28Pacific%2FGuadalcanal%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 Fiji Time %28Pacific%2FFiji%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 New Zealand Standard Time %28Pacific%2FAuckland%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 Petropavlovsk-Kamchatski Time %28Asia%2FKamchatka%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A45%29 Chatham Standard Time %28Pacific%2FChatham%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B13%3A00%29 Phoenix Is%2E Time %28Pacific%2FEnderbury%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B13%3A00%29 Tonga Time %28Pacific%2FTongatapu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B14%3A00%29 Line Is%2E Time %28Pacific%2FKiritimati%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-01%3A00%29 Cape Verde Time %28Atlantic%2FCape_Verde%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-02%3A00%29 South Georgia Standard Time %28Atlantic%2FSouth_Georgia%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-02%3A30%29 Newfoundland Standard Time %28America%2FSt_Johns%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Argentine Time %28America%2FArgentina%2FBuenos_Aires%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Atlantic Standard Time %28America%2FHalifax%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Atlantic Standard Time %28Atlantic%2FBermuda%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Brasilia Time %28America%2FSao_Paulo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Atlantic Standard Time %28America%2FPuerto_Rico%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Chile Time %28America%2FSantiago%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Eastern Standard Time %28America%2FIndiana%2FIndianapolis%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Eastern Standard Time %28America%2FNew_York%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Venezuela Time %28America%2FCaracas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Central Standard Time %28America%2FChicago%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Central Standard Time %28America%2FMexico_City%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Colombia Time %28America%2FBogota%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Eastern Standard Time %28America%2FPanama%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Peru Time %28America%2FLima%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Central Standard Time %28America%2FEl_Salvador%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Mountain Standard Time %28America%2FDenver%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Mountain Standard Time %28America%2FMazatlan%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Mountain Standard Time %28America%2FPhoenix%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Pacific Standard Time %28America%2FLos_Angeles%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Pacific Standard Time %28America%2FTijuana%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-08%3A00%29 Alaska Daylight Time %28America%2FAnchorage%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-08%3A00%29 Pitcairn Standard Time %28Pacific%2FPitcairn%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A00%29 Gambier Time %28Pacific%2FGambier%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A00%29 Hawaii-Aleutian Standard Time %28America%2FAdak%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A30%29 Marquesas Time %28Pacific%2FMarquesas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-10%3A00%29 Hawaii-Aleutian Standard Time %28Pacific%2FHonolulu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-11%3A00%29 Niue Time %28Pacific%2FNiue%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-11%3A00%29 Samoa Standard Time %28Pacific%2FPago_Pago%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Points__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed-Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contacting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discarded</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Training_Type__c</picklist>
+            <values>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Post-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rollout%2FOn boarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar%2FOpen House</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Standing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trained - Training Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Usage Training</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virtual Standing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West Info Center</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>GLI</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>TR_Training_Event_Compact_Layout</compactLayoutAssignment>
+        <label>GLI</label>
+        <picklistValues>
+            <picklist>LCRM_Cancelled_Reason__c</picklist>
+            <values>
+                <fullName>Cancelled by Client</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancelled by TR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled session cancelled for other reason</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Three contact attempts with no response</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Delivery_Method__c</picklist>
+            <values>
+                <fullName>On-Site%2FIn Person</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telepresence</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WebEx%2FWebinar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Subscription_Type__c</picklist>
+            <values>
+                <fullName>Demo%2FPre-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchased</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trial</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Time_Zone__c</picklist>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Azores Summer Time %28Atlantic%2FAzores%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Eastern Greenland Summer Time %28America%2FScoresbysund%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Greenwich Mean Time %28GMT%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Western European Time %28Africa%2FCasablanca%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 British Summer Time %28Europe%2FLondon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Central European Time %28Africa%2FAlgiers%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Irish Summer Time %28Europe%2FDublin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Western European Summer Time %28Europe%2FLisbon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FAmsterdam%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FBerlin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FBrussels%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FParis%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FPrague%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FRome%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Eastern European Time %28Africa%2FCairo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 South Africa Standard Time %28Africa%2FJohannesburg%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FBaghdad%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FKuwait%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FRiyadh%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern African Time %28Africa%2FNairobi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Asia%2FBeirut%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FAthens%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FBucharest%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FHelsinki%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Time %28Europe%2FIstanbul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Israel Daylight Time %28Asia%2FJerusalem%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Moscow Standard Time %28Europe%2FMinsk%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Moscow Standard Time %28Europe%2FMoscow%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Armenia Time %28Asia%2FYerevan%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Azerbaijan Time %28Asia%2FBaku%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Georgia Time %28Asia%2FTbilisi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Gulf Standard Time %28Asia%2FDubai%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A30%29 Afghanistan Time %28Asia%2FKabul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A30%29 Iran Daylight Time %28Asia%2FTehran%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Pakistan Time %28Asia%2FKarachi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Uzbekistan Time %28Asia%2FTashkent%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Yekaterinburg Time %28Asia%2FYekaterinburg%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A30%29 India Standard Time %28Asia%2FColombo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A30%29 India Standard Time %28Asia%2FKolkata%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A45%29 Nepal Time %28Asia%2FKathmandu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B06%3A00%29 Bangladesh Time %28Asia%2FDhaka%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B06%3A30%29 Myanmar Time %28Asia%2FRangoon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 Indochina Time %28Asia%2FBangkok%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 Indochina Time %28Asia%2FHo_Chi_Minh%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 West Indonesia Time %28Asia%2FJakarta%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Australian Western Standard Time %28Australia%2FPerth%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 China Standard Time %28Asia%2FShanghai%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 China Standard Time %28Asia%2FTaipei%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Hong Kong Time %28Asia%2FHong_Kong%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Malaysia Time %28Asia%2FKuala_Lumpur%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Philippines Time %28Asia%2FManila%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Singapore Time %28Asia%2FSingapore%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A00%29 Japan Standard Time %28Asia%2FTokyo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A00%29 Korea Standard Time %28Asia%2FSeoul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A30%29 Australian Central Standard Time %28Northern Territory%29 %28Australia%2FDarwin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A30%29 Australian Central Standard Time %28South Australia%29 %28Australia%2FAdelaide%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A00%29 Australian Eastern Standard Time %28New South Wales%29 %28Australia%2FSydney%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A00%29 Australian Eastern Standard Time %28Queensland%29 %28Australia%2FBrisbane%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A30%29 Lord Howe Standard Time %28Australia%2FLord_Howe%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B11%3A00%29 Norfolk Time %28Pacific%2FNorfolk%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B11%3A00%29 Solomon Is%2E Time %28Pacific%2FGuadalcanal%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 Fiji Time %28Pacific%2FFiji%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 New Zealand Standard Time %28Pacific%2FAuckland%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 Petropavlovsk-Kamchatski Time %28Asia%2FKamchatka%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A45%29 Chatham Standard Time %28Pacific%2FChatham%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B13%3A00%29 Phoenix Is%2E Time %28Pacific%2FEnderbury%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B13%3A00%29 Tonga Time %28Pacific%2FTongatapu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B14%3A00%29 Line Is%2E Time %28Pacific%2FKiritimati%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-01%3A00%29 Cape Verde Time %28Atlantic%2FCape_Verde%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-02%3A00%29 South Georgia Standard Time %28Atlantic%2FSouth_Georgia%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-02%3A30%29 Newfoundland Standard Time %28America%2FSt_Johns%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Argentine Time %28America%2FArgentina%2FBuenos_Aires%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Atlantic Standard Time %28America%2FHalifax%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Atlantic Standard Time %28Atlantic%2FBermuda%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Brasilia Time %28America%2FSao_Paulo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Atlantic Standard Time %28America%2FPuerto_Rico%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Chile Time %28America%2FSantiago%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Eastern Standard Time %28America%2FIndiana%2FIndianapolis%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Eastern Standard Time %28America%2FNew_York%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Venezuela Time %28America%2FCaracas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Central Standard Time %28America%2FChicago%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Central Standard Time %28America%2FMexico_City%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Colombia Time %28America%2FBogota%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Eastern Standard Time %28America%2FPanama%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Peru Time %28America%2FLima%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Central Standard Time %28America%2FEl_Salvador%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Mountain Standard Time %28America%2FDenver%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Mountain Standard Time %28America%2FMazatlan%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Mountain Standard Time %28America%2FPhoenix%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Pacific Standard Time %28America%2FLos_Angeles%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Pacific Standard Time %28America%2FTijuana%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-08%3A00%29 Alaska Daylight Time %28America%2FAnchorage%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-08%3A00%29 Pitcairn Standard Time %28Pacific%2FPitcairn%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A00%29 Gambier Time %28Pacific%2FGambier%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A00%29 Hawaii-Aleutian Standard Time %28America%2FAdak%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A30%29 Marquesas Time %28Pacific%2FMarquesas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-10%3A00%29 Hawaii-Aleutian Standard Time %28Pacific%2FHonolulu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-11%3A00%29 Niue Time %28Pacific%2FNiue%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-11%3A00%29 Samoa Standard Time %28Pacific%2FPago_Pago%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Points__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed-Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contacted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Scheduled</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Training_Type__c</picklist>
+            <values>
+                <fullName>Advanced</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Certification</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Combined Scenario Training</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Content Specific</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Elite User Group Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Refresher</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rollout%2FOn boarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scenario %28WAYWO%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Gratis Training</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Usage%2FBusiness Review</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Workflow%2FTask Based Training</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Rep_Generated</fullName>
+        <active>true</active>
+        <description>This is for Rep Generated Record</description>
+        <label>Rep Generated</label>
+        <picklistValues>
+            <picklist>LCRM_Cancelled_Reason__c</picklist>
+            <values>
+                <fullName>Cancelled by Client</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cancelled by TR</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Scheduled session cancelled for other reason</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Three contact attempts with no response</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Delivery_Method__c</picklist>
+            <values>
+                <fullName>On-Site%2FIn Person</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Telepresence</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WebEx%2FWebinar</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Subscription_Type__c</picklist>
+            <values>
+                <fullName>Demo%2FPre-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Purchased</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trial</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Time_Zone__c</picklist>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Azores Summer Time %28Atlantic%2FAzores%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Eastern Greenland Summer Time %28America%2FScoresbysund%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Greenwich Mean Time %28GMT%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B00%3A00%29 Western European Time %28Africa%2FCasablanca%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 British Summer Time %28Europe%2FLondon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Central European Time %28Africa%2FAlgiers%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Irish Summer Time %28Europe%2FDublin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B01%3A00%29 Western European Summer Time %28Europe%2FLisbon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FAmsterdam%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FBerlin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FBrussels%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FParis%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FPrague%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Central European Summer Time %28Europe%2FRome%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 Eastern European Time %28Africa%2FCairo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B02%3A00%29 South Africa Standard Time %28Africa%2FJohannesburg%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FBaghdad%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FKuwait%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Arabia Standard Time %28Asia%2FRiyadh%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern African Time %28Africa%2FNairobi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Asia%2FBeirut%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FAthens%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FBucharest%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Summer Time %28Europe%2FHelsinki%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Eastern European Time %28Europe%2FIstanbul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Israel Daylight Time %28Asia%2FJerusalem%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Moscow Standard Time %28Europe%2FMinsk%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B03%3A00%29 Moscow Standard Time %28Europe%2FMoscow%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Armenia Time %28Asia%2FYerevan%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Azerbaijan Time %28Asia%2FBaku%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Georgia Time %28Asia%2FTbilisi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A00%29 Gulf Standard Time %28Asia%2FDubai%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A30%29 Afghanistan Time %28Asia%2FKabul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B04%3A30%29 Iran Daylight Time %28Asia%2FTehran%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Pakistan Time %28Asia%2FKarachi%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Uzbekistan Time %28Asia%2FTashkent%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A00%29 Yekaterinburg Time %28Asia%2FYekaterinburg%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A30%29 India Standard Time %28Asia%2FColombo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A30%29 India Standard Time %28Asia%2FKolkata%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B05%3A45%29 Nepal Time %28Asia%2FKathmandu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B06%3A00%29 Bangladesh Time %28Asia%2FDhaka%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B06%3A30%29 Myanmar Time %28Asia%2FRangoon%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 Indochina Time %28Asia%2FBangkok%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 Indochina Time %28Asia%2FHo_Chi_Minh%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B07%3A00%29 West Indonesia Time %28Asia%2FJakarta%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Australian Western Standard Time %28Australia%2FPerth%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 China Standard Time %28Asia%2FShanghai%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 China Standard Time %28Asia%2FTaipei%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Hong Kong Time %28Asia%2FHong_Kong%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Malaysia Time %28Asia%2FKuala_Lumpur%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Philippines Time %28Asia%2FManila%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B08%3A00%29 Singapore Time %28Asia%2FSingapore%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A00%29 Japan Standard Time %28Asia%2FTokyo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A00%29 Korea Standard Time %28Asia%2FSeoul%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A30%29 Australian Central Standard Time %28Northern Territory%29 %28Australia%2FDarwin%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B09%3A30%29 Australian Central Standard Time %28South Australia%29 %28Australia%2FAdelaide%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A00%29 Australian Eastern Standard Time %28New South Wales%29 %28Australia%2FSydney%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A00%29 Australian Eastern Standard Time %28Queensland%29 %28Australia%2FBrisbane%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B10%3A30%29 Lord Howe Standard Time %28Australia%2FLord_Howe%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B11%3A00%29 Norfolk Time %28Pacific%2FNorfolk%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B11%3A00%29 Solomon Is%2E Time %28Pacific%2FGuadalcanal%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 Fiji Time %28Pacific%2FFiji%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 New Zealand Standard Time %28Pacific%2FAuckland%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A00%29 Petropavlovsk-Kamchatski Time %28Asia%2FKamchatka%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B12%3A45%29 Chatham Standard Time %28Pacific%2FChatham%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B13%3A00%29 Phoenix Is%2E Time %28Pacific%2FEnderbury%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B13%3A00%29 Tonga Time %28Pacific%2FTongatapu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT%2B14%3A00%29 Line Is%2E Time %28Pacific%2FKiritimati%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-01%3A00%29 Cape Verde Time %28Atlantic%2FCape_Verde%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-02%3A00%29 South Georgia Standard Time %28Atlantic%2FSouth_Georgia%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-02%3A30%29 Newfoundland Standard Time %28America%2FSt_Johns%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Argentine Time %28America%2FArgentina%2FBuenos_Aires%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Atlantic Standard Time %28America%2FHalifax%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Atlantic Standard Time %28Atlantic%2FBermuda%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-03%3A00%29 Brasilia Time %28America%2FSao_Paulo%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Atlantic Standard Time %28America%2FPuerto_Rico%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Chile Time %28America%2FSantiago%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Eastern Standard Time %28America%2FIndiana%2FIndianapolis%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Eastern Standard Time %28America%2FNew_York%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-04%3A00%29 Venezuela Time %28America%2FCaracas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Central Standard Time %28America%2FChicago%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Central Standard Time %28America%2FMexico_City%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Colombia Time %28America%2FBogota%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Eastern Standard Time %28America%2FPanama%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-05%3A00%29 Peru Time %28America%2FLima%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Central Standard Time %28America%2FEl_Salvador%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Mountain Standard Time %28America%2FDenver%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-06%3A00%29 Mountain Standard Time %28America%2FMazatlan%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Mountain Standard Time %28America%2FPhoenix%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Pacific Standard Time %28America%2FLos_Angeles%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-07%3A00%29 Pacific Standard Time %28America%2FTijuana%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-08%3A00%29 Alaska Daylight Time %28America%2FAnchorage%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-08%3A00%29 Pitcairn Standard Time %28Pacific%2FPitcairn%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A00%29 Gambier Time %28Pacific%2FGambier%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A00%29 Hawaii-Aleutian Standard Time %28America%2FAdak%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-09%3A30%29 Marquesas Time %28Pacific%2FMarquesas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-10%3A00%29 Hawaii-Aleutian Standard Time %28Pacific%2FHonolulu%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-11%3A00%29 Niue Time %28Pacific%2FNiue%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>%28GMT-11%3A00%29 Samoa Standard Time %28Pacific%2FPago_Pago%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Points__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>6</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>7</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Completed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Completed-Duplicate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contacting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discarded</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Training_Type__c</picklist>
+            <values>
+                <fullName>At Risk</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Client Meeting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Internal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Post-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Sale</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Project</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Renewal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rollout%2FOn boarding</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar%2FOpen House</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Standing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trade Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trained - Training Referral</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Usage Training</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virtual Standing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>West Info Center</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <customTabListAdditionalFields>Account__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Training_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>LCRM_Start_Time__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Training_Type__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Status__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Number_of_Candidates__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Number_Trained__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Campaign_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>OWNER.LAST_NAME</customTabListAdditionalFields>
+        <excludedStandardButtons>ChangeOwner</excludedStandardButtons>
+        <listViewButtons>Mass_Owner_Change</listViewButtons>
+        <listViewButtons>Mass_Status_Change</listViewButtons>
+        <listViewButtons>LTGS_Mass_Mute_Reassignment</listViewButtons>
+        <lookupDialogsAdditionalFields>Account__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>SAPAccountNumber__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Training_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>OWNER.LAST_NAME</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Account__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Training_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>OWNER.LAST_NAME</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LAST_UPDATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATEDBY_USER</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>CheckEndTimeofTrainingEvent</fullName>
+        <active>true</active>
+        <description>This is to ensure that end time is after start time.</description>
+        <errorConditionFormula>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c = false,
+LCRM_Is_GLI__c  = TRUE,  RecordType.DeveloperName = &apos;GLI&apos;,  LCRM_End_Time__c &lt;  LCRM_Start_Time__c )</errorConditionFormula>
+        <errorDisplayField>LCRM_End_Time__c</errorDisplayField>
+        <errorMessage>End Time cannot be before the Start Time.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>CheckTrainingDateforGLI</fullName>
+        <active>true</active>
+        <description>If the status is changed to &apos;Completed&apos; or &apos;Completed-Duplicate&apos; for GLI training events, training date is required.</description>
+        <errorConditionFormula>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c = false,
+LCRM_Is_GLI__c = TRUE, RecordType.DeveloperName = &apos;GLI&apos;, OR( ISPICKVAL( Status__c , &apos;Completed&apos;) , ISPICKVAL( Status__c , &apos;Completed-Duplicate&apos;)), 
+ISNULL(  LCRM_Start_Time__c  ) )</errorConditionFormula>
+        <errorDisplayField>LCRM_Start_Time__c</errorDisplayField>
+        <errorMessage>If the status is changed to &apos;Completed&apos; or &apos;Completed-Duplicate&apos;, training date is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>CheckTrainingTypeAtCancelledOrCompleted</fullName>
+        <active>true</active>
+        <description>When a training event is cancelled or completed, training type cannot have the value Unknown.</description>
+        <errorConditionFormula>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c = false,
+LCRM_Is_GLI__c  = TRUE, RecordType.DeveloperName == &apos;GLI&apos;, 
+OR( TEXT(Status__c) = &quot;Completed&quot;, TEXT(Status__c) = &quot;Completed-Duplicate&quot;, TEXT(Status__c) = &quot;Cancelled&quot;),
+TEXT(Training_Type__c) = &quot;Unknown&quot;)</errorConditionFormula>
+        <errorDisplayField>Training_Type__c</errorDisplayField>
+        <errorMessage>Training Events should not be saved with Type &apos;Unknown&apos;</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>PreventEditingAfterCompletedorCancelled</fullName>
+        <active>false</active>
+        <description>If the Training Event record is in any of the “Cancelled” or “Completed” statuses, it cannot be edited by:Training Administrator, Trainer and Training Delivery Manager. It can only be edited by authorized users.</description>
+        <errorConditionFormula>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c = false,
+LCRM_Is_GLI__c = TRUE, 
+RecordType.DeveloperName == &apos;GLI&apos;, 
+OR(TEXT(PRIORVALUE(Status__c )) = &quot;Completed&quot;,
+TEXT(PRIORVALUE(Status__c )) = &quot;Completed-Duplicate&quot;, TEXT(PRIORVALUE(Status__c )) = &quot;Cancelled&quot;),
+NOT($Permission.Bypass_GLI_Training_Event_Status),NOT( ISPICKVAL( $User.Sub_Bu__c ,&apos;USL&apos;)))</errorConditionFormula>
+        <errorMessage>This record has been marked as Cancelled/Completed and is therefore locked for editing. If you require changes to be made please contact your line manager.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>checkCanceledReasonOnStatusChange</fullName>
+        <active>true</active>
+        <description>If the status is changed to &apos;Cancelled&apos; Canceled Reason is required.</description>
+        <errorConditionFormula>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c = false,
+IF( AND(ISPICKVAL( Status__c , &apos;Cancelled&apos;) , ISPICKVAL(  LCRM_Cancelled_Reason__c,&quot;&quot; ) ) , true, false))</errorConditionFormula>
+        <errorDisplayField>LCRM_Cancelled_Reason__c</errorDisplayField>
+        <errorMessage>If the status is changed to &apos;Cancelled&apos;, Canceled Reason is required.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>checkDateOnStatusChange</fullName>
+        <active>true</active>
+        <description>If the status is changed to &apos;Completed&apos; or &apos;Completed-Duplicate&apos;, training date is required.</description>
+        <errorConditionFormula>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c = false,
+IF( AND(LCRM_Is_GLI__c = FALSE, OR( ISPICKVAL( Status__c , &apos;Completed&apos;) , ISPICKVAL( Status__c , &apos;Completed-Duplicate&apos;)), ISNULL( Training_Date__c ) ) , true, false))</errorConditionFormula>
+        <errorDisplayField>Training_Date__c</errorDisplayField>
+        <errorMessage>If the status is changed to &apos;Completed&apos; or &apos;Completed-Duplicate&apos;, training date is required.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Generate_Incentive_Passwords</fullName>
+        <availability>online</availability>
+        <description>Allow users to begin the incentive password generation process from a training event.</description>
+        <displayType>button</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Generate Incentive Passwords</masterLabel>
+        <openType>sidebar</openType>
+        <page>ManageIncentivePasswords</page>
+        <protected>false</protected>
+    </webLinks>
+    <webLinks>
+        <fullName>LCRM_Clone</fullName>
+        <availability>online</availability>
+        <description>Custom button to create a training event from another training event.</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Clone</masterLabel>
+        <openType>sidebar</openType>
+        <protected>false</protected>
+        <url>/apex/LCRMCloneTrainingEvent?teId={!Training_Event__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LCRM_Lightning_Create_Non_Trial_Promo_Password</fullName>
+        <availability>online</availability>
+        <description>Created for DPS-19401</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Create Non-Trial Promo Password</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/apex/PromoPasswordonTrainingEvent?id={!Training_Event__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LTGS_Mass_Mute_Reassignment</fullName>
+        <availability>online</availability>
+        <description>The button &quot;Mass Mute Reassignment Change&quot; is On-click JavaScript button in Classic, in order to have the same functionality in lightning this button is created.</description>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Mass Mute Reassignment Change</masterLabel>
+        <openType>sidebar</openType>
+        <page>LTGS_MassMuteReassignmentTrainingEvent</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Mass_Mute_Reassignment</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Mass Mute Reassignment Change</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/32.0/connection.js&quot;)} 
+{!REQUIRESCRIPT(&quot;/soap/ajax/29.0/apex.js&quot;)} 
+
+//alert(&apos;{!$Profile.Name}&apos;); 
+//alert(&apos;{!$UserRole.Name}&apos;); 
+
+var result = sforce.connection.query(&quot;SELECT Id FROM PermissionSetAssignment WHERE PermissionSet.Name = &apos;LCRM_Mute_Training_Event_Reassignment&apos; AND AssigneeId = &apos;{!$User.Id}&apos;&quot;); 
+
+var psAssignment = result.getArray(&quot;records&quot;); 
+//alert(&apos;@@psAssignment is &apos;+psAssignment ); 
+
+var profileName = &apos;{!$Profile.Name}&apos; ; 
+//var roleName = &apos;{!$UserRole.Name}&apos; ; 
+//userrole = &apos;Manag&apos;; 
+
+var records1 = {!GETRECORDIDS($ObjectType.Training_Event__c)}; 
+var newRecords = []; 
+var trainingrec = sforce.connection.query(&apos;select id,LCRM_Mute_Reassignment__c from Training_Event__c where id in (\&apos;&apos; + records1.join(&apos;\&apos;,\&apos;&apos;) + &apos;\&apos;)&apos; );
+var TrainRecords = trainingrec.getArray(&quot;records&quot;); 
+var arrayLength = TrainRecords.length; 
+
+if((profileName == &apos;Elite Sales Ops&apos; || profileName == &apos;GLI Sales Ops User&apos;|| profileName ==&apos;UKI Sales Ops&apos; || profileName == &apos;System Administrator&apos;) || (psAssignment.length == 1) ){ 
+	if(records1==null || records1==&apos;&apos;) { 
+		alert(&quot;Please choose at least one record.&quot;); 
+	} else { 
+		try { 
+			for (var n=0; n&lt;arrayLength; n++){ 
+				var led = new sforce.SObject(&quot;Training_Event__c&quot;);			
+				
+				led.id = TrainRecords[n].Id;
+				//alert(&apos;val&apos;+TrainRecords [n].LCRM_Mute_Reassignment__c); 
+				if(TrainRecords[n].LCRM_Mute_Reassignment__c == &apos;true&apos;){ 
+					//alert(&apos;insidetrue&apos;); 
+					led.LCRM_Mute_Reassignment__c = false; 
+				} 
+				if(TrainRecords[n].LCRM_Mute_Reassignment__c == &apos;false&apos;){ 
+					//alert(&apos;insidefalse&apos;); 
+					led.LCRM_Mute_Reassignment__c = true; 
+				} 
+				newRecords.push(led); 
+			} 
+			result2 = sforce.connection.update(newRecords); 
+			window.location.reload(); 
+
+			if (result2[0].getBoolean(&quot;success&quot;)) { 
+				alert(&quot;Selected Records updated&quot;); 
+			} else { 
+				alert(&quot;failed to update Records&quot; ); 
+			} 
+		} 
+		catch (e) { 
+			alert(e); 
+		} 
+	} 
+} 
+else{ 
+alert(&apos;You do not have permission to mass update Mute Reassignment Value&apos;); 
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Mass_Owner_Change</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Mass Owner Change</masterLabel>
+        <openType>noSidebar</openType>
+        <page>massReassignTEOwner</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Mass_Status_Change</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <height>600</height>
+        <linkType>page</linkType>
+        <masterLabel>Mass Status Change</masterLabel>
+        <openType>noSidebar</openType>
+        <page>massTEUpdate</page>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+    </webLinks>
+    <webLinks>
+        <fullName>Save</fullName>
+        <availability>online</availability>
+        <description>go to Training Events tab</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Save</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/{!$ObjectType.Training_Event__c}/o</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Take_Ownership_On_Training_Event</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Take Ownership</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/connection.js&quot;)}
+{!REQUIRESCRIPT(&quot;/soap/ajax/10.0/apex.js&quot;)}
+
+if(&quot;{!Training_Event__c.Status__c}&quot; == &apos;Completed&apos; || &quot;{!Training_Event__c.Status__c}&quot; == &apos;Completed-Duplicate&apos; || &quot;{!Training_Event__c.Status__c}&quot; == &apos;Discarded&apos;)
+{
+ alert(&apos;You are not allowed to take ownership when status is Completed, Completed-Duplicate or Discarded.&apos;);
+}
+
+else
+{
+sforce.apex.execute(&quot;TakeOwnership&quot;,
+&quot;addTrainingEventOwner&quot;,{trainingEvent:&quot;{!Training_Event__c.Id}&quot;,oUser:&quot;{!$User.Id}&quot;}); 
+parent.location.href = parent.location.href;
+
+}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Training_Report</fullName>
+        <availability>online</availability>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Training Report</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>/00Oa00000074fPg?pv0={!Training_Event__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Update_Training_Contacts</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>page</linkType>
+        <masterLabel>Update Training Contacts</masterLabel>
+        <openType>replace</openType>
+        <page>updateTrainingContacts</page>
+        <protected>false</protected>
+    </webLinks>
+</CustomObject>

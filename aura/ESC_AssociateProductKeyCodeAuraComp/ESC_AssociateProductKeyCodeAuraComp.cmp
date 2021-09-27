@@ -1,0 +1,11 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	<aura:attribute name="recId" type="String" />
+    <aura:attribute name="islivenote" type="boolean"/>
+    <aura:attribute name="isprodoc" type="boolean"/>
+    <aura:if isTrue="{!v.islivenote}">
+     <c:esc_LiveNoteLicenseCode recordId="{!v.recId}"/>
+    </aura:if>
+    <aura:if isTrue="{!v.isprodoc}">
+     <c:esc_ProdocKeyCodes recordId="{!v.recId}"/>
+    </aura:if>
+</aura:component>

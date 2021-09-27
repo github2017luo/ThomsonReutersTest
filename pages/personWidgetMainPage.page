@@ -1,0 +1,739 @@
+<apex:page standardController="Contact" extensions="personWidgetCtrl">
+    <style type="text/css">
+        table.noGap {margin:0;display:block}
+        td.left { border-left: thin solid #bdbdbd; }
+        td.top { border-top: thin solid #bdbdbd; }
+        td.right { border-right: thin solid #bdbdbd; }
+        td.bottom { border-bottom: thin solid #bdbdbd; }
+        td.allBorder{ border: thin solid #bdbdbd;}
+        span.circle {
+            behavior: url(PIE.htc); /* remove if you don't care about IE8 */
+            display: inline-block;
+            padding: 10px;
+            line-height: 60%;
+            
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        
+            background-color: #1798c1;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            
+        }
+
+        .clearfix:after {
+            display:block;
+            clear:both;
+        }
+         
+        /*----- Menu Outline -----*/
+        
+        .menu-wrap {
+            width:100%;
+            box-shadow:0px 1px 3px rgba(0,0,0,0.2);
+            background:#3e3436;
+        }
+         
+        .menu {
+            width:100%;
+            margin:0px auto;
+        }
+         
+        .menu li {
+            margin:0px;
+            list-style:none;
+            width:16%;
+        }
+         
+        .menu a {
+            transition:all linear 0.15s;
+            color:#919191;
+        }
+         
+        .menu li:hover > a, .menu .current-item > a {
+            text-decoration:none;
+            color:#be5b70;
+        }
+         
+        .menu .arrow {
+            font-size:11px;
+            line-height:0%;
+        }
+         
+        /*----- Top Level -----*/
+        
+        .menu > ul > li {
+            /*float:left;*/
+            display:inline-block;
+            position:relative;
+            font-size:13px;
+        }
+         
+        .menu > ul > li > a {
+            /*padding:10px 40px;*/
+            padding:10px;
+            width:87%;
+            display:inline-block;
+            color:#1798c1;
+            text-align: left;
+            text-decoration: none;
+        }
+         
+        .menu > ul > li:hover > a, .menu > ul > .current-item > a {
+            background:#1798c1;
+            color:#ffffff;
+        }
+         
+        /*----- Bottom Level -----*/
+        
+        .menu li:hover .sub-menu {
+            z-index:1;
+            opacity:1;
+        }
+         
+        .sub-menu {
+            width:100%;
+            padding:5px 0px;
+            position:absolute;
+            top:100%;
+            left:0px;
+            z-index:-1;
+            opacity:0;
+            transition:opacity linear 0.15s;
+            box-shadow:0px 2px 3px rgba(0,0,0,0.2);
+            background:#ffffff;
+        }
+        
+        .sub-menu li {
+            display:block;
+            font-size:12px;
+        }
+         
+        .sub-menu li a {
+            padding:10px 0px;
+            display:block;
+            color:#000000;
+            text-decoration:none;
+            text-align:left;
+        }
+         
+        .sub-menu li a:hover, .sub-menu .current-item a {
+            background:#8ab529;
+            color:#000000;
+        }        
+    </style>
+    
+    <script>
+        function ChangeColor(tableRow, highLight)
+        {
+            if (highLight)
+            {
+              tableRow.style.backgroundColor = '#8ab529';
+            }
+            else
+            {
+              tableRow.style.backgroundColor = 'white';
+            }
+        }
+        
+        function ChangeColorBackToOriginal(tableRow, highLight, original)
+        {
+            if (highLight)
+            {
+              tableRow.style.backgroundColor = '#8ab529';
+            }
+            else
+            {
+              tableRow.style.backgroundColor = original;
+            }
+        }
+        window.onload=function(){
+            doSomething();
+        };
+    </script>
+    <apex:form >
+        <apex:outputPanel id="mainPanel">
+            <apex:actionFunction name="doSomething" action="{!doSomething}" reRender="mainPanel"/>
+            <apex:actionFunction name="selPanelChange" action="{!changePanel}" reRender="dataPanel,mainPanel" status="loadStatus">
+                <apex:param name="selPanel" value=""/>
+            </apex:actionFunction>
+            <apex:outputPanel id="personPanel" rendered="{!AND(loadingFlag=FALSE,noRecordFlag=false)}">
+                <table width="100%" border="0" cellspacing="0px" align="center">
+                    <apex:outputPanel rendered="{!NOT(selPanel='none')}" layout="none">
+                        <tr onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');" onclick="selPanelChange('none');">
+                            <td colspan="2"  style="text-align: center;">
+                                <apex:outputLabel id="goBacklbl" style="font-size:16px; padding-left:25px; font-weight:bold;" value="Click here for Main Screen"></apex:outputLabel>
+                            </td>
+                        </tr>
+                    </apex:outputPanel>
+                    <tr bgcolor="#1798c1"><!--onmouseover="ChangeColorBackToOriginal(this, true,'#1798c1');" onmouseout="ChangeColorBackToOriginal(this, false,'#1798c1');" onclick="selPanelChange('none');"-->
+                        <td height="35px" valign="bottom">
+                            <apex:outputText style="color: #ffffff;font-size:16px; padding-left:25px; font-weight:bold;" value="{!PersonName}"></apex:outputText>
+                        </td>
+                        <td align="right" valign="bottom">
+                            <apex:outputText style="color: #ffffff;font-size:16px; padding-right:25px; font-weight:bold;" value="{!$Label.Person_LastUpdated}"></apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:outputLabel id="personIDlbl" style="font-size:16px; padding-left:25px; font-weight:bold;" value="{!$Label.Person_PersonID} {!personID}"></apex:outputLabel>
+                        </td>
+                        <td align="right">
+                            <apex:outputText style="font-size:16px; padding-right:25px; font-weight:bold;" value="{!PersonLastUpdt}"></apex:outputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <apex:outputPanel id="historyPanel" rendered="{!NOT(hisDataList.totalCount=0)}"> <!--rendered="{!AND(NOT(hisDataList.totalCount=0),OR(selPanel='none',selPanel='viewAll',selPanel='recAct',selPanel='openLead',selPanel='unworkLead',selPanel='allOpen',selPanel='closedPipe',selPanel='oppOnDemTrails'))}">-->
+                                <style>
+                                    .triangle-isosceles {
+                                        position:relative;
+                                        padding:10px;
+                                        margin:1em 0 3em;
+                                        color:#000;
+                                        background:#bdbdbd; /* default background for browsers without gradient support */
+                                        /* css3 */
+                                        background:-webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
+                                        background:-moz-linear-gradient(#e6e6e6, #bdbdbd);
+                                        background:-o-linear-gradient(#e6e6e6, #bdbdbd);
+                                        background:linear-gradient(#e6e6e6, #bdbdbd);
+                                        -webkit-border-radius:10px;
+                                        -moz-border-radius:10px;
+                                        border-radius:10px;
+                                    }
+                                    
+                                    .triangle-isosceles:after {
+                                        content:"";
+                                        position:absolute;
+                                        bottom:-15px; /* value = - border-top-width - border-bottom-width */
+                                        left:{!IF((selPanel='none'),'4',IF(OR(selPanel='viewAll',selPanel='recAct'),'4',IF(OR(selPanel='openLead',selPanel='unworkLead'),'20',IF(OR(selPanel='allOpen',selPanel='closedPipe',selPanel='oppOnDemTrails'),'36',IF(OR(selPanel='allAct',selPanel='subRenNext',selPanel='subAccess'),'52',IF(OR(selPanel='markActLast90',selPanel='markActUnLeads'),'68',IF(OR(selPanel='salesAct90'),'85','0')))))))}%; /* controls horizontal position */
+                                        border-width:15px 15px 0; /* vary these values to change the angle of the vertex */
+                                        border-style:solid;
+                                        border-color:#bdbdbd transparent;
+                                        /* reduce the damage in FF3.0 */
+                                        display:block;
+                                        width:0;
+                                    }
+                                </style>
+                                
+                                <table class="triangle-isosceles" width="97%" align="left" cellspacing="0" cellpadding="4" style="padding-bottom: 0px; padding-top: 0px; margin-top: ‒5; margin-top: 5px; margin-bottom: 15px;">
+                                    <tr>
+                                        <td colspan="3">
+                                            <apex:outputLabel style="font-size:13px; font-weight:bold;" value="{!$Label.Person_His_Header}" escape="false"></apex:outputLabel>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bottom"><b>{!hisDataCol1Name}</b>
+                                            <!--
+                                            <apex:commandLink action="{!tempmethod}" style="font-weight:bold;" value="{!hisDataCol1Name}{!IF(hisSortExpression=='DataCol1',IF(hisSortDirection='ASC','▼','▲'),'')}" reRender="mainPanel" status="loadStatus">
+                                                <apex:param value="DataCol1" name="column" assignTo="{!hisSortExpression}" ></apex:param>
+                                            </apex:commandLink>
+                                            -->
+                                        </td>
+                                        <td class="bottom"><b>{!hisDataCol2Name}</b>
+                                            <!--
+                                            <apex:commandLink action="{!tempmethod}" style="font-weight:bold;" value="{!hisDataCol2Name}{!IF(hisSortExpression=='DataCol2',IF(hisSortDirection='ASC','▼','▲'),'')}" reRender="mainPanel" status="loadStatus">
+                                                <apex:param value="DataCol2" name="column" assignTo="{!hisSortExpression}" ></apex:param>
+                                            </apex:commandLink>
+                                            -->
+                                        </td>
+                                        <td class="bottom"><b>{!hisDataCol3Name}</b>
+                                            <!--
+                                            <apex:commandLink action="{!tempmethod}" style="font-weight:bold;" value="{!hisDataCol3Name}{!IF(hisSortExpression=='DataCol3',IF(hisSortDirection='ASC','▼','▲'),'')}" reRender="mainPanel" status="loadStatus">
+                                                <apex:param value="DataCol3" name="column" assignTo="{!hisSortExpression}" ></apex:param>
+                                            </apex:commandLink>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <!--
+                                    <apex:repeat value="{!hisList}" var="item">
+                                        <tr>
+                                            <td  width="25%" style="padding-top: 0px; padding-bottom: 5px;">
+                                                <apex:outputLabel value="{!item.data1}"></apex:outputLabel> 
+                                            </td>
+                                            <td  width="25%" style="padding-top: 0px; padding-bottom: 5px;">
+                                                <apex:outputLabel value="{!item.data2}"></apex:outputLabel>
+                                            </td>
+                                            <td  width="50%" style="padding-top: 0px; padding-bottom: 5px;"> 
+                                                <apex:outputLabel value="{!item.data3}"></apex:outputLabel> 
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                    -->
+                                    <apex:repeat value="{!hisDataList.CurrentPage}" var="item">
+                                        <tr>
+                                            <td  width="25%" style="padding-top: 0px; padding-bottom: 5px;">
+                                                <apex:outputLabel value="{!item.data1}"></apex:outputLabel> 
+                                            </td>
+                                            <td  width="25%" style="padding-top: 0px; padding-bottom: 5px;">
+                                                <apex:outputLabel value="{!item.data2}"></apex:outputLabel>
+                                            </td>
+                                            <td  width="50%" style="padding-top: 0px; padding-bottom: 5px;"> 
+                                                <apex:outputLabel value="{!item.data3}"></apex:outputLabel> 
+                                            </td>
+                                        </tr>
+                                    </apex:repeat>
+                                    <tr>
+                                        <td>
+                                            <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:left;" rendered="{!NOT(hisDataList.totalCount=0)}">
+                                                <b>{!hisDataList.RecordStart}-{!hisDataList.RecordEnd} of {!hisDataList.totalCount}</b>
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td>
+                                            <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;" rendered="{!NOT(hisDataList.totalCount=0)}">
+                                                <apex:outputPanel layout="inline" rendered="{!hisDataList.AllowMovePrev}">
+                                                    <apex:commandLink id="linkMovePrev" value="< Previous" immediate="true" status="statusPaging" 
+                                                                action="{!hisDataList.movePrev}" rerender="historyPanel" style="font-weight: bold;"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="inline" rendered="{!NOT(hisDataList.AllowMovePrev)}">
+                                                    <apex:outputText value="< Previous"></apex:outputText>
+                                                </apex:outputPanel>
+                                                            
+                                                <apex:outputPanel layout="inline" rendered="{!hisDataList.AllowMoveNext}">
+                                                    <span>&nbsp;|&nbsp;</span>
+                                                    <apex:commandLink id="linkMoveNext" value="Next >" immediate="true" status="statusPaging"
+                                                                action="{!hisDataList.moveNext}" rerender="historyPanel" style="font-weight: bold;"/>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="inline" rendered="{!NOT(hisDataList.AllowMoveNext)}">
+                                                    <span>&nbsp;|&nbsp;</span>
+                                                    <apex:outputText value="Next >"></apex:outputText>
+                                                </apex:outputPanel>
+                                                            
+                                                <span>&nbsp;&nbsp;</span>
+                                                            
+                                                <apex:actionStatus id="statusPaging">
+                                                    <apex:facet name="start">
+                                                        <img src="/img/loading.gif" height="14px" width="14px"/>
+                                                    </apex:facet>
+                                                    <apex:facet name="stop">
+                                                        <img src="/img/s.gif" height="14px" width="14px"/>
+                                                    </apex:facet>
+                                                </apex:actionStatus>
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td>
+                                            <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;" rendered="{!NOT(hisDataList.totalCount=0)}">
+                                                <b>Page {!hisDataList.PageIndex+1}</b>
+                                            </apex:outputPanel>
+                                        </td>
+                                        <!--
+                                        <td colspan="3">
+                                            
+                                            <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">                 
+                                                <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:left;" rendered="{!NOT(hisDataList.totalCount=0)}">
+                                                    {!hisDataList.RecordStart}-{!hisDataList.RecordEnd} of {!hisDataList.totalCount}
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:center;" rendered="{!NOT(hisDataList.totalCount=0)}">
+                                                    <apex:outputPanel layout="inline" rendered="{!hisDataList.AllowMovePrev}">
+                                                        <span>&nbsp;|&nbsp;</span>
+                                                        <apex:commandLink id="linkMovePrev" value="Prev" immediate="true" status="statusPaging" 
+                                                                    action="{!hisDataList.movePrev}" rerender="historyPanel" />
+                                                    </apex:outputPanel>
+                                                                
+                                                    <apex:outputPanel layout="inline" rendered="{!hisDataList.AllowMoveNext}">
+                                                        <span>&nbsp;|&nbsp;</span>
+                                                        <apex:commandLink id="linkMoveNext" value="Next" immediate="true" status="statusPaging"
+                                                                    action="{!hisDataList.moveNext}" rerender="historyPanel" />
+                                                    </apex:outputPanel>
+                                                                
+                                                    <span>&nbsp;&nbsp;</span>
+                                                                
+                                                    <apex:actionStatus id="statusPaging">
+                                                        <apex:facet name="start">
+                                                            <img src="/img/loading.gif" height="14px" width="14px"/>
+                                                        </apex:facet>
+                                                        <apex:facet name="stop">
+                                                            <img src="/img/s.gif" height="14px" width="14px"/>
+                                                        </apex:facet>
+                                                    </apex:actionStatus>
+                                                </apex:outputPanel>
+                                                <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;" rendered="{!NOT(hisDataList.totalCount=0)}">
+                                                    Page {!hisDataList.PageIndex+1}
+                                                </apex:outputPanel>
+                                      
+                                            </apex:outputPanel>
+                                            
+                                        
+                                        </td>
+                                        -->
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel rendered="{!selPanel='none'}">
+                                <table width="95%" align="center" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td width="16%" align="left" style="padding-top:10px; padding-bottom:10px; {!IF((OR(selPanel='viewAll',selPanel='recAct')),'background-color : #1798c1;','background-color : #ffffff')}">
+                                            <apex:outputText style="padding-left:5px; font-size:13px; font-weight:bold; color:{!IF((OR(selPanel='viewAll',selPanel='recAct')), '#ffffff', '#1798c1')};" value="{!$Label.Person_Contacts}"></apex:outputText>
+                                        </td>
+                                        <td width="16%" align="left" style="padding-top:10px; padding-bottom:10px; {!IF((OR(selPanel='openLead',selPanel='unworkLead',selPanel='oppOnDemTrails')),'background-color : #1798c1;','background-color : #ffffff')}">
+                                            <apex:outputText style="padding-left:5px; font-size:13px; font-weight:bold; color:{!IF((OR(selPanel='openLead',selPanel='unworkLead',selPanel='oppOnDemTrails')), '#ffffff', '#1798c1')};" value="{!$Label.Person_Lead_Header}"></apex:outputText>
+                                        </td>
+                                        <td width="17%" align="left" style="padding-top:10px; padding-bottom:10px; {!IF((OR(selPanel='allOpen',selPanel='closedPipe')),'background-color : #1798c1;','background-color : #ffffff')}">
+                                            <apex:outputText style="padding-left:5px; font-size:13px; font-weight:bold; color:{!IF((OR(selPanel='allOpen',selPanel='closedPipe')), '#ffffff', '#1798c1')};" value="{!$Label.Person_Opportunities}"></apex:outputText>
+                                        </td>
+                                        <td width="17%" align="left" style="padding-top:10px; padding-bottom:10px; {!IF((OR(selPanel='allAct',selPanel='subRenNext',selPanel='subAccess')),'background-color : #1798c1;','background-color : #ffffff')}">
+                                            <apex:outputText style="padding-left:5px; font-size:13px; font-weight:bold; color:{!IF((OR(selPanel='allAct',selPanel='subRenNext',selPanel='subAccess')), '#ffffff', '#1798c1')};" value="{!$Label.Person_Subscriptions}"></apex:outputText>
+                                        </td>
+                                        <td width="17%" align="left" style="padding-top:10px; padding-bottom:10px; {!IF((OR(selPanel='markActLast90',selPanel='markActUnLeads')),'background-color : #1798c1;','background-color : #ffffff')}">
+                                            <apex:outputText style="padding-left:5px; font-size:13px; font-weight:bold; color:{!IF((OR(selPanel='markActLast90',selPanel='markActUnLeads')), '#ffffff', '#1798c1')};" value="{!$Label.Person_Mark_Header}"></apex:outputText>
+                                        </td>
+                                        <td width="17%" align="left" style="padding-top:10px; padding-bottom:10px; {!IF((OR(selPanel='salesAct90')),'background-color : #1798c1;','background-color : #ffffff')}">
+                                            <apex:outputText style="padding-left:5px; font-size:13px; font-weight:bold; color:{!IF((OR(selPanel='salesAct90')), '#ffffff', '#1798c1')};" value="{!$Label.Person_Sales_Header}"></apex:outputText>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='viewAll')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='viewAll')),'#8ab529','#ffffff')}');" onclick="selPanelChange('viewAll');"  style="{!IF((OR(selPanel='viewAll')),'background-color : #8ab529;','')}">
+                                            <table id="viewAll" width="100%" border="0" >
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Con_View_All}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countConAll}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='openLead')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='openLead')),'#8ab529','#ffffff')}');" onclick="selPanelChange('openLead');" style="{!IF((OR(selPanel='openLead')),'background-color : #8ab529;','')}">
+                                            <table id="openLead" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Lead_Open_Leads}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countOpenLead}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='allOpen')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='allOpen')),'#8ab529','#ffffff')}');" onclick="selPanelChange('allOpen');" style="{!IF((OR(selPanel='allOpen')),'background-color : #8ab529;','')}">
+                                            <table id="allOpen" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Opp_All_Open}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countOppAll}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='allAct')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='allAct')),'#8ab529','#ffffff')}');" onclick="selPanelChange('allAct');" style="{!IF((OR(selPanel='allAct')),'background-color : #8ab529;','')}">
+                                            <table id="allAct" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Subs_View_All_Active}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countSubAll}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='markActLast90')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='markActLast90')),'#8ab529','#ffffff')}');" onclick="selPanelChange('markActLast90');" style="{!IF((OR(selPanel='markActLast90')),'background-color : #8ab529;','')}">
+                                            <table id="markActLast90" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Mark_Last90}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countMarkAct90}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='salesAct90')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='salesAct90')),'#8ab529','#ffffff')}');" onclick="selPanelChange('salesAct90');" style="{!IF((OR(selPanel='salesAct90')),'background-color : #8ab529;','')}">
+                                            <table id="salesAct90" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Sales_Last90}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countSalesAct90}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    
+                                    <tr border="1">
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='recAct')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='recAct')),'#8ab529','#ffffff')}');" onclick="selPanelChange('recAct');" style="{!IF((OR(selPanel='recAct')),'background-color : #8ab529;','')}">
+                                            <table id="recAct" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Con_With_Recent_Activities}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countConRecAct}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='unworkLead')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='unworkLead')),'#8ab529','#ffffff')}');" onclick="selPanelChange('unworkLead');" style="{!IF((OR(selPanel='unworkLead')),'background-color : #8ab529;','')}">
+                                            <table id="unworkLead" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Leads_Unworked_Leads}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countUnworLead}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='closedPipe')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='closedPipe')),'#8ab529','#ffffff')}');" onclick="selPanelChange('closedPipe');" style="{!IF((OR(selPanel='closedPipe')),'background-color : #8ab529;','')}">
+                                            <table id="closedPipe" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Opp_View_Closed_Pipeline}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countOppClosed}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='subRenNext')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='subRenNext')),'#8ab529','#ffffff')}');" onclick="selPanelChange('subRenNext');" style="{!IF((OR(selPanel='subRenNext')),'background-color : #8ab529;','')}">
+                                            <table id="subRenNext" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Subs_Renewal_Next_90_Days}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countSubRen}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='oppOnDemTrails')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='oppOnDemTrails')),'#8ab529','#ffffff')}');" onclick="selPanelChange('oppOnDemTrails');" style="{!IF((OR(selPanel='oppOnDemTrails')),'background-color : #8ab529;','')}">
+                                            <table id="oppOnDemTrails" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Opp_On_Demand_Trials}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countOppOnDem}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td></td>
+                                        <td class="allBorder" onmouseover="ChangeColorBackToOriginal(this, true, '{!IF((OR(selPanel='subAccess')),'#8ab529','#ffffff')}');" onmouseout="ChangeColorBackToOriginal(this, false, '{!IF((OR(selPanel='subAccess')),'#8ab529','#ffffff')}');" onclick="selPanelChange('subAccess');" style="{!IF((OR(selPanel='subAccess')),'background-color : #8ab529;','')}">
+                                            <table id="subAccess" width="100%" border="0">
+                                                <tr>
+                                                    <td>
+                                                        <apex:outputText style="font-size:12px;" value="{!$Label.Person_Subs_Access}"></apex:outputText>
+                                                    </td>
+                                                    <td align="right">
+                                                        <span class="circle"><apex:outputText style="font-size:12px;" value="{!countSubAccess}"></apex:outputText></span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel id="menuPanel" rendered="{!NOT(selPanel='none')}">
+                                <div class="menu">
+                                    <ul style="padding-left: 15px;">
+                                        <li class="{!IF((OR(selPanel='viewAll',selPanel='recAct')),'current-item','')}">
+                                            <a href="#"><b>{!$Label.Person_Contacts}</b></a>
+                                            <ul class="sub-menu">
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('viewAll');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Con_View_All}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countConAll}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('recAct');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Con_With_Recent_Activities}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countConRecAct}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="{!IF((OR(selPanel='openLead',selPanel='unworkLead',selPanel='oppOnDemTrails')),'current-item','')}">
+                                            <a href="#"><b>{!$Label.Person_Lead_Header}</b></a>
+                                            <ul class="sub-menu">
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('openLead');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Lead_Open_Leads}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countOpenLead}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('unworkLead');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Leads_Unworked_Leads}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countUnworLead}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('oppOnDemTrails');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Opp_On_Demand_Trials}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countOppOnDem}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="{!IF((OR(selPanel='allOpen',selPanel='closedPipe')),'current-item','')}">
+                                            <a href="#"><b>{!$Label.Person_Opportunities}</b></a>
+                                            <ul class="sub-menu">
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('allOpen');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Opp_All_Open}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countOppAll}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('closedPipe');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Opp_View_Closed_Pipeline}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countOppClosed}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="{!IF((OR(selPanel='allAct',selPanel='subRenNext',selPanel='subAccess')),'current-item','')}">
+                                            <a href="#"><b>{!$Label.Person_Subscriptions}</b></a>
+                                            <ul class="sub-menu">
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('allAct');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Subs_View_All_Active}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countSubAll}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('subRenNext');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Subs_Renewal_Next_90_Days}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countSubRen}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('subAccess');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Subs_Access}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countSubAccess}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="{!IF((OR(selPanel='markActLast90',selPanel='markActUnLeads')),'current-item','')}">
+                                            <a href="#"><b>{!$Label.Person_Mark_Header}</b></a>
+                                            <ul class="sub-menu">
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('markActLast90');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Mark_Last90}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countMarkAct90}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="{!IF((OR(selPanel='salesAct90')),'current-item','')}">
+                                            <a href="#"><b>{!$Label.Person_Sales_Header}</b></a>
+                                            <ul class="sub-menu">
+                                                <li style="width:100%;">
+                                                    <table width="100%" cellspacing="0">
+                                                        <tr onclick="selPanelChange('salesAct90');" onmouseover="ChangeColorBackToOriginal(this, true,'#ffffff');" onmouseout="ChangeColorBackToOriginal(this, false,'#ffffff');">
+                                                            <td style="padding-left: 5px; padding-left: 5px; padding-bottom: 10px;padding-top: 10px;" width="80%">{!$Label.Person_Sales_Last90}</td>
+                                                            <td style="padding-bottom: 10px;padding-top: 10px;" width="20%"><span class="circle">{!countSalesAct90}</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </apex:outputPanel>
+                            <div/>
+                            
+                            <apex:pageBlock id="dataPanel" title="{!dataBlockName}" rendered="{!NOT(selPanel='none')}">
+                                <apex:facet name="header">
+                                    <apex:outputPanel id="header1">
+                                        <table border="0" cellpadding="0" cellspacing="0">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="pbTitle">
+                                                        <h2 class="mainTitle">{!dataBlockName} 
+                                                            <apex:outputPanel id="header2" rendered="{!shownote=TRUE}">
+                                                                <apex:outputLabel escape="false" value="{!$Label.Person_SubsNote}"></apex:outputLabel>
+                                                            </apex:outputPanel>
+                                                        </h2>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                <apex:iframe src="/apex/personWidgetGuidesPage?id={!contactID}&funct={!selPanel}" scrolling="false" height="400px"/>
+                            </apex:pageBlock>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>  
+    
+            <apex:outputPanel id="noRecPanel" rendered="{!AND(loadingFlag=FALSE,noRecordFlag=true)}">
+                <table width="100%" border="0" cellspacing="0px" align="center">
+                    <tr >
+                        <td bgcolor="#000000" height="50px" valign="bottom">
+                            <apex:outputText style="color: #ffffff;font-size:24px; padding-left:25px; font-weight:bold;" value="{!errorMsg}"></apex:outputText>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            
+            <apex:outputPanel id="loadingPanel" rendered="{!loadingFlag=true}">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                    <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                        <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                        <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                    </div>
+                </div>
+            </apex:outputPanel>
+            
+            <apex:outputpanel >
+                <apex:actionstatus id="loadStatus">
+                    <apex:facet name="start">
+                        <div class="waitingSearchDiv" id="el_loading" style="background-color: #FFFFFF; height: 200%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                            <div class="waitingHolder" style="top: 74.2px; width: 91px;">
+                                <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                                <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                            </div>
+                        </div>
+                    </apex:facet>
+                </apex:actionstatus>
+            </apex:outputpanel>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>ianb__BannerPopMultiplier__c</fullName>
+        <defaultValue>3</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multiple of Refresh Rate at which to pop snoozed Banners open</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Multiple of Refresh Rate at which to pop snoozed Banners open</inlineHelpText>
+        <label>Banner Pop Multiplier</label>
+        <precision>2</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__BannerRefreshRate__c</fullName>
+        <defaultValue>300</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the interval in seconds at which Banners will re-query, outside of normal page refreshes. Enter -1 to refresh only on page load.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the interval in seconds at which Banners will re-query, outside of normal page refreshes. Enter -1 to refresh only on page load.</inlineHelpText>
+        <label>Banner Refresh Rate</label>
+        <precision>4</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__BannerSnoozedIcons__c</fullName>
+        <defaultValue>&quot;/img/msg_icons/confirm16.png,/img/msg_icons/warning16.png,/img/msg_icons/error16.png,/img/msg_icons/info16.png&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Comma-separated list of three icon paths that can be applied progressively to snoozed banners, plus a fourth for use when opened.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma-separated list of three icon paths that can be applied progressively to snoozed banners, plus a fourth for use when opened.</inlineHelpText>
+        <label>Banner Snoozed Icons</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__BannerSnoozedStyles__c</fullName>
+        <defaultValue>&quot;green,#ff9900,red,navy&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Comma-separated list of three style settings that can be applied progressively to snoozed banners, plus a fourth for use when opened.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma-separated list of three style settings that can be applied progressively to snoozed banners, plus a fourth for use when opened.</inlineHelpText>
+        <label>Banner Snoozed Styles</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__BannerTitleAreaColour__c</fullName>
+        <defaultValue>&quot;fc4f59&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Web colour (RGB HEX) to use for the title area of the Notification Banner</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Web colour (RGB HEX) to use for the title area of the Notification Banner</inlineHelpText>
+        <label>Banner Title Area Colour</label>
+        <length>6</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__BrandCSS__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Stylesheet to use as the source of Improved NoticeBoard customer-specific style overrides</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Stylesheet to use as the source of Improved NoticeBoard customer-specific style overrides</inlineHelpText>
+        <label>Brand CSS</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>ianb__CustomStyles__c</fullName>
+        <defaultValue>&quot;LUXRed, LUXAmber, LUXGreen, LUXLightBlue, LUXDarkBlue, LUXLightGrey, LUXDarkGrey&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Names of Custom CSS styles that can be applied to Notices</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Names of Custom CSS styles that can be applied to Notices</inlineHelpText>
+        <label>Custom Styles</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__ExternalLicenseTypes__c</fullName>
+        <defaultValue>&quot;CSPLitePortal, CustomerSuccess, PowerCustomerSuccess, PowerPartner&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Salesforce user license types that are considered to represent &quot;external&quot; users</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Salesforce user license types that are considered to represent &quot;external&quot; users</inlineHelpText>
+        <label>External License Types</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__MaxNotificationsPerBanner__c</fullName>
+        <defaultValue>0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The maximum number of Notifications any User&apos;s Banners will display at one time (0 = unlimited)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The maximum number of Notifications any User&apos;s Banners will display at one time (0 = unlimited)</inlineHelpText>
+        <label>Max Notifications per Banner</label>
+        <precision>3</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__MaxStep3Selections__c</fullName>
+        <defaultValue>2000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The maximum number of entries allowed in the Step 3 (Selected Recipients) listing when authoring Notices</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The maximum number of entries allowed in the Step 3 (Selected Recipients) listing when authoring Notices</inlineHelpText>
+        <label>Max Step 3 Selections</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__NotificationBannerCounterLink__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Notification Banner Counter Link</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__NotificationBannerTitleLink__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Notification Banner Title Link</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__NotificationBannerTitle__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Notification Banner Title</label>
+        <length>20</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__PrimaryFontFamily__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Name of the font family to be used for key areas of Improved NoticeBoard, such as Notification Banners</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the font family to be used for key areas of Improved NoticeBoard, such as Notification Banners</inlineHelpText>
+        <label>Primary Font Family</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ianb__PrimaryFontURL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>URL of the (typically TTF or OTF) file that defines the NoticeBoard Primary Font Family</description>
+        <externalId>false</externalId>
+        <inlineHelpText>URL of the (typically TTF or OTF) file that defines the NoticeBoard Primary Font Family</inlineHelpText>
+        <label>Primary Font URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>NoticeBoardSettings</label>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,19 @@
+<apex:page showHeader="false" sidebar="false" controller="APTS_SegmentSelectorController">
+    <apex:form >
+    <!--styleClass="hidden"-->
+    <apex:pageBlock >
+    <apex:pageBlockButtons >
+        <apex:commandButton value="Save" action="{!doSave}" oncomplete="history.back()"/>
+        <apex:commandButton value="Cancel" action="{!doCancel}" oncomplete="history.back()"/>
+    </apex:pageBlockButtons>
+        <apex:pageBlockSection >
+            <!-- <apex:inputField value="{!proposal.APTS_Selected_Clauses__c}"/> -->
+            <apex:outputText value="Applicable Clauses:"/><Br/>
+            <apex:selectList value="{!selectedValues}" size="5" multiselect="True">
+                <apex:selectOptions value="{!items}"/>
+            </apex:selectList>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+    </apex:form>
+</apex:page>

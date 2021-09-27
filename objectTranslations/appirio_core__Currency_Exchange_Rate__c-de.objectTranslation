@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <caseType>Nominative</caseType>
+        <plural>false</plural>
+        <value>Wechselkurs</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Nominative</caseType>
+        <plural>true</plural>
+        <value>Wechselkurse</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Accusative</caseType>
+        <plural>false</plural>
+        <value>Wechselkurs</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Accusative</caseType>
+        <plural>true</plural>
+        <value>Wechselkurse</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Genitive</caseType>
+        <plural>false</plural>
+        <value>Wechselkurs</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Genitive</caseType>
+        <plural>true</plural>
+        <value>Wechselkurse</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Dative</caseType>
+        <plural>false</plural>
+        <value>Wechselkurs</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Dative</caseType>
+        <plural>true</plural>
+        <value>Wechselkurse</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>Diese Suche verweist auf den Währungsdatensatz, für den der datierte Wechselkurs gilt. Der Kurs ist immer definiert als der Betrag der referenzierten Währung am angegebenen Stichtag 1 (einer) Einheit der Unternehmenswährung entspricht.</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Datum, an dem der datierte Wechselkurs tatsächlich gilt, auch wenn er für einen größeren Zeitraum verwendet wird. Währungsumrechnungen würden immer nach der neuesten Rate suchen, die nicht in der Zukunft liegt (dh heute oder früher).</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Gibt das Datum an, an dem dieser Wechselkurs gegebenenfalls abläuft. Der Wechselkurs ist bis zum Tag vor dem Ablaufdatum gültig oder läuft nie ab, wenn er leer ist.</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>Wenn diese Option aktiviert ist, wird angegeben, dass dieser Wechselkurs nur im Testmodus verwendet wird und nicht für &quot;echte&quot; (Produktions-) Wechselkurskonvertierungen verwendet werden soll.</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>Wenn diese Option aktiviert ist, bedeutet dies, dass dieser Wechselkursdatensatz ungültig ist und nicht verwendet werden soll</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>Definiert das effektive Datum des nachfolgenden Wechselkurses für die Währung, falls vorhanden. Es wird für die letzte Rate leer sein. Dieses Feld sollte vom System automatisch festgelegt werden.</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Definiert den numerischen Wert des datierten Wechselkurses zwischen der referenzierten Währung und der Firmenwährung für die Organisation.</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Wechselkursnummer</nameFieldLabel>
+</CustomObjectTranslation>

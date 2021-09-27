@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Exécution de travail planifiée</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Exécutions de travail planifiées</value>
+    </caseValues>
+    <fields>
+        <label><!-- Apex Job Id --></label>
+        <name>fferpcore__ApexJobId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process Status --></label>
+        <name>fferpcore__BatchProcessStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process --></label>
+        <name>fferpcore__BatchProcess__c</name>
+        <relationshipLabel><!-- Scheduled Job Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Indique si le contrôle de lot a réussi.</help>
+        <label><!-- Notification --></label>
+        <name>fferpcore__NotificationType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled Job --></label>
+        <name>fferpcore__Process__c</name>
+        <relationshipLabel><!-- Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>fferpcore__Status__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation>Achevée</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Error</masterLabel>
+            <translation>Erreur</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Processing</masterLabel>
+            <translation>En traitement</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Nombre total de lots abandonnés en fonction du nombre de journaux de lots contenant un type de journal d&apos;abandon.</help>
+        <label><!-- Total Aborted Batches --></label>
+        <name>fferpcore__TotalNumberOfAborts__c</name>
+    </fields>
+    <fields>
+        <help>Nombre total d&apos;enregistrements avec une erreur basée sur le nombre de journaux de lot contenant un type de journal d&apos;erreur.</help>
+        <label><!-- Total Errors --></label>
+        <name>fferpcore__TotalNumberOfErrors__c</name>
+    </fields>
+    <fields>
+        <help>Nombre total de lots dépassant les limites du gouverneur Salesforce ou contenant d&apos;autres problèmes.</help>
+        <label><!-- Total Number of Batches Exceeding Limits --></label>
+        <name>fferpcore__TotalNumberOfExternal__c</name>
+    </fields>
+    <fields>
+        <help>Nombre total de journaux de lots pour ce contrôle par lots.</help>
+        <label><!-- Total Logs --></label>
+        <name>fferpcore__TotalNumberOfLogs__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Numéro de course</nameFieldLabel>
+    <startsWith>Vowel</startsWith>
+</CustomObjectTranslation>

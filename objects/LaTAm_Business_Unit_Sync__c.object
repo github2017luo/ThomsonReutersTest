@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>LaTAM Partner Community - Creating this custom setting as Business Unit Picklist values are different on User and Lead Business Unit field</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Lead_Business_Unit__c</fullName>
+        <description>Lead Business Unit Pick list values</description>
+        <externalId>false</externalId>
+        <label>Lead Business Unit (LatAm)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Business_Unit__c</fullName>
+        <description>User Business Unit picklist Values</description>
+        <externalId>false</externalId>
+        <label>User Business Unit</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>LaTAm Business Unit Sync</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Lead_Business_Unit__c</columns>
+        <columns>User_Business_Unit__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>LAST_UPDATE</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <visibility>Public</visibility>
+</CustomObject>

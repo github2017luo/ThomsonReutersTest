@@ -1,0 +1,52 @@
+<aura:component controller="TR_CampaignLookupController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">    
+    
+    <aura:attribute name="selectedCampaignRecord" type="Campaign" default="{}" description="Use,for store SELECTED Campaign Record"/>
+    <aura:attribute name="selectedCampaign" type="Campaign" />
+    <aura:attribute name="listOfSearchRecords" type="List" description="Use,for store the list of search records which returns from apex class"/>
+    <aura:attribute name="listOfSelectedRecords" type="List" description="Use,for store the list of selected records"/>
+    <aura:attribute name="SearchKeyWord" type="string"/>
+    <aura:attribute name="selectedRecordId" type="String" />
+    <aura:attribute name="objectAPIName" type="string" default=""/>
+    <aura:attribute name="IconName" type="string" default=""/>
+    <aura:attribute name="filter" type="string" default=""/>
+    <aura:attribute name="label" type="string" default=""/>
+    <aura:attribute name="Message" type="String" default=""/>
+    <aura:attribute name="reqVal" type="Boolean"/>
+    <aura:attribute name="defaultCampaign" type="Campaign" default="{}" description="Use to store default sObject record"/>
+    <aura:attribute name="campVal" type="Boolean"/> 
+    <aura:method name="clearSelectedVal" action="{!c.clearCampaign}"></aura:method>
+    <aura:method name="clearSearchValue" action="{!c.clearSearchValueFunc}"></aura:method>
+    <aura:handler name="selectedRecEvent" event="c:TR_CampaignSelectedEvent" action="{!c.handleRecordComponentEvent}"/>   
+    <aura:handler name ="campLookUpEvent" event="c:TR_CampaignLookupEvent" action="{!c.handleCampaignLookUpEvent}"/>
+    <div onmouseleave="{!c.onblur}" aura:id="searchRes" class="slds-form-element slds-lookup slds-is-close" data-select="single">
+        <label class="slds-form-element__label" for="lookup-348">{!v.label}</label>
+            <div class="slds-form-element__control">            
+                <div class="slds-input-has-icon slds-input-has-icon--right">                
+                    <div aura:id="lookup-pillCampaign" class="slds-pill-container slds-hide">
+                        <lightning:pill class="pillSize" label="{!v.selectedCampaign.Name}" name="{!v.selectedCampaign.Name}" onremove="{!c.clearCampaign}">
+                            <aura:set attribute="media">
+                                <lightning:icon iconName="{!v.IconName}" size="x-small" alternativeText="{!v.IconName}"/>
+                            </aura:set>
+                        </lightning:pill>
+                    </div>
+                    <div aura:id="lookupFieldCampaign" class="slds-show">
+                        <lightning:icon class="slds-input__icon slds-show" iconName="utility:search" size="x-small" alternativeText="search"/>
+                        <span class="slds-icon_container  slds-combobox__input-entity-icon" title="record">
+                        </span>                    
+                        <ui:inputtext click="{!c.onfocus}" aura:id="lookupInput" updateOn="keyup" keyup="{!c.keyPressController}" class="slds-lookup__search-input slds-input leftPaddingClass" value="{!v.SearchKeyWord}" required="{!v.reqVal}" placeholder="" />                    
+                    </div>   
+                </div>
+                <aura:if isTrue="{!v.campVal}">
+                    <p style="color: rgb(194, 57, 52) !important;font-size: .75rem;margin-top: .125rem;display: block; " aura:id = "errorText" class = "slds-hide">You must enter a value</p>        
+                </aura:if>
+            </div>
+      <!-- <a href="{!'/' + v.selectedCampaign.Id}" target="_blank">{!v.selectedCampaign.Name} {!v.selectedCampaign.StartDate} {!v.selectedCampaign.EndDate}</a>-->
+        <ul style="min-height:40px;margin-top:0px !important" class="slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid slds-lookup__menu slds" role="listbox">
+            <lightning:spinner class="slds-hide" variant="brand" size="small" aura:id="mySpinner"/>
+            <center> {!v.Message}</center>
+            <aura:iteration items="{!v.listOfSearchRecords}" var="singleRec">
+                <c:TR_CampaignLookupResult oRecord="{!singleRec}" IconName="{!v.IconName}" objectName = "campaign"/>
+            </aura:iteration>
+        </ul>
+    </div>
+</aura:component>

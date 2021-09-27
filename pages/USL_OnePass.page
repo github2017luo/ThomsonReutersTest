@@ -1,0 +1,113 @@
+<!--
+* CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 2018-06-14   Matthew Main            Creating OnePass Integration Per ESD-312
+* =============================================================================
+-->
+
+<apex:page standardController="LCRM_Contact_SSD__c" extensions="USL_OnePass" id="pageOnePass">
+<apex:includeScript value="/support/console/22.0/integration.js"/>
+<style>
+.linkClass {
+            color:blue;
+            font-size:11px;
+        }
+.columnClass {
+    text-align:left;
+}
+.requiredClass {
+    background-color:#C00000;
+}
+</style>
+
+
+    <script>
+
+var closeSubtab = function closeSubtab(result) {
+    var tabId = result.id;
+    sforce.console.closeTab(tabId);
+};
+
+function testOpenSubtab(){
+    //alert('Hi');
+    if (sforce.console.isInConsole()) {
+        sforce.console.getEnclosingTabId(closeSubtab);
+        //var url = '{!contactSSD.id}/?isdtp=vw';
+        //alert(url);
+        //srcSelf(url);
+    }
+    else {
+        //alert('Hi Sales');
+        var url = '/{!contactSSD.id}';
+        //alert(url);
+        window.open(url,'_top');
+    }
+}
+
+</script>
+<apex:sectionHeader id="pageTitle" title="" subtitle="OnePass" />
+
+&nbsp;&nbsp;&nbsp;<a href="/{!contactSSD.id}?isdtp=vw"  style="color:#015BA7;">Back to {!contactSSD.Name}</a> <!--SFD-16-->
+                    &nbsp;<br/>
+        <apex:pageBlock id="OnePassInformation">
+            <apex:pageBlockSection title="OnePass Information" columns="2" collapsible="false" id="OnePassInfo">
+                <apex:pageBlockTable value="{!OnePass.entitlements}" var="opl" id="tableEntitlements">
+                    <apex:column >
+                        <apex:facet name="header">SAP Contact Id</apex:facet>
+                        {!opl.onePass.SAPContactId}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">OnePass Username</apex:facet>
+                        {!opl.logonName}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">First Name</apex:facet>
+                        {!opl.authFirstName}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Last Name</apex:facet>
+                        {!opl.authLastName}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Status</apex:facet>
+                        {!opl.status}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Domain</apex:facet>
+                        {!opl.applicationId}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Product Registration</apex:facet>
+                        {!opl.registrationKey}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">User GUID</apex:facet>
+                        {!opl.appUserGUID}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Data Source</apex:facet>
+                        {!opl.authenticationSystem}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Access Start Date</apex:facet>
+                        {!opl.accessStartDate}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Access End Date</apex:facet>
+                        {!opl.accessEndDate}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Nickname</apex:facet>
+                        {!opl.nickName}
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Last Login</apex:facet>
+                        {!opl.lastLogin}
+                    </apex:column>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+
+</apex:page>

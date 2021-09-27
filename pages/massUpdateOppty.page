@@ -1,0 +1,149 @@
+<!--
+Name                      Description                           Date
+Amit kumar chourasiya    Enabling lightningStylesheets="true"   06-Feb-2019
+-->
+<apex:page standardController="Opportunity" recordSetVar="opportunities" extensions="massOptyUpdateController" id="muopp" showHeader="false" lightningStylesheets="true">
+
+    <apex:form id="muform1" rendered="{!NOT(IsRecords)}">
+        
+        <apex:pageBlock >
+            
+            <apex:pageMessage summary="Atleast 1 opportunity record should be selected to edit the Stage" 
+            severity="info" id="mupmst"/><br></br><br></br>
+            
+            <apex:commandButton value="Go Back to List View" action="{!cancel}" id="butcanhh" />
+        
+        </apex:pageBlock>
+    
+    </apex:form>
+     
+    <apex:form id="muform" rendered="{!IsRecords}">
+               {!IsRequired}
+        <apex:pageMessage summary="Editable Collection Size: {!EditListSize}" severity="info" id="mupms"/>
+       
+        <apex:pageMessage rendered="{!IsNonEditOpty}" summary="Non Editable Collection Size: {!NonEditListSize}" 
+            severity="info" id="mupm1"/>        
+         
+        <apex:pageBlock id="muselectedlist1" rendered="{!IsNonEditOpty}">
+            
+           <apex:pageBlockSection collapsible="true" title="Non Editable Opportunities">
+            <apex:pageMessage summary="These opportunities can't be updated as they are either staged '100%' or are not 'Pipeline Opportunities'." severity="info" id="mupms3"/><br></br>
+            
+            <apex:pageBlockTable value="{!NonEditList}" var="opp" id="mutab1">
+                <apex:column value="{!opp.name}" id="oppname1"/>
+                <apex:column value="{!opp.AccountId}" id="oppaccount1"/>
+                <apex:column value="{!opp.StageName}" id="oppstage1"/>
+                 <apex:column value="{!opp.Win_Loss__c}" id="oppwlreason1" />   
+                <apex:column value="{!opp.Reason__c}" id="reason1"/>
+               <apex:column value="{!opp.Was_There_a_Competitor__c}" id="HasCompetitor1"/>
+                <apex:column value="{!opp.Competitor_Name__c}" id="competitorname1" /> 
+               
+                <apex:column headerValue="Record Type Name" value="{!opp.RecordType.Name}" id="opprectype1"/>
+                <apex:column value="{!opp.OwnerId}" id="oppowner1"/>             
+            </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+       
+        <apex:pageBlock title="Opportunity Mass-Update" mode="edit" id="mub1"  rendered="{!IsEdit}">
+            
+                     <apex:pageMessages />
+            
+            <apex:actionRegion >
+            
+                <apex:selectRadio value="{!Opt}" rendered="{!IsEdit}">
+                    <apex:selectOptions value="{!items}"/>                   
+                    <apex:actionSupport event="onclick" rerender="mub1,muselectedlist" action="{!Test}" status="ActionStatus"/>               
+                </apex:selectRadio>
+                
+            </apex:actionRegion><br></br><br></br>
+           
+            <apex:pageBlockSection id="mus1"> 
+           
+                <apex:inputField value="{!opportunity.StageName}" id="stagename" required="true"  rendered="{!IsNotAll}" >                 
+                 </apex:inputField>
+                
+                <apex:inputField value="{!opportunity.Was_There_a_Competitor__c}" id="HasComp"  rendered="{!IsNotAll}">                 
+                  </apex:inputField>
+                
+                  <apex:inputField value="{!opportunity.Win_Loss__c}" id="winloss"  rendered="{!IsNotAll}"  />
+                
+                                  
+                                    
+                
+
+                <!-- <apex:actionSupport event="onchange" rerender="muselectedlist"/> -->
+                
+                <apex:inputField value="{!opportunity.Competitor_Name__c}" id="competitorname"  rendered="{!IsNotAll}">
+              
+                </apex:inputField>
+                
+                <apex:inputField value="{!opportunity.Reason__c}" id="reason" rendered="{!IsNotAll}">                 
+              
+                </apex:inputField>
+                
+                
+                
+            </apex:pageBlockSection> 
+            
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Selected Opportunities" id="muselectedlist">
+            
+            <apex:pageMessage summary="No editable opportunity selected." severity="info" id="mupms3" rendered="{!NOT(IsEdit)}"/><br></br>
+           
+            <apex:actionStatus id="ActionStatus" startText="Refreshing..." startStyle="color:red;font-weight:bold"></apex:actionStatus>        
+    
+            <apex:pageBlockTable value="{!OppWrapper}" var="oppSelected" id="mutab" rendered="{!IsEdit}">
+                <apex:column value="{!oppSelected.opp.name}" id="oppname" width="15%"/>
+                <apex:column value="{!oppSelected.opp.OwnerId}" id="oppowner"  width="15%" />
+                <apex:column value="{!oppSelected.opp.AccountId}" id="oppaccount"  width="15%"/>
+        <apex:column value="{!oppSelected.opp.StageName}" id="oppstage" rendered="{!IsNotAll}" width="17.5%"/>
+                <apex:column value="{!oppSelected.opp.Win_Loss__c}" id="oppwlreason" rendered="{!IsNotAll}" width="17.5%" />
+                <apex:column value="{!oppSelected.opp.Reason__c}" id="reason" rendered="{!IsNotAll}" width="10%"/>
+                <apex:column value="{!oppSelected.opp.Was_There_a_Competitor__c}" id="HasComp" rendered="{!IsNotAll}" width="10%"/>
+                <apex:column value="{!oppSelected.opp.Competitor_Name__c}" id="competitorName" rendered="{!IsNotAll}" width="10%"/>
+                
+                <apex:column rendered="{!NOT(IsNotAll)}" title="{!$ObjectType.opportunity.fields.stagename.label}" headerValue="{!$ObjectType.opportunity.fields.stagename.label}" width="17.5%" > 
+                    <apex:inputField value="{!oppSelected.opp.StageName}" id="oppstage8" />
+                </apex:column>
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Win/Loss Reason" headerValue="{!$ObjectType.opportunity.fields.Win_Loss__c.label}" width="17.5%" > 
+                
+                    <apex:inputField value="{!oppSelected.opp.Win_Loss__c}" id="oppwlreason1"/>
+                </apex:column>
+                 
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Reason" headerValue="{!$ObjectType.opportunity.fields.Reason__c.label}" width="15%" > 
+                    <apex:inputField value="{!oppSelected.opp.Reason__c}" id="reason8" />
+                </apex:column>
+                
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Reason" headerValue="{!$ObjectType.opportunity.fields.Was_There_a_Competitor__c.label}" width="15%" > 
+                    <apex:inputField value="{!oppSelected.opp.Was_There_a_Competitor__c}" id="HasComp8"/>
+                </apex:column>
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Competitor Name" headerValue="{!$ObjectType.opportunity.fields.Competitor_Name__c.label}" width="15%" > 
+                    <apex:inputField value="{!oppSelected.opp.Competitor_Name__c}" id="compname1"/>
+                </apex:column>
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockButtons id="mubut1" rendered="{!IsEdit}">
+
+                <apex:commandButton value="Save" action="{!saveOpty}" id="butsav1" rendered="{!NOT(IsNotAll)}"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="Cancel" action="{!cancel}" id="butcan1" rendered="{!NOT(IsNotAll)}"/>            
+                <apex:commandButton value="Save" action="{!saveOpty}" id="butsav" rendered="{!IsNotAll}"/>&nbsp;&nbsp;&nbsp;&nbsp;                                
+                <apex:commandButton value="Cancel" action="{!cancel}" id="butcan" rendered="{!IsNotAll}"/>
+            </apex:pageBlockButtons><br></br>
+                                               
+            
+        </apex:pageBlock>
+         <apex:pageBlock id="mu445" rendered="{!NOT(IsEdit)}">
+          <apex:pageBlockButtons id="mubutfdg1" location="top">
+
+         <apex:commandButton value="Cancel" action="{!cancel}" id="butcadvdn1"/>            
+                </apex:pageBlockButtons><br></br>
+            
+          </apex:pageBlock>  
+          
+          
+         
+        
+    </apex:form>
+    
+</apex:page>

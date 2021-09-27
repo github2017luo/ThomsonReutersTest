@@ -1,0 +1,280 @@
+<apex:page standardcontroller="case" extensions="ESC_CaseProductInlineControllerv3"
+    sidebar="false" showHeader="false" deferLastCommandUntilReady="true" lightningStylesheets="true">
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    
+    <apex:form >
+   
+         <apex:pageMessages id="pageMessages" />
+        <apex:outputPanel id="pgBlockPNL" layout="block" style="overflow-x:auto;overflow-y:auto;width:100%;height:100%">
+            <apex:pageblock id="pgblock" mode="Detail">
+       <apex:pageBlockButtons location="bottom">
+                    <apex:commandbutton id="cmdBtn" rerender="pgblock" action="{!addRows}" value="New Case Product"
+                        style="visibility:hidden" />&nbsp;&nbsp;
+                   <!--  <apex:commandButton action="{!shownewPrimary}" value="{!$Label.ESC_RefreshCP}"  reRender="pgblock" rendered="{!isCaseClosed == false}"/> -->
+                   <apex:commandButton onClick="refreshPage();return false;" value="{!$Label.ESC_RefreshCP}"  rendered="{!isCaseClosed == false}"/>
+                    <div style="padding-bottom:80px"></div>
+                </apex:pageBlockButtons>
+
+                <apex:pageblocktable id="taskTable" width="100%" value="{!cpList}" var="t" rendered="{!cpList.size >0}">
+                    
+                    <!--<apex:column rendered="{!showPrimary}">
+<apex:facet name="header">{!$Label.ESC_Primary}</apex:facet>
+
+<apex:outputfield rendered="{!t.edit != True}" value="{!t.cp.Is_Primary__c}" />
+<apex:inputField required="false" rendered="{!t.edit == true}" value="{!t.cp.Is_Primary__c}" onchange="checkOthers('{!t.cp}',this );"></apex:inputField>
+
+</apex:column>-->
+
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Product}</apex:facet>
+                        <apex:outputPanel id="productBlock">
+
+                            <apex:outputField rendered="{!t.edit ==false}" value="{!t.cp.Product__c}">
+
+
+                            </apex:outputField>
+
+                            <!--<apex:inputField required="true" rendered="{!t.edit == True}" value="{!t.cp.Product__c}"/> -->
+                            <apex:inputText id="productTextBox" rendered="false"
+                                value="{!searchTerm}" styleClass="placeHolder" onkeyup="return productAuto(event); return false;"
+                                html-placeholder="{!selectedCriteria}">
+                                <apex:actionSupport event="onchange" rerender="pgblock" status="fetchStatus"></apex:actionSupport>
+                                <apex:actionSupport event="onkeyup" rerender="pgblock" status="fetchStatus"></apex:actionSupport>
+
+                            </apex:inputText>
+                            <apex:inputText id="productTextBox2" rendered="{!t.edit == True && isCaseClosed == false}"
+                                value="{!searchTerm}" styleClass="placeHolder" onkeyup=" return productAuto(event); return false;"
+                                html-placeholder="{!selectedCriteria}">
+
+                            </apex:inputText>
+                            
+                            <apex:inputHidden id="searchProduct" rendered="{!t.edit == True}" value="{!selectedProduct}"
+                            />
+                        </apex:outputPanel>
+                    </apex:column>
+                    
+                    <apex:column headerValue="{!$Label.ESC_ProductCode}">
+                        <apex:outputField value="{!t.cp.Product_Code__c}" rendered="{!t.edit ==false}" />
+                    </apex:column>
+
+                    <apex:repeat value="{!fields}" var="f" rendered="{!t.edit ==false}">
+                        <apex:column headerValue="{!f.Label}">
+                            <!--<apex:inputField value="{!t.cp[f.fieldPath]}"  rendered="{!t.edit ==true}" required="{!OR(f.required, f.dbrequired)}"/> -->
+                          <!-- <apex:outputField value="{!t.cp['product__r.'+f.fieldPath]}" />-->
+                            <apex:inputField value="{!t.cp[f.fieldPath]}" rendered="{!t.edit ==true && isCaseClosed == false}" />
+                            <apex:outputField value="{!t.cp[f.fieldPath]}" rendered="{!t.edit ==false}" />
+                        </apex:column>
+                    </apex:repeat>
+
+                    <apex:column style="nowrap" rendered="{!isCaseClosed == false}">
+                        <apex:facet name="header">{!$Label.ESC_Action}</apex:facet>
+
+                        <apex:outputpanel rendered="{!t.Edit == true}">
+                            <apex:commandlink id="saveRow" action="{!saverelatedrecord}" rerender="pgblock" rendered="{!t.edit}"
+                                status="fetchStatus" oncomplete="bindandfocusNow();">
+                                {!$Label.ESC_Save}
+                                <apex:param id="saverowid" name="saverowid" value="{!t.count}" />
+                            </apex:commandlink>|
+                            <apex:commandLink immediate="true" action="{!cancel}" oncomplete="bindandfocusNow();" rerender="pgblock" html-opted="" >
+                                {!$Label.ESC_Cancel}
+                                <apex:param name="cancelrowid" value="{!t.count}" />
+                            </apex:commandLink>
+
+                        </apex:outputpanel>
+                        <apex:outputpanel rendered="{!t.Edit != true && t.cp.Id != null}">
+                            <apex:commandLink immediate="true" action="{!delRows}" rerender="pgblock,pageMessages" >
+                                {!$Label.ESC_Delete}
+                                <apex:param name="delrowid" value="{!t.count}" />
+                            </apex:commandLink>|
+                            <apex:commandLink immediate="true" action="{!edit}" rerender="pgblock" >
+                                {!$Label.ESC_Edit}
+                                <apex:param name="editrowid" value="{!t.count}" /></apex:commandLink>
+                        </apex:outputpanel>
+                    </apex:column>
+                    
+                    
+                    
+                </apex:pageblocktable>
+                <input type="Hidden" id="myPrimaryPDCT" value="{!primaryProduct}" />
+            </apex:pageblock>
+
+            <apex:actionFunction action="{!saverelatedrecord}" name="save" rerender="pgblock"></apex:actionFunction>
+            <apex:actionStatus id="fetchStatus">
+                <apex:facet name="start">
+                    <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                        &nbsp;
+                    </div>
+                    <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                        <img src="/img/loading.gif" />
+                    </div>
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputPanel>
+    </apex:form>
+    <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/AutoSuggestion/jquery-ui.min.css')}"
+    />
+
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/AutoSuggestion/jquery-ui.min.js')}"
+    />
+    <script>
+        if(UITheme.getUITheme() === 'Theme4u') {
+            $('[id$=pgBlockPNL]').css("overflow-x","hidden");
+        }
+        function refreshPage(){
+                console.log('refresh');
+                //window.location.reload();
+                window.location.href = '/apex/ESC_CaseProductInline?id='+"{!JSENCODE(caseid)}";
+            }
+         function checkOt(){
+         debugger;
+         }
+        function checkOthers(selectedItem, rowCheck) {
+            var primary = $("#myPrimaryPDCT").val();
+            //   console.log($(rowCheck)[0] );
+            //  console.log(selectedItem );
+            //  console.log(primary );
+            if (primary.length > 0 && $(rowCheck)[0].checked) {
+
+                if (selectedItem != primary) {
+                    if (confirm("{!$Label.ESC_ValidationPrimaryCP}") == false) {
+                        $("[opted]").click();
+                        addNewRow();
+                    }
+                }
+            }
+
+        }
+
+        function productAuto(event) {
+            event.preventDefault();
+            var PLACEHOLDER = '{!JSENCODE(selectedCriteria)}';
+            var productObjects;
+            var queryTerm;
+try{
+          //  console.log($("[id*='productTextBox']").val().length);
+          
+            if ( $("[id*='productTextBox']").val()) {
+                         // bindNow();
+                $("[id*='productTextBox']").autocomplete({
+                        minLength: 4,
+                        delay: 800,
+                        source: function(request, response) {
+                            queryTerm = request.term;
+
+                            Visualforce.remoting.Manager.invokeAction(
+                                '{!$RemoteAction.ESC_CaseProductInlineControllerv3.searchProduct}',
+                                request.term,
+                                function(result, event) {
+                                    if (event.type == 'exception') {
+                                        // alert(event.message);
+                                    } else {
+                                        productObjects = result;
+                                        response(productObjects);
+                                    }
+                                }, {
+                                    buffer: false,
+                                    escape: true,
+                                    timeout: 30000
+                                });
+                        },
+                        focus: function(event, ui) {
+                            $("[id*='productTextBox']").val(ui.item.Name);
+
+                            return false;
+                        },
+                        select: function(event, ui) {
+
+                            $("[id*='productTextBox']").val(ui.item.Name);
+                            $("[id$='searchProduct']").val(ui.item.Id);
+                            return false;
+                        },
+                    })
+                    .data("uiAutocomplete")._renderItem = function(ul, item) {
+                        var entry = "<a >" + item.Name;
+
+                        entry = entry + "</a>";
+                        entry = entry.replace(queryTerm, "<b>" + queryTerm +
+                            "</b>");
+                        return $("<li style='padding:5px'></li>")
+                            .data("item.autocomplete", item)
+                            .append(entry)
+                            .appendTo(ul);
+                    };
+                $("[id*='productTextBox']").on("blur", function(event) {
+                    $tgt = $(event.target);
+                    if ($tgt.val() === '') {
+                        $tgt.val(PLACEHOLDER);
+                        $tgt.addClass('placeHolder');
+                    }
+                });
+                //   console.log($("[id$='searchProduct']"));
+            }
+   // alert('hola');
+}catch(e){
+    console.log(e);
+}
+           return false;       
+           }
+
+
+        function addNewRow() {
+            $("[id$='cmdBtn']").click();
+        }
+        bindandfocusNow();
+        function bindandfocusNow() {
+            bindNow();
+             $("[type*='text']").focus();
+        };
+        function bindNow(){
+        $('form').bind('keyup', function(e) {
+            if (e.keyCode == 13 ) {
+              
+                 e.preventDefault();
+                 if($(".placeHolder").val()){
+                $("[id$='saveRow']").click();
+               
+                 }
+            }
+        });
+        
+        $('form').submit(function(e){
+    e.preventDefault();
+});
+       
+        }
+
+    </script>
+    <style>
+        .displayNone {
+            display: none;
+        }
+        
+        .displayBlock {
+            display: block;
+        }
+        
+        .ui-autocomplete-loading {
+            background: white url(/img/loading32.gif) right center no-repeat;
+            background-size: 15px 15px;
+        }
+        
+        .placeHolder {
+            font-style: italic;
+        }
+        
+     
+       .ui-autocomplete {
+            max-height: 100px;
+            max-width:225px;
+            position:relative;
+            overflow-y: auto;
+            /* prevent horizontal scrollbar */
+            overflow-x: auto;
+            /* add padding to account for vertical scrollbar */
+            
+        } 
+</style>
+
+
+
+</apex:page>

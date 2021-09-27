@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Configuration for scheduled backlog</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Assignment_Batch_Size__c</fullName>
+        <defaultValue>200</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of assignments to process in a single batch</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of assignments to process in a single batch</inlineHelpText>
+        <label>Assignment Batch Size</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Backlog_Details_CorporateCurrencies__c</fullName>
+        <deprecated>false</deprecated>
+        <description>A comma-delimited list of valid ISO codes used in backlog reporting.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A comma-delimited list of valid ISO codes used in backlog reporting.</inlineHelpText>
+        <label>Backlog Details Corporate Currencies</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Copy_Fields_Default__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The default value for the Copy Fields for Current Time Period checkbox</inlineHelpText>
+        <label>Copy Fields Default</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Time_Period_Types__c</fullName>
+        <defaultValue>&quot;Month;Quarter;Year;Perpetual&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>A semicolon delimited list of the default time period types to process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A semicolon delimited list of the default time period types to process</inlineHelpText>
+        <label>Default Time Period Types</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Delete_Details_on_Calc_Deletion__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Delete Details on Calc Deletion</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Include_Sublevels_Default__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The default value for the Include Sublevels option</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The default value for the Include Sublevels option</inlineHelpText>
+        <label>Include Sublevels Default</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Milestone_Statuses__c</fullName>
+        <defaultValue>&quot;Open,Planned&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>A comma-delimited list of valid milestone status values for backlog calculation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A comma-delimited list of valid milestone status values for backlog calculation.</inlineHelpText>
+        <label>Milestone Statuses</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Perform_Scheduled_Job_Cleanup__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This setting is deprecated and no longer used.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting is deprecated and no longer used.</inlineHelpText>
+        <label>Deprecated: Perform Job Cleanup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Post_Process_Milestone_Batch_Size__c</fullName>
+        <defaultValue>200</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of milestones to process in a single batch if the backlog remainder is processed in a separate batch.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of milestones to process in a single batch if the backlog remainder is processed in a separate batch.</inlineHelpText>
+        <label>Post Process Milestone Batch Size</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Post_Process_Project_Batch_Size__c</fullName>
+        <defaultValue>100</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of projects to process in a single batch if the backlog remainder is processed in a separate batch.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of projects to process in a single batch if the backlog remainder is processed in a separate batch.</inlineHelpText>
+        <label>Post Process Project Batch Size</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Post_Process_RPG_Batch_Size__c</fullName>
+        <defaultValue>50</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of regions, practices, or groups to process in a single batch if the backlog remainder is processed in a separate batch. The default value is 50. Contact FinancialForce.com customer support before changing this value.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of regions, practices, or groups to process in a single batch if the backlog remainder is processed in a separate batch. The default value is 50. Contact FinancialForce.com customer support before changing this value.</inlineHelpText>
+        <label>Post Process RPG Batch Size</label>
+        <precision>5</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Post_Process_Resource_Request_Batch_Size__c</fullName>
+        <defaultValue>100</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Post Process Resource Request Batch Size</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Post_Processing_Delay__c</fullName>
+        <defaultValue>60</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This setting is deprecated and no longer used.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting is deprecated and no longer used.</inlineHelpText>
+        <label>Deprecated: Post Processing Delay</label>
+        <precision>10</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Process_Backlog_Remainder_Inline__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This setting is deprecated and no longer used.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting is deprecated and no longer used.</inlineHelpText>
+        <label>Deprecated: Process Remainder Inline</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Bill_Currency_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the field to use to specify the billing currency for resource request backlog calculations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the field to use to specify the billing currency for resource request backlog calculations.</inlineHelpText>
+        <label>Resource Request Bill Currency Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Bill_Rate_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the field to use as a bill rate for resource request backlog calculations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the field to use as a bill rate for resource request backlog calculations.</inlineHelpText>
+        <label>Resource Request Bill Rate Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Cost_Currency_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the field to use as the cost currency for resource request backlog calculations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the field to use as the cost currency for resource request backlog calculations.</inlineHelpText>
+        <label>Resource Request Cost Currency Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Request_Cost_Rate_Field__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the field to use as the cost rate for resource request backlog calculations.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the field to use as the cost rate for resource request backlog calculations.</inlineHelpText>
+        <label>Resource Request Cost Rate Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Reuse_Detail_Objects_Default__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Default value for the Reuse Detail Objects checkbox</inlineHelpText>
+        <label>Reuse Detail Objects Default</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Backlog</label>
+    <visibility>Public</visibility>
+</CustomObject>

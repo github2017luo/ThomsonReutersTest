@@ -1,0 +1,38 @@
+<!--
+ - This Page is used to expire all proposals
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page showHeader="true" sidebar="true" controller="Digital_Expire_All_ProposalsController" lightningStylesheets="true">
+    <apex:messages />
+        
+    <apex:form >
+    <!--styleClass="hidden"-->
+    <apex:pageBlock html-style="width: 50%; height: 21px; font-size: 14px;">
+    <div>
+        <apex:outputText rendered="{!bNotOwnerFlag}">
+            <br />Only the Opportunity owner can Expire Digital Quote/Proposals.
+        </apex:outputText> 
+        <apex:outputText rendered="{!bContinue}">
+            <br />Are you sure you wish to continue?  <br />
+            This process will 'Expire' all Digital Quote/Proposals attached to this Opportunity.<br />
+        </apex:outputText>
+        <apex:outputText rendered="{!bNoWork}">
+            <br />This Opportunity has no Quote/Proposals that need to be expired.<br />
+        </apex:outputText>
+    
+            <apex:pageBlockButtons location="bottom"> 
+                <apex:commandButton value="Return to Opportunity" action="{!ReturnToOpp}" rendered="{!bError}"/>
+                <apex:commandButton value="Yes" action="{!ContinueExpire}" rendered="{!not(bError)}"/>
+                <apex:commandButton value="No" action="{!ReturnToOpp}" rendered="{!not(bError)}"/>
+            </apex:pageBlockButtons>
+    </div>
+    </apex:pageBlock>
+    </apex:form>
+      
+</apex:page>

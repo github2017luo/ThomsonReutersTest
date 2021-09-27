@@ -1,0 +1,34 @@
+<!--
+ - Used from Opportunity button to send personalized renewal email
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2021-02-04   Ameeta Antonio          DLT-21406 - [SFDC][REN][SL,CORP,GOVT,ML] Personalized Rep Email
+ - ==================================================================================================================================   
+-->
+<apex:page showHeader="true" sidebar="true" controller="Digital_Create_Email_TemplateController" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form >
+        <apex:pageBlock html-style="width: 50%; height: 21px; font-size: 14px;">
+            <div>
+                <apex:outputText rendered="{!not(errorFlag)}">
+            		Personalized Message &nbsp; 
+        		</apex:outputText>
+                
+                <apex:inputTextarea html-maxlength="1000" value="{!inputMsg}" id="inputStr" rendered="{!not(errorFlag)}"/>
+                
+                <apex:outputText rendered="{!errorFlag}">
+            		<br />No valid proposal to generate email.<br />
+        		</apex:outputText>
+                
+                <apex:pageBlockButtons location="bottom"> 
+                    
+                    <apex:commandButton value="Send" action="{!sendEmail}" rendered="{!not(errorFlag)}"/>
+                    <apex:commandButton value="Cancel" action="{!returnToOpp}"/>
+                
+            	</apex:pageBlockButtons>
+            </div>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

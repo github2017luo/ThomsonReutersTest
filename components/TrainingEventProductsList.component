@@ -1,0 +1,7 @@
+<apex:component controller="TrainingEventProductsListController" access="global">
+    <apex:attribute name="teId" assignTo="{! trainingEventId}" type="ID" description="It is the training event Id"/>
+    <apex:repeat value="{! products}" var="prod">
+        <apex:outputPanel rendered="{!products[0].id != prod.id}">,&nbsp;</apex:outputPanel>
+        <apex:outputText value="{! prod.LCRM_Product__r.Name}"/>
+    </apex:repeat>
+</apex:component>

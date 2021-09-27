@@ -1,0 +1,35 @@
+<!--
+   Apttus Contract Management
+   MSTeamsSettingList
+    
+   @2018 Apttus Inc. All rights reserved.
+  -->
+  <apex:page controller="Apttus.MSTeamsSettingListController">     
+    <apex:form id="form" >
+        <div class="bPageTitle">
+            <div class="ptBody secondaryPalette brandSecondaryBrd">
+                <div class="content">       
+                    <h1 class="pageType">{!$Label.apttus__customsetting}</h1>
+                    <h2 class="pageDescription">{!$Label.apttus__msteamssetting}</h2>
+                </div>
+            </div>
+        </div>
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="top">
+                <apex:outputLink title="{!$Label.apttus__new}" styleClass="btn" value="/apex/MSTeamsSettingEdit" style="text-decoration:none;padding:4px;" >{!$Label.apttus__new}</apex:outputLink>                  
+            </apex:pageBlockButtons>    
+            <apex:pageBlockTable value="{!msTeamsSettings}" var="setting" rendered="{! IF(isSettingFound, true, false) }">
+                <apex:column headervalue="{!$Label.apttus__action}" style="width:100px;">
+                    <apex:outputLink title="{!$Label.apttus__edit}" value="/apex/MSTeamsSettingEdit?setting={!setting.Name}" styleClass="actionLink">{!$Label.apttus__edit}</apex:outputLink>&nbsp;|&nbsp;
+                    <a href="javascript:if (window.confirm('{!$Label.MSTeamsDeleteConfirmMessage}')) deleteSetting('{!setting.Name}');" styleClass="actionLink">{!$Label.Del}</a>
+                </apex:column>
+                <apex:column value="{!setting.Name}" />
+                <apex:column value="{!setting.Apttus__Active__c}" />
+            </apex:pageBlockTable>        
+        </apex:pageBlock>
+        <apex:pageMessage summary="{!$Label.apttus__norecordfound}" severity="info" rendered="{! IF(isSettingFound, false, true) }" />          
+        <apex:actionFunction action="{!deleteSetting}" name="deleteSetting" reRender="form" >
+            <apex:param name="settingName" value="" assignTo="{!SelectedSettingName}"/>
+        </apex:actionFunction>
+    </apex:form>    
+</apex:page>

@@ -1,0 +1,144 @@
+<!--
+============================================================================================== 
+PAGE FOR VIEWING THE PROPERTIES OF A NOTICEBOARD
+REQUIRES THE ID OF A NOTICEBOARD, I.E:
+
+    [SF base URL]/Apex/[VF Page Name]?Id=[NoticeBoard id]
+
+ProvenWorks for Improved Apps
+Copyright (c.) Improved Apps Limited 2012. All Rights Reserved.
+============================================================================================== 
+ -->
+
+<apex:page standardController="ianb__NoticeBoard__c" extensions="ianb.ControllerExtensionNoticeBoard" 
+        showHeader="true" sidebar="true" tabStyle="ianb__NoticeBoard__c" 
+        title="{!BrandingLocalisations['ProductName']}: {!DialogueLocalisations['TitleDialogueTitleView']}">
+
+    <script type="text/javascript">
+        function deletionConfirm() {
+            return confirm('{!JSENCODE(GlobalLocalisations['MessageDeleteWarning'])}');
+        }
+    </script>
+    <apex:pageMessages />
+    
+<!--   
+===============================================
+NOTICEBOARD DETAIL
+===============================================
+ -->            
+    <apex:sectionHeader subtitle="{!ianb__NoticeBoard__c.Name}" title="{!BrandingLocalisations['NoticeBoardObjectName']}" />
+    <apex:form >
+        <apex:pageBlock mode="maindetail" title="{!DialogueLocalisations['TitleDialogueTitleView']}">
+    
+            <apex:pageBlockButtons location="both">
+                <apex:commandButton action="{!edit}" value="{!GlobalLocalisations['ButtonEdit']}" id="editButton"/>
+                <apex:commandButton action="{!delete}" value="{!GlobalLocalisations['ButtonDelete']}" id="deleteButton" onclick="return deletionConfirm();" />
+                <apex:commandButton action="{!save}" value="{!GlobalLocalisations['ButtonSave']}" id="saveButton" style="display:none;" />
+                <apex:commandButton action="{!cancel}" value="{!GlobalLocalisations['ButtonCancel']}" id="cancelButton" style="display:none;" />
+                <apex:commandButton action="{!URLFOR($Action.NoticeBoard__c.Share,NoticeBoard__c.Id)}" value="{!GlobalLocalisations['ButtonShare']}"/>
+                <apex:commandButton action="{!RefreshNoticesCount}" value="{!GlobalLocalisations['ButtonRefreshStats']}" />
+
+            </apex:pageBlockButtons>   
+            <apex:pageBlockSection columns="2" collapsible="false" showHeader="false">
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelName']}" value="{!ianb__NoticeBoard__c.Name}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,cloneButton,deleteButton" event="ondblclick" />
+                </apex:outputField>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!GlobalLocalisations['FieldLabelCreatedBy']}" for="txtCreatedBy" />
+                    <apex:outputText id="txtCreatedBy" value="{!ianb__NoticeBoard__c.CreatedBy.Name}" />
+                </apex:pageBlockSectionItem>
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!GlobalLocalisations['FieldLabelOwner']}" for="txtOwner" />
+                    <apex:outputPanel >
+                        <apex:outputLink id="txtOwner" value="/{!ianb__NoticeBoard__c.Owner.Id}">{!ianb__NoticeBoard__c.Owner.Name}</apex:outputLink>
+                        &nbsp;
+                        <apex:outputLink value="/{!ianb__NoticeBoard__c.Id}/a?retURL={!ianb__NoticeBoard__c.Id}">{!GlobalLocalisations['ButtonChangeOwner']}</apex:outputLink>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:outputField label="{!GlobalLocalisations['FieldLabelCreatedDate']}" value="{!ianb__NoticeBoard__c.CreatedDate}" />                 
+            </apex:pageBlockSection>
+            
+<!--   
+===============================================
+NOTICEBOARD DESCRIPTION
+===============================================
+ -->                                        
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleNoticeBoardDescription']}" columns="1" collapsible="true" >
+ 
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelSummary']}" value="{!ianb__NoticeBoard__c.ianb__Summary__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,cloneButton,deleteButton" event="ondblclick" />
+                </apex:outputField>
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelDescription']}" value="{!ianb__NoticeBoard__c.ianb__Description__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,cloneButton,deleteButton" event="ondblclick" />
+                </apex:outputField>
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelAckStatement']}" value="{!ianb__NoticeBoard__c.ianb__DefaultAcknowledgementStatement__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,cloneButton,deleteButton" event="ondblclick" />
+                </apex:outputField>
+ 
+            </apex:pageBlockSection>
+            
+<!--   
+===============================================
+NOTICE STATISTICS
+===============================================
+ -->                        
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleNoticeStatistics']}" columns="2" collapsible="true" >
+
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelTotalNotices']}" value="{!ianb__NoticeBoard__c.ianb__TotalNotices__c}" />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelPublishedNotices']}" value="{!ianb__NoticeBoard__c.ianb__PublishedNotices__c}" />
+
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelNewNotices']}" value="{!ianb__NoticeBoard__c.ianb__NewNotices__c}" />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelSuspendedNotices']}" value="{!ianb__NoticeBoard__c.ianb__SuspendedNotices__c}" />
+
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelDraftedNotices']}" value="{!ianb__NoticeBoard__c.ianb__DraftedNotices__c}" />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelClosedNotices']}" value="{!ianb__NoticeBoard__c.ianb__ClosedNotices__c}" />
+                
+                <apex:outputText value="" />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelNoticeStatisticsRefreshed']}" value="{!ianb__NoticeBoard__c.ianb__NoticeStatisticsRefreshed__c}" />
+            
+            </apex:pageBlockSection>
+            
+<!--   
+===============================================
+NOTICE APPROVAL REQUESTS
+===============================================
+ -->                        
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleApprovalRequests']}" columns="2" collapsible="true" >
+                <apex:outputText />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovalsSubmitted']}" value="{!ianb__NoticeBoard__c.ianb__SubmittedApprovalRequests__c}" />
+                <apex:outputText />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovalsRejected']}" value="{!ianb__NoticeBoard__c.ianb__RejectedApprovalRequests__c}" />
+                <apex:outputText />
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovedNotices']}" value="{!ianb__NoticeBoard__c.ianb__ApprovedNotices__c}" />
+            </apex:pageBlockSection>
+            
+<!--   
+===============================================
+NOTICEBOARD THEME
+===============================================
+ -->                        
+            <apex:pageBlockSection title="{!DialogueLocalisations['TitleSubtitleTheme']}" columns="2" collapsible="true" >
+                <apex:outputField label="{!DialogueLocalisations['FieldLabelThemeImage']}" value="{!ianb__NoticeBoard__c.ianb__ThemeImageUrl__c}">
+                    <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,cloneButton,deleteButton" event="ondblclick" />
+                </apex:outputField>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!DialogueLocalisations['FieldLabelThemeImagePreview']}" for="imgThemeImage" />
+                    <apex:image id="imgThemeImage" value="{!ianb__NoticeBoard__c.ianb__ThemeImageUrl__c}" rendered="{!AND(NOT(ISNULL(ianb__NoticeBoard__c.ianb__ThemeImageUrl__c)), NOT(BEGINS(ianb__NoticeBoard__c.ianb__ThemeImageUrl__c, 'javascript:')))}" style="max-width:172px;" height="100"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+<!--   
+===============================================
+RELATED LISTS
+===============================================
+ -->            
+    <apex:relatedList title="{!DialogueLocalisations['TitleSubtitleRelatedListNotices']}" subject="{!ianb__NoticeBoard__c}" list="Notices__r" />
+    <apex:relatedList title="{!DialogueLocalisations['TitleSubtitleRelatedListRecipientGroups']}" subject="{!ianb__NoticeBoard__c}" list="RecipientGroups__r" />
+    <apex:relatedList title="{!DialogueLocalisations['TitleSubtitleRelatedListNotes']}" subject="{!ianb__NoticeBoard__c}" list="CombinedAttachments" /> 
+
+</apex:page>

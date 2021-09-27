@@ -1,0 +1,18 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId" 
+                access="global" >
+    
+    <aura:html tag="style">
+         .slds-modal__container{
+        width: 95%;
+        max-width: 95rem;
+        }
+        .modal-body{
+        height : 800px !important;
+        max-height: 800px !important;
+        }
+      
+       
+    </aura:html>   
+    <c:createOmniTrials recordId="{!v.recordId}" oncloseQuickAction="{!c.closeQuickAction_AuraMethod}" ></c:createOmniTrials>	
+    
+</aura:component>

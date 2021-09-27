@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitlementProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <SObjectType>Case</SObjectType>
+    <active>true</active>
+    <description>This entitlement is used for Chile business hours</description>
+    <entryStartDateField>Case.CreatedDate</entryStartDateField>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>true</value>
+    </exitCriteriaFilterItems>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>false</value>
+    </exitCriteriaFilterItems>
+    <isVersionDefault>true</isVersionDefault>
+    <milestones>
+        <businessHours>America/Santiago</businessHours>
+        <milestoneCriteriaFormula>ISPICKVAL(Status,&apos;New&apos;) &amp;&amp; ISPICKVAL(ESC_Diagnosis_Summary__c,&apos;&apos;)</milestoneCriteriaFormula>
+        <milestoneName>Case Acceptance Time</milestoneName>
+        <minutesToComplete>240</minutesToComplete>
+        <successActions>
+            <name>UpdateSTatus</name>
+            <type>FieldUpdate</type>
+        </successActions>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <businessHours>America/Santiago</businessHours>
+        <milestoneCriteriaFormula>IF(ISPICKVAL(Status,&apos;New&apos;)=false &amp;&amp; ISPICKVAL(ESC_Diagnosis_Summary__c,&apos;&apos;)=true,true,false)</milestoneCriteriaFormula>
+        <milestoneName>First Response Time</milestoneName>
+        <minutesToComplete>240</minutesToComplete>
+        <timeTriggers>
+            <actions>
+                <name>Case_Response_time_Voilated</name>
+                <type>Alert</type>
+            </actions>
+            <timeLength>1</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <timeTriggers>
+            <actions>
+                <name>GGO_UpdatGGO_Updatee_IsEscalated_to_TRUE</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <businessHours>America/Santiago</businessHours>
+        <milestoneCriteriaFormula>GGO_Referral_Milestone_Entry_Flag__c =true</milestoneCriteriaFormula>
+        <milestoneName>Case Referral Time</milestoneName>
+        <minutesCustomClass>ESC_MilestoneTimeCalculator</minutesCustomClass>
+        <successActions>
+            <name>GGO_Milestone_Referral_Flag</name>
+            <type>FieldUpdate</type>
+        </successActions>
+        <successActions>
+            <name>UpdateReferralMilestoneCreateFlag</name>
+            <type>FieldUpdate</type>
+        </successActions>
+        <timeTriggers>
+            <actions>
+                <name>Case_Referral_Response_Time_is_voilated</name>
+                <type>Alert</type>
+            </actions>
+            <timeLength>1</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <businessHours>America/Santiago</businessHours>
+        <milestoneCriteriaFormula>IF(ESC_Reopen_Case__c=false &amp;&amp; ISPICKVAL(Status,&apos;Closed&apos;)=false &amp;&amp; ISPICKVAL(Status,&apos;Cancelled&apos;)=false &amp;&amp; GGO_Case_Closure_Flag__c =true,true,false)</milestoneCriteriaFormula>
+        <milestoneName>Case Closure Time</milestoneName>
+        <minutesCustomClass>ESC_MilestoneTimeCalculator</minutesCustomClass>
+        <timeTriggers>
+            <actions>
+                <name>Case_Response_time_Voilated</name>
+                <type>Alert</type>
+            </actions>
+            <timeLength>0</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <businessHours>America/Santiago</businessHours>
+        <milestoneCriteriaFormula>IF(IsClosed=false &amp;&amp; ESC_Reopen_Case__c=true,true,false)</milestoneCriteriaFormula>
+        <milestoneName>Case Reopen Time</milestoneName>
+        <minutesToComplete>480</minutesToComplete>
+        <timeTriggers>
+            <timeLength>-5</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <name>ggo entitlement process_v1_chile</name>
+    <versionMaster>5522D0000008OJI</versionMaster>
+    <versionNumber>3</versionNumber>
+</EntitlementProcess>

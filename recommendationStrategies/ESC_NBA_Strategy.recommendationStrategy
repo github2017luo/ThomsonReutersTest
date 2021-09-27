@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecommendationStrategy xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contextRecordType>Case</contextRecordType>
+    <filter>
+        <childNode>IVRUpdateLoad</childNode>
+        <label>IVR Update</label>
+        <name>IVRUpdateFilter</name>
+        <expression>ISBLANK($Record.contact.USL_IVR_Phone_Number__c) &amp;&amp; $Record.LCRM_Sub_BU__c = &quot;USL&quot; &amp;&amp; $Record.ContactId != NULL</expression>
+    </filter>
+    <filter>
+        <childNode>ModifyInvoiceSapload</childNode>
+        <label>ModifyInvoiceSap</label>
+        <name>ModifyInvoiceSap</name>
+        <expression>CONTAINS($Record.Form_Name_New__c, &quot;Modify Invoice&quot;)</expression>
+    </filter>
+    <filter>
+        <childNode>OrderCorrectionLoad</childNode>
+        <label>OrderCorrectionFormFilter</label>
+        <name>OrderCorrectionFormFilter</name>
+        <expression>CONTAINS($Record.Form_Name_New__c, &quot;Order Correction&quot;)</expression>
+    </filter>
+    <filter>
+        <childNode>ChargeCancellationFormLoad</childNode>
+        <label>ChargeCancellationFormFilter</label>
+        <name>ChargeCancellationFormFilter</name>
+        <expression>CONTAINS($Record.Form_Name_New__c, &quot;Charge Cancellation&quot;)</expression>
+    </filter>
+    <filter>
+        <childNode>negativefeebackload</childNode>
+        <label>negativefeedbackfilter</label>
+        <name>negativefeedbackfilter</name>
+        <expression>$Record.ESC_Is_Maritz_reopened__c = true</expression>
+    </filter>
+    <filter>
+        <childNode>Modify_InvoiceLoad</childNode>
+        <label>Modified Invoice</label>
+        <name>ModifiedInvoiceFilter</name>
+        <expression>CONTAINS(LOWER($Record.Subject),&apos;modify invoice&apos;) &amp;&amp; $Record.Form_Name_New__c != &quot;Modify Invoice&quot;</expression>
+    </filter>
+    <label>ESC NBA Strategy</label>
+    <recommendationLoad>
+        <label>IVRUpdate</label>
+        <name>IVRUpdateLoad</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>IVR Update</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Recommendation</object>
+    </recommendationLoad>
+    <recommendationLoad>
+        <label>ModifyInvoiceSapload</label>
+        <name>ModifyInvoiceSapload</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Modify Invoice Submitted</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Recommendation</object>
+    </recommendationLoad>
+    <recommendationLoad>
+        <label>OrderCorrectionLoad</label>
+        <name>OrderCorrectionLoad</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Order Correction</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Recommendation</object>
+    </recommendationLoad>
+    <recommendationLoad>
+        <label>ChargeCancellationFormLoad</label>
+        <name>ChargeCancellationFormLoad</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Charge Cancellation Submitted</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Recommendation</object>
+    </recommendationLoad>
+    <recommendationLoad>
+        <label>negativefeebackload</label>
+        <name>negativefeebackload</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Customer Provided Survey with Low Satisfactory Score</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Recommendation</object>
+    </recommendationLoad>
+    <recommendationLoad>
+        <label>Modify Invoice</label>
+        <name>Modify_InvoiceLoad</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Modify Invoice Form</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Recommendation</object>
+    </recommendationLoad>
+    <union>
+        <childNode>IVRUpdateFilter</childNode>
+        <childNode>ModifyInvoiceSap</childNode>
+        <childNode>OrderCorrectionFormFilter</childNode>
+        <childNode>ChargeCancellationFormFilter</childNode>
+        <childNode>negativefeedbackfilter</childNode>
+        <childNode>ModifiedInvoiceFilter</childNode>
+        <label>Output</label>
+        <name>Output_89b4a7cd1a444e74ac994242445b41f6</name>
+    </union>
+</RecommendationStrategy>

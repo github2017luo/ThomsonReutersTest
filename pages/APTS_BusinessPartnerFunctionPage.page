@@ -1,0 +1,167 @@
+<!-- Author : Akshay Mewada - 10/11/2016
+   ***************************************************************************************************
+   Modification Log:
+   *
+   *    Akshay Mewada, 10/11/2016 - Created.
+   *    2019-04-03   Kumar Shubham         Jira no-DPS-4099-Enabled LightningStylesheets as part of Sales Lightning 
+   ***************************************************************************************************
+-->
+<apex:page standardController="Apttus_Proposal__Proposal__c" extensions="APTS_BusinessPartnerFnExt" showHeader="true" sidebar="true"  lightningStylesheets="true">
+<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"/>
+<script>
+    $j = jQuery.noConflict();
+         
+    function billToCheckboxChanged(checkbox) {
+        // Get the name of the checkbox which changed
+        var changedCheckboxId = $j(checkbox).attr('name');            
+             
+        // Get all checkboxes
+        $j(":checkbox[data-cbType='billToCheckbox']").each(function(index) {
+             
+            // Set all checkboxes EXCEPT the recently changed one to be unchecked
+            if (changedCheckboxId != $j(this).attr('name')) {
+                    $j(this).attr('checked', false);
+            }
+        });
+    };
+
+    function shipToCheckboxChanged(checkbox) {
+        // Get the name of the checkbox which changed
+        var changedCheckboxId = $j(checkbox).attr('name');            
+             
+        // Get all checkboxes
+        $j(":checkbox[data-cbType='shipToCheckbox']").each(function(index) {
+             
+            // Set all checkboxes EXCEPT the recently changed one to be unchecked
+            if (changedCheckboxId != $j(this).attr('name')) {
+                    $j(this).attr('checked', false);
+            }
+        });
+    };
+    
+    //SOC-6753 August
+    function payerCheckboxChanged(checkbox) {
+        // Get the name of the checkbox which changed
+        var changedCheckboxId = $j(checkbox).attr('name');            
+             
+        // Get all checkboxes
+        $j(":checkbox[data-cbType='payerCheckbox']").each(function(index) {
+             
+            // Set all checkboxes EXCEPT the recently changed one to be unchecked
+            if (changedCheckboxId != $j(this).attr('name')) {
+                    $j(this).attr('checked', false);
+            }
+        });
+    }; 
+</script>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="both">
+               <apex:commandButton value="Save" action="{!save}"/>
+               <apex:commandButton value="Cancel" action="{!cancel}"/>
+               <apex:commandButton value="Reset BillTo" action="{!onClickResetBillTo}"/>
+               <apex:commandButton value="Reset ShipTo" action="{!onClickResetShipTo}"/>
+               <apex:commandButton value="Reset Payer" action="{!onClickResetPayer}"/>  <!-- SOC-6753 -->
+            </apex:pageBlockButtons>
+            <!--soc-4010 bijeta Nov 17 start-->
+            <!-- Bill To Section -->    
+            <apex:pageBlockSection showHeader="true" title="Bill To" columns="1" rendered="{!isBillToPartyAvail}" id="bill">
+                <apex:pageBlockTable value="{!BPFBill}" var="businessFn" >
+                    <apex:column style="width: 3%">
+                        <apex:inputCheckbox html-data-cbType="billToCheckbox">
+                            <apex:actionSupport event="onclick" action="{!onSelectionBillTo}" rerender="out" onsubmit="billToCheckboxChanged(this)">
+                                <apex:param name="selectedBillTo" value="{!businessFn.ID}"></apex:param>
+                            </apex:actionSupport>
+                        </apex:inputCheckbox>
+                      </apex:column>  
+                <apex:column value="{! businessFn.Account_SAP_Number__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByAccNumber }" reRender="bill">Account Number</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+               
+                <apex:column value="{! businessFn.Related_Account_GLI__r.Account_Name__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByName }" reRender="bill">Account Name</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!businessFn.Related_Account_GLI__r.Number_Street__c}{!businessFn.Related_Account_GLI__r.LCRM_PO_Box__c}" headerValue="Address" style="width: 31%"/>
+                <apex:column value="{! businessFn.City__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByCity }" reRender="bill">City</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column title="State" value="{!businessFn.State__c}" style="width: 25%"></apex:column>
+                
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            
+            <!-- Ship To Section -->
+            <apex:pageBlockSection showHeader="true" title="Ship To" columns="1" rendered="{!isShipToPartyAvail}" id="ship">
+                <apex:pageBlockTable value="{!BPFShip}" var="businessFn" >
+                    <apex:column style="width: 3%">
+                        <apex:inputCheckbox html-data-cbType="shipToCheckbox">
+                            <apex:actionSupport event="onclick" action="{!onSelectionShipTo}" rerender="out" onsubmit="shipToCheckboxChanged(this)">
+                                <apex:param name="selectedShipTo" value="{!businessFn.ID}"></apex:param>
+                            </apex:actionSupport>
+                        </apex:inputCheckbox>
+                      </apex:column>  
+                <apex:column value="{! businessFn.Account_SAP_Number__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByAccNumber }" reRender="ship">Account Number</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+               
+                <apex:column value="{! businessFn.Related_Account_GLI__r.Account_Name__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByName }" reRender="ship">Account Name</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!businessFn.Related_Account_GLI__r.Number_Street__c}{!businessFn.Related_Account_GLI__r.LCRM_PO_Box__c}" headerValue="Address" style="width: 31%"/>
+                <apex:column value="{! businessFn.City__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByCity }" reRender="ship">City</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column title="State" value="{!businessFn.State__c}" style="width: 25%"></apex:column>
+          </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <!--soc-4010 bijeta Nov 17 end-->
+        
+        <!-- SOC-6753 Payer details -->
+        <apex:pageBlockSection showHeader="true" title="Payer" columns="1" rendered="{!isPayerAvail}" id="payer">
+                <apex:pageBlockTable value="{!BPFPayer}" var="businessFn" >
+                    <apex:column style="width: 3%">
+                        <apex:inputCheckbox html-data-cbType="payerCheckbox">
+                            <apex:actionSupport event="onclick" action="{!onSelectionPayer}" rerender="out" onsubmit="payerCheckboxChanged(this)">
+                                <apex:param name="selectedPayer" value="{!businessFn.ID}"></apex:param>
+                            </apex:actionSupport>
+                        </apex:inputCheckbox>
+                      </apex:column>  
+                <apex:column value="{! businessFn.Account_SAP_Number__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByAccNumber }" reRender="payer">Account Number</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+               
+                <apex:column value="{! businessFn.Related_Account_GLI__r.Account_Name__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByName }" reRender="payer">Account Name</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!businessFn.Related_Account_GLI__r.Number_Street__c}{!businessFn.Related_Account_GLI__r.LCRM_PO_Box__c}" headerValue="Address" style="width: 31%"/>
+                <apex:column value="{! businessFn.City__c}">
+                    <apex:facet name="header">
+                    <apex:commandLink action="{! sortByCity }" reRender="payer">City</apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column title="State" value="{!businessFn.State__c}" style="width: 25%"></apex:column>
+          </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+            <!-- Payer details end, SOC-6753 -->
+        </apex:pageBlock> 
+        
+        <apex:outputText value="" id="out" label=""/>
+            
+    </apex:form>
+</apex:page>

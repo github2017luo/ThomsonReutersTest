@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Contains settings for configuring the Jira - PSA integration.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Email__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Email address for receiving error notifications if the Integration with Jira fails.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Email address for receiving error notifications if the Integration with Jira fails.</inlineHelpText>
+        <label>Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Jira_Application_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The URL to the Jira application. Used for authentication.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The URL to the Jira application. Used for authentication.</inlineHelpText>
+        <label>Jira Application URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>pse__Jira_Issue_Status_Category__c</fullName>
+        <defaultValue>&apos;Done&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Category of Jira issue statuses used for updating PSA projects.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When the Map PSA Projects to Jira Issues field is selected, determines the category of Jira issue statuses that update the mapped project field with the value defined in PSA Field Value for Updating Projects.</inlineHelpText>
+        <label>Jira Issue Status Category</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Jira_Issue_Type__c</fullName>
+        <defaultValue>&apos;Epic&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When the Enable Syncing Projects with Jira Issues field is selected, determines the type of Jira issues PSA projects are synced with.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When the Enable Syncing Projects with Jira Issues field is selected, determines the type of Jira issues PSA projects are synced with. This value is case-sensitive and the issue type must exist in your Jira application.</inlineHelpText>
+        <label>Jira Issue Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Jira_Welcome_Email_for_Synced_Resources__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Enable Jira Notification Email for Synced Resources</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether PSA resources synced to Jira receive an email notification with their Jira username and a link to set their password.</inlineHelpText>
+        <label>Jira Welcome Email for Synced Resources</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Map_PSA_Projects_to_Jira_Issues__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When selected, PSA projects are mapped to Jira issues, instead of to Jira projects.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When selected, PSA projects are mapped to Jira issues, instead of to Jira projects. The type of Jira issue is determined by the value of the Jira Issue Type field.</inlineHelpText>
+        <label>Map PSA Projects to Jira Issues</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Max_Resource_Days_Per_Week__c</fullName>
+        <defaultValue>5</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Maximum number of timecard days time can be logged against each week for a resource.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of timecard days, starting with Monday, time can be logged against each week for a resource. You can enter a whole number between 1 and 7. For example, enter 5 to enable time logging for Monday to Friday.</inlineHelpText>
+        <label>Max Resource Days Per Week</label>
+        <precision>1</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Max_Resource_Hours_Per_Day__c</fullName>
+        <defaultValue>8.0</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Maximum number of timecard hours that can be logged each day for a resource.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of timecard hours that can be logged each day for a resource. You can enter a value between 1 and 24.</inlineHelpText>
+        <label>Max Resource Hours Per Day</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__PSA_Field_Value_for_Updating_Projects__c</fullName>
+        <defaultValue>&apos;true&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Value used to update a specified PSA project field when a Jira issue is set to a specified status.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When the Map PSA Projects to Jira Issues field is selected, determines the value with which the mapped project field is updated when a Jira issue has the status defined in Jira Issue Status Category. This value is case-sensitive.</inlineHelpText>
+        <label>PSA Field Value for Updating Projects</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Parent_Issue_Field__c</fullName>
+        <defaultValue>&apos;Parent Link&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Name of the Jira custom field used to link an issue to a parent issue type.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the Jira custom field used to link an issue to a parent issue type, for example, Parent Link. The relationship can have multiple levels, but the issue type defined in Jira Issue Type is the highest one taken into account.</inlineHelpText>
+        <label>Parent Issue Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Task_Jira_Issue_Types__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Determines the type of Jira issues that are eligible for syncing with PSA project tasks.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the type of Jira issues that are eligible for syncing with PSA project tasks. You can separate multiple issue types with commas. The issue types must exist in your Jira application.</inlineHelpText>
+        <label>Project Task Jira Issue Types</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Retry_Project_Task_Sync_Batch_Size__c</fullName>
+        <defaultValue>200</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the batch size used when retrying to sync PSA project tasks to Jira issues. The default value is 200.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the batch size used when retrying to sync PSA project tasks to Jira issues. The default value is 200.</inlineHelpText>
+        <label>Retry Project Task Sync Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_Jira_Issues_to_PSA_Project_Tasks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether Jira issues should be synchronized to PSA project tasks.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether Jira issues should be synchronized to PSA project tasks. Automatically populates when the Sync Issues from Jira to Project Tasks in PSA workflow is enabled using the Feature Console.</inlineHelpText>
+        <label>Sync Jira Issues to PSA Project Tasks</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_Jira_Work_Logs_to_PSA_Timecards__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether Jira work logs should be synchronized to PSA timecards.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether Jira work logs should be synchronized to PSA timecards. Automatically populates when the Sync Work Logs from Jira to Timecards in PSA workflow is enabled using the Feature Console.</inlineHelpText>
+        <label>Sync Jira Work Logs to PSA Timecards</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_PSA_Project_Tasks_to_Jira_Issues__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether PSA project tasks should be synchronized to Jira issues.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether PSA project tasks should be synchronized to Jira issues. Automatically populates when the Sync PSA Project Tasks to Jira Issues workflow is enabled using the Feature Console.</inlineHelpText>
+        <label>Sync PSA Project Tasks to Jira Issues</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_PSA_Projects_to_Jira_Issues__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether PSA projects should be synchronized to Jira issues.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether PSA projects should be synchronized to Jira issues. Automatically populates when the Sync Projects from PSA to Issues in Jira workflow is enabled using the Feature Console.</inlineHelpText>
+        <label>Sync PSA Projects to Jira Issues</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_PSA_Projects_to_Jira_Projects__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether PSA projects should be synchronized to Jira projects.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether PSA projects should be synchronized to Jira projects. Automatically populates when the Sync Projects from PSA to Projects in Jira workflow is enabled using the Feature Console.</inlineHelpText>
+        <label>Sync PSA Projects to Jira Projects</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_PSA_Resources_to_Jira_Users__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether PSA resources should be synchronized to Jira users.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether PSA resources should be synchronized to Jira users. Automatically populates when the Sync Resources from PSA to Users in Jira workflow is enabled using the Feature Console.</inlineHelpText>
+        <label>Sync PSA Resources to Jira Users</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_Status__c</fullName>
+        <defaultValue>&apos;Saved&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Status in which timecards are created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status in which timecards are created.</inlineHelpText>
+        <label>Timecard Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Projects_Based_on_Issue_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether PSA Projects should be updated based on Jira issue status.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether PSA Projects should be updated based on Jira issue status.</inlineHelpText>
+        <label>Update Projects Based on Issue Status</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Task_Status_Based_On_Issue_Status__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the status of PSA project tasks should be updated based on the status of the related Jira issues.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the status of PSA project tasks should be updated based on the status of the related Jira issues.</inlineHelpText>
+        <label>Update Task Status Based on Issue Status</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Jira_Cloud__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates whether the Jira application provided in the Jira Application URL is a Jira Cloud version.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether the Jira application provided in the Jira Application URL is a Jira Cloud version. Leave deselected if you are using Jira Server.</inlineHelpText>
+        <label>Use Jira Cloud</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_PSA_as_Source_for_Project_Task_Sync__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines the direction of the project task synchronization (provided that the appropriate workflow is enabled). When selected, PSA project tasks are synced to Jira issues. When deselected, Jira issues are synced to PSA project tasks.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the direction of the project task synchronization (provided that the appropriate workflow is enabled). When selected, PSA project tasks are synced to Jira issues. When deselected, Jira issues are synced to PSA project tasks.</inlineHelpText>
+        <label>Use PSA as Source for Project Task Sync</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Integration Hub Connector: Jira - PSA</label>
+    <visibility>Public</visibility>
+</CustomObject>

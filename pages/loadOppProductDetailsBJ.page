@@ -1,0 +1,37 @@
+<apex:page standardController="OpportunityProductDetail__c" extensions="loadOppProductDetailBJController" tabStyle="Opportunity">
+<apex:pageMessages />
+<apex:form >
+    <apex:variable var="rowNumber" value="0" />
+    <apex:pageBlock title="{!$Label.Opp_Prod_Details}" mode="detail">
+        <apex:pageBlockSection columns="2" title="{!$Label.Opportunity_Information}">
+            <apex:outputField value="{!oOpportunity.Name}"/>
+            <apex:outputField value="{!oAccount.Name}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="{!$Label.Details}" collapsible="false">
+            <apex:repeat value="{!listDetailItems}" var="DetailItem">
+                <apex:repeat value="{!DetailItem.listOppProductDetails}" var="detail">
+                    <apex:pageBlockSection title="{!DetailItem.oOppLineItem.PricebookEntry.Product2.Name}" showHeader="true" columns="2">
+                        <apex:repeat value="{!DetailItem.fieldList}" var="fieldName">
+                                <apex:pageblockSectionItem rendered="{!fieldName != 'Contact__c'}">
+                                    <apex:outputLabel >{!mapfieldTitles[fieldName]}</apex:outputLabel>
+                                    <apex:inputField value="{!detail[fieldName]}"/>
+                                </apex:pageblockSectionItem>
+                                <apex:pageblockSectionItem rendered="{!fieldName == 'Contact__c'}">
+                                    <apex:outputLabel >{!mapfieldTitles[fieldName]}</apex:outputLabel>
+                                    <apex:selectList value="{!detail.Contact__c}" multiselect="false" size="1" style="width:300px" rendered="{!fieldName == 'Contact__c'}">
+                                    <apex:selectOptions value="{!ContactSelectOptions}"/>
+                                </apex:selectList>
+                                </apex:pageblockSectionItem>
+                        </apex:repeat>
+                    </apex:pageBlockSection>                                  
+                </apex:repeat>
+            </apex:repeat>
+        </apex:pageBlockSection>
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="Save"/>
+            <apex:commandButton action="{!quickSave}" value="Quick Save"/>
+            <apex:commandButton action="{!cancel}" value="Cancel"/>
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

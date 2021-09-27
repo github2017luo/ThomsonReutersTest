@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>预定的工作运行</value>
+    </caseValues>
+    <fields>
+        <label><!-- Apex Job Id --></label>
+        <name>fferpcore__ApexJobId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process Status --></label>
+        <name>fferpcore__BatchProcessStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process --></label>
+        <name>fferpcore__BatchProcess__c</name>
+        <relationshipLabel><!-- Scheduled Job Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>指示批处理控制是否成功。</help>
+        <label><!-- Notification --></label>
+        <name>fferpcore__NotificationType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled Job --></label>
+        <name>fferpcore__Process__c</name>
+        <relationshipLabel><!-- Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>fferpcore__Status__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation>完成</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Error</masterLabel>
+            <translation>错误</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Processing</masterLabel>
+            <translation>处理</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>根据包含日志类型Abort的批日志数计算的已中止批次的总数。</help>
+        <label><!-- Total Aborted Batches --></label>
+        <name>fferpcore__TotalNumberOfAborts__c</name>
+    </fields>
+    <fields>
+        <help>根据包含日志类型Error的批处理日志数而出现错误的记录总数。</help>
+        <label><!-- Total Errors --></label>
+        <name>fferpcore__TotalNumberOfErrors__c</name>
+    </fields>
+    <fields>
+        <help>超过Salesforce管理员限制或包含其他问题的批次总数。</help>
+        <label><!-- Total Number of Batches Exceeding Limits --></label>
+        <name>fferpcore__TotalNumberOfExternal__c</name>
+    </fields>
+    <fields>
+        <help>此批处理控件的批处理日志总数。</help>
+        <label><!-- Total Logs --></label>
+        <name>fferpcore__TotalNumberOfLogs__c</name>
+    </fields>
+    <nameFieldLabel>运行号码</nameFieldLabel>
+</CustomObjectTranslation>

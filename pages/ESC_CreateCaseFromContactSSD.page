@@ -1,0 +1,31 @@
+<apex:page standardController="Case" extensions="ESC_CreateCaseFromContactSSDController" recordsetvar="Cases" action="{!CreateCase}" lightningStylesheets="true">
+<apex:includeScript value="/support/console/42.0/integration.js"/>
+  <script>
+       function OpenUrl(){
+        if(sforce.console.isInConsole()){
+          var PrimaryTabId;
+          sforce.console.getFocusedPrimaryTabId(function(result){
+          PrimaryTabId=result.id;
+          
+           if('Theme4u' == '{!$User.UIThemeDisplayed}'){                                        
+               sforce.one.navigateToURL('/{!oCaseSSD.Contact_Source_System__c}',true);             
+              sforce.one.navigateToURL('/{!oCaseSSD.Id}',false);                                 
+          }
+          else{
+          window.open('/{!oCaseSSD.Contact_Source_System__c}', "_self");
+          sforce.console.openSubtab(PrimaryTabId,'/{!oCaseSSD.Id}',true);
+          }
+          });
+         }
+          else{
+          if('Theme4u' == '{!$User.UIThemeDisplayed}'){
+            sforce.one.navigateToURL('/{!oCaseSSD.Id}',false);
+          }
+       else{
+       window.open('/{!oCaseSSD.Id}', "_self");
+       }
+       }
+       } 
+    </script>
+    <apex:outputText value="{!callfunc}" escape="false"></apex:outputText>
+</apex:page>

@@ -1,0 +1,80 @@
+<!-- ============================================================================================
+Name			:	ODT_TrialDetails
+Description		:	This page is developed as part of CXD-ODT project : DLT-12947
+
+Modification History:
+Date			Name                    Description
+06/24/2019		David Hoel				DLT-16849: update New Trial command button
+============================================================================================== -->
+
+<apex:page standardController="Account" extensions="ODT_TrialDetailsCon" sidebar="false" showHeader="false" lightningStylesheets="true">
+    
+    <apex:actionStatus id="myStatus" >
+        <apex:facet name="start" >
+            <div id="loadingDiv"/>                   
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <script>
+        window.onload = function() {
+          callTrials();
+        };
+    </script>
+    
+    <body>
+        <apex:form id="allTrials">
+            <apex:pageBlock >
+                <apex:pageBlockTable value="{!trialsToDisplay}" var="trials" rendered="{!trialsToDisplay.size>0}">
+                    <apex:column headerValue="Trial Name" ><apex:outputLink value="/{!trials.id}" target="_blank" >{!trials.name}</apex:outputLink> </apex:column>
+                    
+                    <apex:column value="{!trials.Trial_Id__c}" headerValue="Trial ID"/>
+                    <apex:column value="{!trials.Trial_Start_Date__c}"/>
+                    <apex:column value="{!trials.Trial_End_Date__c}"/>
+                    <apex:column value="{!trials.Trial_Status__c}"/>
+                    <apex:column value="{!trials.ODT_Email__c}" headerValue="Primary User"/>    
+                    <apex:column value="{!trials.ODT_SAP_Account_Number__c}"  headerValue="Account Number" />     
+                    <apex:column value="{!trials.Source_System_Detail__c}" headerValue="Account Name"/> 
+                </apex:pageBlockTable>
+                
+                <apex:pageBlockButtons location="top" >
+                    <!--<apex:outputLink value="/apex/contactslist?id={!accId}" target="blank" styleClass="buttonDisplay" rendered="{!checkvisibility}" > New Trial </apex:outputLink>-->
+                    <apex:commandLink action="{!callToContactListPage}" target="_blank">
+                       <apex:commandButton value="New Trial" rendered="{!checkvisibility}" Status="myStatus"/>                                                   
+                    </apex:commandLink>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:form>
+        
+        <apex:form >
+            <apex:actionFunction action="{!sendDetails}" reRender="allTrials" id="loadTrialsFromJS" name="callTrials" status="myStatus"/>
+        </apex:form>
+    </body>
+    
+    <style>
+        #loadingDiv{
+            position:fixed;
+            top:0px;
+            left:0px;
+            width:100%;
+            height:100%;
+            //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)}) 50% 50% no-repeat #666;
+            
+            z-index:99999;
+            opacity: 0.4; /* You can adjust the opacity */
+            filter: alpha(opacity=40); /* For IE8 and earlier */
+        }
+        
+        .buttonDisplay{
+            display: block;
+            width: 100px;
+            height: 20px;
+            background: #d3d3d3;
+            padding: 10px;
+            text-align: center;
+            border-radius: 5px;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+</apex:page>

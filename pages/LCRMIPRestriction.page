@@ -1,0 +1,129 @@
+<apex:page standardController="Account" extensions="LCRMCredentialInfoController" tabStyle="Account" title="{!$Label.Act} {!Account.Name}" sidebar="false" id="pageClearIP">
+  <apex:includeScript value="{!$Resource.Datepicker}"/>
+    <apex:pageMessages Id="IpAddressMsg"></apex:pageMessages>
+         <apex:form id="formSubscriptionIP">
+             <apex:outputPanel id="ipPanel">
+             <apex:param name="AccountId" value="{!Account.ID}"/>
+                <apex:outputLabel for="DomainType" value="{!$Label.Domain}" style="font-weight:bold;"  />
+                <apex:selectList value="{!sSelectedOption}" multiselect="false" size="1" required="true" id="selectListDomain">
+                <apex:actionSupport action="{!FetchRecords}" event="onchange" reRender="IPAddressInfoIP" />
+                <apex:selectOptions value="{!DomainListOptions}"/>
+                </apex:selectList>&nbsp;&nbsp;&nbsp;&nbsp;
+                 <apex:outputLabel for="dtIP" style="font-weight:bold;" value="Date " />
+                     <apex:panelGroup >
+                        - &nbsp;<!--<apex:inputText required="true" size="8" id="dtIP" value="{!strValidityDateIP}" onfocus="DatePicker.pickDate(false, 'pageClearIP:formSubscriptionIP:dtIP', false);"/> &nbsp;&nbsp;
+                       <apex:commandButton Id="GoIP" value="Go" action="{!displayIPInfoList}" rerender="IPAddressInfoIP" status="statusClearInfoIP"/>-->
+                       <apex:inputText value="{!strValidityDateIP}" size="10" id="demo" onfocus="DatePicker.pickDate(false, this , false);" />
+                    &nbsp;&nbsp;&nbsp;
+                <apex:actionStatus startText=" Processing the stuff " stopText=" Done " id="statusClearInfoIP" >
+                <apex:facet name="start" >
+                <font size="3" face="calibri"><b>{!$Label.Processing}</b></font><img style="padding-left:10px;" src="/img/loading.gif" />
+                </apex:facet> 
+                <apex:facet name="stop">
+                <apex:commandButton title="SearchIP" rerender="IPAddressInfoIP,IpAddressMsg" action="{!displayIPInfoList}" id="welcomeDivIP" value="{!$Label.LCRMIPAddress_Button}" status="statusClearInfoIP"/>
+                
+                </apex:facet>
+                </apex:actionStatus> 
+                     </apex:panelGroup>
+           <!-- <div id="sectionSubscriptionIP" >          z
+                    
+            <apex:actionStatus startText=" Processing the stuff " stopText=" Done " id="statusClearInfoIP" >
+            <apex:facet name="start" >
+            <font size="3" face="calibri"><b>{!$Label.Processing}</b></font><img style="padding-left:10px;" src="/img/loading.gif" />
+            </apex:facet> 
+            <apex:facet name="stop">
+            <apex:commandButton title="SearchIP" rerender="IPAddressInfoIP,IpAddressMsg" action="{!displayIPInfoList}" id="welcomeDivIP" value="Search for IP restriction" status="statusClearInfoIP"/>
+            
+            </apex:facet>
+            </apex:actionStatus>             
+             </div> --><br/><br/> 
+        <apex:pageBlock id="IPAddressInfoIP" title="{!$Label.Technical_Information_IP_Restriction}">
+            
+                <apex:pageBlockSection id="sectionIPRestriction" collapsible="true" columns="1" title="Technical Information" showHeader="true" rendered="{!IF(ipGenericList!=null,true,false)}">
+                    <apex:pageblocktable value="{!ipGenericList}"  var="ipitem" id="tableIPRestrictionInfo">
+                       
+                       <apex:column >
+                              <apex:facet name="header">{!$Label.SAP_Account_Number}</apex:facet>
+                              <apex:outputText value="{!ipitem.Accountnumber}"/>
+                         </apex:column>
+                         
+                         <apex:column >
+                              <apex:facet name="header">{!$Label.Add_Group_Type}</apex:facet>
+                              <apex:outputText value="{!ipitem.groupType}"/>
+                         </apex:column>
+                         <apex:column >
+                              <apex:facet name="header">{!$Label.IP_Description}</apex:facet>
+                              <apex:outputText value="{!ipitem.IPRestrictionDesc}"/>
+                         </apex:column> 
+                          <apex:column >
+                              <apex:facet name="header">{!$Label.IP_Address}</apex:facet>
+                              <apex:outputText value="{!ipitem.IPAddress}"/>
+                         </apex:column>
+                         <apex:column >
+                              <apex:facet name="header">{!$Label.IP_Upper}</apex:facet>
+                              <apex:outputText value="{!ipitem.IPUpper}"/>
+                         </apex:column>
+                      <apex:column >
+                              <apex:facet name="header">{!$Label.Country_Name}</apex:facet>
+                              <apex:outputText value="{!ipitem.countryDesc}"/>
+                         </apex:column>
+                        <apex:column >
+                              <apex:facet name="header">{!$Label.Effective_Date}</apex:facet>
+                             <apex:outputText value="{!ipitem.effectiveBegDate}"/>
+                             <!-- <apex:param value="{!ipitem.effectiveBegDate}"/>-->
+                             
+                         </apex:column>
+                         <apex:column >
+                              <apex:facet name="header">{!$Label.E_D}</apex:facet>
+                             <apex:outputText value="{!ipitem.effectiveEndDate}" />
+                             <!-- <apex:param value="{!ipitem.effectiveEndDate}"/>-->
+                             
+                           </apex:column>
+                    </apex:pageblocktable>
+                     <apex:outputPanel layout="block" rendered="{!(ipGenericList.empty)}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">
+                     {!$Label.No_records_to_display_on_this_Date}
+                     </apex:outputPanel>                     
+                     
+              </apex:pageBlockSection>
+             
+             
+            <apex:pageblocktable value="{!ExceptionIPMesginfo}" var="ExpCredBusItem" id="ExceptionCredentialInfo" rendered="{!IF(ExceptionIPRestriction = True,true,false)}">
+            
+            <apex:column >
+            <apex:facet name="header">{!$Label.Status_Code}</apex:facet>
+            <apex:outputText value="{!ExpCredBusItem.statusCode}" />
+            </apex:column>
+            
+            <apex:column >
+            <apex:facet name="header">{!$Label.Status_Description}</apex:facet>
+            <apex:outputText value="{!ExpCredBusItem.statusDescription}" />
+            </apex:column>
+            <apex:column >
+            <apex:facet name="header">{!$Label.Status_Detail_Message}</apex:facet>
+            <apex:outputText value="{!ExpCredBusItem.statusDetailMessage}" />
+            </apex:column>
+            </apex:pageblocktable>
+            <!-- Pagination Data  -->
+        <apex:outputPanel rendered="{!AND(IF(IPRestrpaginater.isAll, false, true), IF(IPRestrpaginater.totalPage == 1, false, true))}">
+
+        <apex:commandButton value="{!$Label.Previous}" rerender="ipPanel" action="{!previousPageIP}" rendered="{!IPRestrpaginater.showPrevious}"/>
+
+        &nbsp;&nbsp;&nbsp;
+        <apex:repeat value="{!IPRestrpaginater.pageList}" var="pl">
+       <apex:outputText rendered="{!!pl.isActive}">
+        <apex:commandLink action="{!updatePageIP}" rerender="ipPanel">
+        {!pl.pageNum}                                
+        <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!IPRestrpaginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+        </apex:commandLink>
+        </apex:outputText>
+        <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+
+        </apex:repeat>
+        &nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="{!$Label.Next}" rerender="ipPanel" action="{!nextPageIP}" rendered="{!IPRestrpaginater.showNext}"/>
+        </apex:outputPanel>
+         
+             </apex:pageBlock>
+             </apex:outputPanel>
+       </apex:form>  
+</apex:page>

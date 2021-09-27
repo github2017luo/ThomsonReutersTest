@@ -1,0 +1,105 @@
+<apex:page standardController="Opportunity" recordSetVar="opportunities" extensions="opptyMassRemoveTeamMemberController" showHeader="false" 
+
+id="muopp">
+
+    <apex:form id="muform1" rendered="{!NOT(IsRecords)}">
+        
+        <apex:pageBlock >
+            
+            <apex:pageMessage summary="Atleast 1 opportunity record should be selected for reassignment" 
+            severity="info" id="mupmst"/><br></br><br></br>
+            
+            <apex:commandButton value="Go Back to List View" action="{!cancel}" id="butcanhh" />
+        
+        </apex:pageBlock>
+    
+    </apex:form>
+               
+    <apex:form id="muform" rendered="{!IsRecords}">
+        
+        <apex:pageMessage summary="Editable Collection Size: {!mySelectedSize}" severity="info" id="mupms"/>
+       
+        <apex:pageMessage rendered="{!IsNonEditOpty}" summary="Non Editable Collection Size: {!NonAssignListSize}" 
+            severity="info" id="mupm1"/>        
+        
+        <apex:pageBlock id="muselectedlist1" rendered="{!IsNotAssignOpty  }">
+            
+           <apex:pageBlockSection collapsible="true" title="Non Editable Opportunities">
+            <apex:pageMessage summary="These opportunities can't be updated as they are staged '100%'." severity="info" id="mupms3"/><br></br>
+            
+            <apex:pageBlockTable value="{!NonAssignList}" var="opp" id="mutab1">
+                <apex:column value="{!opp.name}" id="oppname1"/>
+                <apex:column value="{!opp.AccountId}" id="oppaccount1"/>
+                <apex:column value="{!opp.StageName}" id="oppstage1"/>
+                <apex:column headerValue="Record Type Name" value="{!opp.RecordType.Name}" id="opprectype1"/>
+                <apex:column value="{!opp.OwnerId}" id="oppowner1"/>             
+            </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Opportunity Mass Change Team Member" mode="edit" id="mub1"  rendered="{!IsAssign}">
+            
+            <apex:pageMessages />
+            
+            <apex:actionRegion >
+            
+                <apex:selectRadio value="{!Opt}" rendered="{!IsAssign}">
+                    <apex:selectOptions value="{!items}"/>                   
+                    <apex:actionSupport event="onclick" rerender="mub1,muselectedlist" action="{!Test}" status="ActionStatus"/>               
+                </apex:selectRadio>
+                
+            </apex:actionRegion><br></br><br></br>            
+          
+         <apex:pageBlockSection id="mus1" columns="2" > 
+              <apex:inputField value="{!OppTeamMember.UserId}" id="stagename" required="False"  rendered="{!IsNotAll}" label="Opportunity Team Member to be Removed">                 
+                <!-- <apex:actionSupport event="onchange" rerender="muselectedlist"/> -->
+                </apex:inputField>              
+                 <apex:inputField value="{!OppTeamMemberAdd.UserId}" id="stagenameadd" required="False" rendered="{!IsNotAll}" label="Opportunity Team Member to be Added">                 
+                </apex:inputField>
+         </apex:pageBlockSection>  
+                 
+          
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="Selected Opportunities" id="muselectedlist">
+            
+            <apex:pageMessage summary="No editable opportunity selected." severity="info" id="mupms3" rendered="{!NOT(IsAssign)}"/><br></br>
+           
+            <apex:actionStatus id="ActionStatus" startText="Refreshing..." startStyle="color:red;font-weight:bold"></apex:actionStatus>        
+    
+            <apex:pageBlockTable value="{!Opps}" var="op" id="mutab" rendered="{!IsAssign}">
+                <apex:column value="{!op.opp.name}" id="oppname" width="15%"/>
+                <apex:column value="{!op.opp.AccountId}" id="oppaccount"  width="15%"/>
+                <apex:column value="{!op.opp.StageName}" id="oppstage" width="17.5%"/>
+                <apex:column value="{!op.opp.OwnerId}" id="oppwlreason" rendered="{!IsNotAll}" width="17.5%"/>
+                <apex:column rendered="{!NOT(IsNotAll)}" title="Stage" headerValue="Opportunity Team Member to be Removed" width="17.5%" > 
+                    <apex:inputField value="{!op.Removeopty.UserId}" id="oppstage8" required="False"/>
+                 </apex:column>
+                    <apex:column rendered="{!NOT(IsNotAll)}" title="Stage" headerValue="Opportunity Team Member to be Added" width="17.5%" > 
+                    <apex:inputField value="{!op.Addopty.UserId}" id="oppstage9" required="False"/>
+                </apex:column>
+                 </apex:pageBlockTable>
+            
+            <apex:pageBlockButtons id="mubut1" rendered="{!IsAssign}">
+
+                <apex:commandButton value="Save" action="{!saveOpty}" id="butsav1" rendered="{!NOT(IsNotAll)}"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="Cancel" action="{!cancel}" id="butcan1" rendered="{!NOT(IsNotAll)}"/>            
+                <apex:commandButton value="Save" action="{!saveOpty}" id="butsav" rendered="{!IsNotAll}"/>&nbsp;&nbsp;&nbsp;&nbsp;                    
+
+            
+                <apex:commandButton value="Cancel" action="{!cancel}" id="butcan" rendered="{!IsNotAll}"/>
+            </apex:pageBlockButtons><br></br>
+                                               
+            
+        </apex:pageBlock>
+         <apex:pageBlock id="mu445" rendered="{!NOT(IsAssign)}">
+          <apex:pageBlockButtons id="mubutfdg1" location="top">
+
+         <apex:commandButton value="Cancel" action="{!cancel}" id="butcadvdn1"/>            
+                </apex:pageBlockButtons><br></br>
+            
+          </apex:pageBlock>  
+        
+    </apex:form>
+    
+</apex:page>

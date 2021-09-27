@@ -1,0 +1,1136 @@
+<apex:page standardStylesheets="false" sidebar="false" controller="ESC_CaseHomePageController"
+   language="{!$CurrentPage.Parameters.lang}">
+    <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/Minified/MinifiedCSSCHP.css')}"
+    />
+      <c:ESC_PushTopicInit push="{!pushtopicset}"></c:ESC_PushTopicInit>
+
+    <apex:slds />
+    <div id="demo">
+        <div class="loader" style="position: fixed;width: 20px;height: 20px;top: 50%;left: 50%;margin-top: -100px; "></div>
+        <div id="mainDivCont">
+            <div class="slds-scope">
+                <div styleClass="slds-col">
+                    <input type="hidden" id="myHidden" />
+                    <input type="hidden" id="highLight" />
+
+                    <!-- Added for Dashboard Changes-->
+                    <div id="dboarddiv">
+                        <apex:pageBlock title="{!$Label.ESC_DashboardSectionName}" rendered="{!lstdbs !=null && lstdbs.size>0}">
+                            <apex:pageblockSection columns="3">
+                                <apex:repeat value="{!lstdbs}" var="e" id="theRepeat">
+                                    <apex:pageBlockSectionItem >
+                                        <apex:outputLink onclick="openCa('{!e.Id}');return false;" target="_blank" title="{!e.description}">{!e.title}</apex:outputLink>
+                                    </apex:pageBlockSectionItem>
+                                </apex:repeat>
+                            </apex:pageblockSection>
+                        </apex:pageBlock>
+                    </div>
+                    <!-- End Added for Dashboard Changes-->
+                    <div class="tab" style="display:none" >
+                         <input id="defaultOpen" type="image" src="{! URLFOR($Resource.ESC_UniversalResource, '/Extras/Datasheets.png')} "
+                            name="j_id0:j_id2:defaultOpen" onclick="return showDiv(event, 'ListView')"
+                            class="oval tablinks" title="{!$Label.ESC_RecordsView}" />
+                        <input type="image" src="{! URLFOR($resource.ESC_UniversalResource, '/Extras/report.png')} "
+                            name="j_id0:j_id2:x" onclick="return showDiv(event, 'ReportView')"
+                            class="oval tablinks" title="{!$Label.ESC_ReportsView}" />
+                        </div>
+                    <div id="Parendiv">
+                        <apex:pageMessages id="errors" />
+
+                    </div>
+                    <div class="tabcontent" id="ReportView" >
+                        <apex:dynamicComponent componentValue="{!myPanel}"></apex:dynamicComponent>
+                    </div>
+                    <div class="tabcontent" id="ListView" style="font-size:16px">
+                        <apex:repeat value="{!resultList}" var="result">
+                            <c:ESC_HomePage result="{!result}" showHeader="true" />
+
+                        </apex:repeat>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <apex:includeScript value="/support/console/42.0/integration.js" />
+     <script src="../../soap/ajax/42.0/connection.js" type="text/javascript" />
+    <script>
+        var table = [];
+        var state = [];
+        var isFirst = true;
+        var idToOpenx = '';
+        var myDateFormats = JSON.parse('{!Formats}');
+        var valueAccepted = "{!$Label.ESC_Accepted}";
+        var languageATT = eval(JSON.parse('{!DataTableEntity}'));
+        var language = [];
+        var dtApplied = false;
+        var isAPPr = false;
+        //function to deactivate console logging, comment below to enable all console logging messages
+      // console.log = function() {};
+
+        function mySpy() {
+            statis = setInterval(
+                function() {
+
+                    if (sforce.console.isInConsole())
+                        sforce.console.getFocusedSubtabId(function(result) {
+                            OPENEDTAB = result.id;
+                            sforce.console.getFocusedPrimaryTabId(
+                                function(result) {
+                                    PRIMARYTAB = result.id;
+
+
+                                    if (PRIMARYTAB == 'null' &&
+                                        OPENEDTAB == 'null') {
+
+                                        try {
+                                            clearInterval(statis);
+                                            initOfPt();
+                                        } catch (e) {
+                                            console.error(
+                                                'error while setting tables'
+                                            );
+                                            console.error(e);
+                                        }
+                                    }
+                                });
+
+                        });
+
+
+
+                }, 2000);
+        };
+
+        language.push(({
+            "processing": languageATT[0].ESC_processing,
+            "search": languageATT[0].ESC_search,
+            "lengthMenu": languageATT[0].ESC_lengthMenu,
+            "info": languageATT[0].ESC_info,
+            "infoEmpty": languageATT[0].ESC_infoEmpty,
+            "infoFiltered": languageATT[0].ESC_infoFiltered,
+            'infoPostFix': "",
+            'loadingRecords': languageATT[0].ESC_loadingRecords,
+            'zeroRecords': languageATT[0].ESC_zeroRecords,
+            'emptyTable': languageATT[0].ESC_emptyTable,
+            'paginate': {
+                'first': languageATT[0].ESC_paginateFirst,
+                'previous': languageATT[0].ESC_paginatePrevious,
+                'next': languageATT[0].ESC_paginateNext,
+                'last': languageATT[0].ESC_paginateLast
+            },
+            'aria': {
+                'sortAscending': languageATT[0].ESC_sortAscending,
+                'sortDescending': languageATT[0].ESC_sortDescending
+            }
+        }));
+
+        function destroyer(){
+            j$(table).each(function(){
+                
+                this.destroy();
+            });
+                
+                
+        }
+        
+        function fetchMoreRecords(currentElement, event,isPrev,isNext) {
+//debugger;
+
+     try {
+         
+        event.preventDefault();
+        showProcessing();
+        //console.time('readOffset');
+         var lname = j$(currentElement).attr("lname");
+        if(isPrev){
+        var query = j$(currentElement).attr("fullquery");
+        btnlimit = query.split('Limit ')[1];
+        btnlimit = (btnlimit.split(' offset')[0]).trim();
+        btnoffset = (query.split('offset ')[1]).trim();
+        
+        
+        }
+        if(isNext){
+        var query = j$(currentElement).attr("fullquery").replace('offset 0', '');
+        //j$("a[btntype='prevbutton'][lname='" + lname + "']").show();
+        }
+        //console.log('query'+query);
+        var offset = 0;
+       
+       
+        if (query.indexOf('offset ') == -1) {
+            limit = query.split('Limit ')[1];
+            query += ' offset ' + limit;
+            offset = limit;
+            j$(currentElement).attr("limit", limit.trim());
+        } else {
+            oldOffset = query.split('offset ')[1];
+            //console.log('currentoffset' +oldOffset);
+            if(isNext){
+                if((parseInt(oldOffset) + parseInt(j$(currentElement).attr("limit"))) < 2000){
+                offsetNew = parseInt(oldOffset) + parseInt(j$(currentElement).attr("limit"));
+                
+                if (offsetNew >= 2000) {
+                    throw "Maximum offset reached!";
+                } }else{
+                    throw "Maximum offset reached!";
+                }
+            } else if(isPrev){
+                 limit = query.split('Limit ')[1];
+                 j$(currentElement).attr("limit", limit.trim());
+                 if(oldOffset >=1){
+                 offsetNew = parseInt(oldOffset) - parseInt(j$(currentElement).attr("limit"));
+                 
+                if (offsetNew <= -1 ) {
+                    throw "No Prev Batch!";
+                }
+                
+                 } else{
+                 throw "No Prev Batch!";
+                 }
+                
+                
+                
+            }
+            query = query.replace('offset ' + oldOffset, 'offset ' + offsetNew);
+            offset = offsetNew;
+            //console.log('finalquery'+query);
+        }
+        offset = (offset + '').trim();
+        //j$(currentElement).attr("fullquery", query);
+        j$("a[lname='" + lname + "']").attr("fullquery", query);
+        console.timeEnd('readOffset');
+        
+        var url = window.location.protocol + '//' + window.location.hostname + '/apex/ESC_CaseHomePageShowMore?lname=' + lname + '&offset=' + offset + '&lang=' + "{!JSENCODE(Locale)}";
+        
+        
+        console.log('url ' + url);
+        console.time("fetchMoreFull");
+        console.time("fetchMoreUrlOad");
+        j$("#success").load(url + '.compact ', function(response, status, xhr) {
+            console.log('status'+status);
+            if (status == "error") {
+
+                var msg = "Sorry but there was an error: ";
+                j$("#error").html(msg + xhr.status + " " + xhr.statusText);
+                // removeProcessing(); 
+            } else {
+                
+               
+                console.timeEnd("fetchMoreUrlOad");
+                var msg = "done ";
+
+                var innerHtml = '';
+                var allBlocks = j$("tbody[lname='" + lname + "']");
+                var allNewRows = j$(allBlocks).first().find("tr");
+                j$(allBlocks).find('td').each(function(){
+
+                
+                   j$(this).attr('data-search',this.innerHTML);
+                   j$(this).attr('data-order',this.innerHTML);
+                   var parent = j$(this);
+                   j$(this).find('img').each(function(){
+                       parent.attr('data-search',j$(this).prop('src'));
+                        parent.attr('data-order',j$(this).prop('src'));
+                   });
+                   
+                    //var date = new Date(this.innerText);
+                    var strDate = this.innerText;
+                    if(strDate.indexOf("/") != -1){
+                    
+                    var date = new Date(strDate);
+                    if(date != 'Invalid Date'){
+                    
+                       // var setDateFormat = date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear();
+                       var setDateFormat = moment(date).format('{!JSENCODE(currentDateFormat)}');
+                        j$(this).attr('data-search',this.innerText);
+                        j$(this).attr('data-order',this.innerText);
+                        //debugger;
+                        this.innerText = setDateFormat;
+                       
+                        
+                    }}
+                   
+                   // ends here
+                   
+                });
+                assignAllocatedDimensions();
+              
+                //removeProcessing();
+                console.log(allBlocks);
+                if (allNewRows.length) {
+                    try{
+                    
+                    //destroyer();
+                     destroyer();
+                   
+                    j$(allBlocks).empty();
+                     
+                    allNewRows.each(function() {
+                        
+                        j$(allBlocks).last().append(this);
+                        j$(this).find('a[href ^="http"]').each( function(){
+                        var currHref = j$(this).attr('href');
+                        
+                   var currentId = currHref.split('/')[3];
+                   
+                   var onclickVal = "openCa('"+currentId+"')";
+                   
+                   
+                   j$(this).attr("href","");
+                 j$(this).attr("onclick",onclickVal+'; return false;');
+                        });
+                   
+                   
+                    });
+                    if(isNext){
+        
+        j$("a[btntype='prevbutton'][lname='" + lname + "']").show();
+        }
+        if(isPrev){
+           
+        if(btnlimit === btnoffset){
+        j$("a[btntype='prevbutton'][lname='" + lname + "']").hide();    
+        }}
+                    initOfPt(true);
+                    removeProcessing();
+                    
+                    }
+                    catch(e){
+                            console.log('error with show more'+e);
+                    }
+
+                } else {
+                    removeProcessing2(currentElement);
+                    updateOffset = offset - parseInt(j$(currentElement).attr("limit"));
+                    //console.log('norecords'+offset);
+                    console.log('query'+query);
+                    
+                    updateQuery = query.replace('offset ' + offset, 'offset ' + updateOffset);
+                    console.log('norecords'+updateQuery);
+                    
+                    j$("a[lname='" + lname + "']").attr("fullquery", updateQuery);
+                    //if(removeProcessing2()){
+                    //setTimeout(alert("No more records present for " + j$(currentElement).attr("blocktitle")),7000);}
+                        }
+                   
+                    }
+        
+                });
+                
+                
+                
+            } catch (e) {
+               // initializer(false);
+        
+                removeProcessing();
+                alert('MSG: ' + e);
+            }
+        
+            return false;
+        
+        }
+        
+        function removeProcessing2(currentElement) {
+            
+
+            j$('#mainDivCont').css("opacity", '1');
+            j$('.loader').hide("",function(){
+                alert("No more records present for " + j$(currentElement).attr("blocktitle"));
+                
+        });}
+        function updateOwner(selectedId, selectedBlock, selectedRow) {
+
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ESC_CaseHomePageController.updateOwner}',
+                selectedId,
+                function(result, event) {
+                    if (event.status) {
+                        // Get DOM IDs for HTML and Visualforce elements like this
+                        if (result.startsWith("**")) {
+                            j$('#Parendiv').append(
+                                "<strong style='color:red;'>" +
+                                result + "</strong>");
+                        } else {
+                            openCa(result);
+                            j$(selectedRow).fadeOut();
+                            var rowSel = j$(selectedRow).parent();
+                            rowSel.append("<strong style='color:orange;'>" +
+                                valueAccepted + "</strong>");
+                        }
+
+                    } else if (event.type === 'exception') {
+
+                    } else {
+
+                    }
+                    removeProcessing();
+                }, {
+                    escape: true
+                }
+            );
+        }
+
+        function openApprovalRec(selectedId, selectedBlock, selectedRow,
+            clicked) {
+
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ESC_CaseHomePageController.getApprovalRecord}',
+                selectedId,
+                function(result, event) {
+
+                    result = result.substring(0, 15);
+                    selectedId = selectedId.substring(0, 15);
+
+                    if (clicked == 'approve') {
+                        openAppRecord("{!$Label.ESC_HomeApprovalLink}" +
+                            result,result);
+                    } else {
+                        console.log('reassign link ' + result +
+                            "{!$Label.ESC_HomeReassignLink}");
+                        openAppRecord(result +
+                            "{!$Label.ESC_HomeReassignLink}",result);
+                    }
+                    removeProcessing();
+                }, {
+                    escape: true
+                }
+            );
+        }
+
+        function showDiv(evt, divName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active",
+                    "");
+            }
+            document.getElementById(divName).style.display = "block";
+            evt.currentTarget.className += " active";
+            return false;
+        }
+
+        function openCa(CasId, title) {
+            var openCasURL = '/' + CasId;
+
+            if (sforce.console.isInConsole()) {
+                newid = CasId.substring(0, 15);
+                findTab(newid, title);
+
+
+            } else{
+             if('Theme4u' == '{!JSENCODE($User.UIThemeDisplayed)}'){
+                    sforce.one.navigateToSObject(CasId,"detail");
+                    //sforce.one.navigateToURL(CasId,"detail");
+                 }else{
+                    location.href = openCasURL;
+                }
+            }
+                
+
+
+        }
+
+        function openAppRecord(AppId,recId) {
+        console.log('AppId'+AppId);
+            var openURL = window.location.ancestorOrigins[0] + '/' + AppId;
+            console.log(window.location.ancestorOrigins[0]);
+            console.log('final url: ' + openURL);
+            if (sforce.console.isInConsole()) {
+            //  window.open(openURL);
+                findTab(openURL);
+            } else if('Theme4u' == '{!JSENCODE($User.UIThemeDisplayed)}'){
+                sforce.one.navigateToSObject(recId);  
+            }else{
+                location.href = openURL;
+            }
+
+        }
+
+        function findTab(criteria, title) {
+            sforce.console.getPrimaryTabIds(getPageInfo);
+            idToOpenx = '';
+
+
+            function getPageInfo(result) {
+            console.log('result');
+            console.log(result);
+                var isNotOpened = 0;
+                if (result.ids.length == 0) {
+                    return;
+                }
+                var count = 0;
+                for (i = 0; i < result.ids.length; i++) {
+                    var xid = result.ids[i];
+                    if (xid == null || xid.length == 0) {
+                    
+                        if (!criteria.startsWith('http'))
+                            criteria = "/" + criteria;
+                            console.log('criteria'+criteria);
+                        sforce.console.openPrimaryTab(null,
+                            criteria, true, undefined, openSuccess,
+                            undefined);
+                    } else {
+                       console.log('xid'+xid);
+                        sforce.console.getPageInfo(xid, checkPresence);
+                    }
+
+                    function checkPresence(result1) {
+
+
+                        console.log('checkPresence');
+                        var ObjectID = JSON.parse(result1.pageInfo).objectId;
+                        if (ObjectID == null || ObjectID.length == 0 ||
+                            ObjectID.indexOf('04i') != -1) {
+                            ObjectID = JSON.parse(result1.pageInfo).url;
+                        }
+
+                        if (ObjectID.indexOf(criteria) != -1) {
+                            // sforce.console.focusPrimaryTabById(result.ids[count]);
+                            sforce.console.refreshPrimaryTabById(result.ids[
+                                count], true, sucessMeth, true);
+                            isAPPr = result.ids[count];
+                            initillizeRefresh();
+                            isNotOpened += 1;
+                            idToOpenx = xid;
+                        }
+
+                        if (count == result.ids.length - 1) {
+                            console.log('test'+criteria);
+                            if (isNotOpened == 0 && title != undefined && title
+                                .length >= 1) {
+                                sforce.console.openPrimaryTab(null, "/" +
+                                    criteria, true,
+                                    title);
+                            } else if (isNotOpened == 0) {
+                                if (!criteria.startsWith('http'))
+                                    criteria = '/' + criteria;
+                                sforce.console.openPrimaryTab(null,
+                                    criteria, true, undefined, openSuccess,
+                                    undefined);
+                            } else{
+                                console.log('else');
+                            focusOnOpenedTab(criteria);
+                                 
+                            }
+
+                        }
+                        count++;
+
+                    }
+                }
+                console.log('outta here' + idToOpenx);
+
+
+            }
+        }
+        function focusOnOpenedTab(criteria){
+            console.log('insidemethod');
+            sforce.console.getPrimaryTabIds(function(response) {
+            var primaryTabIds = response.ids;
+            for (let id of primaryTabIds) {
+                sforce.console.getPageInfo(id, function(response) {
+                    var myVar = JSON.parse(response.pageInfo);
+                    var objectId = myVar.objectId;
+                    var objId = objectId.substring(0, 15);
+                    console.log(objId);
+                    console.log(criteria);
+                    if (objId === criteria) {
+                    
+                        sforce.console.focusPrimaryTabById(id);
+                    }
+                });
+            }
+        });
+            
+            
+        }
+        function sucessMeth(result) {
+            //alert(JSON.stringify(result,',','\t'));
+        }
+
+        function initillizeRefresh() {
+
+            if (isAPPr) {
+                sforce.console.addEventListener(sforce.console.ConsoleEvent.CLOSE_TAB,
+                    onEnclosingPrimaryTabClose, {
+                        tabId: isAPPr
+                    });
+            }
+            isAPPr = '';
+        }
+        var onEnclosingPrimaryTabClose = function(result) {
+            // alert('The enclosing primary tab is about to be closed. Tab ID: ' + result.id + ', Object ID: ' + (result.objectId ? result.objectId : 'not available'));
+            pageRefresh();
+        };
+
+        var openSuccess = function openSuccess(result) {
+            //Report whether opening the new tab was successful
+           
+            if (result.success == true) {
+             console.log('true'+result.id);
+                isAPPr = result.id;
+                initillizeRefresh();
+
+            } else {
+ console.log(result.success);
+            }
+        };
+
+        function time(msg) {
+            var dt = new Date();
+            var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
+            //console.log(msg + ' @' + time);
+        }
+        j$ = jQuery.noConflict();
+        j$(".myAnchor").click(function() {
+
+            openCa(j$(this).attr('rowid'));
+
+        });
+
+        function modifyDataSearch() {
+            j$("[data-search]").find("[href]").each(function(index) {
+                var elem = j$(this);
+                // console.log('b4 eem'+elem.text());
+                var toModify = j$(this.closest("td"));
+                var toReplaceText = 'data-search="' + toModify.data(
+                    'search') + '"';
+                var replacedText = 'data-search="' + elem.text() + '"';
+                var fullHTML = toModify[0].outerHTML;
+
+                //  console.log('trpt'+toReplaceText);
+                try {
+                    toModify[0].outerHTML = fullHTML.replace(
+                        toReplaceText,
+                        replacedText);
+                } catch (e) {
+
+                }
+                // console.log(toModify[0].outerHTML);
+            });
+        }
+
+        function modifyIDS() {
+
+            j$("a[id *='lookup']").each(function(index) {
+                var newID = "referencedField" + index;
+                var elem = j$(this);
+                var fullHTML = elem[0].outerHTML;
+                var oldID = elem.attr('id');
+
+                var regex = new RegExp(oldID, 'g');
+                // console.log(fullHTML);
+
+                try {
+
+                    elem[0].outerHTML = fullHTML.replace(regex,
+                        newID);
+                } catch (e) {
+
+                }
+            });
+        }
+        j$(window).resize(function() {
+            console.log('window resize fired');
+            var windowWidth = window.innerWidth;
+            var pixlWidth = windowWidth / 1.09 + 'px';
+            j$(".myPanel").css({
+
+                "width": pixlWidth
+            });
+            j$(table).each(function() {
+                this.columns.adjust().draw();
+
+            });
+
+        });
+        j$(document).ready(function() {
+            try {
+                j$("a[btntype='prevbutton']").hide();
+                modifyDataSearch();
+                modifyIDS();
+                time('Init');
+
+                if (!JSON.parse('{!noBandShow}'))
+                    j$(".tab").fadeIn();
+                j$(".myCol img").each(function(i) {
+                    var jq = j$(this);
+                    jq.closest('td').attr('data-order', jq.prop(
+                        'src'));
+                });
+                document.getElementById("ListView").style.display =
+                    "block";
+
+                time('readyProcessed');
+                if (sforce.console.isInConsole())
+                    mySpy();
+                else
+                    initOfPt();
+            } catch (e) {
+                console.log(e);
+            }
+
+            //
+            return false;
+        });
+
+        j$("#demo").focus(function() {
+            console.log("Handler for .focus() called.");
+        });
+
+        function initOfPt() {
+            myFunction();
+            j$(".myPanel").css({
+                "display": "inline-block"
+            });
+
+
+            setTimeout(function() {
+                j$(table).each(function() {
+                    this.columns.adjust().draw();
+
+                });
+
+            }, 2);
+            setTimeout(function() {
+                if (sessionStorage.highlightedIDS) {
+
+                    j$("#highLight").val(sessionStorage.getItem(
+                        "highlightedIDS"));
+                    highlightRows("fresh");
+                    sessionStorage.removeItem(
+                        "highlightedIDS");
+                    j$("#highLight").val();
+                }
+
+
+            }, 2);
+            j$(".loader").hide();
+        }
+
+
+
+        function pageRefresh() {
+            var value = j$("#highLight").val();
+
+            sessionStorage.setItem("highlightedIDS", value);
+            if (sforce.console.isInConsole())
+                sforce.console.refreshNavigationTab();
+            else {
+                location.reload();
+            }
+            return false;
+        }
+
+
+        function assignDynamicID() {
+
+            j$(function() {
+                j$('div.flash').each(function(i) {
+
+                    var idobj = "flashDiv" + i;
+                    j$(this).attr({
+                        id: idobj
+                    });
+                });
+            });
+
+        }
+
+        function showProcessing() {
+            // moveSlow();
+            j$('#mainDivCont').css("opacity", '.2');
+            //j$('#myDivLoad').fadeIn();
+            j$(".loader").fadeIn();
+
+        }
+
+        function removeProcessing() {
+            //j$('#myDivLoad').fadeOut();
+             j$('.loader').hide();
+            j$('#mainDivCont').css("opacity", '1');
+        }
+
+        function highlightRows(divInfoToRemove) {
+            var input = j$("#highLight");
+            if (input.val().length >= 1) {
+                var currentVal = input.val().split(":");
+                var crln = currentVal.length;
+
+
+                for (var i = 1; i <= crln; i++) {
+                    if (currentVal[i] != undefined) {
+                        var divPair = currentVal[i].split('_');
+
+                        var div = divPair[1];
+                        if (div == divInfoToRemove || divInfoToRemove ===
+                            "fresh")
+
+                        {
+
+                            var idOfObj = divPair[0];
+                            j$("[rowID = '" + idOfObj + "']").closest(
+                                "tr").effect(
+                                "highlight", {
+                                    color: "#ffe680"
+                                }, 40000).focus();
+
+                            input.val(input.val().replace(':' + currentVal[i],
+                                ''));
+                        }
+                    }
+                }
+            }
+        }
+        function assignAllocatedDimensions(){
+            var elems = j$("span[dimension *='|']");
+            elems.each(function(){
+                dimension = j$(this).attr('dimension');
+                var width = dimension.split('|')[0];
+                var height = dimension.split('|')[1];
+                if(width != 0)
+               j$(this).find('img').width(width);
+                if(height != 0)
+               j$(this).find('img').height(height);
+            });
+        }
+
+        function myFunction() {
+            assignDynamicID();
+            assignAllocatedDimensions();
+            table = [];
+            var windowWidth = window.innerWidth;
+            var pixlWidth = windowWidth / 1.09 + 'px';
+            j$(".myPanel").css({
+
+                "width": pixlWidth
+            });
+
+            var truncateCoulumns = JSON.parse('{!BlockTruncateColumns}');
+            console.log('truncateCoulumns');
+            console.log(truncateCoulumns);
+            var lengthDF = myDateFormats.length;
+            
+            try{
+            for (j = 0; j < lengthDF; j++) {
+                //j$.fn.dataTable.moment(myDateFormats[j]);
+            }
+             j$.fn.dataTable.moment('{!JSENCODE(currentDateFormat)}');
+            }
+            catch(e){
+                console.log('moment unitiatiallied for dtbles @@'+e);
+            }
+            //j$.fn.dataTable.sortCustom();
+
+            invokeDataTables(".myClassPagination", true, truncateCoulumns);
+
+            invokeDataTables(".myClassNoPagination", false, truncateCoulumns);
+        }
+        function parseTheString(stringToWOrk){
+           // console.log(stringToWOrk);
+         myArray =   stringToWOrk.replace('[','').replace(']','').split(',');
+         size = myArray.length;
+         //console.log(size);
+         var arr = [];
+         for(icount=0; icount<size ;icount++){
+             var str= myArray[icount];
+             if(str.indexOf(':') !=-1){
+               str= str.split(':')[1];
+             }
+             arr.push(str.trim());
+         }
+         //console.log('parseTheString');
+        // console.log(arr);
+         return arr;   
+        }
+
+        function invokeDataTables(className, paginationOpn, truncateCoulumns) {
+            var tablesO = j$(className);
+            var length = tablesO.length;
+
+
+            for (i = 0; i < length; i++) {
+                var dt = tablesO[i];
+                var allColumns = j$(dt).find(".myCol");
+                var numberOfRows = j$(dt).find('tr').length - 1;
+                var sortOrder = j$(dt).find('tbody').attr("sortOrder");
+                sortOrder = sortOrder == "false" ? "desc" : "asc";
+                var truncateCoul = parseTheString(j$(dt).find('tbody').attr("truncateinfo"));
+                var columnToHide = parseInt(j$(dt).find('tbody').attr(
+                    "ishidden"))
+                var defaultSortCol = parseInt(j$(dt).find('tbody').attr(
+                    "defaultSortCol"));
+
+                //  alert(defaultSortCol);
+                var isHiddenFirst = columnToHide != -1;
+                columnToHide = isHiddenFirst ? columnToHide : 0;
+
+                // console.log(truncateCoulumns[i]);
+                if (numberOfRows >= 1) {
+                    //var values = Object.keys(truncateCoulumns[i].columnsConfig);
+
+
+                    var numberOfColumnsPerRow = allColumns.length /
+                        numberOfRows;
+                    // console.log(Object.keys(values));   
+                    for (currRow = 0; currRow < numberOfRows; currRow++) {
+                        for (colVal = 0, len = truncateCoul.length; colVal < len; colVal++) {
+                            var cutoffLength = parseInt(truncateCoul[
+                                colVal]);
+
+                               var validIndex = colVal + currRow *
+                                numberOfColumnsPerRow;
+                            //var validIndex = parseInt(values[colVal]) + currRow *
+                                //numberOfColumnsPerRow;
+                            //  console.log(validIndex);   
+                            var currCol = j$(allColumns[validIndex]);
+                            var text = currCol.text().trim();
+                            console.log('text:'+ text);
+                            if (cutoffLength == 0) {
+                                cutoffLength = text.length;
+                            }
+                            if (text.length > cutoffLength) {
+                                var shortened = text.substr(0, cutoffLength - 1);
+                                
+                                var lastElem = currCol.find("*:last");
+                                if (lastElem.prop("tagName") == "BR") {
+                                    lastElem = currCol.find("span:last");
+                                }
+
+
+                                if (lastElem.prop("tagName") == "SPAN") {
+
+                                    lastElem.attr('title', text);
+                                    console.log('Inside Span');
+                                }
+                                if (lastElem.prop("tagName") == "A" && !lastElem[0].id && lastElem.attr('href').length ) {
+                                    
+                                    lastElem.attr('title', text);
+                                 
+                                }
+                               if(lastElem[0] != undefined){
+                                    lastElem[0].textContent = shortened + '..';
+                                }
+                                 
+
+                            }
+
+                        }
+                    }
+                }
+                var tableOb = j$(dt).DataTable({
+                    'bStateSave': true,
+                    'pageResize': true,
+                    'responsive': true,
+                    "bSortClasses": false,
+                    "iDisplayLength": 10,
+                    "order": [
+                        [defaultSortCol, sortOrder]
+                    ],
+                    'bDestroy': true,
+                    "bAutoWidth": false,
+                    "processing": true,
+                    "colReorder": true,
+                    "sPaginationType": "full_numbers",
+                    "scrollX": true,
+                    "sScrollX": "100%",
+                    "bPaginate": paginationOpn,
+                    'columnDefs': [{
+                        visible: !isHiddenFirst,
+                        targets: columnToHide
+                    }],
+                    "lengthMenu": [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "All"]
+                    ],
+                    "stateDuration": -1,
+                    'createdRow': function(row, data, dataIndex) {
+                        var dm = j$('td[data-order]', row).find('img');
+                        var maxWidth = 0;
+
+                        dm.each(function(index) {
+
+                            // console.log('index'+index);    
+                            var width = j$(this).width();
+                                
+                            if (width && width > maxWidth) {
+                             
+                                     j$(this).css('min-width',
+                                    width +
+                                    'px');
+                                maxWidth = width;
+                            }
+
+                        });
+                    }
+                });
+
+                var invisibleColumns = j$(dt).find('.invisCLS').closest("th");
+                invisibleColumns.each(function(index) {
+
+                    var currColM = j$(this).prop("dataset").columnIndex;
+                    var column = tableOb.column(currColM);
+                    column.visible(false);
+
+                });
+
+
+                table.push(tableOb);
+            };
+
+
+
+
+        }
+
+        (function(factory) {
+            if (typeof define === "function" && define.amd) {
+                define(["jquery", "moment", "datatables.net"], factory);
+            } else {
+                factory(jQuery, moment);
+            }
+        }(function(j$, moment) {
+
+            j$.fn.dataTable.moment = function(format, locale) {
+                var types = j$.fn.dataTable.ext.type;
+                // Add type detection
+                types.detect.unshift(function(d) {
+                    if (d) {
+                        // Strip HTML tags and newline characters if possible
+                        //  console.log('d');
+
+
+                        //console.log(e);
+                        if (d.replace) {
+                            d = d.replace(
+                                /(<.*?>)|(\r?\n|\r)/g,
+                                '');
+                        }
+
+                        // Strip out surrounding white space
+                        d = j$.trim(d);
+                    }
+
+                    // Null and empty values are acceptable
+                    if (d === '' || d === null || j$(
+                            "<div>" + d + "</div>").text().charCodeAt() ==
+                        160) {
+
+                        return 'moment-' + format;
+                    }
+                    return moment(d, format, locale, true).isValid() ?
+                        'moment-' + format :
+                        null;
+                });
+
+                // Add sorting method - use an integer for the sorting
+                types.order['moment-' + format + '-pre'] = function(
+                    d) {
+                    if (d) {
+                        // Strip HTML tags and newline characters if possible
+                        if (d.replace) {
+                            d = d.replace(/(<.*?>)|(\r?\n|\r)/g,
+                                '');
+                        }
+
+                        // Strip out surrounding white space
+                        d = j$.trim(d);
+                    }
+
+                    return (d === '' || d === null || j$(
+                                "<div>" + d + "</div>").text().charCodeAt() ==
+                            160) ?
+                        -Infinity :
+                        parseInt(moment(d, format, locale, true)
+                            .format('x'), 10);
+                };
+            };
+        }));
+
+    </script>
+
+    <script>
+        var token = '{!JSENCODE($Api.Session_ID)}';
+
+    </script>
+
+
+
+   
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-ui.min.js')}"
+    />
+
+
+    <apex:includeScript value="/support/console/40.0/integration.js" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/DataTables-1.10.15/js/jquery.dataTables.min.js')}"
+    />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/DataTables-1.10.15/js/dataTables.colReorder.min.js')}"
+    />
+
+
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/DateTime/moment.js')}"
+    />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/DateTime/datetimeMoment.js')}"
+    />
+
+    <style>
+        #myProgress {
+            width: 100%;
+            background-color: #ddd;
+        }
+        
+        .blockOP {
+            display: inline-block;
+            padding: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #ffe6cc;
+            border-right: 16px solid #ffbb99;
+            border-bottom: 16px solid #ff884d;
+            border-left: 16px solid #ff661a;
+            width: 120px;
+            height: 120px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+        }
+        
+        @-webkit-keyframes spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/CometD-New/json2.js')}"
+    />
+
+   
+  
+
+</apex:page>

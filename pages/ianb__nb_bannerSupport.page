@@ -1,0 +1,191 @@
+<!--
+============================================================================================== 
+COMMON SCRIPTS AND DEPENDENCIES FOR USE ON BANNER PAGES 
+
+Martin Little for Improved Apps
+August 2017
+============================================================================================== 
+ -->
+
+<apex:page controller="ianb.ControllerNoticeBoard" standardStylesheets="False" showHeader="False" sidebar="False" >
+
+    <meta http-equiv="refresh" content="{!RefreshInterval}"/>
+
+    <apex:includeScript value="/support/console/25.0/integration.js"/>
+    <apex:includeScript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/js/jsSettings.js')}"/>
+
+<!--   
+===============================================
+IF THERE ARE NOTIFICATIONS, RECORD THE FACT
+THAT THESE HAVE BEEN SHOWN TO USER IN BANNER
+===============================================
+ -->                
+    <apex:outputPanel rendered="{!HasRecipients}" layout="none">
+    
+        <script type="text/javascript">
+            
+            (function($) {
+                $(document).ready(function(){
+                
+                    // Note that notifs have been displayed
+                    setDisplayedStatus();
+                    
+                    // Adjust console settings, where relevant    
+                    setupConsole();
+                                   
+                });
+            })(jQuery);
+
+
+            // Set console button text and styling, plus pop banner if required
+            function setupConsole() {
+            
+                sforce.console.setCustomConsoleComponentButtonText('{!JSENCODE(BannerTitle)} - {!JSENCODE(TEXT(PendingNotices))}');
+                   
+                // Pop banner open if required:
+                // Factors:
+                // - Banner is already open (if it is, keep open to re-set timer cookie)
+                // - Are there notifications?       (HasRecipients = true)
+                // - Is banner snoozed?             (Check cookie - how long to next pop? Wait unless in the past)
+
+                // - [To Do: future releases] Is user on a call?                (Check CTI - if yes, do not pop!)
+            
+            
+                var timeToRefresh = {!RefreshInterval};                     
+                var timeToPop = {!RefreshInterval} * {!PopMultiplier};
+                var styles = '{!SnoozedStyles}';    
+                var icons = '{!SnoozedIcons}';  
+
+                styles = styles.split(',');
+                icons = icons.split(',');
+                
+                var x = new Date (readCookie('IANBSnooze{!$CurrentPage.Name}'));
+                var popped = readCookie('IANBBannerPopped{!$CurrentPage.Name}');
+                var DNow = new Date();
+            
+                if (popped == 'true') {popped = true;} else {popped = false;}
+                var popBanner = x.getYear() + '' == 'NaN' || x < DNow || popped;
+                NBSetCookie('IANBBannerPopped{!$CurrentPage.Name}', popBanner, 1);
+                                
+                if (popBanner == true) {
+                                    
+                    // Show banner and clear button style;
+                    sforce.console.setCustomConsoleComponentWindowVisible({!HasRecipients});
+                    sforce.console.setCustomConsoleComponentButtonStyle('background-color: ' + styles[3] + ';');
+                    sforce.console.setCustomConsoleComponentButtonIconUrl(icons[3]);
+                        
+                    // Set cookie specifying next pop time
+                    var exDate = new Date (new Date().getTime() + (timeToPop * 1000));                      
+                    NBSetCookie('IANBSnooze{!$CurrentPage.Name}', exDate, 1);
+                        
+                } else {
+                    // If not popping banner, style console button to reflect urgency / time to next pop
+                    if ({!HasRecipients} == true) {
+                                    
+                        // Style is a function of how long until next pop
+                        var styl;
+                        var IconURL;
+                        var rmd = (x - DNow) / (timeToPop * 1000);
+            
+                        if (rmd > 0.6) {
+                            styl = styles[0];
+                            IconURL = icons[0];
+                        } else if (rmd > 0.3) {
+                            styl = styles[1];
+                            IconURL = icons[1];
+                        } else {
+                            styl = styles[2];
+                            IconURL = icons[2];
+                        }
+            
+                        sforce.console.setCustomConsoleComponentButtonStyle('background-color: ' + styl + ';');
+                        sforce.console.setCustomConsoleComponentButtonIconUrl(IconURL);
+                    }
+                }
+            }
+            
+            
+            // For console: track when banner is opened / closed            
+            var eventHandler = function (result) {
+                var popped = !result.windowHidden;
+                NBSetCookie('IANBBannerPopped{!$CurrentPage.Name}', popped, 1);
+                setupConsole();
+            };
+            sforce.console.onCustomConsoleComponentButtonClicked(eventHandler);
+
+            
+            // Navigate to a Notification or other URL as it is clicked
+            function gotoURL(NID, NRAct, NDetail, HideHeader, TargetNewTab) {
+                
+                if (NRAct == 'Visit URL') {
+                    // Visit URL types need a new window with no additional parameters, plus special 
+                    // handling to record the fact that the Notification was opened
+                    window.open(NDetail);
+                    SetOpened(NID);
+
+                } else if (NRAct == 'Click to Dismiss') {
+                    // Record the fact that message was "opened", then 
+                    // display dismissal message if required and refresh banner
+                    
+                    if (NDetail != null && NDetail != '') {                    	
+						if (confirm(NDetail + '\n\n' + '{!JSENCODE(DialogueLocalisations['MessageClickToDismiss'])}')) {
+							SetOpened(NID);
+						}                    	
+                    } else {
+                    	// If there's no dismissal message, just record opening and refresh
+						SetOpened(NID);
+                    }
+                    
+                } else if (NRAct == 'BANNERLINK') {
+                    // These are banner title links etc. - not Notifications. So: simply display them
+                    window.open(NDetail);
+
+                } else {
+                    var NURL = '{!$Page.RecipientView}?id=' + NID;
+
+                    if (isConsolePage() == true) {
+                        // If in console, URLs should open into primary tabs
+                        // NB: these MUST have header hidden!
+                        sforce.console.openPrimaryTab(null, NURL + '&HideHeader=true', true, '', false, '');
+                        
+                    } else {
+                        if (TargetNewTab == true) {
+                            window.open(NURL + '&HideHeader=' + HideHeader);
+                        } else {
+                            top.location = NURL + '&HideHeader=' + HideHeader;
+                        }
+                    }
+                }
+            }    
+            
+            
+            // Check for whether banner is in Console
+            function isConsolePage () {
+
+                if (typeof sforce != 'undefined') {
+                    if (!sforce.console) {
+                        return false;
+                    } else {
+                        return sforce.console.isInConsole();
+                    }       
+                } else {
+                    // If we don't have library, look for tell-tale query parameters
+                    if (document.location.search.toUpperCase().indexOf('ISDTP=') != -1) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            
+            
+            // Locate Notification by its ID and set opened date in cases where we're opening an external URL (Required Action = Visit URL)
+            function SetOpened(NID) {
+                SetOpenedStatus(NID);
+            }
+                                    
+        </script>
+    </apex:outputPanel>
+
+
+</apex:page>

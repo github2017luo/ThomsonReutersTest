@@ -1,0 +1,312 @@
+<apex:page id="Page" standardController="TR_Retention__Retention_Child_Criteria__c" extensions="TR_Retention.RetentionActivityRuleController" sidebar="false">
+
+  <script type="text/javascript">
+  function openLookup(baseURL, width, modified, searchParam){
+    var originalbaseURL = baseURL;
+    var originalwidth = width;
+    var originalmodified = modified;
+    var originalsearchParam = searchParam;
+
+    var lookupType = baseURL.substr(baseURL.length-3, 3);
+    if (modified == '1') baseURL = baseURL + searchParam;
+
+    var isCustomLookup = false;
+    var SubjectPrefix ='{!SubjectPrefixID}';
+    var ChildPrefix ='{!ChildCrtPrefixID}';
+    
+    // Following "a08" is the lookup type for Activity Subject object
+    if(lookupType == SubjectPrefix){
+      var urlArr = baseURL.split("&");
+      var txtId = '';
+      if(urlArr.length > 2) {
+        urlArr = urlArr[1].split('=');
+        txtId = urlArr[1];
+      }
+        var master = '{!MasterID}';
+        var objName = 'Retention_Activity_Subject__c ';
+      // Following is the url of Custom Lookup page. You need to change that accordingly
+      baseURL = "/apex/CustomLookup?txt=" + txtId;
+
+      // Following is the id of apex:form control "myForm". You need to change that accordingly
+      baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+      if (modified == '1') {
+        baseURL = baseURL + "&lksearch=" + searchParam + "&master=" +master + "&objName=" +objName;
+      }
+      
+      // Following is the ID of inputField that is the lookup to be customized as custom lookup
+      if(txtId.indexOf('ActivitySubject') > -1 ){
+        isCustomLookup = true;
+      }
+    }
+    
+    // Following "a0A" is the lookup type for Trigger Criteria - Dependent Task (Retention_Child_Criteria__c) object 
+    if(lookupType == ChildPrefix){
+      var urlArr = baseURL.split("&");
+      var txtId = '';
+      if(urlArr.length > 2) {
+        urlArr = urlArr[1].split('=');
+        txtId = urlArr[1];
+      }
+      var master = '{!MasterID}';
+      var objName = 'Retention_Child_Criteria__c';
+        
+      // Following is the url of Custom Lookup page. You need to change that accordingly
+      baseURL = "/apex/CustomLookup?txt=" + txtId;
+    
+      // Following is the id of apex:form control "myForm". You need to change that accordingly
+      baseURL = baseURL + "&frm=" + escapeUTF("{!$Component.myForm}");
+      if (modified == '1') {
+        baseURL = baseURL + "&lksearch=" + searchParam + "&master=" +master + "&objName=" +objName;
+      }
+    
+      // Following is the ID of inputField that is the lookup to be customized as custom lookup
+      if(txtId.indexOf('deptask') > -1 ){
+        isCustomLookup = true;
+      }
+      
+    }
+    
+
+    if(isCustomLookup == true){
+      openPopup(baseURL, "lookup", 350, 480, "width="+width+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    }
+    else {
+      if (modified == '1') originalbaseURL = originalbaseURL + originalsearchParam;
+      openPopup(originalbaseURL, "lookup", 350, 480, "width="+originalwidth+",height=480,toolbar=no,status=no,directories=no,menubar=no,resizable=yes,scrollable=no", true);
+    } 
+  }
+</script>
+
+<apex:sectionHeader title="Retention Activity Rule"  subtitle="Retention Activity Rule" />
+
+  <apex:form id="myForm">  
+    <apex:PageBlock id="PageBlock">  
+    <apex:pageMessages ></apex:pageMessages>
+      <apex:pageBlockSection title="Activity Information" id="info">
+
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.Name.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.Name.Label}</apex:outputtext>
+            <apex:inputField id="namee" value="{!activityChild.name}"/>
+        </apex:pageBlockSectionItem>
+        
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Rule_Description__c.inlineHelpText}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Rule_Description__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+                <div class="requiredInput">
+                    <div class="requiredBlock"></div>    
+                    <apex:inputField value="{!activityChild.TR_Retention__Activity_Rule_Description__c}"  required="false"/>
+                 </div>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        
+        <apex:outputField id="criteria" value="{!activityChild.TR_Retention__Retention_Parent_Criteria__c}"  />
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Parent_Rule_Engine_Description__c.inlineHelpText}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Parent_Rule_Engine_Description__c.Label}</apex:outputtext>
+             <apex:inputField value="{!activityChild.TR_Retention__Parent_Rule_Engine_Description__c}"  required="false"/>
+        </apex:pageBlockSectionItem>
+        
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Type__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Type__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+                <div class="requiredInput">
+                    <div class="requiredBlock"></div>    
+                <apex:selectList value="{!activityChild.TR_Retention__Activity_Type__c}"  size="1" required="true" >
+                    <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                    <apex:selectOptions value="{!ActivityTypeOptions}" />
+                    <apex:actionsupport event="onchange" rerender="myForm,emailcc" />
+                </apex:selectList>
+            </div>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Priority__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Priority__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+                <div class="requiredInput">
+                    <div class="requiredBlock"></div>    
+                <apex:selectList value="{!activityChild.TR_Retention__Priority__c}"  size="1" required="true">
+                    <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                    <apex:selectOptions value="{!ActivityPriorityOptions}" />
+                </apex:selectList>
+            </div>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject__c.inlineHelpText}" rendered="{!!activityChild.TR_Retention__Is_Default__c}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:inputField id="ActivitySubject" value="{!activityChild.TR_Retention__Activity_Subject__c}" required="false"/>
+                    </div>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <!-- Default -> Readonly-->
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Is_Default__c}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject__c.Label}</apex:outputtext>
+            <apex:outputField id="ActivitySubjectR" value="{!activityChild.TR_Retention__Activity_Subject__c}" />
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject_Formula__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Activity_Subject__c!='' && activityChild.TR_Retention__Activity_Subject_Formula__c!=''}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject_Formula__c.Label}</apex:outputtext>
+            <apex:outputText id="ActivitySubjectText" value="{!activityChild.TR_Retention__Activity_Subject_Formula__c}" />
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Description_Formula__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Activity_Subject__c!='' && activityChild.TR_Retention__Activity_Description_Formula__c!=''}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Description_Formula__c.Label}</apex:outputtext>
+            <apex:outputText id="ActivityDescriptionText" value="{!activityChild.TR_Retention__Activity_Description_Formula__c}" />
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Email_CC_To_Manager__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Activity_Type__c=='Email'}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Email_CC_To_Manager__c.Label}</apex:outputtext>
+            <apex:inputField id="emailcc" value="{!activityChild.TR_Retention__Activity_Email_CC_To_Manager__c}"/>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Same_Task_Reminder__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Activity_Type__c!='Email'}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Same_Task_Reminder__c.Label}</apex:outputtext>
+            <apex:inputcheckbox id="reminder1" value="{!chkBxReminder}" label="checkBox">    
+                <apex:actionSupport event="onchange" rerender="thePanel, myForm" action="{!checkedReminder}"/>    
+            </apex:inputcheckbox> 
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem id="thePanel" helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Same_Task_Reminder_days__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Activity_Type__c!='Email' && displayInputputText}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Same_Task_Reminder_days__c.Label}</apex:outputtext>
+            <apex:inputField id="days" value="{!activityChild.TR_Retention__Same_Task_Reminder_days__c}"  />
+        </apex:pageBlockSectionItem>     
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Role__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Role__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+               <div class="requiredInput">
+               <div class="requiredBlock"></div>
+                <apex:selectList value="{!activityChild.TR_Retention__Role__c}"  size="1" required="true">
+                    <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                    <apex:selectOptions value="{!TeamMemberRolesOptions}" />
+                </apex:selectList>
+                </div>
+              </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Send_Email_To_Customer__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Activity_Type__c=='Email'}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Send_Email_To_Customer__c.Label}</apex:outputtext>
+                <apex:selectRadio value="{!activityChild.TR_Retention__Send_Email_To_Customer__c}" >
+                    <apex:selectOption itemValue="true" itemLabel="Primary Contact Contract" id="redOption"/>
+                    <apex:selectOption itemValue="false" itemLabel="Task Owner" id="blueOption"/>
+                </apex:selectRadio>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Role__c.inlineHelpText}" rendered="{!(!activityChild.TR_Retention__Is_Default__c && dynamicList.Size !=0)}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Group_Name__c.Label}</apex:outputtext>
+            <apex:inputField id="groupnos" value="{!activityChild.TR_Retention__Group_Name__c}"  />
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Email Template Information" rendered="{!activityChild.TR_Retention__Activity_Type__c=='Email'}">
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Email_Template_ID__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Email_Template_ID__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+               <div class="requiredInput">
+               <div class="requiredBlock"></div>
+            <apex:selectList value="{!activityChild.TR_Retention__Email_Template_ID__c}"  size="1" required="true">
+                <apex:selectOptions value="{!EmailTempWithFolders}" />
+            </apex:selectList> 
+            </div>
+            </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection columns="2" title="Activity Trigger Criteria">
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Product__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Product__c.Label}</apex:outputtext>
+            <apex:inputField id="prod" value="{!activityChild.TR_Retention__Product__c}"/>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Trigger_Time__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Trigger_Time__c.Label}</apex:outputtext>
+                <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:inputField id="triggertime" value="{!activityChild.TR_Retention__Trigger_Time__c}" required="false"/>
+                    </div>
+                </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Trigger_Date__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Trigger_Date__c.Label}</apex:outputtext>
+                <apex:outputPanel >
+                    <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                    <apex:inputField id="triggerdate" value="{!activityChild.TR_Retention__Trigger_Date__c}"  required="false" />
+                    </div>
+                </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Trigger_Date_1__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Trigger_Date_1__c.Label}</apex:outputtext>
+            <apex:outputPanel >
+                    <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                    <apex:selectList value="{!activityChild.TR_Retention__Trigger_Date_1__c}"  size="1" required="false">
+                        <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                        <apex:selectOptions value="{!CriteriaDateOption}" />
+                    </apex:selectList>
+                </div>
+                </apex:outputPanel>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Dependent_Task__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Dependent_Task__c.Label}</apex:outputtext>
+            <apex:inputField id="deptask" value="{!activityChild.TR_Retention__Dependent_Task__c}"/>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Dependent_Task_Description__c.inlineHelpText}" rendered="{!If(activityChild.TR_Retention__Dependent_Task__c !=null, true, false)}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Dependent_Task_Description__c.Label}</apex:outputtext>
+             <apex:inputField value="{!activityChild.TR_Retention__Dependent_Task_Description__c}"  required="false"/>
+        </apex:pageBlockSectionItem>
+        
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Include_in_Renewal_Contract__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Include_in_Renewal_Contract__c.Label}</apex:outputtext>
+            <apex:inputField id="renewal" value="{!activityChild.TR_Retention__Include_in_Renewal_Contract__c}" />
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Sequence__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Sequence__c.Label}</apex:outputtext>
+            <apex:inputField id="seq" value="{!activityChild.TR_Retention__Activity_Sequence__c}" />
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Enabled__c.inlineHelpText}" rendered="{!!activityChild.TR_Retention__Is_Default__c}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Enabled__c.Label}</apex:outputtext>
+            <apex:inputField id="isenable" value="{!activityChild.TR_Retention__Is_Enabled__c}"/>
+        </apex:pageBlockSectionItem>
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Enabled__c.inlineHelpText}" rendered="{!activityChild.TR_Retention__Is_Default__c}">
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Enabled__c.Label}</apex:outputtext>
+            <apex:outputField id="isenable" value="{!activityChild.TR_Retention__Is_Enabled__c}" />
+        </apex:pageBlockSectionItem>        
+        
+        
+        <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Default__c.inlineHelpText}" >
+            <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Default__c.Label}</apex:outputtext>
+            <apex:outputField id="default" value="{!activityChild.TR_Retention__Is_Default__c}"  />
+        </apex:pageBlockSectionItem>
+        
+                        
+      </apex:pageBlockSection>
+      
+      <apex:pageblockButtons >
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Save & New" action="{!saveAndNew}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+      </apex:pageblockButtons>
+            
+    </apex:PageBlock>
+  </apex:form>
+ 
+</apex:page>

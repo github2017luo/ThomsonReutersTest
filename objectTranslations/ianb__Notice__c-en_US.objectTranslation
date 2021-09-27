@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- The number of Notifications that have been Acknowledged &amp; Flagged by Recipients; to indicate that they need further assistance to fulfil the Required Action and/or the Notice&apos;s purpose --></help>
+        <label><!-- Flagged Notifications --></label>
+        <name>ianb__AcknowledgedAndFlaggedNotifications__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of Notifications that hat been Acknowledged in some way by Recipients (where Acknowledgement is the Required Acton) --></help>
+        <label><!-- Acknowledged Notifications --></label>
+        <name>ianb__AcknowledgedNotifications__c</name>
+    </fields>
+    <fields>
+        <help><!-- A Notice-specific acknowledgement statement for Recipients to agree (and optionally Flag for follow-up) if the Notice Required Action is to Acknowledge the Notice. New Notices default to the parent NoticeBoards Default Acknowledgement Statement. --></help>
+        <label><!-- Acknowledgement Statement --></label>
+        <name>ianb__AcknowledgementStatement__c</name>
+    </fields>
+    <fields>
+        <help><!-- Allows Recipients to provide Comments with their Response to this Notice, when checked --></help>
+        <label><!-- Allow Comment --></label>
+        <name>ianb__AllowComment__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date and time when this Notice was first submitted for Approval - if pre-publication approval was set as required --></help>
+        <label><!-- Approval Request Submitted Date --></label>
+        <name>ianb__ApprovalRequestSubmittedDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sets whether any Notice Approval process is required before this Notice can be published --></help>
+        <label><!-- Approval Required? --></label>
+        <name>ianb__ApprovalRequired__c</name>
+    </fields>
+    <fields>
+        <help><!-- Tracks the Status of approval process milestones on the Notice Approval tab. (Set via field updates from the approval Process.) --></help>
+        <label><!-- Approval Status --></label>
+        <name>ianb__ApprovalStatus__c</name>
+        <picklistValues>
+            <masterLabel>0: Not Started</masterLabel>
+            <translation><!-- 0: Not Started --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>1: Submitted</masterLabel>
+            <translation><!-- 1: Submitted --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2: Rework Required</masterLabel>
+            <translation><!-- 2: Rework Required --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3: Resubmitted</masterLabel>
+            <translation><!-- 3: Resubmitted --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4: Rejected</masterLabel>
+            <translation><!-- 4: Rejected --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5: Approved</masterLabel>
+            <translation><!-- 5: Approved --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Required</masterLabel>
+            <translation><!-- Not Required --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The date and time when this Notice was Approved for publication - see the Notice Approvals tab for more detail. (Set via field updates from the approval process.) --></help>
+        <label><!-- Approved Date --></label>
+        <name>ianb__ApprovedDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of days until this Notice is set to be published automatically (by a time-based workflow) --></help>
+        <label><!-- Auto-Publish Countdown (Days) --></label>
+        <name>ianb__AutoPublishCountdownDays__c</name>
+    </fields>
+    <fields>
+        <help><!-- The future date and time when this Notice is Scheduled to be published automatically (via time-based workflow) --></help>
+        <label><!-- Auto-Publish Date --></label>
+        <name>ianb__AutoPublishDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of days until this Notice is set to be suspended from publication, automatically (by a time-based workflow) --></help>
+        <label><!-- Auto-Suspend Countdown (Days) --></label>
+        <name>ianb__AutoSuspendCountdownDays__c</name>
+    </fields>
+    <fields>
+        <help><!-- The future date and time when this Notice is Scheduled to be suspended from publication, automatically (via time-based workflow) --></help>
+        <label><!-- Auto-Suspend Date --></label>
+        <name>ianb__AutoSuspendDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- An optional, Notice-specific &apos;call to action&apos; message that overrides the default Required Action statement for this Notice&apos; Required Action setting --></help>
+        <label><!-- Banner Action Message --></label>
+        <name>ianb__BannerActionMessage__c</name>
+    </fields>
+    <fields>
+        <help><!-- A formula returning the default Required Action by Recipients for this Notice - for display within the Recipients&apos; Notification Banner (unless overridden by a Notice-specific Banner Action Message) --></help>
+        <label><!-- Banner Required Action --></label>
+        <name>ianb__BannerRequiredAction__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date and time when this Notice was Closed - having served its purpose and completing its lifecycle, ready for archival, according to local procedures --></help>
+        <label><!-- Closed Date --></label>
+        <name>ianb__ClosedDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- The custom style class, if any, to apply to this particular Notice and its Notifications --></help>
+        <label><!-- Custom Style --></label>
+        <name>ianb__CustomStyle__c</name>
+    </fields>
+    <fields>
+        <help><!-- The core message for this Notice, in rich text format; including any links to resources required by Recipients to meet the Required Action --></help>
+        <label><!-- Detail --></label>
+        <name>ianb__Detail__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of Notifications that have been Displayed to Recipients via their Notification Banner, but not yet Opened (or Acknowledged in some way, if that is the Required Action) --></help>
+        <label><!-- Displayed Notifications --></label>
+        <name>ianb__DisplayedNotifications__c</name>
+    </fields>
+    <fields>
+        <help><!-- Check this box to continue with Notice publication in the event of errors arising with individual Recipients --></help>
+        <label><!-- Ignore any Recipients that may cause err --></label>
+        <name>ianb__IgnoreRecipientErrors__c</name>
+    </fields>
+    <fields>
+        <help><!-- Web address of an image to associate with this Notice --></help>
+        <label><!-- Image URL --></label>
+        <name>ianb__ImageURL__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of Notifications that have been Issued to Recipients, but not yet Displayed, Opened (and optionally, Acknowledged in some way, if required) --></help>
+        <label><!-- Issued Notifications --></label>
+        <name>ianb__IssuedNotifications__c</name>
+    </fields>
+    <fields>
+        <help><!-- The Salesforce User who will approve this Notice for publication, if approval is required (defaults to the NoticeBoard Owner for new Notices) --></help>
+        <label><!-- Notice Approver --></label>
+        <name>ianb__NoticeApprover__c</name>
+        <relationshipLabel><!-- Notices --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- NoticeBoard Name --></label>
+        <name>ianb__NoticeBoard_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- NoticeBoard Theme Image URL --></label>
+        <name>ianb__NoticeBoard_Theme_Image_URL__c</name>
+    </fields>
+    <fields>
+        <help><!-- The NoticeBoard that contains this Notice - controlling its publishing team, policies, theme and default Signatory &amp; Acknowledgement Statement --></help>
+        <label><!-- NoticeBoard --></label>
+        <name>ianb__NoticeBoard__c</name>
+        <relationshipLabel><!-- Notices --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Defines the mode in which Recipients were selected - at an individual User level or as sets of Recipients, selected from one or more Lists --></help>
+        <label><!-- Notice Mode --></label>
+        <name>ianb__NoticeMode__c</name>
+    </fields>
+    <fields>
+        <help><!-- Shows this Notice&apos;s current milestone status within the Notice Management Lifecycle - New, Drafted, Published, Suspended, Closed --></help>
+        <label><!-- Notice Status --></label>
+        <name>ianb__NoticeStatus__c</name>
+        <picklistValues>
+            <masterLabel>Closed</masterLabel>
+            <translation><!-- Closed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Drafted</masterLabel>
+            <translation><!-- Drafted --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>New</masterLabel>
+            <translation><!-- New --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Publication Failed</masterLabel>
+            <translation><!-- Publication Failed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Publication Started</masterLabel>
+            <translation><!-- Publication Started --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Published</masterLabel>
+            <translation><!-- Published --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Suspended</masterLabel>
+            <translation><!-- Suspended --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Controls arrangements for Required Action = Open &amp; Acknowledge: Acknowledge Only → 1 button; Acknowledge / Acknowledge &amp; Flag (for follow-up) → 2 buttons; Vote → Vote Options visible --></help>
+        <label><!-- Notification Response Option --></label>
+        <name>ianb__NotificationResponseOption__c</name>
+        <picklistValues>
+            <masterLabel>Acknowledge / Acknowledge &amp; Flag</masterLabel>
+            <translation><!-- Acknowledge / Acknowledge &amp; Flag --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Acknowledge Only</masterLabel>
+            <translation><!-- Acknowledge Only --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Vote</masterLabel>
+            <translation><!-- Vote --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The date and time when Notification statistics for this Notice were last refreshed. Click the &apos;Refresh&apos; button to update --></help>
+        <label><!-- Notification Statistics Last Refreshed --></label>
+        <name>ianb__NotificationStatisticsRefreshed__c</name>
+    </fields>
+    <fields>
+        <help><!-- The number of Notifications that have been Opened by Recipients, but not yet Acknowledged in some form, (if that is the Required Action) --></help>
+        <label><!-- Opened Notifications --></label>
+        <name>ianb__OpenedNotifications__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sets whether this Notice will be published automatically on the Auto-Publish Date (unless pending any Notice Approval) or manually --></help>
+        <label><!-- Publication Mode --></label>
+        <name>ianb__PublicationOption__c</name>
+        <picklistValues>
+            <masterLabel>Manual</masterLabel>
+            <translation><!-- Manual --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Scheduled</masterLabel>
+            <translation><!-- Scheduled --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The date and time when this Notice was Published (and Notifications Issued to its Selected Recipients) --></help>
+        <label><!-- Published Date --></label>
+        <name>ianb__PublishedDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- When using Notice Mode = &apos;List&apos; to select Recipients in bulk, this field records the currently selected lists --></help>
+        <label><!-- Recipient List Definition --></label>
+        <name>ianb__RecipientListDefinition__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date and time when the (latest) Notice Approval Request for this Notice was Rejected. It is set by field updates from any approval process in play for this Notice - see the Notice Approvals tab for more detail. --></help>
+        <label><!-- Rejected Date --></label>
+        <name>ianb__RejectedDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date and time by which Recipients must complete the Required Action associated with this Notice for it to be deemed successful --></help>
+        <label><!-- Required Action Deadline --></label>
+        <name>ianb__RequiredActionDeadline__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sets the response needed by Recipients for this Notice to be successful: &apos;Open and Read&apos; is an &apos;FYI&apos; announcement, whereas &apos;Read and Acknowledge&apos; means some form of feedback action or &apos;RSVP&apos; is required --></help>
+        <label><!-- Required Action --></label>
+        <name>ianb__RequiredAction__c</name>
+        <picklistValues>
+            <masterLabel>Click to Dismiss</masterLabel>
+            <translation><!-- Click to Dismiss --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Open and Read</masterLabel>
+            <translation><!-- Open and Read --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Read and Acknowledge</masterLabel>
+            <translation><!-- Read and Acknowledge --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Visit URL</masterLabel>
+            <translation><!-- Visit URL --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Used with &apos;Salutation = Other&apos; to create a Notice-specific opening greeting for personalisation, such as &apos;Hey there, [John]&apos; --></help>
+        <label><!-- Salutation-Other --></label>
+        <name>ianb__Salutation_Other__c</name>
+    </fields>
+    <fields>
+        <help><!-- Enables a choice of formal, informal or custom (&apos;Other&apos;) opening greeting for Recipients to help &apos;set the tone&apos; of this Notice --></help>
+        <label><!-- Salutation --></label>
+        <name>ianb__Salutation__c</name>
+        <picklistValues>
+            <masterLabel>Dear</masterLabel>
+            <translation><!-- Dear --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hey</masterLabel>
+            <translation><!-- Hey --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Hi</masterLabel>
+            <translation><!-- Hi --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>[Not Personalised]</masterLabel>
+            <translation><!-- [Not Personalised] --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- A count of all Selected Recipients for this Notice --></help>
+        <label><!-- Selected Recipients --></label>
+        <name>ianb__SelectedRecipients__c</name>
+    </fields>
+    <fields>
+        <help><!-- The name, role, function or team from whom this Notice is sent - as in an email&apos;s &apos;From&apos; field --></help>
+        <label><!-- Signatory --></label>
+        <name>ianb__Signatory__c</name>
+    </fields>
+    <fields>
+        <help><!-- A succinct statement which can constitute the entire Notice or summarise its Detail --></help>
+        <label><!-- Summary --></label>
+        <name>ianb__Summary__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date and time stamp when this Notice was suspended from publication --></help>
+        <label><!-- Suspended Date --></label>
+        <name>ianb__SuspendedDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Sets whether this Notice will be suspended from publication automatically on the Auto-Suspend date or manually --></help>
+        <label><!-- Suspension Mode --></label>
+        <name>ianb__SuspensionOption__c</name>
+        <picklistValues>
+            <masterLabel>Manual</masterLabel>
+            <translation><!-- Manual --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Scheduled</masterLabel>
+            <translation><!-- Scheduled --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- The subject or &apos;headline&apos; for this Notice --></help>
+        <label><!-- Title --></label>
+        <name>ianb__Title__c</name>
+    </fields>
+    <fields>
+        <help><!-- List of the Ids of any Apex Jobs relating to this Notice and its Recipients that have yet to complete execution --></help>
+        <label><!-- Updates Pending --></label>
+        <name>ianb__UpdatesPending__c</name>
+    </fields>
+    <fields>
+        <help><!-- Traps the reason for Voiding a Notice (setting it&apos;s Status to Closed), which has been submitted for Appoval but not yet Published --></help>
+        <label><!-- Void Reason --></label>
+        <name>ianb__VoidReason__c</name>
+    </fields>
+    <fields>
+        <help><!-- A comma-separated list of the options from which Recipients can choose their vote. To set a default choice, enclose one value in square brackets (not including the comma, no spaces between choices). Examples: &apos;[Yes],No,Maybe&apos; or &apos;Red,Amber,Green&apos; --></help>
+        <label><!-- Vote Choices --></label>
+        <name>ianb__VoteChoices__c</name>
+    </fields>
+</CustomObjectTranslation>

@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Will contain all custom settings attributes for the Business Development Premier Application.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>APP_OAUTH_CLIENTID__c</fullName>
+        <description>OAuth Client ID string</description>
+        <externalId>false</externalId>
+        <inlineHelpText>OAuth Client ID string</inlineHelpText>
+        <label>OAuth Client Id</label>
+        <length>75</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>APP_OAUTH_SECRET__c</fullName>
+        <description>OAuth secret string</description>
+        <externalId>false</externalId>
+        <inlineHelpText>OAuth secret string</inlineHelpText>
+        <label>OAuth Secret</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>APP_OAUTH_TOKEN__c</fullName>
+        <description>the token from a successful OAuth call</description>
+        <externalId>false</externalId>
+        <inlineHelpText>the token from a successful OAuth call</inlineHelpText>
+        <label>OAuth Token</label>
+        <length>250</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>APP_PASSWORD__c</fullName>
+        <description>Application password to use with OAuth call again may or may not be user related</description>
+        <externalId>false</externalId>
+        <label>APP_PASSWORD</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>APP_USERNAME__c</fullName>
+        <description>application user name for OAuth  may or may not be the logged in user?</description>
+        <externalId>false</externalId>
+        <label>APP_USERNAME</label>
+        <length>150</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account_Rel__c</fullName>
+        <defaultValue>&apos;No Contact Relationship Information available for this Account.&apos;</defaultValue>
+        <description>No Contact Relationship Information available for this Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Error Mesage No Contact Relationship Information available for this Account.</inlineHelpText>
+        <label>Account Rel(106)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <defaultValue>&apos;No Associated Account found in BDP.&apos;</defaultValue>
+        <description>No Associated Account found in BDP.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Error message No Associated Account found in BDP.</inlineHelpText>
+        <label>Account(102)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Audit_Log_Expiration_Age_Days__c</fullName>
+        <defaultValue>30</defaultValue>
+        <description>When to expire the Audit Log entries. Actions performed by users are captured to an Audit Log. This value controls how many days are retained.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When to expire the Audit Log entries. Actions performed by users are captured to an Audit Log. This value controls how many days are retained.</inlineHelpText>
+        <label>Audit Log Expiration Age (Days)</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Auth_Cookie_API_14_Overflow__c</fullName>
+        <description>On occasion, the Authorization token returned by API version 14 will exceed the storage capacity of &apos;Auth Cookie API 14&apos;. When this happens, &apos;Auth Cookie API 14 Overflow&apos; handles the extra data.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>On occasion, the Authorization token returned by API version 14 will exceed the storage capacity of &apos;Auth Cookie API 14&apos;. When this happens, &apos;Auth Cookie API 14 Overflow&apos; handles the extra data.</inlineHelpText>
+        <label>Auth Cookie API 14 Overflow</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Auth_Cookie_API_14_Timestamp__c</fullName>
+        <description>The timestamp when the Auth Cookie was obtained</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The timestamp when the Auth Cookie was obtained</inlineHelpText>
+        <label>Auth Cookie API 14 Timestamp</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Auth_Cookie_API_14__c</fullName>
+        <description>Holds the authorization cookie received back from the 14R1 API Logon Resource</description>
+        <externalId>false</externalId>
+        <label>Auth Cookie API 14</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CN_Password__c</fullName>
+        <description>password to use until OAuth is implemented</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please enter the CN Data Engine password</inlineHelpText>
+        <label>CN Password</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>CN_User_Name__c</fullName>
+        <description>place holder for CN login user name until OAuth is implemented</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Please enter CN Data Engine login name</inlineHelpText>
+        <label>CN User Name</label>
+        <length>35</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Relationship__c</fullName>
+        <defaultValue>&apos;No Relationship available for selected Contact.&apos;</defaultValue>
+        <description>No Relationship available for selected Contact</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Error message No Relationship available for selected Contact</inlineHelpText>
+        <label>Contact Relationship(101)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Corp_Insight__c</fullName>
+        <defaultValue>&apos;No Corporate Insight information Available.&apos;</defaultValue>
+        <description>No Corporate Insight information Available.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Error message No Corporate Insight information Available.</inlineHelpText>
+        <label>Corp Insight(105)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Cache_Size__c</fullName>
+        <defaultValue>10</defaultValue>
+        <description>Total number of top level records to be returned as part of any BDP web service request</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of top level records to be returned as part of any BDP web service request</inlineHelpText>
+        <label>Data Cache Size</label>
+        <precision>4</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Cleanup_Job_Id__c</fullName>
+        <description>Job Id from CronTrigger object which identifies the Data Cleanup Job. This field is not exposed to admin as it is controlled by custom code.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Job Id from CronTrigger object which identifies the Data Cleanup Job. This field is not exposed to admin as it is controlled by custom code.</inlineHelpText>
+        <label>Data Cleanup Job Id</label>
+        <length>18</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Display_Size__c</fullName>
+        <defaultValue>5</defaultValue>
+        <description>Total number of top level records to be displayed on the screen to the end user by default</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of top level records to be displayed on the screen to the end user by default</inlineHelpText>
+        <label>Data Display Size</label>
+        <precision>3</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Expiration_Hours__c</fullName>
+        <defaultValue>24</defaultValue>
+        <description>When to expire the local cache in BDP Relationship custom object? The decision is made by adding this hour to the record creation date. Once the data is expired, it will be deleted by batch job.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When to expire the local cache in BDP Relationship custom object? The decision is made by adding this hour to the record creation date. Once the data is expired, it will be deleted by batch job.</inlineHelpText>
+        <label>Data Expiration Time (Hrs)</label>
+        <precision>3</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Data_Sensitive_Display_Value__c</fullName>
+        <defaultValue>&quot;N/A&quot;</defaultValue>
+        <description>Contains the default display value for missing data like phone or email.  This value will display in each field appended to the field type (eg. Email N/A).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contains the default display value for missing data like phone or email.  This value will display in each field appended to the field type (eg. Email N/A).</inlineHelpText>
+        <label>Data Missing Display Value</label>
+        <length>25</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Display_General_Error_Message__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When unexpected exception occurs, do you like to display the original exception stack trace or a more generic (user friendly) error message on the user interface?</inlineHelpText>
+        <label>Display General Error Message</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Enable_Contact_Add_Action__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Enable the Add action link located on the Contact tab of the Business Development Premier components.  The default is true (ie. Enabled).  If unchecked (ie. Disabled) the Add action link will be hidden.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enable the Add action link located on the Contact tab of the Business Development Premier components.  The default is true (ie. Enabled).  If unchecked (ie. Disabled) the Add action link will be hidden.</inlineHelpText>
+        <label>Enable Contact Add Action</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Enable_Contact_Search_Action__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Enable the Search action link located on the Contact tab of the Business Development Premier components.  The default is true (ie. Enabled).  If unchecked (ie. Disabled) the Search action link will be hidden.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enable the Search action link located on the Contact tab of the Business Development Premier components.  The default is true (ie. Enabled).  If unchecked (ie. Disabled) the Search action link will be hidden.</inlineHelpText>
+        <label>Enable Contact Search Action</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Enable_Data_Cleanup_Job__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>By enabling this option, apex batch job which delete the following type of relationship records from the object cache based on the scheduled interval:
+
+1) Expired 
+2) Non expired but over the storage limit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>By enabling this option, apex batch job which delete the following type of relationship records from the object cache based on the scheduled interval:
+
+1) Expired 
+2) Non expired but over the storage limit</inlineHelpText>
+        <label>Enable Data Cleanup Job</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Enhanced_List_Data_Display_Size__c</fullName>
+        <defaultValue>25</defaultValue>
+        <description>Total number of top level records to be displayed on the enhanced list to the end user by default</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total number of top level records to be displayed on the enhanced list to the end user by default</inlineHelpText>
+        <label>Enhanced List Data Display Size</label>
+        <precision>3</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Error_Notification__c</fullName>
+        <defaultValue>&quot;cnsalesforce@thomsonreuters.com&quot;</defaultValue>
+        <description>The email address to which any error warnings or notifications would be sent to.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The email address to which any error warnings or notifications would be sent to.</inlineHelpText>
+        <label>Error Notification Email</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Exclude_Sensitive_Audit_Log_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>When checked, any Audit Log records that are downloaded will be sanitized by replacing the specific Account and Contact names with their Salesforce Id.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked, any Audit Log records that are downloaded will be sanitized by replacing the specific Account and Contact names with their Salesforce Id.</inlineHelpText>
+        <label>Exclude Sensitive Audit Log Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Feedback_Notification_Email__c</fullName>
+        <defaultValue>&quot;cnsalesforce@thomsonreuters.com&quot;</defaultValue>
+        <description>Email address to which feedback can be submitted by users</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Email address to which feedback can be submitted by users</inlineHelpText>
+        <label>Feedback Notification Email</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Feedback_Notification_Subject__c</fullName>
+        <defaultValue>&quot;FEEDBACK: CN SF Application&quot;</defaultValue>
+        <description>Subject that will be automatically placed on the feedback link</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Subject that will be automatically placed on the feedback link</inlineHelpText>
+        <label>Feedback Notification Subject</label>
+        <length>150</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>General_Error_Message__c</fullName>
+        <defaultValue>&quot;The ContactNet application has experienced an unexpected error.  Should this message persists, please contact your System Administrator and provide tracking id {TOKEN}.&quot;</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>When &quot;Display General Error Message&quot; field is checked, this default error message will be used as the user friendly message instead of the original exception stack trace on the user interface.</inlineHelpText>
+        <label>General Error Message</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Inner_Relationship_Data_Display_Size__c</fullName>
+        <defaultValue>10</defaultValue>
+        <description>Controls the total number of records displayed on account relationship drill down page</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Controls the total number of records displayed on account relationship drill down page</inlineHelpText>
+        <label>Inner Relationship Data Display Size</label>
+        <precision>4</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Login_Failed__c</fullName>
+        <defaultValue>&apos;Login unsuccessful to BDP.&apos;</defaultValue>
+        <description>Login unsuccessful to BDP.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Error message Login unsuccessful to BDP</inlineHelpText>
+        <label>Login Failed(103)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Data_Storage__c</fullName>
+        <defaultValue>20</defaultValue>
+        <description>What is the Maximum amount of temporary Data Storage that the BDP Relationship object could consume (MB)?  Note: each record is 2 KB therefore 20 MB = 10,000 records max</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What is the Maximum amount of temporary Data Storage that the BDP Relationship object could consume (MB)?  Note: each record is 2 KB therefore 20 MB = 10,000 records max</inlineHelpText>
+        <label>Max Data Storage (MB)</label>
+        <precision>4</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OAUTH_GRANTTYPE__c</fullName>
+        <description>OAuth Grant type i.e. password</description>
+        <externalId>false</externalId>
+        <inlineHelpText>OAuth Grant type i.e. password</inlineHelpText>
+        <label>OAuth Grant Type</label>
+        <length>35</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OAUTH_URL__c</fullName>
+        <description>OAuth endpoint for BDP OAuth call</description>
+        <externalId>false</externalId>
+        <inlineHelpText>OAuth endpoint for BDP OAuth call</inlineHelpText>
+        <label>OAuth URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>OA_company__c</fullName>
+        <defaultValue>&apos;Selected Company is not an OA Company.&apos;</defaultValue>
+        <description>Selected Company is not an OA Company.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Error Message Selected Company is not an OA Company.</inlineHelpText>
+        <label>OA Company(104)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OAuth_Expiration_Time__c</fullName>
+        <description>OAuth Expiration Time</description>
+        <externalId>false</externalId>
+        <inlineHelpText>OAuth Expiration Time</inlineHelpText>
+        <label>OAuth Expiration Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Recency_as_Date__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Allows user to indicate preference to display recency as date rather than # of days</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Allows user to indicate preference to display recency as date rather than # of days</inlineHelpText>
+        <label>Display Recency</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Security_Token__c</fullName>
+        <description>Contains the security token used as part of the web service credentials.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contains the security token used as part of the web service credentials.</inlineHelpText>
+        <label>Security Token</label>
+        <length>32</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Email_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Colleague Email Data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Email Data</inlineHelpText>
+        <label>Show Colleague Email Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Location__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Show Colleague Location</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Location</inlineHelpText>
+        <label>Show Colleague Location Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Phone_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Colleague Phone Data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Phone Data</inlineHelpText>
+        <label>Show Colleague Phone Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Recency__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Colleague Recency</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Recency</inlineHelpText>
+        <label>Show Colleague Recency</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Relationship_Strength__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Colleague Relationship Strength</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Relationship Strength</inlineHelpText>
+        <label>Show Colleague Relationship Strength</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Source__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Colleague Source</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Source</inlineHelpText>
+        <label>Show Colleague Source</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Colleague_Title__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Colleague Title</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Colleague Title</inlineHelpText>
+        <label>Show Colleague Title</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Email_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Email Data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Email Data</inlineHelpText>
+        <label>Show Contact Email Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Location__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Location</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Location</inlineHelpText>
+        <label>Show Contact Location</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Phone_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Phone Data</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Phone Data</inlineHelpText>
+        <label>Show Contact Phone Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Recency__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Recency</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Recency</inlineHelpText>
+        <label>Show Contact Recency</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Relationship_Strength__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Relationship Strength</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Relationship Strength</inlineHelpText>
+        <label>Show Contact Relationship Strength</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Source__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Source</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Source</inlineHelpText>
+        <label>Show Contact Source</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Contact_Title__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Show Contact Title</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Show Contact Title</inlineHelpText>
+        <label>Show Contact Title</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Email_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>When disabled, the Business Development Premier Contact tab&apos;s Email column will be hidden from all users.  Enabled by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When disabled, the Business Development Premier Contact tab&apos;s Email column will be hidden from all users.  Enabled by default.</inlineHelpText>
+        <label>Show Email Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Show_Phone_Data__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>When disabled, the Business Development Premier Contact tab&apos;s Phone column will be hidden from all users.  Enabled by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When disabled, the Business Development Premier Contact tab&apos;s Phone column will be hidden from all users.  Enabled by default.</inlineHelpText>
+        <label>Show Phone Data</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Support_Notification_Email__c</fullName>
+        <defaultValue>&quot;cnsalesforce@thomsonreuters.com&quot;</defaultValue>
+        <description>Contains the ContactNet technical support email.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Contains the ContactNet technical support email.</inlineHelpText>
+        <label>Support Notification Email</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>WS_API_Version__c</fullName>
+        <defaultValue>&quot;15R1&quot;</defaultValue>
+        <description>Identifies which Business Development Premier Web Service API version to connect with.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Identifies which Business Development Premier Web Service API version to connect with.</inlineHelpText>
+        <label>API Version</label>
+        <length>15</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>WS_Auth_Key__c</fullName>
+        <description>Web Service Settings - The application level password as configured in the ContactNet Server Application Level Security</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The application level password as configured in the ContactNet Server Application Level Security</inlineHelpText>
+        <label>Auth Key</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>WS_Consumer_Name__c</fullName>
+        <description>Web Service Settings - The name of the consuming application as configured in the Business Development Premier&apos;s Server Application Level Security</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The name of the consuming application as configured in the Business Development Premier&apos;s Server Application Level Security</inlineHelpText>
+        <label>Consumer Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>WS_Endpoint__c</fullName>
+        <defaultValue>&quot;https://contactnet.DomainPlaceHolder.com/services/service.svc/&quot;</defaultValue>
+        <description>Web Service Settings - Business Development Premier URL endpoint for web service callouts</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Business Development Premier URL endpoint for web service callouts</inlineHelpText>
+        <label>Endpoint</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>WS_Is_Active__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Web Service Settings - A way to manually disable the Business Development Premier Web Service, if necessary (ie. routine maintenance and testing)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A way to manually disable the Business Development Premier Web Service, if necessary (ie. routine maintenance and testing)</inlineHelpText>
+        <label>Is Active</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>WS_Timeout__c</fullName>
+        <defaultValue>20</defaultValue>
+        <description>Web Service Settings - Length of time (in seconds) the callout waits for a response from the Business Development Premier provider before producing an error</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Length of time (in seconds) the callout waits for a response from the Business Development Premier provider before producing an error</inlineHelpText>
+        <label>Timeout (Seconds)</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>WS_Unavailable_Message__c</fullName>
+        <defaultValue>&quot;The Business Development Premier web service is temporarily unavailable. Please try again later.&quot;</defaultValue>
+        <description>Web Service Settings - The message displayed to the user if the Business Development Premier web service is unavailable</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The message displayed to the user if the Business Development Premier web service is unavailable</inlineHelpText>
+        <label>Unavailable Message</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>CN App Settings</label>
+    <visibility>Protected</visibility>
+</CustomObject>

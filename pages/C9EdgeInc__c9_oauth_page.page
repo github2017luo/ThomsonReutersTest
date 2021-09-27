@@ -1,0 +1,83 @@
+<apex:page showHeader="false" title="HD Forecast">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type="text/css">
+      body {
+        margin: 0;
+        font-size:1em;
+      }
+      
+      #centralAppIFrame {
+        height: 100%;
+        width: 100%;
+        border: none;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        z-index: 0;
+      }
+     
+        .emptyStates {
+            width: 400px;
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            font-family: sans-serif;
+            font-size: 14px;
+            background: #f0f0f0;
+            border-radius: 0 0 3px 3px;
+            color: #666;
+            z-index: 0;
+            position: fixed;
+            top: -1px;
+            left: 50%;
+            margin-left: -200px;
+        }
+
+    </style>
+ <apex:iframe src="/services/oauth2/authorize?response_type=code&client_id=3MVG9xOCXq4ID1uEOlDrB4lHALccq0NA9935Ly8uenk3bqO5NHZqR9VGP6IV0Wx4QMLyT0vzAnzrQxU52afGJ&redirect_uri=https://central.cloud9analytics.com/CentralApplication/index.jsp?pkg=new" scrolling="false" id="centralAppIFrame" title="Central"/>
+    
+       <script language="javascript" type="text/javascript">
+        var timepast = false;
+        var theiframe = document.getElementById("centralAppIFrame");
+        var iframeUrl = theiframe.src;  
+    
+      function emptyStateUI(msgUrl) {
+        var containerDiv = document.createElement('div');
+        containerDiv.className = 'emptyStates';
+        containerDiv.innerHTML += '<span>Having trouble viewing the content? <a href="' + msgUrl + '" target="_blank">Open in a new window</a></span>';
+        document.body.appendChild(containerDiv);
+      }
+    
+        function checkiframe() {
+
+          var iframeTimeout = setTimeout(function() {
+            timepast = true;
+          }, 1000);
+            
+            if (theiframe.attachEvent) {
+              theiframe.attachEvent("onload", function() {
+                if (timepast) {
+                    theiframe.style.display = '';
+                } else {
+                  emptyStateUI(iframeUrl);
+                }
+              });
+            } else {
+              theiframe.onload = function() {
+                if (timepast) {
+                    theiframe.style.display = '';
+                    
+                } else {
+                    emptyStateUI(iframeUrl);
+                }
+              };
+            }
+
+      }
+
+    checkiframe();  
+    
+    </script>
+</apex:page>

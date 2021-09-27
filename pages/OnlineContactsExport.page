@@ -1,0 +1,42 @@
+<!-- /**
+ * OnlineContactsExport Page to display page as CSV file with Online contacts of Quote/Proposal whic is calling from Online ContactsController
+ *
+ * @author  TCS
+ * @version 2017-01-27
+ */
+
+/**
+ * CHANGE HISTORY
+ * =============================================================================
+ * Date         Name                    Description
+ * 2017-01-27   Sreenu D                     Created
+ 
+ * =============================================================================
+ */ -->
+<apex:page controller="OnlineContactsExportController" readOnly="true" renderAs="pdf" cache="true" pageStyle="padding:0" showHeader="false" applyBodyTag="false" applyHtmlTag="false">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+        <style>@page{ size: landscape }</style>
+   </head>
+   <apex:pageBlock >   
+    <apex:pageBlockTable value="{!ocList}" var="oc" style="font-size:12px;" width="100%">
+        
+        <apex:column value="{!oc.SAP_Account_Number__c}" style="padding:0 3px 0 3px;" headerValue="SAP Number" />
+        <!--<apex:column value="{!oc.Account_Address__c}" />-->
+        <apex:column value="{!oc.Material__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.Product_Description__c}" style="padding:0 1px 0 1px;"/>
+        <apex:column value="{!oc.First_Name__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.Last_Name__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.Email__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.Position__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.Type__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.WLEc_Juris__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column headerValue="Banded Product" style="padding:0 3px 0 3px;">
+            {!IF(oc.Is_Banded_Product__c, 'Yes', 'No')}
+        </apex:column>
+        <apex:column value="{!oc.NAIC_Number__c}" style="padding:0 3px 0 3px;"/>
+        <apex:column value="{!oc.NAIC_Name__c}" style="padding:0 3px 0 3px;"/>
+        
+    </apex:pageBlockTable>     
+    </apex:pageBlock>         
+</apex:page>

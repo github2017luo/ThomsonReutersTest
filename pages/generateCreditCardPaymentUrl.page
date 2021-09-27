@@ -1,0 +1,12 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c" extensions="generateCreditCardPaymentUrlController"  rendered="{!oQuote.APTS_Payment_Option__c == 'Credit Card'}">
+    <apex:form id="Form1" >
+        <apex:pageBlock mode="mainDetail" id="pgblkMain">
+            <apex:pageBlockSection columns="1">
+                 <apex:pageBlockSectionItem >
+                      <apex:outputLabel for="PaymentGateway" value="PaymentGateway"/>
+                      <apex:outputLink id="gateurl" value="{!gatewayURL}"  target="_blank" style="color:blue; font-weight:bold">Payment Information</apex:outputLink>
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>       
+        </apex:pageBlock>
+    </apex:form>       
+</apex:page>

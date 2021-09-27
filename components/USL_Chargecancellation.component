@@ -1,0 +1,54 @@
+<apex:component controller="USL_chargeCancellationController">
+     <apex:attribute name="ipageController" type="ESC_PageControllerBase" assignTo="{!pageController}"
+        required="true" description="The controller for the page." />
+    <apex:pageBlock >
+    <apex:pageBlockSection columns="3">
+        <apex:pageBlockSectionItem >            
+            <apex:inputCheckbox />
+            <apex:outputLabel >Apply Rootcause/Reason code to all</apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        <apex:pageblockSectionItem >
+            <apex:selectList size="1" id="rotc" value="{!rootCause}">
+                <apex:selectOptions value="{!rootCauseList}"></apex:selectOptions>
+            </apex:selectList> 
+        </apex:pageblockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:selectList size="1" id="rasco" value="{!reasonCode}">
+                <apex:selectOptions value="{!reasonCodeList}"></apex:selectOptions>
+            </apex:selectList> 
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:inputCheckbox />
+            <apex:outputLabel >Cancel all WestLaw Items</apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        <apex:pageblockSectionItem >
+            <apex:selectList size="1" id="rotc" value="{!rootCause}">
+                <apex:selectOptions value="{!rootCauseList}"></apex:selectOptions>
+            </apex:selectList> 
+        </apex:pageblockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:selectList size="1" id="rasco" value="{!reasonCode}">
+                <apex:selectOptions value="{!reasonCodeList}"></apex:selectOptions>
+            </apex:selectList> 
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:inputCheckbox />
+            <apex:outputLabel >Cancel all Non-WestLaw Items</apex:outputLabel>
+        </apex:pageBlockSectionItem>
+        <apex:pageblockSectionItem >
+            <apex:selectList size="1" id="rotc" value="{!rootCause}">
+                <apex:selectOptions value="{!rootCauseList}"></apex:selectOptions>
+            </apex:selectList> 
+        </apex:pageblockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:selectList size="1" id="rasco" value="{!reasonCode}">
+                <apex:selectOptions value="{!reasonCodeList}"></apex:selectOptions>
+            </apex:selectList> 
+        </apex:pageBlockSectionItem>
+        <apex:pageBlockSectionItem >
+            <apex:inputCheckbox />
+            <apex:outputLabel >Cancel Tax</apex:outputLabel>
+        </apex:pageBlockSectionItem>
+    </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:component>

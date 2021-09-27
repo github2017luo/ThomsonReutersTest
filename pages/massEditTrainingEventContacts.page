@@ -1,0 +1,292 @@
+<apex:page id="page" standardController="Training_Event_Contact__c" recordSetVar="Training Event Contacts" extensions="MassEditTrainingContacts" action="{! onPageLoad}">
+    <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" /> 
+    <apex:stylesheet value="{!$Resource.CalendarControl}"/>
+    <apex:includeScript value="{!$Resource.Datepicker}"/> 
+    <apex:includeScript value="{!URLFOR($Resource.jQueryPopup, 'popbox.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryPopup, 'popbox.css')}" />
+       
+    <style>
+        .linkClass {
+                    color:blue;
+                    font-size:11px;                    
+                }
+    </style>
+    
+    <br/>
+    <apex:sectionHeader id="pageTitle" title="Manage Contacts" subtitle="{!tEventName}" />
+    <div>&nbsp;</div>
+    <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 2px;">
+            &nbsp;&laquo;&nbsp;<a href="/{!TrngEvntId}" style="color:#015BA7;">Back to Training Event: {!tEventName} </a>
+    </div>
+    <div>&nbsp;</div>
+
+    <apex:form id="formnorecs" rendered="{!NOT(IsRecords)}">
+        <apex:pageBlock >
+            <apex:pageMessage summary="There are no contacts associated to this training event." 
+            severity="info" id="mupmst"/>            
+        </apex:pageBlock>    
+    </apex:form>
+
+
+    <apex:form id="form" rendered="{!IsRecords}">
+        <apex:actionFunction name="topicTab" action="{!setBool}" reRender="blockContacts" status="refreshStat"/>
+        <apex:actionFunction name="dateTab" action="{!setBool}" reRender="blockContacts" status="refreshStat"/>        
+        <apex:outputPanel >
+            <apex:pageBlock mode="detail">
+                <apex:pageBlockSection columns="1" title="Mass Edit Options">
+                    <apex:tabPanel switchType="client" 
+                    tabClass="activeTab" inactiveTabClass="inactiveTab"
+                    contentClass="tabContent" selectedTab="trainingDate">
+                            <apex:tab label="Training Date" name="trainingDate" id="tabTrainingDate" ontabenter="dateTab()">
+                                <apex:outputPanel layout="block" style="padding:10px;">
+                                <strong>User Training Date</strong><br/>
+                                
+                                    <apex:inputText size="10" id="trainedDate" value="{!dTrainedDate}" onfocus="DatePicker.pickDate(true, 'page:form:j_id24:j_id25:trainedDate', false);"/>
+                                    <br/><br/>
+                                    <apex:commandButton value="Update Selected Contacts" id="updateTrainedDate" action="{!SaveMassDate}" reRender="contactsTable" status="refreshStat"/>
+                                 </apex:outputPanel>
+                            </apex:tab>
+                            <apex:tab label="Topics" name="Topics" id="tabTopics" ontabenter="dateTab()">
+                                <apex:pageBlockSection columns="1" title="Available Topics" collapsible="true" id="pgblktopic">
+                                 <apex:outputPanel layout="block" id="topicblk">
+                                     
+                                        <strong>Filter By Category</strong><br/>
+                                    <div>
+                                         <apex:outputPanel id="ctgyblk">
+                                            <apex:selectList size="1" id="searchValue5" value="{!sSearchValue5}">
+                                                <apex:selectOptions value="{!listCategories}"></apex:selectOptions>
+                                                <apex:actionSupport event="onchange"  action="{!findResults}"  rerender="topiclst"/>
+                                            </apex:selectList>                                            
+                                        </apex:outputPanel>   
+                                   </div><br/>
+                                       <apex:outputPanel id="topiclst">
+                                            <apex:pageMessages id="mupm1"/>                                       
+                                           <c:DuelingListBox sourceList="{!listMatchingTopics}" value="{!selTopics}"  defaultList="{!defaultTopics}" onChange="{JSENCODE(!selTopicsList)}"/>
+                                           <br/><br/>
+                                           <apex:commandButton value="Update Selected Contacts" id="updateTopic" action="{!saveTopics}" status="addStat" reRender="topiclst,contactsTable"/>
+                                           <apex:actionStatus startText="Adding Topics...." id="addStat" startStyle="color:red;font-weight:bold"/>
+                                           <script type='text/javascript'>
+                                               jQuery.noConflict();
+                                               jQuery(document).ready(function($){
+                                                   j$("[id$=updateTopic]").click(function()
+                                                  {
+                                                    
+                                                    selected = false;
+                                                    
+                                                    j$("[id$=childCheckbox]").each(function()
+                                                    {
+                                                        if(j$(this).attr('checked'))
+                                                        {
+                                                          selected = true;         
+                                                        }
+                                                    });
+                                                    if(!selected)
+                                                          alert('Please select at least one row to add the topics.');
+                                                  });   
+                                               });     
+                                           </script>     
+                                       </apex:outputPanel>
+                                </apex:outputPanel>
+                            </apex:pageBlockSection>
+                        </apex:tab>
+                </apex:tabPanel>
+             </apex:pageBlockSection>
+          </apex:pageBlock>
+        </apex:outputPanel>
+        
+        <apex:actionFunction name="removeChecked" action="{!RemoveSelected}" reRender="contactsTable" status="refreshStat"/>
+        <apex:actionStatus startText="Refreshing, Please Wait......" id="refreshStat" startStyle="color:red;font-weight:bold"/>
+        <apex:pageBlock id="blockContacts"  mode="edit" title="Contacts [{!rSize}]">        
+            <apex:pageBlockButtons id="pgbtns">
+                <apex:commandButton value="Save" action="{!Save}" reRender="contactsTable" id="saveDate" status="refreshStat"/>
+                <apex:commandButton value="Save and Return" action="{!SaveAndReturn}" id="saveDateReturn"/>
+                <apex:commandButton value="Remove Selected" id="removeBtn" reRender="contactsTable" status="refreshStat"/>
+            </apex:pageBlockButtons>         
+            <apex:outputPanel layout="block" styleClass="scrollableContainer" id="contactsTable">
+                <apex:pageBlockSection id="sectionContacts" title="Contacts" columns="1" collapsible="false">
+                    <apex:variable value="{!1}" var="rowNum"/> 
+                    <apex:pageBlockTable value="{!oPagingContacts.listTrainingEventCons}" var="tec" styleClass="scrollableContent"
+                                            first="{!oPagingContacts.Offset}"
+                                            rows="{!oPagingContacts.PageSize}" id="table1">
+                        <apex:column >
+                            <apex:facet name="header">
+                                                        <apex:inputCheckbox id="parentCheckbox" 
+                                                            title="Select/Deselect All"
+                                                            onclick="javascript:toggleSelectAll(this);" />
+                                                    </apex:facet>
+                            <apex:inputCheckbox id="childCheckbox" value="{!tec.bSelected}" styleClass="rowSelector"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                             <apex:facet name="header">
+                                 <apex:commandLink value="First Name" action="{!toggleSort}" rerender="contactsTable" status="refreshStat">
+                                     <apex:param name="sortField" value="First_Name__c" assignTo="{!sortField}"/>
+                                 </apex:commandLink>
+                              </apex:facet>
+                              <apex:outputField value="{!tec.oTrainingEventContact.First_Name__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="Last Name" action="{!toggleSort}" rerender="contactsTable" status="refreshStat">
+                                    <apex:param name="sortField" value="Last_Name__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.Last_Name__c}"/>
+                        </apex:column>
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="Westlaw User Id" action="{!toggleSort}" rerender="contactsTable" status="refreshStat">
+                                    <apex:param name="sortField" value="Contact_Name__r.Westlaw_User_ID__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.Contact_Name__r.Westlaw_User_ID__c}"/>
+                        </apex:column>
+                                
+                        <apex:column headerValue="{!$ObjectType.Contact.fields.SAP_Role__c.label}" value="{!tec.oTrainingEventContact.Contact_Name__r.SAP_Role__c }"/>
+                                            
+                        
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="Account Name" action="{!toggleSort}" rerender="contactsTable">
+                                    <apex:param name="sortField" value="Account_Name__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.Account_Name__c}"/>
+                        </apex:column>
+                                
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="SAP Account Number" action="{!toggleSort}" rerender="contactsTable">
+                                    <apex:param name="sortField" value="SAP_Account_Number__c" assignTo="{!sortField}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!tec.oTrainingEventContact.SAP_Account_Number__c}"/>
+                        </apex:column> 
+                                       
+                        <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.User_trained_Date__c.label}" rendered="{!IsDate}">
+                            <apex:inputField id="UserTrainedDate" value="{!tec.oTrainingEventContact.User_trained_Date__c}"/>
+                        </apex:column>    
+                        
+                        <apex:column rendered="{!NOT(IsDate)}">
+                             <apex:facet name="header">
+                                 <apex:commandLink value="User Trained Date" action="{!toggleSort}" rerender="contactsTable">
+                                     <apex:param name="sortField" value="User_trained_Date__c" assignTo="{!sortField}"/>
+                                 </apex:commandLink>
+                             </apex:facet>
+                             <apex:outputField value="{!tec.oTrainingEventContact.User_trained_Date__c}"/>
+                        </apex:column>
+                        
+                        <apex:column headerValue="Topics">
+                            <div id="popbox{!rowNum}" class='popbox' style="z-index:{!1000-rowNum};">
+                                <a id="open{!rowNum}" class='open' href='#'>View[{!tec.oTopics}]</a>
+                                    <div id="collapse{!rowNum}" class='collapse'>
+                                        <div id="box{!rowNum}" class='box'>
+                                            <div id="arrow{!rowNum}" class='arrow'></div>
+                                            <div id="arrow-border{!rowNum}" class='arrow-border'></div>
+                                            <div style="padding:20px;">
+                                            <h3>Topics</h3><br/>
+                                            <table>
+                                                <apex:repeat value="{!tec.oTrainingContactTopic}" var="topic" id="theRepeat">
+                                                   <tr>
+                                                   <td>
+                                                   <apex:commandLink value="Del" action="{!RemoveTrainingContactTopic}" rerender="contactsTable" status="refreshStat">
+                                                        <apex:param name="tTopicDel" value="{!topic}" assignTo="{!tTopicDel}"/>
+                                                        <apex:param name="tContactDel" value="{!tec.oTrainingEventContact.id}" assignTo="{!tContactDel}"/>
+                                                    </apex:commandLink>                                                    
+                                                  </td>
+                                                  <td><apex:outputText value="{!topic}" id="theValue"/></td>
+                                                  </tr>
+                                              </apex:repeat>
+                                            </table>
+                                            <a href="#" id="close{!rowNum}" class="close">close</a>    
+                                        </div>
+                                    </div>  
+                                </div>      
+                            </div>
+                            <script type='text/javascript'>
+                                jQuery.noConflict();
+                        
+                                jQuery(document).ready(function($){
+                                    $('#popbox{JSENCODE(!rowNum)}').popbox({
+                                        'open': '#open{JSENCODE(!rowNum)}',
+                                        'box': '#box{JSENCODE(!rowNum)}',
+                                        'arrow': '#arrow{JSENCODE(!rowNum)}',
+                                        'arrow-border': '#arrow-border{JSENCODE(!rowNum)}',
+                                        'close': '#close{JSENCODE(!rowNum)}'
+                                    }); 
+                        
+                                    $('#popbox{JSENCODE(!rowNum)}').css("width"," ");
+                                });
+                            </script>                            
+                            <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <c:PagingToolbar rerender="contactsTable" paging="{!oPagingContacts}" immediate="false"/>
+                </apex:pageBlockSection>
+                
+            </apex:outputPanel>
+            <script type='text/javascript'>
+                                jQuery.noConflict();
+                        
+                                jQuery(document).ready(function($){                                    
+                                  j$("[id$=removeBtn]").click(function()
+                                  {
+                                    var del= false;                        
+                                    j$("[id$=childCheckbox]").each(function()
+                                    {
+                                        if(j$(this).attr('checked'))
+                                        {
+                                          del= true;
+                                        }
+                                        
+                                    });
+                                    if(!del)
+                                        alert('Please select at least one row to be removed.'); 
+                                    else
+                                    {
+                                        //alert('Confirm Deletion?');
+                                        var r=confirm("Selected Contact(s) will be removed from Training Event.");
+                                        if (r==true)
+                                        {
+                                           removeChecked();
+                                        }                           
+                                    }       
+                                  });
+                                });
+                            </script>   
+        </apex:pageBlock>
+    </apex:form>
+    <script>
+                    j$ = jQuery.noConflict();
+                    j$(document).ready(function()
+                    {
+                      
+                      j$("[id$=updateTrainedDate]").click(function()
+                      {
+                        var checked = false;
+                        j$("[id$=childCheckbox]").each(function()
+                        {
+                            if(j$(this).attr('checked'))
+                            {
+                              checked = true;                              
+                            }
+                        });
+                        if(!checked)
+                          alert('Please select at least one row');    
+                      });     
+                  
+                    });
+                    
+                      function toggleSelectAll(element) {
+          var elCheckbox = jQuery(element);
+          var elTable = elCheckbox.closest('table');
+          
+          var isChecked = elCheckbox.is(':checked');
+          elTable.find('*:checkbox.rowSelector').each(function(){
+            jQuery(this).attr('checked', isChecked);
+          });
+      }
+                </script>
+</apex:page>

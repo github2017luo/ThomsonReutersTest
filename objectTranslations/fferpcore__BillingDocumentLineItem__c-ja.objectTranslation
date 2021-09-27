@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>請求伝票明細</value>
+    </caseValues>
+    <fields>
+        <help>製品の配送先を表すSalesforceアカウント。このアカウントは、関連する請求ドキュメントアカウントの子孫であり、完全な住所の詳細を含んでいる必要があります。階層の深い5つの関係までの子孫が有効です。</help>
+        <label><!-- Shipping Account --></label>
+        <name>fferpcore__Account__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>請求伝票明細の下位分析に使用され、さまざまなビジネスコンセプトを表すために使用できます。</help>
+        <label><!-- Analysis Item 1 --></label>
+        <name>fferpcore__AnalysisItem1__c</name>
+        <relationshipLabel><!-- Related Document Lines 1 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>請求伝票明細の下位分析に使用され、さまざまなビジネスコンセプトを表すために使用できます。</help>
+        <label><!-- Analysis Item 2 --></label>
+        <name>fferpcore__AnalysisItem2__c</name>
+        <relationshipLabel><!-- Related Document Lines 2 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>請求伝票明細の下位分析に使用され、さまざまなビジネスコンセプトを表すために使用できます。</help>
+        <label><!-- Analysis Item 3 --></label>
+        <name>fferpcore__AnalysisItem3__c</name>
+        <relationshipLabel><!-- Related Document Lines 3 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>請求伝票明細の下位分析に使用され、さまざまなビジネスコンセプトを表すために使用できます。</help>
+        <label><!-- Analysis Item 4 --></label>
+        <name>fferpcore__AnalysisItem4__c</name>
+        <relationshipLabel><!-- Related Document Lines 4 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>この請求伝票品目が属する請求伝票の外部税ステータス。</help>
+        <label><!-- Billing Document External Tax Status --></label>
+        <name>fferpcore__BillingDocumentExternalTaxStatus__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細が属する請求伝票のステータス。</help>
+        <label><!-- Billing Document Status --></label>
+        <name>fferpcore__BillingDocumentStatus__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細が属する請求伝票。</help>
+        <label><!-- Billing Document --></label>
+        <name>fferpcore__BillingDocument__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>製品の発送元の場所を表す会社のサイト。サイトは、関連する請求書発行会社の子であり、完全な住所の詳細が含まれている必要があります。</help>
+        <label><!-- Company Site --></label>
+        <name>fferpcore__CompanySite__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の合計割引。</help>
+        <label><!-- Discount Total --></label>
+        <name>fferpcore__DiscountTotal__c</name>
+    </fields>
+    <fields>
+        <help>選択した会社のサイトが請求書発行会社の子ではないことを示します。</help>
+        <label><!-- Invalid Company Site --></label>
+        <name>fferpcore__InvalidCompanySite__c</name>
+    </fields>
+    <fields>
+        <help>選択した配送アカウントが請求伝票アカウントの子孫ではないことを示します。</help>
+        <label><!-- Invalid Shipping Account --></label>
+        <name>fferpcore__InvalidShippingAccount__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票明細の説明。</help>
+        <label><!-- Description --></label>
+        <name>fferpcore__LineDescription__c</name>
+    </fields>
+    <fields>
+        <help>配送先住所を手動で入力して管理することを示します。選択を解除して配送アカウントを指定すると、アカウントの配送先住所がラインに保存されます。</help>
+        <label><!-- Enter Shipping Address Manually --></label>
+        <name>fferpcore__ManualAddressOverride__c</name>
+    </fields>
+    <fields>
+        <help>割引が適用される前の請求伝票明細の正味額。</help>
+        <label><!-- Net Value Before Discount --></label>
+        <name>fferpcore__NetValueBeforeDiscount__c</name>
+    </fields>
+    <fields>
+        <help>正味額のオプションの手動計算。</help>
+        <label><!-- Net Value Override --></label>
+        <name>fferpcore__NetValueOverride__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税引前の合計値。これを計算するために使用される式は、数量×単価です。</help>
+        <label><!-- Net Value --></label>
+        <name>fferpcore__NetValue__c</name>
+    </fields>
+    <fields>
+        <help>Salesforce製品またはサービスへのルックアップ。</help>
+        <label><!-- Product or Service --></label>
+        <name>fferpcore__ProductService__c</name>
+        <relationshipLabel><!-- Product Service Relationship --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>この請求伝票明細に含まれる明細の数。これは、請求伝票明細の合計金額を計算するために使用されます。</help>
+        <label><!-- Quantity --></label>
+        <name>fferpcore__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reporting Net Value Number --></label>
+        <name>fferpcore__ReportingNetValueNumber__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票の伝票タイプに基づく、この請求伝票明細の税引前の合計値。</help>
+        <label><!-- Reporting Net Value --></label>
+        <name>fferpcore__ReportingNetValue__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票の伝票タイプに基づく、対応する税率の税額1。</help>
+        <label><!-- Reporting Tax Value 1 --></label>
+        <name>fferpcore__ReportingTaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票の伝票タイプに基づく、対応する税率の税額2。</help>
+        <label><!-- Reporting Tax Value 2 --></label>
+        <name>fferpcore__ReportingTaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票の伝票タイプに基づく、対応する税率の税額3。</help>
+        <label><!-- Reporting Tax Value 3 --></label>
+        <name>fferpcore__ReportingTaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票の伝票タイプに基づく請求伝票明細の合計税。</help>
+        <label><!-- Reporting Tax Value Total --></label>
+        <name>fferpcore__ReportingTaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票の伝票タイプに基づく税を含むこの請求伝票明細の合計金額。</help>
+        <label><!-- Reporting Total Value --></label>
+        <name>fferpcore__ReportingTotalValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping City --></label>
+        <name>fferpcore__ShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Country --></label>
+        <name>fferpcore__ShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping State/Province --></label>
+        <name>fferpcore__ShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Street --></label>
+        <name>fferpcore__ShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税を計算するときに使用する税コード。州、郡、市の税務当局を表すために税コードを使用できます。</help>
+        <label><!-- Tax Code 1 --></label>
+        <name>fferpcore__TaxCode1__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税を計算するときに使用する税コード。州、郡、市の税務当局を表すために税コードを使用できます。</help>
+        <label><!-- Tax Code 2 --></label>
+        <name>fferpcore__TaxCode2__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税を計算するときに使用する税コード。州、郡、市の税務当局を表すために税コードを使用できます。</help>
+        <label><!-- Tax Code 3 --></label>
+        <name>fferpcore__TaxCode3__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税を計算するときに使用する税率。</help>
+        <label><!-- Tax Rate 1 --></label>
+        <name>fferpcore__TaxRate1__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税を計算するときに使用する税率。</help>
+        <label><!-- Tax Rate 2 --></label>
+        <name>fferpcore__TaxRate2__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の税を計算するときに使用する税率。</help>
+        <label><!-- Tax Rate 3 --></label>
+        <name>fferpcore__TaxRate3__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票明細の合計税率。</help>
+        <label><!-- Tax Rate Total --></label>
+        <name>fferpcore__TaxRateTotal__c</name>
+    </fields>
+    <fields>
+        <help>税額は、次の式を使用して対応する税率から計算されます。正味額*（税率/ 100）</help>
+        <label><!-- Tax Value 1 --></label>
+        <name>fferpcore__TaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>税額は、次の式を使用して対応する税率から計算されます。正味額*（税率/ 100）</help>
+        <label><!-- Tax Value 2 --></label>
+        <name>fferpcore__TaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>税額は、次の式を使用して対応する税率から計算されます。正味額*（税率/ 100）</help>
+        <label><!-- Tax Value 3 --></label>
+        <name>fferpcore__TaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票明細の合計税。</help>
+        <label><!-- Tax Value Total --></label>
+        <name>fferpcore__TaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>この請求伝票明細の合計金額。これを計算するために使用される式は、正味額+税額の合計です。</help>
+        <label><!-- Total Value --></label>
+        <name>fferpcore__TotalValue__c</name>
+    </fields>
+    <fields>
+        <help>請求伝票明細の1つの明細の価格。これは、請求伝票明細の合計金額を計算するために使用されます。</help>
+        <label><!-- Unit Price --></label>
+        <name>fferpcore__UnitPrice__c</name>
+    </fields>
+    <fields>
+        <help>Foundationsシステム内で使用されるPSA Billing Event Item相関キーを記録します。</help>
+        <label><!-- Billing Event Item Correlation ID --></label>
+        <name>pse__Billing_Event_Item_Correlation_Id__c</name>
+    </fields>
+    <nameFieldLabel>伝票明細</nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,50 @@
+<!--**********************************
+Page Name:CreateCaseFromContact
+Purpose: VF page to create a case from Contact Related list
+Author:Rupesh/Manish
+Date Created:05/05/2017
+Date Updated:V0:
+***********************************-->
+
+
+<apex:page standardController="Case" extensions="ESC_CreateCaseFromContactController" recordSetVar="Cases" action="{!CreateCase}">
+<apex:includeScript value="/support/console/42.0/integration.js"/>
+    <script>
+       function OpenUrl(){
+        if(sforce.console.isInConsole()){
+          var PrimaryTabId;
+          sforce.console.getFocusedPrimaryTabId(function(result){
+          PrimaryTabId=result.id;
+          if('Theme4u' == '{!$User.UIThemeDisplayed}'){
+              
+              sforce.one.navigateToURL('/{!oCase.ContactId}',true);
+              //sforce.console.refreshPrimaryTabById(PrimaryTabId,true,refreshSuccess);
+              //sforce.one.navigateToSObject('{!oCase.ContactId}');
+              sforce.one.navigateToURL('/{!oCase.Id}',false);
+            
+               
+            
+          }
+          else{
+            window.open('/{!oCase.ContactId}', "_self");
+            sforce.console.openSubtab(PrimaryTabId,'/{!oCase.Id}',true); }
+          });
+        }
+        else{
+          if('Theme4u' == '{!$User.UIThemeDisplayed}'){
+            sforce.one.navigateToURL('/'+oCase.Id,false);
+          }
+          else{
+           window.open('/{!oCase.Id}', "_self");
+            }
+          }
+       }
+      
+    
+  
+    </script>
+    <apex:pageMessages id="showmsg" />
+
+    
+    <apex:outputText value="{!callfunc}" escape="false"></apex:outputText>
+</apex:page>

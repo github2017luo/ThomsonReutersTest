@@ -1,0 +1,36 @@
+<!--
+@purpose : JIRA Story- CRM-13107
+GLI Users (all tenants) must be able to see the Account Territory information on the Opportunity Page Layout with the following fields visible:
+1.Territory #
+2.Chanel
+3.Region
+4.Market Segment Desc
+5.Rep Function Desc
+6.SalesForce Description
+======================================================================================================================
+DATE(DD/MM/YY)           Developer NAME              DESC
+05/02/2018               Navjyoti Mohanta(Developed by)     
+08/02/2018               Radhika Pawar(Modified by)  Added the channel field in pageBlockTable
+======================================================================================================================
+-->
+<apex:page standardController="Opportunity" extensions="LCRMOpportunityTerritoriesController">
+    <apex:pageBlock mode="maindetail" rendered="{!!flagTerritoryPresent}">
+        <apex:pageMessages ></apex:pageMessages>
+    </apex:pageBlock>
+    <apex:pageBlock mode="maindetail" rendered="{!flagTerritoryPresent}" >       
+        <apex:pageBlockTable value="{!listOfTMSTerritories}" var="ter">
+            <apex:column headerValue="{!$Label.Actions}">
+                <apex:outputLink value="{!URLFOR($Action.TMS_Territory__c.View, ter.id)}" target="_blank"  style="text-decoration:none;color:#015ba7!important" onmouseover="changeStyle(this)" onmouseout="removeLine(this)">{!$Label.Views}</apex:outputLink>
+            </apex:column>  
+            <apex:column headerValue="{!$Label.Names}">
+                <apex:outputLink value="{!URLFOR($Action.TMS_Territory__c.View, ter.id)}" target="_blank">{!ter.name}</apex:outputLink>
+            </apex:column>            
+            <apex:column value="{!ter.TMS_Territory_Number__c}"/>
+            <apex:column value="{!ter.Channel__c}"/>
+            <apex:column value="{!ter.Region__c}"/>
+            <apex:column value="{!ter.TMS_Market_Segment_Desc__c}"/>
+            <apex:column value="{!ter.TMS_Rep_Function_Desc__c}"/>
+            <apex:column value="{!ter.TMS_Sales_Force_Desc__c}" />
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

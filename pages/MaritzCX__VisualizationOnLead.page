@@ -1,0 +1,14 @@
+<!-- This apex page is used to display charts on Lead Page -->
+<apex:page standardController="Lead" sidebar="false" showHeader="false" id="pageId" readOnly="true" applyHtmlTag="false" lightningStylesheets="true">
+<apex:form >
+    <apex:variable var="isMobile" value="{!$User.UIThemeDisplayed=='Theme4t'|| $CurrentPage.parameters.isMobile = 'true' }"/>
+
+    <apex:outputPanel rendered="{!isMobile}">
+        <c:VisualizationsMobileComp ></c:VisualizationsMobileComp>       
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!NOT(isMobile)}">
+        <c:VisualizationsComponent ></c:VisualizationsComponent>   
+    </apex:outputPanel>
+        
+</apex:form>
+</apex:page>

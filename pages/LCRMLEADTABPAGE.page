@@ -1,0 +1,33 @@
+<!--
+/**
+ * Description: Clone of standard tab page without the "Lead Disposition" and "Merge and Convert lead" buttons
+ * Author: TCS 
+ * Project: Legal CRM
+ * Release: R1 & R2
+ * Change History: 
+ * 15-Oct-2016 Initial Version
+ * 15-Dec-2016 Hide the "Merge & Convert" button
+ * 
+*/
+-->
+<apex:page recordSetVar="lead" standardController="Lead" action="{!if($Setup.GLI_Profiles__c.Is_Active__c,null,urlFor($Action.Lead.Tab, $ObjectType.Lead,
+    null, true))}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"/>
+    <script>
+    $j = jQuery.noConflict();
+    $j('[name="actionForm"]').ready(function(){hideButtons();});
+    $j(document).on('click','a',function(){hideButtons();});
+    $j(document).on('click','input',function(){hideButtons();});
+    $j(document).on('click','tr',function(){hideButtons();});
+    function hideButtons(){
+            for (var i = 0; i < 40; i++) {
+                setTimeout(function(){
+                    $j('[name="lead_disposition"]').css({"display":"none"}); 
+                    $j('[name="create_opportunity"]').css({"display":"none"}); 
+                    
+                }, i*50);
+            }
+        } 
+    </script>
+  <apex:enhancedList type="Lead" height="600" />
+</apex:page>

@@ -1,0 +1,44 @@
+<apex:page controller="ObjectDataViewerController" standardStylesheets="true">
+    <apex:form id="frmSearch">
+        <apex:PageBlock id="pbSearch">
+            <apex:pageBlockSection collapsible="false" columns="2">
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel >
+                        <apex:outputLabel >Object Type</apex:outputLabel>
+                        <apex:selectList value="{!objectType}" multiselect="false" size="1">
+                            <apex:selectOptions value="{!sObjectTypes}"/>
+                            <apex:actionsupport event="onchange" action="{!resetForm}" reRender="pnlFields, pbresults"/> 
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel id="pnlFields">
+                        <apex:outputLabel >{!FieldName}&nbsp;</apex:outputLabel>
+                        <apex:inputText value="{!identifier}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton id="submit" value="Submit" action="{!getDetails}" rerender="pbresults"/>
+            </apex:pageBlockButtons>
+        </apex:PageBlock>
+        <apex:pageBlock id="pbresults">
+            <apex:outputPanel id="pnlMultiresults" rendered="{!hasMultiresults}">
+                <apex:outputLabel >We found multiple results. </apex:outputLabel>
+                <apex:selectList value="{!multiOption}" multiselect="false" size="1">
+                    <apex:selectOptions value="{!recOptions}"/>
+                    <apex:actionSupport event="onchange" action="{!setResults}" reRender="pbresults"/>
+                </apex:selectList>
+            </apex:outputPanel>
+            <apex:outputPanel dir="pnlresults" rendered="{!hasResults}">
+                <apex:pageBlockSection id="AsIs" title="Result Page" collapsible="true" columns="1" >
+                    <apex:pageBlockSectionItem >
+                        <apex:detail id="page" inlineEdit="true" relatedList="true" relatedListHover="true" showChatter="true" 
+                                    subject="{!thissObjectId}"/>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:dynamicComponent id="pbDynamic" componentValue="{!detailedFieldInformation}"/>
+            </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

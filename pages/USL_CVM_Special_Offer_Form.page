@@ -1,0 +1,326 @@
+<apex:page controller="USL_CVM_Special_Offer_Cancellation" docType="html-5.0" sidebar="false"  showHeader="false" title="CVM Special Offer Cancellation Form">
+<apex:slds />
+
+<style>
+        .myCLS {
+        color: orange;
+        font-family: verdana;
+        font-size: 150%;
+        text-align: left;
+        padding-left: 30% !important;
+        }
+        
+        .textBold{
+        font-weight:bold;
+        }
+        #textNormal{
+        font-weight:normal;
+        }
+        
+        .bPageBlock .detailList .labelCol {
+        width: 20%;
+        }
+        .bPageBlock .detailList .dataCol{
+        width: 20%;
+        }
+       
+        #pbSubsection1{
+            overflow-y:auto;
+            height:30px;
+        }
+    </style>
+    <script>var __sfdcSessionId = '{!GETSESSIONID()}';</script>
+    <script src="/support/console/42.0/integration.js" type="text/javascript"></script>
+    <script src="../../soap/ajax/42.0/connection.js" type="text/javascript"></script>
+    <script>
+    function uploadFile()
+     {
+        var input = document.getElementById('file-input');
+        
+        var parentId = '{!CaseId}';// Your ID here, I suggest using a merge field to get this
+        
+        var filesToUpload = input.files;
+        for(var i = 0, f; f = filesToUpload[i]; i++)
+        {
+            var reader = new FileReader();
+            // Keep a reference to the File in the FileReader so it can be accessed in callbacks
+            reader.file = f;
+            reader.onerror = function(e)
+            {
+                switch(e.target.error.code)
+                {
+                    case e.target.error.NOT_FOUND_ERR:
+                        alert('File Not Found!');
+                        break;
+                    case e.target.error.NOT_READABLE_ERR:
+                        alert('File is not readable');
+                        break;
+                    case e.target.error.ABORT_ERR:
+                        break; // noop
+                    default:
+                        alert('An error occurred reading this file.');
+                };
+            };
+            reader.onabort = function(e)
+            {
+                alert('File read cancelled');
+            };
+            reader.onload = function(e)
+            {
+                
+                var att = new sforce.SObject("Attachment");
+                att.Name = this.file.name;
+                att.ContentType = this.file.type;
+                att.ParentId = parentId;
+                att.Body = (new sforce.Base64Binary(e.target.result)).toString();
+                sforce.connection.create([att],
+                {
+                    onSuccess : function(result, source)
+                    {
+                        if (result[0].getBoolean("success"))
+                        {
+                         
+                         alert('Upload Successful');
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    onFailure : function(error, source)
+                    {
+                        alert('Upload Failed'); 
+                    }
+                });
+            };
+            reader.readAsBinaryString(f);
+        }
+    }
+    function closeItNow() {        
+            sforce.console.getEnclosingTabId(closeSubtab);
+        } 
+        var closeSubtab = function closeSubtab(result) {
+        //Now that we have the tab ID, we can close it
+            var tabId = result.id;
+            sforce.console.closeTab(tabId);
+        };
+ </script>
+    <apex:pageBlock mode="maindetail">
+    <apex:facet name="header">
+            <apex:outputText styleClass="myCLS" id="header" value="CVM Special Offer Cancellation Form" />
+        </apex:facet>
+    </apex:pageBlock>
+    <apex:form style="margin-left:5%;margin-right:5%;">
+         <apex:actionFunction name="renderdecision" action="{!showdecision}" status="actStatusId2" rerender="specica1,acclistpanel" />
+         
+        <apex:actionFunction name="showProducttype" action="{!showProducttype}" status="actStatusId2"   rerender="propanel"/>
+         
+          
+    
+    <apex:pageBlock mode="maindetail" >
+         <apex:pagemessages id="msg1"></apex:pagemessages>
+         <apex:outputPanel id="specical">
+            <apex:pageBlockSection columns="2">
+                    <apex:pageBlockSectionItem >
+                               <apex:outputLabel for="stype"  value="Does this offer have special billing allocation?" />
+                                <apex:inputField id="stype" label="" value="{!CFE.Special_billing_allocation__c}" onchange="renderdecision();"/>  
+                    </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem >
+                                    <apex:outputLabel for="stype1" value="Location" />
+                                    <apex:inputField id="stype1" label="" value="{!CFE.Location__c}" onchange="renderdecision();" />  
+                        </apex:pageBlockSectionItem>
+                        
+            </apex:pageBlockSection>
+          </apex:outputPanel>
+          <apex:actionStatus id="actStatusId2" >
+                    <apex:facet name="start" >
+                      <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                </apex:actionStatus>
+         <apex:outputPanel id="specica1">
+             <apex:outputLabel styleclass="textBold"  value=" Since this offer has a Special Billing Alloocation and the location is Individual,
+                        Please work with PPS to adjust billing allocation prior to submitting this cancellation." rendered="{!isshowSpecialBilling}" />
+         </apex:outputPanel>
+            <apex:outputPanel id="specica2">
+              <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="stype1" value="Your Email Address" />
+                        <apex:outputField styleclass="textBold"  value="{!Caseacc.owner.email}" />
+            </apex:pageBlockSectionItem>
+             <apex:pageBlockSection columns="2" >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="stype" value="Product Type" />
+                        <apex:inputField id="stype" label="" value="{!CFE.Product_Type__c}" onchange="showProducttype();"/> 
+                        </apex:pageBlockSectionItem>
+                    <apex:outputPanel id="propanel">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel for="stype" value="List Product(s)" rendered="{!isshowProduct}" />
+                        <apex:inputField id="stype" label="" value="{!CFE.ESC_List_Product__c}" rendered="{!isshowProduct}" /> 
+                        </apex:pageBlockSectionItem>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>    
+                    
+                    <apex:pageBlockSectionItem >
+                            <apex:inputCheckbox id="stype2" label="" value="{!CFE.ESC_Special_Offer__c}" />
+                        <apex:outputLabel for="stype2" value="Check if customer does NOT want a CDROM from Ancillary Subscription added when lapsing a Special Offer." />
+                      
+                        </apex:pageBlockSectionItem>
+
+                    <apex:pageBlockSectionItem >
+                            <apex:inputCheckbox id="stype3" label="" value="{!CFE.ESC_Special_Offer_check__c}" /> 
+                        <apex:outputLabel for="stype3" value="Request a 100% discount and pull bill." />
+                </apex:pageBlockSectionItem>
+                
+                </apex:pageBlockSection> 
+            </apex:outputPanel>
+                <apex:outputPanel >
+                
+                <apex:pageBlockSection id="IPsection">
+                     <apex:outputPanel >
+                       <apex:outputtext value="{!CFE.ESC_Selected_Subs__c}" styleclass="textBold" rendered="{!Nosubs!=''}"/>
+                      <apex:outputtext value="{!$Label.USL_ValueStep1}" styleclass="textBold" rendered="{!Nosubs==''}"/>
+                     <apex:pageBlockTable value="{!Displaysubs}" var="sub" rendered="{!Nosubs==''}">
+                                <apex:column width="40px" style="text-align:center">
+                                    <apex:inputCheckbox value="{!sub.IsSelected}"/>
+                                </apex:column>
+                                <apex:column >
+                                    <apex:facet name="header">Material Number</apex:facet>
+                                    <apex:outputText value="{!sub.MaterialNum}"/>
+                                </apex:column>
+                                <apex:column >
+                                     <apex:facet name="header">Description</apex:facet>
+                                    <apex:outputText value="{!sub.Description}"/>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                            <apex:outputPanel id="pagebuttons" rendered="{!AND(IF(ordPaginater.isAll, false, true), IF(ordPaginater.totalPage == 1, false, true),IF(Displaysubs.size == 0, false, true),Nosubs=='')}">
+                                <apex:commandLink value="Previous" rerender="IPsection,pagebuttons" action="{!previousPage}"
+                                    rendered="{!ordPaginater.showPrevious}" /> &nbsp;&nbsp;&nbsp;
+                                <apex:commandLink value="Next" rerender="IPsection,pagebuttons" action="{!nextPage}"
+                                    rendered="{!ordPaginater.showNext}" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                 <apex:outputText style="align:left">Showing {!startnum} - {!endnum} of {!SubsList.size} Subscriptions</apex:outputText>
+                            </apex:outputPanel>
+                        </apex:outputPanel>    
+                   </apex:pageBlockSection> 
+                
+                
+            </apex:outputPanel>
+        
+        
+            
+                    <apex:outputPanel id="Special4">
+                 <apex:pageBlockSection columns="1" >
+                        <apex:pageBlockSectionItem >
+                                     <apex:outputPanel >
+                            <apex:outputtext styleclass="textBold"  value="For Immediate Lapse select todays date into What Date to Lapse? field below" /><br/>
+                            </apex:outputPanel>
+                                </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem >
+                                          <apex:outputPanel >
+                                              <apex:outputtext styleclass="textBold"  value=" For Entire Offer Lapse type the last day of the month the lapse will occur on into
+                            What Date to Lapse? field below (Midnight of that day is default for Customer Service for future lapse dates) " />
+                                                                     </apex:outputPanel>
+                                            </apex:pageBlockSectionItem>
+                                
+                                     
+                          <apex:pageBlockSection columns="2">
+            
+                                <apex:pageBlockSectionItem >
+                                     <apex:outputPanel >
+                                <apex:outputLabel for="stype" value="What Date to Lapse?" /><br/>
+                                <apex:inputField id="stype" label="" value="{!CFE.ESC_Special_Offer_time__c}" />
+                                 </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                 <apex:outputPanel >
+                                            <apex:outputLabel for="stype1" value="Segment" /><br/>
+                                            <apex:inputField id="stype1" label="" value="{!CFE.ESC_Segment_Special_offer__c}"  />
+                                             </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                
+                                    <apex:pageBlockSectionItem >
+                                         <apex:outputPanel >
+                                            <apex:outputLabel for="stype1" value="Account Name" /><br/>
+                                            <apex:outputField styleclass="textBold"  value="{!caseacc.Accountid}" />
+                                             </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    </apex:pageBlockSection>
+                                    <apex:outputPanel id="acclistpanel">
+                                    <apex:pageBlockSection columns="2">
+                                    
+                                    <apex:pageBlockSectionItem rendered="{!!showlistacc}">
+                                         <apex:outputPanel >
+                                                <apex:outputLabel for="stype1" value="Type of Account Number" /><br/>
+                                           <apex:inputField styleclass="textBold"  value="{!CFE.ESC_Type_of_Account_Number__c}" />
+                                            </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                     <apex:pageBlockSectionItem rendered="{!!showlistacc}">
+                                          <apex:outputPanel >
+                                                <apex:outputLabel for="stype1" value="Assigned Sales Rep" /><br/>
+                                           <apex:inputField styleclass="textBold"  value="{!CFE.ESC_Assigned_Sales_Rep__c}" />
+                                            </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!!showlistacc}">
+                                         <apex:outputPanel >
+                                                <apex:outputLabel for="stype1" value="Account Number" /><br/>
+                                           <apex:outputField styleclass="textBold"  value="{!Caseacc.USL_SAP_Account_Number__c}" />
+                                            </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    
+                                        <apex:pageBlockSectionItem rendered="{!!showlistacc}">
+                                            <apex:outputPanel >
+                                                <apex:outputLabel for="stype1" value="Reason for Termination" /><br/>
+                                           <apex:inputField styleclass="textBold"  value="{!CFE.ESC_Reason_For_Termination__c}" /><br/>
+                                           (Ex. Lexis Kick-out, Budget Constraints, Mergers, Acquistion)
+                                            </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                        <apex:pageBlockSectionItem rendered="{!!showlistacc}">
+                                            <apex:outputPanel >
+                                                <apex:outputLabel for="stype1" value="Competitor's Name" /><br/>
+                                           <apex:inputField styleclass="textBold"  value="{!CFE.ESC_Competitors_Name__c}" />
+                                           </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                    <apex:pageBlockSectionItem rendered="{!showlistacc}">
+                                        <apex:outputPanel >
+                                            <apex:outputLabel for="stype6" value="List of Account Number for Individual Locations" /><br/>
+                                                <apex:inputTextArea id="stype6" label="" value="{!CFE.ESC_Special_Offer_Account__c}"   />  
+                                        </apex:outputPanel>
+                                    </apex:pageBlockSectionItem>
+                                
+                                <apex:pageBlockSectionItem >
+                                         <apex:outputLabel >
+                                        <apex:outputLabel for="stype7" value="Comments" /><br/>
+                                        <apex:inputTextArea id="stype7" label="" value="{!CFE.ESC_Instructions__c}" />  
+                                         </apex:outputLabel>
+                                </apex:pageBlockSectionItem>                                
+                                    <apex:pageBlockSectionItem >
+                                            <apex:outputPanel > 
+                                                <input id="file-input" type="file" name="file"  value="Upload" />&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <input type="Button" value="Upload" onclick="uploadFile();"/><br/>
+                                                Only the following file extensions are supported: jpg, gif, jpeg, pdf, xml, txt, tif, doc, xls, rtf, docx, xlsx
+                                            </apex:outputPanel>
+                                            
+                                </apex:pageBlockSectionItem>
+                                
+                                 </apex:pageBlockSection>
+                                 </apex:outputPanel>
+            </apex:pageBlockSection>
+            
+                </apex:outputPanel>
+            
+            <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton value="Save" action="{!Savebutton}" status="actStatusId1" reRender="msg1"/>
+                    
+                        <apex:commandButton value="Exit"  onclick="closeItNow();return false;"/>
+                
+                <apex:actionStatus id="actStatusId1" >
+                    <apex:facet name="start" >
+                      <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                </apex:actionStatus>
+                </apex:pageBlockButtons>
+            </apex:pageBlock>    
+
+    </apex:form>
+  
+</apex:page>

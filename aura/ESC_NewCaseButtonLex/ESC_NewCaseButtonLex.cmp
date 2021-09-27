@@ -1,0 +1,64 @@
+<!--Purpose:Component is to create new Case from Account and display error from Case object for 
+    ESC Service app in lightning.
+   Created: 03/12/2019
+   Author: Akansha Gill -->
+<aura:component controller="LTGS_NewCaseButtonController" implements="lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.onload}"/>
+    <aura:attribute name="lstOfRecordType" type="String[]" />
+    <aura:attribute name="mapOfRecordType" type="Map" />
+    <aura:attribute name="isOpen" type="boolean" /><!-- show/hide any popup-->
+    <aura:attribute name="executeProf" type="boolean" default="false"/>
+    <aura:attribute name="userProfile" type="String"/>
+    <aura:if isTrue="{!v.isOpen}">
+        <!-- modal box starts for ESC cases to display error- to not allow user to create Case-->
+        <aura:if isTrue="{!v.executeProf}"> -->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <p> {!$Label.c.GLI_Restrict_Case_from_Account} </p><!-- Custom label to display error message.-->
+                    </div> 
+                    <footer class="slds-modal__footer">
+                        <lightning:button variant="neutral" 
+                                          label="OK"
+                                          onclick="{! c.closeModal1 }"></lightning:button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <aura:set attribute="else">
+                <!-- Model Box Start - to create case from Account for Sales User -->      
+                <div aura:id="rType" role="dialog" tabindex="-1" aria-labelledby="header43" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-hide">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+                                X<span class="slds-assistive-text">Cancel</span>
+                            </button>
+                            <h2 id="header43" class="slds-text-heading--medium">New Case</h2>
+                        </div>
+                        
+                        <div class="slds-modal__content slds-p-around--medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size--1-of-2 slds-large-size--1-of-2">
+                                    <div class="slds-align--absolute-center">Select a Record Type</div>                            
+                                </div>
+                                <div class="slds-size--1-of-2 slds-large-size--1-of-2">
+                                    <ui:inputSelect aura:id="selectid">
+                                        <aura:iteration items="{!v.lstOfRecordType}" var="item">                            
+                                            <ui:inputSelectOption text="{!item}" label="{!item}"  />
+                                        </aura:iteration>
+                                    </ui:inputSelect>
+                                </div>&nbsp; &nbsp;
+                            </div>                   
+                        </div>
+                        
+                        <div class="slds-modal__footer">
+                            <lightning:button class="slds-button slds-button--neutral" onclick="{!c.closeModal}">Cancel</lightning:button>
+                            <lightning:button class="slds-button slds-button--brand" onclick="{!c.createRecord}">Next</lightning:button>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop--open"></div>
+            </aura:set>
+        </aura:if>
+    </aura:if>
+</aura:component>

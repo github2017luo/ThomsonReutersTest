@@ -1,0 +1,295 @@
+<apex:page standardController="Case" extensions="ESC_AssociateInvoiceController" doctype="html-5.0" lightningStylesheets="true">
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+    <script src="/support/console/42.0/integration.js" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            setDataTables4();
+            setDataTables3();
+        } );  
+        function myFunction(issuccess) {             
+             window.scrollTo(0,0);
+             if(issuccess == 'true')
+             myVar = setTimeout(closeItNow, 3000);
+        }
+        function closeItNow() {
+            sforce.console.getEnclosingTabId(function(result) {
+                var tabId = result.id;
+                sforce.console.closeTab(tabId);
+            });
+        }
+        function setDataTables1(){
+           $('.tableARInfo1').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 1, "desc" ]],
+             "info":false,             
+             "scrollX":"100%"
+             } );
+        }
+        function setDataTables2(){            
+           $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 1, "desc" ]],             
+             "info":false,
+             "scrollX":"100%"            
+             } );
+        }
+        function setDataTables3(){
+            $('.tableARInfo1').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 1, "desc" ]],             
+             "info":false,
+             "scrollX":"100%"             
+             } );
+        }
+        function setDataTables4(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 1, "desc" ]],             
+             "info":false,
+             "scrollX":"100%"             
+             } );
+        }
+    </script>
+    
+    <apex:form >
+        <apex:pagemessages id="msg"></apex:pagemessages>
+        <apex:actionStatus id="fetchStatus2">
+            <apex:facet name="start">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.35; z-index: 1000; background-color: black;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 13% 50%">
+                <div style="display: inline-block; padding: 2px; background-color: #fff; width: 125px;">
+                    <img src="/img/loading.gif" style="float: left; margin: 8px;" />
+                    <span style="display: inline-block; padding: 10px 0px;">Please Wait...</span>
+                </div>
+            </div>
+            </apex:facet>
+        </apex:actionStatus>        
+        <apex:pageBlock >
+            <apex:pageblockSection columns="6"  id="sectionFilters" collapsible="false" title="{!$Label.AccountRec_DateRangeSecTitle}" >
+                <apex:input type="date" id="BeginDate" value="{!invwrap.BeginDt}" 
+                                        label="{!$Label.AccountRec_BeginDate}" />
+                <apex:input type="date" id="EndDate" value="{!invwrap.EndDt}" 
+                                        label="{!$Label.AccountRec_EndDate}" />
+                <apex:commandButton value="{!$Label.AccountRec_DateRangeSecButton}" reRender="pageBlock,msg"
+                                            status="fetchStatus2" action="{!checkdate}" oncomplete="setDataTables2();setDataTables1();"/>
+            </apex:pageblockSection>
+        </apex:pageBlock>
+        <apex:pageblock id="pageBlock">
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionOpenItems" title="{!$Label.AccountRec_SOOpen} {!$Label.AccountRec_ItemsTrans}"   collapsible="false">
+                 <apex:dataTable value="{!pagiwrap.openpagiwrap.openwrapperlist2}"  id="openlist" var="Olist" styleclass="tableARInfo">
+                    <apex:column >                         
+                        <apex:facet name="header">Select</apex:facet>
+                        <apex:inputCheckbox value="{!Olist.isselected}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.additionalPdfDocumentId}" />
+                    </apex:column> 
+                     <apex:column rendered="{!showlinenumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.lineNumber}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Invoice_Amount}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.amount}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Dispute_Amount}</apex:facet>
+                        <apex:inputText value="{!Olist.openlist.disputeamount}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.baselineDate}" />
+                    </apex:column> 
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.shortDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Ldes}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.longDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.docNumber}" />
+                    </apex:column>  
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_PostingDate}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.postingDate}" />
+                    </apex:column> 
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_RenderedDate}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.servicesRenderedDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Debit Credit Indicator</apex:facet>
+                        <apex:outputText value="{!IF(Olist.openlist.debitCreditInd == 'H','C', IF(Olist.openlist.debitCreditInd == 'S','D',Olist.openlist.debitCreditInd))}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">RefKey</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.referencekey}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.netArrers}" />
+                    </apex:column>  
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocDate}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.docDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.type}" />
+                    </apex:column>
+                </apex:dataTable>
+            </apex:pageblockSection>                                         
+            <apex:outputPanel rendered="{!AND(IF(pagiwrap.openpagiwrap.paginater.isAll, false, true), IF(pagiwrap.openpagiwrap.paginater.totalPage == 1, false, true))}">
+                <apex:commandButton value="Previous" rerender="pageBlock" action="{!previousPage}" rendered="{!pagiwrap.openpagiwrap.paginater.showPrevious}"  oncomplete="setDataTables1();setDataTables2();"/>
+                &nbsp;&nbsp;&nbsp;
+                <apex:repeat value="{!pagiwrap.openpagiwrap.paginater.pageList}" var="pl">
+                    <apex:outputText rendered="{!!pl.isActive}" value="">
+                        <apex:commandLink action="{!updatePage}" rerender="pageBlock"  oncomplete="setDataTables1();setDataTables2();">
+                            {!pl.pageNum}                                
+                            <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!pagiwrap.openpagiwrap.paginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                        </apex:commandLink>
+                    </apex:outputText>
+                    <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                </apex:repeat>
+                &nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="Next" rerender="pageBlock" action="{!nextPage}" rendered="{!pagiwrap.openpagiwrap.paginater.showNext}" oncomplete="setDataTables1();setDataTables2();"/>
+            </apex:outputPanel> 
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionClearedItems" title="{!$Label.AccountRec_SOCleared} {!$Label.AccountRec_ItemsTrans}"          collapsible="false">
+                <apex:dataTable value="{!pagiwrap.clearpagiwrap.clearwrapperlist2}" var="Clist" styleclass="tableARInfo1">
+                    <apex:column > 
+                        <apex:facet name="header">Select</apex:facet>                        
+                        <apex:inputCheckbox value="{!Clist.isselected}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.additionalPdfDocumentId}" />
+                    </apex:column>
+                    <apex:column rendered="{!showlinenumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.lineNumber}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Invoice_Amount}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.amount}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Dispute_Amount}</apex:facet>
+                        <apex:inputText value="{!Clist.clearlist.disputeamount}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.baselineDate}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_ClearingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.clearingDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_ClearingDocNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.clearingDocumentNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.shortDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Ldes}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.longDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.docNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_PostingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.postingDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Debit Credit Indicator</apex:facet>
+                        <apex:outputText value="{!IF(Clist.clearlist.debitCreditInd == 'H','C', IF(Clist.clearlist.debitCreditInd == 'S','D',Clist.clearlist.debitCreditInd))}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">RefKey1</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.referencekey}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.netArrers}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.docDate}" />
+                    </apex:column>
+                    <apex:column > 
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.type}" />
+                    </apex:column>                  
+                    <apex:column rendered="{!showlinenumber}">
+                        <apex:facet name="header">{!$Label.USL_Rnum}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.referenceNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_AllocationNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.allocationNumber}" />
+                    </apex:column>
+                </apex:dataTable>                
+                <apex:outputPanel rendered="{!AND(IF(pagiwrap.clearpagiwrap.clearpaginater.isAll, false, true), IF(pagiwrap.clearpagiwrap.clearpaginater.totalPage == 1, false, true))}">
+                    <apex:commandButton value="Previous" rerender="pageBlock" action="{!cpreviousPage}" rendered="{!pagiwrap.clearpagiwrap.clearpaginater.showPrevious}" status="fetchStatus" oncomplete="setDataTables1();setDataTables2();"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:repeat value="{!pagiwrap.clearpagiwrap.clearpaginater.pageList}" var="pl">
+                        <apex:outputText rendered="{!!pl.isActive}" value="">
+                            <apex:commandLink action="{!cupdatePage}" rerender="pageBlock" status="fetchStatus" oncomplete="setDataTables1();setDataTables2();">
+                                {!pl.pageNum}                                
+                                <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!pagiwrap.clearpagiwrap.clearpaginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                            </apex:commandLink>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                    </apex:repeat>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Next" rerender="pageBlock" action="{!cnextPage}" rendered="{!pagiwrap.clearpagiwrap.clearpaginater.showNext}" status="fetchStatus" oncomplete="setDataTables1();setDataTables2();"/>
+                </apex:outputPanel> 
+                <apex:actionStatus id="fetchStatus">
+                    <apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                            &nbsp;
+                        </div>
+                        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                            <img src="/img/loading.gif" />
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Save Invoices"  status="fetchStatus2" action="{!saveInvoice}" oncomplete="myFunction('{!invwrap.isSuccess}');" reRender="msg"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

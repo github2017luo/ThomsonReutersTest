@@ -1,0 +1,163 @@
+<apex:component allowDML="true" controller="ESC_FormGeneratorCompController" >
+    <apex:attribute name="ikey" type="String" assignTo="{!Key}" description="The key given to this component so the page can easily get access to it"
+                    />
+    <apex:attribute name="ipageController" type="ESC_PageControllerBase" assignTo="{!pageController}"
+                    description="The controller for the page." />
+    <apex:attribute name="sectionID" type="string" description="The section iD " assignTo="{!sectionIDE}"
+                    />
+    <apex:attribute name="sectionDetail" type="ESC_SectionDetails" description="The section iD "
+                    assignTo="{!scd}" />
+    <apex:attribute name="sectionDescriber" type="ESC_SectionDescriber" description="The section Description "
+                    assignTo="{!currentDescribedSection}" />
+     <apex:attribute name="singleExtensionN" type="ESC_Case_Form_Extension__c" description="The extension Item "
+                    assignTo="{!singleExtension}" />
+                    <apex:attribute name="singleExtensionLineItemsListN" type="ESC_Case_Form_Extension_Line_Item__c[]" description="The extension ine Item List"
+                    assignTo="{!singleExtensionLineItemsList}" />
+              <apex:inputCheckbox id="myCHK" style="display:none;" value="{!currentDescribedSection.isRendered}"/>      
+     <apex:actionRegion id="ActRgn">                 
+                    <apex:pageMessages rendered="false" id="msgs2" /> 
+                    
+    <apex:variable value="{!Section}" var="fs2" />
+    <apex:variable value="{!currentDescribedSection}" var="fs" />
+    <apex:variable value="{!fs.objectName == 'ESC_Case_Form_Extension__c' || fs.objectName == 'ESC_Case_Form_Extension_Line_Item__c'}"
+                   var="isExtension"></apex:variable>
+    <apex:outputPanel styleclass="parentDiv" id="MainPanel" html-diviD="{!sectionID}"
+                      styleClass="{!if(fs.isRendered,'visible','invisible')}" style="text-align: left !important;">
+       
+           
+            
+            
+            <!-- ******************************************plain Layout ******************************************************************-->
+            
+            <apex:pageBlock mode="mainDetail" id="PlainLayout" >
+             
+                <apex:outputPanel rendered="{!fs.isPlainLayout}" >
+                <!-- if readonly -->
+                <apex:pageBlockSection id="pbColumnsNE" collapsible="false" columns="{!fs.layoutColumns}"
+                                       rendered="{! !isExtension }" >
+                    <apex:repeat id="rptColumns" value="{!fs.fsAPINameList}" var="fsm">
+                        <apex:outputField value="{!fs.sobj[fsm]}"></apex:outputField>
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                 
+                <apex:pageBlockSection id="pbColumnsE" html-objectType="{!fs.objectName}" collapsible="false"
+                                       columns="{!fs.layoutColumns}" rendered="{! isExtension }" >
+                    <apex:repeat id="rptColumns" value="{!fs.fsAPINameList }" var="fsm">
+                      
+                        <apex:inputField rendered="{!$ObjectType[fs.objectName].fields[fsm].type == 'picklist' || $ObjectType[fs.objectName].fields[fsm].type == 'date' || $ObjectType[fs.objectName].fields[fsm].type == 'boolean'}" styleClass="{!if(preDescribedFieldMap[fsm]['isMandatory'],'mandate' ,'nonmandate') } api{!fsm} typ{!$ObjectType[fs.objectName].fields[fsm].type}"
+                                         label="{! if(preDescribedFieldMap[fsm]['labelName'] != 'xxx',$Label[preDescribedFieldMap[fsm]['labelName']],$ObjectType[fs.objectName].fields[fsm].label)}"
+                                         id="inpColFld2" value="{!fs.sobj[fsm]}"  >
+                            
+            
+                            <apex:actionSupport event="onchange" action="{!imitateFormSubmit}" rerender="msgs2"
+                            oncomplete="perormChangeEvents(this,'{!sectionName}','{!sectionID}',escape('data+{!fieldDescpn[fsm]}'),0,false);console.log('fired onc P')"></apex:actionSupport>
+                            
+                            
+                         </apex:inputField>
+                         
+                         <apex:inputField rendered="{!$ObjectType[fs.objectName].fields[fsm].type != 'picklist' && $ObjectType[fs.objectName].fields[fsm].type != 'date' && $ObjectType[fs.objectName].fields[fsm].type != 'boolean' }" styleClass="{!if(preDescribedFieldMap[fsm]['isMandatory'],'mandate' ,'nonmandate') } api{!fsm} typ{!$ObjectType[fs.objectName].fields[fsm].type}"
+                                         label="{! if(preDescribedFieldMap[fsm]['labelName'] != 'xxx',$Label[preDescribedFieldMap[fsm]['labelName']],$ObjectType[fs.objectName].fields[fsm].label)}"
+                                         id="inpColFld3" value="{!fs.sobj[fsm]}"  >
+                            
+            
+                            <apex:actionSupport event="onkeyup" action="{!imitateFormSubmit}" rerender="msgs2"
+                            ></apex:actionSupport>
+                            
+                            
+                         </apex:inputField>
+                         
+                    </apex:repeat>
+                </apex:pageBlockSection>
+                </apex:outputPanel>
+                 
+            </apex:pageBlock>
+            
+            <!-- ******************************************isTabular ******************************************************************-->
+            
+            <apex:pageBlock id="pbTable" mode="mainDetail" >
+                 <apex:variable value="{!currentDescribedSection}" var="fs" />
+                <apex:outputPanel rendered="{!fs.isTabular}" style="overflow:scroll;height:250px;" layout="block">
+                <apex:variable var="rowNumber" value="{!0}"/>   
+                <apex:pageBlockTable id="tab" html-tableID="{sectionID}" value="{!fs.sobjList}" var="ocr">
+                    <apex:repeat id="rptTab" value="{!fs.fsAPINameList}" var="fsm">
+                        <apex:column id="tabCol">
+                            <apex:facet name="header">
+                                <apex:outputPanel >
+                                    <apex:variable rendered="{! isExtension}" value="{!preDescribedFieldMap[fsm]['labelName']}"
+                                                   var="labelName" />
+                                    <apex:outputText rendered="{! isExtension && labelName == 'xxx'}" value="{!$ObjectType[fs.objectName].fields[fsm].label}"></apex:outputText>
+                                    <apex:outputText rendered="{! isExtension && labelName != 'xxx'}" value="{! $Label[labelName]}"></apex:outputText>
+                                </apex:outputPanel>
+                            </apex:facet>
+                            <!-- <apex:outputField rendered="{! isExtension}" value="{!ocr[fsm]}"></apex:outputField> -->
+                            <apex:variable rendered="{! isExtension}" value="{!preDescribedFieldMap[fsm]['isMandatory']}"
+                                           var="isMandatory" />
+                            <apex:variable rendered="{! isExtension}" value="{!fieldDescpn[fsm]}" var="rerenderKey"
+                                           />
+                                             <apex:outputField value="{!ocr[fsm]}" rendered="{!(isExtension && fs.readOnlyFieldsMap[fsm] ==fsm)}"/>
+                            <apex:outputPanel rendered="{!(if(fs.readOnlyFieldsMap[fsm] ==fsm,false,true))}">
+                            <apex:inputField styleClass="{!if(isMandatory,'mandate','nonmandate')} api{!fsm} typ{!$ObjectType[fs.objectName].fields[fsm].type}" 
+                                        
+                                        id="inpTabFld" value="{!ocr[fsm]}" >
+                                <apex:actionSupport event="onkeyup" action="{!imitateFormSubmit}" rerender="msgs2" oncomplete="console.log('tabular layout field onchange fired');console.log(this)"></apex:actionSupport>
+                                <apex:actionSupport event="onmouseup" action="{!imitateFormSubmit}" rerender="msgs2" oncomplete="console.log('tabular layout field onchange fired');console.log(this)"></apex:actionSupport>
+                            </apex:inputField>
+                            </apex:outputPanel>
+                        </apex:column>
+                    </apex:repeat>
+                    <apex:column >
+                         <apex:variable var="rowNumber" value="{!rowNumber+1}" />
+                        <apex:commandLink styleClass="{!rowNumber}" id="cmdDelRow" rendered="{!fs.sobjList.size>1}" status="fetchStatus" value="Delete" reRender="{!$Component.pbTable},msgs2"
+                            immediate="true"  action="{!delRow}" oncomplete="onPageFLoad(); ">
+                            <apex:param name="rowNumberParam"
+                value="{!rowNumber}"
+                assignTo="{!rowNumberParam}"/>
+                            </apex:commandLink>
+                       
+                        
+                    </apex:column>
+                </apex:pageBlockTable>
+                </apex:outputPanel>
+                <apex:pageBlockButtons id="pbTabBtns" styleClass="pButtonVIsibile" location="bottom" rendered="{!fs.isTabular}">
+                    <apex:commandLink id="cmdTab" value="Add Row" action="{!addRow}" status="fetchStatus" immediate="true" reRender="{!$Component.pbTable},msgs2" oncomplete="console.log('{!$Component.pbTable}');onPageFLoad(false);"
+                                     />
+                </apex:pageBlockButtons>
+                
+            </apex:pageBlock>
+            
+       
+        
+        <!-- ******************************************isvisualforce component ******************************************************************-->
+        
+        <apex:pageBlock id="pbVFComponent" mode="mainDetail" rendered="{!fs.isVFP}">
+            <c:USL_Chargecancellation rendered="{!fs.vfComponentName == 'USL_Chargecancellation' }"
+                                      ipageController="{!pagecontroller}"></c:USL_Chargecancellation>
+            <c:USL_AttachFileComp rendered="{!fs.vfComponentName == 'USL_AttachFileComp' }"
+                                  ipageController="{!pagecontroller}" caseid="{!scd.masterRecordID}"></c:USL_AttachFileComp>
+            
+            <c:USL_WriteOffComp rendered="{!fs.vfComponentName == 'USL_WriteOffComp' }"
+                                  ipageController="{!pagecontroller}" caseid="{!scd.masterRecordID}" formid="{!scd.masterRecordID}"></c:USL_WriteOffComp>                                   
+            
+                       
+            <c:USL_ChargeCExceptionController rendered="{!fs.vfComponentName == 'USL_ChargeCExceptionController' }"
+                                  ipageController="{!pagecontroller}" caseid="{!scd.masterRecordID}" formid="{!scd.masterRecordID}"></c:USL_ChargeCExceptionController>                                   
+            
+              
+                       
+            
+                                                      
+        </apex:pageBlock>
+        
+    </apex:outputPanel>
+      </apex:actionRegion>
+    
+
+    <apex:actionFunction status="fetchStatus" action="{!formRerenderCall}" name="formRerenderCall{!sectionID}"
+                         reRender="msgs2,{!$Component.myCHK}">
+        <apex:param id="statusRendered" name="statusRendered" value="" />
+    </apex:actionFunction>
+    
+   
+    <script>
+    </script>
+</apex:component>

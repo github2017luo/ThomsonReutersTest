@@ -1,0 +1,223 @@
+<apex:page showHeader="false" standardStylesheets="false">
+    <style type='text/css'>
+        .embeddedServiceHelpButton .helpButton .uiButton { background-color: #005290; font-family: "Salesforce Sans", sans-serif; }
+        .embeddedServiceHelpButton .helpButton .uiButton:focus { outline: 1px solid #005290; }
+        @font-face {
+        font-family: 'Salesforce Sans';
+        src: url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.woff') format('woff'),
+        url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.ttf') format('truetype');
+        }
+    </style>
+    <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+    <script type='text/javascript'>
+    var initESW = function(gslbBaseURL) {
+        
+        var url= new URL(location);
+        var caseNumber=url.searchParams.get("casenumber");
+        var firstname=url.searchParams.get("firstname");
+        var lastname=url.searchParams.get("lastname");
+        var product=url.searchParams.get("product");
+        var LCRM_Sub_BU__c=url.searchParams.get("LCRM_Sub_BU__c");
+        var Sales_Org__c=url.searchParams.get("Sales_Org__c");
+        var Email=url.searchParams.get("Email");
+        var lang =url.searchParams.get("lang");
+        if(lang == null || lang == '' || lang == 'en-US')
+        {
+            lang = '';
+        }
+        if(lang == 'es_AR')
+        {
+            lang = 'es_AR';
+        }
+        embedded_svc.settings.defaultMinimizedText = '{!$Label.ESC_Latam_defaultMinimizedText}'; //(Defaults to Chat with an Expert)
+        embedded_svc.settings.disabledMinimizedText = '{!$Label.ESC_Latam_disabledMinimizedText}'; //(Defaults to Agent Offline)
+        
+        embedded_svc.settings.displayHelpButton = true; //Or false
+        embedded_svc.settings.language = lang; //For example, enter 'en' or 'en-US',es_AR
+        
+        embedded_svc.settings.avatarImgURL = '';
+        embedded_svc.settings.prechatBackgroundImgURL = '';
+        embedded_svc.settings.waitingStateBackgroundImgURL = '';
+        embedded_svc.settings.smallCompanyLogoImgURL = '';
+        
+        obj =   [ 
+            { "label": "Origin",
+             "value": "Chat",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_Origin__c"] 
+            },
+            { "label": "First Name",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_First_Name__c"] 
+            },
+            { "label": "Last Name",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_Last_Name__c"] 
+            },
+            { "label": "Email",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_Email__c"] 
+            },
+            {"label": "Sub BU",
+             "value": "GGO",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_Sub_BU__c"]
+            }, 
+            {"label": "SalesOrg",
+             "value": "BEJE",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_SalesOrg__c"]
+            }, 
+            {"label": "Status",
+             "value": "Work In Progress",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_Status__c"]
+            },
+            {"label": "Case Type",
+             "value": "Incident",
+             "displayToAgent": false,
+             "transcriptFields":["ESC_Case_Type__c"]
+            },
+            {"label": "product",
+             "displayToAgent": false,
+             "value": product,
+             "transcriptFields":["ESC_Product_Latam__c"]
+            },
+            {
+             "label": "fname",
+             "displayToAgent": false,
+             "value": firstname,
+             "transcriptFields":["ESC_First_Name__c"]
+            },
+            {
+             "label": "lname",
+             "displayToAgent": false,
+             "value": lastname,
+             "transcriptFields":["ESC_Last_Name__c"]
+            },
+            {
+             "label": "cmail",
+             "displayToAgent": false,
+             "value": Email,
+             "transcriptFields":["ESC_Email__c"]
+            },
+            {"label": "UniqIdentifier",
+             "value": "GGO_Chat",
+             "displayToAgent": false
+            }
+        ];
+        
+        embedded_svc.settings.extraPrechatFormDetails = obj;
+        embedded_svc.settings.prepopulatedPrechatFields = {
+            FirstName: firstname,
+            LastName:lastname,
+            Email :Email,
+            LCRM_Customer_First_Name__c: firstname,
+            LCRM_Customer_Last_Name__c:lastname,
+            LCRM_Email_Address__c:Email
+            
+        };
+        
+        if(lang==null||lang==""||lang=='en-US'){
+            
+            embedded_svc.settings.extraPrechatInfo=[
+                
+                {"entityFieldMaps":[
+                    {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                    {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                    {"doCreate":false,"doFind":true,"fieldName":"Email","isExactMatch":false,"label":"Email"}
+                ]
+                 ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                {"entityFieldMaps":[
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_First_Name__c","isExactMatch":false,"label":"First Name"},
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_Last_Name__c","isExactMatch":false,"label":"Last Name"},
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Email_Address__c","isExactMatch":true,"label":"Email"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Origin","isExactMatch":false,"label":"Origin"},
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Sub_BU__c","isExactMatch":false,"label":"Sub BU"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Sales_Org__c","isExactMatch":false,"label":"SalesOrg"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Status","isExactMatch":false,"label":"Status"},
+                    {"doCreate":true,"doFind":false,"fieldName":"ESC_Unique_Identifier__c","isExactMatch":false,"label":"UniqIdentifier"},
+                    //{"doCreate":true,"doFind":false,"fieldName":"ESC_Product_Latam__c","isExactMatch":false,"label":"product"},
+                    {"doCreate":true,"doFind":false,"fieldName":"ESC_Case_Type__c","isExactMatch":false,"label":"Case Type"}
+                ]
+                 ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":true}]; 
+        }
+        else{
+           
+            embedded_svc.settings.extraPrechatInfo = [
+            {"entityFieldMaps":[
+                    {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"lname"},
+                    {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"fname"},
+                    {"doCreate":false,"doFind":true,"fieldName":"Email","isExactMatch":false,"label":"cmail"}
+                ]
+                 ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                {"entityFieldMaps":[
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_First_Name__c","isExactMatch":false,"label":"fname"},
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_Last_Name__c","isExactMatch":false,"label":"lname"},
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Email_Address__c","isExactMatch":true,"label":"cmail"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Origin","isExactMatch":false,"label":"Origin"},
+                    {"doCreate":true,"doFind":false,"fieldName":"LCRM_Sub_BU__c","isExactMatch":false,"label":"Sub BU"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Sales_Org__c","isExactMatch":false,"label":"SalesOrg"},
+                    {"doCreate":true,"doFind":false,"fieldName":"Status","isExactMatch":false,"label":"Status"},
+                    {"doCreate":true,"doFind":false,"fieldName":"ESC_Unique_Identifier__c","isExactMatch":false,"label":"UniqIdentifier"},
+                    //{"doCreate":true,"doFind":false,"fieldName":"ESC_Product_Latam__c","isExactMatch":false,"label":"product"},
+                    {"doCreate":true,"doFind":false,"fieldName":"ESC_Case_Type__c","isExactMatch":false,"label":"Case Type"}
+                ]
+                 ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":true}]; 
+            
+        }
+        
+        
+        
+        embedded_svc.settings.directToButtonRouting = function (prechatFormData) {
+            //Dynamically changes the button ID based on what the visitor enters in the pre-chat form.
+            //Returns a valid button ID.
+            
+            var latamProd = product;
+                if(latamProd =="Flex"){
+                    return "5734O0000004HYs";}
+                else if(latamProd =="SAAS/Contable"){
+                    return "5734O0000004HYx";}
+                 else if(latamProd =="SJ/RRHH"){
+                    return "5734O0000004HZ2";}
+                 else if(latamProd =="TEC"){
+                    return "5734O0000004HZ7";}
+                 else {
+                    return "5734O0000004HZC";}
+        };
+
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';
+
+ 
+
+        embedded_svc.init(
+            'https://thomsonreutersglis2e.my.salesforce.com',
+            'https://thomsonreuterss2elatam.secure.force.com/LiveAgentLatamSupport',
+            gslbBaseURL,
+            '00D30000000pLSL',
+            'Latam_Flex_Chat_SnapIn',
+            {
+                baseLiveAgentContentURL: 'https://c.la3-c2-ph2.salesforceliveagent.com/content',
+                deploymentId: '5724O0000004Goz',
+                buttonId: '5734O0000004HZC',
+                baseLiveAgentURL: 'https://d.la3-c2-ph2.salesforceliveagent.com/chat',
+                eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I4O000000003yUAA_17c1b8897fd',
+                isOfflineSupportEnabled: false
+            }
+        );
+    };
+    if (!window.embedded_svc) {
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://thomsonreutersglis2e.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+        s.onload = function() {
+            initESW(null);
+        };
+        document.body.appendChild(s);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+</apex:page>

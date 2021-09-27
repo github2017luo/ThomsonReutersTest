@@ -1,0 +1,100 @@
+<template>
+  
+  <template if:true={isAssetLI} >
+      <lightning-card title="AssetItem" icon-name="standard:record" > <br/>
+     
+          <div if:true={errorMsg} >
+            <p style="color: red;">{errorMsg}</p>
+        </div>
+    <div if:true={data} >
+    <div style="height:350px">
+      <lightning-datatable
+                     key-field="AssetTable"
+                     data={data}
+                     columns={columns}
+                     onrowselection={getSelectedName}
+                >
+             </lightning-datatable>
+             <br/>
+             <lightning-button variant="brand" label="Next" title="Select Asset" onclick={handleClick} class="slds-m-right_x-small"></lightning-button>
+        
+      </div>
+  </div>
+  
+         
+ 
+             <div class="demo-only" style="height:6rem" if:true={displaySpinner}>
+               <div class="slds-spinner_container">
+                 <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                   <span class="slds-assistive-text">Loading</span>
+                   <div class="slds-spinner__dot-a"></div>
+                   <div class="slds-spinner__dot-b"></div>
+                 </div>
+               </div>
+             </div>
+  
+  </lightning-card>
+  </template>  
+
+  <template if:true={isCaseAssetLI}>
+      <lightning-card title="CaseAssetItem" icon-name="standard:case" > <br/>
+          <div if:true={errorMsg} >
+              <p style="color: red;">{errorMsg}</p>
+          </div>
+    <template if:true={isModifySub}>
+      <!-- Custom Lightning Input Select Field-->
+      <b>
+          <label class="slds-form-element__label" for="select-01">Select Operation</label></b>
+            <div class="slds-form-element__control">
+              <div class="slds-select_container" style="width:300px">
+                <select class="slds-select" id="select-01" onchange={onValueSelection} >
+                      <option value="">---None---</option>
+                      <!--iterate all picklist values from wrapper list using for:each loop-->
+                        <template for:each={stageNameValues.data} for:item="picklistItem">
+                           <option key={picklistItem.svalue} value={picklistItem.svalue}>
+                             {picklistItem.slabel}
+                           </option>
+                      </template>
+                </select>
+              </div>
+            </div>
+            
+    </template>
+    <div class="slds-p-around_medium lgc-bg" if:true={selectPLValue} style="width:300px">
+      <b><lightning-input type="text" label="Enter value" onchange={handleInputChange} required></lightning-input></b>
+      <div>
+        <lightning-button variant="brand" label="Apply" title="Update" onclick={handleUpdateClick} class="slds-m-left_x-small" if:true={isModifySub}></lightning-button>
+      </div>
+   </div>
+   
+     <div if:true={data} >
+      <div style=" height:200px;">
+                <lightning-datatable
+                     key-field="Id"
+                     data={data}
+                     columns={columns}
+                     onrowselection={getSelectedRow}
+                     selected-rows={preSelectedRows}
+
+                >
+             </lightning-datatable>
+             <br/>
+             <div>
+              <lightning-button variant="brand" label="Finish" title="Finish" onclick={handleFinishClick} class="slds-m-left_x-small"></lightning-button>
+             </div>
+             
+            </div>
+          </div>  
+          <div class="demo-only" style="height:6rem" if:true={displaySpinner}>
+            <div class="slds-spinner_container">
+              <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+              </div>
+            </div>
+          </div>
+          </lightning-card>
+          </template>
+     
+    </template>

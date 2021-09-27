@@ -1,0 +1,118 @@
+<!--
+* {Purpose} - Displays 'Show More' link which can be used for relationship tables.
+*
+* @author   Shah Kadirmohideen
+* @version  2011-12-07
+*/
+ 
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                    Description
+* 2011-12-07    Shah Kadirmohideen      Created
+* 2012-01-20    Shah Kadirmohideen      Incorporated enhanced list (go to list) functionality related changes.   
+* 2014-08-29    David Sarbello          Added new  attribute to pass the AccountId when applicable.
+*                                       Added call for Audit Logging. Doing so more tightly coupls this Component
+*                                       to its parent - which must use CNGlobalViewController and thus have access to logEntry 
+* =============================================================================
+-->  
+<apex:component id="paginationFooterCompId">
+    <apex:attribute name="paginator" description="Paginator object which contains the table data" type="CNPaginator" required="required" />
+    <apex:attribute name="rerenderId" description="Comma separated list of ids which will be used for rerender after the Show More link is clicked" type="String" required="required" />
+    <apex:attribute name="isDownloadMode" description="Indicates if the context is download or regular view" type="Boolean" required="required" />
+    <apex:attribute name="tabName" description="Identifies the tab name in which this paginator is placed" type="String" required="required" />
+    <apex:attribute name="feedbackToEmail" description="Email to address which will be placed on submit feedback link" type="String" required="required" />
+    <apex:attribute name="feedbackSubject" description="Email subject which will be placed on submit feedback link" type="String" required="required" />
+    <apex:attribute name="gotoListURL" description="Email subject which will be placed on submit feedback link" type="String" required="required" />
+    <apex:attribute name="componentSource" description="Identifies if this component is on an Account or Contact" type="String" required="required" />
+    <apex:attribute name="accountId" description="The AccountId for logging purposes" type="String" />
+    <apex:attribute name="contactId" description="The ContactId for logging purposes" type="String" />  
+
+    <apex:outputPanel id="paginationId" style="white-space:nowrap">        
+            <table align="left" border="0" style="width:250px; height: 22px;"><tr>
+                <td><!-- LEFT FIRST PAGE ARROW -->
+                    <div style=" cursor: pointer; margin: 0px 5px 0px 0px; width: 16px; height: 16px; display:{!IF(paginator.currentPageNo==1,'none','block')};" 
+                        class="arrowLineLeftDark"  onclick="children[0].onclick();" onmouseover="this.className='arrowLineLeftDark hover';" 
+                        onmouseout="this.className='arrowLineLeftDark';">
+                        <apex:commandLink action="{!paginator.first}" rerender="{!rerenderId}" onclick=""  oncomplete="resizeWindow('{!tabName}');" >
+                            <apex:param name="pageNo" value="1" assignTo="{!paginator.pageNo}"/>                
+                        </apex:commandLink>
+                    </div> 
+                </td>
+                <td><!-- PAGE LEFT ARROW -->
+                    <div style="; cursor: pointer; width: 16px; height: 16px; display:{!IF(paginator.currentPageNo>1,'block','none')};" class="doubleArrowLeftDark" onmouseover="this.className='doubleArrowLeftDark hover';" onmouseout="this.className='doubleArrowLeftDark';" onclick="children[0].onclick();">
+                        <apex:commandLink action="{!paginator.previous}" rerender="{!rerenderId}" onclick="" />             
+                    </div> 
+                </td>
+                <td><!-- LEFT ELLIPSIS -->
+                    <div style="display:{!IF(paginator.pagerStartNumber>1,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle" onclick="children[0].click()" onmouseover="this.className='circle hover';" onmouseout="this.className='circle ';">
+                        <apex:commandLink action="{!paginator.backElipsis}" rerender="{!rerenderId}" onclick="" >
+                            <apex:param name="pageNo" value="{!paginator.pagerStartNumber}" assignTo="{!paginator.pageNo}"/>
+                        </apex:commandLink>...
+                    </div>
+            </td>
+            <td><!-- PAGE ONE -->
+                <div style="display:block; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber,'selected','')} hover';" onmouseout="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber,'selected','')}';">
+                    <apex:commandLink action="{!paginator.specificPage}" rerender="{!rerenderId}" onclick="" >
+                        <apex:param name="pageNo" value="{!paginator.pagerStartNumber}" assignTo="{!paginator.pageNo}"/>
+                    </apex:commandLink>{!paginator.pagerStartNumber}
+                </div>
+            </td>
+            <td><!-- PAGE TWO -->
+                <div style="display:{!IF(paginator.TotalPages>=paginator.pagerStartNumber+1,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+1,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+1,'selected','')} hover';" onmouseout="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+1,'selected','')}';">
+                    <apex:commandLink action="{!paginator.specificPage}" rerender="{!rerenderId}" onclick="" >
+                        <apex:param name="pageNo" value="{!paginator.pagerStartNumber+1}" assignTo="{!paginator.pageNo}"/>
+                    </apex:commandLink>{!paginator.pagerStartNumber+1}
+                </div>
+            </td>
+            <td><!-- PAGE THREE -->
+                <div style="display:{!IF(paginator.TotalPages>=paginator.pagerStartNumber+2,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+2,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+2,'selected','')} hover';" onmouseout="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+2,'selected','')}';">
+                    <apex:commandLink action="{!paginator.specificPage}" rerender="{!rerenderId}" onclick="" >
+                        <apex:param name="pageNo" value="{!paginator.pagerStartNumber+2}" assignTo="{!paginator.pageNo}"/>
+                    </apex:commandLink>{!paginator.pagerStartNumber+2}
+                </div>
+            </td>
+            <td><!-- PAGE FOUR -->
+                <div style="display:{!IF(paginator.TotalPages>=paginator.pagerStartNumber+3,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+3,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+3,'selected','')} hover';" onmouseout="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+3,'selected','')}';">
+                    <apex:commandLink action="{!paginator.specificPage}" rerender="{!rerenderId}" onclick="" >
+                        <apex:param name="pageNo" value="{!paginator.pagerStartNumber+3}" assignTo="{!paginator.pageNo}"/>
+                    </apex:commandLink>{!paginator.pagerStartNumber + 3}
+                </div>
+            </td>
+            <td><!-- PAGE FIVE -->
+                <div style="display:{!IF(paginator.TotalPages>=paginator.pagerStartNumber+4,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+4,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+4,'selected','')} hover';" onmouseout="this.className='circle {!IF(paginator.currentPageNo==paginator.pagerStartNumber+4,'selected','')}';">
+                    <apex:commandLink action="{!paginator.specificPage}" rerender="{!rerenderId}" onclick="" >
+                        <apex:param name="pageNo" value="{!paginator.pagerStartNumber+4}" assignTo="{!paginator.pageNo}"/>
+                    </apex:commandLink>{!paginator.pagerStartNumber + 4}
+                </div>
+            </td>
+            <td><!-- RIGHT ELLIPSIS -->
+                <div style="display:{!IF(paginator.TotalPages>=paginator.pagerStartNumber+5,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle " onclick="children[0].click()" onmouseover="this.className='circle hover';" onmouseout="this.className='circle ';">
+                    <apex:commandLink action="{!paginator.Elipsis}" rerender="{!rerenderId}" onclick="" >
+                        <apex:param name="pageNo" value="{!paginator.pagerStartNumber+5}" assignTo="{!paginator.pageNo}"/>
+                    </apex:commandLink>...
+                </div>
+            </td>
+            <td><!-- PAGE RIGHT ARROW -->
+                <div style="display:{!IF(paginator.EndOfPages==1,'block','none')}; cursor: pointer; width: 16px; height: 16px;"  class="doubleArrowRightDark" onclick="children[0].onclick();" onmouseover="this.className='doubleArrowRightDark hover';" onmouseout="this.className='doubleArrowRightDark';">
+                    <apex:commandLink action="{!paginator.next}" rerender="{!rerenderId}" onclick="" />         
+                </div>
+            </td>
+            <td><!-- END PAGE ARROW -->
+                <div style="display:{!IF(paginator.EndOfPages==1,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;" class="arrowLineRightDark"  onclick="children[0].onclick();" onmouseover="this.className='arrowLineRightDark hover';" onmouseout="this.className='arrowLineRightDark';">
+                    <apex:commandLink action="{!paginator.last}" rerender="{!rerenderId}"  onclick=""  oncomplete="resizeWindow('{!tabName}')" />               
+                </div>
+            </td>
+            </tr></table>
+         
+        <div style="float: right; margin: 5px 5px 5px 5px; line-height: 10px;">
+        <!-- DEBUG INFO -->
+            <!--<label class="lblPageStart">pagerStartNumber&nbsp;{!paginator.pagerStartNumber}</label>&nbsp;
+            <label class="lblPageEnd">TotalPages&nbsp;{!paginator.TotalPages}</label>&nbsp; 
+            <label class="lblNumResults">EndOfPages&nbsp;{!paginator.EndOfPages}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->  
+            <label class="lblPageStart">{!paginator.startRecordNo}</label> -&nbsp;
+            <label class="lblPageEnd">{!paginator.endRecordNo}</label>&nbsp;of&nbsp;
+            <label class="lblNumResults">{!paginator.TotalRecords}</label>&nbsp;items        
+         </div>
+    </apex:outputPanel>          
+</apex:component>

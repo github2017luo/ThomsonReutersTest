@@ -1,0 +1,310 @@
+<apex:page standardcontroller="Case" extensions="ESC_UnifiedAttachmentListController" docType="html-5.0" showHeader="false" id="page" action="{!updateCaseFlagToFalse}" lightningStylesheets="true">
+   <apex:slds />
+    <style>
+        .inb {
+            background-image: url(../img/emailInbound.gif);
+            background-position-x: right;
+            background-position-y: center;
+            background-size: initial;
+            background-repeat-x: no-repeat;
+            background-repeat-y: no-repeat;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: initial;
+            padding-right: 20px;
+        }
+
+        .ath {
+            background-image: url(../img/emailHasAttach.gif);
+            background-position-x: right;
+            background-position-y: center;
+            background-size: initial;
+            background-repeat-x: no-repeat;
+            background-repeat-y: no-repeat;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: initial;
+        }
+
+        .otb {
+            background-image: url(../img/emailOutbound.gif);
+            background-position-x: right;
+            background-position-y: center;
+            background-size: initial;
+            background-repeat-x: no-repeat;
+            background-repeat-y: no-repeat;
+            background-attachment: initial;
+            background-origin: initial;
+            background-clip: initial;
+            background-color: initial;
+            padding-right: 20px;
+        }
+    </style>
+    <apex:form >
+        <apex:slds />
+        <div id="myDiv" class="slds-scope">
+            <div styleClass="slds-col" >
+                <apex:actionFunction name="getRefreshed" action="{!getRefreshed}" />
+                <!--<apex:actionFunction name="update_FileUPDflag" action="{!update_FileUPDflag}" /> -->
+                <apex:PageBlock >
+                    <apex:dataTable style="white-space:nowrap;" value="{!allAttachmentsMap}" var="attach" styleClass="dataTable_mainTables" id="datatableid">
+                        <apex:column rendered="{!  hasSec }" html-data-orderable="false" headerClass="slds-text-title--caps" styleClass=" {! if(allAttachmentsMap[attach][0]['isRendered'],'','details-control')}">
+                            <apex:facet name="header"></apex:facet>
+                        </apex:column>
+                        <apex:column html-data-orderable="false">
+                            <apex:facet name="header">{!$Label.ESC_DocumentName}</apex:facet>
+                
+                            <!--<apex:outputLink title="{!allAttachmentsMap[attach][0]['docTitleFull']}" value="{!allAttachmentsMap[attach][0]['downloadlink']}" target="_blank" rendered="{! allAttachmentsMap[attach][0]['isRendered']}">{!attach}</apex:outputLink>-->
+                            <apex:outputPanel rendered="{! allAttachmentsMap[attach][0]['isRendered']}">
+                                <a title="{!allAttachmentsMap[attach][0]['docTitleFull']}" href="{!(allAttachmentsMap[attach][0]['downloadlink'])}" target= "_blank" >{!attach}</a>
+                            </apex:outputPanel>
+                            <apex:outputPanel styleClass="slds-truncate" rendered="{! !allAttachmentsMap[attach][0]['isRendered']}" style="color:blue">{!attach}</apex:outputPanel>
+                           
+                        </apex:column>
+                        <apex:column html-data-order="{!allAttachmentsMap[attach][0]['SortByDate']}">
+                            <apex:facet name="header">{!$Label.ESC_UploadDate}</apex:facet>
+                            <apex:outputPanel styleClass="slds-truncate" html-data-order="{!allAttachmentsMap[attach][0]['SortByDate']}" rendered="{!allAttachmentsMap[attach][0]['isRendered']}">{!allAttachmentsMap[attach][0]['uploadedDateF']}</apex:outputPanel>
+                        </apex:column>
+                        <apex:column html-data-orderable="false">
+                            <apex:facet name="header">{!$Label.ESC_ContentType}</apex:facet>
+                            <apex:outputPanel styleClass="slds-truncate" rendered="{!allAttachmentsMap[attach][0]['isRendered']}">{!allAttachmentsMap[attach][0]['type']}</apex:outputPanel>
+                        </apex:column>
+                        <apex:column html-data-orderable="false">
+                            <apex:facet name="header">{!$Label.ESC_Size}</apex:facet>
+                            <apex:outputPanel styleClass="slds-truncate" rendered="{!allAttachmentsMap[attach][0]['isRendered']}">{!allAttachmentsMap[attach][0]['attachmentSize']}</apex:outputPanel>
+                        </apex:column>
+                        <apex:column html-data-orderable="false">
+                            <apex:facet name="header">{!$Label.ESC_Source}</apex:facet>
+                            <apex:outputLink styleClass="{!allAttachmentsMap[attach][0]['styleClass']}" html-data-orderable="false" title="{!allAttachmentsMap[attach][0]['parent']}" onclick="openattach('{!JSENCODE(allAttachmentsMap[attach][0]['parentId'])}') ;return false;" rendered="{!allAttachmentsMap[attach][0]['isRendered']}">{!allAttachmentsMap[attach][0]['parentType']}</apex:outputLink>
+                        </apex:column>
+                    </apex:dataTable>
+                </apex:PageBlock>
+            </div>
+        </div>
+    </apex:form>
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryDataTables, 'css/jquery.dataTables.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryDataTables, 'css/jquery.dataTables.min.css')}" />
+     <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryDataTables, 'css/expand.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.ESC_UniversalResource, '/Minified/MinifiedCSSCHP.css')}" />
+    <script type="text/javascript" src="{!URLFOR($Resource.jQueryDataTables, 'js/jquery.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.jQueryDataTables, 'js/jquery.dataTables.js')}"></script>
+   
+    
+    <apex:includeScript value="/support/console/42.0/integration.js" />
+    <apex:includeScript value="/soap/ajax/42.0/apex.js" />
+    <script src="../../soap/ajax/42.0/connection.js" type="text/javascript" />
+     <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+        var count = 0;
+        
+
+        
+        
+        function format(d) {
+            // `d` is the original data object for the row
+            var records = JSON.parse('{!results}');
+            var $key = (j$(d[1])).text();
+            var record = records[$key];
+            console.log(typeof record);
+            var col = [];
+            for (var i = 0; i < 5; i++) {
+                col.push(i);
+            }
+            // CREATE DYNAMIC TABLE.
+            var subTable = document.createElement("table");
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+            var tr = subTable.insertRow(-1); // TABLE ROW.
+            var headers = ['File Name', 'Source', 'Content Type', 'Size', 'Upload Date'];
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = '';
+                tr.appendChild(th);
+            }
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (var i = 0; i < record.length; i++) {
+                tr = subTable.insertRow(-1);
+                var tabCell = tr.insertCell(-1);
+                console.log(typeof record[i]);
+                tabCell.innerHTML = '<a class="slds-truncate" href=' + record[i]
+                    ['downloadlink'] + ' target="_blank" >' + record[i]['docName'] + '</a>';
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = '<span class="slds-truncate">' + record[i]['uploadedDateF'] + '</span>';
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = '<span class="slds-truncate">' + record[i]['type'] + '</span>';
+                tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = '<span class="slds-truncate">' + record[i]['attachmentSizeF'] + '</span>';
+                tabCell = tr.insertCell(-1);
+                var str = '<a href="" target="_blank" class="slds-truncate ' + record[i]['styleClass'] + '" onclick="openattach(&quot;' + record[i]['parentId'] + '&quot;);return ' + false + ';" title="' + record[i]['parent'] + '">' + record[i]['parentType'] + ' </a>';
+                tabCell.innerHTML = str;
+            }
+            return subTable;
+        }
+
+        function fordatatables() {
+            var j$ = jQuery.noConflict();
+            var windowWidth = j$(window).width();
+            var windowHeight = j$(window).height();
+            var pixlWidth = windowWidth / 2.5 + 'px';
+            var pixlHeight = windowHeight / 2.5 + 'px';
+            console.log("myFunction $val" + pixlHeight);
+            var languageATT = eval(JSON.parse('{!DataTableEntity}'));
+            console.log('dte');
+            var language = [];
+            language.push(({
+                "processing": languageATT[0].ESC_processing,
+                "search": languageATT[0].ESC_search,
+                "lengthMenu": languageATT[0].ESC_lengthMenu,
+                "info": languageATT[0].ESC_info,
+                "infoEmpty": languageATT[0].ESC_infoEmpty,
+                "infoFiltered": languageATT[0].ESC_infoFiltered,
+                'infoPostFix': "",
+                'loadingRecords': languageATT[0].ESC_loadingRecords,
+                'zeroRecords': languageATT[0].ESC_zeroRecords,
+                'emptyTable': languageATT[0].ESC_emptyTable,
+                'paginate': {
+                    'first': languageATT[0].ESC_paginateFirst,
+                    'previous': languageATT[0].ESC_paginatePrevious,
+                    'next': languageATT[0].ESC_paginateNext,
+                    'last': languageATT[0].ESC_paginateLast
+                },
+                'aria': {
+                    'sortAscending': languageATT[0].ESC_sortAscending,
+                    'sortDescending': languageATT[0].ESC_sortDescending
+                }
+            }));
+            j$(".slds-col").css({
+                "overflow": "auto",
+                "width": pixlWidth,
+                "height": pixlHeight
+            });
+            var sor = JSON.parse('{!hasSec}') == "false" ? 1 : 2;
+            var table = j$('.dataTable_mainTables').DataTable({
+                "sPaginationType": "full_numbers",
+                "bFilter": true, // Make Filer True/False
+                "bStateSave": false,
+                "bPaginate": true, // Make pagination true/false
+                "bLengthChange": true, // hide length change dropdown
+                "bInfo": true,
+                "destroy": true,
+                "iDisplayLength": 10,
+                "sScrollY": windowHeight / 2,
+                "scrollX": true,
+                "bAutoWidth": true,
+                "language": language[0],
+                "order": [
+                    [sor, "desc"]
+                ],
+                "columnDefs": [{
+                    orderable: false,
+                    targets: '_all'
+                }]
+            });
+            setTimeout(function() {
+                table.columns.adjust().draw();
+            }, 500);
+            // Add event listener for opening and closing details
+            j$('.dataTable_mainTables').on('click', 'td.details-control', function() {
+                var tr = j$(this).closest('tr');
+                var row = table.row(tr);
+                console.log("clicked");
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                } else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    //const tmpRow = table.row.add().draw().node();
+                    //childNode = $(tmpRow).clone(true);
+                    //row.child(childNode).show();
+                    tr.addClass('shown');
+                    //table.row(tmpRow).remove().draw();
+                }
+            });
+        }
+        j$(document).ready(function() {
+            fordatatables();
+            j$("input[type='search']").focus();
+             modifyIDS();
+        });
+
+        function openattach(PrimaryId) {
+            console.log('called');
+            if (sforce.console.isInConsole()) sforce.console.openPrimaryTab(null, '/' + PrimaryId, true);
+            else location.href = '/' + PrimaryId;
+        }
+        function modifyIDS() {
+            console.log('modifyIDS');
+            j$("a[id *='lookup']").each(function(index) {
+                var newID = "referencedField" + index;
+                var elem = j$(this);
+                var fullHTML = elem[0].outerHTML;
+                var oldID = elem.attr('id');
+                console.log(oldID);
+                var oldHREF = 'href="' + elem.attr('href') + '"';
+                console.log(oldHREF);
+                var regex = new RegExp(oldID, 'g');
+                var regex2 = new RegExp('javascript:srcUp', 'g');
+                // console.log(fullHTML);
+                try {
+                    fullHTML = fullHTML.replace(regex, newID).replace(oldHREF, "onclick=GoToSelected('" + oldID + "') href='#'");
+                    elem[0].outerHTML = fullHTML;
+                } catch (e) {}
+            });
+            j$("a[href *='srcUp']").each(function(index) {
+                var elem = j$(this);
+                //console.log(this);
+                var oldhref = elem.attr('href');
+                oldhref = oldhref.replace("javascript:srcUp('", "").replace("'%27');", "");
+                //  console.log(oldhref);
+                oldhref = decodeURIComponent(oldhref);
+                oldhref = oldhref.replace("?isdtp=vw');", "").replace("/", "");
+                //  console.log(oldhref);
+                if (oldhref) {
+                    j$(this).attr("href", "#");
+                    // console.log(oldID);
+                    //  console.log(oldHREF);
+                    //  console.log(fullHTML);
+                    try {
+                        j$(this).click(function() {
+                            GoToSelected(oldhref);
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            });
+        }
+       
+    </script>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/cometd.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/json2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery_cometd.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/cometdReplayExtension.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/PushTopicConnectionEstablisher.js')}" />
+   
+    <script>
+        var token = '{!JSENCODE($Api.Session_ID)}';
+        
+
+        function subscribeToPT() {
+            _subscription = cometd.subscribe('/topic/ESC_FileUPD', receive);
+            if (!_subscription) {
+                _subscription = cometd.resubscribe(_subscription);
+            }
+            //               
+        }
+
+        function receive(message) {
+            data = message.data;
+            console.log(JSON.stringify(message, null, '\t'));
+            //getRefreshed();
+            //window.location.reload(true);
+            window.location.href = '/apex/ESC_UnifiedAttachmentList?id='+"{!JSENCODE(caseid)}";
+        }
+    </script>
+</apex:page>

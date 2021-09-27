@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Settings for License Manager App</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Bypass_Triggers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Bypass Triggers</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Deactivation_Slide_out_in_min__c</fullName>
+        <defaultValue>60</defaultValue>
+        <description>Time in minutes to slide the Deactivation Date by</description>
+        <externalId>false</externalId>
+        <label>Deactivation Slide out (in min)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Monitoring_Time_Period_in_min__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>Time period in minutes that is used to check if the objects being monitored has been modified in the last X period.</description>
+        <externalId>false</externalId>
+        <label>Monitoring Time Period (in min)</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Notification_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Notification Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Objects_to_Monitor__c</fullName>
+        <description>Comma separated list of objects that are to be monitored. If user is already modified a record in the last X time period (controlled via Monitoring Time Period) then the deactivation is pushed out</description>
+        <externalId>false</externalId>
+        <label>Objects to Monitor</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <label>License Manager Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,15 @@
+<!-- 
+    Apttus Contract Management
+    OCCIntermediateView
+     
+    @2020 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page showHeader="false" sidebar="false" lightningStylesheets="true" action="{!checkOCCFeature}" controller="Apttus.OCCIntermediateViewController">
+  <script>
+      if(!{!isOCCEnabled}) {
+          alert('{!$Label.OCCDisabledErrorMessage}');
+          window.top.location.href = '/' + '{!parentURLId}';
+      }
+  </script>
+</apex:page>

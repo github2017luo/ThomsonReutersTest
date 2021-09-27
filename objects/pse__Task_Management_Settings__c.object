@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Manages configuration of project tasks and related user interfaces.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Auto_Create_Task_Assignment_All_or_None__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, errors are ignored when creating assignments or assignment milestones and that will cause project task assignment records to be created. This option is ignored unless Automatically Create Task Assignments is true.</inlineHelpText>
+        <label>Auto Create Task Assignments All or None</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Auto_Create_Task_Assignment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether to automatically assign unassigned project tasks that belong to the same milestone as the assignment when assigning a resource to a project or creating a new assignment milestone record. The default value is false.</inlineHelpText>
+        <label>Automatically Create Task Assignments</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Auto_Delete_Task_Assignment_All_or_None__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, errors are ignored when deleting assignments or assignment milestones and that will cause deletion of project  task assignment records. This option is ignored unless Automatically Remove Task Assignments is true.</inlineHelpText>
+        <label>Auto Remove Task Assignments All or None</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Auto_Delete_Task_Assignment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates whether to automatically remove project task assignments when resource or milestone is removed or the milestone is no longer associated with that assignment. The default value is false.</inlineHelpText>
+        <label>Automatically Remove Task Assignments</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Task_Ordering__c</fullName>
+        <defaultValue>&quot;Start_Date_Time__c ASC NULLS LAST, CreatedDate ASC&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Controls the default ordering of tasks on the task management interface on initial load and after refreshing. This must be valid after a SOQL ORDER BY clause.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Controls the default ordering of tasks on the task management interface on initial load and after refreshing. This must be valid after a SOQL ORDER BY clause.</inlineHelpText>
+        <label>Default Task Ordering</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>pse__PTA_Require_Lock_Fieldset__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Name of fieldset on the Project Task Assignment object that contains a list of fields that will be restricted for editing when the record is not locked.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of fieldset on the Project Task Assignment object that contains a list of fields that will be restricted for editing when the record is not locked.</inlineHelpText>
+        <label>PTA Require Lock Fieldset</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__PTD_Require_Lock_Fieldset__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Name of fieldset on the Project Task Dependency object that contains a list of fields that will be restricted for editing when the record is not locked.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of fieldset on the Project Task Dependency object that contains a list of fields that will be restricted for editing when the record is not locked.</inlineHelpText>
+        <label>PTD Require Lock Fieldset</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__PT_Require_Lock_Fieldset__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Name of fieldset on the Project Task object that contains a list of fields that will be restricted for editing when the record is not locked.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of fieldset on the Project Task object that contains a list of fields that will be restricted for editing when the record is not locked.</inlineHelpText>
+        <label>PT Require Lock Fieldset</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Limit__c</fullName>
+        <defaultValue>10000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Maximum number of Projects to load for selection in Task Management UI</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of Projects to load for selection in Task Management UI</inlineHelpText>
+        <label>Deprecated:Project Limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Edit_End_Date_Milestone__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, restricts you from saving changes to the Task End Date when it is greater than the Milestone Target date.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, restricts you from saving changes to the Task End Date when it is greater than the Milestone Target date.</inlineHelpText>
+        <label>Restrict Edit - End Date - Milestone</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Edit_End_Date_Project__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, restricts you from saving changes to the Task End Date when it is out-of-range of the Project Start and End dates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, restricts you from saving changes to the Task End Date when it is out-of-range of the Project Start and End dates.</inlineHelpText>
+        <label>Restrict Edit - End Date - Project</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Edit_PTA_Dates__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, restricts you from saving changes to the Task End Date when it is out-of-range of the Project Task Assignment dates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, restricts you from saving changes to the Task End Date when it is out-of-range of the Project Task Assignment dates.</inlineHelpText>
+        <label>Restrict Edit - PTA - Dates</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Edit_PTA_Hours__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, restricts you from saving changes to the Task End Date when it is out-of-range of the Project Task Assignment hours.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, restricts you from saving changes to the Task End Date when it is out-of-range of the Project Task Assignment hours.</inlineHelpText>
+        <label>Restrict Edit - PTA - Hours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Edit_Start_Date_Milestone__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, restricts you from saving changes to the Task Start Date when it is greater than the Milestone Target date.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, restricts you from saving changes to the Task Start Date when it is greater than the Milestone Target date.</inlineHelpText>
+        <label>Restrict Edit - Start Date - Milestone</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Restrict_Edit_Start_Date_Project__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, restricts you from saving changes to the Task Start Date when it is out-of-range of the Project Start and End dates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, restricts you from saving changes to the Task Start Date when it is out-of-range of the Project Start and End dates.</inlineHelpText>
+        <label>Restrict Edit - Start Date - Project</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Track_Points_History_Disabled__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Track Points History Disabled</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Task Management Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

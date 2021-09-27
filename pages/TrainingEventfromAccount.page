@@ -1,0 +1,117 @@
+<!--  
+============================================================================================================
+ $VF Page TrainingEventfromAccount$
+============================================================================================================
+
+PURPOSE:         VF Page to create new Account Level Training event (Also Non Account Level)
+
+FUNCTIONALITY:   Creates Training Event(and also Training Event Account)
+                
+COMMENTS:
+ 
+CHANGE HISTORY
+============================================================================================================
+Version No.     Date              Changed By          Description of the change
+1.0             2011-02-16        Srikanth Kuruva           Created
+============================================================================================================
+-->
+<apex:page standardController="Training_Event__c" extensions="TrainingEventfromAccount" action="{! onPageLoad}" lightningStylesheets="true">
+<apex:includeScript value="/support/console/26.0/integration.js"/>
+<script type="text/javascript"> //SFD 16 [Snehajit]
+        var pageLoad = window.onload;
+        window.onload = function(){
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+        };
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('New Training Event');
+        };
+</script>
+<apex:form >
+ <apex:outputPanel rendered="{!bRenderStrategyInfo}">
+    <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 6px;" >
+               « <a href="/{!oStrategy.Id}" style="color:#015BA7;">Back to Strategy</a>            
+        </div></apex:outputPanel>
+    <apex:sectionHeader title="Training Event Edit" subtitle="New Training Event"/>
+    <apex:pageBlock title="Training Event Edit">
+        <apex:pageBlockButtons >
+            <apex:commandButton title="Save" value="Save" action="{!Save}"/>
+            <apex:commandButton title="Cancel" value="Cancel" action="{!cancel}"/>
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Training_Name__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Training_Name__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Training_Date__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Training_Date__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Training_Type__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Training_Type__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Status__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Status__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Campaign_Name__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Campaign_Name__c}"/>
+            </apex:pageBlockSectionItem>
+           
+           <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Notes__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Notes__c}"/> 
+            </apex:pageBlockSectionItem> 
+            <apex:pageBlockSectionItem > 
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Tracking_Code__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Tracking_Code__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Owner"/>
+                <apex:outputText value="{!$User.FirstName} {!$User.LastName}"/>
+            </apex:pageBlockSectionItem>            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel rendered="{!bRenderAccountInfo}" value="{!$ObjectType.Account.fields.Name.label}"/>
+                <apex:outputField rendered="{!bRenderAccountInfo}" value="{!aAccount.Name}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Training_Rep_2__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Training_Rep_2__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel rendered="{!bRenderAccountInfo}" value="{!$ObjectType.Account.fields.SAPAccountNumber__c.label}"/>
+                <apex:outputField rendered="{!bRenderAccountInfo}" value="{!aAccount.SAPAccountNumber__c}"/>                
+            </apex:pageBlockSectionItem>            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Training_Rep_3__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Training_Rep_3__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>            
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Training_Rep_4__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Training_Rep_4__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Strategy__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Strategy__c}"/>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="{!$ObjectType.Training_Event__c.fields.Points__c.label}"/>
+                <apex:inputField value="{!Training_Event__c.Points__c}"/>
+            </apex:pageBlockSectionItem>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+   
+    
+</apex:form>
+</apex:page>

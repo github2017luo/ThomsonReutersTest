@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Corporate_Partner_Leads</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Used to share leads with corporate partner user.</description>
+        <label>Corporate Partner Leads</label>
+        <sharedTo>
+            <roleAndSubordinates>GLI</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Corporate</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LeadSource</field>
+            <operation>equals</operation>
+            <value>Partner</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Elite_Power_User</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This sharing rule provides read write access to all Elite Leads to Elite Power User Group.</description>
+        <label>Elite Power User</label>
+        <sharedTo>
+            <group>Elite_Power_User</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Elite_Roles</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Elite Roles</label>
+        <sharedTo>
+            <group>Elite_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>LCRM_Share_Leads_with_Impartner_user</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Created as part of DPS-20280</description>
+        <label>LCRM Share Leads with Impartner user</label>
+        <sharedTo>
+            <role>TR_Partner</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Integration_Source__c</field>
+            <operation>equals</operation>
+            <value>Impartner</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>LOTUS_isGLI_Lead_Read_Only</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Based on DPS-14002</description>
+        <label>LOTUS-isGLI Lead Read Only</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Region_EQUALS_AEM</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Region EQUALS AEM</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_AEM_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>AEM</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Region_EQUALS_Canada</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Region EQUALS Canada</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Canada_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Canada</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Region_EQUALS_Europe</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Region EQUALS Europe</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Europe_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Europe</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Region_EQUALS_LatAm</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Region EQUALS LatAm</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_LatAm_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>LatAm</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Region_EQUALS_US</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Region EQUALS US</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_US_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>US</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Region_Segment_EQUALS_Global</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Region/Segment EQUALS Global</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Global_Region_Segment</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2 OR 3 OR 4 OR 5</booleanFilter>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>UKI</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>USL</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>FindLaw</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>LMS</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Segment_EQUALS_Corporate</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Segment EQUALS Corporate</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Corporate_Segment</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Corporate</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Segment_EQUALS_Professional_Legal</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Segment EQUALS Professional Legal</label>
+        <sharedTo>
+            <group>LTSGlobalUsersProfessionalLegalSegment</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Legal</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Lead_BU_Segment_EQUALS_Professional_Tax</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Lead BU Segment EQUALS Professional Tax</label>
+        <sharedTo>
+            <group>LTSGlobalUsersProfessionalTaxSegment</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Tax</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Leads_Corporate_Sharing_Rule</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This sharing rule provides Read/Write access on all leads where BU Segment equals Corporate</description>
+        <label>Leads Corporate Sharing Rule</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>President_Corporates_GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Corporate</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Leads_Corporate_Sharing_Rule_For_TR_Marketer</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This sharing rule provides Read/Write access on all leads where BU Segment equals Corporate</description>
+        <label>Leads Corporate Sharing Rule For TR Marketer</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>TR_Marketer</roleAndSubordinatesInternal>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Tax,Professional Legal,Corporate</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>S2E_Leads</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This sharing rules ensures existing S2E users have read write capability to all leads which are not GLI lead.</description>
+        <label>S2E Leads</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>S2E</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Share_Leads_with_USL_Mktg_Multi_Sub_BU</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>CRM-14017, CRM-18097: Share USL/ Elite/ LMS/ FindLaw leads with Marketing group</description>
+        <label>Share Leads with USL Mktg Multi-Sub-BU</label>
+        <sharedTo>
+            <group>USL_Mktg_Multi_Sub_BU</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2 OR 3 OR 4</booleanFilter>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>USL</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>LMS</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>FindLaw</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Sharing_GLI_Leads_to_DQA_Users</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sharing GLI Leads to DQA Users</label>
+        <sharedTo>
+            <group>GLI_DQA_User</group>
+        </sharedTo>
+        <booleanFilter>1</booleanFilter>
+        <criteriaItems>
+            <field>Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Sharing_Rule_on_Leads_Canada</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Created as a part of DPS-2032</description>
+        <label>Sharing Rule on Leads_Canada</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>Legal_Canada</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>Canada</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>UKI_Power_User</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This Sharing Rule provides read write access to UKI Power User, on all UKI leads.</description>
+        <label>UKI Power User</label>
+        <sharedTo>
+            <group>UKI_Power_User</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>UKI</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>USL_Sales_User</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>This sharing rule provides read/write access to all leads in USL/Elite/FindLaw BU.</description>
+        <label>USL Sales User</label>
+        <sharedTo>
+            <group>USL_Sales_User</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2 OR 3</booleanFilter>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>USL</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>FindLaw</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_BU__c</field>
+            <operation>equals</operation>
+            <value>LMS</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

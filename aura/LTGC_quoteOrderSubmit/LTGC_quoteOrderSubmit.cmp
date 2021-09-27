@@ -1,0 +1,21 @@
+<aura:component controller="APTS_ProposalUtilities" implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+	<aura:attribute name="sampleQuote" type="Object"/>
+    <aura:attribute name="quoteError" type="String"/>
+    
+    <aura:html tag="style">
+    .slds-backdrop {
+    background: rgba(43, 40, 38, 0) !important;  
+    }
+    .slds-fade-in-open {
+    display:none !important;
+   }
+</aura:html>
+    <force:recordData aura:id="proposalRecord"                      
+                      recordId="{!v.recordId}"
+                      fields="Apttus_Proposal__Approval_Stage__c,RecordType.Name,APTS_Proposal_Business_Unit__c,Latam_APTS_Reason__c,APTS_Order_Is_Created__c"   
+                      targetFields="{!v.sampleQuote}"
+                      targetError="{!v.quoteError}"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      />
+    <!--<aura:handler name="init" action="{!c.doInit}" value="{!this}" />-->
+</aura:component>

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Contains details related to CN application usage auditing log including both user components and package configuration</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Primary Salesforce account being viewed at the time the audit log entry was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Primary Salesforce account being viewed at the time the audit log entry was created.</inlineHelpText>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>CN Audit Logs</relationshipLabel>
+        <relationshipName>CN_Audit_Logs1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Action_Description__c</fullName>
+        <description>Description of action being logged</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Description of action being logged</inlineHelpText>
+        <label>Action Description</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Action_Type__c</fullName>
+        <description>What type of interaction was performed by the user?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of interaction was performed by the user?</inlineHelpText>
+        <label>Action Type</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Add</fullName>
+                    <default>false</default>
+                    <label>Add</label>
+                </value>
+                <value>
+                    <fullName>Delete Cache</fullName>
+                    <default>false</default>
+                    <label>Delete Cache</label>
+                </value>
+                <value>
+                    <fullName>Drilldown</fullName>
+                    <default>false</default>
+                    <label>Drilldown</label>
+                </value>
+                <value>
+                    <fullName>Edit Config</fullName>
+                    <default>false</default>
+                    <label>Edit Config</label>
+                </value>
+                <value>
+                    <fullName>Go to List</fullName>
+                    <default>false</default>
+                    <label>Go to List</label>
+                </value>
+                <value>
+                    <fullName>Initial Load</fullName>
+                    <default>false</default>
+                    <label>Initial Load</label>
+                </value>
+                <value>
+                    <fullName>Search</fullName>
+                    <default>false</default>
+                    <label>Search</label>
+                </value>
+                <value>
+                    <fullName>Show More</fullName>
+                    <default>false</default>
+                    <label>Show More</label>
+                </value>
+                <value>
+                    <fullName>Submit Feedback</fullName>
+                    <default>false</default>
+                    <label>Submit Feedback</label>
+                </value>
+                <value>
+                    <fullName>Tab</fullName>
+                    <default>false</default>
+                    <label>Tab</label>
+                </value>
+                <value>
+                    <fullName>View Config</fullName>
+                    <default>false</default>
+                    <label>View Config</label>
+                </value>
+                <value>
+                    <fullName>View WS Queues</fullName>
+                    <default>false</default>
+                    <label>View WS Queues</label>
+                </value>
+                <value>
+                    <fullName>Expand Details</fullName>
+                    <default>false</default>
+                    <label>Expand Details</label>
+                </value>
+                <value>
+                    <fullName>Collapse Details</fullName>
+                    <default>false</default>
+                    <label>Collapse Details</label>
+                </value>
+                <value>
+                    <fullName>View Audit Log</fullName>
+                    <default>false</default>
+                    <label>View Audit Log</label>
+                </value>
+                <value>
+                    <fullName>Download Audit Log</fullName>
+                    <default>false</default>
+                    <label>Download Audit Log</label>
+                </value>
+                <value>
+                    <fullName>Cancelled Edit Config</fullName>
+                    <default>false</default>
+                    <label>Cancelled Edit Config</label>
+                </value>
+                <value>
+                    <fullName>Reset Security Token</fullName>
+                    <default>false</default>
+                    <label>Reset Security Token</label>
+                </value>
+                <value>
+                    <fullName>Web service callout - Async</fullName>
+                    <default>false</default>
+                    <label>Web service callout - Async</label>
+                </value>
+                <value>
+                    <fullName>Web service callout - Sync</fullName>
+                    <default>false</default>
+                    <label>Web service callout - Sync</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Component_source__c</fullName>
+        <description>Which component did the entry come from?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Which component did the entry come from?</inlineHelpText>
+        <label>Component source</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Package Administration</fullName>
+                    <default>false</default>
+                    <label>Package Administration</label>
+                </value>
+                <value>
+                    <fullName>Account Component – Colleagues Tab</fullName>
+                    <default>false</default>
+                    <label>Account Component – Colleagues Tab</label>
+                </value>
+                <value>
+                    <fullName>Contact Component – Colleagues Tab</fullName>
+                    <default>false</default>
+                    <label>Contact Component – Colleagues Tab</label>
+                </value>
+                <value>
+                    <fullName>Account Component – Contacts Tab</fullName>
+                    <default>false</default>
+                    <label>Account Component – Contacts Tab</label>
+                </value>
+                <value>
+                    <fullName>Account Component</fullName>
+                    <default>false</default>
+                    <label>Account Component</label>
+                </value>
+                <value>
+                    <fullName>Contact Component</fullName>
+                    <default>false</default>
+                    <label>Contact Component</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Primary Salesforce contact being viewed at the time the audit log entry was created.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Primary Salesforce contact being viewed at the time the audit log entry was created.</inlineHelpText>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>CN Audit Logs</relationshipLabel>
+        <relationshipName>CN_Audit_Logs1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>CreatedDT__c</fullName>
+        <externalId>false</externalId>
+        <formula>CreatedDate</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Created Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Expiration_Date__c</fullName>
+        <description>Indicates when the current record should be deleted from Salesforce.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates when the current record should be deleted from Salesforce.</inlineHelpText>
+        <label>Expiration Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Expired__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF (Expiration_Date__c &lt; NOW(), &apos;Yes&apos;, &apos;No&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Expired</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Audit log entry for this user</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Audit log entry for this user</inlineHelpText>
+        <label>User</label>
+        <referenceTo>User</referenceTo>
+        <relationshipName>CN_Audit_Logs1</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <label>CN Audit Log</label>
+    <nameField>
+        <displayFormat>AL-{00000}</displayFormat>
+        <label>CN Audit Log Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>CN Audit Logs</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

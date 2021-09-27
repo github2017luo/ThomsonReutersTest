@@ -1,0 +1,77 @@
+<apex:page standardController="Address__c" title="Address Edit" extensions="APTS_CreateAddressFromProposalCtrl">
+    <apex:sectionHeader title="Address Edit" subtitle="{!Address__c.Name}"/>
+    <apex:pageMessages id="msgs"/>    
+    <apex:form id="form">
+        
+        <apex:pageBlock mode="edit" title="Address Edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!doSave}" value="Save" reRender="msgs"/>
+                <apex:commandButton action="{!doCancel}" value="Cancel" immediate="true"/>
+            </apex:pageblockButtons>
+            <apex:pageBlockSection columns="2" title="Information">
+                <apex:inputField value="{!newAddress.Name}" required="true"/>
+                <apex:inputField value="{!newAddress.AccountId__c}"/>                
+                <apex:inputField value="{!newAddress.Street__c}" required="true"/>
+                <apex:inputField value="{!newAddress.Street_Address_3__c}"/>
+                <apex:inputField value="{!newAddress.City__c}" required="true"/>
+                <apex:inputField value="{!newAddress.Street_Address_4__c}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$ObjectType.Address__c.Fields.Country__c.Label}" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="sCountry" 
+                                value="{!newAddress.Country__c}" 
+                                size="1"
+                                required="true"
+                                multiselect="false">
+                                
+                                <apex:selectOptions value="{!CountryOpts}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                    event="onchange"
+                                    action="{!getStates}"
+                                    rerender="selectBillingState"
+                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                    </apex:outputPanel>
+                    </apex:pageBlockSectionItem> 
+                <apex:inputField value="{!newAddress.ContactId__c}"/>
+                <apex:inputField value="{!newAddress.County__c}"/>
+                <apex:outputField value="{!newAddress.OwnerId}"/>
+                <apex:pageBlockSectionItem id="sectionItemState" >
+                    <apex:outputLabel for="selectBillingState" value="{!$ObjectType.Address__c.Fields.State__c.Label}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                        <apex:selectList id="selectBillingState" 
+                            value="{!newAddress.State__c}" 
+                            size="1"
+                            required="{!stateOpts.size>1}"
+                            multiselect="false" >
+                            
+                            <apex:selectOptions value="{!stateOpts}" />
+                        </apex:selectList>
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                        </div>
+                        
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!newAddress.Mastering_Source__c}"/>
+                <apex:inputField value="{!newAddress.Zipcode__c}" required="true"/>
+                <apex:inputField value="{!newAddress.Parent_Type__c}"/>
+                <apex:inputField value="{!newAddress.Phone__c}"/>
+                <apex:inputField value="{!newAddress.Address_Type__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>  
+</apex:page>

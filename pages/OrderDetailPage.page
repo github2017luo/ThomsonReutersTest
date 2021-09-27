@@ -1,0 +1,82 @@
+<apex:page standardController="Account" extensions="OrderDetails">
+    <style type="text/css">
+     .loadingIcon {
+    background-image: url(/img/loading.gif);
+    width: 16px;
+    height: 16px;
+    }
+    </style>
+    <br />
+    <apex:form >        
+        <apex:pageBlock >
+            <apex:pageBlockSection id="sectionMatchInfo" title="{!$Label.Order_Information} - {!sOrderNumber}" columns="2" collapsible="false">
+                 <apex:outputtext value="{!sOrderType}" Label="{!$Label.Order_Type}"  id="Order_Type" />           
+                 <apex:outputtext value=" {!sOrderDate}" Label="{!$Label.Order_Date}"  id="Order_Date" />
+                 <apex:outputtext value="{!sOrderNumber}" Label="{!$Label.Order_Number}"  id="Order_Number" />
+                 <apex:outputtext value="{!sSubmittingRep}" Label="{!$Label.Submitting_Rep}"  id="Submitting_Rep" />
+                 <apex:outputtext value="{!sRevenueChannel}" Label="{!$Label.Revenue_Channel}" id="Revenue_Channel" />
+                 <apex:outputtext value="{!sPONumber}" Label="PO #" id="PO_Number" />
+                 <apex:outputtext value="{!sShipDate}" Label="{!$Label.Ship_Date}" id="Ship_Date" />
+                 <apex:outputtext value="{0, number, currency}" Label="{!$Label.Net_Value}" id="Net_Value">
+                <apex:param value="{!dNetValue}" />
+                </apex:outputText>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock >
+            <apex:pageBlockSection columns="1" title="{!$Label.Order_Items}">
+                 <apex:outputPanel layout="block"  rendered="{!orderdetails.size==0}"  style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.No_Records_to_Display}</apex:outputPanel>
+                 <apex:pageBlockTable id="Orderdetail" value="{!orderdetails}"  var="d" rendered="{!orderdetails.size!=0}"> 
+                    <!--<apex:column headerValue="test" value="{!d.deliverydate}"/>-->
+                    <!--<apex:column headerValue="Order Date">
+                        <apex:outputText value="{0, date, short}">
+                            <apex:param value="{!d.deliverydate}" />
+                        </apex:outputText>
+                    </apex:column>-->                   
+                    <apex:column headerValue="{!$Label.Material_Description}" value="{!d.Description}" />
+                    <apex:column headerValue="{!$Label.Order_Quantity}"  value="{!d.QuantityOrdered}" />
+                     <apex:column headervalue="{!$Label.Material_Number}"> 
+                        <apex:outputtext value="{!d.MaterialNumber}" rendered="{!d.productId==null}"/>
+                        <apex:outputLink value="/{!d.productId}" rendered="{!d.productId!=null}" >{!d.MaterialNumber}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="{!$Label.Net_Price}" style="text-align:right;">
+                        <apex:outputText value="{0, number, currency}">
+                            <apex:param value="{!d.NetPrice}" />
+                        </apex:outputText>
+                    </apex:column>
+                    <!-- <apex:column headerValue="Order #">
+                    <a href="/apex/OrderDetailPage?Id={!Account.id}">{!c.DeliveryNumber}
+                    </a>
+                    </apex:column>-->
+                    <!--<apex:column headerValue="Order #" value="{!c.OrderNumber}" />-->
+                    <!--<apex:column headerValue="Description" value="{!c.DeliveryNumber}" />
+                    <apex:column headerValue="Delivery Number"
+                    value="{!c.DeliveryNumber}" />
+                    <apex:column headerValue="Submitting Rep"
+                    value="{!c.SubmittingRep}" />
+                    <apex:column headerValue="Delivery Number"
+                    value="{!c.RevenueChannel}" />
+                    <apex:column headerValue="PO #" value="{!c.PurchaseOrderNumber}" />
+                    <apex:column headerValue="Net Value" style="text-align:right;">
+                    <apex:outputText value="{0, number, currency}">
+                    <apex:param value="{!c.Netvalue}" />
+                    </apex:outputText>
+                    </apex:column> 
+                    <apex:column headerValue="Shipping Address">
+                        <apex:outputPanel >
+                            <apex:outputText value="{!'{0},{1},{2},{4} {3}, {5},{6} - {7}'}"> 
+                                <apex:param value="{!d.ShipToAddress.Name1}"/>
+                                <apex:param value="{!d.ShipToAddress.Name2}"/>
+                                <apex:param value="{!d.ShipToAddress.Name3}"/>
+                                <apex:param value="{!d.ShipToAddress.Street}"/>
+                                <apex:param value="{!d.ShipToAddress.PoBox}"/>
+                                <apex:param value="{!d.ShipToAddress.City}"/>
+                                <apex:param value="{!d.ShipToAddress.Region}"/>
+                                <apex:param value="{!d.ShipToAddress.PostalCode}"/>
+                            </apex:outputText>
+                        </apex:outputPanel>
+                    </apex:column>-->
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>               
+    </apex:form>
+</apex:page>

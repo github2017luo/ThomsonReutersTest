@@ -1,0 +1,5 @@
+<apex:page standardController="Account" extensions="AccountDetailController" rendered="{!IF($Profile.Name='System Administrator'||(($Profile.Name ='USL Helpdesk Agent' ||  $Profile.Name ='USL Accountable Resolver' ||  $Profile.Name ='USL Helpdesk Manager' ||  $Profile.Name ='USL Hybrid Agent' ) && (ISPICKVAL($User.Sub_Bu__c,'USL'))) ,true,false)}">
+    <apex:form >
+        <apex:commandLink onclick="window.open('https://myaccount.thomsonreuters.com/westlaw/InternalAccess/Default.aspx','_blank',height=600,width=700)" style="margin-left: 10px;"  Value="My Account"/>
+    </apex:form>           
+</apex:page>

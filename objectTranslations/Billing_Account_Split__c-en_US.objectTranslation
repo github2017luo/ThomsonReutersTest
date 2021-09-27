@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Billing Account</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Billing Accounts</value>
+    </caseValues>
+    <fields>
+        <help><!-- Select the Account for this Opportunity --></help>
+        <label><!-- Account --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- Billing Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Boleto Contact --></label>
+        <name>Boleto_Contact__c</name>
+        <relationshipLabel><!-- Billing Accounts (Boleto Contact) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Child Opportunity name generated after click on Generate Child Opportunities button --></help>
+        <label><!-- Child Opportunity --></label>
+        <name>Child_Opportunity__c</name>
+        <relationshipLabel><!-- Billing Accounts (Child Oppportunity) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- E-Billing Contact --></label>
+        <name>E_Billing_Contact__c</name>
+        <relationshipLabel><!-- Billing Accounts (E-Billing Contact) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicate here the information that need to be added on the Invoice --></help>
+        <label><!-- Invoice Notes --></label>
+        <name>Invoice_Notes__c</name>
+    </fields>
+    <fields>
+        <help><!-- The reference Master Opportunity for which this Billing Account Split information is related --></help>
+        <label><!-- Master Opportunity --></label>
+        <name>Master_Opportunity__c</name>
+        <relationshipLabel><!-- Billing Accounts Splits (Master Opportunity) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- OLI_id_1 --></label>
+        <name>OLI_id_1__c</name>
+    </fields>
+    <fields>
+        <label><!-- OLI_id_2 --></label>
+        <name>OLI_id_2__c</name>
+    </fields>
+    <fields>
+        <label><!-- OLI_id_3 --></label>
+        <name>OLI_id_3__c</name>
+    </fields>
+    <fields>
+        <help><!-- This field is a copy from information provided on Opportunity Description field --></help>
+        <label><!-- Description --></label>
+        <name>Opportunity_Notes__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicate the PO Number provided by Customer (if needed) --></help>
+        <label><!-- PO Number --></label>
+        <name>PO_Number__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates the percentage of the amount in comparion to Master Opportunity --></help>
+        <label><!-- % of MO Amount --></label>
+        <name>Percentage_MO_Amount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 1 Quantity --></label>
+        <name>Product_1_Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 1 Sales Price --></label>
+        <name>Product_1_Sales_Price__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 1 --></label>
+        <name>Product_1__c</name>
+        <relationshipLabel><!-- Billing Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Product 2 Quantity --></label>
+        <name>Product_2_Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 2 Sales Price --></label>
+        <name>Product_2_Sales_Price__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 2 --></label>
+        <name>Product_2__c</name>
+        <relationshipLabel><!-- Billing Accounts (Product 2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Product 3 Quantity --></label>
+        <name>Product_3_Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 3 Sales Price --></label>
+        <name>Product_3_Sales_Price__c</name>
+    </fields>
+    <fields>
+        <label><!-- Product 3 --></label>
+        <name>Product_3__c</name>
+        <relationshipLabel><!-- Billing Accounts (Product 3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicates the Total amount related to this Billing Account --></help>
+        <label><!-- Subtotal Amount --></label>
+        <name>Subtotal_Amount__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- You cannot edit any information on Child Opportunities or Quotes when the Master Quote has been submitted for approval or at Opportunity stage 95% &amp; 100% . --></errorMessage>
+        <name>LatAm_Mastersaf_BAS_Lock</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The Account you selected does not meet the minimum criteria to be considered a Billing Account.Billing Accounts must have a record Type of Customer and have an SAP Number. --></errorMessage>
+        <name>LatAm_Mastersaf_BillingAccount_Selection</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Contact is a valid E-Billing Contact must have Email and Phone values. --></errorMessage>
+        <name>LatAm_Mastersaf_Validate_E_Billing_Cont</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Contact is a valid Boleto Contact must have an Email value. --></errorMessage>
+        <name>LatAm_Mastersaf_Validate_E_Boleto_Cont</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Generate_Child_Opportunities --></label>
+        <name>Generate_Child_Opportunities</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Generate_Child_Opportunities_1 --></label>
+        <name>Generate_Child_Opportunities_1</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Manage_Billing_Accounts --></label>
+        <name>Manage_Billing_Accounts</name>
+    </webLinks>
+</CustomObjectTranslation>

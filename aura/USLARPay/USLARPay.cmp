@@ -1,0 +1,7 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+     <aura:attribute name="caseId" type="String" />
+     <aura:attribute name="formid" type="String" />
+     <aura:attribute name="apliid" type="String" />
+     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+     <c:esc_credDebtPay caseId="{!v.caseId}" formid="{!v.formid}" apId="{!v.apliid}"/>
+</aura:component>

@@ -1,0 +1,141 @@
+<!--
+  @File Name          : hierarchyInsights.html
+  @Description        : 
+  @Author             : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Group              : 
+  @Last Modified By   : ChangeMeIn@UserSettingsUnder.SFDoc
+  @Last Modified On   : 12/16/2019, 4:57:54 PM
+  @Modification Log   : 
+  Ver       Date            Author      		    Modification
+  1.0    11/25/2019   ChangeMeIn@UserSettingsUnder.SFDoc     Initial Version
+-->
+<template>
+    <lightning-tabset>
+        <lightning-tab label="Opportunities">
+            <lightning-card variant="narrow" icon-name="standard:opportunity">
+                <h1 slot="title">Opportunity List</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mOpp} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mOpp_columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+            </lightning-card>
+        </lightning-tab>
+        <lightning-tab label="Asset Line Items (Ship to)">
+            <lightning-card variant="narrow" icon-name="standard:account">
+                <h1 slot="title">Asset Line Item List(Ship To)</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mALIBill} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mALIBill_Columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+        </lightning-card>
+        </lightning-tab>
+        <lightning-tab label="Training Event" >
+            <lightning-card variant="narrow" icon-name="standard:account">
+                <h1 slot="title">Training Event List</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mTE} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mTE_columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+        </lightning-card>
+        </lightning-tab>
+        <lightning-tab label="Activities">
+            <lightning-card variant="narrow" icon-name="standard:contact">
+                <h1 slot="title">Activities</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mAct} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mAct_Columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+        </lightning-card>
+        </lightning-tab>
+        <lightning-tab label="Activity History">
+            <lightning-card variant="narrow" icon-name="standard:contact">
+                <h1 slot="title">Activity History</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mActHis} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mActHis_Columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+        </lightning-card>
+        </lightning-tab>
+        <lightning-tab label="Proposals">
+            <lightning-card variant="narrow" icon-name="standard:contact">
+                <h1 slot="title">Proposals</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mProp} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mProp_Columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+        </lightning-card>
+        </lightning-tab>
+        <lightning-tab label="Cases">
+            <lightning-card variant="narrow" icon-name="standard:case">
+                <h1 slot="title">Cases</h1>
+                <div class="slds-m-left_small">
+                    <div style="height: 300px;">
+                        <lightning-datatable 
+                            key-field="id" 
+                            data={mCases} 
+                            hide-checkbox-column="true"
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            suppress-bottom-bar 
+                            columns={mCases_Columns}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+        </lightning-card>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

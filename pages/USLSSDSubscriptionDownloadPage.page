@@ -1,0 +1,62 @@
+<apex:page id="pageInvoice" pageStyle="PDFCSS" standardController="Source_System_Detail__c" extensions="USLsubscriptionController"
+    renderAs="{!renderAsdoc}"  contentType="{!renderAsExcel}"  readOnly="true" tabstyle="Account">
+
+<apex:stylesheet value="{!URLFOR($Resource.ESC_USLResource,'/USLSSDSubscriptionDownloadPage/PDFCSS.css')}"/>
+<apex:messages ></apex:messages>
+<apex:outputPanel layout="block" style="overflow:hidden scroll;width: 600px;"> 
+         <apex:outputText value="Subscriptions" style="font-weight:bold;font-size:30px;text-align: center;"></apex:outputText>
+         <br/>
+         <br/>
+        <apex:outputPanel layout="block" rendered="{!sizeOfOpenMap>0}" > 
+        <table id="pdfTable">
+        <tr>
+            <th>{!$Label.USL_Subsnumber}</th>
+            <th>{!$Label.USL_Substype}</th>            
+            <th>{!$Label.USL_startDate}</th>
+            <th>{!$Label.USL_Enddate}</th>
+            <th>{!$Label.USL_priceQuantity}</th>
+            <th>{!$Label.USL_agreementNumber}</th>
+            <th>{!$Label.USL_quantity}</th>
+            <th>{!$Label.USL_lapseDate}</th>
+            <th>Material Price Group</th>
+            <th>Material Price Grp Desc</th>
+            <th>CPC Plan</th>
+            <th>{!$Label.USL_lapseIndicator}</th>
+            <th>{!$Label.USL_cardType}</th>
+            <th>{!$Label.USL_expiration}</th>
+            <th>{!$Label.USL_categoryDesc}</th>
+            <th>{!$Label.USL_MediaType}</th>
+            <th>{!$Label.USL_materialNumber}</th>
+            <th>{!$Label.USL_materialDescription}</th>
+            <th>{!$Label.USL_MYRType}</th>
+            <th>Billing plan</th>
+        </tr>
+        <apex:repeat var="Olist" value="{!oSelectedmap}">
+        <tr>
+            <td>{!oSelectedmap[Olist].subscriptionNumber}</td>
+            <td>{!oSelectedmap[Olist].subscriptionType}</td>
+            <td>{!oSelectedmap[Olist].startDate}</td>
+            <td>{!oSelectedmap[Olist].endDate}</td>
+            <td>{!oSelectedmap[Olist].priceQuantity}</td>
+            <td>{!oSelectedmap[Olist].agreementNumber}</td>
+            <td>{!oSelectedmap[Olist].quantity}</td>
+            <td>{!oSelectedmap[Olist].lapseDate}</td>
+            <td>{!oSelectedmap[Olist].priceRateType}</td>
+            <td>{!oSelectedmap[Olist].priceRateDescription}</td>
+            <td>{!oSelectedmap[Olist].Cpcplan}</td>
+            <td>{!oSelectedmap[Olist].lapseIndicator}</td>
+            <td>{!oSelectedmap[Olist].cardType}</td>
+            <td>{!oSelectedmap[Olist].expiration}</td>
+            <td>{!oSelectedmap[Olist].categoryDesc}</td>
+            <td>{!oSelectedmap[Olist].MediaType}</td>
+            <td>{!oSelectedmap[Olist].materialNumber}</td>
+            <td>{!oSelectedmap[Olist].materialDescription}</td>
+            <td>{!oSelectedmap[Olist].MYRType}</td> 
+            <td>Billing Plan</td>
+        </tr>
+        </apex:repeat> 
+        
+    </table>
+   </apex:OutputPanel>   
+   </apex:OutputPanel> 
+</apex:page>

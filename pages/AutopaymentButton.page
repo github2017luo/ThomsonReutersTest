@@ -1,0 +1,12 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c"  extensions="ResendPaymentgatewayEmailController" rendered="{!(oOrder.AutopaymentEmailButton__c == true)}"> 
+     <apex:form id="Form1" >
+        <apex:pageBlock mode="mainDetail" id="pgblkMain">
+            <apex:pageBlockSection columns="1">
+                 <apex:pageBlockSectionItem >
+                      <apex:outputLabel for="AutoPayment Email" value="AutoPayment Email"/>
+                      <apex:CommandButton value="ReSend" action="{!AutoPaymentEmail}" style="height:20px"  />
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>       
+        </apex:pageBlock>
+    </apex:form>       
+</apex:page>

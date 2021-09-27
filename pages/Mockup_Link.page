@@ -1,0 +1,26 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2017-09-21     Harika Devi Kalidindi      Restrict visiblity of Links to USL users
+2019-03-02     Kumar Shubham              Enabled LightningStylesheets as part of Sales Lightning
+===============================================================================
+-->
+<apex:page standardController="Account" lightningStylesheets="true" extensions="AccountDetailController" rendered="{!IF($Profile.Name='System Administrator'||(($Profile.Name='GLI Sales User' || $Profile.Name='GLI Sales Ops User') && (ISPICKVAL($User.Sub_Bu__c,'USL') || ISPICKVAL($User.Sub_Bu__c,'LMS') || ISPICKVAL($User.Sub_Bu__c,'FindLaw'))) ,true,false)}">
+    <apex:form >
+        <apex:commandLink onclick="window.open('https://myaccount.thomsonreuters.com/westlaw/InternalAccess/Default.aspx','_blank',height=600,width=700)" style="margin-left: 10px;"  Value="{!$Label.My_Account}"/>
+        <apex:commandLink onclick="window.open('http://eg-ceoweb-b01.int.westgroup.com/ceo/scripts/dept/cls/implemenation_tool/list.asp','_blank',height=600,width=700)" style="margin-left: 10px;"  Value="{!$Label.Software_Implementation_Tool_SIT}"/>
+        <apex:commandLink value="{!$Label.US_Legal_Customer_Feedback}" onclick="window.open('https://theshare.thomsonreuters.com/sites/cetbs/voc/Lists/ContactUs/NewForm.aspx?Source=/sites/cetbs/voc/Pages/ThankYou.aspx&CancelDestination=/sites/cetbs/voc/Pages/default.aspx','_blank',height=600,width=700)" style="margin-left: 10px;"/>
+        
+        <apex:commandLink value="{!$Label.LMLF_Echelon_Pricing_Calculator}" onclick="window.open('https://westlawnextcalc.thomson.com/LLF/Quote.aspx','_blank',height=600,width=700)" style="margin-left: 10px;"/>
+     <!--Jira Story- CRM-6299,  CRM-6300,  CRM-6301   -->
+        <apex:commandLink value="{!$Label.QuickView} +" onclick="window.open('https://quickview.thomsonreuters.com/','_blank',height=600,width=700)" style="margin-left: 10px;" />
+
+ <apex:commandLink value="{!$Label.FL_BPM_Workspace_My_Inbox}" onclick="window.open('https://flws.int.thomsonreuters.com/#/tasks','_blank',height=600,width=700)" style="margin-left: 10px;" />
+        <apex:commandLink value="{!$Label.FL_BPM_Workspace}" onclick="window.open('https://flws.int.thomsonreuters.com/#/projects','_blank',height=600,width=700)" style="margin-left: 10px;"  />
+
+ 
+       
+       
+    </apex:form>           
+</apex:page>

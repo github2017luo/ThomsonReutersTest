@@ -1,0 +1,48 @@
+<!--
+ - This page is used to manage validation messages when a Rep wants to include a 
+ - manual proposal in a Digital offer
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-04-27   Brenda Shields          DLT-19727 - Created vf page to initiate the process to include manual proposal types into a Digital offer
+ - 2020-06-04   Brenda Shields          DLT-20180 - Add a new message for updating the Opp to Digital
+ - 2020-06-24   Brenda Shields          DLT-20224 - Add a new message when Rep already has 3 manual quotes per Digital offer
+ - 2020-08-20   Brenda Shields          DLT-20592 - Display an error if the Order Confirmation Contact is Inactive or has an invalid email address
+ -                                                  Updated per PMD Scan
+ - 2020-09-16   Brenda Shields          DLT-20757 - Update text in the initial pop-up message window
+ - ==================================================================================================================================   
+-->
+<apex:page showHeader="true" sidebar="true" controller="Digital_Display_In_CXD_Controller" lightningStylesheets="true">
+    <apex:messages />
+               
+    <apex:form >
+    <!--styleClass="hidden"-->
+    <apex:pageBlock >
+      
+    <div>
+         <apex:outputText rendered="{!bError}">
+             <br /><apex:outputText value="{!strErrorMessage}" styleClass="slds-input"/><br />
+        </apex:outputText> 
+              
+        <apex:outputText rendered="{!bContinue}">
+            <br />This process will take a few moments to complete. <br /><br />
+            After this page automatically refreshes, proceed to the Opportunity connected to this Proposal to view the digital renewal link.<br /><br />
+            Press the 'Yes' button to begin processing.<br />
+        </apex:outputText>
+
+        <apex:pageBlockButtons location="bottom"> 
+            <apex:commandButton value="Return to Quote/Proposal" action="{!returnToQuote}" rendered="{!bError}"/>
+            <apex:commandButton value="Yes" action="{!continueProcess}" rendered="{!not(bError)}" status="actStatusId"/>
+            <apex:actionStatus id="actStatusId" >
+                <apex:facet name="start" >
+                  <img src="/img/loading.gif" />                    
+                </apex:facet>
+            </apex:actionStatus>
+            <apex:commandButton value="No" action="{!returnToQuote}" rendered="{!not(bError)}"/>
+        </apex:pageBlockButtons>
+    </div>
+    </apex:pageBlock>
+    </apex:form>
+      
+</apex:page>

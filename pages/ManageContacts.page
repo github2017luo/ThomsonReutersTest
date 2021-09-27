@@ -1,0 +1,263 @@
+<apex:page tabStyle="Contact" standardController="Training_Event__c" extensions="ManageContacts">
+<apex:form >
+
+
+<br/>
+
+<!-- Define Tab panel .css styles -->
+<style>
+.activeTabLight {
+            padding: 5px 10px;
+            color: #015BA7 !important;
+            font-weight: bold;
+            text-decoration: underline;
+            background-image: none;
+            background-color: #F1F1F1;
+            cursor: default;
+        }
+        .inactiveTabLight {
+            padding: 4px 10px;
+            color: #333 !important;
+            font-weight: bold;
+            background-image: none;
+            background-color: #fff;
+            cursor: pointer;
+        }
+.loadingIcon {
+            background-image: url(/img/loading.gif);
+            width: 16px;
+            height: 16px;
+        }
+.sectionHeader {
+            background-color: lightgrey;
+            color:black;
+            background-image:none;
+            font-weight:bold;
+            font-size:13px;
+        }
+.columnHeader { 
+            color:black;
+            font-weight:bold;
+            font-size:12px;
+        }
+.linkClass {
+            color:blue;
+            font-size:11px;
+        }
+.tableClass {
+            width:100%;
+        }
+</style>
+<apex:sectionHeader id="pageTitle" title="Training Event {!Training_Event__c.Name}" subtitle="Manage Contacts" />
+&nbsp;&nbsp;&nbsp;<apex:outputLink styleClass="linkClass" target="" value="/{!Training_Event__c}">
+                    Back to {!Training_Event__c.Name}</apex:outputLink><br/>&nbsp;<br/>
+<!--<apex:pageBlock title="Manage Contacts" tabStyle="Contact">-->
+<apex:pageMessage escape="false" summary="Account Name: {!acc.Name}" rendered="{!renderAccountInfo}" severity="info" strength="1"/>
+<!-- Create Tab panel -->
+    <apex:tabPanel switchType="client" selectedTab="Add_Contacts" id="ManageContactsTabPanel" 
+        activeTabClass="activeTabLight" inactiveTabClass="inactiveTabLight">
+            <apex:tab label="Add Contacts" name="Add_Contacts" id="Add_Contacts" ontabenter="enterAddContactsTab();">
+            <apex:actionFunction name="enterAddContactsTab" rerender="matchingContacts" action="{!enterAddContactsTab}" status="statusManageContacts"/>
+                <table class="tableClass" >
+                    <tr class="sectionHeader"><td>Specify Filter Criteria</td></tr>
+                    <tr><td>
+                        <table>
+                        <tr class="columnHeader"><td>Field</td><td>Operator</td><td>Value</td></tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField1}" disabled="{!renderAccountInfo}">
+                                    <!--<apex:actionSupport event="onchange" reRender="operatorList1"/>-->
+                                    <apex:selectOptions value="{!listContactFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList1" value="{!sSelectedOperator1}" disabled="{!renderAccountInfo}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue1}" disabled="{!renderAccountInfo}"/>
+                                <apex:outputLabel >AND</apex:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField2}">
+                                    <!--<apex:actionSupport event="onchange" reRender="operatorList2"/>-->
+                                    <apex:selectOptions value="{!listContactFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList2" value="{!sSelectedOperator2}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue2}"/>
+                                <apex:outputLabel >AND</apex:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField9}">
+                                    <!--<apex:actionSupport event="onchange" reRender="operatorList2"/>-->
+                                    <apex:selectOptions value="{!listContactFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList9" value="{!sSelectedOperator9}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue9}"/>                                
+                            </td>
+                        </tr>
+                        </table>
+                    </td></tr>
+                    <tr><td>
+                        <apex:commandButton value="Go!" title="Go!" action="{!findResults}" reRender="matchingContacts" status="statusManageContacts"/>
+                    </td></tr>
+                </table>
+            </apex:tab>
+            <apex:tab ontabenter="enterExistingContactsTab();" label="Existing Contacts" name="Existing_Contacts" id="Existing_Contacts">
+            <apex:actionFunction name="enterExistingContactsTab" rerender="matchingContacts" action="{!enterExistingContactsTab}" status="statusManageContacts"/>
+                <table class="tableClass" >
+                    <tr class="sectionHeader"><td>Search Existing Contacts</td></tr>
+                    <tr><td>
+                        <table>
+                        <tr class="columnHeader"><td>Field</td><td>Operator</td><td>Value</td></tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField3}">
+                                    <!--<apex:actionSupport event="onchange" reRender="operatorList1"/>-->
+                                    <apex:selectOptions value="{!listContactFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList3" value="{!sSelectedOperator3}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue3}"/>
+                                <apex:outputLabel >AND</apex:outputLabel>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField4}">
+                                    <!--<apex:actionSupport event="onchange" reRender="operatorList2"/>-->
+                                    <apex:selectOptions value="{!listContactFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList4" value="{!sSelectedOperator4}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue4}"/>                                
+                            </td>
+                        </tr>                        
+                        </table>
+                    </td></tr>
+                    <tr><td><apex:commandButton value="Go!" title="Search Existing Contacts" action="{!searchExistingContacts}" reRender="matchingContacts" status="statusManageContacts"/></td></tr>
+                </table>
+            </apex:tab>
+    </apex:tabPanel>
+<!--    {!sSelectedTab }
+</apex:pageBlock>-->
+<br/>
+<apex:actionStatus id="statusManageContacts">
+    <apex:facet name="start">
+        <div>
+            <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." /> Please Wait...
+        </div>
+    </apex:facet>    
+    <apex:facet name="stop">
+        <apex:pageMessages />
+        <apex:outputPanel id="matchingContacts">
+            <apex:pageBlock rendered="{!bMatchesFound}">
+                <apex:pageMessage strength="1" rendered="{!listMatchingContacts.size=3000}" severity="Warning" summary="Number of Contacts exceeds the maximum limit.Please narrow your search criteria ." ></apex:pageMessage>
+
+                <apex:commandButton rendered="{!bRenderAddButton}" value="Add Contacts" title="Add Contacts" action="{!AddtoTraining}" reRender="matchingContacts" status="statusManageContacts"/>
+
+                <apex:pageBlockTable headerClass="columnHeader" value="{!listPagedContacts}" var="cnt">
+                <apex:column >
+                    <apex:inputCheckbox disabled="{!cnt.bDisableCheckbox}" value="{!cnt.bSelected}"/>
+                </apex:column>
+                    <apex:column headerValue="First Name" value="{!cnt.cCon.FirstName}"/>
+                    <apex:column headerValue="Last Name" value="{!cnt.cCon.LastName}"/>
+                    <apex:column headerValue="WLaw Id" value="{!cnt.cCon.Westlaw_User_ID__c}"/>
+                    <apex:column headerValue="SAP Role" value="{!cnt.cCon.SAP_Role__c}"/>
+                    <apex:column headerValue="Account Name" value="{!cnt.cCon.Account.Name}"/>
+                    <apex:column headerValue="SAP Account Number" value="{!cnt.cCon.SAP_Account_Number__c}"/>
+                    <apex:column headerValue="Office Location" value="{!cnt.cCon.Account.billingcity}"/>
+                </apex:pageBlockTable>
+                <apex:panelGrid columns="3">                  
+                      <apex:commandLink action="{!Previous}" rendered="{!oMatchingContactsCustomSetCon.hasPrevious}" rerender="matchingContacts" status="statusNavigateBottom">Previous</apex:commandLink>
+                      <apex:commandLink action="{!Next}" rendered="{!oMatchingContactsCustomSetCon.hasNext}" rerender="matchingContacts" status="statusNavigateBottom">Next</apex:commandLink>
+                      <apex:actionStatus id="statusNavigateBottom">
+                          <apex:facet name="start">        
+                              <div>
+                                <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                              </div>
+                          </apex:facet>
+                      </apex:actionStatus>
+                </apex:panelGrid>                
+            </apex:pageBlock>
+            <apex:pageBlock rendered="{!bExistingMatchesFound}">
+                <script type="text/javascript" src="https://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+            <script>
+            j$ = jQuery.noConflict();
+            j$(document).ready(function()
+            {
+              j$("[id$=parentCheckbox]").click(function()
+              {
+                if(j$("[id$=parentCheckbox]").attr('checked'))
+                {
+                  j$("[id$=childCheckbox]").attr('checked',true);
+                }
+                else
+                {
+                  j$("[id$=childCheckbox]").attr('checked',false);
+                }
+              });
+            });
+            </script>
+                <apex:commandButton value="Remove Contacts" title="Remove contacts from the training" action="{!RemovefromTraining}" reRender="matchingContacts" status="statusManageContacts"/>
+                &nbsp;
+                <apex:commandButton value="Add Topics" title="Add Topics to the selected contacts" action="{!AddTopics}" reRender="matchingContacts" status="statusManageContacts"/>                
+                <apex:pageBlockTable headerClass="columnHeader" value="{!listPagedExistingContacts}" var="cnt">
+                <apex:column >
+                    <apex:facet name="header">
+                        <apex:inputCheckbox id="parentCheckbox" title="Select/Deselect All"/>
+                    </apex:facet>
+                    <apex:inputCheckbox id="childCheckbox" value="{!cnt.bSelected}"/>
+                </apex:column>
+                    <apex:column headerValue="First Name" value="{!cnt.cCon.FirstName}"/>
+                    <apex:column headerValue="Last Name" value="{!cnt.cCon.LastName}"/>
+                    <apex:column headerValue="WLaw Id" value="{!cnt.cCon.Westlaw_User_ID__c}"/>
+                    <apex:column headerValue="SAP Role" value="{!cnt.cCon.SAP_Role__c}"/>
+                    <apex:column headerValue="Account Name" value="{!cnt.cCon.Account.Name}"/>
+                    <apex:column headerValue="SAP Account Number" value="{!cnt.cCon.SAP_Account_Number__c}"/>
+                    <apex:column headerValue="Office Location" value="{!cnt.cCon.Account.billingcity}"/>
+                </apex:pageBlockTable>
+                <apex:panelGrid columns="3">                  
+                      <apex:commandLink action="{!Previous}" rendered="{!oExistingContactsCustomSetCon.hasPrevious}" rerender="matchingContacts" status="statusNavigateBottom2">Previous</apex:commandLink>
+                      <apex:commandLink action="{!Next}" rendered="{!oExistingContactsCustomSetCon.hasNext}" rerender="matchingContacts" status="statusNavigateBottom2">Next</apex:commandLink>
+                      <apex:actionStatus id="statusNavigateBottom2">
+                          <apex:facet name="start">        
+                              <div>
+                                <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                              </div>
+                          </apex:facet>
+                      </apex:actionStatus>
+                </apex:panelGrid>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:facet>
+</apex:actionStatus>
+</apex:form>
+</apex:page>

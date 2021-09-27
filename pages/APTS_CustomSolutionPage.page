@@ -1,0 +1,389 @@
+<apex:page docType="html-5.0" controller="APTS_CustomSolutionctrl" sidebar="false" showheader="false" lightningStylesheets="true" standardStylesheets="false"> 
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js" />
+     <apex:includescript value="//code.jquery.com/jquery-1.11.1.min.js" />
+    <apex:stylesheet value="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" />
+    <apex:stylesheet value="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+    <head>
+    <script data-require="jquery@*" data-semver="3.1.1" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link data-require="semantic-ui@*" data-semver="2.1.8" rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.1.8/semantic.min.css" /> 
+    <script data-require="semantic-ui@*" data-semver="2.1.8" src="https://cdn.jsdelivr.net/semantic-ui/2.1.8/semantic.min.js"></script>
+    <script data-require="semantic-ui@*" data-semver="2.1.8" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+   <script data-require="semantic-ui@*" data-semver="2.2.7" src=" https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.7/semantic.js"></script>
+    <link data-require="semantic-ui@*" data-semver="2.1.8" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+       <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__CPQPageResources,'CPQCommon.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__CPQPageResources,'CPQOptions.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__CPQPageResources, 'CPQDelight.css')}"/> 
+        <apex:stylesheet value="{!URLFOR($Resource.APTS_customcss)}"/>
+                <link rel="stylesheet" type="text/css" href="https://loading.io/css/loading-btn.css"/>
+                <!-- Moved to CSS Page (created by Zakeer) - ExposurePack_CSS
+                    <link rel="stylesheet" type="text/css" href="https://loading.io/css/loading.css"/> -->
+                    
+         <style type="text/css">
+             .cmdbtn-info {
+                color: #fff !important;
+                background-color: #5bc0de !important;
+                border-color: #46b8da !important;
+                }
+             .cmdbtn {
+                display: inline-block !important;
+                padding: 6px 12px !important;
+                margin-bottom: 0 !important;
+                font-size: 14px !important;
+                font-weight: 400 !important;
+                line-height: 1.42857143 !important;
+                text-align: center !important;
+                white-space: nowrap !important;
+                vertical-align: middle !important;
+                -ms-touch-action: manipulation !important;
+                touch-action: manipulation !important;
+                cursor: pointer !important;
+                -webkit-user-select: none !important;
+                -moz-user-select: none !important;
+                -ms-user-select: none !important;
+                user-select: none !important;
+                background-image: none !important;
+                border: 1px solid transparent !important;
+                border-radius: 4px !important;
+            }
+            .cmdbtn:hover {
+                background-color:#46b8da !important;
+                color: white !important;
+            }
+            
+         </style>
+    </head>
+            <apex:includeScript value="{!$Resource.ExposurePack_JS}"/>
+            <apex:stylesheet value="{!URLFOR($Page.ExposurePack_CSS)}"/>
+
+            <body id="products" ng-app="npApp" ng-controller="products" ng-init="passParameters('{!$CurrentPage.parameters.id}', '{!config.Apttus_Config2__PriceListId__c}', '{!isOptionsAvailable}')" onload="changeBackground('#6364');">
+            <!-- onload="changeBackground('#6364');"-->
+
+    <apex:form id="frm">
+        <!-- Top header section bar ###Start### here-->
+            
+        <div class="apt-page-header cartTable clearfix" ng-show="tabName != ''">
+            <div class="dropdown apt-pull-left">
+                <div class="apt-hamburger-icon apt-dropdown-toggle" data-toggle="dropdown" id="stepMenu" role="button" style="display: none;">
+                    <div class="icon-utility-list"></div>
+                </div>
+                <ul aria-labelledby="stepMenu" class="apt-list-dropdown dropdown-menu taskPageButtons dropdown-menu-top" role="menu"><li class="aptProductListHeader">&nbsp;&nbsp;&nbsp;Follow these steps:</li></ul>
+            </div>
+            <div class="apt-quote-panel apt-pull-left"><span class="apt-cart-head-label">Proposal:</span>
+                        &nbsp;<apex:outputField id="ProposalNameWithLink" value="{!config.Apttus_QPConfig__Proposald__c}"/><span class="apt-location-text apt-cart-head-label">{!Config.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c}</span>
+
+            </div>
+            <div class="apt-aprroval-panel apt-pull-left"><span class="apt-cart-head-label">Approval Status:</span><span class="approvalText"><span>{!Config.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Approval_Stage__c}</span></span>
+            </div>
+            <div id="aptGeneralSpinner"></div>
+            <div class="apt-headerPlacement apt-pull-right">
+            </div>
+            <div class="dropdown apt-help-panel apt-pull-right">
+
+            </div>
+        
+        <div class="btn-toolbar pull-right">
+                        
+                        <button type="button" form="frm1" class="btn btn-info" ng-click="addToCart()">Add to Cart</button> &nbsp; &nbsp;                    
+                        <apex:actionFunction action="{!goToCart}" name="gotoCart" />
+                        <apex:actionFunction action="{!cancel2}" name="Cancel2" />
+                        
+                        <apex:commandButton styleClass="cmdbtn cmdbtn-info"  value="Go to Cart" onclick="gotoCart(); return false ;" reRender="frm" /> &nbsp; &nbsp;
+
+                        <apex:commandButton styleClass="cmdbtn cmdbtn-info" value="Product Catalog" onclick="Cancel2(); return false ;" />
+                        <apex:actionFunction action="{!exit}" name="exit" />
+                        <apex:commandButton value="Exit" image="{!URLFOR($Resource.Exit)}" onclick="exit(); return false ;" /> &nbsp; &nbsp;
+                         
+        </div>
+        </div>
+        </apex:form>
+        <!--Gowthami changes ended-->
+    
+    <div class="main" ng-app="npApp"  style="zoom: 80%;">
+       
+    <!-- Spinner -->
+        <div ng-show="addtocartload">
+            <div class="loading">Loading&#8230;</div>
+        </div>
+        
+        <div ng-show="getProductLoad">
+            <div class="loading">Loading&#8230;</div>
+        </div>
+     
+        <div ng-show="tableLoading">
+            <div class="loading">Loading&#8230;</div>
+        </div>
+    <!-- Spinner -->
+    
+        <div class="box1">
+            <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color: #428bca;">
+                    <h3 class="panel-title">Products</h3>                    
+                </div>
+                <div class="panel-body">
+                   <ul id="accordion" class="accordion" >
+                      <li ng-repeat="(key, categoryType) in categories">
+                          
+                        <div class="link" >{{categoryType.name}}<i class="fa fa-chevron-down"></i></div>
+                        <ul ng-class="{submenu1: categoryType.name == 'Miscellaneous', submenu: categoryType.name != 'Miscellaneous'}">
+                                  <li ng-repeat="item in categoryType[categoryType.name] track by $index" ng-click="getProductDetails(item)" ng-class="{'active': item.Name == currentProduct.activeItem}"><a style="color:black" >{{item.Name}}</a></li><!-- productHighlight -->
+                        </ul>
+                      </li>                      
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="box2main">
+            <div ng-if='showNoProductMessage' class="box2">
+                <div class="panel panel-default">
+                            <div class="panel-heading" style="background-color: #428bca;">
+                        <h3 class="panel-title">Select a Product</h3>
+                    </div>
+                    <div class="panel-body">
+                           {{model.selectProductHeading}}                
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show='showFilterData' class="box2">
+                <div class="panel panel-default">
+                            <div class="panel-heading" style="background-color: #428bca;">
+                                <h3 class="panel-title" style="color: WHITE;">Filters</h3>
+                    </div>
+                    <div class="text_infor"> &nbsp; (NOTE * = Required information)</div>
+                    <span style="color: red; font-size:20px;" ng-if="mandatorySelect"> <strong> <font size="3"> &nbsp;&nbsp;&nbsp;You have NOT selected a required field. <br />&nbsp;&nbsp;&nbsp; <font color="black"><b>Please make a selection to see results.</b></font> </font></strong></span>
+                    <div class="dropdown-fields">
+                        <div class="panel-body">
+                            <div class="form-group" ng-repeat="(key, productItem) in productItems" >
+                                <label ng-class="{required:!productItem.APTS_UI_Selection_Optional__c}" style="font-size:1.85rem !important;">{{productItem.Name}}</label> 
+                                <p>                      
+                                   <!-- on page load --> 
+                                   <!-- state & practice category -->
+                                    <div ng-if="!productItem.APTS_Dependent_Attribute__c && selectedProductItem.ProductCode != '41053157' && productItem.Name != 'Spotlight Only'">                                                                      
+                                        <select  ng-init="Select" class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2));" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDD(productItem['attribute'+key], key, productItem, productItem.Name)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.ddData | orderBy:'Name'" ng-required="!ddItem.APTS_UI_Selection_Optional__c" >
+           
+                                        </select> 
+                                                
+                                    </div>
+                                    <div  ng-if="productItem.APTS_Dependent_Attribute__c && selectedProductItem.ProductCode != '41053157'">
+                                    <!-- metro(Multi select) -->
+                                    <div ng-if="productItem.Name=='Metro'">
+                                        <div ng-init="multisem()">
+                                        <select multiple="multiple" id="target-region" class="ui dropdown" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDD(productItem['attribute'+key], key, productItem, productItem.Name)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.filterData | orderBy:'Name'" ng-required="!ddItem.APTS_UI_Selection_Optional__c" style="width:auto; font-size:2.5rem; height:calc(3.875rem + (1px * 2)) !important;" >
+                                            
+                                        </select> 
+                                        </div> 
+                                    </div>
+                                    <!-- County -->
+                                    <div ng-if="productItem.Name=='County'">
+                                        <select ng-init="Select" class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2));" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDD(productItem['attribute'+key], key, productItem, productItem.Name)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.filterData | orderBy:'Name'" ng-required="!ddItem.APTS_UI_Selection_Optional__c" >
+                                            
+                                        </select> 
+                                    </div>
+                                    <!-- practice area-->
+                                    <div ng-if="productItem.Name=='Practice Area'">
+                                        <select  ng-init="Select" class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2));" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDDPracArea(productItem['attribute'+key], key, productItem)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.filterData | orderBy:'Name'" ng-required="!ddItem.APTS_UI_Selection_Optional__c">
+                                        </select> 
+                                    </div>
+                                    </div>
+                                    <!-- Spotlight Only-->
+                                    <!-- added by venkat 16-11-2018 for dynamic "spotlight only" -->
+                                    <div ng-if="productItem.APTS_Display_Order__c == '4' && selectedProductItem.ProductCode == '40656701' && productItem.Name == 'Spotlight Only'">                                                                   
+                                        <select  ng-init="model.spotlightOnly = 'No'" class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2));" ng-model="model.spotlightOnly" ng-required="!ddItem.APTS_UI_Selection_Optional__c" >
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select> 
+                                    </div>
+                                </p>
+                                <p> 
+                                     <div ng-if="!productItem.APTS_Dependent_Attribute__c && selectedProductItem.ProductCode == '41053157'"> 
+                                          <div ng-if="productItem.APTS_Display_Order__c == '1' "> 
+                                            <select ng-class="{errorMsg:productItem.APTS_UI_Selection_Optional__c == false}" class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2)); color:rgb(8 ,7, 7);" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDD(productItem['attribute'+key], key, productItem)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.ddData | orderBy:'Name'" ng-required="!ddItem.APTS_UI_Selection_Optional__c">
+                                                
+                                            </select>
+                                          </div>
+                                          <div ng-if="productItem.APTS_Display_Order__c == '3' "> 
+                                            <select ng-init="Select" class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2));" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDD(productItem['attribute'+key], key, productItem)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.ddData" ng-required="!ddItem.APTS_UI_Selection_Optional__c">
+                                                
+                                            </select>
+                                          </div>   
+                                          
+                                    </div>
+                                    <div ng-if="productItem.APTS_Dependent_Attribute__c && selectedProductItem.ProductCode == '41053157'"> 
+                                        <div ng-if="productItem.APTS_Display_Order__c != '4'">                                           
+                                        <select ng-class="{errorMsg:productItem.APTS_UI_Selection_Optional__c == false}"  class="form-control" style="width:auto; height:calc(3.875rem + (1px * 2)); color:rgb(8 ,7, 7);" ng-model="productItem['attribute'+key]" ng-change="onStateChangeDD(productItem['attribute'+key], key, productItem)" ng-options="ddItem.Name as removeAmparsendFilter(ddItem.Name) for ddItem in productItem.filterData | orderBy:'Name'" ng-required="!ddItem.APTS_UI_Selection_Optional__c">
+                                        </select>
+                                         </div>
+                                         
+                                         <div ng-if="productItem.APTS_Display_Order__c == '4' && selectedProductItem.ProductCode == '41053157'">
+                                             <div>
+                                                         <input ng-init="model.attoerneyPR = ''" type="text" ng-blur="attoerneyPRValue(model.attoerneyPR, key)" ng-model="model.attoerneyPR"/>
+                                                 
+                                             </div>
+                                        </div>
+                                    </div>
+                               </p>
+                            </div>
+                       </div>
+                        <div class="getresults-btn">
+                            <button type="submit" class="btn btn-info" ng-click="getattributeCombination()">Search</button>
+                            <button type="submit" class="btn btn-info" ng-click="resetProductFilterValue()">Reset</button>
+                            <div><br></br></div>
+                            <div class="alert alert-danger" ng-show="showSuccessAlert" >
+                                <span> <strong> Your results are more than 600 lines. First 600 lines have been shown. Please narrow results using the provided filters.</strong></span>
+                                <button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">x</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    <p id="demo"></p>
+            <div class="box-table" ng-if="showtable">
+                <div class="panel panel-default" style="width:1100px;background-color: #EDEFF0;" >
+                            <div class="panel-heading" style="background-color: #428bca;">
+                                <h3 class="panel-title" style="color: WHITE;">{{selectedProductItem.Name}}</h3>
+                    </div>
+
+                    <table class="table  table-hover data-table myTable">
+                        <thead>
+                            <tr>
+                                <th class="EmpId"> <input type="checkbox" ng-model="model.isCheckAll" ng-disabled="model.isCheckAllDisabled" ng-change="selectAllItems()"/>
+                                                                      
+                                </th>
+                                        <th ng-if="selectedProductItem.Product_Level_5__c != 'FL PROFILES' && textField1Select != ''" class="arrowstyle"> <a style="color:black" ng-click="order('attributeValueInstance.Attribute3_Name__c','attributeValueInstance.Attribute1_Name__c')" class="pointer"> {{textField1Select}}  <!-- Dual sort -->                          
+                                                       <span class="{{Header[1]}}"></span></a>
+                          <img ng-if='showUpForPracticeCat' src="http://www.pngmart.com/files/3/Down-Arrow-PNG-Free-Download.png"  width="15" height="15">
+                                        </img>
+                                        <img ng-if='!showUpForPracticeCat' src="http://www.pngmart.com/files/3/Up-Arrow-PNG-HD.png" width="15" height="15">
+                                        </img>
+                                </th>
+                                        <th ng-if="selectedProductItem.Product_Level_5__c == 'FL PROFILES'" class="arrowstyle"><a style="color:black" ng-click="order('attributeValueInstance.APTS_Price__c')" class="pointer"> {{productItems[2].Name}}                             
+                                                       <span class="{{Header[1]}}"></span></a>
+                                                       <img ng-if='showUpForPracticeCat' src="http://www.pngmart.com/files/3/Down-Arrow-PNG-Free-Download.png"  width="15" height="15">
+                                        </img>
+                                        <img ng-if='!showUpForPracticeCat' src="http://www.pngmart.com/files/3/Up-Arrow-PNG-HD.png" width="15" height="15">
+                                        </img>
+                                                       </th>
+                                
+                                        <th ng-if="productItems[1].APTS_Display_Order__c == 2" class="arrowstyle"> <a style="color:black" ng-click="order('attributeValueInstance.Attribute1_Name__c','attributeValueInstance.Attribute3_Name__c')" class="pointer"> {{productItems[1].Name}}   <!-- Dual sort -->
+                                            <span class="{{Header[2]}}"></span></a>
+                                            <img ng-if='showUpForPracticeCat' src="http://www.pngmart.com/files/3/Down-Arrow-PNG-Free-Download.png"  width="15" height="15">
+                                        </img>
+                                        <img ng-if='!showUpForPracticeCat' src="http://www.pngmart.com/files/3/Up-Arrow-PNG-HD.png" width="15" height="15">
+                                        </img>
+                          
+                                </th>
+                                <th style="color:black" ng-if="selectedProductItem.APTS_Inventory_Applicable__c && selectedProductItem.Product_Level_5__c != 'FL PROFILES' && selectedProductItem.ProductCode != '42762345' "> <a style="color:black" ng-click="order('attributeValueInstance.APTS_Inventory_Available__c')" class="pointer"> Available Inventory
+                     {{Header[3]}}</a>
+                     <img ng-if='showUpForPracticeCat' src="http://www.pngmart.com/files/3/Down-Arrow-PNG-Free-Download.png"  width="15" height="15">
+                                        </img>
+                                        <img ng-if='!showUpForPracticeCat' src="http://www.pngmart.com/files/3/Up-Arrow-PNG-HD.png" width="15" height="15">
+                                        </img>
+                          
+                                </th>
+                               
+                                <th class="gtext"> <a style="color:black" ng-click="order('attributeValueInstance.APTS_Price__c')" class="pointer"> Price
+                     <span class="{{Header[4]}}"></span></a>
+                     <img ng-if='showUpForPracticeCat' src="http://www.pngmart.com/files/3/Down-Arrow-PNG-Free-Download.png"  width="15" height="15">
+                                        </img>
+                                        <img ng-if='!showUpForPracticeCat' src="http://www.pngmart.com/files/3/Up-Arrow-PNG-HD.png" width="15" height="15">
+                                        </img>
+                          
+                                </th>
+                                <th style="text-align: center" ng-if="(selectedProductItem.ProductCode != '41767150') && (selectedProductItem.ProductCode != '41378928') && (selectedProductItem.ProductCode != '42157433') && (selectedProductItem.ProductCode != '41053157') && (selectedProductItem.ProductCode != '41056102')">Currently Installed</th>
+                                        <th> <a style="color:black" ng-click="sortAddToCart()" class="pointer"> Added to Cart <!-- addtocart sort -->
+                                     <span class="{{Header[4]}}"></span></a>
+                     <img ng-if='showUpForPracticeCat' src="http://www.pngmart.com/files/3/Down-Arrow-PNG-Free-Download.png"  width="15" height="15">
+                                        </img>
+                                        <img ng-if='!showUpForPracticeCat' src="http://www.pngmart.com/files/3/Up-Arrow-PNG-HD.png" width="15" height="15">
+                                        </img>
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr ng-if="check1" ng-repeat="fldc in FLDirectoryCounty | orderBy : [predicate,predicate1]:reverse" ng-init="checkRowData(fldc)" ng-disabled="fldc.isDisabled" ng-class="">
+                                <td><input type="checkbox" ng-model="fldc.selected" ng-change="isLabelChecked()" ng-disabled="fldc.isDisabled"></input>
+                               
+                                </td>
+                                        <td ng-if="selectedProductItem.Product_Level_5__c != 'FL PROFILES'&& fldc.attributeValueInstance.APTS_Attribute_Value3__r != undefined">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute3_Name__c)}}</td>
+                                        <td ng-if="selectedProductItem.Product_Level_5__c == 'FL PROFILES'">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute2_Name__c)}}</td>
+                                        <td ng-if="productItems[1].APTS_Display_Order__c == 2 && (productItems[1].Name == 'Metro' || productItems[1].Name == 'County' || productItems[1].Name == 'Edition')">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute1_Name__c)}}</td>   <!-- added by Venkat for Exposurepack dated 14/11/18 -->                             
+                                        <td ng-if="productItems[1].APTS_Display_Order__c == 2 && productItems[1].Name == 'Practice Category'">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute2_Name__c)}}</td> <!-- added by Venkat for Exposurepack dated 14/11/18 -->                                
+                                <td ng-if="selectedProductItem.APTS_Inventory_Applicable__c && selectedProductItem.Product_Level_5__c != 'FL PROFILES' && selectedProductItem.ProductCode != '42762345' " >{{fldc.attributeValueInstance.APTS_Inventory_Available__c}}</td>
+                                        <td ng-if="fldc.attributeValueInstance.APTS_Price__c != undefined">{{fldc.attributeValueInstance.APTS_Price__c.toFixed(2)}} </td> 
+                                        <td ng-if="selectedProductItem.ProductCode == '40656701' && fldc.attributeValueInstance.APTS_Price__c == undefined">
+                                            <div id="button-{{$index}}" ng-click="getPriceForExposurePackRow(ddValuesCopy, fldc.attributeValueInstance.APTS_Attribute_Value3__r.Id, fldc.attributeValueInstance.Attribute3_Name__c, $index)" class="btn btn-info ld-over" ng-if="selectedProductItem.ProductCode == '40656701'" style="height:30px">Price</div><!--added for ExpoPack-->   
+                                            <div id="loader-{{$index}}" class="" style="font-size:1.4em; color:#428bca; display: table-cell; position: relative; top: 50%; left: 50%; margin-right: -50%; transform: translate(-50%, -50%) "></div>
+                                        </td>
+                                <td style="text-align: center" ng-if="(selectedProductItem.ProductCode != '41767150') && (selectedProductItem.ProductCode != '41378928') && (selectedProductItem.ProductCode != '42157433') && (selectedProductItem.ProductCode != '41053157') && (selectedProductItem.ProductCode != '41056102')">
+                                        <span ng-if="fldc.isInstalled">
+                                            <i class="fa fa-lock fa-lg" aria-hidden="true" title="Product is already installed. Can't be added to cart again."></i>
+                                        </span>
+                                        </td>
+                                        <td ng-if="(!fldc.selected || fldc.selected) && fldc.itemStatus == undefined"></td>
+                                <td ng-if="fldc.selected && fldc.itemStatus != undefined"><span ng-if="fldc.itemStatus">
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" style="margin: 1px;"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/><title>Product has been added to Cart</title></svg>
+                                </span>
+                                <span ng-if="!fldc.itemStatus">
+                                    <svg class="checkmark1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" style="margin: 1px;"><circle class="checkmark__circle1" cx="26" cy="26" r="25" fill1="none" /><path class="checkmark__check1" fill1="none" d="M16 16 36 36 M36 16 16 36" /><title>Product has ALREADY been added to Cart</title>
+                                </svg>
+ 
+                              </span></td>
+                            </tr>
+                            
+                            <!-- addtocart sort -->
+                            <tr ng-if="!check1" ng-repeat="fldc in FLDirectoryCounty" ng-init="checkRowData(fldc)" ng-disabled="fldc.isDisabled" ng-class="">
+                                <td><input type="checkbox" ng-model="fldc.selected" ng-change="isLabelChecked()" ng-disabled="fldc.isDisabled"></input>
+                               
+                                </td>
+                                        <td ng-if="selectedProductItem.Product_Level_5__c != 'FL PROFILES'">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute3_Name__c)}}</td>
+                                        <td ng-if="selectedProductItem.Product_Level_5__c == 'FL PROFILES'">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute2_Name__c)}}</td>
+                                <td ng-if="productItems[1].APTS_Display_Order__c == 2 && (productItems[1].Name == 'Metro' || productItems[1].Name == 'County')">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute1_Name__c)}}</td>   <!-- added by Venkat for Exposurepack dated 14/11/18 -->                             
+                                <td ng-if="productItems[1].APTS_Display_Order__c == 2 && productItems[1].Name == 'Practice Category'">{{removeAmparsendFilter(fldc.attributeValueInstance.Attribute2_Name__c)}}</td> <!-- added by Venkat for Exposurepack dated 14/11/18 -->                               
+                                <td ng-if="selectedProductItem.APTS_Inventory_Applicable__c && selectedProductItem.Product_Level_5__c != 'FL PROFILES' && selectedProductItem.ProductCode != '42762345' " >{{fldc.attributeValueInstance.APTS_Inventory_Available__c}}</td>
+                                        <td ng-if="fldc.attributeValueInstance.APTS_Price__c != undefined">{{fldc.attributeValueInstance.APTS_Price__c.toFixed(2)}} </td> 
+                                        <td ng-if="selectedProductItem.ProductCode == '40656701' && fldc.attributeValueInstance.APTS_Price__c == undefined">
+                                            <div id="button-{{$index}}" ng-click="getPriceForExposurePackRow(ddValuesCopy, fldc.attributeValueInstance.APTS_Attribute_Value3__r.Id, $index)" class="btn btn-link btn-sm" ng-if="selectedProductItem.ProductCode == '40656701'" style="height:20px">Price<div class="ld-over ld ld-ring ld-spin" style="font-size:1.4em; color:#428bca"></div></div></td><!--added for ExpoPack-->   
+                                <td style="text-align: center" ng-if="(selectedProductItem.ProductCode != '41767150') && (selectedProductItem.ProductCode != '41378928') && (selectedProductItem.ProductCode != '42157433') && (selectedProductItem.ProductCode != '41053157') && (selectedProductItem.ProductCode != '41056102')">
+                                        <span ng-if="fldc.isInstalled">
+                                            <i class="fa fa-lock fa-lg" aria-hidden="true" title="Product is already installed. Can't be added to cart again."></i>
+                                        </span>
+                                        </td>
+                                        <td ng-if="(!fldc.selected || fldc.selected) && fldc.itemStatus == undefined"></td>
+                                <td ng-if="fldc.selected && fldc.itemStatus != undefined"><span ng-if="fldc.itemStatus">
+                                    <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" style="margin: 1px;"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/><title>Product has been added to Cart</title></svg>
+                                </span>
+                                <span ng-if="!fldc.itemStatus">
+                                    <svg class="checkmark1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52" style="margin: 1px;"><circle class="checkmark__circle1" cx="26" cy="26" r="25" fill1="none" /><path class="checkmark__check1" fill1="none" d="M16 16 36 36 M36 16 16 36" /><title>Product has ALREADY been added to Cart</title>
+                                </svg>
+ 
+                              </span></td>
+                            </tr>
+                            <!-- addtocart sort -->
+                        </tbody>
+                    </table>
+                    
+                </div>
+                <div >
+                    <apex:form id="frm1">
+                        <apex:pageBlock >
+                        <apex:pageMessages />
+                        <button type="button" class="btn btn-info" ng-click="addToCart()"> Add to Cart </button> &nbsp; &nbsp;                    
+                        <apex:actionFunction action="{!returnToCart}" name="returnCart" />
+                        <apex:actionFunction action="{!cancel}" name="Cancel" />
+                        <apex:commandButton styleClass="cmdbtn cmdbtn-info"  value="Go to Cart" onclick="returnCart(); return false ;" reRender="frm" /> &nbsp; &nbsp;
+                                <apex:commandButton styleClass="cmdbtn cmdbtn-info" value="Product Catalog" onclick="Cancel(); return false ;" />
+                        </apex:pageBlock>
+                    </apex:form>
+                    <br/><br/><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </body>
+</apex:page>

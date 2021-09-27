@@ -1,0 +1,6 @@
+<apex:page sidebar="false" showHeader="false"  >
+    <apex:pageBlock title="Guides" tabStyle="User">
+         <c:AeSalesGuides objectType="_any" objectId="{!$User.Id}" extraInfo="Home ({!JSENCODE($User.Username)})" nothingOnDone="true"
+                    match="Role={!JSENCODE(SUBSTITUTE($UserRole.Name, ",", ""))}" height="475px"/>
+     </apex:pageBlock>
+</apex:page>

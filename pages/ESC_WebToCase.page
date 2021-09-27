@@ -1,0 +1,291 @@
+<apex:page standardcontroller="Case" id="mypage" extensions="ESC_WebToCaseController" docType="html-5.0" showHeader="false" language="{!strlancode}">
+    <apex:outputPanel rendered="{!IF(strBU='Caselines',false,true)}"><c:GGO_WebForm_Header /></apex:outputPanel>
+    <apex:outputPanel rendered="{!IF(strBU='Caselines',true,false)}"><c:CaseLines_WebForm_Header /></apex:outputPanel>
+    <div style ="font-family: Arial;color:#ff8000;font-size: 32px;margin-left: 1em;margin-top: 1em;margin-bottom: 0.5em;">{!title}</div>
+    <apex:outputPanel rendered="{!displayform}">
+    <apex:outputPanel rendered="{!IF(strBU='Caselines',false,true)}">
+    <div style ="font-family: Arial;color:#ff8000;font-size: 20px;margin-left: 1em;margin-top: 1em;margin-bottom: 0.5em;">{!$Label.USL_WebForm_Message}</div>
+    </apex:outputPanel>
+    <apex:outputPanel rendered="{!(strFormName ='print-proview-and-cd-rom-cancellation-request')}">
+    <div style ="font-family: Arial;font-size: 20px;margin-left: 1em;margin-top: 1em;margin-bottom: 0.5em;">{!$Label.ESC_ContractCancellationWarningMsg}</div>
+    </apex:outputPanel>
+    
+    </apex:outputPanel>
+    <apex:slds />
+    <style>
+    #spinner{
+        display: none;
+        width:200px;
+        height: 50px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        text-align:center;
+        padding:10px;
+        font:normal 18px Tahoma, Geneva, sans-serif;
+        margin-left: -100px;
+        margin-top: -100px;
+        z-index:2;
+        overflow: auto;
+        border:1px solid #CCC;
+        background-color:white;
+        z-index:100;
+        padding:5px;
+        line-height:20px;
+     }
+     #opaque {
+         position: fixed;
+         top: 0px;
+         left: 0px;
+         width: 100%;
+         height: 100%;
+         z-index: 1;
+         display: none;
+         background-color: gray;
+         filter: alpha(opacity=30);
+         opacity: 0.3;
+         -moz-opacity:0.3;
+         -khtml-opacity:0.3
+     }
+     * html #opaque {
+         position: absolute;
+     }
+  </style>
+  
+  <div id="opaque"/>
+   <div id="spinner">
+        <p align="center" style='{font-family:"Arial", Helvetica, sans-serif; font-size:20px;}'><apex:image value="/img/loading.gif"/>&nbsp;Please wait</p>
+   </div>
+   
+   <script>
+    function showSpinner()
+    {
+       document.getElementById('opaque').style.display='block';
+       var popUp = document.getElementById('spinner');
+      
+       popUp.style.display = 'block';
+    } 
+   </script>
+    <script type="text/javascript">
+        var RecaptchaOptions = {theme : 'clean'};        
+    </script>    
+    <apex:pageMessages rendered="{!(!displayform)}" />
+    <table border="0"><tr><td>
+    <apex:form id="myform" rendered="{!displayform}" >
+        <div class="slds-scope">
+            <div style="float: left;width:550px; margin-left: 5em;">
+                <apex:pageMessages />
+                <div class="slds-grid slds-wrap slds-box">
+                    <div class="slds-grid slds-wrap ">
+                        <div class="slds-form--stacked">
+                            <div class="slds-form-element"><font face="Arial"> <apex:outputText value="{!$Label.USL_WebForm_InstructionMessage}" escape="false" rendered="{!IF(strBU='Caselines',false,true)}"/></font> </div><br/><br/>
+                            <div class="slds-form-element">
+                            
+                            <apex:repeat value="{!sectionLst}" var="key" rendered="{!(sectionLst!=null && sectionLst.size>0)}">
+                                <apex:panelGrid columns="2" border="0" width="100%">
+                                    <apex:outputPanel >
+                                        <apex:outputPanel rendered="{!If (key!='None',true,false)}">
+                                            <span style="font-weight:bold;font-size:22px;">{!key}</span>
+                                        </apex:outputPanel>
+                                      <apex:outputPanel rendered="{!if(strFormName='Support',true,false)}">
+                                           <b>Need help from a Reference Attorney? </b><br/>
+                                           Phone: 1-800-REF-ATTY (1-800-733-2889) <br/>
+                                           Law students call 1-800-850-WEST (1-800-850-9378) <br/><br/>
+                                           
+                                           <a href="https://next.westlaw.com/" target="_blank">Live Chat: Access via Westlaw&nbsp;</a> <br/>
+                                           
+                                           Available to all customers from 7:00 a.m. to 10:00 p.m. (CST) Monday through Friday <br/> <br/>
+                                      </apex:outputPanel>  
+                                      <apex:repeat value="{!webToCaseFieldsMap[key]}" var="webToCaseFieldsMap1" >
+                                      <div class="slds-form-element">
+                                        <apex:outputLabel styleClass="slds-formelement__label" rendered="{!(webToCaseFieldsMap1.ESC_Required__c && NOT(webToCaseFieldsMap1.ESC_Field_Type__c='Check Box'))}">
+                                                <font size="3" color="red">*</font>{!webToCaseFieldsMap1.ESC_Field_name__c}</apex:outputLabel>
+                                                <apex:outputLabel styleClass="slds-formelement__label" rendered="{!(!webToCaseFieldsMap1.ESC_Required__c && NOT(webToCaseFieldsMap1.ESC_Field_Type__c='Check Box'))}">
+                                                <font size="3" />{!webToCaseFieldsMap1.ESC_Field_name__c}</apex:outputLabel>
+                                       <div class="slds-form-element__control" >
+                                                <apex:inputText style="width:400px;border: 1px solid black;" styleclass="{! If(webToCaseFieldsMap1.ESC_Required__c,'slds-input slds-has-error','slds-input')}"
+                                                    value="{!formNameValueMapping[webToCaseFieldsMap1.ESC_Field_name__c]}" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Type__c='Text Area') && NOT(webToCaseFieldsMap1.ESC_Field_Type__c='Picklist') && NOT(webToCaseFieldsMap1.ESC_Field_Type__c='OutputText') && NOT(webToCaseFieldsMap1.ESC_Field_Type__c='Check Box'))}"/>
+                                                 <apex:inputTextArea style="width:400px;border: 1px solid black;" styleclass="{! If(webToCaseFieldsMap1.ESC_Required__c,'slds-input slds-has-error','slds-input')}"
+                                                    value="{!formNameValueMapping[webToCaseFieldsMap1.ESC_Field_name__c]}" rendered="{!webToCaseFieldsMap1.ESC_Field_Type__c=='Text Area'}"/>
+                                                    
+                                                 <apex:selectList value="{!companycode}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Company Code'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!companycodes}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!accountBillingType}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Account Billing Type'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!AccountBillingTypes}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!accountARAging}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Account AR Aging'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!AccountARAgings}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!contractSubscriptionAmount}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Contract/Subscription Amount'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!ContractSubscriptionAmounts}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!contractPeriod}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Contract Period'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!ContractPeriods}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!billingFrequency}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Billing Frequency'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!BillingFrequencys}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!portalVendor}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Portal Vendor'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!PortalVendors}"  />
+                                                    
+                                                    </apex:selectList>
+                                                     <apex:selectList value="{!portalSubmissionType}"
+                                                    size="1" multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Portal Submission Type'  && webToCaseFieldsMap1.ESC_Field_Type__c=='Picklist')}">
+                                                    
+                                                    <apex:selectOptions value="{!PortalSubmissionTypes}"  />
+                                                    
+                                                    </apex:selectList>
+                                                    <apex:selectList id="selectBillingCountry" 
+                                                    value="{!countryValue}"
+                                                    size="1"
+                                                    multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='Country/region')}">
+                                                    
+                                                    <apex:selectOptions value="{!CountryOptions}"  />
+                                                    
+                                                    </apex:selectList>
+                                                    <apex:selectList id="selectBillingState" 
+                                                    value="{!stateValue}" 
+                                                    size="1"
+                                                    multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!(NOT(webToCaseFieldsMap1.ESC_Field_Name__c==null) && webToCaseFieldsMap1.ESC_Field_Name__c=='State/province')}">
+                                                    
+                                                    <apex:selectOptions value="{!CountryStateOptions}" />
+                                                    
+                                                    </apex:selectList>
+                                                    
+                                                    
+                                       </div>
+                                      </div>
+                                       <apex:inputCheckbox value="{!formNameValueMapping[webToCaseFieldsMap1.ESC_Field_name__c]}" rendered="{!webToCaseFieldsMap1.ESC_Field_Type__c=='Check Box'}"></apex:inputCheckbox><apex:outputLabel styleClass="slds-formelement__label" rendered="{!webToCaseFieldsMap1.ESC_Field_Type__c=='Check Box'}"> <font size="3" />{!webToCaseFieldsMap1.ESC_Field_name__c}</apex:outputLabel>
+                                      </apex:repeat>
+                                      <div>
+                                      <apex:outputLabel styleClass="slds-formelement__label" rendered="{!IF(strBU='Caselines',true,false)}">
+                                                <font size="3" />Product Domain</apex:outputLabel></div>
+                                                <div>
+                                       
+                                        <apex:selectList id="selectproductDomain" 
+                                                    value="{!productDomainValue}" 
+                                                    size="1"
+                                                    multiselect="false" style="width:400px;height:35px;border: 1px solid black;" rendered="{!IF(strBU='Caselines',true,false)}">
+                                                    
+                                                    <apex:selectOptions value="{!productDomainOptions}" />
+                                                    
+                                                    </apex:selectList>
+
+
+                                                </div>
+                                    </apex:outputPanel> 
+                                </apex:panelGrid>
+                        </apex:repeat>
+                        
+                        <br/>
+                                <div class="slds-form-element__control">
+                                    <apex:outputPanel >
+                                        <!--<div class="g-recaptcha" data-sitekey="{!publicKey}" data-callback="onSubmit"></div>--><!-- Commented recaptha V2 GGD 969-->
+                                        <button class="g-recaptcha slds-button slds-button_brand" style="font-weight:bold; border-radius: 6px;background-color:#ff8000;border-color:#ff8000;" data-sitekey="{!publicKey}"
+                                                data-callback="onSubmit" onclick="showSpinner()" >{!$Label.ESC_paginateNext}</button>                                                
+                                    </apex:outputPanel><br/><br/>
+                                    <apex:outputPanel rendered="{!if(strFormName='print-proview-and-cd-rom-cancellation-request',true,false)}">
+                                         <a href="https://legal.thomsonreuters.com/en/support/billing-returns-refunds/return-policy" target="_blank"><b>Thomson Reuters Return Policy</b></a><br/><br/>
+                                         <a href="https://legal.thomsonreuters.com/en/support/billing-returns-refunds/request-return-label" target="_blank"><b>How do I request a return label?</b></a>
+                                    </apex:outputPanel>
+                                    
+                                </div>
+                                <script src="https://www.google.com/recaptcha/api.js?hl={!strlancode}"></script> 
+                                <apex:actionFunction action="{!reCAPTCHASucess}" name="onSubmit" />                                                                                                                                 
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </apex:form>
+        
+    <!--Attachment section-->
+    <apex:form rendered="{!EnableSection}">     
+        <div class="slds-scope">
+            <div style="float: left;width:500px; margin-left: 5em;">
+                <div class="slds-grid slds-wrap slds-box">
+                    <div class="slds-grid slds-wrap ">
+                        <div class="slds-form--stacked">
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label" ></label>
+                                <div class="slds-form-element__control" id="Attachament_Blank">
+                                    <table border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td>
+                                                <apex:outputLabel for="file" style="font-weight:bold;float:left;padding:5px "  value="{!$Label.GGO_WebForm_Attachment_Title}" />
+                                                <img src="/s.gif" Class="infoIcon" title="{!$Label.GGO_WebForm_Attachment_HelpText}" />
+                                            </td>
+                                        </tr> 
+                                        <tr>
+                                            <td>
+                                                <apex:inputFile value="{!attachment.body}"  filename="{!attachment.name}" fileSize="{!attachment.BodyLength}" rendered="{!if(att.size==3,false,true)}" / >
+                                                <span class="button_round">
+                                                    <apex:commandButton value="{!$Label.GGO_WebForm_Attachment_Uploadbtn}" action="{!attachfile}"  rendered="{!if(att.size==3,false,true)}" onclick="showSpinner()" />
+                                                </span><br/><br/>
+                                                <apex:outputPanel layout="block"  rendered="{!Isattach=false}">
+                                                    {!$Label.GGO_WebForm_Attachment_Nofilechosen}<br/><br/>
+                                                    <span class="button_round"><span>
+                                                        <apex:commandButton value="{!$Label.GGO_WebForm_Submit_btn}" action="{!SubmitWithAttachment}" onclick="showSpinner()" />
+                                                    </span></span><br/>
+                                                    <b>{!$Label.GGO_WebForm_Attachment_Note}</b></apex:outputPanel>
+                                            </td>
+                                        </tr> 
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="slds-form-element">
+                                <label class="slds-formelement__label"> </label>
+                                <div class="slds-form-element__control">
+                                    <apex:outputPanel layout="block"  rendered="{!Isattach}">
+                                        <apex:outputLabel for="file" style="font-family:Arial;font-weight:bold;float:left;padding:5px "  value="{!$Label.GGO_WebForm_Attachment_Removehdr}" rendered="{!Isattach}"> </apex:outputLabel>          
+                                        <table border="1" cellpadding="2" cellspacing="2" style="padding: 5px; width: 85%">
+                                            <apex:repeat value="{!att}" var="a">
+                                                <tr>
+                                                    <td align="left" width="50%"><font face="Arial">
+                                                        <apex:outputText value="{!a.Name}"/></font>
+                                                    </td>
+                                                    <td align="center" width="20%">
+                                                        <apex:commandLink action="{!Removeattachment}" onclick="if(!confirm('{!$Label.GGO_WebForm_Attachment_DeleteMsg}')) return false;">{!$Label.GGO_WebForm_Attachment_RemoveDoc}
+                                                            <apex:param value="{!a.Id}" name="idToDel" assignTo="{!recid}"/>
+                                                        </apex:commandLink>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </table><br/>
+                                        <span class="button_round"><span>
+                                            <apex:commandButton value="{!$Label.GGO_WebForm_Submit_btn}" action="{!SubmitWithAttachment}" onclick="showSpinner()" />
+                                        </span></span>
+                                    </apex:outputPanel>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </apex:form>
+    </td></tr><tr><td><apex:outputPanel rendered="{!IF(strBU='Caselines',false,true)}"><c:GGO_WebForm_Footer /></apex:outputpanel></td></tr></table> 
+</apex:page>

@@ -1,0 +1,397 @@
+<!--
+
+Test Case Identification Header
+
+TC_APP_REF:QA
+
+TC_PAGE_REF:AN
+
+TC_LAST_NO_USED:0011
+
+-->
+<apex:page lightningStylesheets="true" controller="ortoo_qra.AnalyticsController"  title="QA Analytics" sidebar="False" id="thepage" tabstyle="ortoo_qra__QA_Analytics__tab">
+        <script type="text/javascript" src="{!URLFOR($Resource.googlecharts,'googlecharts/jsapi')}"></script>
+        <script type="text/javascript" src="{!URLFOR($Resource.googlecharts,'googlecharts/loader.js')}"></script>
+        <link href="{!URLFOR($Resource.CustomStyle, 'CustomStyle.css')}" rel="stylesheet" media="screen"/>
+        <apex:sectionHeader title="{!$Organization.Name}" subtitle="Q-assign Analytics"/>
+        <apex:pageMessages id="message"/>
+        <apex:pageBlock title="Response time" id="pb">
+        <apex:form id="theForm"> 
+            <apex:actionfunction name="AF" rerender="re_panel"/>
+            <apex:inputText html-ortoo-elem-id="QAAN0001" id="elementonfocus" style="display:none;"/>
+            <apex:outputLabel value="Data View:"/>&nbsp;
+                <apex:selectList html-ortoo-elem-id="QAAN0002" value="{!dataView}" size="1" id="dataview">
+                    <apex:selectOptions value="{!viewOptions}"></apex:selectOptions>
+                    <apex:actionSupport event="onchange" reRender="group_list, member_list, visualforcepage, googleapi,assignment_group_view,time_view" status="data_view" />
+                </apex:selectList>
+                <apex:actionStatus id="data_view"> 
+                    <apex:facet name="start">
+                      <img src="/img/loading.gif" />                  
+                    </apex:facet> 
+                </apex:actionStatus>
+                <br/><br/>
+                <apex:outputLabel value="Object:"/>&nbsp;
+                <apex:actionRegion >
+                    <apex:selectList html-ortoo-elem-id="QAAN0003" value="{!objectPrefix}" size="1" id="object">
+                        <apex:selectOptions value="{!objectOptions}"></apex:selectOptions>
+                        <apex:actionSupport action="{!assignmentGroupChanged}" event="onchange" reRender="group_list, member_list" status="reviewSelectionActStatus"/>
+                    </apex:selectList>
+                </apex:actionRegion>
+                &nbsp;&nbsp;
+                <apex:outputLabel value="Start Date:"/>&nbsp;
+                <apex:inputField html-ortoo-elem-id="QAAN0004" value="{!fieldStartDate.ActivityDate}" id="startdate" onchange="AF()"/>
+                &nbsp;&nbsp;
+                <apex:outputLabel value="End Date:"/>&nbsp;  
+                <apex:inputField html-ortoo-elem-id="QAAN0005" value="{!fieldEndDate.ActivityDate}" id="enddate" onchange="AF()"/>
+                &nbsp;&nbsp;
+                <apex:outputLabel value="Assignment Group:"/>&nbsp;
+                <apex:selectList html-ortoo-elem-id="QAAN0006" value="{!assignmentGroup}" size="1" id="group_list">
+                    <apex:selectOptions value="{!objectAssignmentGroupOptions}"></apex:selectOptions>
+                    <apex:actionSupport action="{!AssignmentGroupChanged}" event="onchange" reRender="member_list" status="reviewSelectionActStatus"/>
+                </apex:selectList>
+                <apex:outputPanel id="assignment_group_view">
+                    &nbsp;
+                     <apex:outputLabel value="Group Member:" rendered="{!IF(dataView !='AssignmentCountPerGroupView',true,false)}" />&nbsp;
+                        <apex:selectList html-ortoo-elem-id="QAAN0007" value="{!assignmentGroupMember}" size="1" id="member_list" rendered="{!IF(dataView !='AssignmentCountPerGroupView',true,false)}">
+                             <apex:selectOptions value="{!assignmentGroupMemberOptions}"></apex:selectOptions> 
+                        </apex:selectList>
+                </apex:outputPanel>
+                &nbsp;
+                <apex:outputPanel id="time_view">
+                    <apex:outputLabel value="Time" rendered="{!IF(dataView =='AssignmentCountPerGroupView' || dataView=='AssignmentCountPerMemberView' || 
+                                                        dataView=='AveragePerMember' ,true,false)}"/>&nbsp; 
+                    <apex:selectList html-ortoo-elem-id="QAAN0008" value="{!timeView}" size="1" id="time"  rendered="{!IF(dataView =='AssignmentCountPerGroupView' || dataView=='AssignmentCountPerMemberView' || 
+                                                        dataView=='AveragePerMember' ,true,false)}">
+                        <apex:selectOptions value="{!timeOptions}"></apex:selectOptions> 
+                    </apex:selectList>
+                </apex:outputPanel>
+                
+                
+                <apex:actionStatus id="reviewSelectionActStatus"> 
+                    <apex:facet name="start">
+                      <img src="/img/loading.gif" />                  
+                    </apex:facet> 
+                </apex:actionStatus>
+                <br/><br/>
+                <apex:pageBlockSection id="visualforcepage">
+                <apex:pageBlockSectionItem rendered="{!IF(dataView=='AveragePerMember',true,false)}">
+                 <apex:commandButton html-ortoo-elem-id="QAAN0009" value="Go" action="{!showGraph}"/>
+                  </apex:pageBlockSectionItem>
+                  </apex:pageBlockSection>
+                  
+               </apex:form>
+                <apex:pageBlockSection id="googleapi">
+                <apex:pageBlockSectionItem html-ortoo-elem-id="QAAN0011" rendered="{!IF(dataView!='AveragePerMember',true,false)}">
+                  <input type="submit" value="Go" onclick="go();"/> 
+                  </apex:pageBlockSectionItem>
+                  </apex:pageBlockSection>
+                   <br/><br/><br/><br/>
+                    <div id="chartBlock2" style="display: block;margin: 0 auto;"></div>
+         </apex:pageBlock>
+         
+         <apex:pageBlock title="Average: Assigned Per Group Member"  rendered="{!showReport==true}" id="pb_avg_view">
+                <apex:pageBlockSection title="Shows a grid listing each member and the total assigned number within the date range and the average per time(hour, day, week, month)" columns="1" collapsible="false" id="pbs_avg_view">
+                    <apex:pageBlockSectionItem rendered="{!showTable==true}">
+                            <apex:pageBlockTable html-ortoo-elem-id="QAAN0010" value="{!chart}" var="row">
+                                <apex:column headerValue="Group Member">
+                                    <apex:outputText value="{!row.memName}"/>
+                                </apex:column>
+                                <apex:column headerValue="Assignment Count">
+                                    <apex:outputText value="{!row.recCount}"/>
+                                </apex:column>
+                                <apex:column headerValue="Average Assignment Count(per time)">
+                                    <apex:outputText value="{!row.avgRecCount}"/>
+                                </apex:column>
+                            </apex:pageBlockTable>
+                        </apex:pageBlockSectionItem>
+                        <apex:outputText value="No data found!" rendered="{!noData == true}" />
+                    </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:outputPanel id="re_panel">  
+          <script>
+            function changeDataView()
+            {
+                
+                    if(document.getElementById("thepage:pb_avg_view"))
+                    {
+                        document.getElementById("thepage:pb_avg_view").style.display='none';
+                    }
+                    
+                
+            }
+            
+            function hideMessage()
+            {
+                if(document.getElementById("thepage:message"))
+                {
+                    document.getElementById("thepage:message").style.display='none';
+                }   
+            }
+             google.charts.load('current', {'packages':['line']});
+             
+              function formatDate (inputDate)
+              {
+                console.log('date 1' + inputDate);
+                
+                var x_st_date = inputDate;
+                var d = new Date (x_st_date);
+                var yr = d.getFullYear();
+                var month = d.getMonth()+1;
+                var day = d.getDate();
+                
+                var return_date = day+'/'+month+'/'+yr;
+                return return_date;
+              }  
+              function go()
+              {
+                changeDataView();
+                hideMessage();
+                var view = document.getElementById("thepage:pb:theForm:dataview");
+                var obj = document.getElementById("thepage:pb:theForm:object");
+                var startDate = document.getElementById("thepage:pb:theForm:startdate");
+                var endDate = document.getElementById("thepage:pb:theForm:enddate");
+                var group = document.getElementById("thepage:pb:theForm:group_list");
+                var member= document.getElementById("thepage:pb:theForm:member_list");
+                var member_data = "";
+                console.log('date 2' + startDate.value);
+                if(member)
+                {
+                    member_data = member.value
+                }
+                var time_data= document.getElementById("thepage:pb:theForm:time");
+                var time = '';
+                if(time_data)
+                {
+                    time = time_data.value;
+                }
+                var start_date_value = formatDate('{!JSENCODE(TEXT(fieldStartDate.ActivityDate))}');
+                var end_date_value = formatDate('{!JSENCODE(TEXT(fieldEndDate.ActivityDate))}');
+                
+                console.log('start_date_value:'+start_date_value);
+                console.log('end_date_value:'+end_date_value);
+                
+                var str_start_date = start_date_value;
+                var str_start_date_split = str_start_date.split("/");
+                str_start_date =str_start_date_split[2]+'-'+str_start_date_split[1]+'-'+str_start_date_split[0];
+                var str_end_date = end_date_value;
+                var str_end_date_split = str_end_date.split("/");
+                str_end_date =str_end_date_split[2]+'-'+str_end_date_split[1]+'-'+str_end_date_split[0];
+                var start = new Date(str_start_date);
+                var end = new Date(str_end_date);
+                var diff = new Date(end - start);
+                var days = diff/1000/60/60/24;
+                
+                console.log(start_date_value);
+                console.log(end_date_value);
+                
+                if(days<30 && time=="month")
+                {
+                    alert('Please select days more than 30 for month.');
+                    return ;
+                }
+                if(days<7 && time =="week")
+                {
+                    alert('Please select days more than 7 for week.');
+                    return;
+                }            
+                 google.charts.setOnLoadCallback(initCharts);
+                
+            function initCharts() {        
+                
+                if(view.value == 'CreationAssignmentView' || view.value == 'CreationActivityView' || view.value == 'AssignmentActivityView')
+                {
+                    ortoo_qra.AnalyticsController.getChartDataForAverageHoursGraphs(view.value,obj.value, start_date_value, end_date_value, group.value, member_data, time,
+
+                 function(result, event){ 
+                    if (typeof result  === 'undefined' || result == null) {
+                                 alert('No data found');
+                                 return ;
+                            }
+                            else if(result.length==0)
+                            {
+                                alert('No data found');
+                                return;
+                            }
+                     var chartresult = result;
+                     var data = new google.visualization.DataTable();
+                     ortoo_qra.AnalyticsController.getMembers(view.value,obj.value, start_date_value, end_date_value, group.value, member_data, time,
+                                                            function(xresult, event){
+                             
+                             if (typeof xresult  === 'undefined' || xresult == null) {
+                                 return ;
+                            }
+                            else if(xresult.length==0)
+                            {
+                                return;
+                            }
+                            
+                             var strin = '';
+                             var sub = '';
+                             if(view.value == 'CreationAssignmentView')
+                             {
+                             data.addColumn('string', 'Assignment Date');
+                             strin = 'Creation to Assignment';
+                             sub ='Shows the average hours taken to assign number of Leads/Cases from Creation Date.';
+                             }
+                             else if( view.value == 'CreationActivityView')
+                             {
+                             data.addColumn('string', 'First Activity Date');
+                             strin = 'Creation to First Activity';
+                             sub ='Shows the average hours taken to perform first activity on number of Leads/Cases from Creation Date.';
+                             }
+                             else if(view.value == 'AssignmentActivityView')
+                             {
+                             data.addColumn('string', 'First Activity Date');
+                             strin = 'Assignment to First Activity';
+                             sub ='Shows the average hours taken to perform first activity on number of Leads/Cases from Assignment Date.';
+                             }
+                             
+                             for(var i =0; i<xresult.length;i++)
+                             {
+                                 data.addColumn('number', xresult[i]);
+                             }
+    
+                         for(var i =0; i<chartresult.length;i++){
+    
+                            var r = chartresult[i];
+                            console.log(r);
+                            
+                            var arr = [];
+                            
+                            arr.push(r.objCreatedDate);
+                            arr.push(r.averageHours);
+                            arr.push(r.countSobj);                           
+    
+                            data.addRow(arr);
+    
+                          }
+                          
+                          var options = {
+                            chart: {
+                              title: strin,
+                               subtitle: sub
+                             },
+                            height: 500,
+                           
+                            axes: {
+                              x: {
+                                0: {side: 'top'}
+                              }
+                            }
+                          };
+
+                    var chart = new google.charts.Line(document.getElementById('chartBlock2'));
+
+                      chart.draw(data, options);
+                     }); 
+
+              }, {escape:true});
+                    
+                
+                }
+                else
+                {
+                    ortoo_qra.AnalyticsController.getChartDataForAssignmentCountGraphs(view.value,obj.value, start_date_value, end_date_value, group.value,member_data, time,
+
+                 function(result, event){ 
+                    if (typeof result  === 'undefined' || result == null) {
+                                 alert('No data found');
+                                 return ;
+                            }
+                            else if(result.length==0)
+                            {
+                                alert('No data found');
+                                return;
+                            }
+                     var chartresult = result;
+
+                     var data = new google.visualization.DataTable();
+                     ortoo_qra.AnalyticsController.getMembers(view.value,obj.value, start_date_value, end_date_value, group.value, member_data, time,
+                                                            function(xresult, event){
+                             
+                             if (typeof xresult  === 'undefined' || xresult == null) {
+                                 return ;
+                            }
+                            else if(xresult.length==0)
+                            {
+                                return;
+                            }
+                            console.log(xresult);
+                             data.addColumn('string', 'Assignment Date');
+                             
+                             for(var i =0; i<xresult.length;i++)
+                             {
+                                 data.addColumn('number', xresult[i]);
+                                 console.log('member');
+                                 console.log(xresult[i]);
+                             }
+                             
+    
+                         for(var i =0; i<chartresult.length;i++){
+    
+                            var r = chartresult[i];
+                            var arr = [];
+                            
+                            arr.push(r.closedate);
+                            
+                            for(var j =0 ; j < result[i].memberscount.length ; j++)
+                            {
+                                arr.push(chartresult[i].memberscount[j].count);
+                            }
+                            console.log('count');
+                            console.log(arr);
+                            data.addRow(arr);
+    
+                          }
+                         var strin = '';
+                         var sub = '';
+                         if(view.value == 'AssignmentCountPerGroupView')
+                         {
+                         strin = 'Assignment Count: Per Assignment Group';
+                         sub ='Shows Lead/Cases assignment count per time(hour,day,week,month) for multiple Assignment Groups.';
+                         }
+                         else if( view.value == 'AssignmentCountPerMemberView')
+                         {
+                         strin = 'Assignment Count: Per Assignment Group Member';
+                         sub ='Shows Leads/Cases assignment count per time(hour,day week,month) for multiple Assignment Group Members.';
+                         }
+                         else if(view.value == 'AveragePerMember')
+                         {
+                         strin = 'Average: assigned per member';
+                         sub ='Shows a grid listing each member and the total assigned number within the date range and the average per time(hour, day, week, month).';
+                         }
+                          var options = {
+                          chart: {
+                              title: strin,
+                               subtitle: sub                              
+                             },
+                            height: 500,
+                           
+                            axes: {
+                              x: {
+                                0: {side: 'top'}
+                              }
+                            }
+                            
+                          };
+
+                    var chart = new google.charts.Line(document.getElementById('chartBlock2'));
+
+                      chart.draw(data, options);
+                     }); 
+
+              }, {escape:true});
+                
+                }
+          }
+              }            
+          </script>
+          <script type="text/javascript">
+              window.onload = setFocus
+              function setFocus() 
+              {
+                document.getElementById('thepage:pb:theForm:elementonfocus').focus();
+              }
+          </script>
+        </apex:outputPanel>
+</apex:page>

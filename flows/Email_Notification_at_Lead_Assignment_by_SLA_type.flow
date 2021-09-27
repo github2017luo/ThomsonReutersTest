@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>emailAlertSelection</name>
+            <value>
+                <stringValue>New_Lead_Email_Notification_based_on_Sub_bu</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>New Lead Assignment Email Notification based on Sub-bu</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>Lead.New_Lead_Email_Notification_based_on_Sub_bu</actionName>
+        <actionType>emailAlert</actionType>
+        <connector>
+            <targetReference>myDecision2</targetReference>
+        </connector>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>textJson</name>
+            <value>
+                <stringValue>{&quot;mentions&quot;:[],&quot;message&quot;:&quot;@[{![Lead].OwnerId}] Lead Updated - Action Required\n\nA Qualified Lead you own has new marketing engagement and requires contact within 5 minutes&quot;}</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>Qualified Email Notification Based on Lead Score and Status</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>@[{!myVariable_current.OwnerId}] Lead Updated - Action Required
+
+A Qualified Lead you own has new marketing engagement and requires contact within 5 minutes</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>type</name>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>textJson</name>
+            <value>
+                <stringValue>{&quot;mentions&quot;:[],&quot;message&quot;:&quot;@[{![Lead].OwnerId}] Lead Updated - Action Required\n\nA lead you own has updated from Prospect Stage to Lead Stage. Review the lead record to determine appropriate next steps&quot;}</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>Lead Email Notification from Prospect to Lead Stage</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>@[{!myVariable_current.OwnerId}] Lead Updated - Action Required
+
+A lead you own has updated from Prospect Stage to Lead Stage. Review the lead record to determine appropriate next steps</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>type</name>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>myVariable_waitStartTimeAssignment</name>
+        <label>myVariable_waitStartTimeAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myDecision</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Email Notifications to notify the Rep</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>Qualified Lead Email Notification based on Lead Score and Status</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>Lead Email Notification from Prospect to Lead Stage Based on Lead Score and Status</label>
+        </rules>
+    </decisions>
+    <description>It would need to trigger to notify the rep AFTER the lead leaves the GLI Assignment Queue and gets assigned to a user</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND
+
+(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,[Lead].Is_GLI__c = TRUE, 
+PRIORVALUE([Lead].Lead_Owner_Queue_Name__c ) = &quot;GLI Assignment&quot; , [Lead].Lead_Scoring_Combined__c =&quot;A1&quot;,
+NOT(BEGINS([Lead].OwnerId, &quot;00G&quot;)), 
+NOT((ISBLANK(TEXT([Lead].Owner:User.Sub_Bu__c) ))) 
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND
+
+(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,{!myVariable_current.Is_GLI__c} = TRUE, 
+PRIORVALUE({!myVariable_current.Lead_Owner_Queue_Name__c} ) = &quot;GLI Assignment&quot; , {!myVariable_current.Lead_Scoring_Combined__c} =&quot;A1&quot;,
+NOT(BEGINS({!myVariable_current.OwnerId}, &quot;00G&quot;)), 
+NOT((ISBLANK(TEXT({!myVariable_current.Owner:User.Sub_Bu__c}) ))) 
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND
+
+(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+[Lead].Is_GLI__c = TRUE, 
+BEGINS([Lead].OwnerId, &quot;005&quot;),
+ISCHANGED([Lead].Lead_Scoring_Combined__c), 
+
+OR
+(  
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;B2&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;A2&quot;
+),
+
+OR
+([Lead].Lead_Scoring_Combined__c =&quot;A1&quot;, 
+[Lead].Lead_Scoring_Combined__c =&quot;B1&quot;,
+[Lead].Lead_Scoring_Combined__c =&quot;C1&quot;, 
+[Lead].Lead_Scoring_Combined__c =&quot;D1&quot;
+), 
+
+OR
+(
+ISPICKVAL([Lead].Status , &quot;Unworked&quot;), 
+ISPICKVAL([Lead].Status , &quot;Telesales Accepted&quot;), 
+ISPICKVAL([Lead].Status , &quot;Sales Accepted&quot;)
+)
+
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>AND
+
+(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+{!myVariable_current.Is_GLI__c} = TRUE, 
+BEGINS({!myVariable_current.OwnerId}, &quot;005&quot;),
+ISCHANGED({!myVariable_current.Lead_Scoring_Combined__c}), 
+
+OR
+(  
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;B2&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;A2&quot;
+),
+
+OR
+({!myVariable_current.Lead_Scoring_Combined__c} =&quot;A1&quot;, 
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;B1&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;C1&quot;, 
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;D1&quot;
+), 
+
+OR
+(
+ISPICKVAL({!myVariable_current.Status} , &quot;Unworked&quot;), 
+ISPICKVAL({!myVariable_current.Status} , &quot;Telesales Accepted&quot;), 
+ISPICKVAL({!myVariable_current.Status} , &quot;Sales Accepted&quot;)
+)
+
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND
+(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+[Lead].Is_GLI__c = TRUE, 
+BEGINS([Lead].OwnerId, &quot;005&quot;),
+ISCHANGED([Lead].Lead_Scoring_Combined__c), 
+
+OR
+(  
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;A4&quot;,
+PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;D4&quot;, PRIORVALUE([Lead].Lead_Scoring_Combined__c ) =&quot;D3&quot;
+), 
+
+OR
+(
+[Lead].Lead_Scoring_Combined__c =&quot;A3&quot;,
+[Lead].Lead_Scoring_Combined__c =&quot;C3&quot;,
+[Lead].Lead_Scoring_Combined__c =&quot;C2&quot;, 
+[Lead].Lead_Scoring_Combined__c =&quot;D2&quot;
+), 
+
+OR
+(
+ISPICKVAL([Lead].Status , &quot;Unworked&quot;), 
+ISPICKVAL([Lead].Status , &quot;Telesales Accepted&quot;), 
+ISPICKVAL([Lead].Status , &quot;Sales Accepted&quot;)
+)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>AND
+(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+{!myVariable_current.Is_GLI__c} = TRUE, 
+BEGINS({!myVariable_current.OwnerId}, &quot;005&quot;),
+ISCHANGED({!myVariable_current.Lead_Scoring_Combined__c}), 
+
+OR
+(  
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;A4&quot;,
+PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;D4&quot;, PRIORVALUE({!myVariable_current.Lead_Scoring_Combined__c} ) =&quot;D3&quot;
+), 
+
+OR
+(
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;A3&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;C3&quot;,
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;C2&quot;, 
+{!myVariable_current.Lead_Scoring_Combined__c} =&quot;D2&quot;
+), 
+
+OR
+(
+ISPICKVAL({!myVariable_current.Status} , &quot;Unworked&quot;), 
+ISPICKVAL({!myVariable_current.Status} , &quot;Telesales Accepted&quot;), 
+ISPICKVAL({!myVariable_current.Status} , &quot;Sales Accepted&quot;)
+)
+)</expression>
+    </formulas>
+    <interviewLabel>Email_Notification_at_Lead_Assignment_by_SLA_type-5_InterviewLabel</interviewLabel>
+    <label>Email Notification at Lead Assignment by SLA type</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Lead</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_waitStartTimeVariable</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.CurrentDateTime</elementReference>
+        </value>
+    </variables>
+</Flow>

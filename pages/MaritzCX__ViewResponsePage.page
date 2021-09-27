@@ -1,0 +1,20 @@
+<apex:page showHeader="false" 
+           showChat="false" 
+           showQuickActionVfHeader="false" 
+           sidebar="false" 
+           standardStylesheets="false" 
+           wizard="false" 
+           setup="false" 
+           readOnly="true" >
+    <apex:includeScript value="{!$Resource.MaritzCX__View_Response_Link}"/>
+    <script>
+    	window.onload = function(){
+            var namespace = '{!JSENCODE($Setup.AlPublic__c.NamespacePrefix__c)}';
+            var id = '{!JSENCODE($CurrentPage.parameters.Id)}';
+            viewResponse(namespace,id);
+            window.close();
+            window.history.back();
+        }
+    </script>
+
+</apex:page>

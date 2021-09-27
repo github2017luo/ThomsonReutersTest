@@ -1,0 +1,33 @@
+<!--
+* {Purpose} – Used to override account detail page to display the standard page layout based data.
+* 				The reason why we have to override is to overcome a cross site scripting issue
+* 				which was identified as a shortcoming of how Salesforce has implemented the security.
+*
+* @author	Shah Kadirmohideen
+* @version	2012-05-03
+*/
+
+/**
+* CHANGE HISTORY 
+* =============================================================================
+* Date			Name					Description
+* 2011-05-03	Shah Kadirmohideen		Created  
+* =============================================================================
+-->
+<apex:page controller="CNDataCleanupAllController" showHeader="true" sidebar="true"
+		setup="true" title="Delete All Cached BDP Relationships" action="{!deleteCache}">
+	
+<apex:form forceSSL="true" >	
+<apex:sectionHeader title="Business Development Premier for Salesforce" subtitle="Delete All Cached BDP Relationships"
+            description="A batch job has been started to delete all the cached BDP relationship records. This process may take some time to complete.   
+            You may monitor the progress under Setup -> Administration Setup -> Monitoring -> Apex Jobs."
+/>	
+	<br/>
+	<center>
+		<apex:commandButton value="Back to Application Settings" action="{!goBack}"/>
+	</center>
+	<br/>
+	<br/>
+	
+</apex:form>	
+</apex:page>

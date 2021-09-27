@@ -1,0 +1,340 @@
+<!--
+============================================================================================== 
+PAGE FOR EDITING THE MEMBERSHIP OF RECIPEINT GROUPS
+REQUIRES THE ID OF A RECIPIENT GROUP, I.E:
+
+    [SF base URL]/Apex/[VF Page Name]?Id=[Recipient Group id]
+
+ProvenWorks for Improved Apps
+Copyright (c.) Improved Apps Limited 2012. All Rights Reserved.
+============================================================================================== 
+ -->
+
+<apex:page standardController="ianb__RecipientGroup__c" extensions="ianb.ControllerRecipientGroup" 
+        showHeader="true" sidebar="true" tabStyle="ianb__RecipientGroup__c"
+        title="{!BrandingLocalisations['ProductName']}: {!DialogueLocalisations['TitleDialogueTitle']}" >
+        
+    <style>
+        .bEditBlock .btn { margin-top: 1px; margin-bottom: 1px; }
+    </style>
+    
+    <apex:includeScript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/lib/jquery-3.5.1.min.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/js/jsEditOps.js')}" />
+
+    
+    <script type="text/javascript">
+        var jQ = $.noConflict(true);
+        var groupMembers;
+        
+        jQ(document).ready(function() {
+            groupMembers = jQ.parseJSON(decodeHTML(jQ('input[id*="hdnGroupMembers"]').val()));
+            fillMembersOptions(jQ('input[id*="hdnGroupMembers"]').val(), 'slSelected');
+            fillMembersOptions(jQ('input[id*="hdnListMembers"]').val(), 'slMembers', true);
+        });
+        
+        function startDisplayGroups() {
+            updateGroupListAction();
+        }
+        
+        function saveGroupMembers() {
+            var members = '';
+            var options = jQ('#slSelected option');
+            options.each(function() {
+                if (members) members += ';';
+                var pair = jQ(this).val().split('_');
+                members += pair[1] + ',"' + jQ(this).text() + '",' + pair[0]; 
+            });
+            jQ('input[id*="hdnSaveGroupMembers"]').val(members);
+            saveGroupAction();
+        }
+
+        function stopDisplayUsers() {
+            fillMembersOptions(jQ('input[id*="hdnListMembers"]').val(), 'slMembers', true);
+        }
+        
+        function fillMembersOptions(jsonString, selectId, excludeGroupMembers) {
+            var enc = decodeHTML(jsonString);
+            var members = jQ.parseJSON(enc);
+
+            jQ('select[id*="' + selectId + '"] option').remove();
+
+            var options = [];
+            for (var id in members) {
+                if (!excludeGroupMembers || (!groupMembers[id] && id != 'Recipients Group_{!RecipientGroup__c.Id}')) {
+                    options.push('<option value="' + id + '">' + encodeHTML(members[id]) + '</option>');
+                }
+            }
+
+            if (options.length) {
+                 jQ('select[id*="' + selectId + '"]').prepend(jQ(options.join('')));
+            }
+        }
+
+        function decodeHTML(str) {
+            return str.replace(/&lt\;/g, '<').replace(/&gt\;/g, '>').replace(/&quot\;/g,'"').replace(/&#39\;/g, "'").replace(/&#x2F\;/g, '/').replace(/&amp\;/g, "&");
+        }
+        
+        function encodeHTML(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#39;').replace(/\//g, '&#x2F;');
+        }
+        
+        
+        // Handle "Add" members button
+        function addMembers() {
+            var selOptions = jQ('#slMembers option:selected');
+            var options = [];
+            selOptions.each(function() {
+                var opt = jQ(this);
+                if (!groupMembers[opt.val()]) {
+                    var newOpt = jQ('<option value="' + opt.val() + '">' + encodeHTML(opt.text()) + '</option>');
+                    options.push(newOpt[0]);
+                    groupMembers[opt.val()] = opt.text();
+                }
+            });
+            if (options.length) {
+                jQ('#slSelected').prepend(options);
+            }
+            
+            selOptions.remove();
+            removeSelection('slSelected');
+            
+            // Update number of selected members label
+            var num = (jQ('#slSelected option').length);
+            jQ('#lblRecipientsCount').text(num + ' {!JSENCODE(DialogueLocalisations['AdviceLabelNumberTotal'])}');
+
+            preventStep3Overload();
+        }
+    
+
+        // Handle "Remove" members button
+        function removeMembers() {
+            var selOptions = jQ('#slSelected option:selected');
+            var appended;
+            
+            selOptions.each(function() {
+                var opt = jQ(this);
+                var valueParts = opt.val().split('_');
+                var listType = valueParts[0];
+                if (listType == jQ('input[id*="hdnListType"]').val()) {
+                    var leftOpt = opt.clone();
+                    jQ('#slMembers').append(leftOpt);
+                    appended = true;
+                }
+                delete groupMembers[opt.val()];
+            });
+            if (appended)
+                fillMembersOptions(jQ('input[id*="hdnListMembers"]').val(), 'slMembers', true);
+            
+            if (selOptions.length) {
+                selOptions.remove();
+            } 
+
+            // Update number of selected members label
+            var num = (jQ('#slSelected option').length);
+            jQ('#lblRecipientsCount').text(num + ' {!JSENCODE(DialogueLocalisations['AdviceLabelNumberTotal'])}');            
+
+            preventStep3Overload();
+        }
+
+
+        // Prevent addition of members to step 3 where limits would be exceeded:
+        // Disable add button and display warning
+        function preventStep3Overload() {
+
+try {
+
+//var step2  = jQ('select[id*="slMembers"] option:selected').size();     // Selection in step 2
+//var step3 = jQ('#slSelected option').size();                               // All step 3 options
+
+var step2  = jQ('select[id*="slMembers"] option:selected').length;     // Selection in step 2
+var step3 = jQ('#slSelected option').length;                               // All step 3 options
+
+             var maxStep3Recipients = {!maxStep3Recipients};
+        
+        
+             // If selection at step 2 + already selected members in step 3
+             // exceeds total allowed in step 3, disable the "Add" button and show a warning            
+             if (step2 + step3 > maxStep3Recipients) {
+                jQ('#maxStep3Warning').css('display', 'block');
+                enableButton(jQ('input[id*="btnAddUsers"]'), false);
+            
+                // If disabling here, no need to go further (indeed we should not)
+                return;
+             } else {
+                jQ('#maxStep3Warning').css('display', 'none');
+                enableButton(jQ('input[id*="btnAddUsers"]'), true);
+             }            
+                
+            // If step 3 already at limits, show warning
+            if (step3 >= maxStep3Recipients) {
+                jQ('#maxStep3Reached').css('display', 'block');
+                enableButton(jQ('input[id*="btnAddUsers"]'), false);
+            } else {
+                jQ('#maxStep3Reached').css('display', 'none');
+                enableButton(jQ('input[id*="btnAddUsers"]'), true);
+            }  
+
+} catch (e) {
+    console.log('preventStep3Overload - error: ' + e);
+}
+                                  
+        }
+
+        
+        function removeSelection(id) {
+            jQ('select[id*="'+ id +'"] option:selected').each(function() {
+                jQ(this).removeAttr('selected');
+            });
+        }
+        
+        
+        // Enable / Disable buttons
+        function enableButton(btn, isEnabled) {
+            if (!isEnabled) {
+                jQ(btn).removeClass('btn');
+                jQ(btn).addClass('btnDisabled');
+                jQ(btn).attr('disabled', 'disabled');
+            } else {
+                jQ(btn).removeClass('btnDisabled');
+                jQ(btn).addClass('btn');
+                jQ(btn).removeAttr('disabled');
+            }
+        }
+                   
+    </script>
+
+    <apex:pageMessages id="pbMessages" />   
+    <apex:form >
+
+<!--   
+===============================================
+HIDDEN FIELDS TO RECIEVE JSON INFO FOR LIST REFRESHES
+===============================================
+ -->            
+        <apex:inputHidden value="{!GroupMembers}" id="hdnGroupMembers" />
+        <apex:inputHidden value="{!ListMembers}" id="hdnListMembers" />
+        <apex:inputHidden value="{!SaveGroupMembers}" id="hdnSaveGroupMembers" />
+        <apex:inputHidden value="{!ListType}" id="hdnListType" />
+
+<!--   
+===============================================
+KEY ACTION FUNCTIONS
+===============================================
+ -->            
+        <apex:actionFunction status="statusGroup" reRender="hdnListMembers,hdnListType" name="updateGroupListAction" action="{!UpdateGroupList}" oncomplete="stopDisplayUsers();" />
+        <apex:actionFunction name="saveGroupAction" action="{!SaveGroup}" oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+
+
+<!--   
+===============================================
+HEADER AREA: SAVE/CANCEL, GROUP & NB DETAILS
+===============================================
+ -->            
+        <apex:pageBlock title="{!DialogueLocalisations['TitleDialogueTitle']}" mode="edit">
+            <apex:pageBlockButtons location="both" >
+                <apex:commandButton value="{!GlobalLocalisations['ButtonSave']}" onclick="saveGroupMembers();return false;" />
+                <apex:commandButton value="{!GlobalLocalisations['ButtonCancel']}" action="{!cancel}" immediate="true" />
+            </apex:pageBlockButtons> 
+            
+            <apex:pageBlockSection columns="1" collapsible="false" showHeader="false">
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelRecipientGroupName']}" value="{!ianb__RecipientGroup__c.Name}" required="true" />
+                <apex:inputField label="{!DialogueLocalisations['FieldLabelNoticeBoard']}" value="{!ianb__RecipientGroup__c.ianb__NoticeBoard__c}" required="true"/>
+            </apex:pageBlockSection>        
+
+            <table>
+                
+<!--   
+===============================================
+SELECT SOURCE PICK LIST
+===============================================
+ -->            
+                <tr>
+                    <td width="33%">
+                        <p>{!DialogueLocalisations['FieldLabelSelectSource']}</p>
+                        <apex:selectList id="slSource" size="1" value="{!GroupListSource}" onchange="startDisplayGroups();">
+                            <apex:selectOption itemValue="1" itemLabel="Users"/>
+                            <apex:selectOption itemValue="2" itemLabel="Profiles"/>
+                            <apex:selectOption itemValue="3" itemLabel="Public Groups"/>
+                            <apex:selectOption itemValue="4" itemLabel="Roles"/>
+                            <apex:selectOption itemValue="5" itemLabel="Roles and Subordinates"/>
+                            <apex:selectOption itemValue="6" itemLabel="Recipient Groups"/>
+                        </apex:selectList><br/>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td>{!DialogueLocalisations['FieldLabelAvailableMembers']}</td>
+                    <td>&nbsp;</td>
+                    <td>{!DialogueLocalisations['FieldLabelSelectedMembers']}</td>
+                </tr>
+                <tr>
+
+<!--   
+===============================================
+AVAILABLE MEMBERS IN SELECTED SOURCE
+===============================================
+ -->            
+                    <td>
+                        <apex:outputPanel id="outGroup">
+                            <apex:actionStatus id="statusGroup">
+                               <apex:facet name="start">
+                                    <select style="width:210px;height:174px;background:no-repeat center center url({!URLFOR($Resource.noticeboard_resources, 'noticeboard_resources/images/loading.gif')})" size="9" >
+                                    </select>
+                                </apex:facet>
+                                <apex:facet name="stop">
+                                    <select style="width:210px;height:174px;" id="slMembers" size="10" multiple="multiple" onclick="preventStep3Overload();" onblur="preventStep3Overload();" />
+                                </apex:facet>                               
+                            </apex:actionStatus> 
+                        </apex:outputPanel>
+                    </td>
+                    
+<!--   
+===============================================
+ADD / REMOVE BUTTONS
+===============================================
+ -->                
+                    <td style="vertical-align:middle;text-align:center;" width="75px;">
+                        <apex:commandButton id="btnAddUsers" value="{!GlobalLocalisations['ButtonAdd']} >" onclick="addMembers();return false;" style="width:65px;"/>
+                        <apex:commandButton id="btnRemoveUsers" value="< {!GlobalLocalisations['ButtonRemove']}" onclick="removeMembers();return false;" style="width:65px;"/>
+                    </td>
+                    
+<!--   
+===============================================
+SELECTED MEMBERS LIST
+===============================================
+ -->                                
+                    <td>
+                        <select style="width:210px;height:174px;" id="slSelected" size="10" multiple="multiple">
+                        </select>
+                    </td>
+                </tr>
+                
+<!--   
+===============================================
+SELECTED MEMBER COUNT
+===============================================
+ -->                                
+                <tr>
+                    <td>
+                        <div style="">
+                            <div id='maxStep3Warning' style='display: none; color: red; width: 235px;'>{!DialogueLocalisations['AdviceLabelStep3LimitWarning']}</div>                                       
+                        </div>
+                    </td>
+    
+                    <td></td>
+    
+                    <td>
+                        <apex:outputPanel id="Step3CountLabels">
+                            <div style="">
+                                <div style=""><label id="lblRecipientsCount"></label></div>
+                                <div id='maxStep3Reached' style='display: none; color: red; width: 235px;'>{!DialogueLocalisations['AdviceLabelStep3LimitReached']}</div>
+                            </div>
+                        </apex:outputPanel>                            
+                    </td>
+                </tr>
+                
+            </table>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

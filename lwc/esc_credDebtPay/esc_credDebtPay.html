@@ -1,0 +1,212 @@
+<template>
+<template if:true={showSapError}>
+    <div class="slds-box_x-small slds-theme_error slds-m-top_small slds-align_absolute-center">
+        <h3><b>{errMsg}</b></h3>
+    </div>
+</template>
+<template if:true={areDetailsVisible}>
+<lightning-card title="Account Invoices" icon-name="standard:case" >
+<lightning-messages></lightning-messages>
+
+<template if:true={showErrMsg}>
+    <div class="slds-box_x-small slds-theme_error slds-m-top_small slds-align_absolute-center">
+        <h3><b>{errMsg}</b></h3>
+    </div>
+</template>
+<div class="slds-align_absolute-center slds-m-top_small">
+    <lightning-button variant="brand-outline" label="Next" title="Next" onclick={handleNext}></lightning-button>
+</div>
+<div class="slds-grid slds-p-left_medium">
+    <div class="slds-col slds-size_1-of-6">
+        <lightning-combobox
+        name="progress"
+        label="Account Receivable Items"
+        value={value}
+        options={options}
+        onchange={handleChange} ></lightning-combobox>
+    </div>
+</div>
+
+    <div class="slds-box_x-small slds-theme_shade slds-m-top_small">
+        <h3><b>Date Range Filter</b></h3>
+    </div>
+
+    <div>
+        <lightning-layout horizontal-align="space">
+            <lightning-layout-item padding="around-small" size="4">
+                <lightning-input type="date" name="bgDate" label="Begin Date" value={bgDateData} class="slds-m-left_xx-large" onchange={handleDateChange}></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small" size="4">
+                <lightning-input type="date" name="edDate" label="End Date" class="slds-m-left_xx-large" value={edDateData} onchange={handleDateChange}></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small" size="4">
+                <div class="slds-m-top_large">
+                    <lightning-button variant="brand-outline" label="Go" title="Go" onclick={handleClick} disabled={disabledDate} class="slds-m-left_xx-large"></lightning-button>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <div class="slds-grid slds-theme_shade slds-m-top_small">
+            <div class="slds-col slds-size_1-of-6">
+                <h3><b>Open Items</b></h3>
+            </div>
+            <div class="slds-col slds-size_4-of-6">
+            </div>
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-input variant="label-hidden" type="search" onchange={handleKeyChange1}></lightning-input>
+            </div>
+     </div>
+    
+    <div class="slds-m-top_small">
+        <lightning-datatable
+                key-field="Id"
+                data={data}
+                columns={columns}
+                selected-rows={selection}
+                onrowselection={rowSelection}
+               >
+        </lightning-datatable>
+    </div>
+
+    <h3>Total Open Amount: {totalAmount}</h3>
+    <div class="slds-align_absolute-center">
+        <lightning-button variant="brand-outline" label="Next" title="Next" onclick={handleNext}></lightning-button>
+    </div>
+</lightning-card>
+</template>
+
+<template if:true={showSecond}>
+    <lightning-card title="Account Invoices" icon-name="standard:case">
+        <div class="slds-align_absolute-center">
+            <lightning-button variant="brand-outline" label="Go Back" title="Go Back" onclick={handleBack}></lightning-button>
+        </div>
+        <template if:true={showErrMsg}>
+            <div class="slds-box_x-small slds-theme_error slds-m-top_small slds-align_absolute-center">
+                <h3><b>{errMsg}</b></h3>
+            </div>
+        </template>
+        <div class="slds-box_x-small slds-theme_shade slds-m-top_small">
+            <h3><b>Custom Line Item Section</b></h3>
+        </div>
+        <div class="slds-m-top_small">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            BILLING DOC(*)
+                        </th>
+                        <th class="" scope="col">
+                            AMOUNT
+                        </th>
+                        <th class="" scope="col">
+                            LINE NUMBER
+                        </th>
+                        <th class="" scope="col">
+                            REFERENCE NUMBER
+                        </th>
+                        <th class="" scope="col">
+                            DEBIT CREDIT INDICATOR
+                        </th>
+                        <th class="" scope="col">
+                            NETAR
+                        </th>
+                        <th class="" scope="col">
+                            DOCT
+                        </th>
+                        <th class="" scope="col">
+                            SHORTDESC
+                        </th>
+                        <th class="" scope="col">
+                            BILL DATE
+                        </th>
+                        <th class="" scope="col">
+                            
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={customRecords} for:item="it" for:index="index">
+                        <tr key = {keyIndex}>
+                            
+                            <td>
+                               <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='billDoc' variant="label-hidden" value={it.billDoc}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='amount' variant="label-hidden" value={it.amount}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='lineNumber' variant="label-hidden" value={it.lineNumber}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='refNumber' variant="label-hidden" value={it.refNumber}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='deInd' variant="label-hidden" value={it.deInd}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='netar' variant="label-hidden" value={it.netar}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='doct' variant="label-hidden" value={it.doct}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='sDec' variant="label-hidden" value={it.sDec}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" id={index} onchange={changeHandler} access-key={index} name='bDate' variant="label-hidden" value={it.bDate}></lightning-input>
+                            </td>
+                            <td>
+                                <lightning-icon icon-name="action:delete" id={index} size="x-small" access-key={index} onclick={removeRow}></lightning-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div class="slds-align_absolute-center slds-m-top_small">
+            <lightning-button label="Add Row" title="Add Row" onclick={handleRow}></lightning-button>
+        </div>
+        <div class="slds-box_x-small slds-theme_shade slds-m-top_small">
+            <h3><b>Selected Invoices</b></h3>
+        </div>
+        <div class="slds-m-top_small">
+            <lightning-datatable
+                    key-field="Id"
+                    data={data1}
+                    columns={columns1}
+                    onsave={handleSave}
+                    draft-values={draftValues}
+                    oncellchange={handleCellChange}
+                    oncancel={handelCancelChange}
+                    hide-checkbox-column> 
+            </lightning-datatable>
+        </div>
+        <h3>Total Amount: {totalSelAmount}</h3>
+        <template if:true={hideSubmit}>
+        <div class="slds-align_absolute-center">
+            <lightning-button variant="brand-outline" label="Submit" title="Submit" disabled={disableSubmit} onclick={handleSubmit}></lightning-button>
+        </div>
+        </template>
+    </lightning-card>
+</template>
+<template if:true={showThird}>
+    <lightning-card title="Account Invoices" icon-name="standard:case">
+        <div class="slds-align_absolute-center">
+            <lightning-button variant="brand-outline" label="Make another Payment" title="Make another Payment" onclick={handleMain}></lightning-button>
+        </div>
+        <div class="slds-box_x-small slds-theme_shade slds-m-top_small">
+            <h3><b>Submitted Invoices</b></h3>
+        </div>
+        <div class="slds-m-top_small">
+            <lightning-datatable
+                    key-field="Id"
+                    data={data2}
+                    columns={columns2}
+                    onrowaction={callRowAction}
+                    hide-checkbox-column> 
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>
+</template>

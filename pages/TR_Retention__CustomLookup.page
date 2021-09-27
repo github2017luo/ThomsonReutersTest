@@ -1,0 +1,127 @@
+<apex:page controller="TR_Retention.CustomLookupController" title="Search" showHeader="false" sideBar="false" id="pg">
+
+  <apex:form >
+  <apex:outputPanel id="page" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+    <apex:tabPanel switchType="client" selectedTab="name1" id="tabbedPanel">
+
+      <apex:tab label="Search" name="tab1" id="tabOne">
+
+        <apex:actionRegion >  
+          <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+            <apex:outputLabel value="Search" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+            <apex:inputText id="txtSearch" value="{!searchString}" />
+              <span style="padding-left:5px"><apex:commandButton id="btnGo" value="Go" action="{!Search}" rerender="searchResults"></apex:commandButton></span>
+          </apex:outputPanel>
+       
+          <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+            <apex:pageBlock id="searchResults">
+              
+              <!-- This Pageblocktable for Retention Activity Subject and Retention Activity Description -->
+              <apex:pageBlockTable value="{!results}" var="a" id="tblResults" rendered="{!If((ObjName=='Retention_Activity_Subject__c'),true,false)}">
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Name</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!a.Id}','{!a['Name']}', false)" rendered="{!NOT(ISNULL(a.Id))}">{!a['Name']}</apex:outputLink>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__SUB_BU__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                    <apex:outputtext value="{!a['SUB_BU__c']}"></apex:outputText>
+                </apex:column>
+                
+                <apex:column rendered="{!If(ObjName=='Retention_Activity_Subject__c',true,false)}">
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__Activity_Subject__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Activity_Subject__c']}"></apex:outputText>     
+                </apex:column>
+                
+                <apex:column rendered="{!If(ObjName=='Retention_Activity_Subject__c',true,false)}">
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__Activity_Description__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Activity_Description_Text__c']}"></apex:outputText>     
+                </apex:column>        
+              </apex:pageBlockTable>
+              
+              
+              <!-- This separate Pageblocktable for Retention_Child_Criteria__c Object -->
+              <apex:pageBlockTable value="{!results}" var="a" id="tblResultsRet" rendered="{!If(ObjName=='Retention_Child_Criteria__c',true,false)}">
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >Name</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!a.Id}','{!a['Name']}', false)" rendered="{!NOT(ISNULL(a.Id))}">{!a['Name']}</apex:outputLink>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Priority__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                    <apex:outputtext value="{!a['Priority__c']}"></apex:outputText>
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Type__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Activity_Type__c']}"></apex:outputText>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Subject_Formula__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Activity_Subject_Formula__c']}"></apex:outputText>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Description_Formula__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Activity_Description_Formula__c']}"></apex:outputText>     
+                </apex:column> 
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Activity_Rule_Description__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Activity_Rule_Description__c']}"></apex:outputText>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Role__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Role__c']}"></apex:outputText>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Enabled__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Is_Enabled__c']}"></apex:outputText>     
+                </apex:column>
+                
+                <apex:column >
+                  <apex:facet name="header">
+                    <apex:outputPanel >{!$ObjectType.TR_Retention__Retention_Child_Criteria__c.fields.TR_Retention__Is_Default__c.Label}</apex:outputPanel>
+                  </apex:facet>
+                   <apex:outputtext value="{!a['Is_Default__c']}"></apex:outputText>     
+                </apex:column>
+                
+              </apex:pageBlockTable>
+            </apex:pageBlock>
+            
+          </apex:outputPanel>
+        </apex:actionRegion>
+
+      </apex:tab>
+
+    </apex:tabPanel>
+  </apex:outputPanel>
+  </apex:form>
+</apex:page>

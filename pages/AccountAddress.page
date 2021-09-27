@@ -1,0 +1,178 @@
+<!--
+@Developer:- Updated by Radhika Pawar
+[CRM-5027] Account fields Province should not be visible on the GLI NON-SERVICE page layouts
+CRM-11914 : Account field Province should not be visible on the GLI SERVICE page layout
+2019-03-02   Kumar Shubham     Enabled LightningStylesheets as part of Sales Lightning
+-->
+<apex:page id="accountAddress"
+    standardController="Account"
+    extensions="AccountAddressController"  lightningStylesheets="true">
+    
+    <style>
+        body {margin: 0; padding: 0;}
+    </style>
+    
+    <apex:variable var="accountName" value="{!Account.Name}" />
+    <apex:variable var="recordTypeId" value="{!Account.RecordTypeId}" />
+      
+    <apex:form id="detailEdit">
+        <apex:pageMessages id="messagesGlobal" escape="false" />
+          <script>  
+     function goToSavedRecord(){  
+        window.parent.reload();
+        }
+      
+     }
+      </script>
+        <apex:actionStatus id="statusValidateAddress"
+            onStart="setParentFrameHeight();">
+            
+            <apex:facet name="start">
+                <c:PageStatusMessage message="{!$Label.Validating_address}" />
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:pageBlock id="blockAddressDetail" 
+            mode="mainDetail"
+            rendered="{!NOT(EditAddress)}">
+            
+            <apex:pageBlockSection id="sectionAddressDetail"
+                columns="2">
+                
+                <apex:pageBlockSectionItem id="sectionItemStreet">
+                    <apex:outputLabel for="outputStreet" value="{!$ObjectType.Account.Fields.BillingStreet.Label}" />
+                    <apex:outputPanel layout="none">
+                        <apex:outputField id="outputStreet" value="{!Account.BillingStreet}" />
+                        <span>&nbsp;&nbsp;</span>
+                        <apex:commandLink id="linkEdit" value="{!$Label.Edit_Address}" action="{!edit}" rendered="{!IF(GGOUser ==true && Account.RecordType.Name=='Customer',false,IF(AllowEdit==TRUE,true,false))}"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:outputField value="{!Account.Street_Address_2__c}" />
+                <apex:outputField value="{!Account.Street_Address_3__c}" rendered="{!If($Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users'|| $Profile.Name == 'DQA User' || GLIServiceUser, false, true)}"/>
+                <apex:outputField value="{!Account.Street_Address_4__c}" rendered="{!If($Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users'|| $Profile.Name == 'DQA User'||GLIServiceUser, false, true)}"/>
+                <apex:outputField value="{!Account.Street_Address_5__c}" />
+                <apex:outputField value="{!Account.PO_Box__c}" />
+                <apex:outputField value="{!Account.ANZ_Building__c}" />
+                <apex:outputField value="{!Account.ANZ_DX_Number__c}" />
+                <apex:outputField value="{!Account.Suite_Number__c}" />
+                <apex:outputField value="{!Account.ANZ_Level__c}" />
+                <apex:outputField value="{!Account.ANZ_Suburb__c}" />
+                <apex:outputField value="{!Account.BillingCity}" />
+                <apex:outputField value="{!Account.BillingState}" />
+                <apex:outputField value="{!Account.BillingPostalCode}" />
+                <apex:outputField value="{!Account.BillingCountry}" />
+                <!--<apex:outputField value="{!Account.Province__c}" />-->
+                <apex:outputText value="{!Account.Province__c}" rendered="false"/>
+                <apex:outputField value="{!Account.County__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        
+        <apex:pageBlock id="blockAddressEdit"
+            mode="mainDetail"
+            rendered="{!EditAddress}">
+            
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton id="buttonSave" value="{!$Label.Save}" action="{!save}" rendered="{!NOT(ServiceError)}"  rerender="detailEdit" oncomplete="goToSavedRecord()"  status="statusValidateAddress" />
+                <apex:commandButton id="buttonRetry" value="{!$Label.Retry}" action="{!save}" rendered="{!ServiceError}" rerender="detailEdit" oncomplete="goToSavedRecord()"  status="statusValidateAddress" />
+                <apex:commandButton id="buttonContinue" value="{!$Label.Continue}" action="{!continueSave}" rendered="{!ServiceError}" rerender="detailEdit" oncomplete="goToSavedRecord()"/>
+                <apex:commandButton id="buttonCancel" value="{!$Label.Cancel}" action="{!cancel}" rerender="detailEdit" oncomplete="goToSavedRecord()" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="sectionAddressEdit"
+                columns="2">
+                
+                <apex:inputField value="{!Account.BillingStreet}" />
+                <apex:inputField value="{!Account.Street_Address_2__c}" />
+                <apex:inputField value="{!Account.Street_Address_3__c}" rendered="{!If($Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users'|| $Profile.Name == 'DQA User' || GLIServiceUser, false, true)}"/>
+                <apex:inputField value="{!Account.Street_Address_4__c}" rendered="{!If($Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users'|| $Profile.Name == 'DQA User'  || GLIServiceUser, false, true)}"/>
+                <apex:inputField value="{!Account.Street_Address_5__c}" />
+                <apex:inputField value="{!Account.PO_Box__c}" />
+                <apex:inputField value="{!Account.ANZ_Building__c}" />
+                <apex:inputField value="{!Account.ANZ_DX_Number__c}" />
+                <apex:inputField value="{!Account.Suite_Number__c}" />
+                <apex:inputField value="{!Account.ANZ_Level__c}" />
+                <apex:inputField value="{!Account.ANZ_Suburb__c}" />
+                <apex:inputField value="{!Account.BillingCity}" required="true" />
+                
+                <apex:pageBlockSectionItem id="sectionItemState" >
+                    <apex:outputLabel for="selectBillingState" value="{!$ObjectType.Account.Fields.BillingState.Label}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <apex:selectList id="selectBillingState" 
+                            value="{!Account.BillingState}" 
+                            size="1"
+                            multiselect="false">
+                            
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!Account.BillingPostalCode}" />
+                
+                <apex:pageBlockSectionItem id="sectionItemCountry" >
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$ObjectType.Account.Fields.BillingCountry.Label}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" 
+                                value="{!Account.BillingCountry}" 
+                                size="1"
+                                required="true"
+                                multiselect="false">
+                                
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                    event="onchange"
+                                    action="{!addressCountryChanged}"
+                                    rerender="selectBillingState"
+                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <!--<apex:inputField value="{!Account.Province__c}" />-->
+                <apex:inputField value="{!Account.Province__c}" rendered="false"/>
+                <apex:inputField value="{!Account.County__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"/>
+    
+    <script>
+        jQuery.noConflict();
+        
+        jQuery(document).ready(function() {
+            /* The following script only works if the account page is overriden so that it shares the same
+               domain as this page when rendered, otherwise XSS rules will apply as native salesforce uses
+               a different domain than custom visualforce pages - JDS*/
+            
+            //Resize parent iFrame based on content height
+            setParentFrameHeight();
+        });
+        
+        function setParentFrameHeight() {
+            try {
+                var parentFrame = jQuery('iframe[title="AccountAddress"]', window.parent.document);
+                parentFrame.height(jQuery(document.body).height() + 30);
+                parentFrame.attr('scrolling', 'auto');
+            } catch (e) { /*Ignore Error*/ }
+        }
+     </script>
+</apex:page>

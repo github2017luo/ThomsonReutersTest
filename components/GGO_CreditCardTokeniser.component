@@ -1,0 +1,146 @@
+<apex:component controller="creditCardTokeniserController" allowDML="true">
+    <apex:includescript value="/support/console/40.0/integration.js" />
+    <script>
+        function testSetTabTitle() {
+            //Set the current tab's title
+            //sforce.console.setTabTitle('Credit Card Info');
+            sforce.console.setTabTitle('{!$Label.GGO_CreditCardInfo}');
+
+        }
+        var pageLoad = window.onload;
+        window.onload = function() {
+            if (pageLoad) {
+                pageLoad();
+            }
+            testSetTabTitle();
+
+        }
+
+    </script>
+
+    <script>
+        function setFocusOnLoad() {}
+
+    </script>
+    <script>
+        function postcallout(element) {
+         
+            element.disabled = true;
+            element.value = "Processing..";
+            var tokenendpoint = '{!endpointURL}';
+            if (tokenendpoint != '') {
+                var iframe = document.getElementById('iframeid').contentWindow;
+                iframe.postMessage("message", tokenendpoint);
+            }
+        }
+        
+      
+
+        function receiveMessage(event) {
+            if (event.origin.includes('securepayment.thomsonreuters')) {
+                var response = event.data;
+                processresponse(response);
+            }
+            
+        }
+
+        function redirectNow() {
+            console.log('redirectNow');
+            var myPage = document.getElementById("myPageURL").value;
+            console.log(myPage);
+            var isFeedView = {!isFeedView
+            };
+            console.log('isFeedView' + isFeedView);
+            if(myPage == null || myPage.length <1 ){
+               
+            return;
+            }
+            if (!isFeedView) {
+
+                sforce.console.setTabTitle('{!CaseNumber}');
+
+                window.location.href = myPage;
+            } else {
+
+                sforce.console.getFocusedSubtabId(function(result) {
+                    OPENEDTAB = result.id;
+                    sforce.console.getFocusedPrimaryTabId(function(
+                        result) {
+                        PRIMARYTAB = result.id;
+                        sforce.console.refreshPrimaryTabById(
+                            PRIMARYTAB, true,
+                            refreshSuccess, true);
+                        sforce.console.getSubtabIds(
+                            PRIMARYTAB, showTabId);
+                    });
+                    var showTabId = function showTabId(result) {
+                        var count = result.ids.length;
+
+                        if (count > 1) {
+                            sforce.console.closeTab(OPENEDTAB);
+
+                        }
+
+
+                    };
+
+
+
+                    var refreshSuccess = function refreshSuccess(
+                        result) {
+                        //Report whether refreshing the primary tab was successful
+
+                    };
+                });
+            }
+        }
+
+        window.addEventListener('message', receiveMessage, false);
+
+    </script>
+    <apex:pageBlock id="cardblock">
+        <apex:pageMessages id="msg"></apex:pageMessages>
+        <apex:actionFunction name="processresponse" action="{!processresponse}" reRender="msg,saveStatsPanel,myBtn1"
+            oncomplete="redirectNow();">
+            <apex:param name="postresponse" value="" />
+        </apex:actionFunction>
+        <apex:pageBlockSection columns="1" id="cardsec" title="Credit Card Information" collapsible="false">
+            <br/>
+            <apex:pageBlockSectionItem >
+                <apex:iframe id="iframeid" src="{!endpointURL}" width="100%" height="35px" />
+            </apex:pageBlockSectionItem>
+            <!-- <apex:pageblockSectionItem id="pbsi">                    
+                <apex:outputPanel layout="block" id="pwPanel" >
+                    <apex:outputPanel styleClass="requiredBlock" layout="block" />                    
+                    <apex:inputText html-placeholder="Expiration Date(mm/yyyy)" value="{!expirationdate}" id="date" />
+                    
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>-->
+
+            <apex:outputPanel layout="block" id="pwsPanel">
+                <apex:selectList size="1" id="mthid" value="{!selectedmonth}">
+                    <apex:selectOptions value="{!dynamicmonthlist}"></apex:selectOptions>
+                </apex:selectList> <b>&nbsp;&nbsp;/&nbsp;&nbsp;</b>
+                <apex:selectList size="1" id="yrid" value="{!selectedYear}">
+                    <apex:selectOptions value="{!dynamicyearlist}"></apex:selectOptions>
+                    <apex:actionSupport event="onchange" action="{!dynamicmonthlist}" reRender="mthid"
+                    />
+                </apex:selectList>
+            </apex:outputPanel>
+
+            <apex:pageBlockSectionItem >
+                    
+                    <apex:inputText html-placeholder="Card Holder Name" value="{!name}" />
+                
+            </apex:pageBlockSectionItem>
+            <apex:outputPanel id="saveStatsPanel">
+                <input id="myPageURL" type="hidden" value="{!myPage}" />
+            </apex:outputPanel>
+            
+        </apex:pageblockSection><br/>
+        
+        <apex:commandButton id="myBtn1" styleClass="myBTN" style="margin-left:70px" value="Submit" onclick="postcallout(this);return false;"
+            rerender="cardform,msg" /> 
+            
+    </apex:pageBlock>
+</apex:component>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>A class to be run during certain Foundations processes.</description>
+    <fields>
+        <fullName>fferpcore__ClassName__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The name of the class which will be executed when this plugin is used. This must be an implementation of the plugin class used by that process.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The name of the class which will be executed when this plugin is used. This must be an implementation of the plugin class used by that process.</inlineHelpText>
+        <label>Class Name</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ExtensionPoint__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The interface that the plugin plugs in to.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This string is used by the plugin consumer to locate its plugins. By convention it will be the name of the plugin interface. See the documentation for the extended function.</inlineHelpText>
+        <label>Extension Point</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__PluginNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Number that enables you to determine the order in which plugins run. You can use this for plugins that must be executed in a specific order. Plugins with the lowest number run first.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Number that enables you to determine the order in which plugins run. You can use this for plugins that must be executed in a specific order. Plugins with the lowest number run first.</inlineHelpText>
+        <label>Plugin Number</label>
+        <precision>7</precision>
+        <required>true</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>FDN Plugin</label>
+    <pluralLabel>FDN Plugins</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

@@ -1,0 +1,578 @@
+<!--
+  CHANGE HISTORY
+ * =============================================================================
+ * Date         Name                    Description
+ * 2019-01-30   Akansha Gill            Enabled LightningStylesheets as part of Sales Lightning                                                              
+ * =============================================================================
+ -->
+
+
+<apex:page id="mainPage" standardcontroller="Opportunity" extensions="LCRMOpportunitySplitController" sidebar="false" action="{!loadData}" lightningStylesheets="true">
+    <apex:sectionHeader id="pageTitle" title="{!$Label.LCRM_Split_Title}" subtitle="{!$Label.LCRM_Split_SubTitle}" />
+    <apex:outputPanel rendered="{!NOT(opp=NULL)}">
+        <div class="ptBreadcrumb" style="">
+            &laquo;
+            <apex:outputLink value="/{!opp.Id}" style="color:#015BA7;">{!$Label.LCRM_Split_BackToOpp}&nbsp;{!opp.Name}</apex:outputLink>         
+        </div>
+    </apex:outputPanel>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>-->
+    <script src="{!URLFOR($Resource.LCRM_Freeze, 'jquery-2.1.3.js')}"/>
+    <script src="{!URLFOR($Resource.LCRM_Freeze, 'tableHeadFixer.js')}"/>
+    <script>
+        var toggleHeadVal = true;
+        function toggleHead(){
+            var tFlag = document.getElementById('mainPage:mainFrm:toggleFlag');
+            var toggleHeadValTemp = tFlag.value;
+            if(toggleHeadValTemp == 'true'){
+                document.getElementById('prodSetRow').style.display = 'none';
+                document.getElementById('prodCatRow').style.display = 'none';
+                document.getElementById('prodActRow').style.display = 'none';
+                document.getElementById('prodSegRow').style.display = 'none';
+                document.getElementById('prodCurrAcvRow').style.display = 'none';
+                document.getElementById('prodNewAcvRow').style.display = 'none';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImagePlus').style.display = 'block';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImageMinus').style.display = 'none';
+                tFlag.value = false;
+            }else{
+                document.getElementById('prodSetRow').style.display = 'table-row';
+                document.getElementById('prodCatRow').style.display = 'table-row';
+                document.getElementById('prodActRow').style.display = 'table-row';
+                document.getElementById('prodSegRow').style.display = 'table-row';
+                document.getElementById('prodCurrAcvRow').style.display = 'table-row';
+                document.getElementById('prodNewAcvRow').style.display = 'table-row';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImagePlus').style.display = 'none';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImageMinus').style.display = 'block';
+                document.getElementById('mainPage:mainFrm:toggleFlag').value = true;
+            }
+        }
+        
+        var oldVal;
+        var oldComponent;
+        var tabFlag;
+        var nextTabIndex;
+        var errorFlag;
+        
+        var j$ = jQuery.noConflict();
+        
+        function isScrolledIntoView(elem)
+        {
+            var headerHeight = j$("#theHeader").height();
+            var docViewTop = j$("#innerDiv").scrollTop();
+            var docViewBottom = docViewTop + j$("#innerDiv").height();
+        
+            var elemTop = j$(elem).offset().top;
+            var elemBottom = elemTop + j$(elem).height();
+        
+            return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+        }
+        
+        //var flagsss= true;
+        function scrollDown(ele,tabind,multip){
+            //if(flagsss==true)
+            //alert(''+tabind+':'+multip+':'+(tabind-1)%multip);
+            //flagsss=false;
+            if((tabind-1)%multip != 0) {
+                //while(isScrolledIntoView(ele)){
+                //    document.getElementById('innerDiv').scrollTop += 10;
+                //}
+                document.getElementById('innerDiv').scrollTop += 30;
+            }else{
+                document.getElementById('innerDiv').scrollTop -= 50;
+            }
+            
+        }
+        
+        function validate(component,type){
+            nextTabIndex = component.id;
+            if((type =='Cell' && (component.value ==null || component.value=='' || !(component.value>=0 && component.value<=100)))
+               || (type =='Header' && (!(component.value>=0 && component.value<=100)))){
+                component.style.backgroundColor = 'rgba(255, 0, 0, 0.51)';//red
+                component.focus();
+                errorFlag = true;
+            }else{
+                component.style.backgroundColor = 'white';
+                errorFlag = false;
+            }
+        }
+        
+        function inputLimiter(e,allow) {
+            var AllowableCharacters = '';
+            if (allow == 'Letters'){AllowableCharacters=' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';}
+            if (allow == 'Numbers'){AllowableCharacters='1234567890';}
+            if (allow == 'NameCharacters'){AllowableCharacters=' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-.\'';}
+            if (allow == 'NameCharactersAndNumbers'){AllowableCharacters='1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-\'';}
+            if (allow == 'Currency'){AllowableCharacters='1234567890.';}
+
+            var k = document.all?parseInt(e.keyCode): parseInt(e.which);
+            if (k!=13 && k!=8 && k!=0){
+                if ((e.ctrlKey==false) && (e.altKey==false)) {
+                return (AllowableCharacters.indexOf(String.fromCharCode(k))!=-1);
+                } else {
+                return true;
+                }
+            } else {
+                return true;
+            }
+        }
+        
+        function validateSave(){
+            var flag = true;
+            if(errorFlag == true){
+                alert('{!$Label.LCRM_Split_ErrorWrongPer}');
+                flag = false;
+            }else{
+                flag = true;
+            }
+            return flag;
+        }
+        
+        function validateRefresh(){
+            var flag = true;
+            if(errorFlag == true){
+                alert('{!$Label.LCRM_Split_ErrorWrongPer}');
+                flag = false;
+            }else{
+                flag = true;
+                refreshBeforeSave();
+            }
+            return flag;
+        }
+    </script>
+    
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: block; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 10px;
+            border: 1px solid #888;
+            width: 35%; /* Could be more or less, depending on screen size */
+        }
+        
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        table.noGap {margin:0;display:block}
+        td.left { border-left: thin solid #000000; }
+        td.leftGrey { border-left: thin solid grey; }
+        td.top { border-top: thin solid #000000; }
+        td.topGrey { border-top: thin solid grey; }
+        td.right { border-right: thin solid #000000; }
+        td.rightGrey { border-right: thin solid grey; }
+        td.bottom { border-bottom: thin solid #000000; }
+        td.bottomGrey { border-bottom: thin solid grey; }
+        td.allBorder{ border: thin solid #000000;}
+        td.alignCenter{ text-align: center;}
+        td.alignRight{ text-align: right;}
+        td.alignLeft{ text-align: left;}
+        td.backForAmt{background-color: green;}
+        td.backForHeader{background-color: #ccc;}
+        td.backForPer{background-color: white;}
+        td.catSaperator{border-right: 2px solid rgba(18, 18, 19, 0.32);}
+        tr.dataRow { 
+            background-color:white; 
+        }
+        tr.dataRow:hover{ 
+            background-color: #e3f3ff;
+        };
+        tr.dataRowBorder{ 
+            background-color:white; 
+            border-width: 0 0 1px 1px;
+        }
+        tr.dataRowBorder:hover { 
+            background-color: #e3f3ff;
+            border-width: 0 0 1px 1px;
+        };
+        #parent {
+            height: 300px;
+        }
+        #fixTable {
+            /*width: 1800px !important;*/
+        }
+        
+    </style>
+    <apex:form id="mainFrm">
+    <script>
+        var t$ = jQuery.noConflict();
+        t$(document).ready(function (){
+            t$("#innerDiv").css("maxWidth",t$(window).width()-100);
+            t$("#innerDiv").css("maxHeight",t$(window).height()-200);
+            t$("#fixTable").tableHeadFixer({"left" : 3}); 
+            if(nextTabIndex!=null){
+                document.getElementById(nextTabIndex).focus();
+            }
+            var tFlag = document.getElementById('mainPage:mainFrm:toggleFlag');
+            var toggleHeadValTemp = tFlag.value;
+            if(toggleHeadValTemp == 'true'){
+                document.getElementById('prodSetRow').style.display = 'table-row';
+                document.getElementById('prodCatRow').style.display = 'table-row';
+                document.getElementById('prodActRow').style.display = 'table-row';
+                document.getElementById('prodSegRow').style.display = 'table-row';
+                document.getElementById('prodCurrAcvRow').style.display = 'table-row';
+                document.getElementById('prodNewAcvRow').style.display = 'table-row';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImagePlus').style.display = 'none';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImageMinus').style.display = 'block';
+            }else{
+                document.getElementById('prodSetRow').style.display = 'none';
+                document.getElementById('prodCatRow').style.display = 'none';
+                document.getElementById('prodActRow').style.display = 'none';
+                document.getElementById('prodSegRow').style.display = 'none';
+                document.getElementById('prodCurrAcvRow').style.display = 'none';
+                document.getElementById('prodNewAcvRow').style.display = 'none';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImagePlus').style.display = 'block';
+                document.getElementById('mainPage:mainFrm:mainBlock:theImageMinus').style.display = 'none';
+            }
+        }); 
+        
+        t$(window).resize(function()
+        {   
+            t$("#innerDiv").css("maxWidth",t$(window).width()-100);
+            t$("#innerDiv").css("maxHeight",t$(window).height()-200);
+            t$("#fixTable").tableHeadFixer({"left" : 3}); 
+            if(nextTabIndex!=null){
+                document.getElementById(nextTabIndex).focus();
+            }
+        });
+        
+    </script>
+        <apex:pageBlock id="mainBlock" rendered="{!AND(errorMsg=NULL, opp.LCRM_Split_On__c = TRUE)}">
+            <!--<apex:pageBlockButtons id="pgBlockBtns" rendered="{!editFlag=TRUE}">
+                <input type="button" class="btn" style="padding: 5px 30px 5px 30px;" onclick="validateRefresh();" value="Preview"/>
+                <apex:commandButton id="SaveBtn" value="Save" action="{!Save}" style="padding: 5px 30px 5px 30px;" onclick="return validateSave();" status="loadStatus"/>
+            </apex:pageBlockButtons>-->
+            
+            <apex:outputText value="{!$Label.LCRM_Split_TotalAmt}" style="font-size:25px;font-weight:bold;padding-left: 100px;"></apex:outputText>
+            <span style="font-size:20px;">{!Opp.CurrencyIsoCode}&nbsp;</span>
+            <apex:outputText value="{!DynamicFormatString}" style="font-size:20px;">
+                <apex:param value="{!totalAmount}" />
+            </apex:outputText>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <apex:outputPanel rendered="{!editFlag=TRUE}">
+                <input type="button" class="btn" style="padding: 5px 30px 5px 30px;" onclick="validateRefresh();" value="{!$Label.LCRM_Split_Apply}"/>
+                <apex:commandButton id="SaveBtn" value="{!$Label.LCRM_Split_Save}" action="{!Save}" style="padding: 5px 30px 5px 30px;" onclick="return validateSave();" status="loadStatus"/>
+            </apex:outputPanel>
+            <br/><br/>
+           
+            <apex:image id="theImagePlus" value="/img/setup_plus.gif" width="20" height="15" style="display:none;" onclick="toggleHead();"/>
+            <apex:image id="theImageMinus" value="/img/setup_minus.gif" width="20" height="15" style="display:block;" onclick="toggleHead();"/>
+           
+            <div id="parent">
+                <div id="innerDiv" style="width: 100%; height: 100%; overflow: scroll; max-height: 500px; min-height: 300px; max-width: 1300px; min-width: 450px;">
+                <!-- div tag (id= child) has been added as part of lightning enablement -->
+                 <div id="child" class="slds-scrollable_y">
+                    <table id="fixTable" class="table list" cellspacing="0" style="1px solid #ededed;">
+                        <thead id="theHeader">
+                            <tr id="prodSetRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.OpportunityLineItem.fields.LCRM_Product_Set__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <td class="left top bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan='{!OppProdByCat.oppProdList.size*2+1}'>
+                                        <apex:outputText value="{!OppProdByCat.category}" rendered="{!IF((OppProdByCat.category='blank#1'),FALSE,TRUE)}"/>
+                                    </td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodCatRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.OpportunityLineItem.fields.LCRM_Product_Category__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodFamily">
+                                        <td class="left bottom alignCenter" colspan='2'>{!prodFamily.oppProdClone.LCRM_Product__r.LCRM_Product_Category__c}</td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodNameRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.LCRM_Opportunity_Product_Clone__c.fields.LCRM_Opp_Prod_ID__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodName">
+                                        <td class="left bottom alignCenter" colspan='2'>{!prodName.oppProdClone.LCRM_Product__r.Name}</td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodActRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.LCRM_Opportunity_Product_Clone__c.fields.LCRM_Action__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodAction">
+                                        <td class="left bottom alignCenter" colspan='2'>{!prodAction.oppProdClone.LCRM_Action__c}</td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodSegRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.LCRM_Opportunity_Product_Clone__c.fields.LCRM_Product_Segment__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodAction">
+                                        <td class="left bottom alignCenter" colspan='2'>{!prodAction.oppProdClone.LCRM_Product_Segment__c}</td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodCurrAcvRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.LCRM_Opportunity_Product_Clone__c.fields.LCRM_Current_ACV__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodCurrACV">
+                                        <td class="left bottom alignCenter" colspan='2'>
+                                            <apex:outputField value="{!prodCurrACV.oppProdClone.LCRM_Current_ACV__c}"/>
+                                            <!--<apex:outputText value="${!DynamicFormatString}">
+                                                <apex:param value="{!prodCurrACV.oppProdClone.LCRM_Current_ACV__c}" />
+                                            </apex:outputText>-->
+                                        </td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodNewAcvRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3">{!$ObjectType.LCRM_Opportunity_Product_Clone__c.fields.LCRM_New_ACV_SalesPrice__c.Label}</th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodNewACV">
+                                        <td class="left bottom alignCenter" colspan='2'>
+                                            <apex:outputField value="{!prodNewACV.oppProdClone.LCRM_New_ACV_SalesPrice__c}"/>
+                                            <!--<apex:outputText value="${!DynamicFormatString}">
+                                                <apex:param value="{!prodNewACV.oppProdClone.LCRM_New_ACV_SalesPrice__c}" />
+                                            </apex:outputText>-->
+                                        </td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodIncrAmtRow" class="dataRowBorder" onClick="toggleHead();">
+                                <th class="alignRight" scope="col" style="text-align:right;background: #f2f3f3; border-right: 2px solid rgba(18, 18, 19, 0.32);" colspan="3"><b>{!$ObjectType.LCRM_Opportunity_Product_Clone__c.fields.LCRM_Incremental_Amount__c.Label}</b></th>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodIncAmt">
+                                        <td class="left bottom alignCenter" colspan='2'>
+                                            <b>
+                                                <apex:outputField value="{!prodIncAmt.oppProdClone.LCRM_Incremental_Amount__c}"/>
+                                                <!--<apex:outputText value="${!DynamicFormatString}">
+                                                    <apex:param value="{!prodIncAmt.oppProdClone.LCRM_Incremental_Amount__c}" />
+                                                </apex:outputText>-->
+                                            </b>
+                                        </td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);">
+                                        <b>{!Opp.CurrencyIsoCode}&nbsp;
+                                        <apex:outputText value="{!DynamicFormatString}">
+                                            <apex:param value="{!OppProdByCat.prodIncAmtTotal}" />
+                                        </apex:outputText></b>
+                                    </td>
+                                </apex:repeat>
+                            </tr>
+                            <tr id="prodBlankRow" onClick="toggleHead();">
+                                <td colspan="3" style="border-right: 2px solid rgba(18, 18, 19, 0.32);">&nbsp;</td>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="prodName">
+                                        <td class="left bottom alignCenter" colspan='2'></td>
+                                    </apex:repeat>
+                                    <td class="left bottom alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"></td>
+                                </apex:repeat>
+                            </tr>
+                            <tr class="headerRow" scope="col" style="white-space:nowrap;">
+                                <th class="zen-deemphasize alignCenter" scope="col"><b>{!$Label.LCRM_Split_TeamMember}</b></th>
+                                <td class="alignCenter"><b>{!$Label.LCRM_Split_RepFunct}</b></td>
+                                <td class="alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"><b>{!$Label.LCRM_Split_TotalSalesCred}</b></td>
+                                <apex:variable var="colNum" value="{!1}"/>
+                                <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                    <apex:repeat value="{!OppProdByCat.oppProdList}" var="oppProdID">
+                                        <td class="alignCenter" style="font-weight:bold;">
+                                            <apex:outputPanel rendered="{!AND(editFlag=TRUE,NOT(AND(NOT(oppProdID.oppProdClone.LCRM_Action__c=NULL),NOT(excludeAction=NULL),CONTAINS(excludeAction, oppProdID.oppProdClone.LCRM_Action__c))))}">
+                                                <!--<input id="{!oppProdID.oppProdClone.ID}:H" type="text" tabindex="{!colNum}" class="detectTab" maxlength="3" size="1" onkeypress="return inputLimiter(event,'Numbers');" value=""/>-->
+                                                <apex:inputText id="splitHeaderInput" onblur="validate(this,'Header');" tabindex="{!colNum}" size="1" value="{!oppProdID.NewPerVal}" onkeypress="return inputLimiter(event,'Numbers');"/>
+                                                <apex:variable var="colNum" value="{!colNum + 1}"/>
+                                            </apex:outputPanel>
+                                            %
+                                        </td>
+                                    <td class="alignCenter"><b>{!$Label.LCRM_Split_SalesCred}</b></td>
+                                    </apex:repeat>
+                                    <td class="alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);"><b>{!$Label.LCRM_Split_SubTotal}</b></td>
+                                </apex:repeat>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <apex:variable var="rowNum" value="{!1}"/>
+                        <apex:repeat value="{!OppTeamList}" var="OppTMem">
+                            <tr class="dataRowBorder">
+                                <td class="">{!OppTMem.Name}</td>
+                                <td class="">{!OppTMem.RepFunct}</td>
+                                <td class="alignRight" style="border-right: 2px solid rgba(18, 18, 19, 0.32);">
+                                    {!Opp.CurrencyIsoCode}&nbsp;
+                                    <apex:outputText value="{!DynamicFormatString}">
+                                        <apex:param value="{!OppTMem.totalSales}" />
+                                    </apex:outputText>
+                                </td>
+                                <apex:variable var="colNum" value="{!1}"/>
+                                <apex:repeat value="{!OppTMem.oppSplitByCatList}" var="OppSplitByCat">
+                                    <apex:repeat value="{!OppSplitByCat.oppSplitList}" var="OppSplit">
+                                        <td class="alignCenter" style="white-space:nowrap;">
+                                            <apex:outputPanel rendered="{!OR(NOT(editFlag=TRUE),AND(NOT(OppSplit.oppSplitClone.LCRM_Opportunity_Product_Clone__r.LCRM_Action__c=NULL),NOT(excludeAction=NULL),CONTAINS(excludeAction, OppSplit.oppSplitClone.LCRM_Opportunity_Product_Clone__r.LCRM_Action__c)))}">
+                                                    <apex:outputPanel rendered="{!IF(OppSplit.oppSplitClone.ID=NULL,TRUE,FALSE)}">
+                                                        NA
+                                                    </apex:outputPanel>
+                                                    <apex:outputPanel rendered="{!IF(NOT(OppSplit.oppSplitClone.ID=NULL),TRUE,FALSE)}">
+                                                        {!OppSplit.NewPerVal}%
+                                                    </apex:outputPanel>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel id="splitCell" rendered="{!AND(editFlag=TRUE,NOT(AND(NOT(OppSplit.oppSplitClone.LCRM_Opportunity_Product_Clone__r.LCRM_Action__c=NULL),NOT(excludeAction=NULL),CONTAINS(excludeAction, OppSplit.oppSplitClone.LCRM_Opportunity_Product_Clone__r.LCRM_Action__c))))}">
+                                                <apex:outputPanel rendered="{!IF(OppSplit.oppSplitClone.ID=NULL,TRUE,FALSE)}">
+                                                    NA
+                                                </apex:outputPanel>
+                                                <apex:outputPanel rendered="{!IF(NOT(OppSplit.oppSplitClone.ID=NULL),TRUE,FALSE)}">
+                                                    <apex:inputText id="splitCellInput" onfocus="scrollDown(this,'{JSENCODE(!(colNum*OppTeamList.Size)+rowNum)}','{!OppTeamList.Size}');" onblur="validate(this,'Cell');" tabindex="{!(colNum*OppTeamList.Size)+rowNum}" size="1" value="{!OppSplit.NewPerVal}" onkeypress="return inputLimiter(event,'Numbers');"/>
+                                                    %
+                                                </apex:outputPanel>
+                                                <apex:variable var="colNum" value="{!colNum + 1}"/>
+                                            </apex:outputPanel>
+                                        </td>
+                                        <td class="alignCenter">
+                                            <apex:outputPanel rendered="{!IF(OppSplit.oppSplitClone.ID=NULL,TRUE,FALSE)}">
+                                                NA
+                                            </apex:outputPanel>
+                                            <apex:outputPanel rendered="{!IF(NOT(OppSplit.oppSplitClone.ID=NULL),TRUE,FALSE)}">
+                                                {!Opp.CurrencyIsoCode}&nbsp;
+                                                <apex:outputText value="{!DynamicFormatString}">
+                                                    <apex:param value="{!OppSplit.SalesCredit}" />
+                                                </apex:outputText>
+                                            </apex:outputPanel>
+                                        </td>
+                                    </apex:repeat>
+                                    <td class="alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);">
+                                        <b>{!Opp.CurrencyIsoCode}&nbsp;
+                                        <apex:outputText value="{!DynamicFormatString}">
+                                            <apex:param value="{!OppSplitByCat.subTotal}" />
+                                        </apex:outputText></b>
+                                    </td>
+                                </apex:repeat>
+                            </tr>
+                            <apex:variable var="rowNum" value="{!rowNum + 1}"/>
+                        </apex:repeat>
+                        <tr class="dataRowBorder">
+                            <td class="alignRight" colspan="2"><b>{!$Label.LCRM_Split_Totals}</b></td>
+                            <td class="alignRight" style="border-right: 2px solid rgba(18, 18, 19, 0.32);">
+                                <b>
+                                    {!Opp.CurrencyIsoCode}&nbsp;
+                                    <apex:outputText value="{!DynamicFormatString}">
+                                        <apex:param value="{!totalSalesCredit}" />
+                                    </apex:outputText>
+                                </b>
+                            </td>
+                            <apex:repeat value="{!OppProdByCatList}" var="OppProdByCat">
+                                <apex:repeat value="{!OppProdByCat.salesCreditTotalList}" var="salesCreditTotal">
+                                    <td class="alignCenter"></td>
+                                    <td class="alignCenter">
+                                        <b>
+                                            {!Opp.CurrencyIsoCode}&nbsp;
+                                            <apex:outputText value="{!DynamicFormatString}">
+                                                <apex:param value="{!salesCreditTotal}" />
+                                            </apex:outputText>
+                                        </b>
+                                    </td>
+                                </apex:repeat>
+                                <td class="alignCenter" style="border-right: 2px solid rgba(18, 18, 19, 0.32);" >
+                                    <b>
+                                        {!Opp.CurrencyIsoCode}&nbsp;
+                                        <apex:outputText value="{!DynamicFormatString}">
+                                            <apex:param value="{!OppProdByCat.subTotal}" />
+                                        </apex:outputText>
+                                    </b>
+                                </td>
+                            </apex:repeat>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+            
+        </apex:pageBlock>
+        <apex:outputPanel rendered="{!AND(errorMsg=NULL,opp<>NULL,opp.LCRM_Split_On__c = FALSE,editFlag=TRUE)}">
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span></span>
+                    <p>&nbsp;</p>
+                    <p></p>
+                    <apex:outputPanel rendered="{!AND(errorMsg=NULL,editFlag=TRUE)}">
+                        <p>
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td><b>{!$Label.LCRM_Split_NoSplit}</b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>{!$Label.LCRM_Split_GenMsg}</b></td>
+                                </tr>
+                            </table>
+                        </p>
+                        <center>
+                            <p>
+                                <apex:commandButton id="yesBtn" value="{!$Label.LCRM_Split_YesBtnLbl}" onclick="this.disabled = true;generateSplit();" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                                <apex:commandButton id="cancelBtn" value="{!$Label.LCRM_Split_NoBtnLbl}" action="{!Cancel}" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            </p>
+                        </center>
+                    </apex:outputPanel>
+                    <apex:outputPanel rendered="{!AND(errorMsg=NULL,editFlag=FALSE)}">
+                        <p>
+                            <table border="0" width="100%">
+                                <tr>
+                                    <td><b>{!$Label.LCRM_Split_NoSplit}</b></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Sorry you don&#39;t have permission to create split as well.</b></td>
+                                </tr>
+                            </table>
+                        </p>
+                        <center>
+                            <p>
+                                <apex:commandButton id="returnBtn" value="Return" action="{!Cancel}" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            </p>
+                        </center>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </apex:outputPanel>
+        <apex:Pagemessages id="errorMsg"/>
+        
+        <apex:inputHidden id="toggleFlag" value="{!toggleFlag}"/>
+        <apex:inputHidden id="oppProdIDClicked" value="{!oppProdIDClicked}"/>
+        <apex:inputHidden id="splitIDClicked" value="{!splitIDClicked}"/>
+        <apex:inputHidden id="NewPerVal" value="{!NewPerVal}"/>
+        <!--<apex:actionFunction name="updateSplitCell" action="{!updateSplitCell}" reRender="mainFrm" status="loadStatus"/>-->
+        <apex:actionFunction name="refreshBeforeSave" action="{!refreshBeforeSave}" reRender="mainFrm" status="loadStatus"/>
+        <apex:actionFunction name="generateSplit" action="{!generateSplit}" status="loadStatus"/>
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+        <apex:actionStatus id="loading" startText="loading..."></apex:actionStatus>
+    </apex:form>
+</apex:page>

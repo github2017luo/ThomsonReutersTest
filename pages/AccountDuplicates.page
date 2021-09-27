@@ -1,0 +1,119 @@
+<!--  
+===============================================================================
+ $AccountDuplicates.page$
+===============================================================================
+
+PURPOSE:        Allow users to view and merge a new Prospect record with an
+                an existing Customer or Prospect record.        
+
+FUNCTIONALITY:  1.  Displays a list of possible duplicate accounts
+                2.  Allows user to choose a record from the list
+                3.  If appropriate, allows the user to merge select
+                    fields (Future enhancement)
+                
+COMMENTS:       
+CHANGE HISTORY
+===============================================================================
+DATE            NAME                    DESC
+2011-07-05     	Nick Cook				Created
+2019-02-19     Sweta Sharma         Enabled LightningStylesheet
+===============================================================================
+-->
+<apex:page id="dupeSelect" standardController="Account"	extensions="AccountDuplicatesController" title="Account Duplicate Issue" action="{!runAccountDedupe}">
+	<!-- Javascript used to manage the single select of the option button -->
+	<script language="javascript">
+	function loopForm(sFormId, sTitle)
+	{ 
+		var thisForm = document.getElementById(sFormId);
+		var msSelectedId = sTitle;
+		if(thisForm != null)
+		{
+			for(i=0; i<thisForm.elements.length; i++)
+			{
+				if (thisForm.elements[i].type == 'radio') 
+				{
+		            if (thisForm.elements[i].title == sTitle) 
+		            {
+		                thisForm.elements[i].checked = true;
+						theField.value = sTitle;
+		            } 
+		            else  
+		            {
+		            	thisForm.elements[i].checked = false;
+		            }
+		        } 		            
+	           
+			}
+		}
+	}
+</script>
+	<apex:form id="frmDupes">
+		<!-- For storing selected account id -->
+		<apex:inputHidden id="selectedAccountId" value="{!selectedAccountId}" />
+		<script> var theField = document.getElementById('{!$Component.frmDupes.selectedAccountId}'); </script>
+		<!-- Section for displaying the instructions and new prospect details  -->
+		<apex:pageBlock id="newProspect" title="Existing Account(s) were Found!">
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem >
+					You have created a new Prospect Account that matches one or more existing
+				Accounts already in the system.  Please choose one of the  from the list of existing Accounts below
+				to continue.
+				<ul>
+					<li><b>Choose Selected</b> - will <u>delete</u> this new
+					prospect account and <u>redirect</u> you to the Account you've
+					selected.</li>
+					<li><b>Cancel</b> - will send you back to the New Prospect
+					Edit page.</li>
+				</ul>
+				</apex:pageBlockSectionItem>
+				<apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection title="New Prospect Account Details"	columns="2" collapsible="false">
+				<apex:outputField value="{!Account.Name}" />
+				<apex:outputField value="{!Account.NameTwo__c}" />
+				<apex:outputField value="{!Account.BillingStreet}" />
+				<apex:outputField value="{!Account.BillingCity}" />
+				<apex:outputField value="{!Account.BillingState}" />
+				<apex:outputField value="{!Account.BillingPostalCode}" />
+				<apex:outputField value="{!Account.County__c}" />
+				<apex:outputField value="{!Account.BillingCountry}" />
+				<!--<apex:outputField value="{!Account.ONEOTC_Sales_Org__c}" />-->
+				<!--<apex:outputField value="{!Account.ONEOTC_Industry__c}" />-->
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+		<!-- Section to display list of one or more duplicate accounts -->
+		<apex:pageBlock id="listDupes"> 
+			<apex:pageBlockButtons id="pbButtons" location="top">
+			<apex:outputPanel id="opButtons">
+				<apex:commandButton value="Choose Selected" action="{!save}" id="btnChoose"	onclick="return confirm('Are you sure you wish to continue?');" disabled="{!enableButtons}"/>
+				<apex:commandButton value="Cancel" action="{!cancel}"  id="btnCancel" />
+			</apex:outputPanel>
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection title="Possible Duplicate Accounts"	columns="1" collapsible="false">
+			</apex:pageBlockSection>
+			<apex:pageMessages />
+			<apex:pageBlockTable value="{!listAccountDupes}" var="AD">
+				<apex:column headerValue="Select" >
+					<apex:selectRadio id="isSeleceted" title="{!AD.ID}"	onclick="loopForm('{!$Component.frmDupes}','{!AD.ID}');" />
+					<apex:actionSupport event="onclick" action="{!setEnableButton}" rerender="opButtons" /> 
+				</apex:column>
+				<apex:column headerValue="Match" value="{!AD.MATCH_SCORE}%" />
+				<apex:column headerValue="Name" value="{!AD.Name1}" />
+				<apex:column headerValue="Street" value="{!AD.Street}" />
+				<apex:column headerValue="City" value="{!AD.City}" />
+				<apex:column headerValue="State" value="{!AD.State}" />
+				<apex:column headerValue="Postal Code" value="{!AD.PostalCode}" />
+				<apex:column headerValue="County" value="{!AD.County}" />
+				<apex:column headerValue="Country" value="{!AD.Country}" />
+			<!--	<apex:column headerValue="Id" value="{!AD.ID}"	rendered="{!IsDebug}" />
+				<apex:column headerValue="GroupCount" value="{!AD.GroupCount}"	rendered="{!IsDebug}" /> 
+				<apex:column headerValue="DedupToken" value="{!AD.Dedup_Token}" rendered="{!IsDebug}" /> -->
+<!-- 			
+				<apex:column headerValue="MatchStatus" value="{!AD.MatchStatus}" rendered="{!IsDebug}" />
+				<apex:column headerValue="Master" value="{!AD.Master}" rendered="{!IsDebug}" />
+ -->
+			</apex:pageBlockTable>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

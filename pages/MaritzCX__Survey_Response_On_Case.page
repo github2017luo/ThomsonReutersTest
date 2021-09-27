@@ -1,0 +1,78 @@
+<!--This page is related to Case to display Survey record on the Case Page  
+    Last Modified By: Nakul C (19 Oct 2016) Fixed Stored XSS security issues. 
+-->
+<apex:page showHeader="false" standardController="Case" extensions="MaritzCX.AllegianceResponseOnCaseControllerExt" showChat="false" title="TestTitle" label="TestLabel" name="TestName" applyHtmlTag="false">
+<apex:pageMessages id="showmsg"></apex:pageMessages>
+<apex:includeScript value="{!$Resource.MaritzCX__jquery_js}"/>
+<style>
+.tooltip {
+    position:absolute;
+    border:1px solid #333;
+    background-color:#F2F3F3;
+    border-radius:5px;
+    padding:10px;
+    z-index: auto;
+}
+</style>
+<!-- This Page Block Section display the MaritzCX Survey responses on the Case page -->
+<apex:pageMessage summary="Info:" severity="info" strength="2">
+    <apex:outputLabel escape="true" value="{!$Label.maritzcx__case_response_message}" style="padding-left:8px;"/>
+</apex:pageMessage>
+<apex:pageBlock mode="edit" title="{!$Label.maritzcx__company_name} Responses">
+<apex:pageBlockTable frame="box" value="{!surveyResponseList}" var="sur" >  
+    <apex:column headerValue="Survey" ><apex:outputLink target="_blank" value="/{!JSENCODE(sur.MaritzCX__Survey_Id__c)}"><apex:outputText escape="true" value="{!sur.Survey_Id__r.Name}"></apex:outputText></apex:outputLink></apex:column>
+    <apex:column width="110px" style="text-align: left;" headerValue="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Key_Metric_1__c.label}"><apex:variable var="mBar1" value="{!sur.MaritzCX__Key_Metric_1_Bar__c}"/><apex:outputText style="float:right;" escape="false" value="{!if(sur.MaritzCX__Key_Metric_1__c == NULL, '', mBar1)}" /></apex:column>                
+    <apex:column width="110px" style="text-align: left;" headerValue="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Key_Metric_2__c.label}"><apex:variable var="mBar2" value="{!sur.MaritzCX__Key_Metric_2_Bar__c}"/><apex:outputText style="float:right;" escape="false" value="{!if(sur.MaritzCX__Key_Metric_2__c == NULL, '', mBar2)}" /></apex:column>                
+    <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Metric_1__c.label}"><apex:outputText escape="true" title="{!sur.MaritzCX__Metric_1__c}" value="{!if(len(sur.MaritzCX__Metric_1__c) > 30, LEFT(sur.MaritzCX__Metric_1__c, 30)+'...', sur.MaritzCX__Metric_1__c)}"/></apex:column>                
+    <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Metric_2__c.label}"><apex:outputText escape="true" title="{!sur.MaritzCX__Metric_2__c}" value="{!if(len(sur.MaritzCX__Metric_2__c) > 30, LEFT(sur.MaritzCX__Metric_2__c, 30)+'...', sur.MaritzCX__Metric_2__c)}"/></apex:column>                
+    <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Comments_1__c.label}"><apex:outputText escape="true" title="{!sur.MaritzCX__Comments_1__c}" value="{!if(len(sur.MaritzCX__Comments_1__c) > 100, LEFT(sur.MaritzCX__Comments_1__c, 100)+'...', sur.MaritzCX__Comments_1__c)}"/></apex:column>                
+    <apex:column headerValue="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Comments_2__c.label}"><apex:outputText escape="true" title="{!sur.MaritzCX__Comments_2__c}" value="{!if(len(sur.MaritzCX__Comments_2__c) > 100, LEFT(sur.MaritzCX__Comments_2__c, 100)+'...', sur.MaritzCX__Comments_2__c)}" /></apex:column>                
+    <apex:column headerValue="View Response"><apex:outputPanel rendered="{!(sur.MaritzCX__ALG_Response_Id__c!=null)&&(sur.Survey_Id__r.MaritzCX__Allegiance_Survey_Response_View_Link__c)}"><apex:outputLink onclick="return OpenResponseViewWindow('{!JSENCODE(TEXT(sur.MaritzCX__ALG_Response_Id__c))}')" value="#" ><apex:outputText escape="true" value="View Response"></apex:outputText></apex:outputLink></apex:outputPanel></apex:column>
+</apex:pageBlockTable>  
+</apex:pageBlock>
+<!-- This outputtext Section render when no responses are availaible on the Case page -->
+<apex:outputtext escape="true" rendered="{!IF(surveyResponseList.size==0, true, false)}" value="No responses available.">&nbsp;&nbsp;&nbsp;</apex:outputtext>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+        // Tooltip only Text
+        $('.masterTooltip').hover(function(){
+                // Hover over code
+                var title = $(this).attr('title');
+                $(this).data('tipText', title).removeAttr('title');
+                $('<p class="tooltip"></p>')
+                .text(title)
+                .appendTo('body')
+                .fadeIn('slow');
+                
+                //alert($(".tooltip").html());
+        }, function() {
+                // Hover out code
+                $(this).attr('title', $(this).data('tipText'));
+                $('.tooltip').remove();
+        }).mousemove(function(e) {
+                var mousex = e.pageX + 20; //Get X coordinates
+                var mousey = e.pageY + 10; //Get Y coordinates
+                $('.tooltip')
+                .css({ top: mousey, left: mousex })
+        });
+});
+</script>
+<script type="text/javascript">
+        function OpenResponseViewWindow(ResponseId) {
+            var adjScrWidth;
+            var adjScrHeight;
+            //half the screen width minus half the new window width (plus 5 pixel borders).
+            adjScrWidth = (window.screen.width / 2) - (250);
+            //half the screen height minus half the new window height (plus title and status bars).
+            adjScrHeight = (window.screen.height / 2) - (275);
+            //Open the window.
+            var win2 = window.open("/apex/DisplayResponseView?ResponseId=" + ResponseId, "", "status=no,height=550,width=500,resizable=yes,left=" + adjScrWidth + ",top=" + adjScrHeight + ",screenX=" + adjScrWidth + ",screenY=" + adjScrHeight + ",toolbar=no,menubar=no,scrollbars=1,location=no,directories=no");
+            //console.log(window.name);
+            //console.log(win2.name);
+            //win2.focus();
+            return false;
+        }
+</script>
+</apex:page>

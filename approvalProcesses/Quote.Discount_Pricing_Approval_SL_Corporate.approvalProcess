@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Discount_Pricing_Notes__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <type>userHierarchyField</type>
+            </approver>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>10</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Discount Threshold between 10% to 20%</label>
+        <name>Discount_Threshold_between_10_to_20</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>erik.caballero@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>20</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Discount Threshold between 20% to 30%</label>
+        <name>Discount_Threshold_between_20_to_30</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>menotti.franceschini@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>ricardo.tommasi@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>30</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Discount Threshold between 30% to 40%</label>
+        <name>Discount_Threshold_between_30_to_40</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>ricardo.tommasi@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Discount_Threshold__c</field>
+                <operation>greaterThan</operation>
+                <value>40</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Discount Threshold greater than 40%</label>
+        <name>Discount_Threshold_greater_than_40</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>This is the approval process considered for approvals on SL Corporate pricing discounts</description>
+    <emailTemplate>LatAm_Order_Form/Price_Sent_for_Approval_English</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND(
+$Profile.Name = &quot;LatAm User&quot;,
+$RecordType.Name = &quot;LATAM New Quote&quot;,Opportunity.Is_Child_Opportunity__c &lt;&gt; true, 
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;SL - Corporate&quot;), 
+OR(ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLEY&quot;),
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPCL&quot;),
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;DFCL&quot;)),
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;EDIC&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;SCSI&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;SFWS&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;TSCE&quot;)),
+NOT(OR(ISPICKVAL(Opportunity.StageName,&quot;0%&quot;),ISPICKVAL(Opportunity.StageName,&quot;1%&quot;),ISPICKVAL(Opportunity.StageName,&quot;5%&quot;),ISPICKVAL(Opportunity.StageName,&quot;10%&quot;))),
+Primary_Quote__c =True,
+Promotion__c = False, 
+Pricing_Approval_Required__c = True,
+Pricing_Approval_Complete__c = False,
+OR(ISPICKVAL(Approval_Status__c,&quot;Pricing Approval Rejected&quot;),ISPICKVAL(Approval_Status__c,&quot;&quot;)),
+NOT(ISPICKVAL(Approval_Status__c,&quot;Pending Manager Approval&quot;)),
+NOT(ISPICKVAL(Approval_Status__c,&quot;Pricing Approved&quot;)),
+NOT(ISPICKVAL(Approval_Status__c,&quot;Quote Approved&quot;)),
+NOT(ISPICKVAL(Approval_Status__c,&quot;Quote Rejected&quot;)),
+NOT(ISPICKVAL(Approval_Status__c,&quot;Pending Pricing Approval&quot;)), 
+Opportunity.Renewal_Flag__c = False,
+NOT(ISPICKVAL(Opportunity.Sub_Category__c,&quot;Renewal&quot;))
+)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>MS_Approval_status_to_Pricing_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>MS_Quote_status_to_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Price_Approval_Complete</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>MS_Approval_Status_to_PAR</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>MS_Quote_status_to_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>MS_Update_Approval_Status_to_PPA</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>MS_Update_QuoteStatus_to_InReview</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>Discount Pricing Approval - SL Corporate</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>44</processOrder>
+    <recallActions>
+        <action>
+            <name>MS_Final_Approval_Status_to</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>MS_Final_QuoteStatus_to_In_Review</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

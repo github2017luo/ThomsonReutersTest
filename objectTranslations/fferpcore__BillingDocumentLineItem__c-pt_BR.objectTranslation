@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Item de linha do documento de faturamento</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Itens de linha do documento de faturamento</value>
+    </caseValues>
+    <fields>
+        <help>Conta do Salesforce que representa o local para o qual o produto é enviado. A conta deve ser descendente da conta do documento de faturamento relacionado e conter detalhes completos do endereço. Descendentes de até cinco relacionamentos nas profundezas da hierarquia são válidos.</help>
+        <label><!-- Shipping Account --></label>
+        <name>fferpcore__Account__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanálise de linhas de documento de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 1 --></label>
+        <name>fferpcore__AnalysisItem1__c</name>
+        <relationshipLabel><!-- Related Document Lines 1 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanálise de linhas de documento de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 2 --></label>
+        <name>fferpcore__AnalysisItem2__c</name>
+        <relationshipLabel><!-- Related Document Lines 2 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanálise de linhas de documento de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 3 --></label>
+        <name>fferpcore__AnalysisItem3__c</name>
+        <relationshipLabel><!-- Related Document Lines 3 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanálise de linhas de documento de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 4 --></label>
+        <name>fferpcore__AnalysisItem4__c</name>
+        <relationshipLabel><!-- Related Document Lines 4 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Status de imposto externo do documento de faturamento ao qual esse item de linha do documento de faturamento pertence.</help>
+        <label><!-- Billing Document External Tax Status --></label>
+        <name>fferpcore__BillingDocumentExternalTaxStatus__c</name>
+    </fields>
+    <fields>
+        <help>Status do documento de faturamento ao qual este item de linha do documento de faturamento pertence.</help>
+        <label><!-- Billing Document Status --></label>
+        <name>fferpcore__BillingDocumentStatus__c</name>
+    </fields>
+    <fields>
+        <help>Documento de faturamento ao qual este item de linha do documento de faturamento pertence.</help>
+        <label><!-- Billing Document --></label>
+        <name>fferpcore__BillingDocument__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Site da empresa que representa o local de onde o produto é enviado. O site deve ser filho da empresa do documento de faturamento relacionado e conter detalhes completos do endereço.</help>
+        <label><!-- Company Site --></label>
+        <name>fferpcore__CompanySite__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>O desconto total para este item de linha do documento de faturamento.</help>
+        <label><!-- Discount Total --></label>
+        <name>fferpcore__DiscountTotal__c</name>
+    </fields>
+    <fields>
+        <help>Indica que o site da empresa selecionado não é filho da empresa do documento de faturamento.</help>
+        <label><!-- Invalid Company Site --></label>
+        <name>fferpcore__InvalidCompanySite__c</name>
+    </fields>
+    <fields>
+        <help>Indica que a conta de envio selecionada não é descendente da conta do documento de faturamento.</help>
+        <label><!-- Invalid Shipping Account --></label>
+        <name>fferpcore__InvalidShippingAccount__c</name>
+    </fields>
+    <fields>
+        <help>Descrição do item de linha do documento de faturamento.</help>
+        <label><!-- Description --></label>
+        <name>fferpcore__LineDescription__c</name>
+    </fields>
+    <fields>
+        <help>Indica que você deseja inserir e manter o endereço de entrega manualmente. Se desmarcado e uma conta de envio for especificada, o endereço de envio da conta é salvo na linha.</help>
+        <label><!-- Enter Shipping Address Manually --></label>
+        <name>fferpcore__ManualAddressOverride__c</name>
+    </fields>
+    <fields>
+        <help>O valor líquido do item de linha do documento de faturamento antes da aplicação dos descontos.</help>
+        <label><!-- Net Value Before Discount --></label>
+        <name>fferpcore__NetValueBeforeDiscount__c</name>
+    </fields>
+    <fields>
+        <help>Cálculo manual opcional do valor líquido.</help>
+        <label><!-- Net Value Override --></label>
+        <name>fferpcore__NetValueOverride__c</name>
+    </fields>
+    <fields>
+        <help>Valor total deste item de linha do documento de faturamento antes do imposto. A fórmula usada para calcular isso é Quantidade x Preço Unitário.</help>
+        <label><!-- Net Value --></label>
+        <name>fferpcore__NetValue__c</name>
+    </fields>
+    <fields>
+        <help>Pesquisa para o produto ou serviço Salesforce.</help>
+        <label><!-- Product or Service --></label>
+        <name>fferpcore__ProductService__c</name>
+        <relationshipLabel><!-- Product Service Relationship --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Número de itens incluídos neste item de linha do documento de faturamento. Isso é usado para calcular o valor total do item de linha do documento de faturamento.</help>
+        <label><!-- Quantity --></label>
+        <name>fferpcore__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reporting Net Value Number --></label>
+        <name>fferpcore__ReportingNetValueNumber__c</name>
+    </fields>
+    <fields>
+        <help>Valor total deste item de linha do documento de faturamento antes do imposto com base no tipo de documento do documento de faturamento.</help>
+        <label><!-- Reporting Net Value --></label>
+        <name>fferpcore__ReportingNetValue__c</name>
+    </fields>
+    <fields>
+        <help>Valor do imposto 1 da taxa de imposto correspondente com base no tipo de documento do documento de faturamento.</help>
+        <label><!-- Reporting Tax Value 1 --></label>
+        <name>fferpcore__ReportingTaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>Valor do imposto 2 da taxa de imposto correspondente com base no tipo de documento do documento de faturamento.</help>
+        <label><!-- Reporting Tax Value 2 --></label>
+        <name>fferpcore__ReportingTaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>Valor do imposto 3 da taxa de imposto correspondente com base no tipo de documento do documento de faturamento.</help>
+        <label><!-- Reporting Tax Value 3 --></label>
+        <name>fferpcore__ReportingTaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>Imposto total para o item de linha do documento de faturamento com base no tipo de documento do documento de faturamento.</help>
+        <label><!-- Reporting Tax Value Total --></label>
+        <name>fferpcore__ReportingTaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>Valor total deste item de linha do documento de faturamento, incluindo impostos, com base no tipo de documento do documento de faturamento.</help>
+        <label><!-- Reporting Total Value --></label>
+        <name>fferpcore__ReportingTotalValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping City --></label>
+        <name>fferpcore__ShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Country --></label>
+        <name>fferpcore__ShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping State/Province --></label>
+        <name>fferpcore__ShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Street --></label>
+        <name>fferpcore__ShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help>Código de imposto a ser usado ao calcular o imposto para este item de linha do documento de faturamento. Você pode usar os códigos fiscais para representar as autoridades fiscais estaduais, municipais e municipais.</help>
+        <label><!-- Tax Code 1 --></label>
+        <name>fferpcore__TaxCode1__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Código de imposto a ser usado ao calcular o imposto para este item de linha do documento de faturamento. Você pode usar os códigos fiscais para representar as autoridades fiscais estaduais, municipais e municipais.</help>
+        <label><!-- Tax Code 2 --></label>
+        <name>fferpcore__TaxCode2__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Código de imposto a ser usado ao calcular o imposto para este item de linha do documento de faturamento. Você pode usar os códigos fiscais para representar as autoridades fiscais estaduais, municipais e municipais.</help>
+        <label><!-- Tax Code 3 --></label>
+        <name>fferpcore__TaxCode3__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Taxa de imposto a ser usada ao calcular o imposto para este item de linha do documento de faturamento.</help>
+        <label><!-- Tax Rate 1 --></label>
+        <name>fferpcore__TaxRate1__c</name>
+    </fields>
+    <fields>
+        <help>Taxa de imposto a ser usada ao calcular o imposto para este item de linha do documento de faturamento.</help>
+        <label><!-- Tax Rate 2 --></label>
+        <name>fferpcore__TaxRate2__c</name>
+    </fields>
+    <fields>
+        <help>Taxa de imposto a ser usada ao calcular o imposto para este item de linha do documento de faturamento.</help>
+        <label><!-- Tax Rate 3 --></label>
+        <name>fferpcore__TaxRate3__c</name>
+    </fields>
+    <fields>
+        <help>Taxa de imposto total para o item de linha do documento de faturamento.</help>
+        <label><!-- Tax Rate Total --></label>
+        <name>fferpcore__TaxRateTotal__c</name>
+    </fields>
+    <fields>
+        <help>Valor do imposto calculado a partir da taxa de imposto correspondente usando a fórmula: Valor líquido * (Taxa de imposto / 100).</help>
+        <label><!-- Tax Value 1 --></label>
+        <name>fferpcore__TaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>Valor do imposto calculado a partir da taxa de imposto correspondente usando a fórmula: Valor líquido * (Taxa de imposto / 100).</help>
+        <label><!-- Tax Value 2 --></label>
+        <name>fferpcore__TaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>Valor do imposto calculado a partir da taxa de imposto correspondente usando a fórmula: Valor líquido * (Taxa de imposto / 100).</help>
+        <label><!-- Tax Value 3 --></label>
+        <name>fferpcore__TaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>Imposto total para o item de linha do documento de faturamento.</help>
+        <label><!-- Tax Value Total --></label>
+        <name>fferpcore__TaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>Valor total deste item de linha do documento de faturamento. A fórmula usada para calcular isso é valor líquido + valor total do imposto.</help>
+        <label><!-- Total Value --></label>
+        <name>fferpcore__TotalValue__c</name>
+    </fields>
+    <fields>
+        <help>Preço de um item para o item de linha do documento de faturamento. Isso é usado para calcular o valor total do item de linha do documento de faturamento.</help>
+        <label><!-- Unit Price --></label>
+        <name>fferpcore__UnitPrice__c</name>
+    </fields>
+    <fields>
+        <help>Registra a chave de correlação do Item de evento de faturamento PSA usada no sistema Foundations.</help>
+        <label><!-- Billing Event Item Correlation ID --></label>
+        <name>pse__Billing_Event_Item_Correlation_Id__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Linha de Documento</nameFieldLabel>
+</CustomObjectTranslation>

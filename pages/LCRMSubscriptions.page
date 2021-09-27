@@ -1,0 +1,332 @@
+<apex:page standardController="Account" extensions="LCRMsubscriptionController" id="pageSubscription" tabStyle="Account" showHeader="false" sidebar="false" title="Account Subscription:{!Account.Name}" language="" LightningStylesheets="true" action="{!displayLCRMSubcriptioninfo}">    
+    <apex:sectionHeader id="title" title="" subtitle="{!$Label.Subscription}"/>
+    <apex:includeScript value="/support/console/42.0/integration.js"/>
+    <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/Minified/MinifiedCSSCHP.css')}"/>
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+         <style type="text/css">
+          .loadingIcon {
+                background-image: url(/img/loading.gif);
+                width: 16px;
+                height: 16px;
+            }
+            .bPageBlock .pbTitle{
+                width:40%;
+            }
+         </style>
+        <script> 
+         
+        
+      
+</script>
+
+<script>
+window.onload = function(){
+    document.getElementById("LCRMSubscriptions").focus();
+};
+    var closeSubtab = function closeSubtab(result) {                
+        var tabId = result.id;
+        sforce.console.closeTab(tabId);
+        
+    };    
+function testOpenSubtab(){
+       
+        if (sforce.console.isInConsole()) { 
+        sforce.console.getEnclosingTabId(closeSubtab);
+        
+        } else {                        
+        var url = '/{!Account.Id}';       
+        window.open(url,'_top'); 
+        } 
+         if('Theme4u' == '{!JSENCODE($User.UIThemeDisplayed)}'){
+                   sforce.console.getEnclosingTabId(closeSubtab);
+                }   
+                
+    }
+    <!-- DSS-3663 code block start-->
+    $(document).ready(function() {
+                setDataTables1();
+            });
+              function setDataTables1(){
+            $('.tableSubscription').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],
+             "info":false,             
+             "scrollX":false,
+             "sScrollX":"100%"
+             } );
+        }
+        function setDataTables2(){
+            $('.tableSubscription').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],             
+             "info":false,
+             "scrollX":false,
+             "sScrollX":"100%"             
+             } );
+        }
+        <!-- DSS-3663 code block end-->
+</script>
+         
+  <apex:pageMessages id="messagesGlobal" />   
+    <apex:form id="formSubscription">
+    <!-- DSS-3663 code block start-->
+        <apex:actionFunction name="saveselectedopen" action="{!saveselectedopen}" status="fetchStatus2" rerender=""/>
+        <apex:actionFunction status="actStatusId1" name="sainv" reRender="mainPageBlockId" action="{!selectalllineitem}" oncomplete="setDataTables2();"/>
+        <apex:actionStatus id="actStatusId1" >
+                    <apex:facet name="start" >
+                        <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                </apex:actionStatus>
+        <apex:actionStatus id="fetchStatus2">
+        <apex:facet name="start">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                <img src="/img/loading.gif" />
+            </div>
+        </apex:facet>
+        </apex:actionStatus>
+    <!-- DSS-3663 code block end-->
+        <!-- <apex:actionFunction name="rerenderSubscription" reRender="mainPageBlockId,messagesGlobal,panelSubsType" status="statusSubscription" action="{!sortSubscription}"/>  <br/><br/>
+        <apex:outputLabel for="subscriptionType" value="{!$Label.View}: " style="font-weight:bold;"  />
+            <apex:selectList value="{!sSelectedOption}"  size="1" id="selectListSubscription" onchange="document.getElementById('popUpWindow').style.display='none';document.getElementById('mainDiv').style.display='none';rerenderSubscription();">
+                <apex:selectOptions value="{!subscriptionListOptions}" />
+            </apex:selectList>--> 
+            <apex:actionFunction name="rerenderSubscription" reRender="blockSubscriptionsHeader,mainPageBlockId,sectionSubscription,messagesGlobal,selectedSubscription,panelSubsType" status="statusSubscription" action="{!sortSubscription}" oncomplete="setDataTables2();"/>  <br/><br/>
+    <apex:outputLabel for="subscriptionType" value="{!$Label.View}: " style="font-weight:bold;"  />&nbsp;&nbsp;
+        <apex:selectList value="{!sSelectedOption}"  size="1" style="width:115px;" id="selectListSubscription" onchange="rerenderSubscription();">
+        <apex:selectOptions value="{!subscriptionListOptions}" />
+    </apex:selectList> <br/><br/> 
+            
+           <!-- <apex:outputLabel for="subscriptionType" value="{!$Label.View}: " style="font-weight:bold;"  />
+            <apex:selectList value="{!sSelectedOption}" multiselect="false" size="1" required="true" id="selectListDomain">
+                <apex:actionSupport action="{!sortSubscription}" event="onchange" reRender="mainPageBlockId,tableSubscription" />
+                <apex:selectOptions value="{!subscriptionListOptions}"/>
+                </apex:selectList>-->&nbsp;&nbsp;
+            
+        <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 6px;">
+              &nbsp;&laquo;&nbsp;
+              <table width="100%">
+            <tr>
+            <td width="75%">
+            <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Account.Name}</a>
+            </td>
+            <td width="10%">
+            <apex:commandButton style="background:white;color:blue;text-align:center;" value="Download as PDF" action="{!saveAsPDF}"/>
+            </td>
+            <td></td>
+            <td width="15%">
+            <apex:commandButton style="background:white;color:blue;text-align:center;" value="Download as Excel" action="{!saveAsExcel}"/>
+            </td>
+            </tr>
+            </table>
+              <!--<a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_to_Account}: {!Account.Name}</a> <!--SFD-16-->
+              <!-- <a href="/{!Account.Id}" style="color:#015BA7;">{!$Label.Back_to_Account}: {!Account.Name}</a>   -->
+              <!--<apex:outputLink value="/{!Account.Id}" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Account.Name}</apex:outputLink>  -->          
+        </div>
+         <apex:actionStatus id="statusSubscription">                
+                        <apex:facet name="start">
+                            <apex:outputPanel layout="block" styleClass="message infoM4">
+                                <apex:panelGrid columns="2"  styleClass="messageTable"   columnClasses="messageCell" style="padding:0px;margin:0px;">
+                                    <apex:panelGroup >
+                                        <img class="loadingIcon" src="/s.gif" />
+                                    </apex:panelGroup>
+                                    <apex:panelGroup >
+                                        <div class="messageText">Loading Subscriptions...</div>
+                                    </apex:panelGroup>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:facet>            
+                    </apex:actionStatus>
+        <apex:pageBlock id="mainPageBlockId" >  
+            <div id="mainDiv" > 
+                    <apex:facet name="header">
+                        <apex:panelGrid id="blockSubscriptionsHeader" columns="2"  columnClasses="pbTitle, pbButton, pbHelp">
+                            <apex:panelGroup layout="none" id="selectedSubscription" style="50%" >
+                                <h3>{!sTranslatedSelectOption} [{!totalNumberOfSubscription}]</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" >
+                                <!--<apex:commandButton value="{!$Label.Run_Subscription_Report}" onclick="runSubscriptionReport()" />-->
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" id="panelSubsType" style="colspan:2">
+                                <apex:outputLabel for="sortBy" value="{!$Label.Sort_By}: " style="font-weight:bold;" id="sortByFieldId" />
+                                    <apex:selectList value="{!field}" size="1" id="i" style="width:115px;font-size: 12px;">
+                                        <apex:selectOptions value="{!sortSubscriptionByfield}" />
+                                    </apex:selectList>
+                                <apex:outputLabel for="sortOrder" value="{!$Label.Sort_Order}: " style="font-weight:bold;" id="sortOrderId" />                                        
+                                    <apex:selectList value="{!sortOrder}" size="1" style="width:115px;font-size: 12px;">
+                                        <apex:selectOptions value="{!sortByOrder}" />
+                                    </apex:selectList>
+                                <!--<apex:commandButton action="{!displayLCRMSubcriptionInfo}" reRender="mainPageBlockId,sortByFieldId,sortOrderId ,subTypeForm,sectionSubscription,statusPopUp,messagesGlobal,selectedSubscription,SelectedSortField,panelSubsType" value="{!$Label.Go}" status="sortStatusSubscription"/> --> 
+                                <apex:commandButton action="{!displayLCRMSubcriptioninfo}" reRender="mainPageBlockId,sortByFieldId,sortOrderId,sectionSubscription,messagesGlobal,selectedSubscription,panelSubsType" value="{!$Label.Go}" status="sortStatusSubscription" rendered="{!!renderedNonInfo}" style="background:Lightgray;width:80px;" oncomplete="setDataTables2();"/> 
+                                <apex:actionStatus id="sortStatusSubscription">                    
+                                    <apex:facet name="start">
+                                        <img class="loadingIcon" src="/s.gif" />
+                                        <div class="messageText">Loading {!sSelectedOption} Subscriptions...</div>
+                                    </apex:facet> 
+                                </apex:actionStatus> 
+                            </apex:panelGroup>   
+                        </apex:panelGrid>
+                    </apex:facet>     
+                    <!--<c:PagingToolbar rerender="mainPageBlockId" paging="{!oPagingSubscriptions}" />
+                    <apex:pageblocktable value="{!oPagingSubscriptions.listofSubscription}"  var="subs" id="tableSubscription" rendered="{!!renderedPgblock}" >    -->   <!--rendered="{!IF(oPagingSubscriptions.listofSubscription.size>0,true,false)}"--> 
+                   <!-- <apex:pageblocktable value="{!Displaylcrmsubscription }"  var="subs" id="tableSubscription" rendered="{!!renderedPgblock}" >        -->
+                     <!-- DSS-3663 code block start-->
+                    <!--<apex:pageblocktable value="{!Displaylcrmsubscription }"  var="subs" id="tableSubscription" rendered="{!and (!renderedPgblock,!renderedNonInfo)}" > -->
+                     
+                     <apex:dataTable value="{!Displaylcrmsubscription }" var="subs" styleclass="tableSubscription" rendered="{!and (!renderedPgblock,!renderedNonInfo)}" >               
+                    <apex:column >
+                        <apex:facet name="header">
+                             <apex:inputCheckbox value="{!SelectAll}" onchange="sainv();return false;" />
+                            </apex:facet>
+                        <apex:inputCheckbox value="{!subs.isSelected}" id="InputId" onchange="saveselectedopen();"/>
+                    </apex:column>
+                    <!-- DSS-3663 code block end-->
+                    <apex:column >
+                    <apex:facet name="header">Sap Account Number</apex:facet>
+                    <apex:outputText value="{!subs.SapAccountNumber}" />
+                    </apex:column>  
+                    
+                     <apex:column headerValue="{!$Label.Material_Description}">
+                   <!-- <apex:facet name="header">Material Description</apex:facet>-->
+                    <apex:outputText value="{!subs.materialDescription }"  />
+                    </apex:column>
+                    
+                    <apex:column >
+                    
+                    <apex:facet name="header">{!$Label.Product_Title}</apex:facet>
+                    <!--<apex:outputText value="{!subs.titleId }"  />-->
+                    <apex:outputlink value="http://cpc.thomsonreuters.com/search/sub/{!subs.MaterialNumber}" target="_blank">{!subs.titleId}</apex:outputlink>
+                    </apex:column>
+                     
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Material_Number}</apex:facet>
+                    <apex:outputText value="{!subs.materialNumber }" rendered="{!subs.productId==null}"/>
+                   <apex:outputLink value="/{!subs.productId}" rendered="{!subs.productId!=null}" >{!subs.MaterialNumber}</apex:outputLink>
+                    </apex:column>
+                    
+                    
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Quantity}</apex:facet>
+                    <apex:outputText value="{!subs.Quantity}"  />
+                    </apex:column>
+                    
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Monthly_Charge}</apex:facet>
+                    <apex:outputText value="${!subs.netAmount }"  />
+                    </apex:column>
+                    
+                    
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Estimated}<br/>{!$Label.Unit_UpKeep}</apex:facet>
+                    <apex:outputText value="${!subs.classificationType}"  />
+                    </apex:column>
+
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Contract_Start_Date_Line1}<br/>{!$Label.Contract_Start_Date_Line2}</apex:facet>
+                    <apex:outputText value="{!subs.startDate }"  />
+                    </apex:column>
+                     
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Contract_End_Date_Line1}<br/>{!$Label.Contract_End_Date_Line2}</apex:facet>
+                    <apex:outputText value="{!subs.endDate }"  />
+                    </apex:column>
+                    
+                     <apex:column >
+                    <apex:facet name="header">{!$Label.Lapsed_Date}</apex:facet>
+                    <apex:outputText value="{!subs.lapseDate }"  />
+                    </apex:column>
+                    
+                     <apex:column >
+                    <apex:facet name="header">{!$Label.Contract_Description_Line1}<br/>{!$Label.Contract_Description_Line2}</apex:facet>
+                    <apex:outputText value="{!subs.subscriptionType }"  />
+                    </apex:column>
+                     
+                        
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Details}</apex:facet>
+                    <apex:outputText value="{!subs.discountReason}"  />
+                    </apex:column>
+                     
+                    <apex:column >
+                    <apex:facet name="header">FL Sub<br/>{!$Label.FL_Sub_Location_Line2}</apex:facet>
+                    <apex:outputText value="{!subs.locationDescription}"  />
+                    </apex:column>  
+                        
+                    <apex:column >
+                    <apex:facet name="header">FL Sub<br/>{!$Label.FL_Sub_Practice_Line2}</apex:facet>
+                    <apex:outputText value="{!subs.practiceAreaDescription}"  />
+                    </apex:column>  
+                                         
+                    
+                    <apex:column >
+                    <apex:facet name="header">Banded<br/>Retail Rate</apex:facet>
+                     <apex:outputText value="${!subs.priceRate}"  />                    
+                    </apex:column>
+                    
+                    
+                      <apex:column >
+                    <apex:facet name="header">Banded<br/>Attorney Count</apex:facet>
+                    <apex:outputText value="{!subs.userCount }"  />
+                    </apex:column>
+                      
+                    <apex:column >
+                    <apex:facet name="header">{!$Label.Status}</apex:facet>
+                    <apex:outputText value="{!subs.subscriptionStatus }"  />
+                    </apex:column>
+                   </apex:datatable>
+                  <!-- </apex:pageblocktable> -->
+                   
+               <!--  <apex:pageblocktable value="{!oPagingSubscriptions.listofSubscription}"  var="subs" id="tableSubscription1" rendered="{!renderedPgblock}" > -->      
+                  <!-- <apex:pageblocktable value="{!Displaylcrmsubscription }"  var="subs" id="tableSubscription1" rendered="{!renderedPgblock}" >         
+                     <apex:column >
+                    <apex:facet name="header">Status Code</apex:facet>
+                    <apex:outputText value="{!subs.statusCode }"  />
+                    </apex:column>
+                    
+                    <apex:column headerValue="Status Description">
+                   <apex:outputText value="{!subs.statusDescription }"  />
+                    </apex:column>                       
+                    
+                     </apex:pageblocktable>-->
+                     
+            <apex:outputPanel id="pagebuttons" rendered="{!AND(IF(ordPaginater.isAll, false, true), IF(ordPaginater.totalPage == 1, false, true),IF(Displaylcrmsubscription.size == 0, false, true))}">
+
+                <apex:commandButton value="Previous" rerender="mainPageBlockId" action="{!previousPage}" rendered="{!ordPaginater.showPrevious}" oncomplete="setDataTables2();"/>
+
+                &nbsp;&nbsp;&nbsp;
+                <apex:repeat value="{!ordPaginater.pageList}" var="pl">
+                <apex:outputText rendered="{!!pl.isActive}">
+                <apex:commandLink action="{!updatePage}" rerender="mainPageBlockId" oncomplete="setDataTables2();">
+                {!pl.pageNum}                                
+                <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!ordPaginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                </apex:commandLink>
+                </apex:outputText>
+                <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+
+                </apex:repeat>
+                &nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="Next" rerender="mainPageBlockId" action="{!nextPage}" rendered="{!ordPaginater.showNext}" oncomplete="setDataTables2();"/>
+            </apex:outputPanel>
+                     
+                  
+                          
+            </div>       
+        </apex:pageBlock> 
+                   
+    </apex:form>       
+</apex:page>

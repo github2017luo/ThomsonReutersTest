@@ -1,0 +1,326 @@
+<apex:page standardController="Case" extensions="ESC_FormsLaunchController" lightningStylesheets="true">
+<apex:slds />
+    <apex:includeScript value="/support/console/42.0/integration.js"/>
+    <script>
+        function callfunction(formtype){
+            var formtype = formtype;            
+            redirecttoform(formtype);
+        }
+        function servicenow(){
+            window.open('https://thomsonreuters.service-now.com/sp/?id=sc_cat_item&sys_id=8c6abd341389c300f05c7e276144b0d5');
+        }
+       function callfunction1(){
+            var caseid = '{!JSENCODE(caseid)}';
+            var prepaymentformid = '{!JSENCODE(Prepaymentformid)}';
+            if (sforce.console.isInConsole()){             
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/USL_Prepayment?caseid='+caseid+'&formid='+prepaymentformid,true,'Prepayment Form');
+             });
+            }
+            else{
+               window.parent.location.href="/apex/USL_Prepayment?id='+caseid+'&formid='+prepaymentformid";
+            }
+        }
+        function callfunction2(){
+            var caseid = '{!JSENCODE(caseid)}';
+            var creditDebitformid = '{!JSENCODE(CreditDebitformid)}';
+            if (sforce.console.isInConsole()){             
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/ESC_CreditDebitPayment?caseid='+caseid+'&formid='+creditDebitformid,true,'CreditCard/Debit Payment');
+             });
+            }
+            else{
+               window.parent.location.href="/apex/ESC_CreditDebitPayment?caseid='+caseid+'&formid='+creditDebitformid";
+            }
+        }
+    	
+        function westlawfn(){
+             var caseid = '{!JSENCODE(caseid)}';
+             var westlawformid = '{!JSENCODE(westlawformid)}';
+            if (sforce.console.isInConsole()){   
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/USL_AccLevelPwdForm?caseid='+caseid+'&formid='+westlawformid,true,'Westlaw Access Control & Preferences');
+             });
+            }
+            else{
+               window.parent.location.href="/apex/USL_AccLevelPwdForm?caseid='+caseid+'&formid='+westlawformid";
+            }
+        }
+        function renderform(formid,formname,caseid){
+            if (sforce.console.isInConsole()){             
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid,true,formname);
+             });
+            }
+            else{
+               //window.parent.location.href="/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid";
+               window.open('/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid);
+            }
+             // myWindow = window.open('/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid);
+        }
+        function callfunction5(formid,formname,caseid){
+            if (sforce.console.isInConsole()){   
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/USL_CVM_Special_Offer_Form?caseid='+caseid+'&formid='+formid,true,formname);
+             });
+            }
+            else{
+               window.parent.location.href="/apex/USL_CVM_Special_Offer_Form?caseid='+caseid+'&formid='+formid";
+            }
+        }
+        function openARForm(formid,formname,caseid){
+            var isnotfederal = JSON.parse('{!isnotfederal}');
+            if (sforce.console.isInConsole()){             
+             var PrimaryTabId;
+             
+             if(formname == 'IFF Adjustment' && isnotfederal == 'true'){
+                 alert('The IFF Request can only be processed on a Federal Government account');
+             }
+             else{
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/USL_Invoicepage?id='+caseid+'&formID='+formid,true,formname);
+             });
+             }
+            }
+            else{
+               window.parent.location.href="/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid";
+            }
+             // myWindow = window.open('/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid);
+        }
+        function callfunction6(formid,formname,caseid){
+            if (sforce.console.isInConsole()){             
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/USL_Writeoffpage?id='+caseid+'&formID='+formid,true,formname);
+             });
+            }
+            else{
+               window.parent.location.href="/apex/USL_Writeoffpage?id='+caseid+'&formID='+formid";
+            }
+             // myWindow = window.open('/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid);
+        }
+        function chargecancelform(){
+            var caseid = '{!JSENCODE(caseid)}';
+            var ccformid = '{!JSENCODE(ccformid)}';
+            if (sforce.console.isInConsole()){   
+             var PrimaryTabId;
+             sforce.console.getFocusedPrimaryTabId(function(result){
+                 PrimaryTabId=result.id;          
+                 sforce.console.openSubtab(PrimaryTabId,'/apex/USL_ChargeCancellation?id='+caseid+'&formid='+ccformid,true,'Charge Cancellation');
+             });
+            }
+            else{
+               //window.parent.location.href="/apex/USL_ChargeCancellation?id='+caseid+'&formid='+ccformid}";
+               window.open('/apex/USL_ChargeCancellation?id='+caseid+'&formid='+ccformid);
+            }
+        }
+        function callfunction7(formid,formname,caseid,landingURL){
+            var isnotfederal = JSON.parse('{!isnotfederal}');
+            if(!landingURL.includes('apex')){
+                window.open(landingURL);
+            }else{
+                if (sforce.console.isInConsole()){             
+                    
+                  if(formname == 'IFF Adjustment' && isnotfederal == 'true'){
+                         alert('The IFF Request can only be processed on a Federal Government account');
+                  }else{
+                      var PrimaryTabId;
+                      sforce.console.getFocusedPrimaryTabId(function(result){
+                         PrimaryTabId=result.id;          
+                         sforce.console.openSubtab(PrimaryTabId,landingURL+caseid+'&formid='+formid+'&FormName='+formname,true,formname);
+                      });
+                  }
+                 
+                }
+                else{
+                   //window.parent.location.href= landingURL+"caseid+'&formID='+formid+'&FormName='+formname";
+                   window.open(landingURL+caseid+'&formID='+formid+'&FormName='+formname);
+                }
+                 // myWindow = window.open('/apex/ESC_FormGenerator?id='+caseid+'&formID='+formid);
+            }
+            
+        }
+    </script>
+    <apex:form >
+        <apex:actionFunction name="redirecttoform" action="{!displayform}" rerender="" oncomplete="renderform('{!JSENCODE(formid)}','{!JSENCODE(formname)}','{!JSENCODE(caseid)}');return false;">
+            <apex:param name="formname" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="redirecttoform1" action="{!displayform}" rerender="" oncomplete="openARForm('{!JSENCODE(formid)}','{!JSENCODE(formname)}','{!JSENCODE(caseid)}');return false;">
+            <apex:param name="formname" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="redirecttoform2" action="{!displayform}" rerender="" oncomplete="callfunction5('{!JSENCODE(formid)}','{!JSENCODE(formname)}','{!JSENCODE(caseid)}');return false;">
+            <apex:param name="formname" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="redirecttoform3" action="{!displayform}" rerender="" oncomplete="callfunction6('{!JSENCODE(formid)}','{!JSENCODE(formname)}','{!JSENCODE(caseid)}');return false;">
+            <apex:param name="formname" value=""/>
+        </apex:actionFunction>
+        <apex:actionFunction name="redirecttoform4" action="{!displayform}" rerender="" oncomplete="callfunction7('{!JSENCODE(formid)}','{!JSENCODE(formname)}','{!JSENCODE(caseid)}','{!JSENCODE(landingURL)}');return false;">
+            <apex:param name="formname" value=""/>
+        </apex:actionFunction>
+        <apex:pageBlock >
+           <apex:outputPanel id="panel1" rendered="{!(if(isformsubmit && isFormsSegmentRegionMappingNull,true,false))}">
+              
+               <apex:pageBlockSection columns="1" title="Accounts Receivable/Billing" >
+                    <apex:outputText value="The unformatted time right now is 1 : {! NOW() }" />
+                    <apex:commandLink value="Apply Cash Credits" onclick="redirecttoform1('Cash Credits');return false;" rendered="{!(if(retformname == 'Cash Credits',true,false))}"/>
+                    <apex:commandLink value="Auto Pay" onclick="callfunction('AutoPay Form');return false;" rendered="{!(if(retformname == 'AutoPay Form',true,false))}"/>
+                    <apex:commandLink value="Bill Pull – Current Month Review" onclick="callfunction('Billing Request Form');return false;" rendered="{!(if(retformname == 'Billing Request Form',true,false))}"/>
+                    <apex:commandLink value="Billing Document Format Change" onclick="callfunction('Billing Request Form');return false;" rendered="{!(if(retformname == 'Billing Request Form',true,false))}"/>
+                    <apex:commandLink value="Billing Requests Form" onclick="callfunction('Billing Requests Form1');return false;" rendered="{!(if(retformname == 'Billing Requests Form1',true,false))}"/>
+                    <apex:commandLink value="Charge cancellation" onclick="chargecancelform();return false;" rendered="{!(if(retformname == 'Charge Cancellation',true,false))}"/> 
+                     <apex:commandLink value="Charge Cancellation Exception Form" onclick="callfunction('Charge Cancellation Exception Form');return false;" rendered="{!(if(retformname == 'Charge Cancellation Exception Form',true,false))}" />
+                    <apex:commandLink value="Claims Paid" onclick="redirecttoform1('Claims Paid');return false;"  rendered="{!(if(retformname == 'Claims paid',true,false))}"/>                               
+                    
+                   <apex:commandLink value="CreditCard/Debit Payment" onclick="callfunction2();return false;" rendered="{!(if(retformname == 'CreditCard/Debit Payment',true,false))}"/>
+                    <apex:commandLink value="EFT Prepayment" onclick="callfunction('EFT Prepayment');return false;" rendered="{!(if(retformname == 'EFT Prepayment',true,false))}"/>
+                    <apex:commandLink value="IFF Adjustment" onclick="redirecttoform1('IFF Adjustment');return false;" rendered="{!(if(retformname == 'IFF Adjustment',true,false))}" />                
+                    <apex:commandLink value="Modify Invoice" onclick="callfunction('Billing Request Form');return false;" rendered="{!(if(retformname == 'Billing Request Form',true,false))}"/>
+                    <apex:commandLink value="Prepayment Form" onclick="callfunction1();return false;" rendered="{!(if(retformname == 'Prepayment Form',true,false))}"/>
+                    <apex:commandLink value="PROFORMA Form" onclick="callfunction('PROFORMA Form');return false;" rendered="{!(if(retformname == 'PROFORMA Form',true,false))}"/>
+                    <apex:commandLink value="Refund" onclick="redirecttoform1('Refund');return false;" rendered="{!(if(retformname == 'Refund',true,false))}" />
+                    <apex:commandLink value="Transfer Debits/Credits" onclick="redirecttoform1('Transfer Debits/Credits');return false;" rendered="{!(if(retformname == 'Transfer Debits/Credits',true,false))}"/>
+                    <apex:commandLink value="Transfer Request Form" onclick="callfunction('Transfer Request Form');return false;" rendered="{!(if(retformname == 'Transfer Request Form',true,false))}"/>
+                    <apex:commandLink value="Unapply Reapply Credits Debits" onclick="redirecttoform1('Unapply Reapply Credits Debits Form');return false;" rendered="{!(if(retformname == 'Unapply Reapply Credits Debits Form',true,false))}"/>                
+                    <apex:commandLink value="Write Off" onclick="redirecttoform3('Write Off Form');return false;" rendered="{!(if(retformname == 'Write Off Form',true,false))}"/>
+                    <apex:commandLink value="Write Off Exception" onclick="callfunction('Write Off Exception Form');return false;" rendered="{!(if(retformname == 'Write Off Exception Form',true,false))}" />
+                    
+                    <apex:commandLink value="Reinstatement form" onclick="callfunction('Reinstatement form');return false;" rendered="{!(if(retformname == 'Reinstatement form',true,false))}"/>
+                    
+                    
+                </apex:pageBlockSection>   
+                <apex:pageBlockSection columns="1" title="Account Maintenance">
+                    <apex:commandLink value="Change Account Address Form" onclick="callfunction('Account Change Request Form');return false;" rendered="{!(if(retformname == 'Account Change Request Form',true,false))}"/>
+                    <apex:commandLink value="Change Marketing/Sales Data Form" onclick="callfunction('Account Change Request Form');return false;" rendered="{!(if(retformname == 'Account Change Request Form',true,false))}"/>                    
+                    <apex:commandLink value="Change user’s name/Email" onclick="callfunction('Change users name/Emails form');return false;" rendered="{!(if(retformname == 'Change users name/Emails form',true,false))}"/>                                 
+                    <apex:commandLink value="Account and Partner Function Form" onclick="servicenow();return false;" />                 
+                    <apex:commandLink value="Tax Exemption" onclick="callfunction('Tax Exemption');return false;" rendered="{!(if(retformname == 'Tax Exemption',true,false))}" />
+                    <apex:commandLink value="Warning Notification" onclick="callfunction('Warning Notification');return false;" rendered="{!(if(retformname == 'Warning Notification',true,false))}"/>               
+                    <apex:commandLink value="Westlaw Access Control & Preferences" onclick="westlawfn();return false;" rendered="{!(if(retformname == 'Westlaw Access Control & Preferences',true,false))}"/>
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="Orders">  
+                     <apex:commandLink value="FindLaw Order Resolution" onclick="callfunction('Order Resolution Form');return false;" rendered="{!(if(retformname == 'Order Resolution Form',true,false))}"/>
+                     <apex:commandLink value="Order Correction 1" onclick="callfunction('Order Correction 1');return false;" rendered="{!(if(retformname == 'Order Correction 1',true,false))}"/>
+                     <apex:commandLink value="Order Correction 2" onclick="callfunction('Order Correction 2');return false;" rendered="{!(if(retformname == 'Order Correction 2',true,false))}"/>
+                     <apex:commandLink value="Order Resolution" onclick="callfunction('Order Resolution Form');return false;" rendered="{!(if(retformname == 'Order Resolution Form',true,false))}"/>  
+                     <apex:commandLink value="Reshipment Request" onclick="callfunction('Reshipment Request Form');return false;" rendered="{!(if(retformname == 'Reshipment Request Form',true,false))}"/>
+                     <apex:commandLink value="Westlaw Billing Error Form" onclick="callfunction('Westlaw Billing Error Form');return false;" rendered="{!(if(retformname == 'Westlaw Billing Error Form',true,false))}"/>
+                     
+                     <apex:commandLink value="WPk Deal Creation" onclick="callfunction('WPk Deal Creation Form');return false;" rendered="{!(if(retformname == 'WPk Deal Creation Form',true,false))}"/>                      
+                     
+                     
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="Subscription Cancellation">                                     
+                    <apex:commandLink value="CVM Special Offer Cancellation" onclick="redirecttoform2('CVM Special Offer');return false;" rendered="{!(if(retformname == 'CVM Special Offer',true,false))}"/>                                               
+                    <apex:commandLink value="Revenue Save" onclick="callfunction('Revenue Save Form');return false;" rendered="{!(if(retformname == 'Revenue Save Form',true,false))}"/>                    
+                   <!-- <apex:commandLink value="Subscription Lapse / Online Form" onclick="callfunction3();return false;" rendered="{!(if(retformname == 'OnlineSubsLapseForm',true,false))}"/>
+                    <apex:commandLink value="Subscription Lapse / Print, ProDoc and Proview" onclick="callfunction4();return false;" rendered="{!(if(retformname == 'PrintSubsLapseForm',true,false))}"/> -->                                                 
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:outputPanel id="panel2" rendered="{!(if(NOT(isformsubmit) && isFormsSegmentRegionMappingNull,true,false))}">
+                
+                <apex:pageBlockSection columns="1" title="Accounts Receivable/Billing">
+                    <apex:outputText value="The unformatted time right now is 2: {! NOW() }" />
+                    <apex:commandLink value="Apply Cash Credits" onclick="redirecttoform1('Cash Credits');return false;" />
+                    <apex:commandLink value="Auto Pay" onclick="callfunction('AutoPay Form');return false;"/>
+                    <apex:commandLink value="Bill Pull – Current Month Review" onclick="callfunction('Billing Request Form');return false;"/>
+                    <apex:commandLink value="Billing Document Format Change" onclick="callfunction('Billing Request Form');return false;"/>
+                    <apex:commandLink value="Billing Requests Form" onclick="callfunction('Billing Requests Form1');return false;" />
+                    <apex:commandLink value="Charge cancellation" onclick="chargecancelform();return false;" rendered="{!iscc}"/>                   
+                    <apex:commandLink value="Charge Cancellation Exception Form" onclick="callfunction('Charge Cancellation Exception Form');return false;" rendered="{!iscc}"/>
+                    <apex:commandLink value="Claims Paid" onclick="redirecttoform1('Claims Paid');return false;" />                               
+                    
+                    <apex:commandLink value="CreditCard/Debit Payment" onclick="callfunction2();return false;"/>
+                    <apex:commandLink value="EFT Prepayment" onclick="callfunction('EFT Prepayment');return false;" />
+                    <apex:commandLink value="IFF Adjustment" onclick="redirecttoform1('IFF Adjustment');return false;" />                
+                    <apex:commandLink value="Modify Invoice" onclick="callfunction('Billing Request Form');return false;"/>
+                    <apex:commandLink value="Prepayment Form" onclick="callfunction1();return false;"/>
+                    <apex:commandLink value="PROFORMA Form" onclick="callfunction('PROFORMA Form');return false;"/>
+                    <apex:commandLink value="Refund" onclick="redirecttoform1('Refund');return false;" />
+                    <apex:commandLink value="Transfer Debits/Credits" onclick="redirecttoform1('Transfer Debits/Credits');return false;"/>
+                    <apex:commandLink value="Transfer Request Form" onclick="callfunction('Transfer Request Form');return false;"/>
+                    <apex:commandLink value="Unapply Reapply Credits Debits" onclick="redirecttoform1('Unapply Reapply Credits Debits Form');return false;"/>
+                     
+                    <apex:commandLink value="Write Off" onclick="redirecttoform3('Write Off Form');return false;" rendered="{!iswriteoff}"/>
+                    <apex:commandLink value="Write Off Exception" onclick="callfunction('Write Off Exception Form');return false;" rendered="{!iswriteoff}"/>
+                    <apex:commandLink value="Reinstatement form" onclick="callfunction('Reinstatement form');return false;"/>
+                    
+                </apex:pageBlockSection>   
+                <apex:pageBlockSection columns="1" title="Account Maintenance">
+                    <apex:commandLink value="Change Account Address Form" onclick="callfunction('Account Change Request Form');return false;"/>
+                    <apex:commandLink value="Change Marketing/Sales Data Form" onclick="callfunction('Account Change Request Form');return false;"/>
+                    
+                    <apex:commandLink value="Change user’s name/Email" onclick="callfunction('Change users name/Emails form');return false;"/>                      
+                    <apex:commandLink value="Account and Partner Function Form" onclick="servicenow();return false;"/>                  
+                    <apex:commandLink value="Tax Exemption" onclick="callfunction('Tax Exemption');return false;"/>
+                    <apex:commandLink value="Warning Notification" onclick="callfunction('Warning Notification');return false;"/>               
+                    <apex:commandLink value="Westlaw Access Control & Preferences" onclick="westlawfn();return false;"/>
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="Orders">  
+                     <apex:commandLink value="FindLaw Order Resolution" onclick="callfunction('Order Resolution Form');return false;"/>
+                     <apex:commandLink value="Order Correction 1" onclick="callfunction('Order Correction 1');return false;"/>
+                     <apex:commandLink value="Order Correction 2" onclick="callfunction('Order Correction 2');return false;"/>
+                     <apex:commandLink value="Order Resolution" onclick="callfunction('Order Resolution Form');return false;"/>  
+                     <apex:commandLink value="Reshipment Request" onclick="callfunction('Reshipment Request Form');return false;"/>
+                     <apex:commandLink value="Westlaw Billing Error Form" onclick="callfunction('Westlaw Billing Error Form');return false;"/>
+                     <apex:commandLink value="WPk Deal Creation" onclick="callfunction('WPk Deal Creation Form');return false;"/>                     
+                      
+                    
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="Subscription Cancellation">                                     
+                    <apex:commandLink value="CVM Special Offer Cancellation" onclick="redirecttoform2('CVM Special Offer');return false;"/>                                               
+                    <apex:commandLink value="Revenue Save" onclick="callfunction('Revenue Save Form');return false;"/>                    
+                    <!--<apex:commandLink value="Subscription Lapse / Online Form" onclick="callfunction3();return false;"/>-->
+                    <!--<apex:commandLink value="Subscription Lapse / Print, ProDoc and Proview" onclick="callfunction4();return false;"/> -->                                                 
+                </apex:pageBlockSection>
+            </apex:outputPanel>
+            <apex:outputPanel id="panel3" rendered="{!(if(NOT(isFormsSegmentRegionMappingNull),true,false))}">
+                <apex:pageBlockSection columns="1" title="{!$Label.ESC_AccountsReceivableBilling}" rendered="{!accountReceivableAndBillingScreen}">
+                     <apex:repeat value="{!formSegmtRegMappingList}" var="formSegRegMapLst" id="fromSegment1">
+                         <apex:outputPanel rendered="{!(if(!formSegRegMapLst.ESC_Permission_Set_Assigned__c && formSegRegMapLst.ESC_Form_Section__c == $Label.ESC_AccountsReceivableBilling,true,false ))}">
+                             <apex:commandLink value="{!formSegRegMapLst.ESC_Form_Label_Name__c}" onclick="redirecttoform4('{!formSegRegMapLst.ESC_CSS_Form__r.Name}');return false;"  style="{!if(formLabelNameMap[formSegRegMapLst.ESC_Form_Label_Name__c] == formSegRegMapLst.ESC_Form_Label_Name__c,'color:#195610','')}"/>
+                         </apex:outputPanel>
+                         <apex:outputPanel rendered="{!(if(formSegRegMapLst.ESC_Permission_Set_Assigned__c && iswriteoff && formSegRegMapLst.ESC_Form_Section__c == $Label.ESC_AccountsReceivableBilling && CONTAINS(formSegRegMapLst.ESC_Form_Label_Name__c,'Write Off'),true,false ))}">
+                             <apex:commandLink value="{!formSegRegMapLst.ESC_Form_Label_Name__c}" onclick="redirecttoform4('{!formSegRegMapLst.ESC_CSS_Form__r.Name}');return false;" style="{!if(formLabelNameMap[formSegRegMapLst.ESC_Form_Label_Name__c] == formSegRegMapLst.ESC_Form_Label_Name__c,'color:#195610','')}" />
+                         </apex:outputPanel>
+                         <apex:outputPanel rendered="{!(if(formSegRegMapLst.ESC_Permission_Set_Assigned__c && iscc && formSegRegMapLst.ESC_Form_Section__c == $Label.ESC_AccountsReceivableBilling && !CONTAINS(formSegRegMapLst.ESC_Form_Label_Name__c,'Write Off'),true,false ))}">
+                             <apex:commandLink value="{!formSegRegMapLst.ESC_Form_Label_Name__c}" onclick="redirecttoform4('{!formSegRegMapLst.ESC_CSS_Form__r.Name}');return false;" style="{!if(formLabelNameMap[formSegRegMapLst.ESC_Form_Label_Name__c] == formSegRegMapLst.ESC_Form_Label_Name__c,'color:#195610','')}" />
+                         </apex:outputPanel>
+                     </apex:repeat>
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="{!$Label.ESC_AccountMaintenance}" rendered="{!accountMaintenanceScreen}">
+                     <apex:repeat value="{!formSegmtRegMappingList}" var="formSegRegMapLst" id="fromSegment2">
+                     <apex:outputPanel rendered="{!(if(formSegRegMapLst.ESC_Form_Section__c == $Label.ESC_AccountMaintenance,true,false ))}">
+                             <apex:commandLink value="{!formSegRegMapLst.ESC_Form_Label_Name__c}" onclick="redirecttoform4('{!formSegRegMapLst.ESC_CSS_Form__r.Name}');return false;" style="{!if(formLabelNameMap[formSegRegMapLst.ESC_Form_Label_Name__c] == formSegRegMapLst.ESC_Form_Label_Name__c ,'color:#195610','')}"  />
+                         </apex:outputPanel>
+                     </apex:repeat>
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="{!$Label.ESC_Orders}" rendered="{!ordersScreen}">
+                     <apex:repeat value="{!formSegmtRegMappingList}" var="formSegRegMapLst" id="fromSegment3">
+                     <apex:outputPanel rendered="{!(if(formSegRegMapLst.ESC_Form_Section__c == $Label.ESC_Orders,true,false ))}">
+                             <apex:commandLink value="{!formSegRegMapLst.ESC_Form_Label_Name__c}" onclick="redirecttoform4('{!formSegRegMapLst.ESC_CSS_Form__r.Name}');return false;" style="{!if(formLabelNameMap[formSegRegMapLst.ESC_Form_Label_Name__c] == formSegRegMapLst.ESC_Form_Label_Name__c ,'color:#195610','')}" />
+                     </apex:outputPanel>
+                     </apex:repeat>
+                 </apex:pageBlockSection>
+                 <apex:pageBlockSection columns="1" title="{!$Label.ESC_SubscriptionCancellation}" rendered="{!SubscriptionCancellationScreen}">
+                     <apex:repeat value="{!formSegmtRegMappingList}" var="formSegRegMapLst" id="fromSegment4">
+                     <apex:outputPanel rendered="{!(if(formSegRegMapLst.ESC_Form_Section__c == $Label.ESC_SubscriptionCancellation,true,false ))}">
+                              <apex:commandLink value="{!formSegRegMapLst.ESC_Form_Label_Name__c}" onclick="redirecttoform4('{!formSegRegMapLst.ESC_CSS_Form__r.Name}');return false;" style="{!if(formLabelNameMap[formSegRegMapLst.ESC_Form_Label_Name__c] == formSegRegMapLst.ESC_Form_Label_Name__c,'color:#195610','')}" />
+                     </apex:outputPanel>
+                     </apex:repeat>
+                 </apex:pageBlockSection>
+             </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

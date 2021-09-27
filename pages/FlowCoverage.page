@@ -1,0 +1,61 @@
+<apex:page controller="FlowCoverageClass">
+<style>
+.custom1 {
+    color: red !important;
+}
+.custom2 {
+    color: green !important;
+}
+
+</style>
+  <apex:pageMessages showDetail="true" ></apex:pageMessages> 
+    <apex:form >
+        <apex:pageBlock >
+        <apex:pageBlockButtons location="top">
+               <apex:commandButton action="{!emailTotalCoverage}" value="Email Total Coverage"/>
+           <!--     <apex:commandButton action="{!orgFlowCoverage}" value="Org Flow Coverage"/> -->
+             <apex:commandButton action="{!getUncoveredFlows}" value="Get Uncovered Flows"/> 
+              <apex:commandButton action="{!emailFlowCoverage}" value="Email Flow Coverage"/> 
+        <apex:commandButton action="{!getFlowDetail}" value="Get Flow Detail"/> 
+        </apex:pageBlockButtons>
+        
+     
+        
+        <apex:inputText value="{!flowId}" label="Flow ID" >Enter Flow ID&nbsp;&nbsp;</apex:inputText> <br/> <br/>
+        
+        <b> <apex:outputText rendered="{!unCovFlow}">Flows w/o Coverage</apex:outputText></b><br/>
+        
+         <apex:pageBlockTable rendered="{!unCovFlow}" title="Flows without Coverage" value="{!uncoveredFlows}" var="item">
+
+            <apex:column >
+             <apex:facet name="header">Flow Name</apex:facet>
+              {!item} 
+            </apex:column>
+        </apex:pageBlockTable>
+        
+       <b> <apex:outputText rendered="{!orgCovFlag}" styleClass="{!IF((orgFlowCoverage < 75.0),'custom1','custom2')}" value="{!orgFlowCoverage}%" label="Org Flow Coverage">Org Flow Coverage:&nbsp;</apex:outputText></b><br/><br/>
+         <b> <apex:outputText rendered="{!flowEleFlag}" styleClass="{!IF((totalCoverage < 75.0),'custom1','custom2')}" value="{!totalCoverage}%" label="Aggregate Flow Coverage">Aggregate Coverage of Flow:&nbsp;</apex:outputText></b><br/><br/> 
+       
+        
+        <b> <apex:outputText rendered="{!flowEleFlag}"  value="{!flowName}">Covered Elements of the Flow:&nbsp;</apex:outputText></b><br/><br/>
+        <apex:pageBlockTable rendered="{!flowEleFlag}" title="Covered Elements" value="{!coveredElements}" var="item1">
+        
+        
+            <apex:column >
+             <apex:facet name="header">Element Name</apex:facet>
+              {!item1} 
+            </apex:column>
+        </apex:pageBlockTable>
+
+    <br/><br/>
+    <li> Email Total Coverage: Emails the aggregate coverage of all active flows in the Org. csv will be sent email of logged in user. Flow ID not required.</li>
+    <li> Get Uncovered Flows: Lists the flows which dont have any coverage. Flow ID not required. </li>
+    <li> Email Flow Coverage: Emails the coverage contribution of each method/class for particular flow. Flow ID is required; Flow ID can be fetched from the Total Coverage Mail</li>
+    <li> Get Flow Detail: Lists each Element of a flow which is covered and also the aggregate coverage. Flow ID is required </li>
+
+    
+   
+              
+     </apex:pageBlock>
+    </apex:form>
+    </apex:page>

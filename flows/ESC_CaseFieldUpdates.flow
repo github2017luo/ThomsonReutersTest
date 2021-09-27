@@ -1,0 +1,947 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>myVariable_waitStartTimeAssignment</name>
+        <label>myVariable_waitStartTimeAssignment</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>myVariable_waitStartTimeVariable</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>myDecision</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>CASE - Set Priority to High</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>5.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision11</name>
+        <label>myDecision11</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_12</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_12</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_12_A1</targetReference>
+            </connector>
+            <label>Update Case Assigned Date</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>case inquiry change status to assigned</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision6</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>case inquiry change status to open</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision6</name>
+        <label>myDecision6</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision8</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_7</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_7</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_7_pmetdec</targetReference>
+            </connector>
+            <label>Cash Apps</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>4.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision8</name>
+        <label>myDecision8</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision11</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_9</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_9</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_9_A1</targetReference>
+            </connector>
+            <label>Populate Subject when Case is created</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>myRule_7_pmetdec</name>
+        <label>Previously Met Decision</label>
+        <locationX>700</locationX>
+        <locationY>100</locationY>
+        <defaultConnector>
+            <targetReference>myRule_7_A1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Previously Met</defaultConnectorLabel>
+        <rules>
+            <name>myRule_7_pmetnullrule</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>myVariable_old</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_7_A1</targetReference>
+            </connector>
+            <label>Previously Met - Null</label>
+        </rules>
+        <rules>
+            <name>myRule_7_pmetrule</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_7_pmetrule</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myDecision8</targetReference>
+            </connector>
+            <label>Previously Met - Prev</label>
+        </rules>
+    </decisions>
+    <description>This Process builder used too update the case related fields where re-evaluate trigger is false</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF (NOT(ISBLANK(TEXT([Case].ANZ_Issue__c))) &amp;&amp; NOT(ISBLANK(TEXT([Case].Reason__c))), TEXT([Case].ANZ_Issue__c) + &quot; - &quot; + TEXT([Case].Reason__c), IF (NOT(ISBLANK(TEXT([Case].ANZ_Issue__c))) &amp;&amp; ISBLANK(TEXT([Case].Reason__c)), TEXT([Case].ANZ_Issue__c), &quot;&quot;))</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_10_myRule_9_A1_7379659127</name>
+        <dataType>String</dataType>
+        <expression>IF (NOT(ISBLANK(TEXT({!myVariable_current.ANZ_Issue__c}))) &amp;&amp; NOT(ISBLANK(TEXT({!myVariable_current.Reason__c}))), TEXT({!myVariable_current.ANZ_Issue__c}) + &quot; - &quot; + TEXT({!myVariable_current.Reason__c}), IF (NOT(ISBLANK(TEXT({!myVariable_current.ANZ_Issue__c}))) &amp;&amp; ISBLANK(TEXT({!myVariable_current.Reason__c})), TEXT({!myVariable_current.ANZ_Issue__c}), &quot;&quot;))</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>NOW() </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_13_myRule_12_A1_2398794801</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+          [Case].Large_Account__c == TRUE,
+	  NOT(ISPICKVAL([Case].Priority,&apos;Urgent&apos;)),
+	  [Case].RecordType.DeveloperName &lt;&gt; &apos;Site_Originated&apos; ,
+	  [Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	  [Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_Closed_CPQ_Requests&apos;,
+	  [Case].Is_ESC_Case__c == FALSE,
+          [Case].RecordType.DeveloperName = &apos;ANZ&apos;,
+           NOT(ISPICKVAL([Case].Status,&apos;Closed&apos;))
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+          {!myVariable_current.Large_Account__c} == TRUE,
+	  NOT(ISPICKVAL({!myVariable_current.Priority},&apos;Urgent&apos;)),
+	  {!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Site_Originated&apos; ,
+	  {!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	  {!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_Closed_CPQ_Requests&apos;,
+	  {!myVariable_current.Is_ESC_Case__c} == FALSE,
+          {!myVariable_current.RecordType.DeveloperName} = &apos;ANZ&apos;,
+           NOT(ISPICKVAL({!myVariable_current.Status},&apos;Closed&apos;))
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND( $Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+
+	OR(ISNEW(), 
+	   ISCHANGED([Case].OwnerId)
+	   ),
+	[Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	[Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_Closed_CPQ_Requests&apos;,
+	[Case].Is_ESC_Case__c == FALSE,
+        [Case].IsClosed == FALSE
+
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_12</name>
+        <dataType>Boolean</dataType>
+        <expression>AND( {!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+
+	OR(ISNEW(), 
+	   ISCHANGED({!myVariable_current.OwnerId})
+	   ),
+	{!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	{!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_Closed_CPQ_Requests&apos;,
+	{!myVariable_current.Is_ESC_Case__c} == FALSE,
+        {!myVariable_current.IsClosed} == FALSE
+
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+	OR(
+	   [Case].RecordType.DeveloperName = &apos;SCS_Inquiry&apos; ,
+	   [Case].RecordType.DeveloperName = &apos;Findlaw_Inquiry&apos;
+	),
+	ISCHANGED([Case].OwnerId),
+	ISPICKVAL([Case].Status,&apos;Open&apos;),
+	CONTAINS(PRIORVALUE([Case].OwnerId),&quot;00G&quot;),
+	NOT(CONTAINS([Case].OwnerId,&quot;00G&quot;))
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+	OR(
+	   {!myVariable_current.RecordType.DeveloperName} = &apos;SCS_Inquiry&apos; ,
+	   {!myVariable_current.RecordType.DeveloperName} = &apos;Findlaw_Inquiry&apos;
+	),
+	ISCHANGED({!myVariable_current.OwnerId}),
+	ISPICKVAL({!myVariable_current.Status},&apos;Open&apos;),
+	CONTAINS(PRIORVALUE({!myVariable_current.OwnerId}),&quot;00G&quot;),
+	NOT(CONTAINS({!myVariable_current.OwnerId},&quot;00G&quot;))
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+	OR(
+	   [Case].RecordType.DeveloperName = &apos;SCS_Inquiry&apos; ,
+	   [Case].RecordType.DeveloperName = &apos;Findlaw_Inquiry&apos;
+	),
+	ISCHANGED([Case].OwnerId),
+	ISPICKVAL([Case].Status,&apos;Assigned&apos;),
+	NOT(CONTAINS(PRIORVALUE([Case].OwnerId),&quot;00G&quot;)),
+	CONTAINS([Case].OwnerId,&quot;00G&quot;)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+	OR(
+	   {!myVariable_current.RecordType.DeveloperName} = &apos;SCS_Inquiry&apos; ,
+	   {!myVariable_current.RecordType.DeveloperName} = &apos;Findlaw_Inquiry&apos;
+	),
+	ISCHANGED({!myVariable_current.OwnerId}),
+	ISPICKVAL({!myVariable_current.Status},&apos;Assigned&apos;),
+	NOT(CONTAINS(PRIORVALUE({!myVariable_current.OwnerId}),&quot;00G&quot;)),
+	CONTAINS({!myVariable_current.OwnerId},&quot;00G&quot;)
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+
+	ISPICKVAL([Case].ANZ_Issue__c,&apos;Administrativa&apos;),
+	ISPICKVAL([Case].Reason__c,&apos;Cobranzas/ Reintegros&apos;),
+	ISPICKVAL([Case].Reason_Detail__c,&apos;Reintegro&apos;),
+	[Case].RecordType.DeveloperName &lt;&gt; &apos;Site_Originated&apos; ,
+	[Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	[Case].Is_ESC_Case__c == FALSE
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_7</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+
+	ISPICKVAL({!myVariable_current.ANZ_Issue__c},&apos;Administrativa&apos;),
+	ISPICKVAL({!myVariable_current.Reason__c},&apos;Cobranzas/ Reintegros&apos;),
+	ISPICKVAL({!myVariable_current.Reason_Detail__c},&apos;Reintegro&apos;),
+	{!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Site_Originated&apos; ,
+	{!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	{!myVariable_current.Is_ESC_Case__c} == FALSE
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+
+	ISPICKVAL([Case].ANZ_Issue__c,&apos;Administrativa&apos;),
+	ISPICKVAL([Case].Reason__c,&apos;Cobranzas/ Reintegros&apos;),
+	ISPICKVAL([Case].Reason_Detail__c,&apos;Reintegro&apos;),
+	[Case].RecordType.DeveloperName &lt;&gt; &apos;Site_Originated&apos; ,
+	[Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	[Case].Is_ESC_Case__c == FALSE
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_7_pmetrule</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+
+	ISPICKVAL({!myVariable_old.ANZ_Issue__c},&apos;Administrativa&apos;),
+	ISPICKVAL({!myVariable_old.Reason__c},&apos;Cobranzas/ Reintegros&apos;),
+	ISPICKVAL({!myVariable_old.Reason_Detail__c},&apos;Reintegro&apos;),
+	{!myVariable_old.RecordType.DeveloperName} &lt;&gt; &apos;Site_Originated&apos; ,
+	{!myVariable_old.RecordType.DeveloperName} &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	{!myVariable_old.Is_ESC_Case__c} == FALSE
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+          ISNEW(),
+	  ISBLANK([Case].Subject),
+	  [Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	  [Case].RecordType.DeveloperName &lt;&gt; &apos;Elite_Closed_CPQ_Requests&apos;,
+	  [Case].Is_ESC_Case__c == FALSE
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_9</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+          ISNEW(),
+	  ISBLANK({!myVariable_current.Subject}),
+	  {!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_CPQ_Requests&apos;,
+	  {!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;Elite_Closed_CPQ_Requests&apos;,
+	  {!myVariable_current.Is_ESC_Case__c} == FALSE
+)</expression>
+    </formulas>
+    <interviewLabel>ESC_CaseFieldUpdates-10_InterviewLabel</interviewLabel>
+    <label>ESC_CaseFieldUpdates</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Case</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_12_A1</name>
+        <label>Update Case Assigned Date</label>
+        <locationX>1200</locationX>
+        <locationY>200</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>DateTime</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Assigned Date</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Assigned_Date__c</field>
+            <value>
+                <elementReference>formula_13_myRule_12_A1_2398794801</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>CASE - Set Priority to High</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision2</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Priority</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Priority</field>
+            <value>
+                <stringValue>High</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>update status for inquiry</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision4</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>Assigned</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>update to Open</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision6</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>Open</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_7_A1</name>
+        <label>Update Case Status</label>
+        <locationX>700</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision8</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>Escalated</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <processMetadataValues>
+            <name>evaluationType</name>
+            <value>
+                <stringValue>always</stringValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>isChildRelationship</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </processMetadataValues>
+        <processMetadataValues>
+            <name>reference</name>
+            <value>
+                <stringValue>[Case]</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_9_A1</name>
+        <label>Populate Subject when Case is created</label>
+        <locationX>900</locationX>
+        <locationY>200</locationY>
+        <connector>
+            <targetReference>myDecision11</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <processMetadataValues>
+                <name>implicit</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Subject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Subject</field>
+            <value>
+                <elementReference>formula_10_myRule_9_A1_7379659127</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <startElementReference>myVariable_waitStartTimeAssignment</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_waitStartTimeVariable</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Flow.CurrentDateTime</elementReference>
+        </value>
+    </variables>
+</Flow>

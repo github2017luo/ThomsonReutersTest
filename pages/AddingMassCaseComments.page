@@ -1,0 +1,36 @@
+<apex:page standardController="Case" recordSetVar="cases" tabStyle="Case" extensions="CaseListButtonController">
+<apex:pageMessages id="msgs" />
+  <apex:form >
+    <div>
+        
+     <apex:pageBlock id="pg">
+     
+        <apex:outputText value="This screen allows you to add new Case Comment to selected records"/> 
+        
+
+        <apex:pageBlockButtons location="top">
+               <apex:commandButton action="{!updateCases}" value="Save"/>
+               <apex:commandButton action="{!Cancel}" value="Cancel"/>
+        </apex:pageBlockButtons>
+            
+                       
+         <apex:pageBlockSection title="Add New Case Comment" columns="1">
+               
+               <apex:pageBlockSectionItem >
+                   <apex:outputLabel value="Public" for="case_comments_visibility"/>
+                   <apex:inputCheckbox value="{!caseCommentPublic}"/>
+               </apex:pageBlockSectionItem>                                                           
+                   
+               <apex:pageBlockSectionItem >
+                   <apex:outputLabel value="Case Comment" for="case_comments"/>
+                   <apex:inputtextarea value="{!caseComment}" cols="40" rows="6" />
+               </apex:pageBlockSectionItem>  
+               
+               
+          </apex:pageBlockSection>
+
+      </apex:pageBlock>
+    </div>
+  </apex:form>
+
+</apex:page>

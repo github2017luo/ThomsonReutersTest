@@ -1,0 +1,445 @@
+<apex:page standardController="Quote" tabStyle="Quotes__tab" extensions="OrderProcessingListViewController" id="pg">
+ <apex:includeScript value="{!URLFOR($Resource.Autocomplete,'Autocomplete/js/jquery-1.7.1.min.js')}"/>
+    <style>
+        .labelClass {
+            color:red;
+            font-style:italic;
+        }
+        .enableLink {
+            color: #0193dc;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .enableLink:hover {
+            color: #0193dc;
+            cursor: pointer;
+            text-decoration: none;
+        }
+       .disableLink {
+            color: #a8a8a8!important;
+            background-color: transparent;
+            cursor: text;
+            text-decoration: none;
+       }
+       .disableLink:hover {
+            color: #a8a8a8!important;
+            background-color: transparent;
+            cursor: text;
+            text-decoration: none;
+       }
+       .selectorPnl {
+            display: block;
+            background-color: #fff;
+            color: #333;
+            position: absolute;
+            bottom: 2em;
+            left:0;
+            cursor: pointer!important;
+            border: 2px solid #ccc;
+            width: 136px;
+            text-align: left;
+       }
+       .selectArrow {
+           background-position:left;
+           background-repeat:no-repeat;
+           height:12px;           
+           width:14px;
+           position:relative;
+           left:2px;
+           top:1px;
+           background-position: -15px 0;
+           background-image: url(/img/func_icons/util/selectArrow12.gif);
+       }
+        .col1 {width:10%; text-align:left;}
+        .col2 {width:10%; text-align:left;position: relative;}
+        .col3 {width:70%;width:50%;}
+        .col4 {width:10%; text-align:right;}       
+    </style>
+    <script type="text/javascript">
+        j$ = jQuery.noConflict();
+        j$(document).mouseup(function (e) {
+            if(document.getElementById('pg:frm:pgBlock:pnlGrid').style.display != 'none')     
+                closehover();
+        });
+        //document.addEventListener("click", function() {closeHover();});
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");
+            for(var i=0; i<inputCheckBox.length; i++){
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+        function openHover() {
+            document.getElementById('pg:frm:pgBlock:pnlGrid').style.display = 'inline';  
+            return false;          
+        }
+        function closehover() {
+            
+            //if(document.getElementById('pg:frm:pgBlock:pnlGrid') != null)
+                document.getElementById('pg:frm:pgBlock:pnlGrid').style.display = 'none'; 
+            return false;          
+        }
+        var countChecked = 0;
+        var tempCount = 0;
+        function checkAll(recSection, chkbox) {
+            if(chkbox.checked) {
+                selectRecords(recSection);
+            }
+            else {
+                deSelectRecords(recSection);
+            }
+        }
+        //Select all records
+        function selectRecords(recSection) {    
+            var noCheckBox = 0;                                                                               
+            j$('.'+recSection).each(function() {
+                if(!this.checked) {
+                    j$(this).attr('checked', true);
+                    tempCount ++;
+                    j$('.checkAllQuote').each(function() {
+                        
+                        j$(this).attr('checked', true);
+                    }); 
+                }
+                noCheckBox ++;
+            });
+            if(tempCount != 0 && tempCount != countChecked) {
+                var selText = tempCount + ' Selected';
+                j$('[id$=oSelection]').text(selText);
+                j$('[id$=selectRecs]').text('Select Page(+0)');
+                j$('[id$=deselection]').text('Deselect Page(-' + noCheckBox +')');
+                j$('[id$=clrselection]').text('Clear All Selection(-' + tempCount + ')');
+                countChecked = tempCount;
+            }                
+        }
+        function deSelectRecords(recSection) {   
+            var chkCount = 0;
+            var noCheckBox = 0;                                                                                
+            j$('.'+recSection).each(function() {
+                if(this.checked) {
+                    j$(this).attr('checked', false);
+                    tempCount --;
+                    j$('.checkAllQuote').each(function() {
+                        j$(this).attr('checked', false);
+                    });
+                }
+                noCheckBox ++;
+            });
+            if(tempCount != countChecked) {
+                var selText = tempCount + ' Selected';
+                j$('[id$=oSelection]').text(selText);
+                j$('[id$=selectRecs]').text('Select Page(+ ' + noCheckBox + ')');
+                //j$('[id$=selectRecs]').text('Select Page(+{!$Label.Quote_Page_Size})');
+                j$('[id$=deselection]').text('Deselect Page(-0)');
+                j$('[id$=clrselection]').text('Clear All Selection(-' + tempCount + ')');
+                countChecked = tempCount;
+            }                
+        }
+        function clrSelectRecords() {  
+            var noCheckBox = 0;
+            
+            j$('.quoteChk').each(function() {
+                noCheckBox ++;
+                if(this.checked) {
+                    j$(this).attr('checked', false);                     
+                    countChecked = tempCount = 0;
+                    j$('.checkAllQuote').each(function() {
+                        j$(this).attr('checked', false);
+                    });
+                 }
+            }); 
+            j$('[id$=oSelection]').text('0 Selected'); 
+            j$('[id$=selectRecs]').text('Select Page(+ ' + noCheckBox + ')');
+            j$('[id$=deselection]').text('Deselect Page(-0)');
+            j$('[id$=clrselection]').text('Clear All Selection(-0)');                             
+        }
+
+        function singleChk(chkbox) {
+            var chkCount = 0;
+            var noCheckBox = 0;
+            if(chkbox.checked) {
+                tempCount++; 
+                countChecked++;                
+            }
+            else {
+                
+                tempCount--; 
+                countChecked--;
+                j$('.checkAllQuote').each(function() {
+                    j$(this).attr('checked', false);
+                });
+            }
+            j$('.quoteChk').each(function() {
+                if(this.checked) {
+                    chkCount ++;
+                }
+                noCheckBox ++;                
+            }); 
+            if(chkCount != 0 && noCheckBox != 0 && noCheckBox == countChecked) {
+                j$('.checkAllQuote').each(function() {
+                    j$(this).attr('checked', true);
+                });
+            }
+            var selText = tempCount + ' Selected';
+            j$('[id$=oSelection]').text(selText);
+            var checkSelected = noCheckBox - chkCount;
+            j$('[id$=selectRecs]').text('Select Page(+' + checkSelected + ')');
+            j$('[id$=deselection]').text('Deselect Page(- ' + chkCount + ')');
+            j$('[id$=clrselection]').text('Clear All Selection(' + tempCount + ')');
+     }
+         
+     
+     function onClickField(){
+         var Id = document.getElementByID('{pg:frm:pgBlock:pnlGrid :theLink}').Value;
+         if(typeof(srcUp)=='function'){ 
+            srcUp('/" & Id & "');
+          }else{
+             window.open('/" & Id & "','_blank')
+          }
+     }
+     function onClickOpptyName(){
+         var Id = document.getElementByID('{pg:frm:pgBlock:pnlGrid :theLinkOptName}').Value;
+         if(typeof(srcUp)=='function'){ 
+            srcUp('/" & Id & "');
+          }else{
+             window.open('/" & Id & "','_blank')
+          }
+     }function onClickAccName(){
+         var Id = document.getElementByID('{pg:frm:pgBlock:pnlGrid :theLinkAccName}').Value;
+         if(typeof(srcUp)=='function'){ 
+            srcUp('/" & Id & "');
+          }else{
+             window.open('/" & Id & "','_blank')
+          }
+     }
+    </script>
+    <apex:form id="frm">
+        <apex:actionFunction name="first" action="{!first}" rerender="pgtb2,moreQuotes" />
+        <apex:actionFunction name="previous" action="{!previous}" rerender="pgtb2,moreQuotes" />
+        <apex:actionFunction name="next"  action="{!next}" rerender="pgtb2,moreQuotes" />
+        <apex:actionFunction name="last"  action="{!last}" rerender="pgtb2,moreQuotes" />
+        <apex:pageMessages id="msgs"/> 
+        <table> 
+            <tr>
+                <td>
+                    <b> View: &nbsp;</b>
+                </td>                
+                <td>
+                    <apex:outputPanel id="oplSalesLbl">
+                        <apex:outputLabel value="Sales Org:" style="font-weight:bold;" rendered="{!blnViewSalesOrg}" />  
+                    </apex:outputPanel>                 
+                </td>
+                <td></td>
+            </tr>   
+            <tr>
+                <td>
+                    <apex:selectList value="{!SelectedFilter}" Size="1" multiselect="false">
+                        <apex:actionSupport event="onchange" action="{!receiveSalesOrg}" reRender="oplSalesOrg,oplSalesLbl" status="actStatusId"/>
+                        <apex:selectOptions value="{!Filters}"/>
+                    </apex:selectList>
+                </td>
+                <td>
+                    <apex:outputPanel id="oplSalesOrg">
+                        <apex:selectList value="{!selectedSalesORG}" Size="1" id="slSalesOrg" rendered="{!blnViewSalesOrg}">
+                            <apex:selectOptions value="{!SalesOrg}"/>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </td>
+                <td>
+                    <apex:commandButton value="Go" action="{!go}"/>
+                    <apex:actionStatus id="actStatusId" >
+                        <apex:facet name="start" >
+                          <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus>
+                </td>
+            </tr>
+        </table>
+        <apex:outputPanel id="pnl" >
+            <apex:outputLabel styleClass="labelClass" rendered="{!(QuoteMapSize == 0)}"> No Quotes Found</apex:outputLabel>
+            <apex:pageBlock title="Viewing Quotes" id="pgBlock" rendered ="{!QuoteMapSize > 0}">
+                <apex:pageblockButtons location="top"> 
+                    <apex:commandButton value="Accept"  action="{!processSelected}" />                      
+                </apex:pageblockButtons>
+                <apex:outputPanel layout="block">
+                <apex:pageBlockTable value="{!mapPageToQuotes[currentQuotePage]}" var="l" id="pgtb2" width="100%" > 
+                    <apex:column >                  
+                        <apex:facet name="header">
+                            <!--apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/-->
+                            <apex:inputCheckbox styleClass="checkAllQuote" onClick="checkAll('quoteChk', this);" />
+                        </apex:facet>
+                    <apex:inputCheckbox value="{!l.selected}" id="inputId" styleClass="quoteChk" onclick="singleChk(this);"/>
+                    <!--input type = "checkbox" id = "quoteChk" class ="Quote_chkBox" value = "{!l.selected}" onclick = "selectRec(this);" /-->
+                    </apex:column>
+                    <apex:column headerValue="{!$Label.Action}" width="5%" >
+                        <a  href="/{!l.QuoteRec.id}/e?retURL=%2Fapex%2F{!$CurrentPage.Name}" style="color:blue;">{!$Label.Edit}</a>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Is Mastered Account">
+                        <apex:facet name="header">
+                                <apex:commandLink value="Is Mastered Account" action="{!LoadData}" id="cmdOppName6" >
+                                    <apex:outputPanel rendered="{!IF(isShowSortImage = true && strFieldLabel1 ='Is Mastered Account', true, false)}">                                
+                                        <apex:image value="/s.gif" styleClass="sortAsc"  alt="Sorted Ascending" title="Sorted Descending" rendered="{!IF(sortDirection=='ASC NULLS FIRST',true,false)}" /> 
+                                        <apex:image value="/s.gif" styleClass="sortDesc"  alt="Sorted Descending" title="Sorted Ascending" rendered="{!IF(sortDirection=='DESC NULLS LAST',true,false)}"/>                                                    
+                                    </apex:outputPanel>
+                                    <apex:param value="Is Mastered Account" name="Column" assignTo="{!sortExpression}"/>
+                                    <apex:param value="1" name="ColHeader" assignTo="{!isColHeaderClick}"/>
+                                    <apex:param value="Is Mastered Account" name="FieldLabel" assignTo="{!strFieldLabelName}"/>
+                                </apex:commandLink>
+                        </apex:facet> 
+                        <apex:outputField value="{!l.QuoteRec.Is_Mastered_Account__c}"/>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Quote Number">                        
+                        <apex:facet name="header">
+                                <apex:commandLink value="Quote Number" action="{!LoadData}" id="cmdOppName2" >
+                                    <apex:outputPanel rendered="{!IF(isShowSortImage = true && strFieldLabel1 ='Quote Number', true, false)}">                                
+                                        <apex:image value="/s.gif" styleClass="sortAsc"  alt="Sorted Ascending" title="Sorted Descending" rendered="{!IF(sortDirection=='ASC NULLS FIRST',true,false)}" /> 
+                                        <apex:image value="/s.gif" styleClass="sortDesc"  alt="Sorted Descending" title="Sorted Ascending" rendered="{!IF(sortDirection=='DESC NULLS LAST',true,false)}"/>                                                    
+                                    </apex:outputPanel>
+                                    <apex:param value="Quote Number" name="Column" assignTo="{!sortExpression}"/>
+                                    <apex:param value="1" name="ColHeader" assignTo="{!isColHeaderClick}"/>
+                                    <apex:param value="Quote Number" name="FieldLabel" assignTo="{!strFieldLabelName}"/>
+                                </apex:commandLink>
+                        </apex:facet>                                                    
+                         <!--<a href="/{!l.QuoteRec.id}" target="_blank" >{!l.QuoteRec.QuoteNumber}</a>-->                 
+                         <apex:outputLink value="/{!l.QuoteRec.id}" target="_blank" id="theLink" onclick="onClickField()">{!l.QuoteRec.QuoteNumber}</apex:outputLink>
+                    </apex:column>
+                                        
+                    <apex:column headerValue="Quote Name">
+                        <apex:facet name="header">
+                                <apex:commandLink value="Quote Name" action="{!LoadData}" id="cmdOppName3" >
+                                    <apex:outputPanel rendered="{!IF(isShowSortImage = true && strFieldLabel1 ='Quote Name', true, false)}">                                
+                                        <apex:image value="/s.gif" styleClass="sortAsc"  alt="Sorted Ascending" title="Sorted Descending" rendered="{!IF(sortDirection=='ASC NULLS FIRST',true,false)}" /> 
+                                        <apex:image value="/s.gif" styleClass="sortDesc"  alt="Sorted Descending" title="Sorted Ascending" rendered="{!IF(sortDirection=='DESC NULLS LAST',true,false)}"/>                                                    
+                                    </apex:outputPanel>
+                                    <apex:param value="Quote Name" name="Column" assignTo="{!sortExpression}"/>
+                                    <apex:param value="1" name="ColHeader" assignTo="{!isColHeaderClick}"/>
+                                    <apex:param value="Quote Name" name="FieldLabel" assignTo="{!strFieldLabelName}"/>
+                                </apex:commandLink>
+                        </apex:facet>             
+                        <!--<a href="/{!l.QuoteRec.id}" target="_blank">{!l.QuoteRec.Name}</a>-->
+                        <apex:outputLink value="/{!l.QuoteRec.id}" target="_blank" id="theLinkQtName" onclick="onClickField()">{!l.QuoteRec.Name}</apex:outputLink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Opportunity Name" >
+                        <apex:facet name="header">
+                                <apex:commandLink value="Opportunity Name" action="{!LoadData}" id="cmdOppName4" >
+                                    <apex:outputPanel rendered="{!IF(isShowSortImage = true && strFieldLabel1 ='Opportunity Name', true, false)}">                                
+                                        <apex:image value="/s.gif" styleClass="sortAsc"  alt="Sorted Ascending" title="Sorted Descending" rendered="{!IF(sortDirection=='ASC NULLS FIRST',true,false)}" /> 
+                                        <apex:image value="/s.gif" styleClass="sortDesc"  alt="Sorted Descending" title="Sorted Ascending" rendered="{!IF(sortDirection=='DESC NULLS LAST',true,false)}"/>                                                    
+                                    </apex:outputPanel>
+                                    <apex:param value="Opportunity Name" name="Column" assignTo="{!sortExpression}"/>
+                                    <apex:param value="1" name="ColHeader" assignTo="{!isColHeaderClick}"/>
+                                    <apex:param value="Opportunity Name" name="FieldLabel" assignTo="{!strFieldLabelName}"/>
+                                </apex:commandLink>
+                        </apex:facet> 
+                        <!--<a href="/{!l.QuoteRec.OpportunityId}" target="_blank">{!l.QuoteRec.Opportunity.Name}</a>-->
+                        <apex:outputLink value="/{!l.QuoteRec.OpportunityId}" target="_blank" id="theLinkOptName" onclick="onClickOpptyName()">{!l.QuoteRec.Opportunity.Name}</apex:outputLink>
+                    </apex:column>
+                    
+                    <apex:column headerValue="Account Name" onclick="LoadData()">
+                        <apex:facet name="header">
+                                <apex:commandLink value="Account Name" action="{!LoadData}" id="cmdOppName5" >
+                                    <apex:outputPanel rendered="{!IF(isShowSortImage = true && strFieldLabel1 ='Account Name', true, false)}">                                
+                                        <apex:image value="/s.gif" styleClass="sortAsc"  alt="Sorted Ascending" title="Sorted Descending" rendered="{!IF(sortDirection=='ASC NULLS FIRST',true,false)}" /> 
+                                        <apex:image value="/s.gif" styleClass="sortDesc"  alt="Sorted Descending" title="Sorted Ascending" rendered="{!IF(sortDirection=='DESC NULLS LAST',true,false)}"/>                                                    
+                                    </apex:outputPanel>
+                                    <apex:param value="Account Name" name="Column" assignTo="{!sortExpression}"/>
+                                    <apex:param value="1" name="ColHeader" assignTo="{!isColHeaderClick}"/>
+                                    <apex:param value="Account Name" name="FieldLabel" assignTo="{!strFieldLabelName}"/>
+                                </apex:commandLink>
+                            </apex:facet> 
+                        <!--<a href="/{!l.QuoteRec.AccountId}" target="_blank">{!l.QuoteRec.Account.Name}</a>-->
+                        <apex:outputLink value="/{!l.QuoteRec.AccountId}" target="_blank" id="theLinkAccName" onclick="onClickAccName()">{!l.QuoteRec.Account.Name}</apex:outputLink>
+                    </apex:column>
+                     
+                    <apex:repeat value="{!fields}" var="f" >
+                        <apex:column >
+                            <apex:facet name="header">
+                                <apex:commandLink value="{!f.Label}" action="{!LoadData}" id="cmdOppName" >
+                                    <apex:outputPanel rendered="{!IF(isShowSortImage = true && f.label = strFieldLabel1, true, false)}">                                
+                                        <apex:image value="/s.gif" styleClass="sortAsc"  alt="Sorted Ascending" title="Sorted Descending" rendered="{!IF(sortDirection=='ASC NULLS FIRST',true,false)}" /> 
+                                        <apex:image value="/s.gif" styleClass="sortDesc"  alt="Sorted Descending" title="Sorted Ascending" rendered="{!IF(sortDirection=='DESC NULLS LAST',true,false)}"/>                                                    
+                                    </apex:outputPanel>
+                                    <apex:param value="{!f.Label}" name="Column" assignTo="{!sortExpression}"/>
+                                    <apex:param value="1" name="ColHeader" assignTo="{!isColHeaderClick}"/>
+                                    <apex:param value="{!f.Label}" name="FieldLabel" assignTo="{!strFieldLabelName}"/>
+                                </apex:commandLink>
+                            </apex:facet>
+                            <apex:outputField value="{!l.QuoteRec[f]}"/>                            
+                        </apex:column>
+                    </apex:repeat>
+                </apex:pageBlockTable> 
+                </apex:outputPanel>
+                <br />
+                <apex:panelGrid columns="4" columnClasses="col1, col2, col3, col4" style="text-align: center;" width="100%" >
+                    <apex:outputLabel styleClass="pageText" rendered="{!QuoteMapSize > 0}" id = "displayPgNo"> 
+                        {!((currentQuotePage - 1) * QuotePageSize) + 1} - {!((currentQuotePage - 1) * QuotePageSize) + currentQuotePageMapSize} of {!QuoteListSize} 
+                    </apex:outputLabel>
+                    <apex:outputPanel >
+                    <!--open hover-->
+                    <apex:outputLabel id="oSelection" value="0 Selected" onclick="openHover();"  />
+                    <!--apex:image url="/img/func_icons/util/selectArrow12.gif" styleClass="selectArrow" onclick="openHover();" width="12px" /-->
+                    <img class="selectArrow" onclick="openHover();" />
+                    <apex:panelGrid columns="1" style="display:none;" styleClass="selectorPnl" id="pnlGrid" >
+                        <apex:outputLAbel value="Select Page (+{!$Label.Quote_Page_Size})" id="selectRecs" styleClass="selection" onClick="selectRecords('quoteChk');" />
+                        <apex:outputLAbel value="Deselect Page (-0)" id="deselection" onClick="deSelectRecords('quoteChk');" />
+                        <apex:outputLAbel value="Clear All Selections (-0)" id="clrselection" onClick="clrSelectRecords();" />
+                    </apex:panelGrid>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="block" rendered="{!QuoteMapSize > 0}" id = "moreQuotes" style = "margin: 0 3px;">                      
+                    <script  type="text/javascript">
+                        j$ = jQuery.noConflict();
+                        var chkCount = 0;
+                        var noCheckBox = 0;
+                        j$('.quoteChk').each(function() {
+                            if(this.checked) {
+                                chkCount ++;
+                            }
+                            noCheckBox ++;
+                         });
+                        var selText = tempCount + ' Selected';
+                        j$('[id$=oSelection]').text(selText);
+                        var checkSelected = noCheckBox - chkCount;
+                        j$('[id$=selectRecs]').text('Select Page(+ ' + checkSelected + ')');
+                        j$('[id$=deselection]').text('Deselect Page(- ' + chkCount + ')');
+                        //j$('[id$=clrselection]').text('Clear All Selection(-0)');
+                        
+                        j$('.checkAllQuote').each(function() {
+                            if(chkCount != 0 && noCheckBox != 0 && noCheckBox == countChecked) 
+                                j$(this).attr('checked', true);
+                            else
+                                j$(this).attr('checked', false);
+                        });              
+                    </script>                                                                 
+                        <apex:outputPanel >                                   
+                            <apex:commandLink value="<< " styleclass="{!if(currentQuotePage <= 1,'disableLink','enableLink')}" action="{!first}" rerender="pgtb2,moreQuotes,displayPgNo, pgNumber"/>                            
+                            &nbsp;&nbsp;
+                        </apex:outputPanel>
+                        <apex:outputPanel >
+                            <apex:commandLink value="< Previous" styleclass="{!if(currentQuotePage <= 1,'disableLink','enableLink')}" action="{!previous}" rerender="pgtb2,moreQuotes,displayPgNo, pgNumber" />                            
+                           &nbsp;&nbsp;
+                        </apex:outputPanel>                                       
+                        <apex:outputPanel >               
+                             <apex:commandLink value="Next >" styleclass = "{!if(currentQuotePage < QuoteMapSize,'enableLink','disableLink')}" action="{!next}" rerender="pgtb2,moreQuotes,displayPgNo, pgNumber" />                              
+                             &nbsp;&nbsp;
+                        </apex:outputPanel>
+                        <apex:outputPanel >                                    
+                            <apex:commandLink value=" >>" styleclass = "{!if(currentQuotePage < QuoteMapSize,'enableLink','disableLink')}" action="{!last}" rerender="pgtb2,moreQuotes,displayPgNo, pgNumber"/>                                                                  
+                            &nbsp;&nbsp;
+                        </apex:outputPanel>                     
+                     </apex:outputPanel>
+                     <apex:outputPanel id="pgNumber" >
+                        Page {!currentQuotePage} of {!QuoteMapSize} 
+                     </apex:outputPanel> 
+                 </apex:panelGrid>
+                <apex:pageBlockSection >
+                    <apex:repeat value="{!fields}" var="f" >               
+                    </apex:repeat>
+                </apex:pageBlockSection>
+            </apex:pageblock>
+        </apex:outputPanel>    
+    </apex:form>
+</apex:page>

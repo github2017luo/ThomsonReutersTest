@@ -1,0 +1,42 @@
+<template>
+    <div if:true={errorMsg} >
+      <p style="color: red;">{errorMsg}</p>
+    </div>
+    <div style="height:300px; Width:1130px; margin-bottom:100px; ">
+      <div class="slds-page-header">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media">
+              <div class="slds-media__figure">
+                <lightning-icon icon-name="standard:contact" class="slds-icon slds-page-header__icon slds-icon_small"></lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title slds-text-heading_medium">
+                    <h1>
+                      <span>My Profile</span>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      </div> 
+           <div if:true={data} class="class1">
+             <lightning-datatable 
+                       data={data} 
+                       columns={columns} 
+                       key-field="Id" 
+                       class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                       id="table_id"
+                       hide-checkbox-column="true" 
+                       onsort={updateColumnSorting}
+                       sorted-direction={sortDirection}
+                       sorted-by={sortBy}                     
+               >
+               </lightning-datatable>
+             </div>  
+      </div>
+      
+    </template>

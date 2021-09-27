@@ -1,0 +1,600 @@
+<apex:page id="pageLeadConvert"    
+    standardController="Lead" recordSetVar="leads" standardStylesheets="false" 
+    extensions="MassLeadConvertController">
+    
+   
+   <style >
+      .labelClass{
+           font-size: 0.9em;
+           padding : 5px 5x 5px 5px;
+           marigin : 5px 5x 5px 5px;
+           font-weight:bold;
+           height: 25px;
+           vertical-align: top;
+       }
+       
+       .labelClass1{
+           font-size: 1.1em;           
+           font-family: Verdana;
+           padding : 5px 5x 5px 5px;
+           marigin : 5px 5x 5px 5px;
+           font-weight:bold;
+       }
+       
+       .ErrorClass{
+           font-size: 1.2em;
+           color:blue;
+           padding : 5px 5x 5px 5px;
+           marigin : 5px 5x 5px 5px;
+           font-weight:bold;
+           height: 25px;
+           vertical-align: top;
+           
+       }
+       
+   </style>
+    <script>
+        var nonPrimaryLeads= [];
+        /*strLeads= '{!selected}';        
+        var selectedLeads=[];
+        selectedLeads= strLeads.split(',');
+        if(selectedLeads.length >5){            
+            alert('You can mass convert up to 5 Leads. Please go back and select the leads again.');          
+            
+        }*/
+        /* for custom MCL- 1326
+        function openLookupPopup(name, id)
+        {
+            var accName = document.getElementById(name).value;
+            var accID = document.getElementById(id).value;
+            accName = accName.replace("&", "%26");
+            //Handling Special Character
+            accName = accName.replace("+"," PPLLUUSS ");
+            accName = accName.replace("/"," FFSSLLAASSHH ");
+            accName = accName.replace("-"," DDAASSHH ");//alert('test'+name);
+            //alert('id'+id);
+            var url="/apex/AccountCustomLookupPopupPage?accName="+accName+"&accID="+accID+"&namefield=" + name + "&idfield=" + id;
+            newWin=window.open(url, 'Popup','height=500,width=800,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no');
+            if (window.focus) 
+            {
+                newWin.focus();
+            }
+            return false;
+        }
+            
+        function closeLookupPopup()
+        {
+            if (null!=newWin)
+            {
+                newWin.close();
+            }  
+            rerenderAccountpbsi(); 
+        }
+        */    
+    </script>
+  <apex:form id="theForm" >
+  <apex:pagemessages id="msgs">
+      
+  </apex:pagemessages>
+     
+     <apex:outputLink value="/00Q/o" rendered="{!leadError}" style="color:blue;font-weight:bold;"> Go Back </apex:outputLink>
+    <!-- <apex:outputLabel styleClass="labelClass" style="color:red;" rendered="{!accessError}" value="{!$Label.LM_AccessPriviligeError_MLC}">  </apex:outputLabel>
+     <apex:outputLink value="/00Q" rendered="{!accessError}" style="color:blue;font-weight:bold;"> Link back to lead list here </apex:outputLink> -->
+     <apex:outputLink value="/{!selectedLead}" rendered="{!bError}" style="color:blue;font-weight:bold;"> Click Here to go Back To Lead </apex:outputLink>
+     <apex:pageBlock title="Converting Multiple Leads to an Opportunity: Select Primary Lead"  rendered="{!isLeadSection}">   
+        <apex:outputLabel styleClass="labelClass" > These Leads will be merged into a single opportunity. Select a primary Lead and then Click Next.</apex:outputLabel>  
+        
+       
+        <apex:outputPanel title="Possible Leads">
+        
+        <apex:pageBlockTable value="{!selected}" var="lead" title="Possible Leads" >         
+            <apex:column headervalue="Select Lead">
+                <apex:actionsupport action="{!selectLead}" event="onclick" rerender=" " status="LeadStatus">
+                    <input type="radio" name="selectRadio" id="{!lead.Id}"/>
+                        <apex:param name="leadid" value="{!lead.Id}">
+                       
+                </apex:param>
+                </apex:actionsupport>                
+            </apex:column>
+            <apex:column value="{!lead.Company}"/>
+            <apex:column Headervalue="Lead Name" value="{!lead.Name}"/>
+            <apex:column Headervalue="Account" value="{!lead.Account__c}"/>
+            <apex:column value="{!lead.Status}"/>
+            <apex:column value="{!lead.Accept_By__c}"/>
+            <apex:column value="{!lead.Convert_By__c}"/>
+            <apex:column Headervalue="Lead Contact" value="{!lead.contact__r.name}"/>
+            <apex:column value="{!lead.Source__c}"/>
+            
+            <apex:column value="{!lead.Source_Desc__c}"/>
+            <apex:column value="{!lead.Type__c}"/>
+            <apex:column value="{!lead.Lead_Scoring_Combined__c}"/>
+            <apex:column value="{!lead.Email}" rendered="false"/>
+            <apex:column value="{!lead.phone}" rendered="false"/>
+            <apex:column value="{!lead.company}" rendered="false"/>
+            <apex:column value="{!lead.Campaign_Cell__c}" rendered="false"/>
+            <apex:column value="{!lead.Campaign_Code__c}" rendered="false"/>  
+            <apex:inputHidden value="{!lead.Acceptance_SLA_Violation__c}" />
+            <apex:inputHidden value="{!lead.Accept_By_Date__c}"/>
+            <apex:inputHidden value="{!lead.Convert_By_Date__c}" />
+            <apex:inputHidden value="{!lead.Business_Org__c}" />
+            <apex:inputHidden value="{!lead.Contact_SAP_ID__c}" />  
+            <apex:inputHidden value="{!lead.Contact__c}" />  
+            <apex:inputHidden value="{!lead.Convert_SLA_violation__c}" />  
+            <apex:inputHidden value="{!lead.Discard_Reason__c}"/>
+            <apex:inputHidden value="{!lead.External_Id__c}"/>
+            <apex:inputHidden value="{!lead.LeadID18__c}"/>
+            <apex:inputHidden value="{!lead.LastModifiedBy.Name}"/>
+            <apex:inputHidden value="{!lead.owner.name}"/>
+            <apex:inputHidden value="{!lead.LeadSource}"/>
+            <apex:inputHidden value="{!lead.Type__c}"/>
+            <apex:inputHidden value="{!lead.Primary_Campaign_Source__c}"/>
+            <apex:inputHidden value="{!lead.Priority__c}"/>
+            <apex:inputHidden value="{!lead.Tracking_Code__c}"/>
+            <apex:inputHidden value="{!lead.External_Contact_ID__c}"/>
+            <apex:inputHidden value="{!lead.Legacy_System_ID__c}"/>
+            <apex:inputHidden value="{!lead.MDBID__c}"/>
+            <apex:inputHidden value="{!lead.SAPAccountNumber__c}"/>
+            <apex:inputHidden value="{!lead.Contact_SAP_ID__c}"/>
+         
+       </apex:pageBlockTable>
+       <script>if("{!selectedLead}"!=""){document.getElementById("{!selectedLead}").checked = true;}</script>
+       </apex:outputPanel>
+         <apex:pageBlockButtons >         
+         <apex:commandButton value="Next" action="{!doSomething}" />
+         <apex:commandButton value="Cancel" action="{!Cancel}"/>
+         <apex:outputLabel styleClass="ErrorClass"> <apex:actionStatus id="LeadStatus"  startText=" Loading..."  stopText="" /> </apex:outputLabel>
+       </apex:pageBlockButtons>
+       </apex:pageBlock>
+       <apex:pageBlock rendered="{!isAccountSection}" >
+       <apex:pageBlockSection id="sectionAccountOptions"
+                title="Account Options">
+                           
+                <apex:facet name="body">
+                    <apex:outputPanel layout="none" >
+                     <apex:inputHidden id="leadAccount" value="{!SelectedAccount}" />
+                  
+                     <apex:outputPanel layout="none" styleClass="labelClass" rendered="{!AND(primaryLead.Account__c != '', primaryLead.Account__c != null)}" >
+                      <div class="labelClass">
+                      <input type="radio" 
+                                        value="{!primaryLead.Account__c}" 
+                                        name="account_options" checked="checked"
+                                        onchange="javascript: setSelectedAccountId('{!$Component.leadAccount}', this);" />                                         
+                        <apex:outputLabel for="ExistingAccount" styleClass="labelClass1"> Existing Account Associated To Lead:&nbsp; </apex:outputLabel>
+                        
+                         <apex:outputField id="ExistingAccount" value="{!primaryLead.Account__c}"   styleClass="labelClass1" style="font-size:1.2em;font-family: Verdana;"/>
+                        </div>
+                   
+                        </apex:outputPanel>
+                        
+                        <br/>
+                        
+                        <apex:pageBlockTable id="tableAccounts"  rendered="{!ExisitngAccountIdForMDBSAP}" value="{!LeadAccountOptions}" var="option">
+                            <apex:column headerValue="Selected">
+                           <!--     <apex:actionsupport action="{!selectAccount}" event="onclick" rerender=" ">
+                                    <input type="radio" name="account_options" value="{!option.account.Id}"/>
+                                        <apex:param name="accountId" value="{!option.account.Id}">                                       
+                                </apex:param>
+                                </apex:actionsupport> -->                                
+                                <input type="radio" 
+                                        value="{!option.account.Id}" 
+                                        name="account_options"                                         
+                                        onchange="javascript: setSelectedAccountId('{!$Component.leadAccount}', this);" /> 
+                            </apex:column>
+                            
+                            <apex:column value="{!option.account.Name}" />
+                            <apex:column value="{!option.account.NameTwo__c}" />
+                            <apex:column value="{!option.account.BillingStreet}" />
+                            <!--apex:column value="{!option.account.BillingCity}" />
+                            <apex:column value="{!option.account.BillingState}" /-->
+                            <apex:column value="{!option.account.Billing_City_State__c}" />
+                            <apex:column value="{!option.account.Phone}" />
+                            <apex:column value="{!option.account.SAPAccountNumber__c}" />
+                            <apex:column value="{!option.account.Market_Segment_Account_Indicator__c}" />
+                            <apex:column value="{!option.account.Total_Active_Subscriptions__c}" />
+                            <apex:column value="{!option.account.Sales_Org__c}" />
+
+
+                            <!--apex:column value="{!option.account.SubsTotal__c}" /-->
+                        </apex:pageBlockTable>
+                        
+                    </apex:outputPanel>
+                </apex:facet>
+                
+            </apex:pageBlockSection>
+            <br/>
+            <!-- for MCL- 1326 -->
+            <apex:actionFunction name="rerenderAccountpbsi" action="{!clear}" rerender="AccountSearchPBS"/>
+            <apex:actionFunction name="enableAccNext" action="{!setisAccSelected}" reRender="nextBtn"/> <!-- MCL-1891 -->
+            <apex:actionFunction name="enableAccNextSearch" action="{!setisAccSelectedforSearch}" reRender="nextBtn"/> <!-- MCL-1891 -->
+            <apex:pageBlockSection id="AccountSearchPBS">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Search For an Account"></apex:outputLabel>
+                    <apex:outputPanel >
+                        <apex:inputField id="LdAccount" value="{!tempLd.Account__c}" onchange="onSelectAccount()"/>
+                        <apex:commandLink action="{!clear}" value="Clear" reRender="theForm"/>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <!-- for custom MCL- 1326
+                <apex:pageBlockSectionItem id="Accountpbsi">
+                    <apex:outputLabel id="Accountlbl" value="Search For an Account"></apex:outputLabel>
+                    <apex:outputPanel >
+                        <apex:inputHidden value="{!accID}" id="accID" />
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText id="accName" value="{!accName}" onFocus="this.blur()" disabled="false"/>
+                            <apex:commandLink onclick="openLookupPopup('{!$Component.accName}', '{!$Component.accID}'); return false" >
+                                <img src="{!$Resource.CustomLookupImage}" class="lookupIcon" onblur="this.className = 'lookupIcon';" onfocus="this.className = 'lookupIconOn';" onmouseout="this.className = 'lookupIcon';this.className = 'lookupIcon';" onmouseover="this.className = 'lookupIconOn';this.className = 'lookupIconOn';"/>
+                            </apex:commandLink>
+                            <apex:commandLink onclick="" value="Clear" rendered="{!accID!=NULL}"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                -->
+            </apex:pageBlockSection>
+            
+          
+          <apex:pageBlockButtons id="pbBtns" location="top"> <!-- MCL-1891 -->
+              <!--<apex:outputPanel id="accSectionBtns">          -->
+                 <apex:commandButton value="Previous" action="{!prev}"/>                 
+                 <apex:commandButton value="Next" id="nextBtn" action="{!goToOpportunityPage}" disabled="{!NOT(isAccSelected)}"/> <!-- MCL-1891 rendered="{!AND(NOT(bError), isAccSelected)}"-->                 
+                 <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                
+           </apex:pageBlockButtons>
+           
+           
+     </apex:pageBlock>
+     <apex:pageblock title="Converting multiple Leads to an Opportunity: Associate Contacts" rendered="{!isContactSection}">
+         
+         <apex:outputText >Primary Cotnact</apex:outputText>
+         
+         
+         
+         <apex:pageBlockTable value="{!leadContactOptions}" var="c">
+            <apex:column headervalue="Select Contact">
+                <apex:actionsupport action="{!selectPrimaryContact}" event="onclick" rerender=" ">
+                    <input type="radio" name="{!controllerValue.id}" value="{!c.contact.Id}"/>
+                        <apex:param name="pcontactId" value="{!c.contact.Id}">
+                </apex:param>
+                </apex:actionsupport>
+            </apex:column>
+            <apex:column headerValue="Name" value="{!c.contact.FirstName} {!c.contact.LastName}"/>
+            <apex:column headerValue="Title" value="{!c.contact.Title}"/>
+            <apex:column value="{!c.contact.Email}"/>
+            <apex:column value="{!c.contact.SAP_Account_Number__c}"/>
+            <apex:column headerValue="Account Name" value="{!c.contact.account.name}"/>            
+            <apex:column headerValue="Job Function" value="{!c.contact.Job_Function__c}"/>           
+            <apex:column headerValue="Contact Type" value="{!c.contact.Contact_Type__c}"/>
+            <apex:column headerValue="SAP Role" value="{!c.contact.SAP_Role__c}"/>
+            <apex:column headerValue="Work Direct" value="{!c.contact.Work_Direct__c}"/>
+            <apex:column value="{!c.contact.Phone}"/>
+    
+        </apex:pageBlockTable>
+        
+        
+           <apex:pageBlockTable value="{!npAccountOption}" var="a">
+            
+            <apex:column headerValue="NP Account" value="{!a.account.name} "/>
+            
+    
+        </apex:pageBlockTable>
+        <apex:pageBlockTable value="{!npContactOptions}" var="con">
+            
+            <apex:column headerValue="NP Contact" value="{!con.Contact.FirstName} "/>
+            <apex:column headerValue="NP Contact Id" value="{!con.Contact.Id}"/>
+    
+        </apex:pageBlockTable>
+       
+        
+         <!--<c:LeadPrimaryConvertContactComponent componentValue="{!primaryLead}" selectedAccountId="{!selectedAccount}"/>
+          <apex:inputHidden value="{!selectedContactIdsLst}" id="theHidden"/>
+         <apex:repeat var="con" value="{!nonPrimarySelctedLeads}">       
+                 <script> 
+                    nonPrimaryLeads.push('{!con}'); 
+                </script>              
+                 <c:LeadConvertContactComponent componentValue="{!con}" radioButtonId="{!con.id}" selectedAccountId="{!selectedAccount}"/> 
+         </apex:repeat> -->
+               <apex:pageBlockButtons >
+                 <apex:commandButton value="Previous" action="{!prevAccount}"/>
+                 <apex:commandButton value="Next"  action="{!goToOpportunityPage}"  />
+                 <apex:commandButton value="Cancel" action="{!Cancel}"/>
+           </apex:pageBlockButtons>
+          <!--   <apex:actionFunction name="passContactsToController" action="{!goToOpportunityPage}" rerender="theForm">
+                    <apex:param name="p1" value="" assignTo="{!strSelectedContactIds}" />
+                    <apex:param name="p2" value="" assignTo="{!primaryContactId}" />
+            </apex:actionFunction>-->
+     </apex:pageblock>
+     
+       
+      <apex:pageblock title="Converting multiple Leads to an Opportunity: Associate an Opportunity" rendered="{!isopportunitySection}">
+         <apex:pageBlockSection id="sectionOpportunityOptions"  title="Opportunity Options" >
+                
+                <apex:facet name="body">
+                    <apex:outputPanel layout="none">
+                        <apex:inputHidden id="leadOpportunity" value="{!SelectedOppId}" />
+                        <apex:pageBlockTable id="tableOpportunities"
+                            value="{!LeadOpportunityOptions}"
+                            var="option">
+                            
+                              <apex:column headerValue="Selected">
+                                
+                                <apex:outputPanel layout="none" rendered="{!option.IsSelected}">
+                                    <input type="radio" 
+                                        value="{!option.Opportunity.Id}" 
+                                        name="Opportunity_options" 
+                                        checked="checked"
+                                        onchange="javascript: setSelectedOpportunityId('{!$Component.leadOpportunity}', this);" />
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel layout="none" rendered="{!NOT(option.IsSelected)}">
+                                    <input type="radio" 
+                                        value="{!option.Opportunity.Id}" 
+                                        name="Opportunity_options" 
+                                        onchange="javascript: setSelectedOpportunityId('{!$Component.leadOpportunity}', this);" />
+                                </apex:outputPanel>
+                            </apex:column>
+                            
+                            <apex:column value="{!option.Opportunity.Name}" />
+                            <apex:column value="{!option.Opportunity.StageName}" />
+                            <apex:column value="{!option.Opportunity.Owner.name}" />
+                            <apex:column value="{!option.Opportunity.Created_by_Role__c}" />
+                            <apex:column value="{!option.Opportunity.CloseDate}" />
+                            <apex:column value="{!option.Opportunity.Total_Incremental__c}" />
+                            <apex:column value="{!option.Opportunity.Total_Renewal__c}" />
+                          
+                      
+                        </apex:pageBlockTable>
+                        
+                    </apex:outputPanel>
+                </apex:facet> 
+                
+            </apex:pageBlockSection> 
+         
+      
+               <apex:pageBlockButtons >
+                 <apex:commandButton value="Previous" action="{!prevAccount}"/>
+                 <apex:commandButton value="Next" action="{!goToActivityPage}"/>
+                 <apex:commandButton value="Cancel" action="{!Cancel}"/>
+           </apex:pageBlockButtons>
+     </apex:pageblock>  
+     
+      <apex:pageblock title="Converting multiple Leads to an Opportunity: Create Activity" rendered="{!isActivitySection}">
+         <apex:pageBlockSection id="sectionTaskInformation"
+                title="Task Information"
+                columns="1">
+                
+                <apex:inputCheckbox id="inputCreateFollowUpTask"
+                    label="Create Follow-up Task"
+                    value="{!CreateFollowUpTask}" 
+                    onChange="enableFollowUpTaskInputs(jQuery(this).is(':checked') == true)" />
+                    
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputOwnerGroup"
+                            value="{!$ObjectType.Task.Fields.Owner_Group__c.Label}" />
+                        
+                    <apex:outputPanel layout="block"
+                        styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>
+                        
+                        <apex:inputField id="inputOwnerGroup"
+                            value="{!FollowUpTask.Owner_Group__c}" 
+                            styleClass="FollowUpTaskInput" />   
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputType"
+                        value="{!$ObjectType.Task.Fields.Type.Label}" />
+                        
+                    <apex:outputPanel layout="block"
+                        styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>
+                        
+                        <apex:inputField id="inputType" 
+                            value="{!FollowUpTask.Type}" 
+                            styleClass="FollowUpTaskInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!FollowUpTask.Description}" 
+                    style="width:210px;" 
+                    styleClass="FollowUpTaskInput" />
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputActivityDate"
+                        value="{!$ObjectType.Task.Fields.ActivityDate.Label}" />
+                    
+                    <apex:outputPanel layout="block"
+                        styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>
+                        
+                        <apex:inputField id="inputActivityDate"
+                            value="{!FollowUpTask.ActivityDate}" 
+                            styleClass="FollowUpTaskInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputStatus"
+                        value="{!$ObjectType.Task.Fields.Status.Label}" />
+                    
+                    <apex:outputPanel layout="block"
+                        styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>   
+                        
+                        <apex:inputField id="inputStatus" 
+                            value="{!FollowUpTask.Status}" 
+                            required="false"
+                            styleClass="FollowUpTaskInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputSubject"
+                        value="{!$ObjectType.Task.Fields.Subject.Label}" />
+                        
+                    <apex:outputPanel layout="block"
+                        styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>
+                        
+                        <apex:inputField id="inputSubject" 
+                            value="{!FollowUpTask.Subject}" 
+                            styleClass="FollowUpTaskInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionAdditionalInformation"
+                title="Additional Information"
+                columns="1">
+            
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputPriority"
+                        value="{!$ObjectType.Task.Fields.Priority.Label}" />
+                        
+                    <apex:outputPanel layout="block"
+                        styleClass="requiredInput">
+                        
+                        <div class="requiredBlock"></div>
+                        
+                        <apex:inputField id="inputPriority" 
+                            value="{!FollowUpTask.Priority}"
+                            required="false" 
+                            styleClass="FollowUpTaskInput" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                    
+                <apex:inputField value="{!FollowUpTask.Tracking_Code__c}" 
+                    styleClass="FollowUpTaskInput" />
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionReminder"
+                title="Reminder"
+                columns="1">
+
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel for="inputSetReminder"
+                        value="Reminder" />
+                    
+                    <apex:outputPanel layout="none">
+                        <apex:inputCheckbox id="inputSetReminder" 
+                            value="{!FollowUpTask.IsReminderSet}" 
+                            styleClass="FollowUpTaskInput" />
+                        
+                        <apex:inputField id="inputReminder"
+                            value="{!FollowUpTask.ReminderDateTime}" 
+                            styleClass="FollowUpTaskInput" />       
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+       
+      
+            <apex:pageBlockButtons >
+                 <apex:commandButton value="Previous" action="{!prevActivity}"/>
+                 <apex:commandButton value="Convert" action="{!convertLead}" reRender="msgs" status="LeadConStatus"/>
+                 <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                 <apex:outputLabel styleClass="ErrorClass"> <apex:actionStatus id="LeadConStatus"  startText=" Loading..."  stopText="" /> </apex:outputLabel>
+             </apex:pageBlockButtons>
+     </apex:pageblock>  
+       </apex:form>
+     
+            
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+       
+        jQuery.noConflict();
+        
+        jQuery(document).ready(function() {
+            
+            enableFollowUpTaskInputs({!CreateFollowUpTask});
+        });
+        
+        function toggleProductSelectAll(isChecked) {
+            jQuery('.ProductRowCheckbox').each(function() {
+                jQuery(this).prop('checked', isChecked);
+            });
+        }
+        
+        function enableOpportunityInputs(enabled) {
+            jQuery('.OpportunityInput').each(function() {
+                jQuery(this).prop('disabled', !enabled);
+            });
+        }
+        
+        function enableFollowUpTaskInputs(enabled) {
+            jQuery('.FollowUpTaskInput').each(function() {
+                jQuery(this).prop('disabled', !enabled);
+            });
+        }
+        
+        function setSelectedAccountId(hiddenInputElementId, radioElement) {
+            var elRadio = jQuery(radioElement);
+            
+            if (elRadio.is(':checked')) {
+                var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId));                
+                elHiddenInput.val(elRadio.val());    
+          
+            }
+            
+            rerenderAccountpbsi(); 
+            enableAccNext(); //<!-- MCL-1891 -->
+        }
+        
+        function setSelectedOpportunityId(hiddenInputElementId, radioElement) {
+            var elRadio = jQuery(radioElement);
+            
+            if (elRadio.is(':checked')) {
+                var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId));                
+                elHiddenInput.val(elRadio.val());               
+            }
+        }
+        
+        function goToSavedRecord(objectId){
+         if(document.getElementById('pageLeadConvert:formLeadConvert:blockLead:sectionConvertLead:j_id28:inputCreateOpportunity').checked == false){
+            
+           //sforce.console.refreshPrimaryById(objectId, true, refreshSuccess);
+           //window.top.location = '/ui/support/servicedesk/ServiceDeskPage?tsid='+document.getElementById(objectId).value;
+           window.location.reload();
+            
+          }else{ 
+             
+             window.location.href = '/' + document.getElementById(objectId).value;
+             
+            
+          }
+        }
+        var selectedContactIds= [];
+        function fetchSelectedContacts(){
+                       
+            for (var i = 0; i < nonPrimaryLeads.length; i++) {                
+                var selectedVal = "";                
+                selectedVal = jQuery("input[name=" + nonPrimaryLeads[i]+ "]:checked").val(); 
+                selectedContactIds.push(nonPrimaryLeads[i] + ":" + selectedVal);    
+                
+
+            }        
+            strSelectedContacts= selectedContactIds.join(',');
+            
+            var selectedLeadval= "{!PrimaryLead.Id}";  
+            var prmSelectedVal = jQuery("input[name=" + selectedLeadval + "]:checked").val();             
+            passContactsToController(strSelectedContacts,prmSelectedVal);        
+            
+            
+       } 
+            
+       function onSelectAccount(){
+          var ele = document.getElementsByName("account_options");
+           for(var i=0;i<ele.length;i++)
+              ele[i].checked = false;
+           enableAccNextSearch(); //<!-- MCL-1891 -->
+       }
+      
+    </script>  
+             
+
+</apex:page>

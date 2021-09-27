@@ -1,0 +1,246 @@
+<apex:page controller="LCRMCustomContractLookupCtrl" title="Search" showHeader="false" sideBar="false" tabStyle="Contract" id="pg">
+    <apex:form rendered="{!errorFlag=true}">
+        <apex:pageMessages />
+    </apex:form>
+    <apex:form id="inputForm" title="Child Page" rendered="{!errorFlag=false}">
+        <apex:pageBlock title="{!$Label.LCRM_TrialCustomLkpSearchBlockLbl}">
+        <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+                <apex:inputText value="{!searchvalue}">
+                    <!--<apex:actionSupport event="onkeyup" action="{!onkeyupAction}" reRender="one"/>
+                    <apex:actionSupport event="onchange" action="{!onkeyupAction}" reRender="one"/>-->
+                </apex:inputText>
+                <apex:commandButton value="{!$Label.LCRM_TrialCustomLkpGoBtn}" action="{!searchAction}" status="loadStatus"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <apex:form id="mainForm" title="Child Page" rendered="{!errorFlag=false}">
+        <apex:pageBlock title="{!$Label.LCRM_TrialCustomLkpResultsBlockLbl}"><!-- rendered="{!render1}">-->
+            <apex:pageMessages ></apex:pageMessages>
+            
+            <apex:outputPanel layout="block" rendered="{!OR(records=NULL,records.size<=0)}"
+                            style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.LCRM_TrialCustomLkpResultsNoRecordsError}
+            </apex:outputPanel>
+            
+            <apex:outputPanel layout="block" styleClass="listViewport"  rendered="{!records.size>0}">
+                <div class="bottomNav">
+                    <div class="paginator">
+                        <apex:panelGrid id="gridPaging" columns="3" width="100%" columnclasses="left, center, right">
+                                
+                            <apex:panelGroup >
+                                <span class="selectorTarget"><strong>{!$Label.LCRM_TrialCustomLkpResultsPageMsg} {!pageNumber} {!$Label.LCRM_TrialCustomLkpResultsPageOfMsg} {!totalPages}</strong></span>
+                                <span>&nbsp;&nbsp;</span>
+                                <apex:actionStatus id="statusPaging">
+                                    <apex:facet name="start">
+                                        <img src="/img/loading.gif" height="14px" width="14px"/>
+                                    </apex:facet>
+                                    
+                                    <apex:facet name="stop">
+                                        <img src="/img/s.gif" height="14px" width="14px"/>
+                                    </apex:facet>
+                                </apex:actionStatus>
+                            </apex:panelGroup>
+                            
+                            
+                            <apex:panelGroup >
+                                <span class="prevNextLinks">
+                                    <span class="prevNext">  <!--immediate="{!immediate}" removed from command link--> 
+                                        <apex:commandLink id="linkMoveFirst" status="loadStatus" 
+                                            action="{!first}" rerender="mainForm" rendered="{!allowMovePrev}">
+                                            
+                                            <img src="/s.gif" title="First Page" alt="First Page" class="first" />
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMovePrev)}">
+                                            <apex:image url="/s.gif" title="First Page" alt="First Page" styleclass="firstoff" />
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                    <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                        <apex:commandLink id="linkMovePrev" title="Previous" status="loadStatus" 
+                                            action="{!previous}" rerender="mainForm" rendered="{!allowMovePrev}">
+                                            
+                                            <img src="/s.gif" title="Previous" alt="Previous" class="prev" />
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsPreviousMsg}</span>
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMovePrev)}">
+                                            <apex:image url="/s.gif" title="Previous" alt="Previous" styleclass="prevoff" />
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsPreviousMsg}</span>
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                    <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                        <apex:commandLink id="linkMoveNext" title="Next" status="loadStatus" action="{!next}"
+                                            rerender="mainForm" rendered="{!allowMoveNext}">
+                                            
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsNextMsg}</span>
+                                            <img src="/s.gif" title="Next" alt="Next" class="next" />
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMoveNext)}">
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsNextMsg}</span>
+                                            <apex:image url="/s.gif" title="Next" alt="Next" styleclass="nextoff" />
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                    <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                        <apex:commandLink id="linkMoveLast" status="loadStatus" action="{!Last}"
+                                            rerender="mainForm" rendered="{!allowMoveNext}">
+                                            
+                                            <img src="/s.gif" title="Last Page" alt="Last Page" class="last" />
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMoveNext)}">
+                                            <apex:image url="/s.gif" title="Last Page" alt="Last Page" styleclass="lastoff" />
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                </span>
+                            </apex:panelGroup>
+                            
+                            <apex:panelGroup >
+                                <span class="selectorTarget"><strong>{!$Label.LCRM_TrialCustomLkpResultsTotalRecordMsg} {!totalRecords}</strong></span>
+                            </apex:panelGroup>
+                            
+                        </apex:panelGrid>   
+                    </div>
+                </div>
+            </apex:outputPanel>
+            
+            <apex:pageBlockTable value="{!Records}" var="record" rendered="{!AND(records<>NULL,records.size>0)}">
+                <apex:column headerValue="{!$ObjectType.Contract.fields.ContractNumber.Label}">
+                    <apex:outputLink value="#" onclick="fillIn('{!JSENCODE(record.ContractNumber)}','{!record.id}')">{!record.ContractNumber}</apex:outputLink> 
+                </apex:column>
+                <apex:column value="{!record.Status}"/>
+                <apex:column value="{!record.LCRM_Transaction_Type__c}"/>
+                <apex:column value="{!record.StartDate}"/>
+                <apex:column value="{!record.TR_Retention__Contract_End_Date__c}"/>
+                <apex:column value="{!record.LCRM_Total_Price__c}"/>
+                <apex:column value="{!record.LCRM_Bill_To_Account__c}"/>
+            </apex:pageBlockTable>
+            
+            <apex:outputPanel layout="block" styleClass="listViewport"  rendered="{!records.size>0}">
+                <div class="bottomNav">
+                    <div class="paginator">
+                        <apex:panelGrid id="gridPaging1" columns="3" width="100%" columnclasses="left, center, right">
+                                
+                            <apex:panelGroup >
+                                <span class="selectorTarget"><strong>{!$Label.LCRM_TrialCustomLkpResultsPageMsg} {!pageNumber} {!$Label.LCRM_TrialCustomLkpResultsPageOfMsg} {!totalPages}</strong></span>
+                                <span>&nbsp;&nbsp;</span>
+                                <apex:actionStatus id="statusPaging1">
+                                    <apex:facet name="start">
+                                        <img src="/img/loading.gif" height="14px" width="14px"/>
+                                    </apex:facet>
+                                    
+                                    <apex:facet name="stop">
+                                        <img src="/img/s.gif" height="14px" width="14px"/>
+                                    </apex:facet>
+                                </apex:actionStatus>
+                            </apex:panelGroup>
+                            
+                            
+                            <apex:panelGroup >
+                                <span class="prevNextLinks">
+                                    <span class="prevNext">  <!--immediate="{!immediate}" removed from command link--> 
+                                        <apex:commandLink id="linkMoveFirst1" status="loadStatus" 
+                                            action="{!first}" rerender="mainForm" rendered="{!allowMovePrev}">
+                                            
+                                            <img src="/s.gif" title="First Page" alt="First Page" class="first" />
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMovePrev)}">
+                                            <apex:image url="/s.gif" title="First Page" alt="First Page" styleclass="firstoff" />
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                    <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                        <apex:commandLink id="linkMovePrev1" title="Previous" status="loadStatus" 
+                                            action="{!previous}" rerender="mainForm" rendered="{!allowMovePrev}">
+                                            
+                                            <img src="/s.gif" title="Previous" alt="Previous" class="prev" />
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsPreviousMsg}</span>
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMovePrev)}">
+                                            <apex:image url="/s.gif" title="Previous" alt="Previous" styleclass="prevoff" />
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsPreviousMsg}</span>
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                    <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                        <apex:commandLink id="linkMoveNext1" title="Next" status="loadStatus" action="{!next}"
+                                            rerender="mainForm" rendered="{!allowMoveNext}">
+                                            
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsNextMsg}</span>
+                                            <img src="/s.gif" title="Next" alt="Next" class="next" />
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMoveNext)}">
+                                            <span>{!$Label.LCRM_TrialCustomLkpResultsNextMsg}</span>
+                                            <apex:image url="/s.gif" title="Next" alt="Next" styleclass="nextoff" />
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                    <span class="prevNext"><!--immediate="{!immediate}" removed from command link-->
+                                        <apex:commandLink id="linkMoveLast1" status="loadStatus" action="{!Last}"
+                                            rerender="mainForm" rendered="{!allowMoveNext}">
+                                            
+                                            <img src="/s.gif" title="Last Page" alt="Last Page" class="last" />
+                                        </apex:commandLink>
+                                        
+                                        <apex:outputPanel layout="none" rendered="{!NOT(allowMoveNext)}">
+                                            <apex:image url="/s.gif" title="Last Page" alt="Last Page" styleclass="lastoff" />
+                                        </apex:outputPanel>
+                                    </span>
+                                    
+                                </span>
+                            </apex:panelGroup>
+                            
+                            <apex:panelGroup >
+                                <span class="selectorTarget"><strong>{!$Label.LCRM_TrialCustomLkpResultsTotalRecordMsg} {!totalRecords}</strong></span>
+                            </apex:panelGroup>
+                            
+                        </apex:panelGrid>   
+                    </div>
+                </div>
+            </apex:outputPanel>
+            
+        </apex:pageBlock>
+        
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">{!$Label.LCRM_MergeOppPageLoadingMsg}</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+    </apex:form>
+    <script type="text/javascript">
+        function fillIn(name, id){
+            var winMain=window.opener;
+            if (null==winMain){
+                winMain=window.parent.opener;
+            }
+            var ele=winMain.document.getElementById('{!JSENCODE($CurrentPage.parameters.namefield)}');
+            ele.value=name;
+            ele=winMain.document.getElementById('{!JSENCODE($CurrentPage.parameters.idfield)}');
+            ele.value=id;
+            winMain.closeLookupPopup();
+        }
+ 
+        function CloseWindow(){
+            var winMain=window.opener;
+            if (null==winMain){
+                winMain=window.parent.opener;
+            }
+            winMain.closeLookupPopup();
+        }
+    </script>    
+</apex:page>

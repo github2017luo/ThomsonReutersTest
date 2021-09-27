@@ -1,0 +1,65 @@
+<apex:page controller="fferpcore.ActivateLinkControlController" lightningStylesheets="true" action="{!processPageParameters}">
+        <c:ffui_slds />
+        <style>
+            div.content-wrapper .confimationDetailToggle {
+                padding-bottom: 0.5rem;
+                padding-top: 0.5rem;
+                display: block;
+            }
+        </style>
+        <apex:stylesheet value="{!URLFOR($Resource.fferpcore__CustomLexStyles, 'stylesheets/customLexStyles.css')}"/>
+        <apex:sectionHeader title="{!$Label.fferpcore__erplinkcontrolcreationconfirmationtitle}" help="{!helpUrl}" />
+        <apex:outputPanel rendered="{!ISBLANK(ErrorMessage)}">
+            <c:MetadataRemoteSiteVerifier templateMessage="{!$Label.fferpcore__remotesiteverifierlinkcontrolneedsaccessmessage}"/>
+        </apex:outputPanel>
+        <apex:form >
+        <apex:pageBlock >
+            <apex:pageMessage summary="{!$Label.fferpcore__erplinkcontrolsuccesslabel}" severity="info" strength="1" rendered="{!HasSucceeded}"/>
+            <apex:pageMessage summary="{!$Label.fferpcore__erplinkcontrolnomodificationsneeded}" 
+                severity="info"
+                strength="1"
+                rendered="{!AND(IsCustom, NOT(ISBLANK(AssociatedObject)), NOT(PublicationFieldsExist), NOT(SubscriptionFieldsExist), ISBLANK(ErrorMessage), NOT(HasSucceeded), NOT(IsLinkControl))}"/>
+            <apex:pageMessage summary="{!ErrorMessage}" severity="error" strength="1" rendered="{!NOT(ISBLANK(ErrorMessage))}"/>
+            <apex:pageMessages />
+            <apex:outputPanel id="dataModificationWarning" rendered="{!AND(OR(PublicationFieldsExist, SubscriptionFieldsExist), ISBLANK(ErrorMessage))}" layout="block" styleClass="content-wrapper">
+                <apex:outputText value="{!$Label.fferpcore__erppublicationlinkcontrolmetadatamodificationwarning}" />
+                <apex:outputPanel id="moreInformationBlock">
+                    <apex:commandLink value="{!IF(DisplayNewFields, $Label.fferpcore__erpcurrencieshidemoreinformation, $Label.fferpcore__erpcurrenciesdisplaymoreinformation)}" 
+                        reRender="moreInformationBlock" 
+                        action="{!toggleShowFieldDetail}" 
+                        styleClass="confimationDetailToggle"/>
+                    <apex:outputPanel rendered="{!DisplayNewFields}">
+                        <apex:pageBlockSection title="{!$Label.fferpcore__erppublicationlinkcontrolpublicationtitlesubsection}" columns="1" rendered="{!PublicationFieldsExist}" collapsible="false">
+                            <apex:repeat value="{!PublicationNewFields}" var="objectName">
+                                <apex:outputText value="{!$Label.fferpcore__erpcurrenciesmetadatamodificationwarningfieldcreationtitle}">
+                                    <apex:param value="{!objectName}"/>
+                                </apex:outputText>
+                                <apex:variable var="fieldSet" value="{!PublicationNewFields[objectName]}" />
+                                <apex:dataList value="{!fieldSet}" var="newField">
+                                    <apex:outputText value="{!newField}"/>
+                                </apex:dataList>
+                            </apex:repeat>
+                        </apex:pageBlockSection>
+                        <apex:pageBlockSection title="{!$Label.fferpcore__erppublicationlinkcontrolsubscriptiontitlesubsection}" columns="1" rendered="{!SubscriptionFieldsExist}" collapsible="false">
+                            <apex:repeat value="{!SubscriptionNewFields}" var="objectName">
+                                <apex:outputText value="{!$Label.fferpcore__erpcurrenciesmetadatamodificationwarningfieldcreationtitle}">
+                                    <apex:param value="{!objectName}"/>
+                                </apex:outputText>
+                                <apex:variable var="fieldSet" value="{!SubscriptionNewFields[objectName]}" />
+                                <apex:dataList value="{!fieldSet}" var="newField">
+                                    <apex:outputText value="{!newField}"/>
+                                </apex:dataList>
+                            </apex:repeat>
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+            </apex:outputPanel>
+
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="{!$Label.fferpcore__erpvisualforcecancelbutton}" rendered="{!AND(OR(PublicationFieldsExist, SubscriptionFieldsExist), ISBLANK(ErrorMessage))}" action="{!goBackToEndpoint}"/>
+                <apex:commandButton value="{!$Label.fferpcore__erpvisualforceconfirmbutton}" rendered="{!AND(OR(PublicationFieldsExist, SubscriptionFieldsExist), ISBLANK(ErrorMessage))}" action="{!confirm}"/>
+                <apex:commandButton value="{!$Label.fferpcore__erplinkcontrolokaybuttonlabel}" rendered="{!OR(NOT(ISBLANK(ErrorMessage)), HasSucceeded, AND(!PublicationFieldsExist, !SubscriptionFieldsExist))}" action="{!goBackToEndpoint}"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

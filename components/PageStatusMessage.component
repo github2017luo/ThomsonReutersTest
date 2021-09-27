@@ -1,0 +1,43 @@
+<apex:component id="StatusMessage">
+	<apex:attribute type="boolean" 
+		name="showLoadingIcon"
+		default="true"
+		description="Determines if loading image is displayed" />
+	
+	<apex:attribute type="string" 
+		name="title"
+		description="The title of the message" />
+	
+	<apex:attribute type="string" 
+		name="message"
+		description="The message to display" />
+	
+	<style>
+		.pageMessageBlock { border: 1px solid #ccc; background-color: #FFFFD3; padding: 5px; margin: 5px 10px; border-radius: 4px;}
+		.pageMessageGrid { width: 100%; }
+		.pageMessageGrid td { vertical-align: middle; }
+		.pageMessageGridCellIcon { width: 20px; padding-right: 2px; }
+		.pageMessageGridCellMsg { width: 100%; }
+		.pageMessageTitle { font-weigh: bold; padding-right: 2px;}
+	</style>
+	
+	<apex:outputPanel layout="block"
+		styleClass="pageMessageBlock">
+					
+		<apex:panelGrid columns="2" 
+			styleClass="pageMessageGrid"
+			columnClasses="pageMessageGridCellIcon, pageMessageGridCellMsg">
+			
+			<apex:panelGroup layout="none" 
+				rendered="{!showLoadingIcon}">
+				
+				<img src="/img/loading.gif" height="16px" width="16px"/>
+			</apex:panelGroup>
+			
+			<apex:panelGroup layout="none">
+				<apex:outputPanel layout="block" styleClass="pageMessageTitle" rendered="{!NOT(ISNULL(title))}">{!title}</apex:outputPanel>
+				<apex:outputPanel layout="block" styleClass="pageMessageDetail" rendered="{!NOT(ISNULL(message))}">{!message}</apex:outputPanel>
+			</apex:panelGroup>
+		</apex:panelGrid>
+	</apex:outputPanel>
+</apex:component>

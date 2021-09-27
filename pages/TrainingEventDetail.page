@@ -1,0 +1,464 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2019-02-12       Tejasree                  DPS-1836 : Added custom labels instead of Hard Coded values
+31-Jan-2019		 Kumar Shubham    		   Enabling Lightning as part of Sales Lightning Project
+===============================================================================
+-->
+<apex:page standardController="Training_Event__c" extensions="TrainingEventDetailController" action="{! onPageLoad}" lightningStylesheets="true">
+
+    <script type="text/javascript" src="https://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript">
+      jQuery.noConflict();
+
+      function toggleSelectAll(element) {
+          var elCheckbox = jQuery(element);
+          var elTable = elCheckbox.closest('table');
+          
+          var isChecked = elCheckbox.is(':checked');
+          elTable.find('*:checkbox.rowSelector').each(function(){
+            jQuery(this).attr('checked', isChecked);
+          });
+      }
+    </script>
+
+    <style>
+        .activeTab {padding:10px;background-color: white; color:black; background-image:none;}
+        .inactiveTab {padding:10px; background-color: #eee; color:black; background-image:none;}
+        .tabContent { background-color: white;}
+
+        .detailContent {
+            width: 100%;
+        }
+
+        .sidebarContent {
+            padding: 10px;
+            width: 425px;
+            white-space: nowrap;
+        }
+
+        .scrollableContainer {
+          overflow:auto;
+          width: 445px;
+          border: 1px solid #e0e3e5;
+        }
+
+        .scrollableContent {
+            width: 650px;
+        }
+
+        .searchCommandRow {
+          vertical-align: middle;
+        }
+
+        .duelSelect0 {
+            width:170px;
+        }
+
+        .duelSelect1 {
+            width:170px;
+        }
+    </style>
+
+    <apex:panelGrid id="gridLayout" 
+        columns="2" 
+        columnClasses="detailContent, sidebarContent">
+
+        <apex:panelGroup layout="none" id="detailPanel">
+            <apex:detail subject="{!Training_Event__c.Id}" 
+                inlineEdit="true" 
+                relatedList="true"
+                relatedListHover="true" 
+                showChatter="true"
+                oncomplete="javascript:window.parent.location.reload();" />
+        </apex:panelGroup>
+       
+        <apex:panelGroup layout="none" id="tabPanelGroup">
+            <apex:form id="sidebarForm">
+              
+                <apex:actionFunction name="searchByKeyword" 
+                    action="{!findContacts}" 
+                    status="statusManageContacts" 
+                    reRender="matchingContacts"/>
+
+                <apex:messages id="ErrMsg" 
+                    style="color:red"/>
+               
+                <apex:tabPanel switchType="client" 
+                    selectedTab="Add Contacts" 
+                    tabClass="activeTab" 
+                    inactiveTabClass="inactiveTab" 
+                    contentClass="tabContent" id="tabPanelId">
+
+                    <apex:tab id="Add_Contacts"
+                        label="{!$Label.Add_Contacts}" 
+                        name="{!$Label.Add_Contacts}">
+
+                        <apex:pageBlock id="blockAddContacts"
+                            title="{!$Label.Add_Contacts}"
+                            mode="mainDetail">
+
+                            <apex:pageMessages id="globalMessages" />
+
+                            <apex:pageBlockSection id="sectionFilters"
+                                columns="1"
+                                title=" "
+                                collapsible="false">
+
+                                <apex:facet name="body">
+                                    <apex:outputPanel layout="none">
+                                        <apex:outputPanel id="panelKeyword"
+                                            layout="block">
+                                          
+                                            <h3>{!$Label.Search_By_Name}</h3>
+                                            <div>
+                                                <apex:inputText id="searchKey" 
+                                                    value="{!sSearchKey}" />
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel id="panelFilters"
+                                            layout="block"
+                                            style="padding-top: 10px;">
+
+                                            <h3>{!$Label.By_Field_Filter}</h3>
+
+                                            <div>
+                                                <table>
+                                                    <tr class="columnHeader">
+                                                        <td>{!$Label.Field}</td>
+                                                        <td>{!$Label.Operator}</td>
+                                                        <td>{!$Label.Value}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <apex:selectList size="1"
+                                                             value="{!sSelectedField1}" disabled="{!renderAccountInfo}" rendered="{!renderAccountInfo}">
+                                                             
+                                                                <apex:selectOptions value="{!listContactFields}"/>
+                                                            </apex:selectList>
+                                                        </td>
+                                                        <td>
+                                                            <apex:selectList size="1" id="operatorList1" 
+                                                            value="{!sSelectedOperator1}" disabled="{!renderAccountInfo}" rendered="{!renderAccountInfo}">
+                                                                <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                                            </apex:selectList>                        
+                                                        </td>
+                                                        <td>
+                                                            <apex:inputText value="{!sSearchValue1}" 
+                                                            disabled="{!renderAccountInfo}" rendered="{!renderAccountInfo}"/>
+                                                            <apex:outputLabel rendered="{!renderAccountInfo}" >AND</apex:outputLabel>
+                                                        </td>
+                                                    </tr>
+                                                    <apex:Repeat value="{!ListSelectedfilter}" 
+                                                        var="Selectedfilter">
+
+                                                        <tr>
+                                                            <td>
+                                                                <apex:selectList size="1" 
+                                                                    value="{!Selectedfilter.sSelectedField}">
+
+                                                                    <apex:selectOptions value="{!listContactFields}" />
+                                                                </apex:selectList>
+                                                            </td>
+                                                            <td>
+                                                                <apex:selectList id="operatorList1" 
+                                                                    size="1" 
+                                                                    value="{!Selectedfilter.sSelectedOperator}">
+
+                                                                    <apex:selectOptions value="{!listOperatorFields}" />
+                                                                </apex:selectList>            
+                                                            </td>
+                                                            <td>
+                                                                <apex:inputText value="{!Selectedfilter.sSelectedValue}"/>
+                                                            </td>
+                                                        </tr>
+                                                    </apex:Repeat>
+                                                </table>
+                                            </div>
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel id="panelAddFilter"
+                                            layout="block"
+                                            style="padding-top:10px;">
+
+                                            <apex:commandLink value="{!$Label.Add_Filter}" 
+                                                action="{!addFilter}"
+                                                status="statusaddfilters" 
+                                                rerender="panelFilters" />
+                                                <apex:actionStatus startText="{!$Label.Adding}"
+                                                id="statusaddfilters" startStyle="color:red;font-weight:bold"/>
+                                        </apex:outputPanel>
+                                        
+                                        <apex:outputPanel id="panelcheckbox"
+                                            layout="block"
+                                            style="padding-top: 10px;">
+                                            
+                                                <h3>{!$Label.Active_WL_Password}</h3>
+                                                <apex:inputCheckbox value="{!activePswd}" title="{!$Label.Filter_contacts_on_SAP_Role}"/>
+                                                
+                                        </apex:outputPanel>
+
+                                        <apex:outputPanel id="panelSearchCommand"
+                                            layout="block"
+                                            style="padding-top: 10px;">
+
+                                            <apex:panelGrid id="gridSearchCommand"
+                                                columns="2"
+                                                rowClasses="searchCommandRow">
+
+                                                <apex:panelGroup >
+                                                    <apex:commandButton value="{!$Label.Search}" 
+                                                        title="{!$Label.Search}" 
+                                                        action="{!findContacts}" 
+                                                        status="statusManageContacts" 
+                                                        reRender="sectionContacts"/>
+                                                        
+                                                </apex:panelGroup>
+
+                                                <apex:panelGroup >
+                                                  <apex:actionStatus id="statusManageContacts">
+                                                      <apex:facet name="start">
+                                                          <apex:outputPanel layout="none">
+                                                              <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." />
+                                                              <span>{!$Label.Searching_please_wait}</span>
+                                                          </apex:outputPanel>
+                                                      </apex:facet>
+                                                  </apex:actionStatus>
+                                                </apex:panelGroup>
+                                            </apex:panelGrid>
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:pageBlockSection>
+
+                            <apex:pageBlockSection id="sectionContacts"
+                                columns="1"
+                                title="Available Contacts [{!listMatchingContacts.size}]">
+
+                                <apex:facet name="body">
+                                    <apex:outputPanel id="panelMatchingContacts"
+                                        layout="block">
+
+                                        <apex:actionRegion >
+                                            <apex:outputPanel id="panelContainer"
+                                                layout="block"
+                                                styleclass="scrollableContainer"
+                                                rendered="{!listMatchingContacts.size != 0}">
+
+                                                <apex:pageBlockTable id="conLst" 
+                                                    styleClass="scrollableContent"
+                                                    value="{!listMatchingContacts}" 
+                                                    var="cnt"
+                                                    first="{!oPagingContacts.Offset}"
+                                                    rows="{!oPagingContacts.PageSize}">
+
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:inputCheckbox id="parentCheckbox" 
+                                                                title="{!$Label.Select_Deselect_All}"
+                                                                onclick="javascript:toggleSelectAll(this);" />
+                                                        </apex:facet>
+
+                                                        <apex:inputCheckbox id="childCheckbox" 
+                                                            styleClass="rowSelector"
+                                                            value="{!cnt.bSelected}"/>
+                                                    </apex:column>
+                                   
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="{!$Label.First_Name}" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortFirstName" value="FirstName" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.FirstName}"/>
+                                                    </apex:column>                    
+                                        
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="{!$Label.Last_Name}" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortLastName" value="LastName" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.LastName}"/>
+                                                    </apex:column>   
+                                                    
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="{!$Label.WLaw_Id}" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortField" value="Westlaw_User_ID__c" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.Westlaw_User_ID__c}"/>
+                                                    </apex:column>                                
+                                                    
+                                                    <apex:column headerValue="{!$Label.SAP_Role}" value="{!cnt.cCon.SAP_Role__c}" />    
+                                                    
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="{!$Label.Account_NameN}" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortField" value="Account.Name" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.Account.Name}"/>
+                                                    </apex:column>
+                                                    
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="{!$Label.SAP_Account_Number}" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortField" value="SAP_Account_Number__c" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.SAP_Account_Number__c}"/>
+                                                    </apex:column>
+                                                    
+                                                    
+                                                    
+                                                                 
+                                                    <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="{!$Label.Office_Location}" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortField" value="Account.billingcity" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.Account.billingcity}"/>
+                                                    </apex:column>
+                                                    
+                                                    <apex:column headerValue="{!$Label.Source}" value="{!cnt.cCon.Source__c}" />          
+                                
+                                                    
+                                                     <apex:column >
+                                                        <apex:facet name="header">
+                                                            <apex:commandLink value="External Id" action="{!toggleSort}" rerender="conLst" status="statusPaging">
+                                                                <apex:param name="sortField" value="External_Id__c" assignTo="{!sortField}"/>
+                                                            </apex:commandLink>
+                                                        </apex:facet>
+                                                        <apex:outputField value="{!cnt.cCon.External_ID__c}"/>
+                                                    </apex:column>
+                                                    
+                                                </apex:pageBlockTable>
+                                            </apex:outputPanel>
+
+                                            <c:PagingToolbar paging="{!oPagingContacts}" 
+                                                rerender="conLst" 
+                                                immediate="false"
+                                                rendered="{!listMatchingContacts.size != 0}" />
+                                        </apex:actionRegion>
+
+                                        <apex:outputText rendered="{!listMatchingContacts.size=0}">{!$Label.No_records}</apex:outputText>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:pageBlockSection>
+
+                            <apex:pageBlockSection id="sectionTopics"
+                                columns="1"
+                                title="{!$Label.Available_Topics}">
+
+                                <apex:facet name="body">
+                                    <apex:outputPanel layout="none">
+                                        <h3>{!$Label.Filter_By_Category}</h3>
+
+                                        <apex:outputPanel id="panelTopics"
+                                            layout="block">
+
+                                            <apex:selectList id="searchValue5"
+                                                size="1"
+                                                value="{!sSearchValue5}">
+
+                                                <apex:selectOptions value="{!listCategories}" />
+                                                
+                                                <apex:actionSupport event="onchange"
+                                                    action="{!findResults}"
+                                                    rerender="topiclst" />
+                                            </apex:selectList>
+
+                                            <c:DuelingListBox id="topiclst"
+                                                sourceList="{!listMatchingTopics}" 
+                                                value="{!selTopics}"
+                                                defaultList="{!defaultTopics}" 
+                                                onChange="{!selTopicsList}" />
+                                        </apex:outputPanel>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:pageBlockSection>
+
+                            <apex:pageBlockSection id="sectionAddCommand"
+                                columns="1">
+
+                                <apex:facet name="body">
+                                    <apex:outputPanel id="panelAddCommand"
+                                        layout="block"
+                                        style="text-align:center;padding-top:10px;">
+
+                                        <apex:commandButton value="{!$Label.Add_Contacts}" action="{!AddtoTraining}"/>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:pageBlockSection>
+                        </apex:pageBlock>
+                    </apex:tab>
+
+                   <apex:tab label="Task" name="Task" id="tabTask">
+                        <apex:outputPanel id="taskPanel">
+                        <apex:pageBlock id="blockTask" mode="edit" title="Create Task">
+                            <apex:pageBlockButtons >
+                                <apex:commandButton value="{!$Label.Save}" action="{!addTask}" reRender="taskPanel, detailPanel" status="statusAdd"/>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:actionStatus startText="{!$Label.Adding}" id="statusAdd" startStyle="color:black;font-weight:bold"/>
+                               
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection id="sectionInfo" columns="1" title="{!$Label.Task_Information}">
+                                <apex:inputField value="{!NewTask.Type}" />
+                                <apex:inputField value="{!NewTask.Activity_Category__c}" />
+                                <apex:inputField value="{!NewTask.Description}" />
+                                <apex:inputField value="{!NewTask.ActivityDate}" />
+                                <apex:inputField value="{!NewTask.Status}" />
+                                <apex:inputField value="{!NewTask.WhoId}" />
+                                <apex:inputField value="{!NewTask.Subject}" />
+                            </apex:pageBlockSection>
+                            
+                            <apex:pageBlockSection id="sectionAdditionalInfo" columns="1" title="{!$Label.Additional_Information}">
+                                <apex:inputField value="{!NewTask.Priority}" />
+                                <apex:inputField value="{!NewTask.Tracking_Code__c}" />
+                            </apex:pageBlockSection>
+                        </apex:pageBlock></apex:outputPanel>
+                    </apex:tab>
+
+                    <apex:tab label="Event" name="Event" id="tabEvent">
+                        <apex:outputPanel id="eventPanel">
+                        <apex:pageBlock id="blockEvent" mode="edit" title="{!$Label.Create_Event}">
+                            <apex:pageBlockButtons >
+                                <apex:commandButton value="{!$Label.Save}" action="{!addEvent}" reRender="eventPanel, detailPanel" status="statusAdd"/>
+                           &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <apex:actionStatus startText="{!$Label.Adding}" id="statusAdd" startStyle="color:black;font-weight:bold"/>
+                                                         
+                            </apex:pageBlockButtons>
+
+                            <apex:pageBlockSection id="sectionInfo" columns="1" title="{!$Label.Calendar_Details}">
+                                <apex:inputField value="{!NewEvent.OwnerId}" />
+                                <apex:inputField value="{!NewEvent.Type}" />
+                                <apex:inputField value="{!NewEvent.Activity_Category__c}" />
+                                <apex:inputField value="{!NewEvent.Description}" />
+                                <apex:inputField value="{!NewEvent.IsAllDayEvent}" />
+                                <apex:inputField value="{!NewEvent.StartDateTime}" />
+                                <apex:inputField value="{!NewEvent.EndDateTime}" />
+                                <apex:inputField value="{!NewEvent.Subject}" />
+                                <apex:inputField value="{!NewEvent.Status__c}" />
+                                <apex:inputField value="{!NewEvent.WhoId}" />
+                                <apex:inputField value="{!NewEvent.Location}" />
+                            </apex:pageBlockSection>
+
+                            <apex:pageBlockSection id="sectionAdditionalInfo" columns="1" title="{!$Label.Additional_Information}">
+                                <apex:inputField value="{!NewEvent.Tracking_Code__c}" />
+                            </apex:pageBlockSection>
+
+                            <apex:pageBlockSection id="sectionRecurrence" columns="1" title="{!$Label.Recurrence}">
+                                <apex:inputField value="{!NewEvent.IsRecurrence}" />
+                            </apex:pageBlockSection>
+                        </apex:pageBlock></apex:outputPanel>
+                    </apex:tab>
+                </apex:tabPanel>
+            </apex:form>
+        </apex:panelGroup>
+    </apex:panelGrid>
+</apex:page>

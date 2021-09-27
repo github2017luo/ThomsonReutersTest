@@ -1,0 +1,13 @@
+<apex:page standardController="Account" lightningStylesheets="true">
+    <c:ffui_slds />
+	<apex:form >
+		<apex:sectionHeader title="{!$Label.fferpcore__erpaddressvalidation}"/>
+		<apex:pageMessages />
+        <apex:variable var="dummy1" value="{!Account.BillingStreet}"/>
+        <apex:variable var="dummy2" value="{!Account.BillingCity}"/>
+        <apex:variable var="dummy3" value="{!Account.BillingState}"/>
+        <apex:variable var="dummy4" value="{!Account.BillingCountry}"/>
+        <apex:variable var="dummy5" value="{!Account.BillingPostalCode}"/>
+		<c:AddressValidation validationRecord="{!Account}" validationAddressType="account-billing"/>
+	</apex:form>
+</apex:page>

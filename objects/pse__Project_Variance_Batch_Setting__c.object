@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Stores the settings used by Batch Apex jobs for Project Variance calculations.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Notifications_Chatter__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, notifications from Project Variance batch processes are sent via Chatter to recipients listed in the Notification Recipients setting. This is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, notifications from Project Variance batch processes are sent via Chatter to recipients listed in the Notification Recipients setting. This is deselected by default.</inlineHelpText>
+        <label>Notifications by Chatter</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Email__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, notifications from Project Variance batch processes are sent via email to recipients listed in the Notification Recipients setting. This is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, notifications from Project Variance batch processes are sent via email to recipients listed in the Notification Recipients setting. This is deselected by default.</inlineHelpText>
+        <label>Notifications by Email</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Recipients__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies the notification recipients for Project Variance batch notifications sent via Chatter or email. The value is a list of email addresses separated by semicolons (;). This setting is null by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the notification recipients for Project Variance batch notifications sent via Chatter or email. The value is a list of email addresses separated by semicolons (;). This setting is null by default.</inlineHelpText>
+        <label>Notification Recipients</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Task__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, notifications from Project Variance batch processes are sent via tasks. This is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, notifications from Project Variance batch processes are sent via tasks. This is deselected by default.</inlineHelpText>
+        <label>Notifications by Task</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__ProjectVariance_Batch_Size__c</fullName>
+        <defaultValue>5</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of records to process in a single batch. The value is 5 by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of records to process in a single batch. The value is 5 by default.</inlineHelpText>
+        <label>Project Variance Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Project Variance Batch Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

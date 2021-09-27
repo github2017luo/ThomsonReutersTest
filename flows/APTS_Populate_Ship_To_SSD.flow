@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <assignments>
+        <name>Populate_Ship_to_SSD</name>
+        <label>Populate Ship to SSD</label>
+        <locationX>566</locationX>
+        <locationY>106</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.APTS_SSD_Ship_to__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Apttus_QPConfig__ProposalId__r.APTS_SSD_ship_to__c</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <description>Check if Ship to SSD was blank on Asset then populate it from Ship to SSD on Proposal</description>
+    <interviewLabel>APTS Populate Ship To SSD {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>APTS Populate Ship To SSD</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Populate_Ship_to_SSD</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>APTS_SSD_Ship_to__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Apttus_QPConfig__ProposalId__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <object>Apttus_Config2__AssetLineItem__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

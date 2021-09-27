@@ -1,0 +1,43 @@
+<apex:page standardController="Account" extensions="LCRMOrderDetailController" sidebar="false" action="{!getOrderDetails}">
+    <style type="text/css">
+     .loadingIcon {
+    background-image: url(/img/loading.gif);
+    width: 16px;
+    height: 16px;
+    }
+    </style>
+    <br />
+    <apex:form >
+    <apex:pageMessages id="messagesGlobal" />
+         <apex:pageBlock >
+             <apex:pageBlockSection id="sectionMatchInfo" title="{!$Label.Order_Information} - {!sOrderNumber}" columns="2" collapsible="false">
+                 <apex:outputtext value="{!sOrderType}" Label="{!$Label.Order_Type}"  id="Order_Type" />           
+                 <apex:outputtext value=" {!sOrderDate}" Label="{!$Label.Order_Date}"  id="Order_Date" />
+                 <apex:outputtext value="{!sOrderNumber}" Label="{!$Label.Order_Number}"  id="Order_Number" />
+                 <apex:outputtext value="{!sSubmittingRep}" Label="{!$Label.Submitting_Rep}"  id="Submitting_Rep" />
+                 <apex:outputtext value="{!sRevenueChannel}" Label="{!$Label.Revenue_Channel}" id="Revenue_Channel" />
+                 <apex:outputtext value="{!sPONumber}" Label="{!$Label.PO}" id="PO_Number" />
+                 <apex:outputtext value="{!sShipDate}" Label="{!$Label.Ship_Date}" id="Ship_Date" />
+                 <apex:outputtext value="${!dNetValue}" Label="{!$Label.Net_Value}" id="Net_Value"/>
+             </apex:pageBlockSection>    
+         </apex:pageBlock>
+         <apex:pageBlock >
+             <apex:pageBlockSection columns="1" title="{!$Label.Order_Items}">
+                 <apex:outputPanel layout="block"  rendered="{!odItems.size==0 && ExceptionMesginfo != null}"  style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.No_Records_to_Display}</apex:outputPanel>
+                  <apex:pageBlockTable id="Orderdetail" value="{!odItems}"  var="d" rendered="{!odItems.size!=0}"> 
+                      <apex:column headerValue="{!$Label.Material_Description}" value="{!d.MaterialDescription}" />
+                      <apex:column headerValue="{!$Label.Order_Quantity}"  value="{!d.QuantityOrdered}" />
+                      <apex:column headervalue="{!$Label.Material_Number}"> 
+                         <apex:outputtext value="{!d.MaterialNumber}" rendered="{!d.productId==null}"/>
+                        <apex:outputLink value="/{!d.productId}" rendered="{!d.productId!=null}" >{!d.MaterialNumber}</apex:outputLink>
+                    </apex:column>
+                     <apex:column headerValue="{!$Label.Net_Price}" style="text-align:right;">
+                        <apex:outputText value="{0, number, currency}">
+                            <apex:param value="{!d.NetAmount}" />
+                        </apex:outputText>
+                    </apex:column>
+                 </apex:pageBlockTable>
+             </apex:pageBlockSection>
+         </apex:pageBlock>
+    </apex:form>
+</apex:page>

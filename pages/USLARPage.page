@@ -1,0 +1,437 @@
+<apex:page id="pageInvoice" standardController="Source_System_Detail__c" extensions="USLARController" doctype="html-5.0"
+    sidebar="false" lightningStylesheets="true">
+    
+    <apex:includeScript value="/support/console/22.0/integration.js" />
+    <apex:sectionHeader id="title" title="{!$Label.AccountRec_Title}" rendered="{!!iserror}" subtitle="{!Source_System_Detail__c.Account_Name__r.Name}"
+    />
+    <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/Minified/MinifiedCSSCHP.css')}"/>
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+    <script>
+        function setFocusOnLoad() {}
+
+    </script>
+    <script type="text/javascript">
+        function Opendocurl(docUrl) {
+            if (docUrl == '' || docUrl == null) {
+                alert('{!$Label.AccountRec_ImageError}');
+            } else {
+                window.open(docUrl);
+            }
+        }
+     function openwindow(Invnumber)
+     {
+         var url='/apex/USLArdetailpage?invoice='+Invnumber;
+         window.open(url);
+     }
+        function testOpenSubtab() {
+           
+            if (sforce.console.isInConsole()) {
+                 //alert('Hi Console');
+
+                var url =
+                    '/{!Source_System_Detail__c.Account_Name__r.Id}?isdtp=vw';
+                
+                srcSelf(url);
+            } else {
+                                
+
+                var url = '/{!Source_System_Detail__c.Account_Name__r.Id}';
+                
+                window.open(url, '_top');
+            }
+        }
+        $(document).ready(function() {
+                setDataTables1();
+                setDataTables3();
+            });
+              ffunction setDataTables1(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],
+             "info":false,             
+             "scrollX":false,
+             "sScrollX":"100%"
+             } );
+        }
+        function setDataTables2(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],             
+             "info":false,
+             "scrollX":false             
+             } );
+        }
+        function setDataTables3(){
+            $('.tableARInfo1').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "info":false,
+             "order": [[ 2, "desc" ]],
+             "scrollX":false,
+             "sScrollX":"100%"
+             } );
+        }
+        function setDataTables4(){
+            $('.tableARInfo1').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],
+             "info":false,
+             "scrollX":false             
+             } );
+                }
+    </script>
+    <apex:form >
+        <apex:actionFunction name="saveselectedopen" action="{!saveselectedopen}" status="fetchStatus2" rerender=""/>
+        <apex:actionFunction name="saveselectedopen1" action="{!saveselectedopen1}" status="fetchStatus2" rerender=""/>
+        <apex:actionFunction status="actStatusId1" name="sainv" reRender="bPageBlockSectionOpenItems" action="{!selectalllineitem}" oncomplete="setDataTables2();"/>
+        <apex:actionFunction status="actStatusId1" name="sainv1" reRender="bPageBlockSectionClearedItems" action="{!selectalllineitem1}" oncomplete="setDataTables4();" />
+        <apex:actionStatus id="actStatusId1" >
+                    <apex:facet name="start" >
+                        <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                </apex:actionStatus>
+        <apex:actionFunction name="rerenderInvoice" reRender="pageBlock,msg"
+            status="statusInvoice" action="{!setInvoiceDateRange}" oncomplete="setDataTables2();setDataTables4();" /> <br/><br/>
+            <apex:actionStatus id="fetchStatus2">
+        <apex:facet name="start">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                <img src="/img/loading.gif" />
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+        <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 6px;">
+            &laquo;
+            <table width="100%">
+            <tr>
+            <td width="90%">
+            <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Source_System_Detail__c.Account_Name__r.Name}</a>
+            </td>
+            <td width="10%">
+            <apex:commandButton value="Printable View" action="{!Print}"/> 
+            </td>
+            </tr>
+            </table>
+            <!--SFD-16-->
+        </div>
+        <br/>
+        <apex:outputLabel for="InvoiceType" value="{!$Label.AccountRec_ViewPicklistLabel} "
+            style="font-weight:bold;" />
+        <apex:selectList value="{!sSelectedOption}" size="1" id="i" onchange="rerenderInvoice();">
+            <apex:selectOptions value="{!ARItemType}" />
+        </apex:selectList><br/><br/>
+
+        <apex:actionStatus id="statusInvoice">
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell"
+                        style="padding:0px;margin:0px;">
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>
+                        <apex:panelGroup >
+                            <div class="messageText">{!$Label.AccountRec_LoadingInv}</div>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>
+        </apex:actionStatus>
+
+        <apex:actionStatus id="statusImage">
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell"
+                        style="padding:0px;margin:0px;">
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>
+                        <apex:panelGroup >
+                            <div class="messageText">{!$Label.AccountRec_LoadingInvImg}</div>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:pageBlock id="pageBlock" >
+        <apex:actionRegion >
+            <apex:pageBlockSection columns="6" id="sectionFilters" collapsible="false" title="{!$Label.AccountRec_DateRangeSecTitle}">
+                <apex:input type="date" id="BeginDate" value="{!BeginDt}"
+                    label="{!$Label.AccountRec_BeginDate}" />
+                <apex:input type="date" id="EndDate" value="{!EndDt}"
+                    label="{!$Label.AccountRec_EndDate}" />
+                <apex:commandButton value="{!$Label.AccountRec_DateRangeSecButton}" reRender="pageBlock,msg"
+                    status="statusInvoice" action="{!setInvoiceDateRange}"  oncomplete="setDataTables2();setDataTables4();"/>
+            </apex:pageBlockSection>
+            <apex:pageMessages id="msg" />
+            <apex:outputLabel for="InvoiceType" value="{!$Label.AccountRec_ViewPicklistLabel} "
+                style="font-weight:bold;" />
+
+
+            <!-- PageBlockSection for OPEN ITEM Items -->
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionOpenItems" title="{!$Label.AccountRec_SOOpen} {!$Label.AccountRec_ItemsTrans}"
+                rendered="{!(sSelectedOption == $Label.AccountRec_SOOpen||sSelectedOption == $Label.AccountRec_SOAll)&& !IsError}"
+                collapsible="false">
+                <apex:pageBlockTable value="{!OResponseopenlist2}" var="Olist" id="tableARInfo"> 
+                <!--<apex:dataTable value="{!OResponseopenlist}" var="Olist" styleclass="tableARInfo"> -->              
+                    <apex:column >
+                        <apex:facet name="header">
+                             <apex:inputCheckbox value="{!SelectAll}" onchange="sainv();return false;" />
+                            </apex:facet>
+                        <apex:inputCheckbox value="{!Olist.isSelected}" id="InputId" onchange="saveselectedopen();"/>
+                    </apex:column>
+                    <apex:column rendered="{!NOT(showLineNumber)}">
+                        <apex:facet name="header">{!$Label.AccountRec_ViewImage}</apex:facet>
+                        <apex:commandlink rendered="{!Olist.referencekey!=null}" onclick="window.open('/apex/LCRMIXOS_Document?AccId={!Source_System_Detail__c.Account_Name__r.Id}&AcctSapId={!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}&ReferenceNumber={!JSENCODE(Olist.referencekey)}&ContractNumber={!JSENCODE(Olist.referencekey)}&SalesOrg={!JSENCODE(strSalesOrgCode)}&MessageId=Invoice&SSDid={!oSSD.id}','LCRMIXOS_Document');"  rerender="none">
+                            {!$Label.Images}</apex:commandlink>
+                    </apex:column>
+                     <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.AccountRec_ViewImage}</apex:facet>
+                        <apex:commandlink rendered="{!Olist.document.docNumber!=null}" onclick="window.open('/apex/ESC_IXOSHana_Document?AccId={!Source_System_Detail__c.Account_Name__r.Id}&AcctSapId={!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}&ReferenceNumber={!JSENCODE(Olist.document.additionalPdfDocumentId)}&MessageId=Invoice&SSDid={!oSSD.id}','ESC_IXOS_Document');"  rerender="none">
+                            {!$Label.Images}</apex:commandlink>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                        <apex:outputLink value="/apex/USLArdetailpage?invoice={!Olist.document.additionalPdfDocumentId}&ssdId={!Source_System_Detail__c.Id}"> {!Olist.document.additionalPdfDocumentId}
+                             </apex:outputLink>
+                   </apex:column>
+                   <!-- added for Tax Hana-->
+                    <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.lineNumber}" />
+                    </apex:column> 
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                        <apex:outputText value="{!Olist.amount}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:outputText value="{!Olist.baselineDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:outputText value="{!Olist.shortDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Ldes}</apex:facet>
+                        <apex:outputText value="{!Olist.longDescription}" />
+                    </apex:column>                  
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.document.docNumber}" />
+                    </apex:column>                     
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_PostingDate}</apex:facet>
+                        <apex:outputText value="{!Olist.postingDate}" />
+                    </apex:column>                    
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_RenderedDate}</apex:facet>
+                        <apex:outputText value="{!Olist.servicesRenderedDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">D/C Ind</apex:facet>
+                        <apex:outputText value="{!IF(Olist.debitCreditInd == 'H','C', IF(Olist.debitCreditInd == 'S','D',Olist.debitCreditInd))}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">RefKey</apex:facet>
+                        <apex:outputText value="{!Olist.referencekey}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:outputText value="{!Olist.netArrers}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocDate}</apex:facet>
+                        <apex:outputText value="{!Olist.document.docDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:outputText value="{!Olist.document.type}" />
+                    </apex:column>
+                 </apex:pageBlockTable> 
+                <!-- </apex:dataTable>-->
+                <apex:outputPanel layout="block">
+                    {!$Label.USL_TotalAmount}:<apex:outputText value="{!OResponsealllist.totalOpenItemAmount}" />&nbsp;&nbsp; 
+                    {!$Label.USL_TopenAmount}: <apex:outputText value="{!OResponsealllist.totalOpenItemAmountInvoiced}" />&nbsp;&nbsp; 
+                    {!$Label.USL_pastDueBalance} <apex:outputText value="{!OResponsealllist.pastDueBalance}" />
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" rendered="{!OResponseopenlist.size==0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.AccountRec_NoRecordsMsg}
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!AND(IF(Arpaginater.isAll, false, true), IF(Arpaginater.totalPage == 1, false, true))}">
+                    <apex:commandButton value="Previous" rerender="bPageBlockSectionOpenItems" action="{!previousPage}" rendered="{!Arpaginater.showPrevious}" status="fetchStatus1" oncomplete="setDataTables2();"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:repeat value="{!Arpaginater.pageList}" var="pl">
+                        <apex:outputText rendered="{!!pl.isActive}">
+                            <apex:commandLink action="{!updatePage}" rerender="bPageBlockSectionOpenItems" status="fetchStatus1" oncomplete="setDataTables2();">
+                            {!pl.pageNum}                                
+                            <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!Arpaginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                            </apex:commandLink>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                    </apex:repeat>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Next" rerender="bPageBlockSectionOpenItems" action="{!nextPage}" rendered="{!Arpaginater.showNext}" status="fetchStatus1" oncomplete="setDataTables2();"/>
+                </apex:outputPanel>
+                <apex:actionStatus id="fetchStatus1">
+                    <apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                            &nbsp;
+                        </div>
+                        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                            <img src="/img/loading.gif" />
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection>
+            
+            <!-- PageBlockSection for OPEN Items -->
+            <!-- PageBlockSection for CLEAR ITEM Items -->
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionClearedItems" title="{!$Label.AccountRec_SOCleared} {!$Label.AccountRec_ItemsTrans}"
+                rendered="{!(sSelectedOption == $Label.AccountRec_SOCleared ||sSelectedOption == $Label.AccountRec_SOAll)&&!IsError}"
+                collapsible="false">
+                <apex:pageBlockTable value="{!OResponseclearlist2}" var="Clist" id="tableARInfo1">
+               <!-- <apex:dataTable value="{!OResponseclearlist2}" var="Clist" styleclass="tableARInfo"> -->
+                    <apex:column >
+                         <apex:facet name="header">
+                             <apex:inputCheckbox value="{!selectallclear}" onchange="sainv1();return false;" />
+                            </apex:facet>
+                        <apex:inputCheckbox value="{!Clist.isSelected}" id="InputId" onchange="saveselectedopen1();"/>
+                   </apex:column>
+                    <apex:column rendered="{!NOT(showLineNumber)}">
+                        <apex:facet name="header">{!$Label.AccountRec_ViewImage}</apex:facet>
+                        <apex:commandlink rendered="{!Clist.referencekey!=null}" onclick="window.open('/apex/LCRMIXOS_Document?AccId={!Source_System_Detail__c.Account_Name__r.Id}&AcctSapId={!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}&ReferenceNumber={!JSENCODE(Clist.referencekey)}&ContractNumber={!JSENCODE(Clist.referencekey)}&SalesOrg={!JSENCODE(strSalesOrgCode)}&MessageId=Invoice&SSDid={!oSSD.id}','LCRMIXOS_Document');"  rerender="none">
+                        {!$Label.Images}</apex:commandlink>     
+                    </apex:column>
+                    <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.AccountRec_ViewImage}</apex:facet>
+                        <apex:commandlink rendered="{!Clist.document.additionalPdfDocumentId!=null}" onclick="window.open('/apex/ESC_IXOSHana_Document?AccId={!Source_System_Detail__c.Account_Name__r.Id}&AcctSapId={!JSENCODE(Source_System_Detail__c.Source_System_Account_Number__c)}&ReferenceNumber={!JSENCODE(Clist.document.additionalPdfDocumentId)}&MessageId=Invoice&SSDid={!oSSD.id}','ESC_IXOSHana_Document');"  rerender="none">
+                        {!$Label.Images}</apex:commandlink>     
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.document.additionalPdfDocumentId}" />
+                    </apex:column>
+                    <!-- added for Tax Hana-->
+                    <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.lineNumber}" />
+                    </apex:column> 
+                      <apex:column >
+                        <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                        <apex:outputText value="{!Clist.amount}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.baselineDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_ClearingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearingDate}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_ClearingDocNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearingDocumentNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:outputText value="{!Clist.shortDescription}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Ldes}</apex:facet>
+                        <apex:outputText value="{!Clist.longDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.document.docNumber}" />
+                    </apex:column>   
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_PostingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.postingDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">D/C Ind</apex:facet>
+                        <apex:outputText value="{!IF(Clist.debitCreditInd == 'H','C', IF(Clist.debitCreditInd == 'S','D',Clist.debitCreditInd))}" />
+                    </apex:column>
+                      <apex:column >
+                        <apex:facet name="header">RefKey1</apex:facet>
+                        <apex:outputText value="{!Clist.referencekey}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:outputText value="{!Clist.netArrers}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocDate}</apex:facet>
+                        <apex:outputText value="{!Clist.document.docDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:outputText value="{!Clist.document.type}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Rnum}</apex:facet>
+                        <apex:outputText value="{!Clist.document.referenceNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_AllocationNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.allocationNumber}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                <!-- </apex:dataTable>  -->
+                <apex:outputPanel layout="block" rendered="{!OResponseclearlist.size==0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.AccountRec_NoRecordsMsg}
+                </apex:outputPanel>
+                
+                <apex:outputPanel rendered="{!AND(IF(Arpaginater1.isAll, false, true), IF(Arpaginater1.totalPage == 1, false, true))}">
+                    <apex:commandButton value="Previous" rerender="bPageBlockSectionClearedItems" action="{!cpreviousPage}" rendered="{!Arpaginater1.showPrevious}" status="fetchStatus" oncomplete="setDataTables4();"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:repeat value="{!Arpaginater1.pageList}" var="pl">
+                        <apex:outputText rendered="{!!pl.isActive}">
+                            <apex:commandLink action="{!cupdatePage}" rerender="bPageBlockSectionClearedItems" status="fetchStatus" oncomplete="setDataTables4();">
+                            {!pl.pageNum}                                
+                            <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!Arpaginater1.pageNum}" />&nbsp;&nbsp;&nbsp;
+                            </apex:commandLink>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                    </apex:repeat>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Next" rerender="bPageBlockSectionClearedItems" action="{!cnextPage}" rendered="{!Arpaginater1.showNext}" status="fetchStatus" oncomplete="setDataTables4();"/>
+                </apex:outputPanel> 
+                <apex:actionStatus id="fetchStatus">
+                    <apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                            &nbsp;
+                        </div>
+                        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                            <img src="/img/loading.gif" />
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection> 
+            <!-- PageBlockSection for CLEAR Items -->  
+            </apex:actionRegion>
+        </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

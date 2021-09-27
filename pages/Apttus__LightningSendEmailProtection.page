@@ -1,0 +1,155 @@
+<!-- 
+Apttus Contract Management
+LightningSendEmailProtection
+
+@2017-2019 Apttus Inc. All rights reserved.
+
+-->
+<apex:page standardController="Apttus__APTS_Agreement__c"
+           extensions="Apttus.LightningSendEmailWizardController" >
+    <head>
+		<apex:stylesheet value="{!URLFOR($Resource.Apttus__LightningResource, 'css/sendforreview.css')}" />
+        <apex:slds />
+    </head>
+    <body>
+        <apex:variable var="hasAttachments" value="{!attachments !=null && attachments.size >= 1 }" />
+        <apex:form >
+            <!-- hidden field(s) to be included by sf default query -->
+            <apex:inputHidden value="{!Apttus__APTS_Agreement__c.Apttus__Parent_Agreement__c}"/>
+            <apex:inputHidden value="{!Apttus__APTS_Agreement__c.Apttus__Status_Category__c}"/>
+            <apex:inputHidden value="{!Apttus__APTS_Agreement__c.Apttus__Status__c}"/>
+            <apex:inputHidden value="{!Apttus__APTS_Agreement__c.Apttus__FF_Agreement_Number__c}"/>
+            <apex:outputText value="{!Apttus__APTS_Agreement__c.Apttus__VersionAware__c}" rendered="false" />
+         
+            <!-- Wizard header -->
+            <div class="slds">
+                <div class="slds-page-header">
+                    <div class="slds-page-header__row">
+                        <div class="slds-page-header__col-title">
+                            <div class="slds-media">
+                                <div class="slds-media__figure">
+                                    <span class="slds-icon_container">
+                                        
+                                        <!--image-->
+                                        <img src="{!URLFOR($Resource.ParallelReviewResource, 'ParallelReviewResource/ParallelReview/icons/ReviewCycle.png')}" alt="Review Cycle" class="pageTitleIcon" title="{!$Label.ReviewCycle}"/>
+                                    </span>
+                                </div>
+                                
+                                <!-- header title -->
+                                <div class="slds-media__body">
+                                    <div class="slds-page-header__name">
+                                        <div class="slds-page-header__name-title">
+                                            <h1>
+                                                <span class="slds-page-header__name-meta">{!reviewTitle}</span>
+                                            </h1>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- agreement name -->
+                                    <p class="slds-page-header__title slds-truncate">
+                                        <apex:outputText value="{!Apttus__APTS_Agreement__c.Name}"/> 
+                                    </p>
+                                </div>
+                                
+                                <!-- cancel button -->
+                                <div class="slds-grid slds-grid_align-end">
+                                    <apex:commandButton styleclass="slds-button slds-button--neutral"  value="{!$Label.apttus__cancel}"  action="{!doCancel}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end pageheader -->
+                
+                <!-- body -->
+                <apex:outputPanel layout="block" styleClass="slds-brand-band slds-brand-band_cover slds-brand-band_medium">
+                    <div class="pageBody">
+                    
+                        <!-- section to display error messages -->
+                        <div class="visibleeror"> 
+                            <h2 class="error">
+                                <apex:pageMessages />   
+                            </h2>    
+                        </div> 
+                        
+                        <!-- section header -->
+                        <div class="pageSectionHeader slds-grid">
+                         
+                            <!-- step title -->
+                            <div class="pageStepTitle">{!stepTitle}</div>
+                         
+                            <!-- progress indicator --> 
+                            <apex:outputPanel rendered="{!totalStepsProgressIndicator.size > 0}" layout="block" styleClass="progressIndicatorPanel slds-progress">
+                                <ol class="slds-progress__list">
+                                    <apex:repeat value="{!totalStepsProgressIndicator}" var="Step">
+       
+                                        <li class="slds-progress__item {!IF(currentStepNumber == Step, 'slds-is-active','' )} {!IF(currentStepNumber > Step, 'slds-is-completed','' )}">
+                                            <apex:outputPanel rendered="{!AND(currentStepNumber == Step, NOT(errorsPresent))}">
+                                            <div class="progressIndicatorToolTip slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip" id="step-{!Step}-tooltip">
+                                                <div class="slds-popover__body">{!$Label.SelectDocumentProtectionOptional}</div>
+                                            </div>
+											<span class="slds-button slds-progress__marker" aria-describedby="step-{!Step}-tooltip">
+                                                <span class="slds-assistive-text"></span>
+                                            </span>
+                                            </apex:outputPanel>
+											
+											<apex:outputPanel rendered="{!currentStepNumber > Step}">
+												<button onclick="return false;" class="slds-button slds-button_icon slds-button_icon slds-progress__marker slds-progress__marker_icon">
+													<img src="{!URLFOR($Resource.LightningResource, 'images/success.png')}"/>
+													<span class="slds-assistive-text"></span>
+												</button>
+											</apex:outputPanel>
+                                        </li>
+                                    </apex:repeat>
+                                </ol>
+                                
+                                <div class="slds-progress-bar slds-progress-bar_x-small" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" role="progressbar">
+                                    <span class="slds-progress-bar__value" style="width: {!(currentStepNumber-1)/(totalSteps - 1) * 100}%"></span>
+                                </div>
+                            </apex:outputPanel>
+         
+                            <!-- next, previous buttons -->
+                            <div class="rightButtonsPanel">                        
+                                <apex:commandButton styleclass="displayInline slds-button slds-button--brand" action="{!onPrevious}" value="{!$Label.apttus__previous}"/>&nbsp;
+                                <apex:commandButton styleclass="displayInline slds-button slds-button--brand" action="{!onNext}" value="{!$Label.apttus__next}" rendered="{!!isTeamsReviewLightning}"/>
+                                <apex:commandButton styleclass="displayInline slds-button slds-button--brand" action="{!loadTeamMemberSelection}" value="{!$Label.apttus__next}" rendered="{!isTeamsReviewLightning}"/>
+                            </div>
+                        </div> <!-- end section header -->
+                    
+                        <!-- help text section -->
+                        <div class="paddingCls">
+                            <apex:outputText value="{!LightningSendEmailProtectiontext}"/>
+                        </div>
+                        
+                        <!-- documents section -->
+                        <div class="paddingCls">         
+                            <div style="width:50%; float:left">
+                                <span class="slds-text-heading_medium">{!$Label.SendEmailDocumentsSelectedForReview}</span><br/><br/>
+                                <apex:dataTable value="{!selectedAttachments}" width="50%" var="attachData" id="theTable" styleClass="slds-table slds-table--bordered slds-table--striped">
+                                    <apex:column style="width: 70%;">    
+                                        <apex:facet name="header">{!$Label.apttus__filename}</apex:facet>
+                                        <apex:outputLink styleClass="breakWordCls" value="/{!attachData.AttachmentFileWrapper.Id}">{!attachData.AttachmentFileWrapper.Name}</apex:outputLink>
+                                    </apex:column>
+
+                                    <apex:column >
+                                        <apex:facet name="header">{!$ObjectType.Attachment.Fields.LastModifiedDate.Label}</apex:facet>
+                                        <apex:outputText value="{!attachData.AttachmentFileWrapper.LastModifiedDate}" />
+                                    </apex:column>
+                                </apex:dataTable>
+                            </div>
+                            
+                            <!-- select protection level section -->
+                            <div class="leftPadding" >
+                                <span class="slds-text-heading_medium">{!$Label.SendEmailPermissionsLevelForReviewDocuments}</span><br/><br/>
+                                <apex:outputPanel id="idProtectionSelectionPanel">
+                                    <apex:selectRadio value="{!protectionLevel}" layout="pageDirection">
+                                        <apex:selectOptions value="{!protectionLevels}"/>
+                                    </apex:selectRadio>
+                                </apex:outputPanel>
+                            </div>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+            </div>
+        </apex:form>
+    </body>
+</apex:page>

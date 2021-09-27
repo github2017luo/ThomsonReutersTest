@@ -1,0 +1,42 @@
+<!--
+ - This page is used to manage information and validation messages when trying to bulk update the Bypass Automation
+ - records on Digital Subscription records 
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-07-31   Brenda Shields          Created
+ - ==================================================================================================================================   
+-->
+<apex:page standardController="Product_Account_Detail__c" recordSetVar="Product_Account_Detail__c" extensions="Digital_DS_Mass_Update_Controller" lightningStylesheets="true" >
+    <apex:messages />
+        
+    <apex:form >
+    <!--styleClass="hidden"--> 
+    <apex:pageBlock html-style="width: 75%; height: 25px; font-size: 12px;">
+    <div>
+        <apex:outputText rendered="{!isOverLimit}">
+            <p>Your view contains over 10000 records which is over the processing limit. 
+            Please reduce the number of records in your view to continue.</p>
+        </apex:outputText>
+        <apex:outputText rendered="{!isContinue}">
+            <br />Please select the appropriate action to continue. <br />
+            <br /><apex:outputText value="{!strDSCounts}" styleClass="slds-input"/><br />
+            <br />To set all records to Bypassed, press the 'Check Bypass Flag' button.<br />
+            <br />To set all records to NOT Bypassed, press the 'UnCheck Bypass Flag' button.<br />
+        </apex:outputText>
+        <apex:outputText rendered="{!isNull && isOverLimit == false}">
+            <br />Your view does not contain any Digital Subscription records.  Please update your view to include all records you wish to update.<br />
+        </apex:outputText>
+    
+            <apex:pageBlockButtons location="bottom"> 
+                <apex:commandButton value="Return to DS View" action="{!returnToDSView}" rendered="{!isReturn}"/>
+                <apex:commandButton value="Check Bypass Flag" action="{!updateToBypass}" rendered="{!not(isReturn)}"/>
+                <apex:commandButton value="UnCheck Bypass Flag" action="{!updateToUnBypass}" rendered="{!not(isReturn)}"/>
+                <apex:commandButton value="Cancel" action="{!returnToDSView}" rendered="{!not(isReturn)}"/>
+            </apex:pageBlockButtons>
+    </div>
+    </apex:pageBlock>
+    </apex:form>
+      
+</apex:page>

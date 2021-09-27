@@ -1,0 +1,52 @@
+<apex:page standardController="Lead" recordSetVar="leads" tabStyle="Lead" extensions="ListButtonController">
+<apex:pageMessages id="msgs" />
+    <apex:form >
+    <div>
+         <Apex:actionFunction name="hideSection" action="{!hideSectionOnChange}" rerender="pg"/>
+        <apex:pageBlock id="pg">
+        
+        <apex:pageBlockButtons location="top">
+                <apex:commandButton action="{!updateLeads}" value="Save"/>
+                <apex:commandButton action="{!Cancel}" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+                       
+            <apex:pageBlockSection title="LM All Leads" columns="2">
+            
+          
+                    
+                    <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Status" for="lead_status"/>
+                    <apex:actionregion >
+                    <apex:inputField value="{!lead.Status}" id="lead_status" >
+                    
+                    <apex:actionSupport event="onchange" action="{!hideSectionOnChange}" rerender="pg,msgs"/>
+                   </apex:inputField>
+                    </apex:actionregion>
+                    </apex:pageBlockSectionItem>
+                  
+           
+                
+                 <apex:pageBlockSectionItem rendered="{!(!flag)}" id="discard">               
+                    <apex:outputLabel value="Discard Reason" for="discard_reason"/>
+                    <!--<apex:inputField value="{!lead.Discard_Reason__c}" id="discard_reason" rendered="{!shouldRender}" />-->
+                    <apex:inputField value="{!lead.Discard_Reason__c}" id="discard_reason" required="true"/>  
+                  </apex:pageBlockSectionItem>
+                  
+                  <!--<apex:pageBlockSectionItem rendered="{!(!shouldRender)}" id="reject">               
+                    <apex:outputLabel value="Rejected Reason" for="rejected_reason"/>
+                    <apex:inputField value="{!lead.Rejected_Reason__c}" id="rejected_reason" required="true"/> 
+                  </apex:pageBlockSectionItem>-->
+                  
+                      <apex:pageBlockSectionItem >                                           
+                        <apex:outputLabel value="Justification" for="lead_justification"/>
+                        <apex:inputField value="{!lead.Justification__c}" id="lead_justification"/>                    
+                      </apex:pageBlockSectionItem>    
+                
+            </apex:pageBlockSection>
+
+        </apex:pageBlock>
+</div>
+    </apex:form>
+
+    </apex:page>

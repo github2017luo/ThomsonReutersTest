@@ -1,0 +1,915 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <customHelpPage>fferpcore__BillingDocumentLineItemHelp</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>fferpcore__Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Salesforce account representing the location the product is shipped to. The account must be a descendant of the related billing document account and contain complete address details. Descendants up to five relationships deep in the hierarchy are valid.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Salesforce account representing the location the product is shipped to. The account must be a descendant of the related billing document account and contain complete address details. Descendants up to five relationships deep in the hierarchy are valid.</inlineHelpText>
+        <label>Shipping Account</label>
+        <lookupFilter>
+            <active>true</active>
+            <filterItems>
+                <field>Account.Parent.Id</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Billing Document Line Items</relationshipLabel>
+        <relationshipName>RelatedBillingDocumentLineItems</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__AnalysisItem1__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</inlineHelpText>
+        <label>Analysis Item 1</label>
+        <lookupFilter>
+            <active>false</active>
+            <filterItems>
+                <field>fferpcore__AnalysisItem__c.Id</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>fferpcore__AnalysisItem__c</referenceTo>
+        <relationshipLabel>Related Document Lines 1</relationshipLabel>
+        <relationshipName>RelatedDocumentLines1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__AnalysisItem2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</inlineHelpText>
+        <label>Analysis Item 2</label>
+        <lookupFilter>
+            <active>false</active>
+            <filterItems>
+                <field>fferpcore__AnalysisItem__c.Id</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>fferpcore__AnalysisItem__c</referenceTo>
+        <relationshipLabel>Related Document Lines 2</relationshipLabel>
+        <relationshipName>RelatedDocumentLines2</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__AnalysisItem3__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</inlineHelpText>
+        <label>Analysis Item 3</label>
+        <lookupFilter>
+            <active>false</active>
+            <filterItems>
+                <field>fferpcore__AnalysisItem__c.Id</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>fferpcore__AnalysisItem__c</referenceTo>
+        <relationshipLabel>Related Document Lines 3</relationshipLabel>
+        <relationshipName>RelatedDocumentLines3</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__AnalysisItem4__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to sub-analyze billing document lines and can be used to represent a number of different business concepts.</inlineHelpText>
+        <label>Analysis Item 4</label>
+        <lookupFilter>
+            <active>false</active>
+            <filterItems>
+                <field>fferpcore__AnalysisItem__c.Id</field>
+                <operation>notEqual</operation>
+                <value></value>
+            </filterItems>
+            <isOptional>true</isOptional>
+        </lookupFilter>
+        <referenceTo>fferpcore__AnalysisItem__c</referenceTo>
+        <relationshipLabel>Related Document Lines 4</relationshipLabel>
+        <relationshipName>RelatedDocumentLines4</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__BillingDocumentExternalTaxStatus__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Formula field containing the external tax status of the billing document to which the billing document line item belongs.</description>
+        <externalId>false</externalId>
+        <formula>TEXT(fferpcore__BillingDocument__r.fferpcore__ExternalTaxStatus__c)</formula>
+        <inlineHelpText>External Tax Status of the billing document to which this billing document line item belongs.</inlineHelpText>
+        <label>Billing Document External Tax Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__BillingDocumentStatus__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Formula field containing the status of the billing document to which the billing document line item belongs.</description>
+        <externalId>false</externalId>
+        <formula>TEXT(fferpcore__BillingDocument__r.fferpcore__DocumentStatus__c)</formula>
+        <inlineHelpText>Status of the billing document to which this billing document line item belongs.</inlineHelpText>
+        <label>Billing Document Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__BillingDocument__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Billing document to which this billing document line item belongs.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Billing document to which this billing document line item belongs.</inlineHelpText>
+        <label>Billing Document</label>
+        <referenceTo>fferpcore__BillingDocument__c</referenceTo>
+        <relationshipLabel>Billing Document Line Items</relationshipLabel>
+        <relationshipName>ChildBillingDocumentLineItems</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>fferpcore__CompanySite__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Company site representing the location the product is shipped from. The site must be a child of the related billing document company and contain complete address details.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Company site representing the location the product is shipped from. The site must be a child of the related billing document company and contain complete address details.</inlineHelpText>
+        <label>Company Site</label>
+        <referenceTo>fferpcore__CompanySite__c</referenceTo>
+        <relationshipLabel>Billing Document Line Items</relationshipLabel>
+        <relationshipName>BillingDocumentLineItems</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__DiscountTotal__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The total discount for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The total discount for this billing document line item.</inlineHelpText>
+        <label>Discount Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__InvalidCompanySite__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates that the selected company site is not a child of the billing document company.</description>
+        <externalId>false</externalId>
+        <formula>AND(
+        fferpcore__CompanySite__c != null,
+        OR(
+            fferpcore__BillingDocument__r.fferpcore__Company__c = null,
+            fferpcore__CompanySite__r.fferpcore__Company__c != fferpcore__BillingDocument__r.fferpcore__Company__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Indicates that the selected company site is not a child of the billing document company.</inlineHelpText>
+        <label>Invalid Company Site</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__InvalidShippingAccount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Indicates that the selected shipping account is not a descendant of the billing document account.</description>
+        <externalId>false</externalId>
+        <formula>AND(
+        fferpcore__Account__c != null,
+        OR(
+            fferpcore__BillingDocument__r.fferpcore__Account__c = null,
+            AND(
+                fferpcore__Account__r.ParentId != fferpcore__BillingDocument__r.fferpcore__Account__c,
+                fferpcore__Account__r.Parent.ParentId != fferpcore__BillingDocument__r.fferpcore__Account__c,
+                fferpcore__Account__r.Parent.Parent.ParentId != fferpcore__BillingDocument__r.fferpcore__Account__c,
+                fferpcore__Account__r.Parent.Parent.Parent.ParentId != fferpcore__BillingDocument__r.fferpcore__Account__c,
+                fferpcore__Account__r.Parent.Parent.Parent.Parent.ParentId != fferpcore__BillingDocument__r.fferpcore__Account__c)))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Indicates that the selected shipping account is not a descendant of the billing document account.</inlineHelpText>
+        <label>Invalid Shipping Account</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__LineDescription__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Description of the billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Description of the billing document line item.</inlineHelpText>
+        <label>Description</label>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ManualAddressOverride__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Indicates that you want to enter and maintain the shipping address manually. If deselected and a shipping account is specified, the account shipping address is saved to the line.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates that you want to enter and maintain the shipping address manually. If deselected and a shipping account is specified, the account shipping address is saved to the line.</inlineHelpText>
+        <label>Enter Shipping Address Manually</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__NetValueBeforeDiscount__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The net value of the billing document line item before the discounts are applied.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The net value of the billing document line item before the discounts are applied.</inlineHelpText>
+        <label>Net Value Before Discount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__NetValueOverride__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Optional manual calculation of the net value.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Optional manual calculation of the net value.</inlineHelpText>
+        <label>Net Value Override</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__NetValue__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total Value of this billing document line item before tax. The formula used to calculate this is Quantity x Unit Price.</description>
+        <externalId>false</externalId>
+        <formula>IF(ISNULL(fferpcore__NetValueOverride__c) , fferpcore__Quantity__c  *  fferpcore__UnitPrice__c, fferpcore__NetValueOverride__c)</formula>
+        <inlineHelpText>Total Value of this billing document line item before tax. The formula used to calculate this is Quantity x Unit Price.</inlineHelpText>
+        <label>Net Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ProductService__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the Salesforce product or service to which this billing document line item relates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the Salesforce product or service.</inlineHelpText>
+        <label>Product or Service</label>
+        <referenceTo>Product2</referenceTo>
+        <relationshipLabel>Product Service Relationship</relationshipLabel>
+        <relationshipName>RelatedBillingDocumentLineItems</relationshipName>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__Quantity__c</fullName>
+        <defaultValue>1.000000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Number of items included in this billing document line item. This is used to calculate the Total Value of the billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of items included in this billing document line item. This is used to calculate the Total Value of the billing document line item.</inlineHelpText>
+        <label>Quantity</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>6</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingNetValueNumber__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Reporting net value, stored as a number.</description>
+        <externalId>false</externalId>
+        <formula>fferpcore__ReportingNetValue__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Reporting Net Value Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingNetValue__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total Value of this billing document line item before tax based on the Document Type of the billing document. If the billing document is an invoice, the value is the same as the Net Value. If the document is a credit note, the value is calculated using the formula: Net Value * -1.</description>
+        <externalId>false</externalId>
+        <formula>IF (ISPICKVAL(fferpcore__BillingDocument__r.fferpcore__DocumentType__c, &quot;Credit Note&quot;),  fferpcore__NetValue__c * -1, fferpcore__NetValue__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total Value of this billing document line item before tax based on the Document Type of the billing document.</inlineHelpText>
+        <label>Reporting Net Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingTaxValue1__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax Value 1 of the corresponding Tax Rate based on the Document Type of the billing document. If the billing document is an invoice, the value is the same as Tax Value 1. If the document is a credit note, the value is calculated using the formula: Tax Value 1 * -1.</description>
+        <externalId>false</externalId>
+        <formula>IF (ISPICKVAL(fferpcore__BillingDocument__r.fferpcore__DocumentType__c, &quot;Credit Note&quot;),  fferpcore__TaxValue1__c * -1, fferpcore__TaxValue1__c)</formula>
+        <inlineHelpText>Tax Value 1 of the corresponding Tax Rate based on the Document Type of the billing document.</inlineHelpText>
+        <label>Reporting Tax Value 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingTaxValue2__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax Value 2 of the corresponding Tax Rate based on the Document Type of the billing document. If the billing document is an invoice, the value is the same as Tax Value 2. If the document is a credit note, the value is calculated using the formula: Tax Value 2 * -1.</description>
+        <externalId>false</externalId>
+        <formula>IF (ISPICKVAL(fferpcore__BillingDocument__r.fferpcore__DocumentType__c, &quot;Credit Note&quot;),  fferpcore__TaxValue2__c * -1, fferpcore__TaxValue2__c)</formula>
+        <inlineHelpText>Tax Value 2 of the corresponding Tax Rate based on the Document Type of the billing document.</inlineHelpText>
+        <label>Reporting Tax Value 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingTaxValue3__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax Value 3 of the corresponding Tax Rate based on the Document Type of the billing document. If the billing document is an invoice, the value is the same as Tax Value 3. If the document is a credit note, the value is calculated using the formula: Tax Value 3 * -1.</description>
+        <externalId>false</externalId>
+        <formula>IF (ISPICKVAL(fferpcore__BillingDocument__r.fferpcore__DocumentType__c, &quot;Credit Note&quot;),  fferpcore__TaxValue3__c * -1, fferpcore__TaxValue3__c)</formula>
+        <inlineHelpText>Tax Value 3 of the corresponding Tax Rate based on the Document Type of the billing document.</inlineHelpText>
+        <label>Reporting Tax Value 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingTaxValueTotal__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total tax for the billing document line item based on the Document Type of the billing document. If the billing document is an invoice, the value is the same as the Tax Value Total. If the document is a credit note, the value is calculated using the formula: Tax Value Total * -1.</description>
+        <externalId>false</externalId>
+        <formula>IF (ISPICKVAL(fferpcore__BillingDocument__r.fferpcore__DocumentType__c, &quot;Credit Note&quot;),  fferpcore__TaxValueTotal__c * -1, fferpcore__TaxValueTotal__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total tax for the billing document line item based on the Document Type of the billing document.</inlineHelpText>
+        <label>Reporting Tax Value Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ReportingTotalValue__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total Value of this billing document line item including tax based on the Document Type of the billing document. If the billing document is an invoice, the value is the same as the Total Value. If the document is a credit note, the value is calculated using the formula: Total Value * -1.</description>
+        <externalId>false</externalId>
+        <formula>IF (ISPICKVAL(fferpcore__BillingDocument__r.fferpcore__DocumentType__c, &quot;Credit Note&quot;),  fferpcore__TotalValue__c * -1, fferpcore__TotalValue__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total Value of this billing document line item including tax based on the Document Type of the billing document.</inlineHelpText>
+        <label>Reporting Total Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ShippingCity__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shipping address city.</description>
+        <externalId>false</externalId>
+        <label>Shipping City</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ShippingCountry__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shipping address country.</description>
+        <externalId>false</externalId>
+        <label>Shipping Country</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ShippingPostalCode__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shipping address postal code.</description>
+        <externalId>false</externalId>
+        <label>Shipping Zip/Postal Code</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ShippingState__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shipping address state/province.</description>
+        <externalId>false</externalId>
+        <label>Shipping State/Province</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__ShippingStreet__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Shipping address street.</description>
+        <externalId>false</externalId>
+        <label>Shipping Street</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxCode1__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Tax code to use when calculating tax for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax code to use when calculating tax for this billing document line item. You can use the tax codes to represent the state, county and city tax authorities.</inlineHelpText>
+        <label>Tax Code 1</label>
+        <referenceTo>fferpcore__TaxCode__c</referenceTo>
+        <relationshipLabel>Billing Document Line Items (Tax Code)</relationshipLabel>
+        <relationshipName>BillingDocumentLineItemsTaxCode</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxCode2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Tax code to use when calculating tax for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax code to use when calculating tax for this billing document line item. You can use the tax codes to represent the state, county and city tax authorities.</inlineHelpText>
+        <label>Tax Code 2</label>
+        <referenceTo>fferpcore__TaxCode__c</referenceTo>
+        <relationshipLabel>Billing Document Line Items (Tax Code 2)</relationshipLabel>
+        <relationshipName>BillingDocumentLineItemsTaxCode2</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxCode3__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Tax code to use when calculating tax for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax code to use when calculating tax for this billing document line item. You can use the tax codes to represent the state, county and city tax authorities.</inlineHelpText>
+        <label>Tax Code 3</label>
+        <referenceTo>fferpcore__TaxCode__c</referenceTo>
+        <relationshipLabel>Billing Document Line Items (Tax Code 3)</relationshipLabel>
+        <relationshipName>BillingDocumentLineItemsTaxCode3</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxRate1__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax rate to use when calculating tax for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax rate to use when calculating tax for this billing document line item.</inlineHelpText>
+        <label>Tax Rate 1</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxRate2__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax rate to use when calculating tax for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax rate to use when calculating tax for this billing document line item.</inlineHelpText>
+        <label>Tax Rate 2</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxRate3__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax rate to use when calculating tax for this billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax rate to use when calculating tax for this billing document line item.</inlineHelpText>
+        <label>Tax Rate 3</label>
+        <precision>9</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxRateTotal__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total tax rate for the billing document line item.</description>
+        <externalId>false</externalId>
+        <formula>fferpcore__TaxRate1__c + fferpcore__TaxRate2__c + fferpcore__TaxRate3__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total tax rate for the billing document line item.</inlineHelpText>
+        <label>Tax Rate Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>5</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxValue1__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax value calculated from the corresponding tax rate using the formula: Net Value * (Tax Rate / 100).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax value calculated from the corresponding tax rate using the formula: Net Value * (Tax Rate / 100).</inlineHelpText>
+        <label>Tax Value 1</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxValue2__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax value calculated from the corresponding tax rate using the formula: Net Value * (Tax Rate / 100).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax value calculated from the corresponding tax rate using the formula: Net Value * (Tax Rate / 100).</inlineHelpText>
+        <label>Tax Value 2</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxValue3__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Tax value calculated from the corresponding tax rate using the formula: Net Value * (Tax Rate / 100).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Tax value calculated from the corresponding tax rate using the formula: Net Value * (Tax Rate / 100).</inlineHelpText>
+        <label>Tax Value 3</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TaxValueTotal__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total tax for the billing document line item.</description>
+        <externalId>false</externalId>
+        <formula>fferpcore__TaxValue1__c + fferpcore__TaxValue2__c + fferpcore__TaxValue3__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total tax for the billing document line item.</inlineHelpText>
+        <label>Tax Value Total</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TotalValue__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total Value of this billing document line item including tax. The formula used to calculate this is Net Value + Tax Value Total.</description>
+        <externalId>false</externalId>
+        <formula>fferpcore__NetValue__c + fferpcore__TaxValueTotal__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total Value of this billing document line item. The formula used to calculate this is Net Value + Tax Value Total.</inlineHelpText>
+        <label>Total Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__UnitPrice__c</fullName>
+        <defaultValue>0.000000000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Price of one item for the billing document line item. This is used to calculate the Total Value of the billing document line item.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Price of one item for the billing document line item. This is used to calculate the Total Value of the billing document line item.</inlineHelpText>
+        <label>Unit Price</label>
+        <precision>18</precision>
+        <required>true</required>
+        <scale>9</scale>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Billing_Event_Item_Correlation_Id__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Records the PSA Billing Event Item correlation key used within the Foundations system.</description>
+        <externalId>true</externalId>
+        <inlineHelpText>Records the PSA Billing Event Item correlation key used within the Foundations system.</inlineHelpText>
+        <label>Billing Event Item Correlation ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Billing Document Line Item</label>
+    <listViews>
+        <fullName>fferpcore__All</fullName>
+        <columns>NAME</columns>
+        <columns>fferpcore__ProductService__c</columns>
+        <columns>fferpcore__Quantity__c</columns>
+        <columns>fferpcore__UnitPrice__c</columns>
+        <columns>fferpcore__NetValue__c</columns>
+        <columns>fferpcore__TaxValueTotal__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>BDLI{0000000000}</displayFormat>
+        <label>Document Line</label>
+        <trackHistory>true</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Billing Document Line Items</pluralLabel>
+    <searchLayouts>
+        <customTabListAdditionalFields>fferpcore__ProductService__c</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>fferpcore__ProductService__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>fferpcore__ProductService__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>fferpcore__ProductService__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

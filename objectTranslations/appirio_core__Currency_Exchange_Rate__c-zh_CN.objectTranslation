@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>汇率</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>此查找引用了适用于该日期货币汇率的货币记录。汇率始终定义为在指定生效日期，参考货币的多少等于公司货币的1（一）个单位。</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>实际适用的日期货币兑换率的日期，即使它用于更广泛的日期范围。货币转换总是会查找未来（即今天或更早）的最新汇率。</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>指定此汇率到期的日期（如果有）。汇率有效期至到期日前一天，或永不过期，如果空白。</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>如果选中，则表示此货币汇率记录仅用于测试模式，不用于“实际”（生产）汇率转换。</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>如果选中，则表示此货币汇率记录无效且不会被使用</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>定义货币的后续汇率的生效日期（如果有）。对于最近的汇率，它将是空白的。该字段应由系统自动设置。</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>定义引用的货币与组织的公司货币之间的日期汇率的数值。</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <nameFieldLabel>货币汇率编号</nameFieldLabel>
+</CustomObjectTranslation>

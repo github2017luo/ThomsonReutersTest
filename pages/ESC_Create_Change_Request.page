@@ -1,0 +1,14 @@
+<apex:page lightningStylesheets="true" standardController="Case" >
+ <apex:includeLightning />
+    <flow:interview name="Multiple_Change_Requests_to_Master_Data" finishLocation="/{!Case.Id}" reRender="csreturn">
+        <apex:param name="ID" value="{!Id}" />
+        <apex:param name="recordId" value="{!Id}" />
+        <apex:param name="Description" value="{!Case.Description}" />
+        <apex:param name="AccountArchived" value="{!Case.Account.RecordType}" />
+          <apex:param name="userProfile" value="{!$Profile.Name}" /> 
+        <apex:param id="csreturn" name="Caselist" value="{!Case}"/>
+        <apex:param id="BUSegment" name="BUSegment" value="{!Case.BU_Segment__c}"/>
+        <!-- Currently there is no archive record type for contact. This will be needed if an archive record type is created
+            <apex:param name="ContactArchived" value="{!Case.Contact.RecordType}" />-->
+    </flow:interview>
+</apex:page>

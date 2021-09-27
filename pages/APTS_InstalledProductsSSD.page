@@ -1,0 +1,53 @@
+<apex:page StandardController="Source_System_Detail__c" extensions="APTS_InstalledProductsSSD" lightningStylesheets="true">
+<style>
+  .oddRowClass {
+      background-color: #D3D3D3 !important;
+  }
+  .evenRowClass {
+      
+  }
+  .optionClass {
+     background-color: #8cb3d9 !important;
+  }
+  </style>        
+  <apex:pageBlock mode="detail">
+    <!-- <apex:pageMessage severity="Info" strength="2" summary="{!$Label.APTPS_NoActiveAssetsInfoMsg}" rendered="{! !hasActiveAssets}"/> -->
+    <apex:pageBlockTable value="{!shipToAssetLines}" var="asset" rowClasses="oddRowClass,evenRowClass" rendered="{!hasActiveAssets}">
+        <apex:column style="width: 1%;">
+             <apex:image url="{!IF(asset.Apttus_Config2__HasOptions__c!=false,$Resource.Apttus_Config2__Image_Minus,IF(AND(asset.APTS_SAP_MLA_Agreement_Number__c != null, asset.Apttus_Config2__ProductId__r.Media_Lower_Level__c == 'Q6'),$Resource.Apttus_Config2__Image_Minus,''))}"/>
+        </apex:column>
+        <apex:column headerValue="Asset Name" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"> 
+            <apex:outputLink value="/{!asset.Id}" target="_blank" >{!asset.Name}</apex:outputLink>
+        </apex:column>
+        <apex:column value="{!asset.APTS_Material_Number__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        <!--
+        <apex:column value="{!asset.APTS_Material_Description__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        -->
+        <apex:column value="{!asset.Apttus_Config2__ChargeType__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        
+        <apex:column styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}">
+           <apex:facet name="header">
+              <apex:outputtext value="Quantity" />
+           </apex:facet>
+           <apex:outputText value="{!Round(asset.Apttus_Config2__Quantity__c, 0)}"/>
+        </apex:column>
+  
+<!--        
+        <apex:column styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}">
+           <apex:facet name="header">
+              <apex:outputtext value="Selling Term" />
+           </apex:facet>
+           <apex:outputText value="{!Round(asset.Apttus_Config2__SellingTerm__c, 0)}"/>
+        </apex:column>         
+        
+        <apex:column value="{!asset.Apttus_Config2__SellingFrequency__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        <apex:column value="{!asset.Apttus_Config2__StartDate__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        <apex:column value="{!asset.Apttus_Config2__EndDate__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+--> 
+        <apex:column value="{!asset.APTS_Info_RenewalDate__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        <apex:column value="{!asset.APTS_Info_PlanType__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        <apex:column value="{!asset.Apttus_Config2__NetPrice__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+        <apex:column value="{!asset.Apttus_Config2__AssetStatus__c}" styleClass="{!IF(asset.Apttus_Config2__BundleAssetId__c!='','optionClass','')}"/>
+    </apex:pageBlockTable>
+  </apex:pageBlock> 
+</apex:page>

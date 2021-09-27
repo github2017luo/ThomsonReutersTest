@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Caselines_Response_Sharing</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Caselines Response Sharing</label>
+        <sharedTo>
+            <group>CaseLines_Service_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>MaritzCX__Metric_4__c</field>
+            <operation>equals</operation>
+            <value>Caselines</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>GGO_Maritz_Response_rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>GGO Maritz Response rule</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>S2E</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>MaritzCX__Metric_6__c</field>
+            <operation>equals</operation>
+            <value>GGO</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Legal_Maritz_Response_rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Enable Maritz response visibility for Legal group</description>
+        <label>Legal Maritz Response rule</label>
+        <sharedTo>
+            <group>ESC_Legal_Roles</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2 OR 3 OR 4</booleanFilter>
+        <criteriaItems>
+            <field>MaritzCX__Metric_4__c</field>
+            <operation>equals</operation>
+            <value>Legal</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>MaritzCX__Metric_4__c</field>
+            <operation>equals</operation>
+            <value>ONESOURCE</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>MaritzCX__Metric_4__c</field>
+            <operation>equals</operation>
+            <value>Risk</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>MaritzCX__Metric_4__c</field>
+            <operation>equals</operation>
+            <value>HighQ</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Maritz_Response_rule</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>This rule is to share the Maritz survey response records visibility</description>
+        <label>Maritz Response rule</label>
+        <sharedTo>
+            <group>ESC_Elite_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>MaritzCX__Metric_4__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

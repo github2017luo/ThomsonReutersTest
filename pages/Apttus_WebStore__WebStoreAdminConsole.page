@@ -1,0 +1,158 @@
+<!--
+    Apttus WebStore
+    WebStoreAdminConsole
+
+    @2015-2016 Apttus Inc. All rights reserved.
+ -->
+<apex:page controller="Apttus_WebStore.WebStoreAdminConsoleController"
+           sidebar="false">
+
+  <apex:stylesheet value="{!URLFOR($Resource.Apttus_WebStore__ConsoleCSS)}" />
+
+  <apex:sectionHeader title="{!$Label.apttus_webstore__managestores}" subtitle="{!$Label.apttus_webstore__managestores}"/>
+
+  <apex:outputPanel layout="block"
+                    styleClass="aptRoundedDiv"
+                    style="margin-right:10px; margin-top:10px;" >
+                
+    <apex:outputPanel styleClass="aptConsole" layout="block">
+      <apex:outputPanel styleClass="aptConsoleWrapper" layout="block">
+        
+        <!-- 1. Manage Stores -->
+        <!-- each output panel enclosed the image and the text (another output panel) -->
+        <div>
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('storefront'); return false;" 
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/managestores.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__managestores}"
+                      alt="{!$Label.apttus_webstore__managestores}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__managestores}</apex:outputPanel>
+        </apex:outputPanel>
+
+        <!-- 2. Manage Categories -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('category'); return false;" 
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/managecategories.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__managecategories}"
+                      alt="{!$Label.apttus_webstore__managecategories}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__managecategories}</apex:outputPanel>
+        </apex:outputPanel>
+        
+        <!-- 3. Manage Products -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('product'); return false;" 
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/manageproducts.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__manageproducts}"
+                      alt="{!$Label.apttus_webstore__manageproducts}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__manageproducts}</apex:outputPanel>
+        </apex:outputPanel>
+
+
+        <!-- 4. Manage Price Lists -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('pricelist'); return false;" 
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/managepricelists.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__managepricelists}"
+                      alt="{!$Label.apttus_webstore__managepricelists}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__managepricelists}</apex:outputPanel>
+        </apex:outputPanel>
+
+        <!-- 5. Manage Pages -->
+        <!-- TODO: change METHOD -->
+        <!-- <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="goToPage('{!managePagesUrl}');" 
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.WebStoreAdminIcons, 'EcommerceAdminIcons/managepages.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.ManagePages}"
+                      alt="{!$Label.ManagePages}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.ManagePages}</apex:outputPanel>
+
+        </apex:outputPanel> -->
+
+        <!-- 6. Payment Gateways -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('storefront'); return false;"  
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/paymentgateways.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__paymentgateways}"
+                      alt="{!$Label.apttus_webstore__paymentgateways}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__paymentgateways}</apex:outputPanel>
+
+        </apex:outputPanel>
+
+        </div>
+
+        <div>
+        
+        <!-- 7. Tax Gateways -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('storefront'); return false;"  
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/taxgateways.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__taxgateways}"
+                      alt="{!$Label.apttus_webstore__taxgateways}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__taxgateways}</apex:outputPanel>
+
+        </apex:outputPanel>
+
+        <!-- 8. Shipping Gateways -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('storefront'); return false;"  
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/shippinggateways.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__shippinggateways}"
+                      alt="{!$Label.apttus_webstore__shippinggateways}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__shippinggateways}</apex:outputPanel>
+
+        </apex:outputPanel>
+
+        <!-- 9. Manage Promotions -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('promotion'); return false;"  
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/managepromotions.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__managepromotions}"
+                      alt="{!$Label.apttus_webstore__managepromotions}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__managepromotions}</apex:outputPanel>
+
+        </apex:outputPanel>
+
+        <!-- 10. User Permissions -->
+        <apex:outputPanel styleClass="aptConsoleItem"
+                          onclick="getURL('permission'); return false;"  
+                          layout="block">
+          <apex:image url="{!URLFOR($Resource.Apttus_WebStore__WebStoreAdminIcons, 'EcommerceAdminIcons/userpermissions.png')}" 
+                      styleClass="aptConsoleImage"
+                      title="{!$Label.apttus_webstore__userpermissions}"
+                      alt="{!$Label.apttus_webstore__userpermissions}" />
+          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.apttus_webstore__userpermissions}</apex:outputPanel>
+
+        </apex:outputPanel>
+
+        </div>
+
+
+      </apex:outputPanel> <!-- aptConsoleWrapper -->
+
+    </apex:outputPanel> <!-- aptConsole -->
+  </apex:outputPanel> <!-- aptRoundedDiv -->
+  <apex:form >
+      <apex:actionFunction name="getURL" action="{!goToPageRef}" rerender="view"> 
+          <apex:param name="pageURL" value=" " />
+      </apex:actionFunction>
+  </apex:form>
+
+</apex:page>

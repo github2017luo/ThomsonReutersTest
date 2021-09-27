@@ -1,0 +1,720 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>DummyCallInvoke</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>DummyCallInvoke</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>LTS_GenericDummyClass</actionName>
+        <actionType>apex</actionType>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Determine Applicability</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>On update of Account</label>
+        </rules>
+    </decisions>
+    <description>As a part of DPS-4480 to create a case on update of account record</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>$Setup.GLI_Business_Hours__c.BusinessHoursId__c </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_4_myRule_3_A1_2386060233</name>
+        <dataType>String</dataType>
+        <expression>{!$Setup.GLI_Business_Hours__c.BusinessHoursId__c}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>[Account].Id </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_5_myRule_3_A1_9622913059</name>
+        <dataType>String</dataType>
+        <expression>{!myVariable_current.Id}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF(
+	ISCHANGED([Account].Website),
+	&apos;&lt;b&gt;&apos; +&apos;Website:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE([Account].Website)) = false,
+			PRIORVALUE([Account].Website),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK([Account].Website) = false,
+			[Account].Website,
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED([Account].Phone),
+	&apos;&lt;b&gt;&apos; +&apos;Phone:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE([Account].Phone)) = false,
+			PRIORVALUE([Account].Phone),
+			&apos;Null&apos;
+		)+ &apos;/New Value: &apos; +
+		IF( ISBLANK([Account].Phone) = false,
+			[Account].Phone,
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED([Account].PhoneNumberTwo__c),
+	&apos;&lt;b&gt;&apos; +&apos;Alternate Phone:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE([Account].PhoneNumberTwo__c)) = false,
+			PRIORVALUE([Account].PhoneNumberTwo__c),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK([Account].PhoneNumberTwo__c) = false,
+			[Account].PhoneNumberTwo__c,
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED([Account].Number_of_Attorneys_Org__c),
+	&apos;&lt;b&gt;&apos; +&apos;Number of Attorneys:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE([Account].Number_of_Attorneys_Org__c)) = false,
+			TEXT(PRIORVALUE([Account].Number_of_Attorneys_Org__c)),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK(([Account].Number_of_Attorneys_Org__c)) = false,
+			TEXT([Account].Number_of_Attorneys_Org__c),
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED([Account].Number_of_Accountants__c),
+	&apos;&lt;b&gt;&apos; +&apos;Number of Accountants:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE([Account].Number_of_Accountants__c)) = false,
+			TEXT(PRIORVALUE([Account].Number_of_Accountants__c)),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK(([Account].Number_of_Accountants__c)) = false,
+			TEXT([Account].Number_of_Accountants__c),
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED([Account].NumberofEmployees),
+	&apos;&lt;b&gt;&apos; +&apos;Number of Employees:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE([Account].NumberofEmployees)) = false,
+			TEXT(PRIORVALUE([Account].NumberofEmployees)),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK(([Account].NumberofEmployees)) = false,
+			TEXT([Account].NumberofEmployees),
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)
+</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_6_myRule_3_A1_5199208206</name>
+        <dataType>String</dataType>
+        <expression>IF(
+	ISCHANGED({!myVariable_current.Website}),
+	&apos;&lt;b&gt;&apos; +&apos;Website:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE({!myVariable_current.Website})) = false,
+			PRIORVALUE({!myVariable_current.Website}),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK({!myVariable_current.Website}) = false,
+			{!myVariable_current.Website},
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED({!myVariable_current.Phone}),
+	&apos;&lt;b&gt;&apos; +&apos;Phone:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE({!myVariable_current.Phone})) = false,
+			PRIORVALUE({!myVariable_current.Phone}),
+			&apos;Null&apos;
+		)+ &apos;/New Value: &apos; +
+		IF( ISBLANK({!myVariable_current.Phone}) = false,
+			{!myVariable_current.Phone},
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED({!myVariable_current.PhoneNumberTwo__c}),
+	&apos;&lt;b&gt;&apos; +&apos;Alternate Phone:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE({!myVariable_current.PhoneNumberTwo__c})) = false,
+			PRIORVALUE({!myVariable_current.PhoneNumberTwo__c}),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK({!myVariable_current.PhoneNumberTwo__c}) = false,
+			{!myVariable_current.PhoneNumberTwo__c},
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED({!myVariable_current.Number_of_Attorneys_Org__c}),
+	&apos;&lt;b&gt;&apos; +&apos;Number of Attorneys:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE({!myVariable_current.Number_of_Attorneys_Org__c})) = false,
+			TEXT(PRIORVALUE({!myVariable_current.Number_of_Attorneys_Org__c})),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK(({!myVariable_current.Number_of_Attorneys_Org__c})) = false,
+			TEXT({!myVariable_current.Number_of_Attorneys_Org__c}),
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED({!myVariable_current.Number_of_Accountants__c}),
+	&apos;&lt;b&gt;&apos; +&apos;Number of Accountants:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE({!myVariable_current.Number_of_Accountants__c})) = false,
+			TEXT(PRIORVALUE({!myVariable_current.Number_of_Accountants__c})),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK(({!myVariable_current.Number_of_Accountants__c})) = false,
+			TEXT({!myVariable_current.Number_of_Accountants__c}),
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)+
+IF(
+	ISCHANGED({!myVariable_current.NumberOfEmployees}),
+	&apos;&lt;b&gt;&apos; +&apos;Number of Employees:&apos; +&apos;&lt;/b&gt;&apos; +&apos; Old Value : &apos; +
+		IF( ISBLANK(PRIORVALUE({!myVariable_current.NumberOfEmployees})) = false,
+			TEXT(PRIORVALUE({!myVariable_current.NumberOfEmployees})),
+			&apos;Null&apos;
+		) + &apos;/New Value: &apos; +
+		IF( ISBLANK(({!myVariable_current.NumberOfEmployees})) = false,
+			TEXT({!myVariable_current.NumberOfEmployees}),
+			&apos;Null&apos;
+		)+ &apos;&lt;br&gt; &apos;,
+	null
+)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>{!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c}</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND( NOT($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c ),
+[Account].RecordType.DeveloperName  = &apos;GLI_Account_ECM&apos;,
+NOT(OR($Profile.Name = &apos;DQA User&apos;,$Profile.Name = &apos;System Administrator&apos;) ),
+OR(
+ISCHANGED([Account].Website),
+ISCHANGED([Account].Phone),
+ISCHANGED([Account].PhoneNumberTwo__c),
+ISCHANGED([Account].Number_of_Attorneys_Org__c),
+ISCHANGED([Account].Number_of_Accountants__c),
+ISCHANGED([Account].NumberofEmployees))
+) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>AND( NOT({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} ),
+{!myVariable_current.RecordType.DeveloperName}  = &apos;GLI_Account_ECM&apos;,
+NOT(OR({!$Profile.Name} = &apos;DQA User&apos;,{!$Profile.Name} = &apos;System Administrator&apos;) ),
+OR(
+ISCHANGED({!myVariable_current.Website}),
+ISCHANGED({!myVariable_current.Phone}),
+ISCHANGED({!myVariable_current.PhoneNumberTwo__c}),
+ISCHANGED({!myVariable_current.Number_of_Attorneys_Org__c}),
+ISCHANGED({!myVariable_current.Number_of_Accountants__c}),
+ISCHANGED({!myVariable_current.NumberOfEmployees}))
+)</expression>
+    </formulas>
+    <interviewLabel>Create_a_case_on_account_update-2_InterviewLabel</interviewLabel>
+    <label>Create a case on account update</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Account</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordCreates>
+        <name>myRule_3_A1</name>
+        <label>Create a Case</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Account ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Account</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>AccountId</field>
+            <value>
+                <elementReference>formula_5_myRule_3_A1_9622913059</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Business Hours ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>BusinessHoursId</field>
+            <value>
+                <elementReference>formula_4_myRule_3_A1_2386060233</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Case Origin</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Origin</field>
+            <value>
+                <stringValue>Internal Users</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Owner ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideLabel</name>
+                <value>
+                    <stringValue>DQA_Request_Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G1B000004g0m1UAA</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Priority</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Priority</field>
+            <value>
+                <stringValue>Medium</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Record Type ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>RecordType</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>RecordTypeId</field>
+            <value>
+                <stringValue>0121B000001RYMh</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Special Request Description</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Special_Request_Description__c</field>
+            <value>
+                <elementReference>formula_6_myRule_3_A1_5199208206</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Subject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Subject</field>
+            <value>
+                <stringValue>Validate/Updated Account Information</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Case Type</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Type</field>
+            <value>
+                <stringValue>Edit Account Fields</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordCreates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Obsolete</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+</Flow>

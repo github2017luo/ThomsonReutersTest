@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Used in the ESC_EPX Language Framework to determine the way a team would like the language to be determined.</description>
+    <fields>
+        <fullName>Language_Choice__c</fullName>
+        <description>The available language choices that can be used within the ESC_EPX Language framework</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The available language choices that can be used within the ESC_EPX Language framework</inlineHelpText>
+        <label>Language Choice</label>
+        <required>true</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>A. Use Contact&apos;s preferred language if present and in the available list of supported EPx languages; otherwise use English</fullName>
+                    <default>true</default>
+                    <label>A. Use Contact&apos;s preferred language if present and in the available list of supported EPx languages; otherwise use English</label>
+                </value>
+                <value>
+                    <fullName>B. Use Contact&apos;s preferred language if present and in the available list of supported EPx languages; otherwise use Method D</fullName>
+                    <default>false</default>
+                    <label>B. Use Contact&apos;s preferred language if present and in the available list of supported EPx languages; otherwise use Method D</label>
+                </value>
+                <value>
+                    <fullName>C. Use Contact&apos;s preferred language if present and in the available list of supported EPx languages; otherwise use Method E</fullName>
+                    <default>false</default>
+                    <label>C. Use Contact&apos;s preferred language if present and in the available list of supported EPx languages; otherwise use Method E</label>
+                </value>
+                <value>
+                    <fullName>D. Use the language associated with the Shipping Country of the Contact&apos;s Account, if present and in the available list of supported EPx languages; otherwise use English</fullName>
+                    <default>false</default>
+                    <label>D. Use the language associated with the Shipping Country of the Contact&apos;s Account, if present and in the available list of supported EPx languages; otherwise use English</label>
+                </value>
+                <value>
+                    <fullName>E. Use the language associated with the Case Owner&apos;s Team.</fullName>
+                    <default>false</default>
+                    <label>E. Use the language associated with the Case Owner&apos;s Team.</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Language__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Language (For Choice C and E Only)</label>
+        <referenceTo>ESC_EPX_Language_List__mdt</referenceTo>
+        <relationshipLabel>ESC_EPX_Team_Lang_Settings</relationshipLabel>
+        <relationshipName>ESC_EPX_Team_Lang_Settings</relationshipName>
+        <required>false</required>
+        <type>MetadataRelationship</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Role__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>User role that the language choice will be defined for.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>User role that the language choice will be defined for.</inlineHelpText>
+        <label>User Role</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <label>ESC_EPX_Team_Lang_Settings</label>
+    <pluralLabel>ESC_EPX_Team_Lang_Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

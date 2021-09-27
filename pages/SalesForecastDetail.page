@@ -1,0 +1,248 @@
+<apex:page id="pageSalesForecastDetail"
+	standardController="SalesForecast__c"
+	extensions="SalesForecastDetailController">
+	
+	<apex:sectionHeader id="pageTitle"
+		title="{!$ObjectType.SalesForecast__c.Label}"
+		subtitle="{!SalesForecast__c.Name}" />
+	
+	<div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 2px;">
+		&nbsp;&laquo;&nbsp;<a href="/{!$ObjectType.SalesForecast__c.keyPrefix}" style="color:#015BA7;">Back to List: {!$ObjectType.SalesForecast__c.LabelPlural}</a>
+	</div>
+	
+	<apex:detail id="detailSalesForecast"
+		subject="{!SalesForecast__c.Id}"
+		relatedList="false"
+		title="false"
+		inlineEdit="false" />
+
+	<br/>
+	<apex:form id="formSnapshot">
+		<apex:pageMessages id="globalMessages" />
+		
+		<apex:pageBlock id="blockSnapshot"
+			mode="detail" >
+			
+			<apex:facet name="header">
+				<apex:panelGrid id="gridSnapshotHeader"
+					styleclass="vertical-align: middle;"
+					columns="3"
+					columnClasses="pbTitle, pbButton, pbHelp">
+					
+					<apex:panelGroup layout="none">
+						<h2>Sales Forecast Snapshot - {!SalesForecast__c.FiscalQuarter__c} {!SalesForecast__c.FiscalYear__c}</h2>
+					</apex:panelGroup>
+					
+					<apex:panelGroup layout="none">
+						<apex:commandButton id="btnSave" value="Save" action="{!saveSnapshot}" rendered="{!NOT(IsLocked)}" />
+						<apex:commandButton id="btnRefresh" value="Save and Refresh Snapshot" action="{!refreshSnapshot}" rendered="{!NOT(IsLocked)}" />
+						<apex:commandButton id="btnSubmit" value="Submit Forecast" action="{!submitForecast}" rendered="{!NOT(IsLocked)}" />
+						<apex:commandButton id="btnExport" value="Export Forecast" action="{!exportSalesForecast}" rendered="{!NOT(IsLocked)}" /> 
+					</apex:panelGroup>
+					
+					<apex:panelGroup layout="none">
+						<apex:outputLabel for="selectViewOptions" value="Fiscal Month: " style="font-weight:bold;"/>
+						
+						<apex:selectList id="selectViewOptions" value="{!SelectedView}" size="1">
+							<apex:actionSupport event="onchange" status="statusLoadingView" rerender="panelNewSales,panelRenewals,globalMessages" />
+							<apex:selectOptions value="{!ViewOptions}" />
+						</apex:selectList>
+						
+						<apex:actionStatus id="statusLoadingView">
+                            <apex:facet name="start">
+                                <img src="/img/loading.gif" height="14px" width="14px"/>
+                            </apex:facet>
+                            <apex:facet name="stop">
+                            	<img src="/img/s.gif" height="14px" width="14px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+					</apex:panelGroup>
+				</apex:panelGrid>
+			</apex:facet>
+			
+			
+			<apex:pageBlockSection id="sectionNewSales"
+				columns="1"
+				title="New Sales">
+				
+				<apex:outputPanel id="panelNewSales" layout="block">
+					<table border="0" cellpadding="0" cellspacing="0" class="list">
+						<thead>
+							<tr class="headerRow">
+								<th class="headerRow">Forecast Owner</th>
+								<th class="headerRow">Fiscal Month</th>
+								<th class="headerRow">Non-Pipeline Risk/Upside</th>
+								<th class="headerRow"><apex:outputLabel value="Deals in Potential Forecast Category" title="Informational, not included in forecast calculations"/> </th>
+								<th class="headerRow">Commit Forecast</th>
+								<th class="headerRow"><apex:outputLabel value="Closed Forecast" title="Sales Stages = 95% & 100%"/> </th>
+								<th class="headerRow"><apex:outputLabel value="Adjusted Forecast" title="Non-Pipeline Risk/upside + Commit + Closed"/> </th>
+								<th class="headerRow"><apex:outputLabel value="Quota" title="Territory Quota (TQ)"/> </th>
+								<th class="headerRow"><apex:outputLabel value="% Quota" title="Adjusted Forecast / Quota"/> </th>
+								<th class="headerRow"><apex:outputLabel value="GAP" title="Adjusted Forecast - Quota"/> </th>
+							</tr>
+						</thead>
+						
+						<tbody>
+
+
+							<apex:repeat id="repeatNewSaleSnapshotRows" 
+								value="{!SalesForecastSnapshots}"
+								var="item">
+								
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<th class="headerRow" rowspan="{!IF(SelectedView='0',4,2)}">
+										<apex:outputLink value="/{!item.User__c}">{!item.User__r.Name}</apex:outputLink>
+									</th>
+								</tr>
+								
+								<apex:outputPanel layout="none" rendered="{!OR(SelectedView='1',SelectedView='0')}">
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<td><apex:outputField value="{!item.M1_DisplayLabel__c}"/></td>
+									<td>
+										<apex:outputField value="{!item.M1_NewSaleRiskUpsideAmount__c}" rendered="{!IsLocked}" />
+										<apex:inputField value="{!item.M1_NewSaleRiskUpsideAmount__c}"  rendered="{!NOT(IsLocked)}" />
+									</td>
+
+							  	 	<td style="background-color:#eee;"> <apex:outputfield value="{!item.M1_NewSalePotentialAmount__c}"  /></td> 
+									<td><apex:outputField value="{!item.M1_NewSaleCommitAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M1_NewSaleClosedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M1_NewSaleAdjustedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M1_NewSaleQuota__c}"/></td>
+									<td><apex:outputField value="{!item.M1_NewSaleQuotaPercentage__c}"/></td>
+									<td><apex:outputField value="{!item.M1_NewSaleQuotaGap__c}"/></td> 
+								<!--	<td><apex:outputText value="{0}">  
+									<apex:param value="{!(ROUND(item.M1_NewSaleQuotaGap__c, 0))}"/>
+									</apex:outputText> </td>
+								 <td><apex:outputField value="{roundtolong(!item.M1_NewSaleQuotaGap__c)}"/></td>  -->	
+								</tr>
+								</apex:outputPanel>
+								
+								<apex:outputPanel layout="none" rendered="{!OR(SelectedView='2',SelectedView='0')}">
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<td><apex:outputField value="{!item.M2_DisplayLabel__c}"/></td>
+									<td>
+										<apex:outputField value="{!item.M2_NewSaleRiskUpsideAmount__c}" rendered="{!IsLocked}" />
+										<apex:inputField value="{!item.M2_NewSaleRiskUpsideAmount__c}"  rendered="{!NOT(IsLocked)}" />
+									</td>
+									<td style="background-color:#eee;"> <apex:outputfield value="{!item.M2_NewSalePotentialAmount__c}"  /></td> 
+									<td><apex:outputField value="{!item.M2_NewSaleCommitAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M2_NewSaleClosedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M2_NewSaleAdjustedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M2_NewSaleQuota__c}"/></td>
+									<td><apex:outputField value="{!item.M2_NewSaleQuotaPercentage__c}"/></td>
+									<td><apex:outputField value="{!item.M2_NewSaleQuotaGap__c}"/></td>
+								</tr>
+								</apex:outputPanel>
+								
+								<apex:outputPanel layout="none" rendered="{!OR(SelectedView='3',SelectedView='0')}">
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<td><apex:outputField value="{!item.M3_DisplayLabel__c}"/></td>
+									<td>
+										<apex:outputField value="{!item.M3_NewSaleRiskUpsideAmount__c}" rendered="{!IsLocked}" />
+										<apex:inputField value="{!item.M3_NewSaleRiskUpsideAmount__c}"  rendered="{!NOT(IsLocked)}" />
+									</td>
+									<td style="background-color:#eee;"> <apex:outputfield value="{!item.M3_NewSalePotentialAmount__c}"  /></td> 
+									<td><apex:outputField value="{!item.M3_NewSaleCommitAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M3_NewSaleClosedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M3_NewSaleAdjustedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M3_NewSaleQuota__c}"/></td>
+									<td><apex:outputField value="{!item.M3_NewSaleQuotaPercentage__c}"/></td>
+									<td><apex:outputField value="{!item.M3_NewSaleQuotaGap__c}"/></td>
+								</tr>
+								</apex:outputPanel>
+			 				</apex:repeat> 
+						</tbody>
+					</table>
+				</apex:outputPanel>
+			</apex:pageBlockSection>
+			
+			<apex:pageBlockSection id="sectionRenewals"
+				columns="1"
+				title="Renewals">
+				
+				<apex:outputPanel id="panelRenewals" layout="block">
+					<table border="0" cellpadding="0" cellspacing="0" class="list">
+						<thead>
+							<tr class="headerRow">
+								<th class="headerRow">Forecast Owner</th>
+								<th class="headerRow">Fiscal Month</th>
+								<th class="headerRow">Non-Pipeline Risk/Upside</th>
+								<th class="headerRow"><apex:outputLabel value="Deals in Potential Forecast Category" title="Informational, not included in forecast calculations"/> </th>
+								<th class="headerRow">Commit Forecast</th>
+								<th class="headerRow"><apex:outputLabel value="Closed Forecast" title="Sales Stages = 95% & 100%"/> </th>
+								<th class="headerRow"><apex:outputLabel value="Adjusted Forecast" title="Non-Pipeline Risk/upside + Commit + Closed"/> </th>
+								<th class="headerRow"><apex:outputLabel value="Quota" title="Territory Quota (TQ)"/> </th>
+								<th class="headerRow"><apex:outputLabel value="% Quota" title="Adjusted Forecast / Quota"/> </th>
+								<th class="headerRow"><apex:outputLabel value="GAP" title="Adjusted Forecast - Quota"/> </th>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<apex:repeat id="repeatRenewalSnapshotRows" 
+								value="{!SalesForecastSnapshots}"
+								var="item">
+								
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<th class="headerRow" rowspan="{!IF(SelectedView='0',4,2)}">
+										<apex:outputLink value="/{!item.User__c}">{!item.User__r.Name}</apex:outputLink>
+									</th>
+								</tr>
+								
+								<apex:outputPanel layout="none" rendered="{!OR(SelectedView='1',SelectedView='0')}">
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<td><apex:outputField value="{!item.M1_DisplayLabel__c}"/></td>
+									<td>
+										<apex:outputField value="{!item.M1_RenewalRiskUpsideAmount__c}" rendered="{!IsLocked}" />
+										<apex:inputField value="{!item.M1_RenewalRiskUpsideAmount__c}" rendered="{!NOT(IsLocked)}" />
+									</td>
+									<td style="background-color:#eee;"> <apex:outputfield value="{!item.M1_RenewalPotentialAmount__c}"  /></td> 
+									<td><apex:outputField value="{!item.M1_RenewalCommitAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M1_RenewalClosedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M1_RenewalAdjustedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M1_RenewalQuota__c}"/></td>
+									<td><apex:outputField value="{!item.M1_RenewalQuotaPercentage__c}"/></td>
+									<td><apex:outputField value="{!item.M1_RenewalQuotaGap__c}"/></td>
+								</tr>
+								</apex:outputPanel>
+								
+								<apex:outputPanel layout="none" rendered="{!OR(SelectedView='2',SelectedView='0')}">
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<td><apex:outputField value="{!item.M2_DisplayLabel__c}"/></td>
+									<td>
+										<apex:outputField value="{!item.M2_RenewalRiskUpsideAmount__c}" rendered="{!IsLocked}" />
+										<apex:inputField value="{!item.M2_RenewalRiskUpsideAmount__c}" rendered="{!NOT(IsLocked)}" />
+									</td>
+									<td style="background-color:#eee;"> <apex:outputfield value="{!item.M2_RenewalPotentialAmount__c}"  /></td>
+									<td><apex:outputField value="{!item.M2_RenewalCommitAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M2_RenewalClosedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M2_RenewalAdjustedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M2_RenewalQuota__c}"/></td>
+									<td><apex:outputField value="{!item.M2_RenewalQuotaPercentage__c}"/></td>
+									<td><apex:outputField value="{!item.M2_RenewalQuotaGap__c}"/></td>
+								</tr>
+								</apex:outputPanel>
+								
+								<apex:outputPanel layout="none" rendered="{!OR(SelectedView='3',SelectedView='0')}">
+								<tr class="dataRow" onmouseover="if (window.hiOn){hiOn(this);} " onmouseout="if (window.hiOff){hiOff(this);} " onblur="if (window.hiOff){hiOff(this);}" onfocus="if (window.hiOn){hiOn(this);}">
+									<td><apex:outputField value="{!item.M3_DisplayLabel__c}"/></td>
+									<td>
+										<apex:outputField value="{!item.M3_RenewalRiskUpsideAmount__c}" rendered="{!IsLocked}" />
+										<apex:inputField value="{!item.M3_RenewalRiskUpsideAmount__c}" rendered="{!NOT(IsLocked)}" />
+									</td>
+									<td style="background-color:#eee;"> <apex:outputfield value="{!item.M3_RenewalPotentialAmount__c}"  /></td>
+									<td><apex:outputField value="{!item.M3_RenewalCommitAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M3_RenewalClosedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M3_RenewalAdjustedAmount__c}"/></td>
+									<td><apex:outputField value="{!item.M3_RenewalQuota__c}"/></td>
+									<td><apex:outputField value="{!item.M3_RenewalQuotaPercentage__c}"/></td>
+									<td><apex:outputField value="{!item.M3_RenewalQuotaGap__c}"/></td>
+								</tr>
+								</apex:outputPanel>
+							</apex:repeat>
+						</tbody>
+					</table>
+				</apex:outputPanel>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>	
+</apex:page>

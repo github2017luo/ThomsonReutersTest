@@ -1,0 +1,27 @@
+<!-- ********************************************************************** 
+Name: LTS_Oppty_PartnerListViewComponent   
+====================================================== 
+Req: Component for partner community 
+====================================================== 
+Purpose: LTS_Oppty_PartnerListViewComponent list view is used in partner community-Opportunities navigation tab 
+====================================================== 
+History 
+
+VERSION    AUTHOR             DATE             DETAIL 			JIRA Story Number 
+1.0        TCS Developer     11/3/2019     Initial Development  DPS-2837
+***********************************************************************/ -->
+<aura:component implements="force:appHostable,lightning:actionOverride,flexipage:availableForRecordHome,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,forceCommunity:availableForAllPageTypes" 
+                access="global" >
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="oportunityListViewName" type="String"/>
+    <lightning:listView aura:id="listViewOppty"
+                        objectApiName="Opportunity"
+                        listName="{!v.oportunityListViewName}"
+                        rows="5"
+                        showSearchBar="true"
+                        showActionBar="false"
+                        enableInlineEdit="true"
+                        showRowLevelActions="false"
+                        />
+</aura:component>

@@ -1,0 +1,43 @@
+<apex:page standardController="Source_System_Detail__c" extensions="USLsubscriptionController" id="pageSubscription"
+    tabStyle="Account" showHeader="false" sidebar="false" title="Account Subscription:{!Source_System_Detail__c.Name}"
+    language="" LightningStylesheets="true" action="{!displayFinplanSubcriptioninfo}" readOnly="true">
+    <!--<apex:sectionHeader id="title" title="" subtitle="{!$Label.Subscription}" />-->
+    <apex:includeScript value="/support/console/42.0/integration.js" />
+    <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/Minified/MinifiedCSSCHP.css')}"/>
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+    
+   <script>
+    $(document).ready(function() {
+        setDataTables();
+    } );
+    function setDataTables(){
+            $('.tableSubscription').DataTable({
+        "paging":true,
+        "ordering": true,
+        "info":false,
+        "scrollX":false,
+       } );
+        }
+</script>  
+    <apex:pageMessages id="messagesGlobal" />
+    <apex:form id="formSubscription">
+              <apex:pageBlock title="{!$Label.ESC_Finplan_Title}" rendered="{!inRole}">
+              <apex:pageBlockTable value="{!listofFinplaninfo}" var="subs" styleClass="tableSubscription">
+                <!--<apex:dataTable value="{!listofFinplaninfo}" var="subs" styleClass="tableSubscription"> -->
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Finplan_material}</apex:facet>
+                        <apex:outputText value="{!subs.materialDescription} [{!subs.materialNumber}]" />
+                    </apex:column>
+                   <apex:column >
+                        <apex:facet name="header">{!$Label.ESC_Finplan_keycodes}</apex:facet>
+                        <apex:outputText value="{!subs.licenseKeyCode}" />
+                    </apex:column>
+                    
+                <!--</apex:datatable>-->
+                </apex:pageBlockTable>
+    </apex:pageBlock>
+    </apex:form>
+
+</apex:page>

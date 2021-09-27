@@ -1,0 +1,763 @@
+<apex:page standardcontroller="Account" extensions="ContentController"	id="pageAccountPlanMatch" tabStyle="ContentTool__tab" cache="false">
+	<style type="text/css">
+.searchBlock {
+	padding-bottom: 20px;
+}
+.searchTitle {
+	font-weight: bold;
+}
+.searchSummary {
+	color: #666;
+	font-size: 95%;
+}
+.sectionHeader {
+	width: 100%;
+}
+.sectionTitle {
+	width: 100%;
+}
+.sectionOptions {
+	text-align: right;
+	white-space: nowrap;
+}
+.activeTabLight {
+	padding: 5px 10px;
+	color: #015BA7 !important;
+	font-weight: bold;
+	text-decoration: underline;
+	background-image: none;
+	background-color: #F1F1F1;
+	cursor: default;
+}
+.inactiveTabLight {
+	padding: 4px 10px;
+	color: #333 !important;
+	font-weight: normal;
+	background-image: none;
+	background-color: #D9D9D9;
+	cursor: pointer;
+}
+.loadingIcon {
+	background-image: url(/img/loading.gif);
+	width: 16px;
+	height: 16px;
+}
+</style>
+	<apex:sectionHeader id="pageTitle" title="Account"	subtitle="Plan Match" />
+	<apex:form id="formAccountPlanMatch">
+		<apex:pageMessages id="messagesGlobal" />
+		<apex:outputPanel id="panelSearch" layout="block"	styleClass="searchBlock">
+			<div class="searchTitle">Find Account</div>
+			<div class="searchSummary">Search for an account by SAP Account
+				Number</div>
+			<br />
+			<apex:inputText id="inputSearchText" value="{!SearchText}" size="25" />
+			<span>&nbsp;</span>
+			<apex:commandButton id="buttonSearch" value="Search" action="{!findAccount2}" />
+		</apex:outputPanel>
+		<apex:pageBlock id="blockAccountPlanMatch" mode="mainDetail">
+			<apex:pageBlockSection id="sectionAccount" columns="1"	collapsible="false" title="Account Information">
+				<!-- 	<apex:outputField value="{!PlanMatchAccount.SAPAccountNumber__c}" /> -->
+				<apex:outputField value="{!Account.SAPAccountNumber__c}" />
+				<apex:outputField value="{!Account.Name}" />
+				<!--   					<apex:outputtext value="{!searchtext2}" />
+						<apex:outputtext value="{!searchMonths2}" />
+						<apex:outputtext value="{!dsapaccountnumber}" />  -->
+				<!--		<apex:outputtext value="{!sState}" /> -->
+				<apex:pageBlockSectionItem id="sectionItemAddress">
+					<apex:outputLabel for="panelBillingAddress" value="Billing Address" />
+					<apex:outputPanel id="panelBillingAddress" layout="block"	rendered="{!NOT(ISNULL(Account.BillingStreet))}">
+						<apex:outputField value="{!Account.BillingStreet}" />
+						<br />
+						<apex:outputField value="{!Account.BillingCity}" />
+						<span>,&nbsp;</span>
+						<apex:outputField value="{!Account.BillingState}" />
+						<span>&nbsp;</span>
+						<apex:outputField value="{!Account.BillingPostalCode}" />
+						<br />
+						<apex:outputField value="{!Account.BillingCountry}" />
+					</apex:outputPanel>
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+			<apex:pageBlockSection id="sectionPlanMatchDetail" columns="1"	collapsible="false">
+				<apex:facet name="header">
+					<apex:panelGrid id="gridSectionPlanMatchDetailHeader" columns="2"	styleClass="sectionHeader"	columnClasses="sectionTitle, sectionOptions">
+						<apex:panelGroup id="groupSectionPlanMatchDetailTitle">
+							<h3>Plan Match Details</h3>
+						</apex:panelGroup>
+						<apex:panelGroup id="groupSectionPlanMatchDetailOptions">
+							<apex:outputLabel id="labelSectionPlanMatchDetailMonths" for="inputSectionPlanMatchDetailsMonths" value="Months:" />
+							<span>&nbsp;</span>
+							<apex:selectList id="listMonths" size="1" multiselect="false" value="{!searchMonths}">
+								<apex:selectoption itemValue="3" itemLabel="3 Months back" />
+								<apex:selectoption itemValue="6" itemLabel="6 Months back" />
+								<apex:selectoption itemValue="9" itemLabel="9 Months back" />
+								<apex:selectoption itemValue="12" itemLabel="12 Months back" />
+							</apex:selectList>
+							<span>&nbsp;</span>
+							<apex:commandButton id="buttonRefresh" value="Refresh"	action="{!FindAccount3}" />
+						</apex:panelGroup>
+					</apex:panelGrid>
+				</apex:facet>
+				<apex:facet name="body">
+					<apex:tabPanel id="tabPanelPlanMatchDetails" switchType="client" value="{!sCurrentTab}" activeTabClass="activeTabLight"	inactiveTabClass="inactiveTabLight">
+						<!-- {!sCurrentTab}  tabPlanUsageMatch switchType="client" -->
+						<!-- 	selectedTab="tabPlanMatch" activeTabClass="activeTabLight" -->
+						<!--Tab: Plan Match-->
+						<apex:tab id="tabPlanMatch" name="tabPlanMatch" label="Plan Match"	onTabEnter="try{lazyLoadPlanMatch();} catch(e){}">
+							<apex:actionFunction id="functionLazyLoadPlanMatch"	name="lazyLoadPlanMatch" action="{!lazyLoadPlanMatch}"	status="statusPlanMatch" rerender="blockPlanMatch,messagesGlobal" rendered="{!bRendered}" />
+							<!-- status="statusPlanMatch" rerender="blockPlanMatch" /> -->
+							<apex:pageBlock id="blockPlanMatch" mode="mainDetail"	title="Plan Match">
+								<!-- 	<apex:outputtext value="Current tab is : {!sCurrentTab}" />  -->
+								<!--  	<apex:outputtext value="Current state of customer is : {!sState}" /> 
+  	<apex:inputHidden value="{!sState}" />  -->
+								<apex:pageBlockSection id="sectionPlanMatchInfo" columns="1">
+									<apex:actionStatus id="statusPlanMatch">
+										<apex:facet name="start">
+											<apex:outputPanel layout="block" styleClass="message infoM4">
+												<apex:panelGrid id="gridPlanMatchStatusMessage" columns="2"	styleClass="messageTable" columnClasses="messageCell"	style="padding:0px;margin:0px;">
+													<apex:panelGroup >
+														<img class="loadingIcon" src="/s.gif" />
+													</apex:panelGroup>
+													<apex:panelGroup >
+														<div class="messageText">Loading Plan Match Data...</div>
+													</apex:panelGroup>
+												</apex:panelGrid>
+											</apex:outputPanel>
+										</apex:facet>
+										<apex:facet name="stop">
+											<apex:pageMessage id="messagePlanMatchSummary"	severity="info" strength="1"	summary="Comparison of Included databases to databases in selected content sets." />
+										</apex:facet>
+									</apex:actionStatus>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionPlanMatchPrimaryLaw"	columns="1" title="Primary Law">
+									<apex:pageBlockTable id="tablePlanMatchPrimaryLaw"	value="{!PlanPrimaryContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<!--  		<apex:inputCheckBox />  -->
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);" styleclass="columnSelector" />
+											</apex:facet>
+											<!-- 	<apex:inputCheckBox />  -->
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 			<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+
+											<!-- 	href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}  -->
+											<!--			<a
+												    href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}&Month={!searchMonths2}&SAP={!dSAPAccountNumber}">{!c.MaterialNumber}
+											</a> -->
+											<!-- 			<apex:commandLink id="{!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}" action="{!GotoPage}"> -->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<!--  	<apex:column headerValue="Material #" value="{!c.MaterialNumber}" />  -->
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match" value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+                      			    </apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionPlanMatchPublicLaw"	columns="1" title="Public Records">
+									<apex:pageBlockTable id="tablePlanMatchPublicLaw"	value="{!PlanPublicContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<!--  		<apex:inputCheckBox />  -->
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<!-- 	<apex:inputCheckBox />  -->
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 			<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+
+											<!-- 	href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}  -->
+											<!-- 	href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber} -->
+											<!-- 			<a
+											
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}&Month={!searchMonths2}&SAP={!dSAPAccountNumber}">{!c.MaterialNumber}
+											</a>-->
+
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<!--  	<apex:column headerValue="Material #" value="{!c.MaterialNumber}" />  -->
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionPlanMatchOtherLaw" columns="1" title="Other(Secondary Products)">
+									<apex:pageBlockTable id="tablePlanMatchOtherLaw"	value="{!PlanOtherContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<!--  		<apex:inputCheckBox />  -->
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<!-- 	<apex:inputCheckBox />  -->
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 			<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+
+											<!-- 	href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}  -->
+											<!--  						<a
+											href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}&SAP={!searchText2}&Month={!SearchMonths2}">{!c.MaterialNumber}
+											</a> -->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+											<!--	href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber} -->
+										</apex:column>
+										<!--  	<apex:column headerValue="Material #" value="{!c.MaterialNumber}" />  -->
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:commandButton id="buttonLookupplanmatchDetails"	action="{!DisplayPlanDetail1}" value="Plan Match Details" />
+							</apex:pageBlock>
+						</apex:tab>
+						<!--Tab: Usage Match-->
+						<apex:tab id="tabUsageMatch" name="tabUsageMatch"	label="Usage Match" onTabEnter="try{lazyLoadUsageMatch();} catch(e){}">
+							<apex:actionFunction id="functionLazyLoadUsageMatch"	name="lazyLoadUsageMatch" action="{!lazyLoadUsageMatch}" status="statusUsageMatch"	rerender="blockUsageMatch,messagesGlobal" />
+								<rendered="{!bRendered}" />
+							<apex:pageBlock id="blockUsageMatch" mode="mainDetail"	title="Usage Match">
+								<!-- 	<apex:outputtext value="Current tab is : {!sCurrentTab}" />  -->
+								<apex:pageBlockSection id="sectionUsageMatchInfo" columns="1">
+									<apex:actionStatus id="statusUsageMatch">
+										<apex:facet name="start">
+											<apex:outputPanel layout="block" styleClass="message infoM4">
+												<apex:panelGrid id="gridUsageMatchStatusMessage" columns="2" styleClass="messageTable" columnClasses="messageCell"	style="padding:0px;margin:0px;">
+													<apex:panelGroup >
+														<img class="loadingIcon" src="/s.gif" />
+													</apex:panelGroup>
+													<apex:panelGroup >
+														<div class="messageText">Loading Usage Match Data...</div>
+													</apex:panelGroup>
+												</apex:panelGrid>
+											</apex:outputPanel>
+										</apex:facet>
+										<apex:facet name="stop">
+											<apex:pageMessage id="messageUsageMatchSummary"	severity="info" strength="1"	summary="Compares Included, ancillary database	transactions used to selected content sets." />
+										</apex:facet>
+									</apex:actionStatus>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionUsageMatchPrimaryLaw"	columns="1" title="Primary Law">
+									<apex:pageBlockTable id="tableUsageMatchPrimaryLaw"	value="{!UsagePrimaryContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 						<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionUsageMatchPublicLaw"	columns="1" title="Public Records">
+									<apex:pageBlockTable id="tableUsageMatchPublicLaw"	value="{!UsagePublicContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 				<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionUsageMatchOtherLaw"	columns="1" title="Other(Secondary Products)">
+									<apex:pageBlockTable id="tableUsageMatchOtherLaw"	value="{!UsageOtherContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 	<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}&SAP={!searchText2}&Month={!SearchMonths2}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:commandButton id="buttonLookupusagematchDetails"	action="{!DisplayUsageDetail}" value="Usage Match Details" />
+							</apex:pageBlock>
+						</apex:tab>
+						<!--Tab: Known Demand Match-->
+						<apex:tab id="tabKnownMatch" name="tabKnownMatch"	label="Known Match" onTabEnter="try{lazyLoadKnownMatch();} catch(e){}">
+							<apex:actionFunction id="functionLazyLoadKnownMatch"	name="lazyLoadKnownMatch" action="{!lazyLoadKnownMatch}"	status="statusKnownMatch"	rerender="blockKnownMatch,messagesGlobal"	rendered="{!bRendered}" />
+							<apex:pageBlock id="blockKnownMatch" mode="mainDetail"	title="Known Match">
+								<apex:pageBlockSection id="sectionKnownMatchInfo" columns="1">
+									<!-- 	<apex:outputtext value="Current tab is : {!sCurrentTab}" />  -->
+									<apex:actionStatus id="statusKnownMatch">
+										<apex:facet name="start">
+											<apex:outputPanel layout="block" styleClass="message infoM4">
+												<apex:panelGrid id="gridKnownMatchStatusMessage" columns="2"	styleClass="messageTable" columnClasses="messageCell"	style="padding:0px;margin:0px;">
+													<apex:panelGroup >
+														<img class="loadingIcon" src="/s.gif" />
+													</apex:panelGroup>
+													<apex:panelGroup >
+														<div class="messageText">Loading Known Match Data...</div>
+													</apex:panelGroup>
+												</apex:panelGrid>
+											</apex:outputPanel>
+										</apex:facet>
+										<apex:facet name="stop">
+											<apex:pageMessage id="messageKnownMatchSummary"	severity="info" strength="1"	summary="Compares Included, ancillary and warning screen decline database transactions used to selected	content sets." />
+										</apex:facet>
+									</apex:actionStatus>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionKnownMatchPrimaryLaw"	columns="1" title="Primary Law">
+									<apex:pageBlockTable id="tableKnownMatchPrimaryLaw"	value="{!KnownPrimaryContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"
+												styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 		<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionKnownMatchPublicLaw"	columns="1" title="Public Records">
+									<apex:pageBlockTable id="tableKnownMatchPublicLaw"	value="{!KnownPublicContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 		<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionKnownMatchOtherLaw"	columns="1" title="Other(Secondary Products)">
+									<apex:pageBlockTable id="tableKnownMatchOtherLaw"	value="{!KnownOtherContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 		<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:commandButton id="buttonLookKnownDemandmatchDetails"	action="{!DisplayKnownDemandDetail}"	value="Known Demand Match Details" />
+							</apex:pageBlock>
+						</apex:tab>
+						<!--Tab: Plan And Usage Match-->
+						<apex:tab id="tabPlanUsageMatch" name="tabPlanUsageMatch"	label="Plan and Usage Match"	onTabEnter="try{lazyLoadPlanUsageMatch();} catch(e){}">
+							<apex:actionFunction id="functionLazyLoadPlanUsageMatch"	name="lazyLoadPlanUsageMatch" action="{!lazyLoadPlanUsageMatch}"	status="statusPlanUsageMatch"	rerender="blockPlanUsageMatch,messagesGlobal"	rendered="{!bRendered}" />
+							<apex:pageBlock id="blockPlanUsageMatch" mode="mainDetail"	title="Plan and Usage Match">
+								<!-- 	<apex:outputtext value="Current tab is : {!sCurrentTab}" />  -->
+								<apex:pageBlockSection id="sectionPlanUsageMatchInfo"	columns="1">
+									<apex:actionStatus id="statusPlanUsageMatch">
+										<apex:facet name="start">
+											<apex:outputPanel layout="block" styleClass="message infoM4">
+												<apex:panelGrid id="gridPlanUsageMatchStatusMessage"	columns="2" styleClass="messageTable"	columnClasses="messageCell" style="padding:0px;margin:0px;">
+													<apex:panelGroup >
+														<img class="loadingIcon" src="/s.gif" />
+													</apex:panelGroup>
+													<apex:panelGroup >
+														<div class="messageText">Loading Plan and Usage
+															Match Data...</div>
+													</apex:panelGroup>
+												</apex:panelGrid>
+											</apex:outputPanel>
+										</apex:facet>
+										<apex:facet name="stop">
+											<apex:pageMessage id="messagePlanUsageMatchSummary"	severity="info" strength="1"	summary="Compares Included and ancillary
+								databases used to selected content sets." />
+										</apex:facet>
+									</apex:actionStatus>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionPlanUsageMatchPrimaryLaw"	columns="1" title="Primary Law">
+									<apex:pageBlockTable id="tablePlanUsageMatchPrimaryLaw"	value="{!PlanUsagePrimaryContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 	<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionPlanUsageMatchPublicLaw"	columns="1" title="Public Records">
+									<apex:pageBlockTable id="tablePlanUsageMatchPublicLaw"	value="{!PlanUsagePublicContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 	<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionPlanUsageMatchOtherLaw"	columns="1" title="Other	(Secondary Products)">
+									<apex:pageBlockTable id="tablePlanUsageMatchOtherLaw"	value="{!PlanUsageOtherContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 		<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:commandButton id="buttonLookPlanAndUsagematchDetails"	action="{!DisplayPlanAndUsageDetail}"	value="Plan and Usage Details" />
+							</apex:pageBlock>
+						</apex:tab>
+						<!--Tab: Total Match-->
+						<apex:tab id="tabTotalMatch" name="tabTotalMatch"	label="Total Match" onTabEnter="try{lazyLoadTotalMatch();} catch(e){}">
+							<apex:actionFunction id="functionLazyLoadTotalMatch"	name="lazyLoadTotalMatch" action="{!lazyLoadTotalMatch}"	status="statusTotalMatch"	rerender="blockTotalMatch,messagesGlobal"	rendered="{!bRendered}" />
+							<apex:pageBlock id="blockTotalMatch" mode="mainDetail"	title="Total Match">
+								<!-- 	<apex:outputtext value="Current tab is : {!sCurrentTab}" />  -->
+								<apex:pageBlockSection id="sectionTotalMatchInfo" columns="1">
+									<apex:actionStatus id="statusTotalMatch">
+										<apex:facet name="start">
+											<apex:outputPanel layout="block" styleClass="message infoM4">
+												<apex:panelGrid id="gridTotalMatchStatusMessage" columns="2"	styleClass="messageTable" columnClasses="messageCell"	style="padding:0px;margin:0px;">
+													<apex:panelGroup >
+														<img class="loadingIcon" src="/s.gif" />
+													</apex:panelGroup>
+													<apex:panelGroup >
+														<div class="messageText">Loading Total Match Data...</div>
+													</apex:panelGroup>
+												</apex:panelGrid>
+											</apex:outputPanel>
+										</apex:facet>
+										<apex:facet name="stop">
+											<apex:pageMessage id="messageTotalMatchSummary"	severity="info" strength="1"	summary="Compares Included, ancillary and Warning	screen decline databases to selected content sets." />
+										</apex:facet>
+									</apex:actionStatus>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionTotalMatchPrimaryLaw"	columns="1" title="Primary Law">
+									<apex:pageBlockTable id="tableTotalMatchPrimaryLaw"	value="{!TotalPrimaryContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"
+												styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 					<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionTotalMatchPublicLaw"	columns="1" title="Public Records">
+									<apex:pageBlockTable id="tableTotalMatchPublicLaw"	value="{!TotalPublicContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 	<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:pageBlockSection id="sectionTotalMatchOtherLaw"	columns="1" title="Other(Secondary Products)">
+									<apex:pageBlockTable id="tableTotalMatchOtherLaw"	value="{!TotalOtherContents}" var="c">
+										<apex:column width="5px">
+											<apex:facet name="header">
+												<apex:inputCheckbox id="checkboxSelectAll"	onclick="toggleSelectAll(this);"	styleclass="columnSelector" />
+											</apex:facet>
+											<apex:inputCheckbox id="checkboxSelectRow"	styleclass="rowSelector" value="{!c.IsSelected}" />
+										</apex:column>
+										<apex:column headerValue="Material #" width="65px">
+											<!-- 		<a href="/apex/PlanMaterialDetailPage?Id={!Account.id}">{!c.MaterialNumber} -->
+											<!-- 		<a
+												href="/apex/PlanMaterialDetailPage?Id={!Account.id}&matkey={!c.materialkey}&desc={!c.material}&matnum={!c.materialnumber}&matprice={!c.ListPrice}">{!c.MaterialNumber}
+											</a>-->
+											<apex:commandLink value="{!c.MaterialNumber}" id="LinkMyLink"	action="{!GotoPage}">
+												<apex:param name="IdAccountId" value="{!Account.id}"	assignTo="{!IdAccountId}" />
+												<apex:param name="LMaterialKey" value="{!c.materialkey}"	assignTo="{!LMaterialKey}" />
+												<apex:param name="strMaterialNumber"	value="{!c.materialnumber}" assignTo="{!strMaterialNumber}" />
+												<apex:param name="strMaterialDesc" value="{!c.material}"	assignTo="{!strMaterialDesc}" />
+												<apex:param name="decListPrice" value="{!c.ListPrice}"	assignTo="{!decListPrice}" />
+											</apex:commandLink>
+										</apex:column>
+										<apex:column headerValue="Material" value="{!c.Material}"	width="550px" />
+										<apex:column headerValue="Percent Match"	value="{!c.PercentMatch}" />
+										<apex:column headerValue="Percent Excess"	value="{!c.PercentExcess}" />
+										<apex:column headerValue="List Price"	style="text-align:right;">
+											<apex:outputText value="{0, number, currency}">
+												<apex:param value="{!c.listprice}" />
+											</apex:outputText>
+										</apex:column>
+									</apex:pageBlockTable>
+								</apex:pageBlockSection>
+								<apex:commandButton id="buttonLookTotalmatchDetails"	action="{!DisplayTotalDetail}" value="Total Details" />
+							</apex:pageBlock>
+						</apex:tab>
+					</apex:tabPanel>
+				</apex:facet>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+	<!--Client-Side Scripting-->
+	<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js" />
+	<script type="text/javascript">
+		$.noConflict();
+		jQuery(document).ready(function(){
+		try{
+			lazyLoadPlanMatch();
+			}
+			catch(e){
+			//ignore error
+			}
+		});
+		function toggleSelectAll(element) {
+			var elCheckbox = jQuery(element);
+			var elTable = elCheckbox.closest('table');
+			
+			var isChecked = elCheckbox.is(':checked');
+			
+			elTable.find('*:checkbox.rowSelector').each(function(){
+				jQuery(this).attr('checked', isChecked);
+			});
+		}
+	</script>
+</apex:page>

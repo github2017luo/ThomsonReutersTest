@@ -1,0 +1,28 @@
+<!--
+ - This page is used from a button the Digital Subscription list view 
+ - This process is used by support to manage the Bypass Automation flag in bulk
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-10-07   Brenda Shields          Created  
+ - ==================================================================================================================================   
+-->
+<apex:page lightningStylesheets="true" standardStylesheets="true" standardController="Digital_Customer__c" recordSetVar="custReecords" action="{!updateOpps}" extensions="Digital_Cohort_Cust_Controller">
+
+<apex:pageMessages ></apex:pageMessages>
+    <apex:form >
+		<apex:outputPanel rendered="{!bInitialStatus}">
+            <apex:pageBlock title="Unmark Opportunities as Digital">
+                <apex:outputText >
+                <br /><apex:outputText value="{!strErrorMessage}" styleClass="slds-input"/><br />
+                </apex:outputText> 
+        
+                <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!continueUpdate}" value="Continue" immediate="true" rendered="{!bContinue}"/>
+                <apex:commandButton action="{!returnToSettings}" value="Cancel" immediate="true"/>            
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

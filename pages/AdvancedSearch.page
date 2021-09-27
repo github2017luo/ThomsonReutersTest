@@ -1,0 +1,799 @@
+<!--
+CHANGE HISTORY
+==========================================================================================================
+   Date             Name                      Description
+ 2017-11-14      Arti Choudhari                Modified Code [CRM-11277] Added a link to SAP Account No.
+ 2018-11-15      Arti Choudhari                Modified Code [CRM-11275] Created a lead link which will create single lead for respective Account.
+ 2018-02-18      Arti Choudhari                Modified Code[CRM-11595] Created a Mass Lead Creation button. To create mass lead records for Account based upon Advanced Search Results. 
+ 2019-01-28      Lovedeep Singh                Modified Code[DPS-3229] Added the lightningStylesheets tag to enable lightning for this VF page.
+==========================================================================================================
+-->
+
+<apex:page id="pageAdvancedSearch"
+    cache="true"
+    standardController="AdvancedSearch__c"
+    extensions="AdvancedSearchController"
+    action="{!onPageLoad}"
+           lightningStylesheets="true">
+    
+    <style>
+        .sortArrow { width:11px;height:11px;margin:0 5px;vertical-align:-2px;background:transparent url(/img/alohaSkin/sortArrows_sprite.png) no-repeat 0 top }
+        .sortAsc { background-position:0 -16px }
+        .sortDesc { background-position:0 top }
+        .searchCriteriaInput { border-right: 1px solid #999; padding-right: 15px; }
+        .searchCriteriaList { padding-left: 15px; }
+    </style>
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    
+        <script>
+    function toggleSelectAll(element) {
+          var elCheckbox = jQuery(element);
+          var elTable = elCheckbox.closest('table');
+          
+          var isChecked = elCheckbox.is(':checked');
+          elTable.find('*:checkbox.rowSelector').each(function(){
+            jQuery(this).attr('checked', isChecked);
+          });
+      }
+    
+    </script> 
+       
+    <script type="text/javascript">
+        $(
+            document).ready(function() { 
+                var startYear=2006; 
+                var theDate=new Date()
+                var endYear=theDate.getFullYear();    
+                var optionsString=''; 
+                if(startYear<endYear){ 
+                    for(i=startYear;i<endYear+6;i++){ 
+                        optionsString += "<option value=\""+i+"\">"+i+"</option>"; 
+                    } 
+                    $('#calYearPicker').html(optionsString); 
+                } 
+            }
+        );
+    </script>
+        
+    <apex:sectionHeader id="pageTitle"
+        title="{!$ObjectType.AdvancedSearch__c.Label}" 
+        subtitle="{!IF(ISNULL(AdvancedSearch__c.Id), $Label.NewCL &' ' & $ObjectType.AdvancedSearch__c.Label, AdvancedSearch__c.Name)}" />
+    
+    <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 2px;">
+        &nbsp;&laquo;&nbsp;<a href="/{!AdvancedSearchListURL}" style="color:#015BA7;">{!$Label.Back_to_List}</a>
+    </div>
+        
+    <apex:form id="formEdit">
+        <apex:pageMessages id="globalMessages" escape="false" />
+        
+        <apex:pageBlock id="blockEdit"
+            mode="edit" 
+            title="{!$ObjectType.AdvancedSearch__c.Label}">
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton id="buttonSearch" value="{!$Label.Search}" action="{!searchAccounts}" />
+                <apex:commandButton id="buttonSave"   value="{!$Label.Save}"   action="{!save}" rendered="{!AllowEdit}"/>
+                <apex:commandButton id="buttonDelete" value="{!$Label.Delete}" action="{!deleteSearch}" rendered="{!AllowDelete && AllowEdit}"/>
+                <apex:commandButton id="buttonCancel" value="{!$Label.Cancel}" action="{!cancel}" rendered="{!AllowCancel}" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="sectionSearchInformation"
+                title="Search Information"
+                columns="1">
+                
+                <apex:outputPanel layout="none">
+                    <apex:panelGrid id="gridFilterByTerritories"
+                        columns="2"
+                        cellpadding="10px;"
+                        columnClasses="searchCriteriaInput,searchCriteriaList">
+                        
+                        <apex:panelGroup id="groupTerritoryOptions" 
+                            layout="block">
+                            
+                            <apex:outputPanel id="panelName"
+                                layout="block"
+                                style="padding-bottom: 15px;">
+                                
+                                <apex:outputLabel id="labelName"
+                                    for="fieldName" 
+                                    value="{!$Label.Search_Name}" 
+                                    style="text-align:left;font-weight:bold;padding-right:.69em;" />
+                                
+                                <c:RequiredInputIndicator >
+                                    <apex:inputField id="fieldName" 
+                                        value="{!AdvancedSearch__c.Name}" />
+                                </c:RequiredInputIndicator>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel id="panelTerritoryOptionsHeader"
+                                layout="block">
+                                
+                                <apex:outputLabel id="labelAvailabledTerritories"
+                                    for="selectTerritoryOptions"
+                                    value="{!$Label.Display_Available_Territories}" 
+                                    style="text-align:left;font-weight:bold;padding-right:.69em;"/>
+                                    
+                                <apex:actionStatus id="updatingAvailableTerritories">
+                                    <apex:facet name="start">
+                                        <img src="/img/loading.gif" height="16px" width="16px"/>
+                                    </apex:facet>
+                                    <apex:facet name="stop">
+                                        <img src="/s.gif" height="16px" width="16px"/>
+                                    </apex:facet>
+                                </apex:actionStatus>
+                            </apex:outputPanel>
+                            
+                            <apex:actionRegion >
+                                <apex:selectRadio id="selectTerritoryOptions"
+                                    layout="pageDirection"
+                                    value="{!TerritoryView}"
+                                    onclick="javascript:document.getElementById('pageAdvancedSearch:formEdit:blockEdit:sectionSearchInformation:j_id30:j_id31:fieldName').focus();">
+                                    
+                                    <apex:selectOptions value="{!TerritoryOptions}" />  
+                                    
+                                    <apex:actionSupport id="supportOnChange"
+                                        event="onchange"
+                                        rerender="selectTerritories"
+                                        status="updatingAvailableTerritories" />
+                                </apex:selectRadio>
+                            </apex:actionRegion>
+                        </apex:panelGroup>
+                    
+                        <apex:panelGroup id="groupTerritorySelector" 
+                            layout="block">
+                            
+                            <apex:outputLabel id="labelTerritorySelector"
+                                for="selectTerritories"
+                                value="{!$Label.Search_Territories}" 
+                                style="text-align:left;font-weight:bold;padding-right:.69em;"/>
+                                
+                            <c:DuelingListBox id="selectTerritories"
+                                required="true"
+                                size="6"
+                                onChange="{!onTerritoryChange}"
+                                sourceList="{!AvailableTerritoryOptions}"
+                                defaultList="{!SelectedTerritoryOptions}"
+                                value="{!AdvancedSearch__c.TerritoryFilter__c}" />
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionFilterCriteria"
+                title="Filter Criteria"
+                columns="1">
+                
+                <apex:outputPanel layout="block">
+                    <apex:panelGrid id="gridFilterByFields"
+                        columns="2"
+                        cellpadding="10px;"
+                        columnClasses="searchCriteriaInput,searchCriteriaList">
+                        
+                        <apex:panelGroup >
+                            
+                            <apex:outputPanel id="panelSearchField"
+                                layout="block"
+                                style="padding: 5px 0;">
+                                
+                                <apex:outputLabel id="labelSearchField"
+                                    for="selectSearchField"
+                                    value="{!$Label.Step_1_Select_Search_Field}" 
+                                    style="display:block; font-weight:bold;"/>
+                                    
+                                <apex:selectList id="selectSearchField"
+                                    size="1"
+                                    multiselect="false"
+                                    value="{!NewFilterInput.AdvancedSearchDetail.Name}">
+                                    
+                                    <apex:selectOptions value="{!FilterFields}" />
+                                    
+                                    <apex:actionSupport event="onchange" 
+                                        status="updatingInput"
+                                        action="{!onFilterFieldChanged}"
+                                        rerender="sectionFilterCriteria" />
+                                    <apex:actionSupport event="onselect" 
+                                        status="updatingInput"
+                                        action="{!onFilterFieldChanged}"
+                                        rerender="sectionFilterCriteria" />
+                                </apex:selectList>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel id="panelSearchOperator"
+                                layout="block"
+                                style="padding: 5px 0;">
+                                
+                                <apex:outputLabel id="labelSearchOperator"
+                                    for="selectSearchOperator"
+                                    value="{!$Label.Step_2_Select_Operator}"
+                                    style="display:block; font-weight:bold;" />
+                                    
+                                <apex:selectRadio id="selectSearchOperator"
+                                    layout="pageDirection"
+                                    value="{!NewFilterInput.AdvancedSearchDetail.Operator__c}">
+                                    
+                                    <apex:selectOptions value="{!FilterOperators}" />
+                                    
+                                    <apex:actionSupport event="onchange" 
+                                        status="updatingInput"
+                                        action="{!onFilterOperatorChanged}"
+                                        rerender="sectionFilterCriteria" />
+                                </apex:selectRadio>
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel id="panelSearchValue"
+                                layout="block"
+                                style="padding: 5px 0;">
+                            
+                                <apex:outputLabel id="labelSearchValue"
+                                    for="panelSearchInput"
+                                    value="{!$Label.Step_3_Enter_Value}"
+                                    style="font-weight:bold;" />
+                                
+                                <apex:actionStatus id="updatingInput">
+                                    <apex:facet name="start">
+                                        <img src="/img/loading.gif" height="16px" width="16px"/>
+                                    </apex:facet>
+                                    <apex:facet name="stop">
+                                        <img src="/s.gif" height="16px" width="16px"/>
+                                    </apex:facet>
+                                </apex:actionStatus>
+                                    
+                                <apex:outputPanel id="panelSearchInput"
+                                    layout="block">
+                                    
+                                    <apex:inputField id="inputSearchText"
+                                        value="{!NewFilterInput.AdvancedSearchDetail.Value__c}"
+                                        rendered="{!NewFilterInput.IsTypeText}" />
+                                    
+                                    <apex:inputField id="inputNumericValue1"
+                                        value="{!NewFilterInput.AdvancedSearchDetail.NumberValue1__c}"
+                                        rendered="{!AND(NewFilterInput.IsTypeNumeric)}" />
+                                    
+                                    <apex:inputField id="inputDateValue1"
+                                        value="{!NewFilterInput.AdvancedSearchDetail.DateValue1__c}"
+                                        rendered="{!AND(NewFilterInput.IsTypeDate)}" />
+                                    
+                                    <apex:selectList id="selectSearchFlag"
+                                        size="1"
+                                        multiselect="false"
+                                        value="{!NewFilterInput.AdvancedSearchDetail.Value__c}"
+                                        rendered="{!NewFilterInput.IsTypeFlag}">
+                                        
+                                        <apex:selectOption itemValue="" itemLabel="{!$Label.None}" />
+                                        <apex:selectOption itemValue="Yes" itemLabel="{!$Label.Yes}" />   
+                                        <apex:selectOption itemValue="No" itemLabel="{!$Label.No}" />
+                                    </apex:selectList>
+                                    
+                                    <apex:selectList id="selectSearchValues"
+                                        size="6"
+                                        multiselect="true"
+                                        style="min-width: 200px;"
+                                        rendered="{!NewFilterInput.IsTypeList}"
+                                        value="{!NewFilterInput.SelectedListOptions}" >
+                                        
+                                       <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.0}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.1}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.2}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.3}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.4}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.5}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.6}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.7}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.8}"/> 
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.9}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.11}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.12}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.13}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.14}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.15}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.16}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.17}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.18}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.19}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.20}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.21}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.22}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.23}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.24}"/>
+                                           <apex:selectOptions value="{!NewFilterInput.FieldValueOptions.25}"/>
+                                    </apex:selectList>
+                                    
+                                    <!-- Start Between Input -->
+                                    <apex:outputPanel id="panelJoinBetween"
+                                        layout="block"
+                                        style="padding: 2px 0;'"
+                                        rendered="{!NewFilterInput.IsBetween}">
+                                        
+                                        <span>AND</span>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:inputField id="inputNumericValue2"
+                                        value="{!NewFilterInput.AdvancedSearchDetail.NumberValue2__c}"
+                                        rendered="{!AND(NewFilterInput.IsBetween, NewFilterInput.IsTypeNumeric)}" />
+                                    
+                                    <apex:inputField id="inputDateValue2"
+                                        value="{!NewFilterInput.AdvancedSearchDetail.DateValue2__c}"
+                                        rendered="{!AND(NewFilterInput.IsBetween, NewFilterInput.IsTypeDate)}" />
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel id="panelSearchIncludeExcludeOptions"
+                                    layout="block"
+                                    style="padding: 5px 0;">
+                                    
+                                    <apex:commandButton id="buttonInclude"
+                                        value="{!$Label.Include}"
+                                        status="updatingInclude"
+                                        rerender="sectionFilterCriteria, globalMessages"
+                                        action="{!addNewIncludeFilter}"/>
+                                        
+                                    <apex:commandButton id="buttonExclude"
+                                        value="{!$Label.Exclude}"
+                                        status="updatingExclude"
+                                        rerender="sectionFilterCriteria, globalMessages"
+                                        action="{!addNewExcludeFilter}"/>
+                                </apex:outputPanel>
+                            </apex:outputPanel>
+                        </apex:panelGroup>
+                        
+                        <apex:panelGroup id="groupCriteria" layout="block">
+                            <apex:outputLabel value="{!$Label.Include_Criteria}" style="text-align:left;font-weight:bold;padding-right:.69em;"/>
+                            <apex:actionStatus id="updatingInclude">
+                                <apex:facet name="start">
+                                    <img src="/img/loading.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            
+                            <apex:actionRegion id="regionIncludeCriteriaList">
+                                <div>
+                                    <apex:selectList id="selectInclude"
+                                        size="8"
+                                        multiselect="true"
+                                        style="min-width: 450px;"
+                                        value="{!IncludeFilterBlock.SelectedItem}">
+                                        
+                                        <!--apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions}" /-->
+                                       <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.0}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.1}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.2}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.3}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.4}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.5}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.6}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.7}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.8}"/> 
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.9}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.11}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.12}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.13}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.14}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.15}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.16}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.17}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.18}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.19}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.20}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.21}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.22}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.23}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.24}"/>
+                                           <apex:selectOptions value="{!IncludeFilterBlock.ActiveSelectOptions.25}"/>
+                                    </apex:selectList>
+                                    <div>
+                                        <apex:commandLink id="linkRemoveInclude"
+                                            value="{!$Label.Remove_SelectedCL}"
+                                            status="updatingInclude"
+                                            rerender="selectInclude, globalMessages"
+                                            action="{!IncludeFilterBlock.removeItem}" />
+                                            
+                                        <span>&nbsp;|&nbsp;</span>
+                                        
+                                        <apex:commandLink id="linkClearAllInclude"
+                                            value="{!$Label.Clear_All}"
+                                            status="updatingInclude"
+                                            rerender="selectInclude, globalMessages"
+                                            action="{!IncludeFilterBlock.removeAll}" />
+
+                                    </div>
+                                </div>
+                            </apex:actionRegion>
+                            <br/>
+                            <apex:outputLabel value="{!$Label.Exclude_Criteria}" style="text-align:left;font-weight:bold;padding-right:.69em;"/>
+                            <apex:actionStatus id="updatingExclude">
+                                <apex:facet name="start">
+                                    <img src="/img/loading.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            
+                            <apex:actionRegion id="regionExcludeCriteriaList">
+                                <div>
+                                    <apex:selectList id="selectExclude"
+                                        size="8"
+                                        multiselect="true"
+                                        style="min-width: 450px;"
+                                        value="{!ExcludeFilterBlock.SelectedItem}">
+                                        
+                                        <!-- apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions}" /-->
+                                       <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.0}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.1}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.2}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.3}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.4}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.5}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.6}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.7}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.8}"/> 
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.9}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.11}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.12}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.13}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.14}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.15}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.16}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.17}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.18}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.19}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.20}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.21}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.22}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.23}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.24}"/>
+                                           <apex:selectOptions value="{!ExcludeFilterBlock.ActiveSelectOptions.25}"/>
+                                    </apex:selectList>
+                                    <div>
+                                        <apex:commandLink id="linkRemoveExclude"
+                                            value="Remove Selected"
+                                            status="updatingExclude"
+                                            rerender="selectExclude, globalMessages"
+                                            action="{!ExcludeFilterBlock.removeItem}" />
+                                            
+                                        <span>&nbsp;|&nbsp;</span>
+                                        
+                                        <apex:commandLink id="linkClearAllExclude"
+                                            value="Clear All"
+                                            status="updatingExclude"
+                                            rerender="selectExclude, globalMessages"
+                                            action="{!ExcludeFilterBlock.removeAll}" />
+                                    </div>
+                                </div>
+                            </apex:actionRegion>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="blockSearchResults"
+            mode="detail">
+            
+            <apex:facet name="header">
+                <apex:panelGrid id="gridSnapshotHeader"
+                    styleclass="vertical-align: middle;"
+                    columns="3"
+                    columnClasses="pbTitle, pbButton, pbHelp">
+                    
+                    <apex:panelGroup layout="none">
+                        <h2>{!$Label.Search_ResultOT} [{!SearchResults.Accounts.size}]</h2>
+                    </apex:panelGroup>
+                    
+                    <apex:panelGroup layout="none">
+                        <apex:commandButton id="btnExport" value="{!$Label.Export_Results}" action="{!exportAccounts}" rendered="{!SearchResults.Accounts.size > 0}" />
+                        <!-- <apex:commandButton id="btnMassLead" value="Mass Lead Creation" action="{!massLeadCreation}" rendered="{!SearchResults.Accounts.size > 0}" />
+                        --> 
+                        <apex:commandButton id="btnMassLead1" value="{!$Label.Mass_Lead_Creation}" action="{!massLeadCreation1}" rendered="{!SearchResults.Accounts.size > 0}" />
+                    </apex:panelGroup>
+                    
+                    <apex:panelGroup layout="none">
+                        <span>&nbsp;</span>
+                    </apex:panelGroup>
+                </apex:panelGrid>
+            </apex:facet>
+            
+            <apex:actionStatus id="loadingSearchResults">
+                <apex:facet name="start">
+                    <apex:outputPanel layout="block" 
+                        rendered="{!SearchResults.Accounts.size = 0}"
+                        style="border:1px solid #D4DADC; padding: 5px 2px 5px 4px;">
+                        
+                        <img src="/img/loading.gif" height="16px" width="16px"/>
+                        <span>&nbsp;&nbsp;{!$Label.Searching}</span>
+                    </apex:outputPanel>
+                </apex:facet>
+                
+                <apex:facet name="stop">
+                    <apex:outputPanel layout="block">
+                        <apex:outputPanel layout="block" 
+                            rendered="{!SearchResults.Accounts.size = 0}"
+                            style="border:1px solid #D4DADC; padding: 5px 2px 5px 4px;">
+                            
+                            <span>{!$Label.No_records_to_displayOT}</span>
+                        </apex:outputPanel>
+                        
+                        <apex:pageBlockTable id="tableSearchResults"
+                            value="{!SearchResults.CurrentPage}" columnsWidth="40%,20%,10%,10%" style="word-wrap: break-word;"
+                            var="data"
+                            rendered="{!SearchResults.Accounts.size > 0}">
+                            
+                            <apex:variable value="{!IF(SearchResults.SortDirection='Asc','sortAsc','sortDesc')}" var="sortDir" />
+                        
+                            <apex:facet name="footer">
+                                <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">
+                                    <apex:outputPanel layout="inline">
+                                        {!$Label.PageOT} {!SearchResults.PageIndex + 1} {!$Label.ofOT} {!SearchResults.NumOfPages}
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel layout="inline" rendered="{!SearchResults.AllowMovePrev}">
+                                        <span>&nbsp;|&nbsp;</span>
+                                        <apex:commandLink id="linkMovePrev"
+                                            value="{!$Label.Prev_PageCL}"
+                                            immediate="true"
+                                            status="statusPaging"
+                                            action="{!SearchResults.movePrev}"
+                                            rerender="tableSearchResults, globalMessages" />
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel layout="inline" rendered="{!SearchResults.AllowMoveNext}">
+                                        <span>&nbsp;|&nbsp;</span>
+                                        <apex:commandLink id="linkMoveNext"
+                                            value="{!$Label.Next_PageCL}"
+                                            immediate="true"
+                                            status="statusPaging"
+                                            action="{!SearchResults.moveNext}"
+                                            rerender="tableSearchResults, globalMessages" />
+                                    </apex:outputPanel>
+                                    
+                                    <span>&nbsp;&nbsp;</span>
+                                    
+                                    <apex:actionStatus id="statusPaging">
+                                        <apex:facet name="start">
+                                            <img src="/img/loading.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                        
+                                        <apex:facet name="stop">
+                                            <img src="/img/s.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                    </apex:actionStatus>
+                                </apex:outputPanel>
+                            </apex:facet>
+                            
+                            <apex:column style="width: 100px;" width="100px;">
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none" >
+                                        <apex:commandLink value="{!$Label.AccountCH}" action="{!SearchResults.sortData}" immediate="true" status="statusAccountSort" rerender="tableSearchResults, globalMessages" style="width:8px;"> 
+                                            <apex:param name="sortfield" value="Name" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'Name'}"/>
+                                        <apex:actionStatus id="statusAccountSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="10px" width="10px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                                
+                                <apex:outputText id="textAccountName" 
+                                    value="{!data.Name}" 
+                                    rendered="{!ISNULL(data.AccountId)}" />
+                                
+                                <apex:outputLink id="linkAccount"
+                                    value="/{!data.AccountId}" target="_blank"
+                                    rendered="{!NOT(ISNULL(data.AccountId))}"  >{!data.Name}</apex:outputLink>
+                            </apex:column>
+                            
+                           <!--Arti: commented the opportunity Link  as part of story CRM-11275     
+
+                             <apex:column headerValue="New Opportunity" style="white-space: pre-wrap">
+                             <apex:commandLink Title="New Opportunity" value="New Opportunity"  Id="Newopty"  
+                             onclick="window.open('/setup/ui/recordtypeselect.jsp?ent=Opportunity&nooverride=true&save_new_url=/006/e&retURL=/006/o&accid={!data.AccountId}&CF00N1b000000PAXt={!data.SSDIDName}&CF00N1b000000PAXt_lkid={!data.SSDID}', '_blank ','','true'); return false;" 
+                             id="NewOpty"/>
+                            </apex:column>   -->                        
+                                  
+                             <!--Arti: lead link will be visible if account exist in Salesforce and has linked with SSD record. It will redirect on LCRMLeadCreate PAGE and autopopulate some fields-
+                             Account Name., SAP Account No. in Description, "Advance Search" value in Source Type, Contact Name  -->
+                
+                           <apex:column headerValue="{!$Label.New_LeadCH}" style="white-space: pre-wrap">
+                             <apex:commandLink Title="{!$Label.New_LeadCH}" value="{!$Label.New_LeadCH}"  Id="Newlead" rendered="{!NOT(ISNULL(data.SSDID)) && NOT(ISNULL(data.ContactName))}"
+                                              onclick="window.open('/apex/LeadCreate?Description={!data.SAPAccountNumber}&con={!data.ContactName}&accName={!data.Name}&accid={!data.AccountId}','_blank')" id="NewLead"/> 
+                            
+                            <!--Arti: lead link will be visible if account exist in Salesforce, contact is not available and has linked with SSD record. It will redirect on LCRMLeadCreate PAGE and autopopulate some fields-
+                             Account Name., SAP Account No. in Description, "Advance Search" value in Source Type -->
+                   
+                            <apex:commandLink Title="{!$Label.New_LeadCH}" value="{!$Label.New_LeadCH}"  Id="Newlead2" rendered="{!NOT(ISNULL(data.SSDID)) && ISNULL(data.ContactName)}"
+                                              onclick="window.open('/apex/LeadCreate?Description={!data.SAPAccountNumber}&accName={!data.Name}&accid={!data.AccountId}','_blank')" id="NewLead2"/> 
+                               
+                         <!--Arti: lead link will be visible if account exist or doest exist in Salesforce and has not linked with SSD record. It will redirect on LCRMLeadCreate PAGE and autopopulate some fields-
+                             SAP Account No. in Description, "Advance Search" value in Source Type  -->
+                             
+                           <apex:commandLink Title="{!$Label.New_LeadCH}" value="{!$Label.New_LeadCH}"  Id="Newlead1" rendered="{!ISNULL(data.SSDID) && NOT(ISNULL(data.ContactName))}"
+                                    onclick="window.open('/apex/LeadCreate?Description={!data.SAPAccountNumber}&con={!data.ContactName}&accName={!data.Name}', '_blank ','','true'); return false;" 
+                             id="NewLead1"/> 
+                             
+                              <apex:commandLink Title="{!$Label.New_LeadCH}" value="{!$Label.New_LeadCH}"  Id="Newlead3" rendered="{!ISNULL(data.SSDID) && ISNULL(data.ContactName)}"
+                                    onclick="window.open('/apex/LeadCreate?Description={!data.SAPAccountNumber}&con={!data.ContactName}&accName={!data.Name}', '_blank ','','true'); return false;" 
+                             id="NewLead3"/>
+                            </apex:column> 
+                           
+                             <apex:column >
+                                 <apex:facet name="header">
+                                     <apex:outputPanel layout="none" >
+                                         
+                                 <apex:inputCheckbox title="Select/Deselect All" onclick="javascript:toggleSelectAll(this);" label="{!$Label.Mass_Create_LeadCH}" />
+                                   
+                                         <apex:outputText Value="{!$Label.Mass_Create_LeadCH}"></apex:outputText>
+                                     </apex:outputPanel>
+                                     </apex:facet>
+                            <apex:inputCheckbox id="childCheckbox"  styleClass="rowSelector" value="{!data.bSelected}"/>
+                            </apex:column>
+                            <apex:column value="{!data.Name2}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Name_2CH}" action="{!SearchResults.sortData}" immediate="true" status="statusName2Sort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="Name2" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'Name2'}"/>
+                                        <apex:actionStatus id="statusName2Sort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column value="{!data.Name3}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Name_3CH}" action="{!SearchResults.sortData}" immediate="true" status="statusName3Sort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="Name3" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'Name3'}"/>
+                                        <apex:actionStatus id="statusName3Sort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.SAP_Account_NumberCH}" action="{!SearchResults.sortData}" immediate="true" status="statusSAPSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="SAPAccountNumber" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'SAPAccountNumber'}"/>
+                                        <apex:actionStatus id="statusSAPSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            <apex:outputText id="sapAccountName" 
+                                    value="{!data.SAPAccountNumber}" 
+                                    rendered="{!ISNULL(data.SSDID)}"/>
+                          <!--Arti: Added a link to SAP Account No.. It will redirect to the associated SSD Details page  -->      
+                               <apex:outputLink id="saplinkAccount"
+                                    value="/{!data.SSDID}" target="_blank"
+                                    rendered="{!NOT(ISNULL(data.SSDID))}">{!data.SAPAccountNumber}</apex:outputLink>
+                           
+                            </apex:column>
+                            
+                            <apex:column value="{!data.Phone1}" style="white-space: nowrap">
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Phone_1CH}" action="{!SearchResults.sortData}" immediate="true" status="statusPhone1Sort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="Phone1" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'Phone1'}"/>
+                                        <apex:actionStatus id="statusPhone1Sort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column value="{!data.AddressLine1}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Address_Line_1CH}" action="{!SearchResults.sortData}" immediate="true" status="statusAddressLine1Sort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="AddressLine1" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'AddressLine1'}"/>
+                                        <apex:actionStatus id="statusAddressLine1Sort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column value="{!data.City}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.CityCH}" action="{!SearchResults.sortData}" immediate="true" status="statusCitySort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="City" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'City'}"/>
+                                        <apex:actionStatus id="statusCitySort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column value="{!data.State}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.StateCH}" action="{!SearchResults.sortData}" immediate="true" status="statusStateSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="State" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'State'}"/>
+                                        <apex:actionStatus id="statusStateSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                             <apex:column value="{!data.NumberOfAttorneyOrg}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Number_of_Attorneys_Org}" action="{!SearchResults.sortData}" style="white-space: pre-wrap" immediate="true" status="statusOrgSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="NumberOfAttorneyOrg" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'NumberOfAttorneyOrg'}"/>
+                                        <apex:actionStatus id="statusOrgSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <!--apex:column value="{!data.NumberOfAttorneyLocations}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="Number of Attorneys - Location" action="{!SearchResults.sortData}" immediate="true" status="statusLocationsSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="NumberOfAttorneyLocations" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'NumberOfAttorneyLocations'}"/>
+                                        <apex:actionStatus id="statusLocationsSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column-->
+                            
+                            <apex:column value="{!data.TotalActiveSubs}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Total_Active_Subscriptions}" action="{!SearchResults.sortData}"  style="white-space: pre-wrap" immediate="true" status="statusActiveSubsSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="TotalActiveSubs" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'TotalActiveSubs'}"/>
+                                        <apex:actionStatus id="statusActiveSubsSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column value="{!data.TotalLapsedSubs}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Total_Lapsed_Subscriptions}" action="{!SearchResults.sortData}"  style="white-space: pre-wrap" immediate="true" status="statusLapsedSubsSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="TotalLapsedSubs" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'TotalLapsedSubs'}"/>
+                                        <apex:actionStatus id="statusLapsedSubsSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet>
+                            </apex:column>
+                            
+                            <apex:column value="{!data.ContactName}" >
+                                <apex:facet name="header">
+                                    <apex:outputPanel layout="none">
+                                        <apex:commandLink value="{!$Label.Contact_NameCH}" action="{!SearchResults.sortData}" immediate="true" status="statusContactSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="ContactName" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'ContactName'}"/>
+                                        <apex:actionStatus id="statusContactSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                </apex:facet> 
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">
+                                    
+                                    <apex:outputPanel layout="none">
+                                        
+                                        <apex:commandLink value="{!$Label.Zip_CodeCH}" action="{!SearchResults.sortData}" immediate="true" status="statusZipSort" rerender="tableSearchResults, globalMessages">
+                                            <apex:param name="sortfield" value="ZipCode" assignTo="{!SearchResults.SortField}" />
+                                        </apex:commandLink>
+                                        <apex:image styleclass="sortArrow {!sortDir}" url="/img/s.gif" rendered="{!SearchResults.SortField = 'ZipCode'}"/>
+                                        <apex:actionStatus id="statusZipSort"><apex:facet name="start">&nbsp;<img src="/img/loading.gif" height="12px" width="12px"/></apex:facet></apex:actionStatus>
+                                    </apex:outputPanel>
+                                    
+                                </apex:facet>
+                                <apex:outputText value="{!LEFT(data.ZipCode, 5)}" />
+                            </apex:column>
+                            
+                        </apex:pageBlockTable>
+                    </apex:outputPanel>
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:pageBlock>
+    </apex:form>
+    
+    <apex:variable value="{!AdvancedSearch__c.OwnerId}" var="ownerId" />
+</apex:page>

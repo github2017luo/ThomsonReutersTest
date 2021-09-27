@@ -1,0 +1,332 @@
+<apex:page showHeader="false" standardStylesheets="false">
+  <style type='text/css'>
+    .embeddedServiceHelpButton .helpButton .uiButton { background-color: #005290; font-family: "Salesforce Sans", sans-serif; }
+    .embeddedServiceHelpButton .helpButton .uiButton:focus { outline: 1px solid #005290; }
+    @font-face {
+    font-family: 'Salesforce Sans';
+    src: url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.woff') format('woff'),
+    url('https://www.sfdcstatic.com/system/shared/common/assets/fonts/SalesforceSans/SalesforceSans-Regular.ttf') format('truetype');
+    }
+</style>
+<script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+<script type='text/javascript'>
+function chattype() {
+           // window.top.location.href ='https://lrp1qa1-thomsonreuterss2elatam.cs17.force.com/liveagent2/?chattype='+urlpropertyname; 
+        return {!$CurrentPage.parameters.chattype};
+             
+        }
+var initESW = function(gslbBaseURL) {
+    
+    var url= new URL(location);
+    var caseNumber=url.searchParams.get("casenumber");
+    var firstname=url.searchParams.get("firstname");
+    var lastname=url.searchParams.get("lastname");
+    var LCRM_Is_GLI__c=url.searchParams.get("LCRM_Is_GLI__c");
+    var description=url.searchParams.get("description");
+    var product=url.searchParams.get("product");
+    var LCRM_Sub_BU__c=url.searchParams.get("LCRM_Sub_BU__c");
+    var Is_GLI__c=url.searchParams.get("Is_GLI__c");
+    var Sales_Org__c=url.searchParams.get("Sales_Org__c");
+     <!-- for TAX -->
+    var BU_Segment__c=url.searchParams.get("BU_Segment__c");
+    var buttonID = "573c00000004CdH";
+    var Email=url.searchParams.get("Email");
+    
+embedded_svc.settings.displayHelpButton = true; //Or false
+embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+
+embedded_svc.settings.defaultMinimizedText = '{!$Label.ESC_defaultMinimizedText}'; //(Defaults to Chat with an Expert)
+embedded_svc.settings.disabledMinimizedText = '{!$Label.ESc_disabledMinimizedText}'; //(Defaults to Agent Offline)
+
+//embedded_svc.settings.loadingText = ''; //(Defaults to Loading)
+//embedded_svc.settings.storageDomain = 'yourdomain.com'; //(Sets the domain for your deployment so that visitors can navigate subdomains during a chat session)
+
+// Settings for Live Agent
+embedded_svc.settings.avatarImgURL = '';
+embedded_svc.settings.prechatBackgroundImgURL = '';
+embedded_svc.settings.waitingStateBackgroundImgURL = '';
+embedded_svc.settings.smallCompanyLogoImgURL = '';
+
+obj = [ 
+            { "label": "CaseNumber",
+            "value": caseNumber,
+            "displayToAgent": true,
+            "transcriptFields":["CaseNumber"] 
+            },            
+            { "label": "Origin",
+            "value": "Chat",
+            "displayToAgent": false,
+            "transcriptFields":["Origin"] 
+            },
+            { "label": "Description",
+            "value": description,
+            "displayToAgent": true,
+            "transcriptFields":["Description"] 
+            },
+            { "label": "Product",
+            "value": product,
+            "displayToAgent": true,
+            "transcriptFields":["Product"] 
+            },
+            { "label": "CaseStatus",
+            "value": "Work In Progress",
+            "displayToAgent": true,
+            "transcriptFields":["CaseStatus"] 
+            },
+            { "label": "LCRM_Sub_BU__c",
+            "value": "US",
+            "displayToAgent": false,
+            "transcriptFields":["LCRM_Sub_BU__c"] 
+            },
+             <!-- for Tax -->
+            { "label": "BU_Segment__c",
+            "value": "Professional Tax",
+            "displayToAgent": false,
+            "transcriptFields":["BU_Segment__c"] 
+            },
+            { "label": "Is_GLI__c",
+            "value": "True",
+            "displayToAgent": false,
+            "transcriptFields":["Is_GLI__c"] 
+            },
+            { "label": "Sales_Org__c",
+            "value": "GLI",
+            "displayToAgent": false,
+            "transcriptFields":["Sales_Org__c"] 
+            },
+            { "label": "Is GLI",
+            "value": "true",
+            "displayToAgent": false,
+            "transcriptFields":["LCRM_Is_GLI__c"] 
+            }
+            ];
+          //LCRM_Customer_First_Name__c,LCRM_Customer_Last_Name__c,LCRM_Email_Address__c added for DSS-3223
+    embedded_svc.settings.extraPrechatFormDetails = obj;
+   
+    embedded_svc.settings.prepopulatedPrechatFields = {
+                                                        FirstName: firstname,
+                                                        LastName:lastname,
+                                                        LCRM_Customer_First_Name__c: firstname,
+                                                        LCRM_Customer_Last_Name__c:lastname,
+                                                        LCRM_Email_Address__c:Email,
+                                                        LCRM_Is_GLI__c:"True"
+                                                        }; 
+    if(caseNumber==null||caseNumber==""){
+    embedded_svc.settings.extraPrechatInfo=[
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"LCRM_Is_GLI__c","isExactMatch":true,"label":"Is GLI"}
+                                        ]
+                    ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                    {"entityFieldMaps":[
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_First_Name__c","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Customer_Last_Name__c","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Email_Address__c","isExactMatch":true,"label":"Email"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Subject","isExactMatch":false,"label":"Subject"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Origin","isExactMatch":false,"label":"Origin"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Description","isExactMatch":false,"label":"Description"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"ProductId","isExactMatch":true,"label":"Product"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Status","isExactMatch":true,"label":"CaseStatus"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"LCRM_Sub_BU__c","isExactMatch":true,"label":"LCRM_Sub_BU__c"},
+                                         <!-- for Tax -->
+                                        {"doCreate":true,"doFind":false,"fieldName":"BU_Segment__c","isExactMatch":true,"label":"BU_Segment__c"},
+                                        
+                                        {"doCreate":true,"doFind":false,"fieldName":"Is_GLI__c","isExactMatch":true,"label":"Is_GLI__c"},
+                                        {"doCreate":true,"doFind":false,"fieldName":"Sales_Org__c","isExactMatch":true,"label":"Sales_Org__c"}
+                                        ]
+                    ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":true}]; 
+    }
+    else{
+    
+    embedded_svc.settings.extraPrechatInfo = [
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"LastName","isExactMatch":false,"label":"Last Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"FirstName","isExactMatch":false,"label":"First Name"},
+                                        {"doCreate":false,"doFind":true,"fieldName":"LCRM_Is_GLI__c","isExactMatch":true,"label":"Is GLI"}
+                                        ]
+                    ,"entityName":"Contact","saveToTranscript":"Contact","showOnCreate":false},
+                    {"entityFieldMaps":[
+                                        {"doCreate":false,"doFind":true,"fieldName":"CaseNumber","isExactMatch":false,"label":"CaseNumber"}
+                                        ]
+                    ,"entityName":"Case","saveToTranscript":"Case","showOnCreate":false}];  
+    }
+    
+    
+    
+    
+        embedded_svc.settings.directToButtonRouting = function(prechatFormData) {
+                var prechat = prechatFormData;
+                //alert('prechatformdata: '+ prechat[3].value); 
+                var prechatQueue=prechat[3].value;
+                var Advance="Advance";
+                var Onvio="Onvio";
+                var Practice="Practice";
+                
+                
+                var Checkpointbatch= "Batch";
+                //var Engage="Engage";
+                var UltraTax1040= "UltraTax 1040";
+                var UltraTax1041= "UltraTax 1041";
+                var UltraTax1065= "UltraTax 1065";
+                var UltraTax1120= "UltraTax 1120";
+                var FixedAsset= "Fixed Asset";
+                var PlannerCS= "Planner CS";
+                var UltraTaxSystems= "UltraTax Systems";
+                var UltraTax706= "UltraTax 706";
+                var UltraTax709= "UltraTax 709";
+                var UltraTax990= "UltraTax 990";
+                var UltraTax5500= "UltraTax 5500";
+                
+                var GoSystem706= "GoSystem 706";
+                var GoSystem709= "GoSystem 709";
+                var GoSystem990= "GoSystem 990";
+                var GoSystem5500= "GoSystem 5500";
+                var AccountingCSGeneral= "Accounting";
+                var AccountingCSPayroll= "Payroll";
+                var WorkpapersCS= "Workpapers";
+                var GoFileRoom= "GoFileRoom";
+                var FileCabinetCS= "FileCabinet";
+                var WebServices= "Web Services";
+                var VirtualOffice= "Virtual Office";
+                var SaaS= "SaaS";
+                var GoSystemRS1040= "GoSystem 1040"
+                var GoSystemRS1041= "GoSystem 1041";
+                var GoSystemRS1065= "GoSystem 1065";
+                var GoSystemRS1120= "GoSystem 1120";
+                var GoSystemSystems= "GoSystem Systems";
+                var ONVIO1040= "ONVIO 1040";
+                var ONVIO1041= "ONVIO 1041";
+                var Marketing="Marketing";
+                var Password ="Password";
+                var Tools = "Checkpoint Tools";
+                var Research = "Research";
+                var ContentLearning  = "Content Learning";
+                var ContentAudit = "Content Audit";
+                var ContenteForm = "Content eForm";
+                var ContentProView ="Content ProView";
+                var ContentAO ="Content AO";
+                var ContentBilling = "Content Billing"; 
+                var ContentWebinar = "Content Webinar";
+                  
+                //alert ("Advance flow button id: " + "{!$Label.TXP_Advance_Flow_Chat}");   
+                
+                if(prechatQueue.toLowerCase().indexOf(Advance.toLowerCase()) !== -1){
+                    //alert('inside advance: '+ !$Label.TXP_Advance_Flow_Chat); 
+                    return "{!$Label.TXP_Advance_Flow_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(Tools.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Checkpoint_Tools_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(ContentLearning.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_Learning_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(ContentProView.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_ProView_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(Practice.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Practice_CS_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(Checkpointbatch.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Checkpoint_Chat_Button}";}
+                else if(prechatQueue.toLowerCase().indexOf(UltraTax1040.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_1040_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(UltraTax1041.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_1041_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(UltraTax1065.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_1065_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(UltraTax1120.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_1120_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(FixedAsset.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_FA_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(PlannerCS.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_Planner_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(UltraTaxSystems.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_UltraTax_Systems_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(UltraTax706.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(UltraTax709.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(UltraTax990.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(UltraTax5500.toLowerCase()) !== -1 ){
+                    return "{!$Label.TXP_UltraTax_706_709_990_5500_Chat}";}
+                
+                else if(prechatQueue.toLowerCase().indexOf(ONVIO1040.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_ONVIO_Tax_1040_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(ONVIO1041.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_ONVIO_Tax_1041_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(AccountingCSGeneral.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Accounting_CS_General_Ledger_AP_AR_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(AccountingCSPayroll.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Accounting_CS_Payroll_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(WorkpapersCS.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Workpapers_CS_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoFileRoom.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_GoFileRoom_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(FileCabinetCS.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_FileCabinet_CS_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(WebServices.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(VirtualOffice.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(SaaS.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Web_Services_Virtual_Office_and_SaaS_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoSystemRS1040.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_GoSystem_RS_1040_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoSystemRS1041.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_GoSystem_RS_1041_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoSystemRS1065.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_GoSystem_RS_1065_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoSystemRS1120.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_GoSystem_RS_1120_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoSystem706.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(GoSystem709.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(GoSystem990.toLowerCase()) !== -1 || prechatQueue.toLowerCase().indexOf(GoSystem5500.toLowerCase()) !== -1 ){
+                    return "{!$Label.TXP_GoSystem_RS_706_709_990_and_5500_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(GoSystemSystems.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_GoSystem_RS_Systems_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(Onvio.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Onvio_Chat}";}
+                      else if(prechatQueue.toLowerCase().indexOf(Marketing.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Checkpoint_Marketing_Chat}";}
+                else if(prechatQueue.toLowerCase().indexOf(Password.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_Password_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(Research.toLowerCase()) !== -1){
+                    //alert ("Advance flow button id: " + "{!$Label.TXP_Checkpoint_Research_CHAT}"); 
+                    return "{!$Label.TXP_Checkpoint_Research_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(ContentAudit.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_Audit_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(ContenteForm.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_eForm_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(ContentAO.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_AO_CHAT}";}
+                else if(prechatQueue.toLowerCase().indexOf(ContentBilling.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_Billing_Chat}";}
+                    else if(prechatQueue.toLowerCase().indexOf(ContentWebinar.toLowerCase()) !== -1){
+                    return "{!$Label.TXP_Content_Webinar_Chat}";}
+                
+                
+                //if(prechat[3].value == 'Onvio')
+                    //return "573c00000004CdH"; //onvio
+                //else
+                   // return "573c00000004Cbu"; //advance flow
+               
+            
+        };
+        
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';
+
+        embedded_svc.init(
+            'https://thomsonreutersglis2e.my.salesforce.com',
+            'https://thomsonreuterss2elatam.secure.force.com/LiveChatTXP',
+            gslbBaseURL,
+            '00D30000000pLSL',
+            'TXP_Generic_ChatSnapins',
+            {
+                baseLiveAgentContentURL: 'https://c.la3-c2-ph2.salesforceliveagent.com/content',
+                deploymentId: '5724O0000004Gof',
+                buttonId: '5734O0000004HWV',
+                baseLiveAgentURL: 'https://d.la3-c2-ph2.salesforceliveagent.com/chat',
+                eswLiveAgentDevName: 'EmbeddedServiceLiveAgent_Parent04I4O000000003UUAQ_170d928df88',
+                isOfflineSupportEnabled: false
+            }
+        );
+    };
+
+    if (!window.embedded_svc) {
+        var s = document.createElement('script');
+        s.setAttribute('src', 'https://thomsonreutersglis2e.my.salesforce.com/embeddedservice/5.0/esw.min.js');
+        s.onload = function() {
+            initESW(null);
+        };
+        document.body.appendChild(s);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+</apex:page>

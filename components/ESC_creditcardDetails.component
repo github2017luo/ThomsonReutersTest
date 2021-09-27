@@ -1,0 +1,44 @@
+<apex:component access="global" controller="ESC_getCreditcardDetails"> 
+
+    <apex:attribute name="caseIdValue" type="String" description="This is the Id of the case" assignTo="{!caseId}" access="global" />
+     
+    <table class="table">
+       <!-- <thead>    
+            <tr>
+                <th>Credit Card Type: </th> 
+                <th>Credit Card Number: </th>
+                <th>Transaction Date: </th>
+                <th>Amount: </th>
+                <th>Invoice: </th>
+             </tr>
+        </thead>   -->     
+        <tbody>
+        <apex:repeat value="{!cfe}" var="pos">
+                <!--<tr>
+                        <td>{!pos.ESC_Credit_Card_Type__c}</td>
+                        <td>{!pos.ESC_Credit_Card_Number__c}</td>
+                        <td>{!pos.USL_Payment_Date__c}</td> 
+                        <td>{!pos.USL_Total_Amount__c}</td>
+                        <td>{!pos.invoicefield}</td>
+                 </tr>-->
+
+            <apex:outputPanel rendered="{!if(pos.ESC_Payment_Type__c == 'Credit' , true ,false)}">  				
+                <tr> <td>Credit Card Type/Number/Amount: </td><td>{!pos.ESC_CreditCard_Details__c}</td> </tr>
+                <tr> <td>Transaction Date: </td><td>{!pos.USL_Transaction_Date__c}</td> </tr>
+                <tr> <td>Invoice: </td><td>{!pos.ESC_Invoice_Number__c }</td> </tr>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!if(pos.ESC_Payment_Type__c == 'Debit' , true ,false)}">  				
+                <tr> <td>Bank Routing/Number/Amount: </td><td>{!pos.ESC_CreditCard_Details__c}</td> </tr>
+                <tr> <td>Transaction Date: </td><td>{!pos.USL_Transaction_Date__c}</td> </tr>
+                <tr> <td>Invoice: </td><td>{!pos.ESC_Invoice_Number__c }</td> </tr>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!if(pos.ESC_Payment_Type__c == 'Both' , true ,false)}">  				
+                <tr> <td>Card Type/Number/Amount: </td><td>{!pos.ESC_CreditCard_Details__c}</td> </tr>
+                <tr> <td>Transaction Date: </td><td>{!pos.USL_Transaction_Date__c}</td> </tr>
+                <tr> <td>Invoice: </td><td>{!pos.ESC_Invoice_Number__c }</td> </tr>
+            </apex:outputPanel>
+        </apex:repeat>
+        </tbody>   
+    </table>
+
+</apex:component>

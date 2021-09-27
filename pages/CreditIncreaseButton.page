@@ -1,0 +1,12 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c"  extensions="ResendPaymentgatewayEmailController" > 
+ <apex:form id="Form2" rendered="{!oQuote.CreditincreaseEmailButton__c == true}">
+        <apex:pageBlock mode="mainDetail" id="pgblkMain">
+            <apex:pageBlockSection columns="1">
+                 <apex:pageBlockSectionItem >
+                      <apex:outputLabel for="Credit Increase Email" value="Credit Increase Email"/>
+                      <apex:CommandButton value="ReSend" action="{!CreditIncreaseEmail}" style="height:20px"  />
+                 </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>       
+        </apex:pageBlock>
+    </apex:form>      
+</apex:page>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>false</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>creator</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>USL_Total_Amount__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>USL_Findlaw_AM_Team_Lead_6</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>USL_Total_Amount__c &gt; 500 
+&amp;&amp;(ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;CRM-Findlaw AM-TL 6&apos; &amp;&amp;
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;CRM-Findlaw AM-Dir&apos; &amp;&amp;
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;CRM-Findlaw AM-Mgr&apos; &amp;&amp;
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF&apos; &amp;&amp;
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF-FindLaw-CRM Lead&apos;)</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Acc Manager Step 1</label>
+        <name>Acc_Manager_Step_1</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>FindLaw_AM_Director</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>USL_Total_Amount__c &gt; 4500 
+&amp;&amp;(ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;CRM-Findlaw AM-Dir&apos; &amp;&amp;
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;CRM-Findlaw AM-Mgr&apos; &amp;&amp;
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF&apos; &amp;&amp; 
+	ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF-FindLaw-CRM Lead&apos;)</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Step 2</label>
+        <name>Step_2</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>FindLaw_Finance_Manager</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>USL_Total_Amount__c &gt; 7500 
+&amp;&amp;(ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF&apos; 
+&amp;&amp; ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF-FindLaw-CRM Lead&apos;)</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>ApproveRecord</ifCriteriaNotMet>
+        <label>Director Step</label>
+        <name>Director_Step</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>Findlaw_VP</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>USL_Total_Amount__c &gt; 20000 &amp;&amp; ESC_Case__r.USL_Case_Created_By_Role__c  &lt;&gt; &apos;SLF-FindLaw-CRM Lead&apos;</formula>
+        </entryCriteria>
+        <label>Findlaw VP</label>
+        <name>Findlaw_VP</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>FindLaw customer credit requests</description>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <criteriaItems>
+            <field>ESC_Case_Form_Extension__c.USL_Total_Amount__c</field>
+            <operation>notEqual</operation>
+        </criteriaItems>
+        <criteriaItems>
+            <field>ESC_Case_Form_Extension__c.USL_Approval_Type__c</field>
+            <operation>equals</operation>
+            <value>Findlaw_Customer_Service</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.USL_Case_Created_By_Role__c</field>
+            <operation>equals</operation>
+            <value>CRM-SLF Findlaw-Field AM 6,CRM-SLF Findlaw-Sr AM 6,CRM-SLF Findlaw-AM 6,CRM-Findlaw AM-TL 6,CRM-Findlaw AM-Mgr,CRM-Findlaw AM-Dir,SLF,CRM-Findlaw AM Lead</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Approval_Id_update</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Approval_Name_update</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>USL_Status_update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Rejected_Status_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>USL_Initial_Status_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>USL_Findlaw Charge Cancel 6</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>1</processOrder>
+    <recallActions>
+        <action>
+            <name>USL_Recall_Status_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

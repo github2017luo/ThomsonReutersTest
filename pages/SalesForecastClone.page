@@ -1,0 +1,15 @@
+<apex:page id="pageSalesForecastClone"
+	standardController="SalesForecast__c"
+	extensions="SalesForecastCloneController"
+	action="{!cloneSalesForecast}">
+	
+	<apex:sectionHeader id="pageTitle"
+		title="Sales Forecast Clone"
+		subtitle="{!SalesForecast__c.Name}"/>
+	
+	<apex:pageMessages id="globalMessages" />
+	<div class="ptBreadcrumb">
+		<span>&laquo;&nbsp;</span>
+		<apex:outputLink value="/{!SalesForecast__c.Id}">Back to Original Sales Forecast</apex:outputLink>
+	</div>
+</apex:page>

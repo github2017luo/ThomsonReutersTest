@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>These settings control configurable elements of the Project Task Gantt, allowing you to customize its appearance and functions to suit your users.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Break_Current_Locks__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>When a project is locked for editing, this setting determines whether users (who have permission to edit tasks on the Project Task Gantt) are given the option to break the lock and force the other user into read-only mode.</inlineHelpText>
+        <label>Always Allow Breaking Locks</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Columns_Field_Set__c</fullName>
+        <defaultValue>&quot;Gantt_Columns&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the API name of the field set, on the project task object, that contains the custom columns to show on Project Task Gantt. When the setting is blank, the Gantt Custom Columns field set is used.</inlineHelpText>
+        <label>Columns Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Disable_Buffered_Rendering__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, records in Project Task Gantt are not loaded in a buffer.  The default is deselected. This setting should only be changed after consulting FinancialForce.com Customer Support.</inlineHelpText>
+        <label>Disable Buffered Rendering</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Disable_Resolve_Dependency_Btn_On_Sync__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected the resolve dependency button is deactivated when the project task dependencies are synchronized. If deselected, the button remains active when project task dependencies do not need to be synchronized. The default value is deselected.</inlineHelpText>
+        <label>Disable Resolve Dependency Btn on Sync</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Leading_Buffer_Zone__c</fullName>
+        <defaultValue>20</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the number of rows to render above the current view in Project Task Gantt. The default is 20. This setting should only be changed after consulting FinancialForce.com Customer Support.</inlineHelpText>
+        <label>Leading Buffer Zone</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Milestone_Tooltip__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used to display a custom tooltip for Milestones. If defined, this setting replaces the default Milestone tooltip.</inlineHelpText>
+        <label>Milestone Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__PTA_Tooltip__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used to display a custom tooltip for Project Task Assignments. If defined, this setting replaces the default Project Task Assignment tooltip.</inlineHelpText>
+        <label>PTA Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Manager_Access__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines levels of Gantt edit access for the Project Manager. Values are &quot;Full&quot; (default) - can edit created projects, &quot;Read&quot;- has only read-only access, or &quot;None&quot; - access determined by Permission Controls.</inlineHelpText>
+        <label>Project Manager Access</label>
+        <length>15</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Tooltip__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used to display a custom tooltip for Projects. If defined, this setting replaces the default Project tooltip.</inlineHelpText>
+        <label>Project Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Read_Only_Field_Set__c</fullName>
+        <defaultValue>&apos;Gantt_Read_Only_Fields&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The API name of a field set on a project task containing fields that are not editable in Project Task Gantt.</inlineHelpText>
+        <label>Read Only Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Save_Column_Prefs__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, customizations to width, order, and visibility of columns in the Project Task Gantt will be remembered per user.</inlineHelpText>
+        <label>Save Column Preferences</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Generate_RRs__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, the Create Resource Demand button is shown on the Project Task Gantt toolbar. Use to staff the project plan through the Create Resource Demand button from Project Task Assignments page.</inlineHelpText>
+        <label>Show &quot;Create Resource Demand&quot; button</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Hours_Completion_Percent_Bar__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines if the hours complete percentage shows in the task bar display in the Schedule pane. This setting does not control the display of the %Hrs button in the Schedule pane.</inlineHelpText>
+        <label>Show Hours Completion % in Task Bar</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Show_Points_Completion_Percent_Bar__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines if the points complete percentage shows in the task bar display in the Schedule pane. This setting is selected by default. This setting does not control the display of the %Pts button in the Schedule pane.</inlineHelpText>
+        <label>Show Points Completion % in Task Bar</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Task_Tooltip__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field set used to display a custom tooltip for Project Tasks. If defined, this setting replaces the default Project Task tooltip.</inlineHelpText>
+        <label>Task Tooltip Field Set</label>
+        <length>90</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Trailing_Buffer_Zone__c</fullName>
+        <defaultValue>10</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines the number of rows to render below the current view in Project Task Gantt. The default is 10. This setting should only be changed after consulting FinancialForce.com Customer Support.</inlineHelpText>
+        <label>Trailing Buffer Zone</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Project Task Gantt Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

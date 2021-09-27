@@ -1,0 +1,140 @@
+<!--
+ - ODTResendInviteINC
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page standardController="Invite_Colleagues__c" lightningStylesheets="true" extensions="ODTResendInviteINCCon">
+
+     <apex:detail subject="{!Invite_Colleagues__c.id}" relatedList="true" title="true"/>
+   
+  <apex:form > 
+      <apex:outputPanel id="tstpopup" >
+         <apex:outputPanel styleClass="popupBackgroundcomp"/>
+         <apex:outputPanel styleClass="custPopupcomp" layout="block">
+             <apex:pageblock >
+             <apex:pagemessages ></apex:pagemessages>
+                <apex:pageBlockSection title="Resend Trial Invitation" collapsible="false" showHeader="true" rendered="true">
+                    <apex:inputField value="{!inc.First_Name__c}" required="true"/>
+                    <apex:inputField value="{!inc.Last_Name__c}" required="true"/>
+                    <apex:inputField value="{!inc.Email__c}" required="true"/>
+                    <apex:outputField value="{!inc.SapContactId__c}"/>
+                </apex:pageBlockSection>
+                
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton value="Resend Invite" action="{!processsINC}" id="resendBtn" status="myStatus"/>
+                    
+                </apex:pageblockButtons>
+                
+            </apex:pageblock>
+         </apex:outputPanel>           
+   </apex:outputPanel>   
+    
+ </apex:form>  
+ 
+ 
+ <apex:outputText >
+       <apex:actionStatus id="myStatus" >
+            <apex:facet name="start" >
+              <div id="loadingDivStatus"/>                   
+            </apex:facet>
+        </apex:actionStatus>
+   </apex:outputText> 
+ 
+ 
+ <apex:form >
+        
+        <apex:outputPanel id="SuccessMsg">
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!eloquaEmailTriggered}"/>  
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!eloquaEmailTriggered}"> 
+                <br/><br/>
+                {!$Label.ODT_Salesrep_success}
+                <br/><br/><br/><br/>
+                <apex:commandButton value="Back To Invited Colleague" action="{!closeEloquaPopup}" rerender="tstpopup" styleClass="successbtn" Status="myStatus"/>
+            </apex:outputPanel> 
+        </apex:outputPanel> 
+ 
+ </apex:form>  
+ 
+ 
+ <style>
+  .popupBackgroundcomp{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 70);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9988;
+   }
+        
+  .custPopupcomp{
+        background-color: white;
+        border-width: 2px;
+        border-style: solid;
+        z-index: 9989;
+        left: 40%;
+        padding:10px;
+        position: absolute;
+        width: 500px;
+        margin-left: -250px;
+        top:2px;
+        overflow:auto;
+        width:700px;
+        height:400px;
+    }
+    
+    
+    .popupBackground{
+        background-color:black;
+        opacity: 0.20;
+        filter: alpha(opacity = 20);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 9998;
+        }
+     .custPopup{
+        background-color: white;
+        border: 3px solid rgba(47,86,135,1);
+        border-style: solid;
+        z-index: 9999;
+        position: absolute;
+        top:100px;
+        border-radius: 10px;
+        display: block;
+        font-size: 1.5em;
+        font-family: sans-serif;
+        padding: 1em 2em;
+        margin: 2em auto;
+        margin-left:250px;
+        width: 50%;      
+        text-align: center;
+        }    
+         #loadingDivStatus{
+                position:fixed;
+                top:0px;
+                left:0px;
+                width:100%;
+                height:100%;
+                //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+                background: url({!URLFOR($Resource.ODTLoaderGIF)}) 50% 50% no-repeat #666;
+                
+                z-index:99999;
+                opacity: 0.4; /* You can adjust the opacity */
+                filter: alpha(opacity=40); /* For IE8 and earlier */
+            }
+ 
+ </style>
+ 
+ 
+ 
+</apex:page>

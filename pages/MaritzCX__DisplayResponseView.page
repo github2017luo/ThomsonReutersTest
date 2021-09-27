@@ -1,0 +1,112 @@
+<!-- This page is used to display the entire MaritzCX response in the Pop Window through the viewResponse LINK
+    Last Modified By: Prafull 13-December-2018
+-->
+<apex:page sidebar="false" standardStylesheets="true" showHeader="false"  controller="MaritzCX.DisplayResponseViewController">
+    <apex:stylesheet value="{!$Resource.MaritzCX__compiled}"/>
+    <apex:stylesheet value="{!$Resource.MaritzCX__telecompiled}"/>
+    <apex:stylesheet value="{!$Resource.MaritzCX__forms}"/>
+    <apex:stylesheet value="{!$Resource.MaritzCX__custommin}"/>
+    <style>
+        h2.mainTitle {
+            white-space: nowrap;
+        }
+
+        .hideOverflow {
+            white-space: pre-wrap !important;
+            max-width: 150px !important;
+            text-overflow: ellipsis;
+            overflow: hidden !important;        
+        }
+        .sticky {
+            position: sticky !important;
+            top:0px !important;
+            background-color: white;
+            z-index:2;
+            border-bottom:1px solid rgb(221, 219, 218);
+        }
+    </style>
+    
+    <apex:outputPanel rendered="{!isException}">
+    <br/>
+    <div id="divContent">
+        <div class="responses-content">
+            <table id="Responses" class="MainListTable" align="center" style="width: 90%;">
+                <thead>
+                    <tr>
+                        <th class="TextAlignLeft" width="100%">
+                            <apex:Messages />
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!NOT(isException)}">
+    <div id="ResponseViewDialogueContent">
+        <div class="MainForm" style="margin: 5px 10px 5px 10px;">
+            <div>
+                <div class="MarginB10">
+                    <strong></strong><span id="spanStartDate"></span>
+                </div>                
+                <div class="MarginB10">
+                    <strong>Started:&nbsp;</strong><span id="spanStartDate"><apex:outputText escape="true" value="{!responseContent.startDate}"></apex:outputText></span>
+                </div>                
+                <div class="MarginB10">
+                    <strong>Completed:&nbsp;</strong><span id="spanCompletedDate"><apex:outputText escape="true" value="{!responseContent.completedDate}"></apex:outputText></span>
+                </div>
+                <div class="MarginB10">
+                    <strong>Time Spent (hr:min:sec):&nbsp;</strong><span id="spanTimeSpent"><apex:outputText escape="true" value="{!responseContent.timespent}"></apex:outputText></span>
+                </div>
+                <div class="MarginB10">
+                    <strong>Status:&nbsp;</strong><span id="spanRespondentState"><apex:outputText escape="true" value="{!responseContent.respondentState}"></apex:outputText></span>
+                </div>
+                <div id="divAlertName" class="MarginB10" style="">
+                    <strong>Alert:&nbsp;</strong><span id="spanAlertName"><apex:outputText escape="true" value="{!responseContent.alertName}"></apex:outputText></span>
+                </div>
+                <div id="divAlertCriteria" class="MarginB10" style="">
+                    <strong>Criteria:&nbsp;</strong><span id="spanAlertCriteria"><apex:outputText escape="true" value="{!responseContent.alertCriteria}"></apex:outputText></span>
+                </div>
+            </div>
+            <div style="clear: both;"></div> 
+            <div id="divContent" style="">
+                <div class="responses-content">
+                    <table id="Responses" class="MainListTable" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th class="TextAlignLeft" width="50%">Question</th>
+                                <th class="TextAlignLeft">Answer</th>
+                            </tr>
+                        </thead>
+                        <tbody id="QuestionsBody">
+                            <apex:repeat value="{!responseContent.questions}" var="questionAnswer">
+                            <apex:repeat value="{!questionAnswer}" var="question">
+                                <tr class="questionRow" id="S60998">
+                                    <td><apex:outputText escape="true" value="{!question}"></apex:outputText></td>
+                                    <td><span class="responseText" id="A60998"><apex:outputText escape="true" value="{!questionAnswer[question]}" styleClass="hideOverflow"></apex:outputText></span></td>
+                                </tr>
+                            </apex:repeat></apex:repeat>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin:10px;" >
+         <apex:pageBlock title="{!$Label.maritzcx__keymetricvisualizations}" >
+            <apex:outputText rendered="{!visualizationsHasError}" value="{!visualizationErrorMsg}"/>
+            <apex:pageBlockTable value="{!accessibleQuestions}" var="surveyQuestion" rendered="{!NOT(visualizationsHasError)}"> 
+                
+                <apex:column headerValue="{!$Label.maritzcx__question}" >                         
+                    <apex:outputText value="{!surveyQuestion.MaritzCX__question__c}" styleClass="hideOverflow"/>&nbsp;
+                </apex:column>
+                
+                <apex:column headerValue="{!$Label.maritzcx__chart}">  
+                    <apex:outputField style="white-space:nowrap;" value="{!surveyResponse[surveyQuestion.MaritzCX__Alternate_Field_On_Response__c]}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields[surveyQuestion.MaritzCX__Alternate_Field_On_Response__c].Accessible}" />
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+	</div>
+    </apex:outputPanel>
+</apex:page>

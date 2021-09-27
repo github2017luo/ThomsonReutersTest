@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Contains org-wide settings for Search Resources</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Allow_Special_Characters_In_Address__c</fullName>
+        <defaultValue>&quot;+,#,&amp;,°,÷&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines a set of comma separated characters to allow in the address field.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines a set of comma separated characters to allow in the address field.</inlineHelpText>
+        <label>Allow Special Characters In Address</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Contact_Field_1__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>API name of a field in the contact object to be displayed in Search Resources. This option is ignored when Display Resource Description is true.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field in the contact object to be displayed in Search Resources. This option is ignored when Display Resource Description is true.</inlineHelpText>
+        <label>Contact Field 1</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Contact_Field_2__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>API name of a field in the contact object to be displayed in Search Resources. This option is ignored when Display Resource Description is true.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field in the contact object to be displayed in Search Resources. This option is ignored when Display Resource Description is true.</inlineHelpText>
+        <label>Contact Field 2</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Contact_Field_3__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <deprecated>false</deprecated>
+        <description>API name of a field in the contact object to be displayed in Search Resources. This option is ignored when Display Resource Description is true.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API name of a field in the contact object to be displayed in Search Resources. This option is ignored when Display Resource Description is true.</inlineHelpText>
+        <label>Contact Field 3</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Display_Resource_Description__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, only the resource&apos;s description is shown. When false, Contact Fields 1 to 3 are shown if they contain a valid API name of a field in the contact object. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, only the resource&apos;s description is shown. When false, Contact Fields 1 to 3 are shown if they contain a valid API name of a field in the contact object. The default value is false.</inlineHelpText>
+        <label>Display Resource Description</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Geolocation_Service_URL__c</fullName>
+        <defaultValue>&quot;http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2q6820%2Caa%3Do5-961xh0&amp;outFormat=json&amp;maxResults=1&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Mapping service URL to use when obtaining latitude and longitude using an address. Default value: http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2q6820%2Caa%3Do5-961xh0&amp;outFormat=json&amp;maxResults=1</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Mapping service URL to use when obtaining latitude and longitude using an address. Default value: http://www.mapquestapi.com/geocoding/v1/address?key=Fmjtd%7Cluub2q6820%2Caa%3Do5-961xh0&amp;outFormat=json&amp;maxResults=1</inlineHelpText>
+        <label>Geolocation Service URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>pse__Invalid_Longitude_And_Latitude_Pairs__c</fullName>
+        <defaultValue>&quot;-100.44588200,39.78373000&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines that longitude and latitude are not updated when the address is invalid. Supported format: longitude,latitude;longitude,latitude.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines that longitude and latitude are not updated when the address is invalid. Supported format: longitude,latitude;longitude,latitude.</inlineHelpText>
+        <label>Invalid Longitude and Latitude</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Mapquest_Endpoint_URL__c</fullName>
+        <defaultValue>&quot;http://open.mapquestapi.com/&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the Mapquest Endpoint URL used to validate against the endpoint in Salesforce remote site settings before using the Mapquest Geolocation API. This URL should be a subset of the Geolocation Service URL.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the Mapquest Endpoint URL used to validate against the endpoint in Salesforce remote site settings before using the Mapquest Geolocation API. This URL should be a subset of the Geolocation Service URL.</inlineHelpText>
+        <label>Mapquest Endpoint URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <label>Search Resources Global</label>
+    <visibility>Public</visibility>
+</CustomObject>

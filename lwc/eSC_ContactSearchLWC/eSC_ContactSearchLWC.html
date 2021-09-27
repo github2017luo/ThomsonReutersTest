@@ -1,0 +1,33 @@
+<template>
+    <lightning-card icon-name="standard:record" title={label.ContactResults}>
+        <div if:true={errorMsg} align="center">
+            <p style="color: red;">{errorMsg}</p>
+        </div>
+        <div if:true={data}>
+            <lightning-datatable    data={data} 
+                                columns={columns} 
+                                key-field="Id" 
+                                class="example"
+                                id="table_id"
+                                hide-checkbox-column="true"
+                                onsort={updateColumnSorting}
+                                sorted-direction={sortDirection}
+                                sorted-by={sortBy}
+                >
+                </lightning-datatable>
+         </div>
+         <div>
+            <lightning-card>
+              <div class="demo-only" style="height:6rem" if:true={displaySpinner}>
+             <div class="slds-spinner_container">
+               <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+                 <span class="slds-assistive-text">Loading</span>
+                 <div class="slds-spinner__dot-a"></div>
+                 <div class="slds-spinner__dot-b"></div>
+               </div>
+             </div>
+           </div>
+          </lightning-card>
+      </div>
+    </lightning-card>
+</template>

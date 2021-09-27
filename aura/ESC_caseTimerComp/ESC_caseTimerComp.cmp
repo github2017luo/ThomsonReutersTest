@@ -1,0 +1,51 @@
+<aura:component controller="ESC_CaseTimerController" implements="flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <lightning:workspaceAPI aura:id="workspace" />  
+    
+    <!-- attributes -->
+    <aura:attribute name="stime" type="String" default ="00:00:00"/>
+    <aura:attribute name="tabId" type="String"/>
+    <aura:attribute name="playing" type="Boolean"/>
+    <aura:attribute name="recording" type="Boolean"/>
+    <aura:attribute name="stopwatch" type="Object"/>
+    <aura:attribute name="showStopBtn" type="Boolean" default="true"/>
+    <aura:attribute name="showStartBtn" type="Boolean" default="false"/>
+    <aura:attribute name="showTimer" type="Boolean" default="false"/>
+    <aura:attribute name="time1" type="String"/>
+    <aura:attribute name="time2" type="String"/>
+    <aura:attribute name="Override" type="Boolean" default="false"/>
+    
+    <!-- Handle component initialization in a client-side controller -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="lightning:tabFocused" action="{!c.onTabFocused}"/> 
+    <aura:handler event="lightning:tabClosed" action="{!c.onTabClosed}"/>
+    <aura:handler event="lightning:tabRefreshed" action="{!c.onTabRefreshed}"/>
+    
+    <aura:if isTrue="{!v.showTimer}">
+        <div class="slds-m-around--x-small">
+            <lightning:card>
+                <h2 class="slds-section__title">
+                    <span class="slds-truncate" title="Section Title"><b>&nbsp;&nbsp;&nbsp;Case Timer</b></span>
+                </h2>
+                <p class="slds-text-heading--large slds-text-align_center "><b>{!v.stime}</b></p> 
+                <p class="slds-text--small slds-text-align_center "><b>Total Time Spent : {!v.time1}</b></p>
+                <p class="slds-text--small slds-text-align_center "><b>Billable Time Spent : {!v.time2}</b></p>
+                <br/>
+                <center>
+                    
+                    <aura:if isTrue="{!v.showStartBtn}">
+                        <lightning:button aura:id="Start" variant="success" label="Start" title="Brand action" onclick="{! c.onClick }" />
+                    </aura:if>
+                    <aura:if  isTrue="{!v.showStopBtn}">
+                        <b>
+                        	<lightning:input name="Override" label="Override Auto Stop?" type="checkbox" checked="{!v.Override}" />
+                    	</b>
+                    	<br/>
+                        <lightning:button aura:id="Stop" variant="destructive" label="Stop" title="Brand action" onclick="{! c.onClick }"/>
+                    </aura:if>
+                    
+                </center>
+            </lightning:card>
+        </div>   
+    </aura:if>
+</aura:component>

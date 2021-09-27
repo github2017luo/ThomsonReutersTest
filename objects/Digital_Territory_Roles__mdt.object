@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Holds Territory Roles for Digital Reps in order to assign Opportunities and Proposal owners through automation.</description>
+    <fields>
+        <fullName>Early_Mid_Contract__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>If checked, this role applies only to Early or Mid Contracts</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Check this field if this role only applies to Early or Mid Contract Renewals</inlineHelpText>
+        <label>Early/Mid Contract</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Firm_Code__c</fullName>
+        <description>Short code to represent Digital Firm</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Firm Code</label>
+        <length>15</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Opp_Team_Member_Role__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This Role is used to assign Opportunity Team Members.  Not Opportunity Owners</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Select this checkbox if this role applies to setting Opportunity Team Members.</inlineHelpText>
+        <label>Opp Team Member Role</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Priority</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Role__c</fullName>
+        <description>TMS Territory Role</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Role</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Digital Territory Roles</label>
+    <pluralLabel>Digital Territory Roles</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

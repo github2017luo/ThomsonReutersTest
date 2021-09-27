@@ -1,0 +1,196 @@
+<apex:page standardController="Integration_Logger__c" recordSetVar="intlogs" lightningStylesheets="true" extensions="IntegrationController" title="Integration Logger" sidebar="false" showHeader="false" standardStylesheets="false" applyHtmlTag="false"  applyBodyTag="false" docType="html-5.0" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+   <apex:stylesheet value="/resource/SLDS0102/assets/styles/salesforce-lightning-design-system-ltng.css"/>
+       <html>
+        <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <title>Integration Logger</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>            
+            <apex:slds />            
+            <style>
+                .slds-section__title{
+                  -webkit-border-radius: 0 !important;
+                     -moz-border-radius: 0 !important;
+                          border-radius: 0 !important;
+                }
+                .slds-text-title_caps, .slds-text-title--caps {line-height: 2.25 !important;}
+                .SetWidth{ width: 7.25rem !important;}
+                .bPageHeader, .bPageFooter  {display:none;}
+                .slds-scope .slds-table td, .slds-scope .slds-table th{white-space: unset !important;padding: 0!important;}
+                .table1Headerwidth{width: 5%;}
+                .table3Headerwidth{width: 20%;}
+                .table4Headerwidth{width: 30%;}
+                .slds-scope{    line-height: 2.5 !important; margin: 10px !important;padding: 0!important;}
+                .msgIcon {
+                    display: none!important
+                 }
+                .customMessage * {
+                    color: #fff!important
+                }
+                .customMessage {
+                    margin: 5px 0!important;
+                    max-width: 1280px;
+                    opacity: 1!important;
+                    width: 100%;
+                    font-size: 12px;
+                    border: 0px;
+                    padding-left: 10px;
+                }
+                .message {
+                    opacity: .1
+                }
+            
+                .tableClass tbody{text-align:left}
+            </style>
+            <script>
+    $(document).ready(function(){
+       overridePageMessages();   
+    });
+      
+    function overridePageMessages(){   
+        var textureEffect = '';
+        textureEffect = 'slds-theme--alert-texture';
+                    
+        $('.warningM3').addClass('slds-notify slds-notify--toast slds-theme--warning customMessage '+textureEffect);         
+        $('.confirmM3').addClass('slds-notify slds-notify--alert slds-theme--success  customMessage '+textureEffect);   
+        $('.errorM3').addClass('slds-notify slds-notify--alert slds-theme--error customMessage '+textureEffect);                 
+        $('.infoM3').addClass('slds-notify slds-notify--toast customMessage '+textureEffect);   
+      
+ $('.warningM3').removeClass('warningM3');
+ $('.confirmM3').removeClass('confirmM3');    
+        $('.errorM3').removeClass('errorM3');
+        $('.infoM3').removeClass('infoM3'); 
+      
+    }
+</script>
+        </head>
+        <body class="slds-scope">                
+            <apex:form id="retryid" >                                               
+                <div class="slds-page-header">
+                    <div class="slds-grid">
+                        <!-- PAGE HEADER / ROW 1 / COLUMN 1 -->
+                            <div class="slds-col slds-has-flexi-truncate">
+                                <!-- HEADING AREA -->
+                                    <!-- MEDIA OBJECT = FIGURE + BODY -->
+                                        <div class="slds-media slds-no-space slds-grow">
+                                            <div class="slds-media__figure">
+                                                <svg aria-hidden="true" class="slds-icon slds-icon-standard-user">
+                                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#opportunity')}"></use>
+                                                </svg>
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p class="slds-text-title--caps slds-line-height--reset">
+                                                </p>
+                                            <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="Integration logger">Integration Logger</h1>
+                                            </div>
+                                        </div>
+                                    <!-- / MEDIA OBJECT -->
+                                <!-- HEADING AREA -->
+                            </div>
+                    </div>
+                </div>
+    <!--Interface Name dropdown start--> 
+         
+     
+    <!--<div class="slds-picklist slds-dropdown-trigger slds-dropdown-trigger--click slds-m-around--small" data-aljs="picklist">-->
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">          
+            <label class="slds-form-element__label" for="text-input-interfacename">Interface Name</label>
+            <div class="slds-form-element">                
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right slds-picklist__input">
+                    <apex:selectList value="{!logObjectList}" label="Interface Name" styleClass="slds-lookup__search-input slds-input">  
+                       <apex:selectOption itemValue="Quote/Proposal" itemLabel="Quote/Proposal"></apex:selectOption>      
+                    </apex:selectList>
+                </div>                
+            </div> 
+        </div>  
+    <!--Interface Name dropdown end-->
+    
+    <!--Record Name Textbox start-->
+        <div class="slds-form-element__control slds-input-has-icon .slds-size_3-of-5 slds-card__header slds-grid">
+        <label class="slds-form-element__label" for="text-input-id-1">Record Name</label>
+                <div class="slds-form-element__control">
+                    <apex:inputText id="text-input-id-1" styleclass="slds-input" value="{!searchValue}"/>
+                        <div class="slds-form-element__help"><b>Note: </b>Valid Record number of format ex:O-XXXXXXXX</div>
+                </div>
+        </div>
+    <!--Record Name Textbox end-->
+    
+    <!--Search and Retry All button start-->    
+        <div class="slds-no-flex slds-card__header slds-grid">            
+                <apex:commandButton action="{!search}" styleClass="slds-button slds-button_brand" value="Search" reRender="retryid" status="actStatusId"/> 
+                <apex:actionStatus id="actStatusId" >
+                    <apex:facet name="start" >
+                      <img src="/img/loading.gif"/>                    
+                    </apex:facet>
+                </apex:actionStatus>
+            <!-- <apex:commandButton action="{!retryAll}" styleClass="slds-button slds-button_brand slds-align--absolute-center" value="RetryAll" reRender="searchTable,ErrorMessages" oncomplete="overridePageMessages()"> 
+            </apex:commandButton> Commented as part of CRM-15054 -->
+              
+        </div>               
+    </article>      
+    <!--Search and Retry All button end-->
+    <!--<apex:pageMessages id="ErrorMessages"/>-->
+    <div class="slds">
+        <apex:pagemessages id="ErrorMessages"/>
+    </div>
+     <!--DataTable Result start--->   
+    <div class="scrollable-data">          
+        <apex:dataTable id="searchTable" value="{!wrapLoggerList}" var="logger" rowClasses="slds-truncate" styleClass="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout">
+            <apex:column headerValue="Check" headerClass="table1Headerwidth">
+                <apex:inputCheckbox id="checkbox-15" value="{!logger.selected}"/>
+            </apex:column>
+            <apex:column headerValue="Name"  >
+                <apex:outputLink value="{!URLFOR($Action.Integration_Logger__c.View, logger.logger.Id)}">
+                  {!logger.logger.Name}
+            </apex:outputLink>
+            </apex:column>
+            <apex:column headerValue="Exception Message" headerClass="table3Headerwidth">
+                <p class="slds-truncate" >{!logger.logger.Exception_Message__c}</p>
+            </apex:column>
+            <apex:column headervalue="Success">
+                {!logger.logger.Success__c}
+            </apex:column>
+           <apex:column headervalue="Retry Count">
+                {!logger.logger.Order__r.Retry_Count__c}
+            </apex:column> 
+            <!-- <apex:column headerValue="Request Message" headerClass="table4Headerwidth">
+                <p class="slds-truncate" >{!logger.logger.Request_Message__c}</p>
+            </apex:column>
+            <apex:column headerValue="Object Name">
+                <p class="slds-truncate" >{!logger.logger.Object_Name__c}</p>
+            </apex:column> -->
+            <apex:column headerValue="Order id" >
+                {!logger.logger.Order__r.Name}
+            </apex:column> 
+            <!-- <apex:column headerValue="Action">
+            <apex:commandButton onclick="RetrySingleRecord('{!logger.logger.Order__r.Name}','{!logger.logger.Order__r.Id}','{!logger.logger.Id}')" styleClass="slds-button slds-button_brand" value="Retry" reRender="searchTable">
+                </apex:commandButton>                  
+            </apex:column> Commented as part of CRM-15054 Change-->
+        </apex:dataTable> 
+         
+         <!--<apex:actionFunction action="{!retry}" name="RetrySingleRecord" reRender="searchTable,ErrorMessages" oncomplete="overridePageMessages()">
+            <apex:param name="OrderNumber" value="" assignTo="{!selectedOrdNum}"/>
+            <apex:param name="OrderId" value="" assignTo="{!selectedOrdId}"/>
+            <apex:param name="LogId" value="" assignTo="{!selectedLogId}"/>
+         </apex:actionFunction> Commented as part of CRM-15054 Change-->
+    </div>   
+    <!--Datatable Result ends-->
+    
+    <!--FOOTER-->
+    <div id="Footer" class="slds-align--absolute-center" >
+        <footer role="contentinfo" class="slds-p-around--large" >
+            <apex:commandButton value="Previous" id="Prev" styleClass="slds-button slds-button_brand" action="{!Previous}" reRender="retryid" rendered="{!IsPrev}" disabled="{!NOT(IsPrev)}" status="actStatusId1" />
+            <apex:commandButton value="Next" id="Next" styleClass="slds-button slds-button_brand" action="{!Next}" reRender="retryid" rendered="{!IsNext}" disabled="{!NOT(IsNext)}" status="actStatusId1" />
+            <apex:actionStatus id="actStatusId1" >
+                    <apex:facet name="start" >
+                      <img src="/img/loading.gif"/>                    
+                    </apex:facet>
+                </apex:actionStatus>
+        </footer>
+    </div>
+   </apex:form>         
+  </body>
+ </html>       
+</apex:page>

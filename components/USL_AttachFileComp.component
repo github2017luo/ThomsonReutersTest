@@ -1,0 +1,79 @@
+<apex:component controller="USL_AttachHtmlFileController">
+<apex:attribute name="ipageController" type="ESC_PageControllerBase" assignTo="{!pageController}"
+        required="true" description="The controller for the page." />
+ <apex:attribute name="caseid" type="string" assignTo="{!recid}"
+        required="true" description="caseid." />       
+<script>var __sfdcSessionId = '{!GETSESSIONID()}';</script>
+<script src="../../soap/ajax/42.0/connection.js" type="text/javascript"></script>
+<script src="../../soap/ajax/42.0/integration.js" type="text/javascript"></script>
+<script>
+    
+    //var __sfdcSessionId = '{!GETSESSIONID()}';
+    
+    function uploadFile()
+    {
+        var input = document.getElementById('file-input');
+        
+        var parentId = '{!recid}';// Your ID here, I suggest using a merge field to get this
+        var filesToUpload = input.files;
+        for(var i = 0, f; f = filesToUpload[i]; i++)
+        {
+            var reader = new FileReader();
+            // Keep a reference to the File in the FileReader so it can be accessed in callbacks
+            reader.file = f;
+            reader.onerror = function(e)
+            {
+                switch(e.target.error.code)
+                {
+                    case e.target.error.NOT_FOUND_ERR:
+                        alert('File Not Found!');
+                        break;
+                    case e.target.error.NOT_READABLE_ERR:
+                        alert('File is not readable');
+                        break;
+                    case e.target.error.ABORT_ERR:
+                        break; // noop
+                    default:
+                        alert('An error occurred reading this file.');
+                };
+            };
+            reader.onabort = function(e)
+            {
+                alert('File read cancelled');
+            };
+            reader.onload = function(e)
+            {
+                
+                var att = new sforce.SObject("Attachment");
+                att.Name = this.file.name;
+                att.ContentType = this.file.type;
+                att.ParentId = parentId;
+                att.Body = (new sforce.Base64Binary(e.target.result)).toString();
+                sforce.connection.create([att],
+                {
+                    onSuccess : function(result, source)
+                    {
+                        if (result[0].getBoolean("success"))
+                        {
+                         alert('Upload Successful');
+                        }
+                        else
+                        {
+                            
+                        }
+                    },
+                    onFailure : function(error, source)
+                    {
+                        alert('Upload Failed'); 
+                    }
+                });
+            };
+            reader.readAsBinaryString(f);
+        }
+    }
+
+</script>
+  
+  <input id="file-input" type="file" name="file"  value="Upload" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="Button" value="Upload" onclick="uploadFile();"/><br/>
+  Only the following file extensions are supported: jpg, gif, jpeg, pdf, xml, txt, tif, doc, xls, rtf, docx, xlsx - 25MB limit
+</apex:component>

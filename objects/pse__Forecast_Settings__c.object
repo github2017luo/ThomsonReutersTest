@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Actuals_Cutoff_Date__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Enter the number of days prior to the current date to use as the cutoff date for actual vs scheduled items.   Use 0 for today.   Leave blank for to automatically use  &quot;the end of last week&quot;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Enter the number of days prior to the current date to use as the cutoff date for actual vs scheduled items.   Use 0 for today.   Leave blank for to automatically use  &quot;the end of last week&quot;</inlineHelpText>
+        <label>Actuals Cutoff Date</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Batch_Size__c</fullName>
+        <defaultValue>200</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of records to process in a single batch. The value is 200 by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of records to process in a single batch. The value is 200 by default.</inlineHelpText>
+        <label>Forecast Batch Size</label>
+        <precision>4</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category1_Label__c</fullName>
+        <defaultValue>&quot;Worst Case&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 1.</inlineHelpText>
+        <label>Category1 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category2_Label__c</fullName>
+        <defaultValue>&quot;Downside&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 2.</inlineHelpText>
+        <label>Category2 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category3_Label__c</fullName>
+        <defaultValue>&quot;Commit&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 3.</inlineHelpText>
+        <label>Category3 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category4_Label__c</fullName>
+        <defaultValue>&quot;Forecast&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 4.</inlineHelpText>
+        <label>Category4 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category5_Label__c</fullName>
+        <defaultValue>&quot;Most Likely&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 5.</inlineHelpText>
+        <label>Category5 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category6_Label__c</fullName>
+        <defaultValue>&quot;Upside&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 6.</inlineHelpText>
+        <label>Category6 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Category7_Label__c</fullName>
+        <defaultValue>&quot;Best Case&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The label assigned to the weighted forecast amount for Category 7.</inlineHelpText>
+        <label>Category7 Label</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Opportunity_Curve__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The forecast curve applied when there is no curve set on an opportunity. An error message is displayed if no curve is set on an opportunity and no default opportunity curve is defined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The forecast curve applied when there is no curve set on an opportunity. An error message is displayed if no curve is set on an opportunity and no default opportunity curve is defined.</inlineHelpText>
+        <label>Default Opportunity Curve</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Default_Project_Curve__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The forecast curve applied when there is no curve set on a project. An error message is displayed if no curve is set on a project and no default project curve is defined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The forecast curve applied when there is no curve set on a project. An error message is displayed if no curve is set on a project and no default project curve is defined.</inlineHelpText>
+        <label>Default Project Curve</label>
+        <length>80</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Maximum_Queue_Size__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Maximum Queue Size</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Chatter__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, notifications from Forecast batch processes are sent via Chatter to recipients listed in the Notification Recipients setting. This is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, notifications from Forecast batch processes are sent via Chatter to recipients listed in the Notification Recipients setting. This is deselected by default.</inlineHelpText>
+        <label>Notifications by Chatter</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Email__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, notifications from Forecast batch processes are sent via email to recipients listed in the Notification Recipients setting. This is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, notifications from Forecast batch processes are sent via email to recipients listed in the Notification Recipients setting. This is deselected by default.</inlineHelpText>
+        <label>Notifications by Email</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Recipients__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Specifies the notification recipients for Forecast batch notifications sent via Chatter or email. The value is a list of email addresses separated by semicolons (;). This setting is null by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Specifies the notification recipients for Forecast batch notifications sent via Chatter or email. The value is a list of email addresses separated by semicolons (;). This setting is null by default.</inlineHelpText>
+        <label>Notification Recipients</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>pse__Notifications_Task__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected, notifications from Forecast batch processes are sent via tasks. This is deselected by default.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected, notifications from Forecast batch processes are sent via tasks. This is deselected by default.</inlineHelpText>
+        <label>Notifications by Task</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category1_Calculation__c</fullName>
+        <defaultValue>&quot;0.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 1 for Opportunity Forecasts.</inlineHelpText>
+        <label>Opportunity Category1 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category2_Calculation__c</fullName>
+        <defaultValue>&quot;0.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 2 for Opportunity Forecasts. For best practice, each multiplier should be higher than the previous Category value.</inlineHelpText>
+        <label>Opportunity Category2 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category3_Calculation__c</fullName>
+        <defaultValue>&quot;0.25&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 3 for Opportunity Forecasts. For best practice, each multiplier should be higher than the previous Category value.</inlineHelpText>
+        <label>Opportunity Category3 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category4_Calculation__c</fullName>
+        <defaultValue>&quot;0.50&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 4 for Opportunity Forecasts. For best practice, each multiplier should be higher than the previous Category value.</inlineHelpText>
+        <label>Opportunity Category4 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category5_Calculation__c</fullName>
+        <defaultValue>&quot;0.75&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 5 for Opportunity Forecasts. For best practice, each multiplier should be higher than the previous Category value.</inlineHelpText>
+        <label>Opportunity Category5 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category6_Calculation__c</fullName>
+        <defaultValue>&quot;1.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 6 for Opportunity Forecasts. For best practice, each multiplier should be higher than the previous Category value.</inlineHelpText>
+        <label>Opportunity Category6 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Opportunity_Category7_Calculation__c</fullName>
+        <defaultValue>&quot;1.25&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 7 for Opportunity Forecasts. For best practice, each multiplier should be higher than the previous Category value.</inlineHelpText>
+        <label>Opportunity Category7 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category1_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,0.00,0.00,0.00,0.00,0.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category1 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 1 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category1 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category2_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,0.25,0.00,0.00,0.25,0.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category2 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 2 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category2 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category3_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,0.50,0.25,0.00,0.50,0.50&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category3 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 3 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category3 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category4_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,1.00,0.50,0.25,1.00,1.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category4 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 4 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category4 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category5_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,1.00,1.00,0.50,1.00,1.00&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category5 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 5 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category5 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category6_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,1.00,1.00,1.00,1.00,1.25&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category6 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 6 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category6 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Category7_Calculation__c</fullName>
+        <defaultValue>&quot;1.00,0.00,1.00,1.00,1.00,1.00,1.25&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Multipliers used to calculate the Category7 default for Project Forecasts. Determines contribution of the following metrics (in order): Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled Milestones, Unscheduled Backlog.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The multipliers used to calculate Category 7 for Project Forecasts. This multiplies, in order, the metrics for:Billings, Pass Through Billings, Scheduled Time, Held Resource Requests, Unheld Resource Requests, Scheduled,Milestones and Unscheduled Backlog.</inlineHelpText>
+        <label>Project Category7 Calculation</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category1__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 1 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category1</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category2__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 2 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category2</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category3__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 3 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category3</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category4__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 4 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category4</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category5__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 5 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category5</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category6__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 6 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category6</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Category7__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Select to determine if Category 7 is included in the Forecast calculation.</inlineHelpText>
+        <label>Use Category7</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Is_Services_Product_On_Opp_Product__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked, forecasting will utilize the &quot;Is Services Product&quot; field on the Opportunity Product record, otherwise it will utilize the field directly from the Product record</description>
+        <externalId>false</externalId>
+        <label>Use Is Services Product On Opp Product</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Deprecated: Forecast Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

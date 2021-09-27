@@ -1,0 +1,158 @@
+<apex:component controller="Apttus_CQApprov.CartApprovalEmailController" extensions="APTS_ProductConfigApprovalExtension" access="global">
+    <apex:attribute name="ApprovalRequestSO" 
+                    description="This is the Approval Request SObject." 
+                    type="Apttus_Approval__Approval_Request__c" 
+                    access="global"
+                    assignTo="{!requestSO}" />
+    
+    <apex:attribute name="ApprovalRecipientSO" 
+                    description="This is the Approval Recipient SObject." 
+                    type="User" 
+                    access="global"
+                    assignTo="{!recipientSO}" />
+    
+    <div>
+        <b>Customer Information</b><br />
+        Customer Number:  <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.Source_System_Account_Number__c}" /><br />
+        Customer Name:  <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.Name}" /><br />
+        Frozen Market Segment:  <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.LCRM_Frozen_Market_Segment__c}" /><br />
+        FindLaw Annual Spend:  <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.LCRM_FL_Annual_Spend__c}" /><br />
+        Quote Owner:<apex:outputField value="{!requestSO.Apttus_QPApprov__ProposalId__r.Owner.Name}" /><br />
+        Quote Order #: <apex:outputField value="{!requestSO.Apttus_QPApprov__ProposalId__r.Name}" /><br />
+        Link to the Quote:<apex:outputLink value="{!orgUrl &'/' &requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__c}">Related Proposal</apex:outputLink><br />
+        <br/>
+        <br/>
+        </div>
+        
+        <b>Approvals Information<br /> </b>
+        Approval Request Comments:  
+        <apex:outputField value="{!requestSO.Apttus_Approval__SubmissionComment1__c}" /> 
+        <apex:outputField value="{!requestSO.Apttus_Approval__SubmissionComment2__c}" /> 
+        <apex:outputField value="{!requestSO.Apttus_Approval__SubmissionComment3__c }" /> 
+        <br />
+        Approval Request Approver Comments:  <apex:outputField value="{!requestSO.Apttus_Approval__Approver_Comments__c}" /><br />
+    <apex:outputPanel rendered="{!NOT(IsStatusCancelled)}" >  
+        <Table width="100%">       
+            <tr>
+                <td><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__Step_Name__c.Label & ': '}"/><apex:outputField value="{!requestSO.Apttus_Approval__Step_Name__c}" /></td>
+            </tr>
+            <tr>
+                <td><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__StepLabel__c.Label & ': '}"/>
+                <apex:outputField value="{!requestSO.Apttus_Approval__StepLabel__c}" /></td>
+            </tr>            
+            <tr>
+                <td><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Label & ' ' & $Label.apttus_approval__date & ': '}" />
+                <apex:outputField value="{!requestSO.Apttus_Approval__Date__c}" /></td>
+            </tr>
+            <tr>
+                <td><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Label & ' ' & $Label.apttus_approval__assignedto & ': '}" />
+                <apex:outputField value="{!requestSO.Apttus_Approval__Assigned_To_Name__c}" /></td>
+            </tr>
+            <tr>
+            <td><apex:outputText value="{!'Summary: '}"/>
+            <apex:outputText value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c}"/></td>
+        </tr>
+        <tr>
+            <td><apex:outputText value="{!'Comments From Sales: '}"/><apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Description__c}"/></td>
+        </tr>
+        <tr>
+            <td><apex:outputText value="{!'Close Date: '}"/><apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Valid_Until_Date__c}"/></td>
+        </tr>
+        </table>
+        </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!AreActionsSupported}" >               
+        <apex:outputText value="{!$Label.apttus_approval__approvalactionlinkinstructionforemailresponse1}" 
+                         escape="false" 
+                         rendered="{!IsEmailApprovalResponseEnabled}" />
+        <apex:outputPanel rendered="{!IsEmailApprovalResponseEnabled}"  >     
+            <apex:outputText value="{!$Label.apttus_approval__approvalactionlinkinstructionforemailresponse2}" 
+                             escape="false" />
+                             </apex:outputPanel>
+        <br/>
+        <br/>
+        <apex:outputLink value="{!ReassignPageUrl}">{!$Label.apttus_approval__reassign}</apex:outputLink>
+        <br/>
+        <apex:outputLink value="{!ApproveRejectPageUrl}">{!$Label.apttus_approval__approvereject}</apex:outputLink>
+        <br/>
+        <apex:outputLink value="{!AddCommentPageUrl}">{!$Label.apttus_approval__addcomment}</apex:outputLink>
+        <br/>
+        <br/>      
+    </apex:outputPanel> 
+
+    <table border="1" cellspacing="0">
+        <tr>
+            <th>Line Status from <br />Cart</th>
+            <th>Material #</th>
+            <th>Product Description</th>
+            <th>Line Item Type</th>
+            <th>Term Length <br />(New and Renewal)</th>
+            <th>Quantity </th>
+            <th>Monthly Charges</th>
+            <th>Discount<br />(%)</th>
+            <th>Net Monthly Charges</th>
+            <th>Active Promotions</th>
+         </tr>
+        <apex:repeat value="{!LineItems}" var="lineItem" >
+            <tr>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__LineStatus__c}" /></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__ProductId__r.ProductCode}" rendered="{!IF(lineItem.Apttus_Config2__LineType__c = 'Product/Service',true,false)}"/>
+                <apex:outputField value="{!lineItem.Apttus_Config2__OptionId__r.ProductCode}" rendered="{!IF(lineItem.Apttus_Config2__LineType__c = 'Option',true,false)}"/></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__ProductId__r.Name}" rendered="{!IF(lineItem.Apttus_Config2__LineType__c = 'Product/Service',true,false)}"/> 
+                <apex:outputField value="{!lineItem.Apttus_Config2__OptionId__r.Name}" rendered="{!IF(lineItem.Apttus_Config2__LineType__c = 'Option',true,false)}"/></td>                
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__ChargeType__c}" /></td>               
+                <td><apex:outputField value="{!lineItem.APTS_Contract_Term__c}" /></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__Quantity__c}" /></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__ExtendedPrice__c}" /></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__AdjustmentAmount__c}" /></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__NetPrice__c}" /></td>
+                <td><apex:outputField value="{!lineItem.Apttus_Config2__IncentiveCode__c}" /></td>
+            </tr>
+        </apex:repeat>
+    </table>
+    <br/>
+   
+    <apex:outputPanel rendered="{!NOT(IsStatusCancelled)}" >  
+        <div style="background-color:white;color:white;"><apex:outputText value="{!$Label.apttus_approval__approvalrequestid & ': '}" /><apex:outputField value="{!requestSO.Id}" /></div>
+        <div style="background-color:white;color:white;"><apex:outputText style="font-color:#FFFFFF;" value="{!$Label.apttus_approval__approvaluserid & ': '}" /><apex:outputField value="{!recipientSO.Id}" /></div>
+        
+    </apex:outputPanel>
+    
+    <!--<apex:outputText value="{!QuoteLinkInstruction}" />
+    <br/>
+    <apex:outputLink value="{!QuotePageUrl}">{!requestSO.Apttus_QPApprov__ProposalId__r.Name}</apex:outputLink>
+    <br/>
+    <br/>-->
+    
+    
+    <apex:outputPanel rendered="{!NOT(IsStatusCancelled)}" >    
+        <apex:outputText value="Other Approval Requests:" />
+        <br/>
+        <br/>
+        <table border="1">
+            <tr>
+                <th><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__Step_Name__c.Label}"/></th>
+                <th><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__Approval_Status__c.Label}"/></th>
+                <th><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__Date__c.Label}"/></th>
+                <th><apex:outputText value="{!$Label.apttus_approval__assignedto}"/></th>
+                <th><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__DependsOn__c.Label}"/></th>
+                <th><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__Actual_Approver__c.Label}"/></th>
+                <th><apex:outputText value="{!$ObjectType.Apttus_Approval__Approval_Request__c.Fields.Apttus_Approval__Approver_Comments__c.Label}"/></th>
+                
+            </tr>
+            <apex:repeat value="{!ApprovalHistory}" var="history" >
+                <tr>
+                    <td><apex:outputField value="{!history.Apttus_Approval__Step_Name__c}" /></td>
+                    <td><apex:outputField value="{!history.Apttus_Approval__Approval_Status__c}" /></td>
+                    <td><apex:outputField value="{!history.Apttus_Approval__Date__c}" /></td>
+                    <td><apex:outputField value="{!history.Apttus_Approval__Assigned_To_Name__c}" /></td>
+                    <td><apex:outputField value="{!history.Apttus_Approval__DependsOn__c}" /></td>
+                    <td><apex:outputField value="{!history.Apttus_Approval__Actual_Approver__c}" /></td>
+                    <td><apex:outputField value="{!history.Apttus_Approval__Approver_Comments__c}" /></td>
+                    
+                </tr>
+            </apex:repeat>
+        </table>
+    </apex:outputPanel> 
+    
+</apex:component>

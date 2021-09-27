@@ -1,0 +1,19 @@
+<apex:page standardController="MaritzCX__Invitation_File_Setting__c" extensions="MaritzCX.InvitationFileDetailsController" lightningStylesheets="true">
+    <apex:pageBlock >
+        <apex:pageBlockSection title="Survey Attributes" columns="1">
+            <apex:pageBlockTable var="attribute" value="{!SURVEY_ATTRIBUTES}" width="100%">
+                <apex:column value="{!LABEL_MAP[attribute]}" headerValue="Attribute"/>
+                <apex:column value="{!surveyAttributes[attribute]}" headerValue="Mapped Field"/>
+                <apex:column value="{!attributeValidity[attribute]}" headerValue="Valid"/>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+
+        <apex:pageBlockSection title="Pre-populated Questions" columns="1">
+            <apex:pageBlockTable var="prepopEntry" value="{!prepopMappings}" width="100%">
+                <apex:column value="{!prepopEntry.ScaleId}" headerValue="Scale Id"/>
+                <apex:column value="{!prepopEntry.SFField}" headerValue="Mapped Field"/>
+                <apex:column value="{!prepopValidity[prepopEntry.ScaleId]}" headerValue="Valid"/>
+            </apex:pageBlockTable>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:page>

@@ -1,0 +1,326 @@
+<!--
+============================================================================================== 
+PAGE FOR DISPLAYING NOTIFICATIONS TO NOTICE RECIPIENTS IN A NARROW FORM FACTOR 
+(E.G., AS A SIDEBAR COMPONENT) WITH AUTOMATED / SLIDER NOTIFICATION ANIMATION
+NO PARAMETERS REQUIRED, HOWEVER:
+
+- TO FILTER TO SHOWING ONLY NOTICES FROM A PARTICULAR NOTICEBOARD, PASS ITS ID, IE:
+NBID=[Id of the NoticeBoard record]
+
+- TO SUPRESS SF HEADER/SIDEBAR (USEFUL FOR VIEWING / RECIPIENT VIEW WHEN USED IN COMMUNITIES)
+HideHeader=true
+
+NB: TargetNewTab IS IGNORED / NOTIFICATIONS ALWAYS OPEN IN NEW TABS.
+
+Martin Little for Improved Apps
+Copyright (c.) Improved Apps Limited 2015. All Rights Reserved.
+============================================================================================== 
+ -->
+
+<apex:page controller="ianb.ControllerNoticeBoard" showheader="false" sidebar="false" standardstylesheets="false"
+    title="{!BrandingLocalisations['ProductName']}">
+
+    <head>
+        <apex:stylesheet value="{!BannerSettings.ianb__BrandCSS__c}"/> 
+        <apex:stylesheet value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/css/noticeboard_banner.css')}"/>
+         
+        <apex:includeScript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/lib/jquery-3.5.1.min.js')}"/> 
+
+        <style>
+            @import url({!IF(BannerSettings.PrimaryFontURL__c != '' && BannerSettings.PrimaryFontURL__c != null, BannerSettings.PrimaryFontURL__c, '')});        
+        
+            body                                {font-size: 75%;}
+            body *                              {font-family: {!IF(BannerSettings.PrimaryFontFamily__c != '' && BannerSettings.PrimaryFontFamily__c != null, BannerSettings.PrimaryFontFamily__c, 'Arial,Helvetica,sans-serif')} !important;}
+
+            #BannerSidebar                      {margin: 0px; padding: 0px; width: 100%; overflow: hidden; border-radius: 5px;}
+            #ListContainer                      {margin: 0; padding: 0; height: 80px; width: Calc(100% - 2px); border-top: 0; border-bottom: 0; border-left: 1px solid silver; border-right: 1px solid silver;}
+            #NotificationList                   {overflow: hidden; padding-top: 5px;}
+            #NotificationList ul                {list-style: none; width: 100%; min-width: 198px; margin: 0; padding: 0; position: relative;}         
+            #NotificationList li                {width: 100%; float: left; text-align: center; position: relative;}     
+            .ListItemRow                        {padding: 0 5px 5px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+            div#ListNav                         {padding: 0; font-weight: bold; color: white; font-size: 12px;}
+            div#BannerNav                       {margin: 0; padding: 0;}
+            div#BannerNav a                     {color: white;}            
+            .banner-title                       {margin-left: 4px; max-width: 58%; float: left; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;}
+            .banner-counters                    {margin-right: 4px; max-width: 36%; float: right;}            
+        </style>
+    </head>
+    
+    <body>      
+
+<!--   
+===============================================
+BANNER SPECIFIC CONTAINER STYLING
+===============================================
+ -->            
+        <div id="BannerSidebar" class="NB_{!IF(NoticeBoardId != '', NoticeBoardId, 'Default')}">
+        
+<!--   
+===============================================
+IF THERE ARE NOTIFICATIONS, RECORD THE FACT
+THAT THESE HAVE BEEN SHOWN TO USER IN BANNER
+===============================================
+ -->                
+            <apex:include pageName="ianb__nb_bannerSupport"/>
+
+            <apex:form >
+                <apex:outputPanel id="divResult" />
+                <apex:actionFunction name="setDisplayedStatus" action="{!SetDisplayedStatus}" rerender="divResult" />
+                
+                <apex:actionFunction name="SetOpenedStatus" action="{!SetOpenedStatus}" rerender="divResult" oncomplete="window.location.reload(true);">
+                    <apex:param assignTo="{!OpenedNotifId}" name="ONID" value=""  />
+                </apex:actionFunction>
+            </apex:form>
+        
+<!--   
+===============================================
+TITLE CONTAINER
+===============================================
+ -->            
+            <div id="banner-icon" class="BannerTitleContainer" style="background-color: #{!IF(BannerSettings.BannerTitleAreaColour__c != '', BannerSettings.BannerTitleAreaColour__c, 'ff0000')}; height: 16px; padding: 5px 3px 3px 1px; width: 100%; border-radius: 5px 5px 0px 0px; ">
+
+<!--   
+===============================================
+TITLE LINK
+===============================================
+ -->
+                <div class="banner-title">
+
+                    <a class="BannerTitleLink" title="{!DialogueLocalisations['TipTitleLink']}" 
+                        href="javascript:gotoURL('', 
+                                'BANNERLINK', 
+                                '{!URLENCODE(IF(BannerSettings.NotificationBannerTitleLink__c == null, URLFOR($Action.Notification__c.Tab, $ObjectType.Notification__c),BannerSettings.NotificationBannerTitleLink__c))}', 
+                                null, 
+                                null);">
+
+                        {!BannerTitle}
+                    </a>&nbsp;
+                </div>
+
+                <div class="banner-counters">
+                    <div style="display: {!IF(NOT(HasRecipients), 'none', 'inline')};">
+                        <span id="NotificationNum">1</span> {!DialogueLocalisations['AdviceLabelXofY']}                         
+                    </div>
+        
+                    <div style="display: {!IF(NOT(HasRecipients), 'inline', 'none')};">
+                    </div>
+    
+<!--   
+===============================================
+COUNTER LINK - Default
+===============================================
+ -->                                
+                    <apex:outputPanel rendered="{!BannerSettings.ianb__NotificationBannerCounterLink__c == null}" title="{!DialogueLocalisations['TipCounterLink']}">
+                        <a href="javascript:gotoURL('', 
+                                    'BANNERLINK', 
+                                    '{!URLFOR($Page.NoticeBoardDefaultListView)}', 
+                                    null, 
+                                    null);">
+                            {!TEXT(PendingNotices)}
+                        </a>     
+                    </apex:outputPanel>                        
+    
+<!--   
+===============================================
+COUNTER LINK - If defined in settings
+===============================================
+ -->  
+                    <apex:outputPanel rendered="{!NOT(BannerSettings.ianb__NotificationBannerCounterLink__c == null)}" title="{!DialogueLocalisations['TipCounterLink']}">
+                        <a href="javascript:gotoURL('', 
+                                    'BANNERLINK', 
+                                    '{!BannerSettings.NotificationBannerCounterLink__c}', 
+                                    null, 
+                                    null);">
+                            {!TEXT(PendingNotices)}
+                        </a>     
+                    </apex:outputPanel>
+                </div>                   
+ 
+            </div>
+
+<!--   
+===============================================
+LIST CONTAINER
+===============================================
+ -->            
+            <div id="ListContainer">
+                <div id="NotificationList">
+                
+<!--   
+===============================================
+NOTIFICATIONS LISTING - when there are no Notifications
+===============================================
+ -->            
+                    <div style="display: {!IF(NOT(HasRecipients), 'block', 'none')}; padding: 5px; text-align: center;">
+                        <span class="no-notifications">
+                            {!DialogueLocalisations['AdviceLabelNoNotifications']}
+                        </span>
+                    </div>      
+
+<!--   
+===============================================
+NOTIFICATIONS LISTING - when Notifications exist
+===============================================
+ -->            
+                    <ul>
+                        <apex:repeat value="{!Recipients}" var="rec">
+
+                            <li class="slide">
+                                <div class="ListItem{!IF(rec.CustomStyle != null, ' ' + rec.CustomStyle, '')}" >              
+                                    
+                                    <!-- 
+                                    1.16: new Goto URL function makes tab targeting decisions based on page parameters, required action & environment
+                                    -->
+                                    
+                                    <a class="ListItemLink" 
+                                            href="javascript:gotoURL('{!rec.Id}', 
+                                                '{!rec.NoticeRequiredAction}', 
+                                                '{!IF(rec.NoticeRequiredAction == 'Visit URL' || rec.NoticeRequiredAction == 'Click to Dismiss', JSENCODE(rec.NoticeDetail), '')}', 
+                                                {!hideHeader}, 
+                                                true);"
+                                                
+                                            title="{!DialogueLocalisations['TipButtonOpen']} {!rec.Title} - {!rec.RequiredAction}">
+
+                                        <!-- 1.10: only show the "From" field where a recipient has been supplied -->
+                                        <div class="ListItemRow NotifFrom" style="display: {!IF(rec.From !='' && rec.From != null, 'block', 'none')}; color: #333; font-style: italic; font-weight: bold;">
+                                            {!DialogueLocalisations['AdviceLabelFrom']}:&nbsp;{!rec.From}
+                                        </div>
+                                        
+                                        <div class="ListItemRow NotifTitle" style="color: #004080; font-weight: bold;">
+                                            {!rec.Title}
+                                        </div>
+                                        <div class="ListItemRow NotifBAM" style="color: red; font-weight: bold;">
+                                            {!rec.RequiredAction}
+                                        </div>
+                                        <div class="ListItemRow NotifRAD" style="display: {!IF(ISNULL(rec.FormattedRequiredActionDeadline),'none', 'block')}; color: red; font-style: italic; font-weight: bold;">
+                                            {!IF(ISNULL(rec.FormattedRequiredActionDeadline), '', IF(ISNULL(rec.RequiredAction), rec.FormattedRequiredActionDeadline, ' ' + DialogueLocalisations['AdviceLabelBy'] + ': ' + rec.FormattedRequiredActionDeadline))}
+                                        </div>
+                                    </a>
+                                
+                                </div>                          
+                            </li>                       
+                        </apex:repeat>
+                        
+                  </ul>           
+                </div>
+            </div>     
+                       
+<!--   
+===============================================
+NEXT / PREVIOUS BUTTONS
+===============================================
+ -->                            
+            <div id="ListNav" style="background-color: #{!IF(BannerSettings.BannerTitleAreaColour__c != '', BannerSettings.BannerTitleAreaColour__c, 'ff0000')}; height: 16px; padding: 5px 0; border-radius: 0 0 5px 5px;">               
+                            
+                <div id="BannerNav" style="display: {!IF(Recipients.size > 1, 'block', 'none')};">
+                    <div style="float: left; cursor: pointer; margin-left: 10px;"  title="{!DialogueLocalisations['TipButtonPrevious']}" onclick="javascript:manualSlide('prev', 200);">&larr; {!JSENCODE(DialogueLocalisations['ButtonPrevious'])}</div>
+                    <div style="float: right; cursor: pointer; margin-right: 10px;" title="{!DialogueLocalisations['TipButtonNext']}" onclick="javascript:manualSlide('next', 200);">{!JSENCODE(DialogueLocalisations['ButtonNext'])} &rarr;</div>
+                </div>
+            </div>
+                        
+        </div>
+        
+        <script>
+            var notnum = 1;
+            var navInterval = 5000;             
+            var slides;
+            var container;
+            var elm;
+            var item_width;
+            var run;
+            
+            $(document).ready(function () {
+                
+                slides = $('.slide');
+                container = $('#NotificationList ul')
+                elm = container.find(':first-child').prop("tagName");
+                item_width = container.width();             
+                slides.width(item_width);
+                container.parent().width(item_width);
+                container.width(slides.length * item_width); //set the slides container to the correct total width
+                container.find(elm + ':first').before(container.find(elm + ':last'));
+                
+                // Only animate if there is more than 1 notification
+                if (slides.length > 1) {
+                    run = setInterval(rotate, navInterval);
+                    resetSlides();
+                }
+                
+                
+                // On mouse hover, pause the auto rotation
+                container.parent().mouseenter(function () {
+                    clearInterval(run);
+                }).mouseleave(function () {
+                    if (slides.length > 1) {
+                        run = setInterval(rotate, navInterval);
+                    }
+                });
+
+            });
+
+
+            // Click "next" button (on timer) to carousel through slides            
+            function rotate() {
+                showSlide ('next', 1500);
+            }
+
+            
+            // On user navigation, show slide just as when carouselling, but faster
+            function manualSlide (direction, navSpeed) {
+                // If user interacts with buttons, prevent further automated navs
+                clearInterval(run);
+                showSlide (direction, navSpeed);
+            }
+
+            
+            // Move carousel to next / previous slide
+            function showSlide (direction, navSpeed) {
+            
+                if (container.is(':animated')) {
+                    return false;
+                }
+                                
+                if (direction == 'prev') {
+                    container.stop().animate({
+                        'left': 0
+                    }, navSpeed, function () {
+                        container.find(elm + ':first').before(container.find(elm + ':last'));
+                        resetSlides();
+                    });
+                    
+                    notnum -=1;
+                    if (notnum == 0) {notnum = slides.length;}
+                }
+                
+                if (direction == 'next') {
+                
+                    container.stop().animate({
+                        'left': (item_width * -2)
+                    }, navSpeed, function () {
+                        container.find(elm + ':last').after(container.find(elm + ':first'));
+                        resetSlides();
+                    });
+
+                    notnum +=1;
+                    if (notnum > slides.length) {notnum = 1;}
+                }
+                
+                
+                // Update selected notification number
+                $('#NotificationNum').html(notnum);
+                
+                //cancel the link behavior            
+                return false;                   
+            }
+
+
+            function resetSlides() {
+                container.css({
+                    'left': -1 * item_width
+                });
+            }
+
+        </script>
+    
+    </body>
+</apex:page>

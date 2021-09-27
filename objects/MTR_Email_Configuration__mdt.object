@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This custom metadata will be used to hold the email functionality related details for business units</description>
+    <fields>
+        <fullName>Business_Unit__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Business Unit</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>RISK</fullName>
+                    <default>true</default>
+                    <label>RISK</label>
+                </value>
+                <value>
+                    <fullName>TAX</fullName>
+                    <default>false</default>
+                    <label>TAX</label>
+                </value>
+                <value>
+                    <fullName>USL</fullName>
+                    <default>false</default>
+                    <label>USL</label>
+                </value>
+                <value>
+                    <fullName>UKI</fullName>
+                    <default>false</default>
+                    <label>UKI</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Email_Template__c</fullName>
+        <description>It stores the email template developer name</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Email Template</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>From_Address__c</fullName>
+        <description>It stores the OrgWideEmailAddress&apos;s DisplayName</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>From Address</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Language__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Language</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>en-gb</fullName>
+                    <default>false</default>
+                    <label>en-gb</label>
+                </value>
+                <value>
+                    <fullName>English</fullName>
+                    <default>true</default>
+                    <label>English</label>
+                </value>
+                <value>
+                    <fullName>en-us</fullName>
+                    <default>false</default>
+                    <label>en-us</label>
+                </value>
+                <value>
+                    <fullName>fr-ca</fullName>
+                    <default>false</default>
+                    <label>fr-ca</label>
+                </value>
+                <value>
+                    <fullName>French</fullName>
+                    <default>false</default>
+                    <label>French</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Product_Query__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This is based on MyTR_Category from case object.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Product Query</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Product_Title__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Product Title</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ODEN</fullName>
+                    <default>true</default>
+                    <label>ODEN</label>
+                </value>
+                <value>
+                    <fullName>Compliance Learning</fullName>
+                    <default>false</default>
+                    <label>Compliance Learning</label>
+                </value>
+                <value>
+                    <fullName>Regulatory Intelligence</fullName>
+                    <default>false</default>
+                    <label>Regulatory Intelligence</label>
+                </value>
+                <value>
+                    <fullName>RI Feeds</fullName>
+                    <default>false</default>
+                    <label>RI Feeds</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Region__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Region</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>CANADA</fullName>
+                    <default>true</default>
+                    <label>CANADA</label>
+                </value>
+                <value>
+                    <fullName>UKI</fullName>
+                    <default>false</default>
+                    <label>UKI</label>
+                </value>
+                <value>
+                    <fullName>US</fullName>
+                    <default>false</default>
+                    <label>US</label>
+                </value>
+                <value>
+                    <fullName>USL</fullName>
+                    <default>false</default>
+                    <label>USL</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ReplyTo_Address__c</fullName>
+        <description>It stores the OrgWideEmailAddress&apos;s DisplayName</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>ReplyTo Address</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Segment__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Segment</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Professional Tax</fullName>
+                    <default>true</default>
+                    <label>Professional Tax</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Send_Email__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Send Email</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Source__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Source</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>My TR</fullName>
+                    <default>true</default>
+                    <label>My TR</label>
+                </value>
+                <value>
+                    <fullName>UE Account</fullName>
+                    <default>false</default>
+                    <label>UE Account</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>MTR Email Configuration</label>
+    <listViews>
+        <fullName>MTR_Email</fullName>
+        <columns>MasterLabel</columns>
+        <columns>Business_Unit__c</columns>
+        <columns>Email_Template__c</columns>
+        <columns>From_Address__c</columns>
+        <columns>Product_Query__c</columns>
+        <columns>Product_Title__c</columns>
+        <columns>ReplyTo_Address__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>MTR Email</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>MTR Email Configurations</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

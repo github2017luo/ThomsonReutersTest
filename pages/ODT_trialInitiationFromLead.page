@@ -1,0 +1,67 @@
+<!-- ============================================================================================
+    Name                : ODT_trialInitiationFromLead
+    Description         : This page is developed as part of CXD-ODT project :DLT-12949
+                          This page is embedded as inline VF page on Lead record detail page to display related Trial details and also to initiate new trial
+    Created Date        : 10/10/2018
+    Author              : Harshitha KN
+    Modification History:
+    Date           Name                    Description
+    10/10/2018     Harshitha KN            Created
+    2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+    10/16/2020      Srinivasulu             DLT-20857: Added Additional Fields to display (Total Hours, Total Previous hours and Transactions)
+==============================================================================================*/ -->
+
+<apex:page standardController="Lead" extensions="ODT_TrialInitiationFromLeadController" lightningStylesheets="true">
+    <apex:form id="trials">
+        <apex:pageBlock title="On Demand Trials">
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:pageBlockTable value="{!trialList}" var="t" rendered="{!(trialList.size>0)}">
+                    <apex:column headerValue="Trial Name">
+                        <apex:outputLink value="/{!t.trial__r.id}" target="_blank">{!t.Trial__r.name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Trial ID" value="{!t.trial__r.Trial_Id__c}"></apex:column>
+                    <apex:column headerValue="Trial Start Date" value="{!t.trial__r.Trial_Start_Date__c}" />
+                    <apex:column headerValue="Trial End Date" value="{!t.trial__r.Trial_End_Date__c}" />
+                    <apex:column headerValue="Trial Status" value="{!t.trial__r.Trial_Status__c}" />
+                    <apex:column headerValue="Total Hours" value="{!t.Trial__r.Total_Hours__c}" />
+                    <apex:column headerValue="Total Hours Previous Day" value="{!t.Trial__r.Total_Hours_Previous_Day__c}" />
+                    <apex:column headerValue="Transactions\Views" value="{!t.Trial__r.Transactions_Views__c }" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="New Trial" rendered="{!checkvisibility}" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    </apex:form>
+
+    <script>
+        window.onload = function () {
+            callTrials();
+        };
+    </script>
+
+    <apex:actionStatus id="loadTrials">
+        <apex:facet name="start">
+            <div id="loadingDiv" />
+        </apex:facet>
+    </apex:actionStatus>
+
+    <apex:form >
+        <apex:actionFunction action="{!fetchTrialDetails}" reRender="trials" id="loadTrialsFromJS" name="callTrials" status="loadTrials" />
+    </apex:form>
+
+    <style>
+        #loadingDiv {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666;
+            background: url({!URLFOR($Resource.ODTLoaderGIF)}) 50% 50% no-repeat #666;
+            z-index: 99999;
+            opacity: 0.4; /* You can adjust the opacity */
+            filter: alpha(opacity=40); /* For IE8 and earlier */
+        }
+    </style>
+</apex:page>

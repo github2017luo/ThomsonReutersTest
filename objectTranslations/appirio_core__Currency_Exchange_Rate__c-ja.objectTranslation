@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>為替レート</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>このルックアップは、日付の為替レートが適用される通貨レコードを参照します。利率は常に、指定された発効日に、参照通貨のどれだけが企業通貨の1単位に等しいかとして定義されます。</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>日付の為替レートがより広い日付範囲で使用されている場合でも、実際に適用される日付。通貨換算では、常に将来にはない最新のレート（つまり、今日またはそれ以前）が検索されます。</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>この為替レートが期限切れになる日付があれば、それを指定します。為替レートは有効期限の前日まで有効です。空白の場合は期限切れになりません。</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>チェックすると、この通貨為替レートレコードはテストモードでのみ使用され、 &apos;実際の&apos;（生産）為替レート変換には使用されません。</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>チェックした場合、この通貨為替レートレコードが無効であり使用されないことを示します</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>通貨の後続の為替レートの有効日がある場合はその有効日を定義します。最新の料金の場合は空白になります。この項目はシステムによって自動的に設定されます。</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>組織の参照通貨と企業通貨との間の日付の為替レートの数値を定義します。</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <nameFieldLabel>通貨為替レート番号</nameFieldLabel>
+</CustomObjectTranslation>

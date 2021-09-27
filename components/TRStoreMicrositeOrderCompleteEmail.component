@@ -1,0 +1,232 @@
+<apex:component controller="TRStoreMicrositeOrderCompleteEmailCon" access="global">
+   
+   <apex:attribute type="id" name="leadIdVal" assignTo="{!leadId}" description="This is the Id for lead record and based on Lead id we will get Product configuration record and will display details " />
+   
+   
+   
+       
+       <html lang="en">
+            <head>
+              
+              
+            <style type="text/css">
+            @font-face {
+              font-family: "knowledge";
+              src: local("☺"), local("Knowledge Light"), url("https://store-tr-ca-qa-ams.ewp.thomsonreuters.com/etc/cxd-ecomm/clientlibs/fonts/knowledge2017-light-webfont.woff2") format("woff2"), url("https://store-tr-ca-qa-ams.ewp.thomsonreuters.com//etc/cxd-ecomm/clientlibs/fonts/knowledge2017-light-webfont.woff2") format("woff");
+              }
+              .emailbody {
+                  margin-left:200px;
+                  margin-top:20px;
+                  font-family:knowledge;
+              }
+            
+              .thankyoutitle {
+                  margin-top:20px;
+                  margin-left:0px;
+                  text-align: left;
+              }
+              
+              .orderbody, .lineitemlist{
+                 list-style-type:none;
+                 display:inline-block;
+                 margin-left:0px;
+                 width:80%;
+                 line-height: 25px;
+                 font-size: 14px;
+              }
+               
+              .lineitem {
+                width: 51%;
+                font-weight: 900;
+                line-height: 25px;
+              }
+              
+              .price {
+                margin-top:2px;
+                line-height:5px;
+               
+              }
+            </style>
+            </head>
+            <body class="emailbody">
+            <header>
+            <div>
+            <!--<img src="https://store-tr-ca-qa-ams.ewp.thomsonreuters.com/content/dam/cxd-ecomm/en-us/assets/images/header_logo.png" border="0" alt="Tr_Logo"/>-->
+            <img src="{!URLFOR($Resource.TRStoreLogo)}" border="0" alt="Tr_Logo"/>
+            </div>
+            </header>
+            
+            <section>
+            
+            <div style="margin-top:30px;">
+                <apex:outputText rendered="{!OR(leadrecord.Lead_Microsite__c == 'PWC', leadrecord.Lead_Microsite__c == 'Deloitte')}">
+                    Email Approval - Users can directly provide approval or rejection by replying to the email they receive. The reply should have the correct message "Approve" or "Reject". If there are any typos, then the change will not happen in SFDC and the users will receive an email again to correct it.
+                </apex:outputText>    
+            </div>
+            
+            <div>
+            <h2 class="thankyoutitle"><strong>Trstore order details</strong></h2>
+            
+            <div class="orderbody">
+            
+            <h3>Requester Information:</h3>
+            <strong>  {!leadrecord.FirstName} {!leadrecord.LastName} </strong><br/>
+            {!leadrecord.Job_Function__c} <br/>
+             
+             <h3> Email Address </h3> 
+             {!leadrecord.email} <br/><br/>
+             
+             <apex:outputText rendered="{!NOT(ISNULL(leadrecord.MobilePhone))}">
+                 <h3> Phone Number </h3> 
+                 {!leadrecord.MobilePhone} <br></br>
+             </apex:outputText> 
+             
+             
+             <h3> Company Name </h3>
+             {!leadrecord.company} <br/> 
+            
+            <apex:outputText rendered="{!leadrecord.Lead_Microsite__c== 'Triform'}">
+                 <h3>Carswell Account Number:</h3>
+                 {!leadrecord.SAPAccountNumber__c }
+            </apex:outputText> &nbsp;
+            
+            
+            
+            <h3>Shipping Address:</h3>
+             <!--{!leadrecord.Billing_Street__c},<br/>
+            {!leadrecord.Billing_City__c},<br/>
+            {!leadrecord.Billing_State__c},{!leadrecord.Billing_Country__c},{!leadrecord.Billing_Zip__c}<br/>-->
+            
+            {!leadrecord.street},<br/>
+            {!leadrecord.city},<br/>
+            {!leadrecord.state},{!leadrecord.country},{!leadrecord.postalcode}<br/>
+            <apex:outputText rendered="{!NOT(ISNULL(leadrecord.Shipping_Phone__c))}">
+                {!leadrecord.Shipping_Phone__c}<br/>
+            </apex:outputText> 
+            
+            
+            <!--Payment Method: {!relatedto.Apttus_QPConfig__ProposalId__r.APTS_Payment_Option__c}<br/>-->
+            <h3>Payment:</h3>
+            <apex:outputText value="Charge code :" rendered="{!OR(leadrecord.Lead_Microsite__c== 'PWC', leadrecord.Lead_Microsite__c== 'Deloitte')}"></apex:outputText>  
+            <apex:outputText value="Purchase order number :" rendered="{!AND(leadrecord.Lead_Microsite__c== 'Triform', leadrecord.TRStore_Payment_Method__c !='Credit Card')}"></apex:outputText> &nbsp;
+            <apex:outputText value="{!leadrecord.TRStore_ChargeCode__c}" rendered="{!AND(OR(leadrecord.Lead_Microsite__c== 'Triform', leadrecord.Lead_Microsite__c== 'PWC' , leadrecord.Lead_Microsite__c== 'Deloitte' ), leadrecord.TRStore_Payment_Method__c !='Credit Card')}"></apex:outputText> &nbsp; 
+           
+            <apex:outputText value="Payment method: " rendered="{!AND(leadrecord.Lead_Microsite__c== 'Triform', leadrecord.TRStore_Payment_Method__c =='Credit Card')}"></apex:outputText> &nbsp;
+            <apex:outputText value="{!leadrecord.TRStore_Payment_Method__c}" rendered="{!AND(leadrecord.Lead_Microsite__c== 'Triform', leadrecord.TRStore_Payment_Method__c =='Credit Card')}"></apex:outputText>  <br/><br/><br/>
+              
+            
+            Total Amount:  
+            <apex:outputText rendered="{!NOT(ISNULL(pc.Rollup_Net_Price__c))}">
+                                    $ {!Round(pc.Rollup_Net_Price__c,2)}
+                   <!--- <apex:outputText value="{0,number, ###,###.##}">
+                        <apex:param value="{!pc.Rollup_Net_Price__c}"/>
+                    </apex:outputText> --->
+            </apex:outputText> 
+            
+            </div>
+            
+            <table cellpadding="5" style="border-collapse: collapse" width="860" border="1" styleclass="lineitemlist">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Net Price</th>
+                            <th>Product Code</th>
+                        </tr>  
+                     <apex:repeat var="oli" value="{!pc.Apttus_Config2__LineItems__r}">
+                        <tr>
+                            <td class="lineitem">{!oli.APTS_Product_Name__c}</td>
+                            <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(oli.Apttus_Config2__Quantity__c))}">
+                                   
+                                        <apex:outputText value="{0,number, ###,###}">
+                                            <apex:param value="{!oli.Apttus_Config2__Quantity__c}"/>
+                                        </apex:outputText>
+                                </apex:outputText>  
+                            </td>
+                            <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(oli.Apttus_Config2__NetPrice__c))}">
+                                    $  {!Round(oli.Apttus_Config2__NetPrice__c ,2)}
+                                     <!---   <apex:outputText value="{0,number, ###,###.##}">
+                                                <apex:param value="{!oli.Apttus_Config2__NetPrice__c}"/>
+                                            </apex:outputText> --->
+                                </apex:outputText>  
+                                
+                            
+                             </td>
+                            <td>{!oli.APTS_Product_Code__c }</td>
+                            
+                        </tr>
+                     </apex:repeat>   
+            </table>
+            
+            
+            <apex:outputPanel rendered="{!onlineContact.size!=0}">
+            <div class="orderbody">
+                <h3>Proview User Information: </h3>
+            </div>
+            <table cellpadding="5" style="border-collapse: collapse" width="860" border="1" styleclass="lineitemlist" >
+                        <tr>
+                            <th>User Type</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Title</th>
+                            <th>Jurisdiction</th>
+                            <th>Email</th>
+                        </tr>  
+                     <apex:repeat var="olc" value="{!onlineContact}" rendered="{!NOT(ISNULL(onlineContact))}">
+                      
+                        <tr>
+                            
+                            <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(olc.Type__c))}">
+                                   {!(olc.Type__c)}
+                                </apex:outputText>  
+                             </td>
+                             <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(olc.First_Name__c))}">
+                                   {!(olc.First_Name__c)}
+                                </apex:outputText>  
+                             </td>
+                             <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(olc.Last_Name__c))}">
+                                   {!(olc.Last_Name__c)}
+                                </apex:outputText>  
+                             </td>
+                             <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(olc.Position__c))}">
+                                   {!(olc.Position__c)}
+                                </apex:outputText>  
+                             </td>
+                             <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(olc.WLEc_Juris__c))}">
+                                   {!(olc.WLEc_Juris__c)}
+                                </apex:outputText>  
+                             </td>
+                             <td>
+                                <apex:outputText rendered="{!NOT(ISNULL(olc.Email__c))}">
+                                   {!(olc.Email__c)}
+                                </apex:outputText>  
+                             </td>
+                        </tr>
+                     </apex:repeat>   
+            </table>
+            </apex:outputPanel>
+            </div> 
+            </section>
+            
+            <div style="margin-top:30px;">
+                    <apex:outputText rendered="{!NOT(ISNULL(leadrecord.Microsite_Approvals_History__c))}">
+                       <b> <apex:outputText value="Approvals History: "></apex:outputText></b>
+                       <apex:outputText value="{!leadrecord.Microsite_Approvals_History__c}"></apex:outputText>
+                    </apex:outputText>
+                
+            
+            </div>
+            
+            
+            </body>
+            </html>
+
+    
+   
+</apex:component>

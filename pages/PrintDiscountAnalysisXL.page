@@ -1,0 +1,89 @@
+<!--
+
+Name           Description                                                                                              Date
+Samarpreet Singh      JIRA NO: Enabling Lightning as part of Sales Lightning Project..added lightning stylesheet               14-Feb-2019
+-->
+
+<apex:page standardController="Account" extensions="PrintDiscountAnalysisController" sidebar="false" showHeader="flase" lightningStylesheets="true" 
+    standardStyleSheets="false" cache="true" contentType="application/vnd.ms-excel#PDA_export.xls">
+   <apex:form >
+   
+    <html>
+        <head>
+            <h1 align="center"  style="text-align:center;font-size:20px">Print Discount Analysis</h1>
+            <h2 align="center" style="text-align:center;font-size:16px">(to be used in conjunction with a WestPack/PPL Proposal)</h2>
+        </head>
+               
+        <p style="text-align:left;font-size:14px">
+        <b><apex:outputField value="{!oAccount.SAPAccountNumber__c}" /></b><br></br>
+        <b><apex:outputField value="{!oAccount.Name}" /></b><br></br>
+        <b><apex:outputField value="{!oAccount.BillingStreet }" /></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_2__c}" /></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_3__c}" /></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_4__c}"/></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_5__c}" /></b><br></br>
+        <b><apex:outputField value="{!oAccount.BillingCity}"  /></b>
+        <b><apex:outputField value="{!oAccount.BillingState}" /></b>
+        <b><apex:outputField value="{!oAccount.BillingPostalCode}" /></b></p><br/>
+        
+        <table>
+        <tr><td><apex:outputLabel value="Main Phone" style="font-size:14px" /></td>
+        <td><apex:outputText value="{!oAccount.Phone}" style="font-size:14px"/></td></tr>
+         
+        <tr><td><apex:outputLabel value="Alternate Phone" style="font-size:14px" /></td>
+        <td><apex:outputText value="{!oAccount.PhoneNumberTwo__c}" style="font-size:14px"/></td></tr> 
+        
+        <tr><td><apex:outputLabel value="Fax" style="font-size:14px" /></td>
+        <td><apex:outputText value="{!oAccount.Fax}" style="font-size:14px"/></td></tr> 
+        </table><br/>
+        
+
+         <apex:pageBlock >
+             <b><apex:outputLabel value="Print Discount Estimation" style="font-size:14px" /></b>
+            <apex:pageBlockSection title="Print Discount Estimation" showHeader="false">
+            <apex:pageBlockTable value="{!listSelectedVal}" var="PDASubItem" align="left" cellspacing="8" style="font-size:14px;">
+                   
+                    <apex:column headerValue="SAP Acc #" value="{!oAccount.SAPAccountNumber__c}" style=" border:1px solid black;"/>
+                    <apex:column headerValue="Material #" value="{!PDASubItem.oSubItem.MaterialNumber}" style=" border:1px solid black;"/>
+                    <apex:column headerValue="Description" value="{!PDASubItem.oSubItem.MaterialDesc}" style=" border:1px solid black;"/>
+                    <apex:column headerValue="Qty" value="{!PDASubItem.oSubItem.Quantity}" style=" border:1px solid black;"/>
+                    <apex:column headerValue="*General Estimated Unit Upkeep" value="${!PDASubItem.oSubItem.EstimatedUnitUpKeep}" style=" border:1px solid black;"/>
+                    <apex:column headerValue="Total Estimated UpKeep"  style=" border:1px solid black;"><apex:outputText value="${!PDASubItem.oPdaLineItem.EstimatedUpKeep}"/></apex:column>
+                    <apex:column headerValue="{!HeaderVal}"  style=" border:1px solid black;"><apex:outputText value="${!PDASubItem.oPdaLineItem.DiscountPerUnit}"/></apex:column>
+                    <apex:column headerValue="Total Print Discount"  style=" border:1px solid black;"><apex:outputText value="${!PDASubItem.oPdaLineItem.Discount}"/></apex:column>
+                    <apex:column headerValue="Total Annual Estimated Discounted Upkeep"  style=" border:1px solid black;"><apex:outputText value="${!PDASubItem.oPdaLineItem.UpKeepAfterDiscount}"/></apex:column>
+                  </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+                        
+            
+           <table style="text-align:right;font-size:14px">
+                <tr style="border:1px solid black; border-top-style:none">
+                    <td></td><td></td><td></td><td></td>
+                    <td style="text-align:right;font-size:14px;border:1px solid black; border-top-style:none"><b>Total</b></td>
+                    <td style="border:1px solid black; border-top-style:none"><b><apex:outputText value="${!oPdaItem.TotalEstimatedUpKeep}"/></b></td><td></td>
+                    <td  style="border:1px solid black; border-top-style:none"><b><apex:outputText value="${!oPdaItem.TotalDiscount}"/></b></td>        
+                   <td  style="border:1px solid black; border-top-style:none"><b><apex:outputText value="${!oPdaItem.TotalUpKeepAfterDiscount}"/></b></td>
+                      
+                </tr>
+                <tr style="border:1px solid black;"><td  style="border:1px solid black; border-top-style:none"></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                <td style="text-align:right;font-size:14px; border:1px solid black; border-top-style:none"><b><apex:outputLabel value="Estimated Monthly Savings" style="font-size:14px" /></b></td>
+                <td  style="border:1px solid black; border-top-style:none"><b><apex:outputText value="${!oPdaItem.TotalMonthlySavings}"/></b></td>
+                </tr>
+            
+            </table>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+            
+            <apex:outputText style="text-align:left;font-size:14px" value=" *Upkeep figures are estimates for the current year and are subject to change.  Any additional editions or volumes that may be published during the current year                                                                  
+            are not included.  Estimates do not include applicable taxes. "/>
+            <br></br>
+                                                                              
+            <apex:outputText style="text-align:left;font-size:14px" value=" ** Current year upkeep charges. Upkeep charges begin after free service period for product has expired." />
+            <br></br>     
+                                                      
+            <b><apex:outputText style="text-align:left;font-size:14px" value=" The above information is intended to be used only in conjunction with a Thomson West WestPack/PPL Proposal.  All estimated upkeep figures                                                                   
+            and discount in this document are as today's data and are subject to change." /></b>
+       
+        </apex:pageBlock>
+        </html>
+    </apex:form>
+</apex:page>

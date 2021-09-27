@@ -1,0 +1,27 @@
+<apex:page sidebar="false" showHeader="false">
+    <apex:includeLightning />
+    <head>
+        <title>Heatmap</title>
+    </head>
+
+    <div id="content" style="margin: 20px 5px;">
+        <div id="Heatmap"/>
+    </div>
+    <script>
+        var detailsId = '{! JSINHTMLENCODE($CurrentPage.parameters.id) }';
+        var invitationId = '{! JSINHTMLENCODE($CurrentPage.parameters.invId) }';
+        $Lightning.use("Consensus:DemosOutApp", function () {
+            $Lightning.createComponent("Consensus:Heatmap",
+                    {
+                        invitationId: invitationId,
+                        demoDetailsId: detailsId,
+                        isClassic: true
+                    },
+                    "Heatmap",
+                    function (cmp) {
+                        console.log('Component created!');
+                        console.log(cmp);
+                    });
+        });
+    </script>
+</apex:page>

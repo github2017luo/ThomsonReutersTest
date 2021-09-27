@@ -1,0 +1,47 @@
+<!--
+Name              Description                                                                                           Date
+Vaishali Gayatri  JIRA : Enabling Lightning as part of Sales Lightning Project..need to include lightning stylesheet    17-April-2019
+---------------------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------->
+<apex:page standardController="Training_Event__c" extensions="LCRMTrainingEventAddressController" lightningStylesheets="true">
+  <apex:form id="addressForm">
+        <apex:outputPanel id="ErrorBlock">
+            <apex:pageMessages id="messagesGlobal" escape="false" />
+        </apex:outputPanel>
+        <apex:actionStatus id="statusValidateAddress">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating address, please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+         
+        <apex:commandButton value="Edit" action="{!changeToEdit}" rendered="{! AND(NOT(isEditable),isTrainingUser)}" style="{!IF(($User.UIThemeDisplayed == 'Theme3'),'margin-left:15cm;','margin-left:3.5cm;')} }"/>
+        <apex:commandButton value="Save" action="{!save}" rendered="{! AND(isEditable,NOT(ServiceError))}" status="statusValidateAddress" reRender="addressForm,ErrorBlock" oncomplete="goToSavedRecord()" style="{!IF(($User.UIThemeDisplayed == 'Theme3'),'margin-left:15cm;','margin-left:3cm;')} }"/>
+        <apex:commandButton id="buttonRetry" value="Retry" action="{!save}" rendered="{! AND(isEditable,ServiceError)}" rerender="addressForm" oncomplete="goToSavedRecord()"  status="statusValidateAddress" />
+        <apex:commandButton id="buttonContinue" value="Continue" action="{! continueSave}" rendered="{!AND(isEditable,ServiceError)}" rerender="addressForm" oncomplete="goToSavedRecord()"/>
+        <apex:commandButton value="Cancel" action="{!cancel}" rendered="{! isEditable}"/>
+    
+        
+        <apex:pageBlock rendered="{! NOT(isEditable)}">
+            <apex:pageBlockSection >
+                <apex:outputField value="{! Training_Event__c.LCRM_Address_1__c}"/>
+                <apex:outputField value="{! Training_Event__c.LCRM_Address_2__c}"/>
+                <apex:outputField value="{! Training_Event__c.LCRM_City__c}"/>
+                <apex:outputField value="{! Training_Event__c.LCRM_Postcode_Zip__c}"/>
+                <apex:outputField value="{! Training_Event__c.LCRM_State__c}"/>
+                <apex:outputField value="{! Training_Event__c.LCRM_Country__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock rendered="{! isEditable}">
+            <apex:pageBlockSection >
+                <apex:inputField value="{! Training_Event__c.LCRM_Address_1__c}"/>
+                <apex:inputField value="{! Training_Event__c.LCRM_Address_2__c}"/>
+                <apex:inputField value="{! Training_Event__c.LCRM_City__c}"/>
+                <apex:inputField value="{! Training_Event__c.LCRM_Postcode_Zip__c}"/>
+                <apex:inputField value="{! Training_Event__c.LCRM_State__c}"/>
+                <apex:inputField value="{! Training_Event__c.LCRM_Country__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+  
+</apex:page>

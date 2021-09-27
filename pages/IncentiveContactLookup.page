@@ -1,0 +1,36 @@
+<apex:page controller="IncentiveContactLookup" title="Search" showHeader="false" sideBar="false" tabStyle="User" id="pageLookup">
+    <apex:form >
+        <apex:actionRegion >
+            <apex:outputPanel id="top" layout="block" style="margin:5px;padding:10px;padding-top:2px;">
+                <apex:outputLabel value="Search" style="font-weight:Bold;padding-right:10px;" for="txtSearch"/>
+                <apex:inputText id="txtSearch" value="{!searchString}"/>
+                <span style="padding-left:5px"><apex:commandButton id="btnGo" value="Go" action="{!Search}" rerender="searchResults,messagesGlobal"></apex:commandButton></span> 
+            </apex:outputPanel>            
+            <apex:pageMessages id="messagesGlobal" />           
+
+            <apex:outputPanel id="pnlSearchResults" style="margin:10px;height:350px;overflow-Y:auto;" layout="block">
+                <apex:pageBlock id="searchResults" title="Search results">
+                    <apex:pageBlockTable value="{!results}" var="con" id="tblResults">
+                        <apex:column headerValue="Name">
+                            <apex:outputLink value="javascript:top.window.opener.lookupPick2('{!FormTag}','{!TextBox}_lkid','{!TextBox}','{!con.Id}','{!con.Name}', false)">{!con.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column headerValue="SAP Role" value="{!con.SAP_Role__c}"/>
+                        <apex:column headerValue="Phone" value="{!con.Phone}"/>
+                        <apex:column headerValue="Email" value="{!con.Email}"/>
+                    </apex:pageBlockTable>
+                    <apex:outputPanel rendered="{!results.size==0}">
+                        <table class="list" border="0" cellspacing="0" cellpadding="0">
+                            <tbody>
+                                <tr>
+                                    <td class="noRows" colspan="7">No records found due to one of the following:
+                                    <ul><li>There are no records of this type</li><li>You dont have permission to see any of the records</li></ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:actionRegion>
+    </apex:form>    
+</apex:page>

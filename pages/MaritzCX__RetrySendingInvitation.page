@@ -1,0 +1,23 @@
+<apex:page standardController="MaritzCX__Invitation_Request__c" extensions="MaritzCX.InvitationDetailsController" lightningStylesheets="true">
+    <apex:form >
+        <apex:pageBlock rendered="{!MaritzCX__Invitation_Request__c.MaritzCX__Status__c != 'Error' && MaritzCX__Invitation_Request__c.MaritzCX__Status__c != 'Not Sent'}">
+            <apex:pageMessage severity="INFO" detail="This invitation is already sent or being send" strength="3" summary="Information"/>
+            <apex:commandButton value="Go Back" action="{!cancel}"></apex:commandButton>
+        </apex:pageBlock>
+    
+        <apex:pageBlock rendered="{!MaritzCX__Invitation_Request__c.MaritzCX__Status__c == 'Error' || MaritzCX__Invitation_Request__c.MaritzCX__Status__c == 'Not Sent'}">
+            <apex:pageBlockSection columns="1" title="Confirmation" collapsible="false">
+                <apex:outputText value="Are you sure you want to re-trigger the invitation '{!MaritzCX__Invitation_Request__c.Name}'?"/>
+                <b>Note:</b> All the error details related to this invitation will be gone.
+                <apex:outputPanel >
+                    <apex:inputCheckbox id="reprocess" value="{!reprocess}"/>
+                    <apex:outputLabel value="Reprocess the invitation request's Survey Attributes and Prepop" for="reprocess"/>
+                </apex:outputPanel>
+                <apex:outputPanel >
+                    <apex:commandButton value="Yes" action="{!retryInvitation}"></apex:commandButton>
+                    <apex:commandButton value="Cancel" action="{!cancel}"></apex:commandButton>
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

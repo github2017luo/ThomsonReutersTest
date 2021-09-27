@@ -1,0 +1,490 @@
+<!--
+ - Used TO Re InitiateTrial
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page id="thePage" controller="ODT_TrialReInitiate" sidebar="true" showHeader="true" lightningStylesheets="true">
+
+    <style type="text/css">
+        .custPopupcomp {
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9999;
+            left: 40%;
+            padding: 10px;
+            position: absolute;
+            width: 500px;
+            margin-left: -250px;
+            top: 2px;
+            overflow: auto;
+            width: 800px;
+            height: 800px;
+        }
+
+        .popupBackgroundcomp {
+            background-color: black;
+            opacity: 0.20;
+            filter: alpha(opacity=70);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        .custPopup {
+            background-color: white;
+            border: 3px solid rgba(47, 86, 135, 1);
+            border-style: solid;
+            z-index: 9999;
+            position: absolute;
+            top: 100px;
+            border-radius: 10px;
+            display: block;
+            font-size: 1.5em;
+            font-family: sans-serif;
+            padding: 1em 2em;
+            margin: 2em auto;
+            margin-left: 250px;
+            width: 50%;
+            text-align: center;
+        }
+
+        .popupBackground {
+            background-color: black;
+            opacity: 0.20;
+            filter: alpha(opacity=20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        .successbtn {
+            width: 250px;
+        }
+
+        #loadingDiv {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%; //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)
+        }
+
+        ) 50% 50% no-repeat #666;
+
+        z-index:99999;
+        opacity: 0.4;
+        /* You can adjust the opacity */
+
+        filter: alpha(opacity=40);
+        /* For IE8 and earlier */
+
+        }
+
+        .container {
+            border: 3px solid rgba(47, 86, 135, 1);
+            border-radius: 10px;
+            display: block;
+            font-size: 1.5em;
+            font-family: sans-serif;
+            padding: 1em 2em;
+            margin: 2em auto;
+            width: 80%;
+
+            text-align: center;
+        }
+    </style>
+
+
+    <apex:actionStatus id="myStatus">
+        <apex:facet name="start">
+            <div id="loadingDiv" />
+        </apex:facet>
+    </apex:actionStatus>
+
+    <apex:form >
+
+        <apex:actionFunction name="passSelected" action="{!createIC}">
+            <apex:param value="a" name="array" assignTo="{!selectedOLC}" />
+        </apex:actionFunction>
+
+    </apex:form>
+
+    <apex:detail subject="{!trialID}" relatedList="true" title="true" />
+
+    <apex:form id="theForm" rendered="{!Not(isAddUser)}">
+        <apex:inputHidden id="selectedValue" />
+        <apex:outputPanel id="tstpopup">
+            <apex:outputPanel styleClass="popupBackgroundcomp" />
+            <apex:outputPanel styleClass="custPopupcomp" layout="block">
+
+                <apex:pageBlock >
+                    <apex:pageBlockSection title="Resend Trial Invitation" collapsible="false" showHeader="true" rendered="true" columns="1">
+                        <apex:pageBlockTable value="{!primaryContasTodisplay}" var="c" rendered="{!primaryContasTodisplay.size != 0}">
+                            <apex:column headerValue="Select" width="25px;">
+                                <input type="radio" name="sfdccontactId" value="{!c.SAPContactId}" onclick="parseelement(this);" />
+                            </apex:column>
+                            <apex:column value="{!c.firstName}" headerValue="First Name" />
+                            <apex:column value="{!c.lastName}" headerValue="Last Name" />
+                            <apex:column value="{!c.EmailID}" headerValue="Email" />
+                            <apex:column value="{!c.SAPContactId}" headerValue="SAP Contact Id" />
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+
+                <apex:outputText rendered="{!AND(contactTodisplay.size == 0)}">
+                    <div class="container">
+                        {!$Label.ODT_No_OLC_Contacts_Found}
+                    </div>
+                </apex:outputText>
+
+                <apex:outputText rendered="{!primaryContasTodisplay.size != 0}">
+
+                    {!$Label.ODT_Resend_Invitation}
+
+                </apex:outputText>
+
+
+
+
+
+                <table>
+                    <tr>
+                        <td>
+                            <apex:outputPanel layout="block" style="padding-right:20px;" rendered="{!primaryContasTodisplay.size != 0}">
+                                <apex:commandButton value="Resend Invitation" onclick="return sendItToApex();" reRender="SuccessMsg" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                        <td>
+                            <apex:outputPanel >
+                                <apex:commandButton value="Back to Trial" action="{!closeEloquaPopup}" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                </table>
+
+                <apex:actionFunction name="callToApexFromJs" action="{!reInitiateTrial}" reRender="SuccessMsg,ErrorMsg" Status="myStatus">
+                    <apex:param name="selectedContact" value="" />
+                </apex:actionFunction>
+
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+    <!-- Pagination starts here for add user-->
+    <apex:form rendered="{!isAddUser}" id="addUserFrom">
+        <apex:outputPanel id="addUser">
+            <apex:outputPanel styleClass="popupBackgroundcomp" />
+            <apex:outputPanel styleClass="custPopupcomp" layout="block">
+
+                <apex:pageBlock rendered="{!allOtherOLCcontactsPagination.size !=0}">
+
+                    <apex:pageBlockButtons location="top">
+                        <apex:commandButton action="{!selectAll}" reRender="displaySelected,addUserFrom,ErrorMsg3" value="Select All" status="myStatus" />
+                        <apex:commandButton action="{!deselectAll}" reRender="displaySelected,addUserFrom,ErrorMsg3" value="Deselect All" status="myStatus" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <apex:inputText value="{!searchStr}" id="inputStr" />
+                        <apex:commandButton value="Search" action="{!searchOnlineContacts}" status="myStatus" reRender="displaySelected,addUserFrom,ErrorMsg3" />
+
+                    </apex:pageblockButtons>
+
+                    <apex:pageBlockSection title="Add User" collapsible="false" showHeader="true" columns="1">
+
+                        <apex:outputText rendered="{!NOT(searchBool)}">
+                            <apex:pageBlockTable value="{!allOtherOLCcontactsPagination}" var="c" rendered="{! allOtherOLCcontactsPagination.size != 0 }">
+                                <apex:column headerValue="Select" width="25px;">
+                                    <apex:inputCheckbox value="{!c.isSelected}">
+                                        <apex:actionSupport action="{!addSelected}" event="onchange" reRender="addUserFrom,ErrorMsg3" status="myStatus">
+                                            <apex:param value="{!c.uniqueField}" name="sid" />
+                                        </apex:actionSupport>
+                                    </apex:inputCheckbox>
+                                    <!-- <input type="radio" name="sfdccontactId" value="{!c.SAPContactId}" onclick="parseelement(this);"/>     -->
+                                </apex:column>
+
+                                <apex:column value="{!c.firstName}" headerValue="First Name" />
+                                <apex:column value="{!c.lastName}" headerValue="Last Name" />
+                                <apex:column value="{!c.EmailID}" headerValue="Email" />
+                                <apex:column value="{!c.SAPContactId}" headerValue="SAP Contact Id" />
+                            </apex:pageBlockTable>
+                        </apex:outputText>
+                        <!------- Search Results Starts here...................--------->
+                        <apex:outputText rendered="{!searchBool}">
+
+                            <apex:pageBlockTable value="{!searchResults}" var="c" rendered="{!searchResults.size!=0}">
+                                <apex:column headerValue="Select" width="25px;">
+                                    <apex:inputCheckbox value="{!c.isSelected}">
+                                        <apex:actionSupport action="{!addSelected}" event="onchange" reRender="addUserFrom,ErrorMsg3" status="myStatus">
+                                            <apex:param value="{!c.uniqueField}" name="sid" />
+                                        </apex:actionSupport>
+                                    </apex:inputCheckbox>
+                                    <!-- <input type="radio" name="sfdccontactId" value="{!c.SAPContactId}" onclick="parseelement(this);"/>     -->
+                                </apex:column>
+
+                                <apex:column value="{!c.firstName}" headerValue="First Name" />
+                                <apex:column value="{!c.lastName}" headerValue="Last Name" />
+                                <apex:column value="{!c.EmailID}" headerValue="Email" />
+                                <apex:column value="{!c.SAPContactId}" headerValue="Contact Id" />
+                            </apex:pageBlockTable>
+
+                            <apex:outputText rendered="{!AND(searchResultsbool,searchResults.size == 0 )}">
+                                <div class="container">
+                                    No Records Found
+                                </div>
+                            </apex:outputText>
+
+                        </apex:outputText>
+                        <!------- End of Search Results Starts here...................--------->
+
+
+                    </apex:pageBlockSection>
+                    <apex:outputPanel style="width:100%;" rendered="{!NOT(searchBool)}">
+                        <apex:commandButton value="<<Previous" action="{!previous}" rendered="{!hasPrevious}" reRender="addUserFrom" status="myStatus" />
+                        <apex:commandButton value="Next >>" action="{!next}" rendered="{!hasNext}" reRender="addUserFrom" status="myStatus" />
+                        <apex:outputLabel style="width:98%; margin-right: 1%;"> Total Records : {!allOtherOLCcontacts.size} </apex:outputLabel>
+                    </apex:outputPanel>
+                </apex:pageBlock>
+
+                <apex:pageBlock id="displaySelected" rendered="{!selectedrecords.size !=0 }">
+                    <apex:pageBlockSection rendered="{!selectedrecords.size !=0 }" title="Selected Users" columns="1" collapsible="false">
+
+
+
+                        <apex:pageBlockTable value="{!selectedrecords }" var="obj">
+                            <!--  <apex:column headerValue="Select" width="25px;" >
+                            <apex:inputCheckbox value="{!obj.isSelected}">
+                                   
+                            </apex:inputCheckbox>
+                            </apex:column>  -->
+
+
+
+                            <apex:column value="{!obj.firstname}" headerValue="First Name" />
+                            <apex:column value="{!obj.lastname}" headerValue="Last Name" />
+                            <apex:column value="{!obj.EmailId }" headerValue="Email" />
+                            <apex:column value="{!obj.SAPContactId}" headerValue="Contact Id" />
+
+                        </apex:pageBlockTable>
+
+
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+
+
+                <apex:outputText rendered="{!AND(NOT(isNewAddUser),OR(contactTodisplay.size == 0,allOtherOLCcontacts.size == 0 ))}">
+                    <div class="container">
+                        {!$Label.ODT_No_OLC_Contacts_Found}
+                    </div>
+                </apex:outputText>
+
+
+                <table>
+                    <tr>
+                        <td>
+                            <apex:outputPanel layout="block" style="padding-right:20px;" rendered="{!selectedrecords.size != 0}">
+                                <apex:commandButton id="old_confirm" value="Confirm" action="{!createIC}" reRender="SuccessMsg2,ErrorMsg2,addUserFrom" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                        <td>
+                            <apex:outputPanel >
+                                <apex:commandButton value="Back to Trial" action="{!closeEloquaPopup}" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                </table>
+
+
+
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+    <!-- New User Form -->
+    <apex:form rendered="{!isNewAddUser}" id="newUserForm">
+        <apex:outputPanel id="newUser">
+            <apex:outputPanel styleClass="popupBackgroundcomp" />
+            <apex:outputPanel styleClass="custPopupcomp" layout="block">
+                <apex:pageMessages id="er"></apex:pageMessages>
+                <apex:pageBlock id="addUserBlock">
+                    <apex:pageBlockSection title="Add New User" collapsible="false" showHeader="true" rendered="true" columns="1" id="addUserBlockSec">
+
+                        <apex:pageBlockTable value="{!allOtherOLCcontactsPagination}" var="c" rendered="{!allOtherOLCcontactsPagination.size != 0}" id="addUserBlockSecTable">
+                            <apex:column headerValue="Select" width="25px;">
+                                <apex:inputCheckbox value="{!c.isSelected}" disabled="{!c.displayAddBtn == true}">
+                                    <apex:actionSupport action="{!addSelected}" event="onchange" reRender="displaySelected,newUserForm" status="myStatus">
+                                        <apex:param value="{!c.uniqueField}" name="sid" />
+                                    </apex:actionSupport>
+                                </apex:inputCheckbox>
+                                <!-- <input type="radio" name="sfdccontactId" value="{!c.SAPContactId}" onclick="parseelement(this);"/>     -->
+                            </apex:column>
+                            <!-- <apex:column value="{!c.firstName}" headerValue="First Name" />
+                            <apex:column value="{!c.lastName}" headerValue="Last Name" />
+                            <apex:column value="{!c.EmailID}" headerValue="Email" />
+                            <apex:column value="{!c.SAPContactId}" headerValue="SAP Contact Id" />
+                            -->
+                            <apex:column headerValue="First Name">
+                                <apex:outputText value="{!c.firstName}" rendered="{!c.SAPContactId != null}" />
+                                <apex:inputText value="{!c.firstName}" rendered="{!c.SAPContactId == null}" />
+                            </apex:column>
+                            <apex:column headerValue="Last Name">
+                                <apex:outputText value="{!c.lastName}" rendered="{!c.SAPContactId != null}" />
+                                <apex:inputText value="{!c.lastName}" rendered="{!c.SAPContactId == null}" />
+                            </apex:column>
+                            <apex:column headerValue="Email" id="emailColumn">
+                                <apex:outputText value="{!c.EmailID}" rendered="{!c.SAPContactId != null}" />
+                                <apex:inputText id="emailTextId" value="{!c.EmailID}" rendered="{!c.SAPContactId == null}" />
+                            </apex:column>
+                            <apex:column headerValue="Contact Id">
+                                <apex:outputText value="{!c.SAPContactId}" rendered="{!c.SAPContactId != null}" />
+                                <apex:commandLink value="Add" rendered="{!c.displayAddBtn}" action="{!addUser}" reRender="displaySelected, newUserForm" status="myStatus" styleclass="btn" style="text-decoration:none;padding:4px;">
+                                    <apex:param value="{!c.uniqueField}" name="uniqueField" />
+                                </apex:commandLink>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        <apex:commandButton value="Create User" action="{!createUser}" reRender="newUserForm" />
+                    </apex:pageBlockSection>
+                    <apex:outputPanel >
+                        <apex:commandButton value="<<Previous" action="{!previous}" rendered="{!hasPrevious}" reRender="addUserFrom" status="myStatus" />
+                        <apex:commandButton value="Next >>" action="{!next}" rendered="{!hasNext}" reRender="addUserFrom" status="myStatus" />
+
+                    </apex:outputPanel>
+                </apex:pageBlock>
+
+                <apex:pageBlock id="displaySelected" rendered="{!selectedrecords.size !=0 }">
+                    <apex:pageBlockSection rendered="{!selectedrecords.size !=0 }" title="Selected Users" columns="1" collapsible="false">
+
+
+
+                        <apex:pageBlockTable value="{!selectedrecords }" var="obj">
+                            <!--  <apex:column headerValue="Select" width="25px;" >
+                            <apex:inputCheckbox value="{!obj.isSelected}">
+                                   
+                            </apex:inputCheckbox>
+                            </apex:column>  -->
+
+
+
+                            <apex:column value="{!obj.firstname}" headerValue="First Name" />
+                            <apex:column value="{!obj.lastname}" headerValue="Last Name" />
+                            <apex:column value="{!obj.EmailId }" headerValue="Email" />
+                            <apex:column value="{!obj.SAPContactId}" headerValue="Contact ID" />
+
+                        </apex:pageBlockTable>
+
+
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+
+                <table>
+                    <tr>
+                        <td>
+                            <apex:outputPanel layout="block" style="padding-right:20px;" rendered="{!AND(selectedrecords.size != 0,isNewAddUser)}">
+                                <apex:commandButton id="new_confirm" value="Confirm" action="{!createIC}" reRender="SuccessMsg2,ErrorMsg2,addUserFrom" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                        <td>
+                            <apex:outputPanel >
+                                <apex:commandButton value="Back to Trial" action="{!closeEloquaPopup}" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+
+    <!-- Pagination end here for add user-->
+
+
+    <apex:form >
+
+
+
+        <apex:outputPanel id="SuccessMsg">
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!eloquaEmailTriggered}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!eloquaEmailTriggered}">
+                <br/><br/> {!$Label.ODT_Salesrep_success}
+                <br/><br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!closeEloquaPopup}" rerender="tstpopup" styleClass="successbtn" Status="myStatus" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+        <apex:outputPanel id="ErrorMsg">
+
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!checkError}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!checkError}">
+                <br/><br/> {!$Label.ODT_Required_fields_Null_on_Rep_journey}
+
+                <br/><br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!closeEloquaPopup}" rerender="tstpopup" styleClass="successbtn" Status="myStatus" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+        <apex:outputPanel id="SuccessMsg2">
+
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!isAdded}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isAdded}">
+                <br/><br/> {!$Label.User_added}
+
+                <br/><br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!closeEloquaPopup}" rerender="addUserFrom" styleClass="successbtn" Status="myStatus" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+
+        <apex:outputPanel id="ErrorMsg2">
+
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!checkError}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!checkError}">
+
+                <br/><br/> {!$Label.ODT_Required_fields_Null_on_Rep_journey}
+                <br/><br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!closeEloquaPopup}" rerender="addUserFrom" styleClass="successbtn" Status="myStatus" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputPanel id="ErrorMsg3">
+
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!maxLengthReached}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!maxLengthReached}">
+
+                <br/><br/> {!$Label.ODT_maximum_records_for_add_user}
+                <br/><br/><br/><br/>
+                <apex:commandButton value="OK" action="{!closeError}" rerender="addUserFrom,ErrorMsg3" styleClass="successbtn" Status="myStatus" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+    <!-- Java Script -->
+
+    <script type="text/javascript">
+        function parseelement(ele) {
+            var selVal = ele.getAttribute('value');
+            document.getElementById('{!$Component.thePage.theForm.selectedValue}').value = selVal;
+        }
+
+        function sendItToApex() {
+            var selectedVal = document.getElementById('{!$Component.thePage.theForm.selectedValue}').value;
+
+            if (!selectedVal) {
+                alert('{!$Label.ODT_Select_Contact}');
+                return false;
+            }
+
+            callToApexFromJs(selectedVal);
+            return true;
+        }
+    </script>
+
+
+</apex:page>

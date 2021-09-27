@@ -1,0 +1,56 @@
+<apex:component controller="MassLeadConvertController">
+    <apex:attribute name="componentValue" description="Attribute on the component."
+                  type="Lead" required="required" assignTo="{!controllerValue}"/>
+    <apex:attribute name="selectedAccountId" description="Attribute on the component."
+                  type="string" assignTo="{!selectedAccountAttribute}" />
+   
+    <apex:outputpanel > 
+
+    <apex:pageBlock >
+    <apex:pageBlockSection title="Primary Lead" columns="1">
+        <apex:pageBlockTable value="{!ControllerValue}" var="a">
+           <!-- <apex:column headerValue="Account Name" value="{!a.name}"/> -->  
+            <apex:column headerValue="Account Name" value="{!a.company}"/>
+            <apex:column headerValue="Lead Name" value="{!a.name}"/>            
+           <!-- <apex:column headerValue="Status" value="{!a.Status}"/>
+            <apex:column headerValue="Accepted By" value="{!a.Accept_By__c}"/>
+            <apex:column headerValue="Converted By" value="{!a.Convert_By__c}"/> -->
+            <apex:column headerValue="Email Address" value="{!a.Email}"/>
+            <apex:column headerValue="Phone" value="{!a.Source__c}"/>            
+             <apex:column headerValue="Contact Name" value="{!a.Contact__c}"/>
+              <apex:column headerValue="Source Type" value="{!a.Source__c}"/>
+               <apex:column headerValue="Source Description" value="{!a.Source_Desc__c}"/>
+                <apex:column headerValue="Lead Type" value="{!a.Type__c }"/>
+         
+        </apex:pageBlockTable>
+       
+    
+    <apex:pageBlock title="Select a Possible Contact" >
+    
+        <apex:pageBlockTable value="{!leadContactOptions}" var="c">
+            <apex:column headervalue="Select Contact">
+                <apex:actionsupport action="{!selectPrimaryContact}" event="onclick" rerender=" ">
+                    <input type="radio" name="{!controllerValue.id}" value="{!c.contact.Id}"/>
+                        <apex:param name="pcontactId" value="{!c.contact.Id}">
+                </apex:param>
+                </apex:actionsupport>
+            </apex:column>
+            <apex:column headerValue="Name" value="{!c.contact.FirstName} {!c.contact.LastName}"/>
+            <apex:column headerValue="Title" value="{!c.contact.Title}"/>
+            <apex:column value="{!c.contact.Email}"/>
+            <apex:column value="{!c.contact.SAP_Account_Number__c}"/>
+            <apex:column headerValue="Account Name" value="{!c.contact.account.name}"/>            
+            <apex:column headerValue="Job Function" value="{!c.contact.Job_Function__c}"/>           
+            <apex:column headerValue="Contact Type" value="{!c.contact.Contact_Type__c}"/>
+            <apex:column headerValue="SAP Role" value="{!c.contact.SAP_Role__c}"/>
+            <apex:column headerValue="Work Direct" value="{!c.contact.Work_Direct__c}"/>
+            <apex:column value="{!c.contact.Phone}"/>
+    
+        </apex:pageBlockTable>
+         
+    </apex:pageBlock> 
+     </apex:pageBlockSection>       
+    </apex:pageBlock>  
+       
+    </apex:outputpanel> 
+</apex:component>

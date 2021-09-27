@@ -1,0 +1,280 @@
+<apex:page standardController="Contact" extensions="ContactCreateNewController" id="thepage">
+    <apex:sectionHeader id="pageTitle" title="Create Contact" subtitle="New Contact"/>
+    
+    <script type="text/javascript">
+        function changeValue(input, textid) {
+            if(document.getElementById(textid).value == input.value && input.checked){
+                input.checked = false;
+                document.getElementById(textid).value  = '';
+            }
+            else {
+                document.getElementById(textid).value = input.value;
+               // document.getElementById('thepage:formEdit:pageblock1:pagebtns1:btnSelCreate').style.visibility = "visible";
+            }
+            //alert(input.value);
+            //alert(document.getElementById(textid).value);
+            passContactsToController();
+        } 
+        
+        function test(){
+            callPersonIdGen();
+            alert('test');
+        
+        }
+    </script>
+    
+    <apex:form id="formEdit">
+        <apex:pageMessages id="globalMessages" escape="false" />
+        <apex:actionStatus id="statusValidatePerson">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="{!$Label.Person_Create_ProcessMsg}" />
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:actionstatus id="loadStatus">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                    <div class="waitingHolder" style="position: fixed; margin-left: 500px; margin-top: 100px;">
+                        <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="35" width="35" style="opacity: 1.0;"/>
+                        <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+                    
+        <apex:pageBlock id="pageblock1">
+            <apex:image width="20" height="20" url="{!$Resource.SearchImage}"/><!--value="/img/func_icons/util/search20.gif"/>-->
+            <apex:outputText value="{!$Label.Person_Create_Header_Search}" escape="false" style="font-weight: bold;font-size: 15px;"></apex:outputText> 
+            <div/>
+            &nbsp;
+            <apex:outputPanel rendered="{!NOT(searchClicked)}">
+                <div style="padding-left:23px;">
+                    <apex:outputText style="border-left: 3px solid red;border-top: 1px solid #bdbdbd;border-right: 1px solid #bdbdbd;border-bottom: 1px solid #bdbdbd;padding-left:1px;padding-top:1px;padding-right:18px;padding-bottom:1px;" value="{!$Label.Person_Create_SubHeader_Search}" />
+                </div>
+            </apex:outputPanel>
+            &nbsp;
+            <apex:outputPanel rendered="{!AND(searchClicked,AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts)))}">
+                <apex:outputText />
+                <div><apex:outputText value="{!$Label.Person_Create_NoResMsg1}"></apex:outputText>&nbsp;</div>
+            </apex:outputPanel>
+            <apex:pageBlockSection columns="1" rendered="{!NOT(searchClicked)}">
+                <apex:inputField value="{!oContact.firstName}" required="true"/>
+                <apex:inputField value="{!oContact.lastName}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$Label.Person_Create_Phone}</apex:outputLabel>
+                    <apex:inputField value="{!oContact.Work_Direct__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!oContact.email}" required="true"/>
+                <apex:inputField value="{!oContact.AccountID}" required="true"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="1" rendered="{!(searchClicked)}">
+                <apex:outputField value="{!oContact.firstName}"/>
+                <apex:outputField value="{!oContact.lastName}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$Label.Person_Create_Phone}</apex:outputLabel>
+                    <apex:outputField value="{!oContact.Work_Direct__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!oContact.email}"/>
+                <apex:outputField value="{!oContact.AccountID}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons location="bottom" id="pagebtns1">
+                <apex:outputPanel id="btnsPanel1">
+                    <apex:commandButton id="btnSearch" value="{!$Label.Person_Create_SearchBtn}" action="{!searchPerson}" rerender="formEdit" status="statusValidatePerson" rendered="{!NOT(searchClicked)}"/>
+                    <apex:commandButton id="btnCancel" value="{!$Label.Person_Create_ResetBtn}" action="{!reset}" rerender="formEdit" status="statusValidatePerson" rendered="{!searchClicked}"/>
+                    <apex:commandButton id="btnCreate" value="{!$Label.Person_Create_CreateNewBtn}" action="{!save}" status="statusValidatePerson" rendered="{!AND(searchClicked,AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts)))}" oncomplete="callPersonIdGen();"/> 
+                  <!--  <apex:commandButton id="btnCreate" value="{!$Label.Person_Create_CreateNewBtn}" action="{!updateisContactNewPersonId}" status="statusValidatePerson" rendered="{!AND(searchClicked,AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts)), NOT(isContactNewPersonId))}"/> 
+                    <apex:commandButton id="btnSave" value="Save" action="{!saveWithPerson}" rendered="{!isContactNewPersonId}"/> 
+                    <apex:commandButton id="btnCreate1" value="{!$Label.Person_Create_CreateNewBtn1}" action="{!saveWithPerson}" status="statusValidatePerson" rendered="{!AND(searchClicked,NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))), NOT(ISNULL(selectedPersonID)))}"/> -->
+                    <apex:commandButton id="btnCreate1" value="{!$Label.Person_Create_CreateNewBtn}" action="{!saveWithPerson}" status="statusValidatePerson" rendered="{!AND(NOT(isContactOldPersonId), searchClicked,NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}" oncomplete="callPersonIdGen();"/>
+                    <apex:commandButton id="btnSelCreate" value="{!$Label.Person_Create_CreateNewBtn1}" action="{!saveWithPerson}" status="statusValidatePerson" rendered="{!AND(isContactOldPersonId, searchClicked,NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}" oncomplete="callIDQContactCreate();"/>  
+                    <apex:commandButton id="btnCancelCreate" value="Cancel" action="{!cancel}" />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+        <apex:pageBlock rendered="{!AND(searchClicked,AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts)))}">
+                <apex:image value="/img/func_icons/util/alert16.gif"/>
+                <apex:outputText value="{!$Label.Person_Create_NoResMsg2}" escape="false"></apex:outputText>
+        </apex:pageBlock>
+        
+        <apex:pageBlock rendered="{!AND(searchClicked,NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}">
+            <apex:pageBlockSection columns="1" collapsible="true">
+                <apex:facet name="header">
+                    <apex:outputText value="<b>{!$Label.Person_Create_InsideHeader}</b> - {!matchingSFDCContactsCount} records" escape="false"></apex:outputText>
+                </apex:facet>
+                <apex:pageBlockTable id="sfdcMatchResultsTbl" value="{!respSfdcResults.CurrentPage}" var="item">
+                    
+                    <apex:facet name="footer">
+                        <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">                 
+                                    
+                            <apex:outputPanel layout="inline" rendered="{!respSfdcResults.AllowMovePrev}">
+                                <span>&nbsp;|&nbsp;</span>
+                                <apex:commandLink id="linkMovePrev" value="Prev" immediate="true" status="statusPaging" 
+                                            action="{!respSfdcResults.movePrev}" rerender="sfdcMatchResultsTbl" />
+                            </apex:outputPanel>
+                                        
+                            <apex:outputPanel layout="inline" rendered="{!respSfdcResults.AllowMoveNext}">
+                                <span>&nbsp;|&nbsp;</span>
+                                <apex:commandLink id="linkMoveNext" value="Next" immediate="true" status="statusPaging"
+                                            action="{!respSfdcResults.moveNext}" rerender="sfdcMatchResultsTbl" />
+                            </apex:outputPanel>
+                                        
+                            <span>&nbsp;&nbsp;</span>
+                                        
+                            <apex:actionStatus id="statusPaging">
+                                <apex:facet name="start">
+                                    <img src="/img/loading.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                                <apex:facet name="stop">
+                                    <img src="/img/s.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            
+                            <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;" rendered="{!NOT(respSfdcResults.listMatched.size=0)}">
+                                {!respSfdcResults.RecordStart}-{!respSfdcResults.RecordEnd} of {!respSfdcResults.listMatched.size}
+                            </apex:outputPanel>
+                  
+                        </apex:outputPanel>
+                    </apex:facet>
+                    
+                    <apex:column style="white-space: nowrap; " headervalue="Name">
+                        <apex:outputText id="textContactName" 
+                            value="{!item.Name}"  
+                            rendered="{!ISNULL(item.id)}"/>
+                            
+                        <apex:outputLink id="linkContact"
+                            value="/{!item.Id}" 
+                            rendered="{!NOT(ISNULL(item.id))}">{!item.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column value="{!item.ID}" headerValue="Contact ID"/>
+                    <apex:column value="{!item.MDBContactID}" headerValue="MDB Contact ID"/>
+                    <apex:column value="{!item.EMail}" headerValue="Email"/>
+                    <apex:column value="{!item.Score}" headerValue="Score"/>
+                    <!--
+                    <apex:column value="{!item.firstName}">
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!dummyMethod}" style="font-weight:bold;" value="{!$Label.Person_Create_InHeadFN}{!IF(sortExpressionSfdc=='fName',IF(sortDirectionSfdc='ASC','▼','▲'),'')}" reRender="formEdit" status="statusValidatePerson">
+                                <apex:param value="fName" name="column" assignTo="{!sortExpressionSfdc}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column value="{!item.lastName}">
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!dummyMethod}" style="font-weight:bold;" value="{!$Label.Person_Create_InHeadLN}{!IF(sortExpressionSfdc=='lName',IF(sortDirectionSfdc='ASC','▼','▲'),'')}" reRender="formEdit" status="statusValidatePerson">
+                                <apex:param value="lName" name="column" assignTo="{!sortExpressionSfdc}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column value="{!item.phoneNo}">
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!dummyMethod}" style="font-weight:bold;" value="{!$Label.Person_Create_InHeadPh}{!IF(sortExpressionSfdc=='Phone',IF(sortDirectionSfdc='ASC','▼','▲'),'')}" reRender="formEdit" status="statusValidatePerson">
+                                <apex:param value="Phone" name="column" assignTo="{!sortExpressionSfdc}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column value="{!item.email}">
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!dummyMethod}" style="font-weight:bold;" value="{!$Label.Person_Create_InHeadEmail}{!IF(sortExpressionSfdc=='Email',IF(sortDirectionSfdc='ASC','▼','▲'),'')}" reRender="formEdit" status="statusValidatePerson">
+                                <apex:param value="Email" name="column" assignTo="{!sortExpressionSfdc}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column value="{!item.company}">
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!dummyMethod}" style="font-weight:bold;" value="{!$Label.Person_Create_InHeadAcc}{!IF(sortExpressionSfdc=='accName',IF(sortDirectionSfdc='ASC','▼','▲'),'')}" reRender="formEdit" status="statusValidatePerson">
+                                <apex:param value="accName" name="column" assignTo="{!sortExpressionSfdc}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    <apex:column value="{!item.score}">
+                        <apex:facet name="header">
+                            <apex:commandLink action="{!dummyMethod}" style="font-weight:bold;" value="{!$Label.Person_Create_InHeadMatchSc}{!IF(sortExpressionSfdc=='Score',IF(sortDirectionSfdc='ASC','▼','▲'),'')}" reRender="formEdit" status="statusValidatePerson">
+                                <apex:param value="Score" name="column" assignTo="{!sortExpressionSfdc}" ></apex:param>
+                            </apex:commandLink>
+                        </apex:facet>
+                    </apex:column>
+                    -->
+                </apex:pageBlockTable>
+                <apex:inputHidden value="{!selectedPersonID}" id="RadioButtonValue" />
+                <apex:outputText value="<b>{!$Label.Person_Create_InMsg1_Part1} {!matchingSFDCContactsCount} {!$Label.Person_Create_InMsg1_Part2} {!oContact.firstName} {!oContact.lastName} {!$Label.Person_Create_InMsg1_Part3}</b>" escape="false"></apex:outputText>
+                <apex:outputText value="{!$Label.Person_Create_InMsg2}" escape="false" rendered="{!HasMatchingSFDCContacts}"></apex:outputText>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+            
+        <apex:pageBlock id="pageblock2" rendered="{!AND(searchClicked,NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}">
+            
+            <apex:pageBlockSection columns="1">
+                <apex:facet name="header">
+                    <apex:outputText value="<b>{!$Label.Person_Create_OutsideHeader}</b> - {!matchingNonSFDCContactsCount} records" escape="false"></apex:outputText>
+                </apex:facet>
+                <apex:pageBlockTable id="nonSfdcMatchResultsTbl" value="{!respNonSfdcResults.CurrentPage}" var="item">
+                    <apex:facet name="footer">
+                        <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">                 
+                                    
+                            <apex:outputPanel layout="inline" rendered="{!respNonSfdcResults.AllowMovePrev}">
+                                <span>&nbsp;|&nbsp;</span>
+                                <apex:commandLink id="linkMovePrev" value="Prev" immediate="true" status="statusPaging" 
+                                            action="{!respNonSfdcResults.movePrev}" rerender="nonSfdcMatchResultsTbl" />
+                            </apex:outputPanel>
+                                        
+                            <apex:outputPanel layout="inline" rendered="{!respNonSfdcResults.AllowMoveNext}">
+                                <span>&nbsp;|&nbsp;</span>
+                                <apex:commandLink id="linkMoveNext" value="Next" immediate="true" status="statusPaging"
+                                            action="{!respNonSfdcResults.moveNext}" rerender="nonSfdcMatchResultsTbl" />
+                            </apex:outputPanel>
+                                        
+                            <span>&nbsp;&nbsp;</span>
+                                        
+                            <apex:actionStatus id="statusPaging">
+                                <apex:facet name="start">
+                                    <img src="/img/loading.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                                <apex:facet name="stop">
+                                    <img src="/img/s.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            
+                            <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;" rendered="{!NOT(respNonSfdcResults.listMatched.size=0)}">
+                                {!respNonSfdcResults.RecordStart}-{!respNonSfdcResults.RecordEnd} of {!respNonSfdcResults.listMatched.size}
+                            </apex:outputPanel>
+                  
+                        </apex:outputPanel>
+                    </apex:facet>
+                          
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadSelect}">
+                        <input type="radio" name="chosen" id="{!item.personID}" VALUE="{!item.personID}" onclick="changeValue(this,'{!$Component.RadioButtonValue}');"/>
+                    </apex:column>
+                    <apex:column headerValue="Person ID" value="{!item.personID}"/>
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadFN}" value="{!item.firstName}"/>
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadLN}" value="{!item.lastName}"/>
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadPh}" value="{!item.phoneNo}"/>
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadEmail}" value="{!item.email}"/>
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadAcc}" value="{!item.company}"/>
+                    <apex:column headerValue="{!$Label.Person_Create_OutHeadBU}" value="{!item.BU}"/>
+                    <apex:column headerValue="Match Score" value="{!item.score}"/>
+                </apex:pageBlockTable>
+                <apex:inputHidden value="{!selectedPersonID}" id="RadioButtonValue" />
+                <apex:inputHidden value="{!selectedPersonIDTemp}" id="RadioButtonValue1" />
+                <apex:outputText value="<b>{!$Label.Person_Create_OutMsg1_Part1} {!matchingNonSFDCContactsCount} {!$Label.Person_Create_OutMsg1_Part2} {!oContact.firstName} {!oContact.lastName} {!$Label.Person_Create_OutMsg1_Part3}</b>" escape="false"></apex:outputText>
+                <apex:outputText value="{!$Label.Person_Create_OutMsg2}" escape="false" rendered="{!HasMatchingNonSFDCContacts}"></apex:outputText>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons location="bottom" id="pagegBtns2" >
+                <apex:outputPanel id="btnsPanel2">  
+                    <apex:commandButton id="btnSearch" value="{!$Label.Person_Create_SearchBtn}" action="{!searchPerson}" rerender="formEdit" status="statusValidatePerson" rendered="{!NOT(searchClicked)}"/>
+                    <apex:commandButton id="btnCancel" value="{!$Label.Person_Create_ResetBtn}" action="{!reset}" rerender="formEdit" status="statusValidatePerson" rendered="{!searchClicked}"/>
+                    <apex:commandButton id="btnCreate" value="{!$Label.Person_Create_CreateNewBtn}" action="{!save}" status="statusValidatePerson" rendered="{!AND(searchClicked,AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts)))}" oncomplete="callPersonIdGen();"/> 
+                  <!--  <apex:commandButton id="btnCreate" value="{!$Label.Person_Create_CreateNewBtn}" action="{!updateisContactNewPersonId}" status="statusValidatePerson" rendered="{!AND(searchClicked,AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts)), NOT(isContactNewPersonId))}"/> 
+                    <apex:commandButton id="btnSave" value="Save" action="{!saveWithPerson}" rendered="{!isContactNewPersonId}"/> -->
+                    <apex:commandButton id="btnCreate1" value="{!$Label.Person_Create_CreateNewBtn}" action="{!saveWithPerson}" status="statusValidatePerson" rendered="{!AND(NOT(isContactOldPersonId), searchClicked, NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}" oncomplete="callPersonIdGen();"/> 
+                    <apex:commandButton id="btnCreate2" value="{!$Label.Person_Create_CreateNewBtn1}" action="{!saveWithPerson}" status="statusValidatePerson" rendered="{!AND(isContactOldPersonId, searchClicked, NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}" oncomplete="callIDQContactCreate();" /> <!--, NOT(AND(NOT(HasMatchingSFDCContacts), NOT(HasMatchingNonSFDCContacts))))}"/> -->
+                    <apex:commandButton id="btnCancelCreate" value="Cancel" action="{!cancel}" />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            <apex:actionFunction name="passContactsToController" action="{!updateisContactNewPersonId}" status="loadStatus" reRender="btnsPanel1, btnsPanel2"/>
+            
+        </apex:pageBlock>
+        <apex:actionFunction name="callPersonIdGen" action="{!personIdGeneration}" status="statusValidatePerson" />
+        <apex:actionFunction name="callIDQContactCreate" action="{!idqContactCreate}" status="statusValidatePerson" />
+    </apex:form>
+</apex:page>

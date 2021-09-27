@@ -1,0 +1,13 @@
+<apex:component controller="RenewalTemplateAddressPopulation" access="global">
+    <apex:attribute name="optyId" type="Id" description="Id of the opty" assignTo="{!opportunityId}"/>    
+        <apex:repeat value="{!addressMapping}" var="o">
+            {!o.TR_Business_Address__c},<br />
+            <apex:outputLabel rendered="{!LEN(o.TR_Business_Address1__c) > 1}">
+                {!o.TR_Business_Address1__c}, <br />               
+            </apex:outputLabel>            
+            
+            
+            {!o.TR_Business_Address_City__c},
+            {!o.TR_Business_Address_Zip__c}            
+        </apex:repeat> 
+</apex:component>

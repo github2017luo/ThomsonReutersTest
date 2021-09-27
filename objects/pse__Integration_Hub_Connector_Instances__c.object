@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Contains settings for configuring the Concur - PSA integration.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Allow_Deletion_of_Assignments__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Delete PSA Assignments in Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Delete PSA Assignments in Concur.</inlineHelpText>
+        <label>Allow Deletion of Assignments</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Allow_Deletion_of_Projects__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Delete PSA Projects in Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Delete PSA Projects in Concur.</inlineHelpText>
+        <label>Allow Deletion of Projects</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Approval_Status__c</fullName>
+        <defaultValue>&quot;Approved&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Status that makes an Expense Report in Concur eligible to be sent to PSA.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status that makes an Expense Report in Concur eligible to be sent to PSA.</inlineHelpText>
+        <label>Approval Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__CallBack_Url__c</fullName>
+        <deprecated>false</deprecated>
+        <description>DEPRECATED:Oauth Proxy URL in Integration Hub Connector.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Oauth Proxy URL in Integration Hub Connector.</inlineHelpText>
+        <label>DEPRECATED:CallBack Url</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_API_URL_Suffix__c</fullName>
+        <defaultValue>&quot;/api/v3.0&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>API suffix automatically appended to the Concur API URL Prefix. Only applies to Password Grant Type authentication.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>API suffix automatically appended to the Concur API URL Prefix. Only applies to Password Grant Type authentication.</inlineHelpText>
+        <label>Concur API URL Suffix</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_Filter_By_Billable_Expenses_Field__c</fullName>
+        <defaultValue>&quot;None&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Concur filter fields used to filter Expense Report. Possibilities are &quot;None&quot;, &quot;IsBillable&quot; and/or &quot;IsPersonal&quot; separated by comma.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Concur filter fields used to filter Expense Report. Possibilities are &quot;None&quot;, &quot;IsBillable&quot; and/or &quot;IsPersonal&quot; separated by comma.</inlineHelpText>
+        <label>Concur Filter By Billable Expenses Field</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_field_for_Expense_Billable_Type__c</fullName>
+        <defaultValue>&quot;Is Billable?&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Concur custom field for Expense Billable Type.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Concur custom field for Expense Billable Type.</inlineHelpText>
+        <label>Concur field for Expense Billable Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_field_for_PSA_Project__c</fullName>
+        <defaultValue>&quot;PSA Project&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Name of the custom field in Concur for the PSA project, or PSA project and project manager.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Concur custom field for PSA Project</inlineHelpText>
+        <label>Concur field for PSA Project</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_field_for_PSA_Resource_Assignment__c</fullName>
+        <defaultValue>&quot;PSA Resource-PSA Assignment&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The Concur custom field for the PSA Resource-Assignment LinkedList.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The Concur custom field for the PSA Resource-Assignment LinkedList.</inlineHelpText>
+        <label>Concur field for PSA Resource-Assignment</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Delete_Workflow_Name__c</fullName>
+        <defaultValue>&quot;Delete PSA Project and Assignment in Concur - 2020.400&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The name of the formula in the Integration Hub Connector that is used to delete PSA Project and Assignment records in Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The name of the formula in the Integration Hub Connector that is used to delete PSA Project and Assignment records in Concur.</inlineHelpText>
+        <label>Delete Workflow Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Email__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Email address for receiving error notifications if the Integration with Concur fails.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Email address for receiving error notifications if the Integration with Concur fails.</inlineHelpText>
+        <label>Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Expense_Report_Billable_Mapping__c</fullName>
+        <defaultValue>&quot;Yes:true&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Concur to PSA Expense Report Billable Mapping.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Concur to PSA Expense Report Billable Mapping.</inlineHelpText>
+        <label>Expense Report Billable Mapping</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Expense_Report_Status_Mapping__c</fullName>
+        <defaultValue>&quot;Approved:Approved&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Concur to PSA Expense Report Status Mapping.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Concur to PSA Expense Report Status Mapping.</inlineHelpText>
+        <label>Expense Report Status Mapping</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Expenses_Sync_Workflow_Name__c</fullName>
+        <defaultValue>&quot;Synchronize Expense Report from Concur to PSA - 2020.400&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The name of the formula in the Integration Hub Connector that is used to synchronize Expense Reports with expenses from Concur to FinancialForce.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The name of the formula in the Integration Hub Connector that is used to synchronize Expense Reports with expenses from Concur to FinancialForce.</inlineHelpText>
+        <label>Expenses Sync Workflow Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Initial_Sync_Chunk_Size__c</fullName>
+        <defaultValue>2000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Maximum number of projects, resources, and assignments that are synced in a single initial synchronization chunk.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Maximum number of projects, resources, and assignments that are synced in a single initial synchronization chunk. An additional chunk is created each time this limit is reached. The default is 2000.</inlineHelpText>
+        <label>Initial Sync Chunk Size</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Initial_Sync_Workflow_Name__c</fullName>
+        <defaultValue>&quot;Synchronize All Projects, Resources and Assignments from PSA to Concur - 2019.400.1&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The name of the formula in the Integration Hub Connector that is used to perform initial synchronization of Projects, Resources and Assignments from FinancialForce to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The name of the formula in the Integration Hub Connector that is used to perform initial synchronization of Projects, Resources and Assignments from FinancialForce to Concur.</inlineHelpText>
+        <label>Initial Sync Workflow Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Oauth_Proxy_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>DEPRECATED:OAuth Proxy name in Integration Hub Connector.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>OAuth Proxy name in Integration Hub Connector.</inlineHelpText>
+        <label>DEPRECATED:Oauth Proxy Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__PSA_Filter_field_for_Assignment__c</fullName>
+        <defaultValue>&quot;SendToThirdPartyExpensesApplication&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The PSA custom field used to filter Assignments for deletion.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The PSA custom field used to filter Assignments for deletion.</inlineHelpText>
+        <label>DEPRECATED: PSA Filter field for Assign</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__PSA_Filter_field_for_Project__c</fullName>
+        <defaultValue>&quot;SendToThirdPartyExpensesApplication&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The PSA custom field used to filter Projects for deletion.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The PSA custom field used to filter Projects for deletion.</inlineHelpText>
+        <label>DEPRECATED: PSA Filter field for Project</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__ProjectWorkflowName__c</fullName>
+        <defaultValue>&quot;Synchronize Projects from PSA to Concur - 2020.400&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Formula name in Integration Hub Connector to synchronize Projects from FinancialForce to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Formula name in Integration Hub Connector to synchronize Projects from FinancialForce to Concur.</inlineHelpText>
+        <label>Project Sync Workflow Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Assignment_Sync_Workflow_Name__c</fullName>
+        <defaultValue>&quot;Synchronize Resources and Assignments from PSA to Concur - 2020.400&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The name of the formula in the Integration Hub Connector that is used to synchronize Resources and Assignments from FinancialForce to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The name of the formula in the Integration Hub Connector that is used to synchronize Resources and Assignments from FinancialForce to Concur.</inlineHelpText>
+        <label>Resource-Assignment Sync Workflow Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Sync_Project_Managers__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Sync Project Manager when syncing PSA Projects to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sync Project Manager when syncing PSA Projects to Concur.</inlineHelpText>
+        <label>Sync Project Managers</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Synched_Assignments__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Assignments have been synced to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Assignments have been synced to Concur.</inlineHelpText>
+        <label>Assignments Synced</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Synched_Projects__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Projects have been synced to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Projects have been synced to Concur.</inlineHelpText>
+        <label>Projects Synced</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Synched_Resources__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Resources have been synced to Concur.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Resources have been synced to Concur.</inlineHelpText>
+        <label>Resources Synced</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Integration Hub Connector: Concur - PSA</label>
+    <visibility>Public</visibility>
+</CustomObject>

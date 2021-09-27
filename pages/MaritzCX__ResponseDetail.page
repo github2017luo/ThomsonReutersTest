@@ -1,0 +1,130 @@
+<!-- 
+	Page: ResponseDetail 
+	Description: This apex page overrides standard Response detail page replacling questions with custom labels.
+    Last Modified By: Rounak Sethiya (30 November, 2017)
+ -->
+
+ <apex:page standardController="MaritzCX__Survey_Response__c" extensions="MaritzCX.ResponseDetailController">  
+    <apex:includeScript value="{!$Resource.MaritzCX__View_Response_Link}"/>
+    <script type='text/javascript' language='javascript'>
+        function deleteResponse()
+        {
+            try{
+                if (confirm("Are you sure?")) {
+                    delResponse();
+                }
+             }catch(err){delResponse();}
+        }
+    </script>    
+    <style>
+        .hideOverflow {
+			white-space: pre-wrap !important;
+			max-width: 150px;
+			text-overflow: ellipsis;
+			overflow: hidden;
+        }
+        .sticky {
+            position: sticky;
+            top:0px;
+        }
+    </style>
+    <apex:sectionHeader title="{!$ObjectType.MaritzCX__Survey_Response__c.label}" subtitle="{!responseObject.Name}"/>
+	<apex:outputPanel >
+			<apex:pageMessages id="msg" />
+	</apex:outputPanel>
+	<apex:outputPanel rendered="{!if(NAMESPACE_PREFIX == '',true,false)}">
+			<apex:pageMessage summary="Error:" severity="error" strength="2">
+				<apex:outputLabel escape="true" value="{!$Label.maritzcx__namespace_error} " style="padding-left:8px;"/><apex:outputLabel escape="true" value="{!$Label.maritzcx__organization_settings}" style="text-decoration: underline;"/><apex:outputLabel escape="true" value=". "/><apex:outputLabel escape="true" value="{!$Label.maritzcx__more_details} "/><apex:outputLink value="{!helpLink}" target="_blank"><apex:outputText value="{!$Label.maritzcx__online_help_system}" escape="true"/></apex:outputLink><apex:outputLabel escape="true" value="."/>
+			</apex:pageMessage>
+	</apex:outputPanel>
+	<apex:form > 
+		<apex:pageBlock id="myPanel" rendered="{!NOT(flscheck)}" mode="maindetail" title="{!$ObjectType.MaritzCX__Survey_Response__c.label} Detail"> 
+			
+			<apex:actionFunction action="{!URLFOR($Action.Survey_Response__c.Delete, responseObject.ID)}" name="delResponse"/>
+			<apex:pageBlockButtons location="both">
+				<apex:commandButton value="{!$Label.maritzcx__save}" id="saveButton" style="display:none" action="{!saveResponse}" reRender="myPanel"/>				
+				<apex:commandButton value="{!$Label.maritzcx__cancel}" id="cancelBtn" style="display:none" onclick="{$Action.cancel}"/>				
+				<apex:commandButton value="{!$Label.maritzcx__edit}" id="editBtn" action="{!URLFOR($Action.Survey_Response__c.Edit, responseObject.ID)}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.updateable}" />				
+				<apex:commandButton value="{!$Label.maritzcx__delete}" id="delBtn"  onclick="deleteResponse();return false;" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.deletable}"/>				
+				<apex:commandButton value="{!$Label.maritzcx__clone}" id="cloneBtn" action="{!URLFOR($Action.Survey_Response__c.Clone, responseObject.ID)}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.createable}"/>
+			</apex:pageBlockButtons>
+			
+			<apex:pageBlockSection >
+				<apex:outputField value="{!responseObject.Name}">
+					<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn"  event="ondblclick"/>
+				</apex:outputField>
+				
+				<apex:outputField value="{!responseObject.OwnerID}">
+					<apex:outputText rendered="{!if(NAMESPACE_PREFIX == '',false,true)}">   <a href="/{!JSENCODE(responseObject.ID)}/a?retURL={!URLENCODE('/apex/' + JSENCODE(NAMESPACE_PREFIX) + '__ResponseDetail?id='+JSENCODE(responseObject.ID))}">[Change]</a> </apex:outputText>
+				</apex:outputField>
+				
+				<apex:outputField value="{!responseObject.MaritzCX__Contact_Id__c}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Contact_Id__c.accessible && responseObject.MaritzCX__Lead_Id__c == null}">
+					<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn,cloneBtn"  event="ondblclick" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Contact_Id__c.updateable}"/>
+				</apex:outputField>
+				
+				<apex:outputField value="{!responseObject.MaritzCX__Account__c}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Account__c.accessible  && responseObject.MaritzCX__Lead_Id__c == null}">
+					<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn,cloneBtn"  event="ondblclick" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Account__c.updateable}"/>
+				</apex:outputField>
+
+				<apex:outputField value="{!responseObject.MaritzCX__Survey_Id__c}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Survey_Id__c.accessible}">
+					<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn,cloneBtn"  event="ondblclick" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Survey_Id__c.updateable}"/>
+				</apex:outputField>
+
+				<apex:outputField value="{!responseObject.MaritzCX__Lead_Id__c}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Lead_Id__c.accessible && responseObject.MaritzCX__Lead_Id__c != null}">
+					<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn,cloneBtn"  event="ondblclick" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Lead_Id__c.updateable}"/>
+				</apex:outputField>
+
+				<apex:outputField value="{!responseObject.MaritzCX__Response_Completed_Date__c}" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Response_Completed_Date__c.accessible}">
+					<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn,cloneBtn"  event="ondblclick" rendered="{!$ObjectType.MaritzCX__Survey_Response__c.fields.MaritzCX__Response_Completed_Date__c.updateable}"/>
+				</apex:outputField>
+
+				<apex:pageBlockSectionItem >
+					<apex:outputLabel >View Response</apex:outputLabel>
+					<apex:outputLink value="#" rendered="{!responseViewVisible}" onclick="viewResponse('{!JSENCODE($Setup.MaritzCX__AlPublic__c.MaritzCX__NamespacePrefix__c)}','{!JSENCODE(TEXT(responseObject.MaritzCX__ALG_Response_Id__c))}')">View Response</apex:outputLink>
+				</apex:pageBlockSectionItem> 
+
+				<apex:outputText value="" rendered="{!responseObject.MaritzCX__Lead_Id__c == null}"/>
+				
+				<apex:outputField value="{!responseObject.CreatedById}"/>
+				<apex:outputField value="{!responseObject.LastModifiedById}"/>
+
+			</apex:pageBlockSection> 
+			<br/>
+			<apex:pageBlock >				
+				<apex:pageBlockSection id="pageSection1" collapsible="true" columns="1"  title="Response Details" showHeader="false">									
+					<apex:outputPanel id="pan" style="max-height: 500px; display: block; overflow-y: auto;">
+						<apex:outputText value="{!$Label.maritzcx__no_records_to_display}" rendered="{!accessibleQuestions.size == 0}"></apex:outputText>
+						
+						<apex:pageBlockTable id="pageBlockTable1" value="{!accessibleQuestions}" var="question" styleclass="fixme" rendered="{!accessibleQuestions.size > 0}" >
+							
+							<apex:repeat value="{!configCols}" var="c">
+								<apex:column styleClass="hideOverflow" headerValue="{!$Label.maritzcx__question}" rendered="{!c == '1'}" headerClass="sticky">                         
+									<apex:outputField title="{!question.MaritzCX__question__c}" value="{!question.MaritzCX__question__c}" />									
+								</apex:column>
+
+								<apex:column styleClass="hideOverflow" headerValue="{!$Label.maritzcx__metric_name}" rendered="{!c == '2'}" headerClass="sticky">                         
+									<apex:outputText title="{!question.Question_Label__c }" value="{!question.Question_Label__c }"/>&nbsp;
+								</apex:column>
+
+								<apex:column styleClass="hideOverflow" style="max-width: 120px" headerValue="{!$Label.maritzcx__response_table_response}" rendered="{!c == '3'}" headerClass="sticky">                         
+									<apex:outputField value="{!responseObject[question.MaritzCX__Field_On_Response__c]}" rendered="{!$ObjectType.Survey_Response__c.fields[question.Field_On_Response__c].accessible }">
+									<apex:inlineEditSupport showOnEdit="saveButton,cancelBtn" hideOnEdit="editBtn,delBtn,cloneBtn"  event="ondblclick" rendered="{!NOT(question.MaritzCX__Is_Keymetric__c) && $ObjectType.MaritzCX__Survey_Response__c.fields[question.MaritzCX__Field_On_Response__c].updateable}"/>
+								</apex:outputField>
+								</apex:column>
+
+								<apex:column id="chart1" headerValue="{!$Label.maritzcx__chart}" rendered="{!c == '4'}" headerClass="sticky">                         
+									<apex:outputField style="white-space: nowrap" value="{!responseObject[question.MaritzCX__Alternate_Field_On_Response__c]}" rendered="{!question.MaritzCX__Is_Keymetric__c && $ObjectType.MaritzCX__Survey_Response__c.fields[question.MaritzCX__Alternate_Field_On_Response__c].Accessible}"/>
+								</apex:column>
+							</apex:repeat>
+							
+						</apex:pageBlockTable>
+						
+					</apex:outputPanel>
+			</apex:pageBlockSection> 
+		</apex:pageBlock>              
+	</apex:pageBlock>                                    
+	</apex:form>     	
+	<apex:relatedList list="OpenActivities" rendered="{!NOT(flscheck)}"/>
+	<apex:relatedList list="ActivityHistories" rendered="{!NOT(flscheck)}"/>
+	<apex:relatedList list="Cases__r" rendered="{!NOT(flscheck)}"/>    
+</apex:page>

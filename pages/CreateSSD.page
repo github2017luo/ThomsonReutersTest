@@ -1,0 +1,738 @@
+<!--
+* CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 2019-04-03   Kumar Shubham          Jira no-DPS-4099-Enabled LightningStylesheets as part of Sales Lightning   
+* =============================================================================
+-->
+
+<apex:page id="mainPg" Controller="SourceSystemDetailController"  showHeader="false" sidebar="true" standardStylesheets="false" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0" lightningStylesheets="true" >
+    
+    <html>
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+           
+            <apex:slds />
+            <!--<apex:styleSheet value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.0/themes/smoothness/jquery-ui.css" />-->
+            
+            
+        </head>
+        
+        <style>
+            .table-like {
+            display: table;
+            width: 90%;
+            }
+            
+            .table-like div { 
+            display: table-row;
+            }
+            
+            .table-like div span { 
+            display: table-cell;
+            width:50%;
+            }
+            
+            /* add borders */
+            .table-like,
+            .table-like div span {
+            border: 0px solid black;  
+            vertical-align: middle;
+            }
+            
+            /* bold on 1st row */
+            .table-like div:nth-child(1) {
+            font-weight: bold;
+            }
+        </style>
+       <!--Below Code added to disable save buton being clicked more than once -->
+        <script language="Javascript">
+          function SubmitOnClick (objSubmitBtn) {
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:saveBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:saveBtn").disabled = true;
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:saveBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:saveBtn").disabled = true;
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:backBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:backBtn").disabled = true;
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:backBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:backBtn").disabled = true;
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:cancelBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:cancelBtn").disabled = true;
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:cancelBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:cancelBtn").disabled = true;
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:saveBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:saveBtn").value = 'Submitting...';
+            if(document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:saveBtn")!=null)
+                document.getElementById("mainPg:mainFrm:entryBlock:entryFrmButtons:bottom:saveBtn").value = 'Submitting...';
+            //objSubmitBtn.disabled = true;
+            //objSubmitBtn.value = 'Submitting...';
+            doSubmit();
+            return false;
+          }
+        </script>
+        <body class="slds-scope" onload="init();">
+            <apex:form id="mainFrm">
+               
+                <apex:actionstatus id="loadStatus">
+                    <apex:facet name="start">
+                        <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);z-index:1">
+                            <div class="waitingHolder" style="top: 274.2px; text-align:center;padding-top: 10%;">
+                                <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;"/>
+                                <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                            </div>
+                        </div>
+                    </apex:facet>
+                </apex:actionstatus>
+            
+                <apex:pageBlock id="selectOptionBlock" rendered="{!AND(displayFirstCreateSeg=TRUE, selectedCreateOption=NULL)}"> 
+                    <apex:pageBlockButtons location="top" styleClass="slds-p-top_small slds-grid slds-grid_align-center">
+                        <apex:commandButton id="createAccSSDBtn" styleClass="slds-button slds-button_brand"  value="Create Account with SSD" 
+                                            action="{!clickedAccountWithSSD}" rerender="mainFrm" status="loadStatus"/>
+                        <apex:commandButton id="createSSDBtn" styleClass="slds-button slds-button_brand"  value="Create SSD only" 
+                                            action="{!clickedSSDOnly}" rerender="mainFrm" status="loadStatus"/>                   
+                        <apex:commandButton styleClass="slds-button slds-button_brand"  value="Cancel" action="{!cancel}" immediate="true">   
+                            <apex:actionSupport event="onclick" status="loadStatus" reRender="selectOptionBlock"/>
+                        </apex:commandButton>                   
+                    </apex:pageBlockButtons>         
+                 
+                </apex:pageBlock> 
+                
+                <apex:pageBlock id="entryBlock" rendered="{!AND(displayFirstCreateSeg<>TRUE, selectedCreateOption<>NULL)}">
+                
+                <H4><b>Create New Source System</b></H4>        
+                    <apex:pageBlockButtons id="entryFrmButtons" location="both" styleClass="slds-p-top_small slds-grid slds-grid_align-center">
+                        <apex:commandButton id="backBtn" styleClass="slds-button slds-button_brand"  value="Back"   action="{!clickedBack}" 
+                                            status="loadStatus" immediate="true" html-formnovalidate="formnovalidate" rendered="{!backOptionflag=TRUE}">
+                            <apex:actionSupport event="onclick" status="loadStatus" reRender="entryFrmButtons"/>
+                        </apex:commandButton>                   
+                        <apex:commandButton id="saveBtn" styleClass="slds-button slds-button_brand"  value="Save"   onClick="return SubmitOnClick(this);"/>
+                        <apex:commandButton id="cancelBtn" styleClass="slds-button slds-button_brand" value="Cancel" action="{!cancel}" immediate="true" html-formnovalidate="formnovalidate">
+                            <apex:actionSupport event="onclick" status="loadStatus" reRender="entryFrmButtons"/>
+                        </apex:commandButton>                   
+                        <apex:actionFunction name="doSubmit" action="{!saveSSD}" status="loadStatus"/>
+                    </apex:pageBlockButtons>         
+                    <apex:outputPanel layout="none" >
+                        <div class="slds-text-color_error" style="white-space:nowrap;">
+                            <apex:pageMessages escape="false"/>
+                        </div> 
+                        <apex:outputPanel rendered="{!selectedCreateOption = 'createAccWithSSD'}">
+                            <div class="slds-section slds-is-open" id="accInformation">
+                                <h3 class="slds-section__title" style="background-color: #009EDA;color: white;">
+                                    <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#switch')}"></use>
+                                    </svg>
+                                    <span class="slds-truncate slds-text-heading_small slds-p-around_xx-small" title="Section Title" style="font-family: Arial,Helvetica,sans-serif;">Account Information</span>
+                                </h3> 
+                                <div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+                                    <div class="slds">
+                                        <div class="slds-grid slds-grid_align-center">
+                                         
+                                            <div class="table-like">
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accName"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.Name.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accName" value="{!accRec.Name}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <!--<label class="slds-form-element__label" for="text-input-parentAccount">{!$ObjectType.Account.fields.ParentId.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-parentAccount" value="{!accRec.ParentId}" styleclass="slds-input" />
+                                                            </div>-->
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-billingStreet"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.BillingStreet.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-billingStreet" value="{!accRec.BillingStreet}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <!--<span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-streetAdd2">{!$ObjectType.Account.fields.Street_Address_2__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-streetAdd2" value="{!accRec.Street_Address_2__c}" styleclass="slds-input"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>-->
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-billingCity"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.BillingCity.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-billingCity" value="{!accRec.BillingCity}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="selectBillingState"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.BillingCountry.Label}</label>
+                                                            <div class="slds-form-element__control">   
+                                                                <apex:selectList id="accCountryPick" value="{!accRec.BillingCountryCode}"  styleClass="slds-lookup__search-input slds-input" size="1"  required="true" multiselect="false" onchange="addressCountryChanged((document.getElementById('{!$Component.accCountryPick}')).value)">
+                                                                     <apex:selectOptions value="{!CountryOptions}" />
+                                                                  </apex:selectList>
+                                                                  <apex:actionFunction name="addressCountryChanged" action="{!addressCountryChanged}" reRender="selectBillingState" immediate="true" status="statusLoadingCountryRegions">
+                                                                        <apex:param value="" name="CountryOptions"/>
+                                                                  </apex:actionFunction>
+                                                              </div>
+                                                        </div>
+                                                    </span>
+                                                </div> 
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-billingPostalCode"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.BillingPostalCode.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-billingPostalCode" value="{!accRec.BillingPostalCode}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="selectBillingState"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.BillingState.Label}</label>
+                                                            <div class="slds-form-element__control">   
+                                                                <apex:selectList id="selectBillingState" value="{!accRec.BillingStateCode}"  styleClass="slds-lookup__search-input slds-input" size="1" multiselect="false" required="true">
+                                                                     <apex:selectOptions value="{!CountryRegionOptions}" />
+                                                                     <apex:param value="{!accRec.BillingStateCode}" name="CountryRegionOptions" />
+                                                                  </apex:selectList>
+                                                              </div>
+                                                              <apex:actionStatus id="statusLoadingCountryRegions">
+                                                                    <apex:facet name="start">
+                                                                        <span>&nbsp;&nbsp;</span>
+                                                                        <img src="/img/loading.gif" height="12px" width="12px"/>
+                                                                    </apex:facet>
+                                                              </apex:actionStatus>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accPOBox">{!$ObjectType.Account.fields.PO_Box__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accPOBox" value="{!accRec.PO_Box__c}" styleclass="slds-input"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accCounty">{!$ObjectType.Account.fields.County__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accCounty" value="{!accRec.County__c}" styleclass="slds-input"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-suiteNumber">{!$ObjectType.Account.fields.Suite_Number__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-suiteNumber" value="{!accRec.Suite_Number__c}" styleclass="slds-input"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>              
+                            </div>
+                            
+                            <div class="slds-section slds-is-open" id="accSegInformation">
+                                <h3 class="slds-section__title" style="background-color: #009EDA;color: white;">
+                                    <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#switch')}"></use>
+                                    </svg>
+                                    <span class="slds-truncate slds-text-heading_small slds-p-around_xx-small" title="Section Title" style="font-family: Arial,Helvetica,sans-serif;">Account Segment Information</span>
+                                </h3> 
+                                <div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+                                    <div class="slds">
+                                        <div class="slds-grid slds-grid_align-center">
+                                         
+                                            <div class="table-like">
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accBUSeg"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.Bu_Segment__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accBUSeg" value="{!accRec.Bu_Segment__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accTopFirm"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.ECC_Top_Named_Law_Firms__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accTopFirm" value="{!accRec.ECC_Top_Named_Law_Firms__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accNoOfAtt"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.ECC_Number_of_Attorneys__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accNoOfAtt" value="{!accRec.ECC_Number_of_Attorneys__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accNoOfEmp"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.ECC_Number_Of_Employees__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accNoOfEmp" value="{!accRec.ECC_Number_Of_Employees__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accTopCorp"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.ECC_Top_Named_Corporations__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accTopCorp" value="{!accRec.ECC_Top_Named_Corporations__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accAnnRev"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.ECC_Annual_Revenue__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accAnnRev" value="{!accRec.ECC_Annual_Revenue__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                                <div>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label" for="text-input-accGovType"><font color="red"><b>*</b></font>{!$ObjectType.Account.fields.ECC_Government_Type__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-accGovType" value="{!accRec.ECC_Government_Type__c}" styleclass="slds-input" required="true"/>
+                                                            </div>
+                                                        </div>
+                                                    </span>
+                                                    <span>
+                                                        <div class="slds-form-element">
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>              
+                            </div>
+                                                
+                        </apex:outputPanel>
+                        
+                        <div class="slds-section slds-is-open" id="information">
+                            <h3 class="slds-section__title" style="background-color: #009EDA;color: white;">
+                                <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#switch')}"></use>
+                                </svg>
+                                <span class="slds-truncate slds-text-heading_small slds-p-around_xx-small" title="Section Title" style="font-family: Arial,Helvetica,sans-serif;">{!IF(selectedCreateOption = 'createAccWithSSD','SSD ','')}Information</span>
+                            </h3> 
+                            <div aria-hidden="false" class="slds-section__content" id="expando-unique-id">
+                                <div class="slds">
+                                    <div class="slds-grid slds-grid_align-center">
+                                     
+                                        <div class="table-like">
+                                            <div>
+                                                <span style="{!IF(selectedCreateOption = 'createAccWithSSD','display:none','')}">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-sourceSystemName">{!$ObjectType.Source_System_Detail__c.fields.Name.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputPanel id="nameId">
+                                                                <apex:outputtext id="text-input-sourceSystemName" value="{!sourceSysDetail.Name}" rendered="{!OR(AND(name1Len<=35,selectedsalesOrgName<>$Label.SALESORGS100),AND(name1Len<=40,selectedsalesOrgName=$Label.SALESORGS100))}"/>
+                                                                <apex:inputtext id="text-input-sourceSystemName1" value="{!sourceSysDetail.Name}" rendered="{!OR(AND(name1Len>35,selectedsalesOrgName<>$Label.SALESORGS100),AND(name1Len>40,selectedsalesOrgName=$Label.SALESORGS100))}" styleclass="slds-input"/>
+                                                            </apex:outputPanel>
+                                                        </div>
+                                                        <!--<div class="slds-form-element__control">
+                                                            <apex:inputtext id="text-input-sourceSystemNameggo" value="{!sourceSysDetail.Name}" styleclass="slds-input" style="width: auto;" rendered="{! LOTUS_TAX_CHECK }"/>
+                                                        </div>-->
+                                                    </div>
+                                                </span>
+                                                <span style="{!IF(selectedCreateOption = 'createAccWithSSD','display:none','')}">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-account">{!$ObjectType.Source_System_Detail__c.fields.Account_Name__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputlink id="text-input-account" value="/{!sourceSysDetail.Account_Name__c}">{!accName}</apex:outputlink>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div>
+                                            
+                                                <span >
+                                                    <!--<div class="slds-picklist slds-dropdown-trigger slds-dropdown-trigger--click slds-m-around--small" data-aljs="picklist">-->
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-salesorg"><font color="red"><b>{!IF(LOTUS_TAX_CHECK,'*','')}</b></font>{!$ObjectType.Source_System_Detail__c.fields.LCRM_Sales_Org__c.Label}</label>
+                                                        
+                                                        <div class="slds-form-element__control">
+                                                                <!-- <apex:outputtext id="text-input-salesorg" value="{!sourceSysDetail.LCRM_Sales_Org__c}"/> --> 
+                                                                <apex:selectList id="ssdSalesOrg" size="1" value="{!selectedsalesOrgName}" styleClass="slds-lookup__search-input slds-input" multiselect="false" required="true" onchange="refreshCGroupandIndustry((document.getElementById('{!$Component.ssdSalesOrg}')).value,'true')"> 
+                                                                <apex:selectOptions value="{!salesorg}"/>  
+                                                            </apex:selectList>
+                                                            <apex:actionFunction name="refreshCGroupandIndustry" action="{!refreshCGroupandIndustry}" reRender="cgId,IId,CRId,s4Id,nameId,taxntId,taxnId,taxn3Id,taxn4Id" immediate="true" status="loadStatus">
+                                                                <apex:param value="" name="salesorg"/>
+                                                                <apex:param value="" name="salesOrgChanged"/>
+                                                            </apex:actionFunction>
+                                                            <!--<apex:description></apex:description> <apex:outputtext id="text-input-salesorg" value="{!selectedsalesOrgName}"   />-->
+                                                        </div>
+                                                    </div>
+                                                    <!--</div>-->
+                                                </span>
+               
+                                                <span>
+                                                    <!--<div class="slds-picklist slds-dropdown-trigger slds-dropdown-trigger--click slds-m-around--small" data-aljs="picklist">-->
+                                                    
+                                                    <apex:outputPanel id="cgId">
+                                                        <div class="slds-form-element" style="display:{!if(!bTaxSalesOrgS100Check ,"block","none")};">
+                                                            <label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Customer_Group__c.Label}</label>
+                                                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right slds-picklist__input">
+                                                               <apex:selectList size="1" value="{!selectedCustomerGroupName}" styleClass="slds-lookup__search-input slds-input" > 
+                                                                    <apex:selectOptions value="{!CustomerGroup}"/>  
+                                                                </apex:selectList> 
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                    <!--</div>-->
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-name2">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Name_2__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputfield id="text-input-name2" value="{!sourceSysDetail.LCRM_Name_2__c}" styleclass="slds-input" />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <apex:outputPanel id="IId">
+                                                        <div class="slds-form-element" style="display:{!if(!bTaxSalesOrgS100Check ,"block","none")};">
+                                                            <label class="slds-form-element__label" for="text-input-industry" >{!$ObjectType.Source_System_Detail__c.fields.LCRM_Industry__c.Label}</label>
+                                                            <div class="slds-form-element__control" >
+                                                               <!-- <apex:outputtext id="text-input-industry" value="{!sourceSysDetail.LCRM_Industry__c}"  /> -->
+                                                               <apex:selectList size="1" value="{!selectedIndustryName}" styleClass="slds-lookup__search-input slds-input" > 
+                                                                    <apex:selectOptions value="{!Industry}"/>     
+                                                                </apex:selectList>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-name3">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Name_3__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:inputfield id="text-input-name3" value="{!sourceSysDetail.LCRM_Name_3__c}" styleclass="slds-input" />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-currency">{!$ObjectType.Source_System_Detail__c.fields.CurrencyIsoCode.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <!-- <apex:outputtext id="text-input-currency" value="{!sourceSysDetail.CurrencyIsoCode}" /> -->
+                                                            <apex:selectList size="1" id="CRId" value="{!selectedCurrencyName}" styleClass="slds-lookup__search-input slds-input" multiselect="false"> 
+                                                                <apex:selectOptions value="{!Currency1}"/>  
+                                                            </apex:selectList>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <apex:outputPanel id="taxntId">
+                                                        <div class="slds-form-element" style="display:{!if(latamtaxsec ,"block","none")};">
+                                                        <label class="slds-form-element__label" for="text-input-taxnumbertype"><font color="red"><b>*</b></font>{!$ObjectType.Source_System_Detail__c.fields.LatAm_Tax_Number_Type__c.Label}</label>
+                                                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right slds-picklist__input">
+                                                               <apex:selectList size="1" value="{!selectedtaxnumbertype}" styleClass="slds-lookup__search-input slds-input"> 
+                                                                    <apex:selectOptions value="{!taxnumbertypeList}"/>  
+                                                                </apex:selectList> 
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </span>
+                                                <span>
+                                                    <apex:outputPanel id="taxnId">
+                                                        <div class="slds-form-element" style="display:{!if(latamtaxsec ,"block","none")};">
+                                                        <label class="slds-form-element__label" for="text-input-taxnumber"><font color="red"><b>*</b></font>{!$ObjectType.Source_System_Detail__c.fields.LCRM_Tax_Number__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-taxnumber" value="{!sourceSysDetail.LCRM_Tax_Number__c}" styleclass="slds-input"/>
+                                                            </div>
+                                                        </div> 
+                                                    </apex:outputPanel>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <apex:outputPanel id="taxn3Id">
+                                                        <div class="slds-form-element" style="display:{!if(latamtaxsec ,"block","none")};">
+                                                            <label class="slds-form-element__label" for="text-input-tax3">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Tax_3__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-tax3" value="{!sourceSysDetail.LCRM_Tax_3__c}" styleclass="slds-input" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </span>
+                                                <span>
+                                                    <apex:outputPanel id="taxn4Id">
+                                                        <div class="slds-form-element" style="display:{!if(latamtaxsec ,"block","none")};">
+                                                            <label class="slds-form-element__label" for="text-input-tax4">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Tax_4__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:inputfield id="text-input-tax4" value="{!sourceSysDetail.LCRM_Tax_4__c}" styleclass="slds-input" />
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </span>     
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>              
+                        </div>
+                        
+                        
+                        <div class="slds-section slds-is-open" id="Address" style="{!IF(selectedCreateOption = 'createAccWithSSD','display:none','')}">
+                            <h3 class="slds-section__title" style="background-color: #009EDA;color: white;">
+                                <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#switch')}"></use>
+                                </svg>
+                                <span class="slds-truncate slds-text-heading_small slds-p-around_xx-small" title="Section Title" style="font-family: Arial,Helvetica,sans-serif;">Address</span>
+                            </h3> 
+                            <div aria-hidden="false" class="slds-section__content" id="expando-address-id">
+                                <div class="slds">
+                                    <div class="slds-grid slds-grid_align-center">
+                                        <div class="table-like">
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-street">{!$ObjectType.Source_System_Detail__c.fields.Number_Street__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-street" value="{!sourceSysDetail.Number_Street__c}" rendered="{!street1Len<=35}"/>
+                                                            <apex:inputtext id="text-input-street1" value="{!sourceSysDetail.Number_Street__c}" rendered="{!street1Len>35}" styleclass="slds-input"/>
+                                                        </div>
+                                                        <!--<div class="slds-form-element__control">
+                                                            <apex:inputtext id="text-input-streetggo" value="{!sourceSysDetail.Number_Street__c}" rendered="{! LOTUS_TAX_CHECK}" styleclass="slds-input" style="width: auto;"/>
+                                                        </div>-->
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-city">{!$ObjectType.Source_System_Detail__c.fields.City__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-city" value="{!sourceSysDetail.City__c}" />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-street2">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Street_2__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-street2" value="{!sourceSysDetail.LCRM_Street_2__c}" rendered="{!street2Len<=35}"/>
+                                                            <apex:inputtext id="text-input-street21" value="{!sourceSysDetail.LCRM_Street_2__c}" rendered="{!street2Len>35}" styleclass="slds-input"/>
+                                                        </div>
+                                                         <!--<div class="slds-form-element__control">
+                                                            <apex:inputtext id="text-input-street2ggo" value="{!sourceSysDetail.LCRM_Street_2__c}" rendered="{!LOTUS_TAX_CHECK}" styleclass="slds-input" style="width: auto;"/>
+                                                        </div>-->
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-state">state</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-state" value="{!sourceSysDetail.State__c}"  />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-street3">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Street3__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-street3" value="{!sourceSysDetail.LCRM_Street3__c}" rendered="{!street3Len<=35}"/>
+                                                            <apex:inputtext id="text-input-street31" value="{!sourceSysDetail.LCRM_Street3__c}" rendered="{!street3Len>35}" styleclass="slds-input"/>
+                                                        </div>
+                                                        <!--<div class="slds-form-element__control">
+                                                            <apex:inputtext id="text-input-street3ggo" value="{!sourceSysDetail.LCRM_Street3__c}" rendered="{!LOTUS_TAX_CHECK}" styleclass="slds-input" style="width: auto;"/>
+                                                        </div>-->
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-postalCode">{!$ObjectType.Source_System_Detail__c.fields.Postal_Code__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-postalCode" value="{!sourceSysDetail.Postal_Code__c}"  />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <apex:outputPanel id="s4Id">
+                                                        <div class="slds-form-element"><!-- style="display:{!if(!bTaxSalesOrgS100Check ,"block","none")};">-->
+                                                            <label class="slds-form-element__label" for="text-input-street4">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Street4__c.Label}</label>
+                                                            <div class="slds-form-element__control">
+                                                                <apex:outputtext id="text-input-street4" value="{!sourceSysDetail.LCRM_Street4__c}" rendered="{!street4Len<=35}"/>
+                                                                <apex:inputtext id="text-input-street41" value="{!sourceSysDetail.LCRM_Street4__c}" rendered="{!street4Len>35}" styleclass="slds-input"/>
+                                                            </div>
+                                                        </div>
+                                                    </apex:outputPanel>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-county">{!$ObjectType.Source_System_Detail__c.fields.County__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-county" value="{!sourceSysDetail.County__c}"  />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-pobox">{!$ObjectType.Source_System_Detail__c.fields.LCRM_PO_Box__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-pobox" value="{!sourceSysDetail.LCRM_PO_Box__c}" />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-country">{!$ObjectType.Source_System_Detail__c.fields.Country__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-country" value="{!sourceSysDetail.Country__c}"  />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div> 
+                        
+                        
+                        
+                        
+                        <div class="slds-section slds-is-open" id="contact" style="{!IF(selectedCreateOption = 'createAccWithSSD','display:none','')}">
+                            <h3 class="slds-section__title" style="background-color: #009EDA;color: white;">
+                                <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="true">
+                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Resource.slds, 'assets/icons/utility-sprite/svg/symbols.svg#switch')}"></use>
+                                </svg>
+                                <span class="slds-truncate slds-text-heading_small slds-p-around_xx-small" title="Section Title" style="font-family: Arial,Helvetica,sans-serif;">Contact Information</span>
+                            </h3>    
+                            <div aria-hidden="false" class="slds-section__content" id="expando-contact-id">
+                                <div class="slds">
+                                    <div class="slds-grid slds-grid_align-center">
+                                        <div class="table-like">
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-fax">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Fax__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-fax" value="{!sourceSysDetail.LCRM_Fax__c}" />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-phone">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Phone__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-phone" value="{!sourceSysDetail.LCRM_Phone__c}"  />
+                                                        </div>
+                                                    </div>
+                                                </span>            
+                                            </div>
+                                            <div>
+                                                <span>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="text-input-website">{!$ObjectType.Source_System_Detail__c.fields.LCRM_Website__c.Label}</label>
+                                                        <div class="slds-form-element__control">
+                                                            <apex:outputtext id="text-input-website" value="{!sourceSysDetail.LCRM_Website__c}" />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                
+                                            </div>
+                                             
+                                        </div>
+                                    </div>    
+                                    
+                                </div>
+                            </div>              
+                        </div> 
+                        
+                        
+                    </apex:outputPanel>
+                </apex:pageBlock>
+                
+            </apex:form>
+        </body>
+    </html>      
+</apex:page>

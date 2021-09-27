@@ -1,0 +1,171 @@
+<!--
+ - This page is used to help the support team Manage the Cohort Validation process 
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-12-30   Brenda Shields          DLT-21098 - Add option to run automation and post validation searately
+ - ==================================================================================================================================   
+-->
+<apex:page lightningStylesheets="true" standardStylesheets="true" standardController="Product_Account_Detail__c" recordSetVar="dsrecords" extensions="Digital_Cohort_Initiation">
+
+    <apex:sectionHeader title="Cohort Automation and Validation Execution" />
+
+    <apex:form >
+        <apex:outputPanel id="SuccessMsg">
+            <apex:pageMessages ></apex:pageMessages>
+            <apex:outputPanel styleClass="datapanel" rendered="{!IF(valWrapper.statusValue=='newrecord','true','false')}">
+                <apex:pageBlock id="pgBlckId" title="Request Digital Automation or Validation Run" mode="edit">
+
+                    <apex:pageBlockSection columns="2" showHeader="true">
+                    <apex:pageBlockSectionItem helpText="Select the type of job..">
+                        <apex:panelGrid columns="2">
+                            <table>
+                               <tr>
+                                    <td>Request type</td>
+                                    <td>
+                                        <apex:selectList id="sJob" value="{!valWrapper.selJob}" multiselect="false" size="1">
+                                            <apex:selectOption itemValue="AutomationJob" itemLabel="Automation Only" />
+                                            <apex:selectOption itemValue="Pre-CohortsJob" itemLabel="Pre-Validation" />
+                                            <apex:selectOption itemValue="Post-CohortsJob" itemLabel="Automation & Post-Validation" />
+                                            <apex:selectOption itemValue="Post-CohortsOnly" itemLabel="Post-Validation Only" />
+                                        </apex:selectList>
+                                        <br></br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>
+                                        <apex:inputText id="sName" value="{!valWrapper.selName}" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Segment</td>
+                                    <td>
+                                        <apex:selectList id="sSeg" value="{!valWrapper.selSeg}" multiselect="false" size="1">
+                                            <apex:selectOption itemValue="Corporate" itemLabel="Corporate" />
+                                            <apex:selectOption itemValue="Government" itemLabel="Government" />
+                                            <apex:selectOption itemValue="FindLaw" itemLabel="FindLaw" />
+                                            <apex:selectOption itemValue="Small Law" itemLabel="Small Law" />
+                                            <apex:selectOption itemValue="Medium Law" itemLabel="Medium Law" />
+                                        </apex:selectList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Batch Size</td>
+                                    <td>
+                                        <apex:inputText id="batchSize" value="{!valWrapper.batchSize}" />
+                                        <br></br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td>Digital Settings</td>
+                                	<td>                            
+ 									<apex:selectList value="{!valWrapper.dsName}" multiselect="false" size="1" id="selectedvalue">
+                    					<apex:selectOptions value="{!valWrapper.digitalSettings}" />
+                					</apex:selectList>&nbsp; &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
+                        </apex:panelGrid>
+					</apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton value="Submit" action="{!submitRequest}" Status="triggerjob" reRender="SuccessMsg" />
+                        <apex:commandButton action="{!cancel}" value="Back to DS List" immediate="true" />
+                    </apex:pageBlockButtons>
+                </apex:pageBlock>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!IF(valWrapper.statusValue=='existingvalues','true','false')}">
+                <apex:pageBlock title="Digital Validation Settings Records">
+                    <apex:pageBlockTable value="{!valWrapper.dsSettingsList}" var="dsSettings">
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Name}" />
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Completion__c}" />
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Data_Status__c}" />
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Job_Status__c}" />
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Segment__c}" />
+                    </apex:pageBlockTable>
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton action="{!cancel}" value="Back to DS List" immediate="true" />
+                    </apex:pageBlockButtons>
+                </apex:pageBlock>
+            </apex:outputPanel>
+
+		   <apex:pageBlock title="Automation Status">
+      		<apex:pageBlockTable value="{!lstJobsAutomation}" var="processingList">
+         		<apex:column value="{!processingList.jobStatus}">
+         			<apex:facet name="header">Status</apex:facet>
+         		</apex:column>
+         		<apex:column value="{!processingList.jobName}">
+         			<apex:facet name="header">Job Name</apex:facet>
+         		</apex:column>         
+		         <apex:column value="{!processingList.totalBatches}">
+		         	<apex:facet name="header">Total Batches</apex:facet>
+         		</apex:column>
+         		<apex:column value="{!processingList.processedBatches}">
+         			<apex:facet name="header">Processed Batches</apex:facet>
+         		</apex:column>
+         		<apex:column value="{!processingList.createdDate}">
+         			<apex:facet name="header">Created Date</apex:facet>
+         		</apex:column>
+         		<apex:column value="{!processingList.createdName}">
+         			<apex:facet name="header">Created By</apex:facet>
+         		</apex:column>
+         		<apex:column value="{!processingList.completedDate}">
+         			<apex:facet name="header">Completed Date</apex:facet>
+         		</apex:column>
+         		<apex:column value="{!processingList.extStatus}">
+         			<apex:facet name="header">Failure Message</apex:facet>
+         		</apex:column>
+      		</apex:pageBlockTable>
+      		<apex:pageBlockButtons location="bottom">
+      			<apex:commandButton value="Refresh Status" action="{!refreshStatus}" Status="triggerjob" reRender="SuccessMsg" />
+      		</apex:pageBlockButtons>
+  		 </apex:pageBlock>
+   
+            <apex:outputPanel rendered="{!IF(valWrapper.statusValue=='jobSuccess','true','false')}">
+                <apex:pageBlock title="Digital Validation Settings Records">
+                    <apex:pageBlockTable value="{!valWrapper.dsSettingsList}" var="dsSettings">
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Name}" />
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Data_Status__c}" />
+                        <apex:column onclick="window.open('/{!dsSettings.Id}')" value="{!dsSettings.Segment__c}" />
+                    </apex:pageBlockTable>
+                    <apex:pageBlockButtons location="bottom">
+                        <apex:commandButton action="{!cancel}" value="Back to DS List" immediate="true" />
+                    </apex:pageBlockButtons>
+                </apex:pageBlock>
+            </apex:outputPanel>
+
+        </apex:outputPanel>
+    </apex:form>
+
+    <apex:form >
+        <apex:outputText >
+            <apex:actionStatus id="triggerjob">
+                <apex:facet name="start">
+                    <div id="jobTriggered" />
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputText>
+    </apex:form>
+
+    <style type="text/css">
+        #jobTriggered {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background: url({!URLFOR($Resource.Digital_2)
+        }
+
+        ) 50% 50% no-repeat #666;
+
+        z-index:9999;
+        opacity:0.75;
+        filter: alpha(opacity=75);
+        }
+    </style>
+
+</apex:page>

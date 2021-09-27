@@ -1,0 +1,2544 @@
+<!--
+@Name: APTS_BundleGroupPage
+@Author: N. Singh
+@CreateDate: 7-Sep-2015
+@Description: New Angular JS Based Visual Force Page for Manage Group level based adjustment functionality
+@UsedBy: Product Configuration
+******************************************************************
+@ModifiedBy: Mehul Parmar
+@ModifiedDate:  21st Sep,2015
+@ChangeDescription: All AngularJS Implementation and Calculation are done
+******************************************************************
+@ModifiedBy: Chirag Gulati
+@ModifiedDate:  5/29/2017
+@ChangeDescription: Keep terms functionality for Print Products
+******************************************************************
+@ModifiedBy: Punitha KK
+@ModifiedDate:  20th Dec 2017
+@ChangeDescription: Lapse and Exisitng Ship and Charge for Print Calculator
+******************************************************************
+-->
+<apex:page applyBodyTag="false" applyHtmlTag="false" sidebar="false" showHeader="false" standardController="Apttus_Config2__ProductConfiguration__c" extensions="APTS_BundleGroupCtrl" action="{!doinit}" lightningStylesheets="true">
+
+    <html lang="en" ng-app="lineGroupApp">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Line Item Group Adjustment</title>
+
+        <!-- stylesheets for CPQ like formatting -->
+        <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__CPQPageResources,'CPQCommon.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__CPQPageResources,'CPQOptions.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__CPQPageResources, 'CPQDelight.css')}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.APTS_customcss)}"/>
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.6.0/jquery.nicescroll.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.4/sortable.js" type="text/javascript"></script>
+
+        <!--Tabs required-->
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js'></script>
+        <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
+        <script src="{!URLFOR($Resource.APTS_Angular_JS)}" ></script>
+
+        <!-- Stylesheets for tabs-->
+        <apex:stylesheet value="{!URLFOR($Resource.APTS_Angular_Material)}"/>
+        <apex:stylesheet value="{!URLFOR($Resource.APTS_Angular_Docs)}"/>
+
+
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui/0.4.0/angular-ui.min.js"></script>-->
+        <apex:stylesheet value="{!URLFOR($Resource.APTS_ngResource,'bootstrap/css/bootstrap.min.css')}" />
+        <apex:stylesheet value="{!URLFOR($Resource.APTS_ngResource,'bootstrap/css/bootstrap-theme.min.css')}" />
+        <apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css"/>
+        <apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.theme.min.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"/>
+        <!--Tabs styles-->
+        <style>
+            .tabsdemoDynamicTabs md-content {
+                background-color: transparent !important; }
+            .tabsdemoDynamicTabs md-content md-tabs {
+                border: 1px solid #e1e1e1; }
+            .tabsdemoDynamicTabs md-content md-tabs md-tab-content {
+                background: #f6f6f6; }
+            .tabsdemoDynamicTabs md-content md-tabs md-tabs-wrapper {
+                background: white; }
+            .tabsdemoDynamicTabs md-content h1:first-child {
+                margin-top: 0; }
+
+            .tabsdemoDynamicTabs md-input-container {
+                padding-bottom: 0; }
+
+            .tabsdemoDynamicTabs .remove-tab {
+                margin-bottom: 40px; }
+
+            .tabsdemoDynamicTabs .demo-tab > div > div {
+                padding: 25px;
+                box-sizing: border-box; }
+
+            .tabsdemoDynamicTabs .edit-form input {
+                width: 100%; }
+
+            .tabsdemoDynamicTabs md-tabs {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.12); }
+
+            .tabsdemoDynamicTabs md-tab[disabled] {
+                opacity: 0.5; }
+
+            .tabsdemoDynamicTabs label {
+                text-align: left; }
+
+            .tabsdemoDynamicTabs .long > input {
+                width: 264px; }
+
+            .tabsdemoDynamicTabs .md-button.add-tab {
+                transform: translateY(5px); }
+        </style>
+        <style>
+            input[type=checkbox] {
+                display:none;
+            }
+            .checkbox {
+                display: inline-block;
+                cursor: pointer;
+                font-size: 13px; margin-right:10px; line-height:16px;
+            }
+            input[type="checkbox"]:checked + label::before{
+                background-color: #337ab7;
+                color:white;
+                border-color: #337ab7;
+            }
+            .checkbox:before {
+                content: "";
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                vertical-align:middle;
+                text-align: center;
+                border:1px solid gray;
+                border-radius:2px;
+            }
+            input[type=checkbox]:checked + .checkbox:before {
+                content: "\2713";
+                text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+                font-size: 13px;
+            }
+        </style>
+
+
+        <style>
+            body .lookupHoverDetail.individualPalette>div>.bPageBlock{
+                width:392px !important;
+            }
+            .lookupHoverDetail{
+                z-index: 9999;
+            }
+            .apt-select-wrap:before {
+                border-top-right-radius: 0px;
+                border-bottom-right-radius: 0px;
+                height: 98%;
+                right: 1px;
+            }
+            .selectInput {
+                width: 100px;
+                height: 24px;
+                border-radius: 0px;
+                color: #FFFFFF !important;
+                font-size: 12px;
+                padding: 0px;
+                text-indent: 5px;
+                background-color: rgb(25, 142, 179) !important;
+                line-height: 10px;
+                font-weight: bold;
+            }
+            .InputCustomBox{
+                border-style: solid;
+                border-width: 1px;
+            }
+            .left-side{
+                float:left;
+            }
+            .right-side{
+                float:right;
+            }
+            .customLabelStyle{
+                font-weight:normal;
+                line-height:normal;
+            }
+            .aptPageTitleBarPanel{
+                line-height:20px !important;
+            }
+            .customBody>tr>td{
+                padding:3px !important;
+                min-height: 50px;
+            }
+            .table{
+                margin-bottom:0px;
+            }
+            .cell1{
+                /*width:20%;*/
+                text-align:left;
+            }
+            .cell2{
+                width:10%;
+                text-align:left;
+                vertical-align: middle !important;
+            }
+            .cell3{
+                width:8%;
+                text-align:right;
+            }
+            .cell4{
+                width:3%;
+                text-align:center;
+            }
+            .cell5{
+                width:10%;
+                text-align:center;
+            }
+            .cell6{
+                width:10%;
+                text-align:center;
+            }
+            .cell11{
+                /*width:5%;*/
+                text-align:center;
+                vertical-align: middle !important;
+            }
+            .cellEmpty{
+                width:1%;
+            }
+            .cell7{
+                width:10%;
+                text-align:right;
+            }
+            .cell8{
+                width:10%;
+                text-align:center;
+            }
+            .cell9{
+                width:8%;
+                text-align:right;
+            }
+            .cell10{
+                width:5%;
+                text-align:center;
+            }
+            .cellTotal{
+                width:8%;
+                text-align: left;
+            }
+            .aptRoundedDiv{
+                padding-bottom: 0px;
+            }
+            tr.draggable-row:hover td.customCell {
+                background: url('{!URLFOR($Resource.APTS_DragIcon)}') no-repeat 2px 50%;
+                cursor:-webkit-grab;
+            }
+            tr.draggable-row td.customCell:active{
+                cursor: -webkit-grabbing;
+            }
+            .draggable-highlight-row {
+                border: 2px dashed rgba(43, 176, 218, 0.25);
+                background-color: rgba(105, 170, 191, 0.25);
+                height:40px;
+            }
+            .dynamic-appended-tr{
+                height:40px;
+            }
+            .middlePanelArea{
+                margin-bottom:100px;
+            }
+            .customCell{
+                width:5%;
+                min-width:18px;
+            }
+            tr.selected-row td.customCell {
+                background-image: url('{!URLFOR($Resource.APTS_DragIcon)}');
+                background-color: #1797C0;
+                background-position: 10px 50%;
+                background-repeat: no-repeat;
+            }
+            tr.selected-row:hover td.customCell{
+                background-image: url('{!URLFOR($Resource.APTS_DragIcon)}');
+                background-color: #1797C0;
+                background-position: 10px 50%;
+                background-repeat: no-repeat;
+            }
+            i.exchangeIcon {
+                font-size: 16px;
+            }
+            i.exchangeIcon:hover {
+                font-size: 16px;
+                text-shadow: #DDD 2px 2px 5px;
+            }
+            .mySmallModalLabel{
+                color:white;
+                font-size:13px;
+            }
+            .ApplyIcon {
+                display: inline-block;
+                border: 1px dashed #1797C0;
+                color: #1797C0;
+                padding: 3px;
+                border-radius: 50%;
+                font-size: 14px;
+                margin-left: 15px;
+            }
+            .ApplyIcon:hover {
+                border: 1px dashed #0F617B;
+                background-color: #1797C0;
+                color: white;
+            }
+            .ApplyIconHeader {
+                border: 1px dashed #FDFEFF;
+                color: white;
+                padding: 2px 3px;
+                border-radius: 50%;
+                font-size: 12px;
+                margin-left: 15px;
+                cursor: pointer;
+            }
+            .ApplyIconHeader:hover {
+                border: 1px dashed #0F617B;
+                background-color: #1797C0;
+                color: white;
+            }
+            optgroup {
+                font-weight: 700;
+                color: #005671;
+            }
+            .primaryProduct{
+                display:inline-block;
+                margin-left:5px;
+                vertical-align: middle;
+            }
+            .optionProduct{
+                margin-left:10px;
+                vertical-align: middle;
+                display: inline-block;
+            }
+            .input-group-btn {
+                position: relative;
+                font-size: 0;
+                white-space: nowrap;
+                float: left;
+                right: 0px;
+                width: 40px;
+                height: 22px;
+                border: solid 1px #A9A9A9;
+                vertical-align: middle;
+                background-color: #F3F3F3;
+                box-sizing: border-box;
+            }
+            .adjustmentPopupLink{
+                font-size: 12px;
+                vertical-align: middle;
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                padding-top: 2px;
+                cursor:pointer;
+            }
+            .adjustmentPopupLink:hover{
+                text-decoration: none;
+                text-shadow:#DDD 1px 1px 3px;
+            }
+            .customCaret{
+                float: right;
+                margin-top: 7px;
+                margin-right: 4px;
+            }
+            .group-inputbox {
+                display: inline-block;
+                float: left;
+            }
+            .dropdown-menu>li>a{
+                padding:2px 0px;
+                color: #1797C0;
+            }
+            .dropdown-menu{
+                font-size:12px;
+                width:40px;
+                min-width:40px;
+                z-index:9999;
+                margin-top: 1px;
+                border-radius:0px;
+                text-align: center;
+            }
+            .dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover{
+                background-color:rgb(23, 151, 192);
+                color:white;
+                background-image:none;
+            }
+            .dropdown-menu>li>a.active{
+                background-color:#DDD;
+            }
+            tr.recently-moved td {
+                background-color: rgba(248, 255, 135, 0.79);
+            }
+
+            .main-content{
+                margin-top: 15px;
+                margin-bottom: 55px;
+            }
+
+            .leftPageButtons{
+                visibility: hidden;
+            }
+
+            .bundle-group-label{
+                float: left;
+                margin: 2px 0px 0px 6px;
+            }
+
+            .bundle-group-icon{
+                display: block;
+                float: left;
+                padding-top: 1px;
+            }
+
+            .keep-term-label{
+                margin: 0;
+            }
+
+            /*.ml-address-selected{
+                background-color: #efd4d4 !important;
+            }*/
+
+            .add-location-button:hover{
+
+            }
+
+            .ml-table{
+                border: 1px solid #DDD;
+            }
+
+            .ml-table .customHeader tr{
+                background: #2a94d6;
+            }
+
+            .ml-table .customHeader tr th{
+                color:#FFFFFF;
+            }
+
+            .aptPageTitleBarPanel .checkbox:before{
+                background: #ddd;
+            }
+        </style>
+        
+        <style>
+            ::-webkit-input-placeholder { /* Edge, Chrome */
+              color: #757575;
+              font-size:1.2rem;
+              font-weight:bold;
+            }
+            
+            :-ms-input-placeholder { /* Internet Explorer */
+              color: #757575;
+              font-size:1.2rem;
+              font-weight:bold;
+            }
+            
+            ::placeholder {
+              color: #757575;
+              
+            }
+        </style>
+        
+        <script>
+            var assetsFList = jQuery.parseJSON('{!JSENCODE(fullLnList)}');
+            var assetsLineItems = {};
+            var assetPrintItems = {}; //SOC-3875 Added by Punitha 6/12/17
+            //SOC-4319
+            var cancelledLnList = jQuery.parseJSON('{!JSENCODE(canLnList)}');
+           var cancelledItems = {};
+
+            angular.forEach(assetsFList, function (item){
+                if(item.APTS_Deal_Number__c != null && item.APTS_Deal_Type__c){
+                    //SOC-3875 Added by Punitha 6/12/17
+                    var key = item.APTS_Deal_Number__c+"_"+item.APTS_Deal_Type__c;
+                    if(!assetPrintItems[key]){
+                        assetPrintItems[key] = [];
+                    }
+                    assetPrintItems[key].push(item);                                                                                                        
+                } else if(item.APTS_SAP_MLA_Agreement_Number__c){
+                    var key = item.APTS_SAP_MLA_Agreement_Number__c;
+                }
+                
+                if(!assetsLineItems[key]){
+                    assetsLineItems[key] = [];
+                }
+
+                assetsLineItems[key].push(item);
+            });
+             //SOC-4319 
+            angular.forEach(cancelledLnList,function (item){            
+                if(item.APTS_Deal_Number__c != null && item.APTS_Deal_Type__c){                
+                    var key = item.APTS_Deal_Number__c+"_"+item.APTS_Deal_Type__c;
+                    if(!cancelledItems[key]){
+                        cancelledItems [key] = [];
+                    }
+                  cancelledItems[key].push(item);
+                 }
+            });
+
+            var j$ = jQuery.noConflict();
+            var bussinessObjectId='';
+            var configRequestId='';
+            var G_retUrl = '{!retURLStr}';
+            var multiLocationUrl = '{!multiLocationsUrlStr}';
+
+            var G_RowData = jQuery.parseJSON('{!JSENCODE(JSONLineItemData)}');
+            var G_ParsedRowData;
+
+            // define the app
+            var lineGroupApp= angular.module('lineGroupApp', ['ui.sortable','ngMaterial', 'ngMessages', 'material.svgAssetsCache']);
+
+
+
+
+            // parsed Row Data
+            angular.forEach(G_RowData, function (item){
+                angular.forEach(item.lnItems,function(rec){
+                    if(typeof rec.Apttus_Config2__StartDate__c != 'undefined' && rec.Apttus_Config2__StartDate__c != ''){
+                        var startDate = new Date(rec.Apttus_Config2__StartDate__c);
+                        //console.log('startDate:--> '+startDate);
+                        rec.Apttus_Config2__StartDate__c = startDate;
+                    }
+                    if(typeof rec.Apttus_Config2__EndDate__c != 'undefined' && rec.Apttus_Config2__EndDate__c != ''){
+                        var EndDate = new Date(rec.Apttus_Config2__EndDate__c);
+                        //console.log('EndDate:--> '+EndDate);
+                        rec.Apttus_Config2__EndDate__c = EndDate;
+                    }
+                });
+            });
+            G_ParsedRowData = G_RowData;
+
+
+            lineGroupApp.controller('GroupLineWrap', function ($scope){
+                $scope.RowDataList = jQuery.parseJSON('{!JSENCODE(JSONLineItemData)}');
+                $scope.setOfWPK = jQuery.parseJSON('{!JSENCODE(JSONSetOfWPK)}');
+                
+                var accounts = jQuery.parseJSON('{!JSENCODE(JSONAccountsData)}');
+                $scope.accounts = {};
+                angular.forEach(accounts, function (account){
+                    $scope.accounts[account.Id] = account;
+                });
+                
+                $scope.allName = '{!JSENCODE(allName)}';
+                $scope.keepTermsError = '{!JSENCODE(keepTermsError)}';
+                $scope.adjustmentError = '{!JSENCODE(adjustmentError)}';
+                $scope.maximumNumberError = '{!JSENCODE(maximumNumberError)}';
+                $scope.selectProductMessage = '{!JSENCODE(selectProductMessage)}';
+
+                $scope.tabName = jQuery.parseJSON('{!JSENCODE(JSONTabInfo)}');
+                $scope.bridgePickVal = jQuery.parseJSON('{!bridgePickVal}')
+                $scope.linePickVal = jQuery.parseJSON('{!adjustmentPickVal}');
+                $scope.AdjustmentValu = jQuery.parseJSON('{!contractPickVal}');
+                $scope.fullAdjustmentPicklist = jQuery.parseJSON('{!fullAdjustmentPicklist}');
+
+                $scope.incrementalRevenueRequiredN = {!JSENCODE(TEXT(bundlePageSettings.Incremental_Revenue_Required__c))};
+                $scope.maxDiscount = {!JSENCODE(TEXT(bundlePageSettings.APTS_Max_Discount__c))};
+                $scope.maxDiscountNoWestPack = {!JSENCODE(TEXT(bundlePageSettings.APTS_Max_Discount_no_WestPack__c))};
+                $scope.westPackDiscount = {!JSENCODE(TEXT(bundlePageSettings.APTS_WestPack_Discount__c))};
+
+                $scope.AdjustmentPickVal = [
+                    {"id":"Select Adjustment","name":"Select Adjustment","typeName":""},
+                    /*{"id":"Contract Term", "name":"Contract Term", "typeName":"Contract Term Adjustment"},
+                    {"id":"YOY % Yr 1 Renewal", "name":"YOY % Yr 1 Renewal", "typeName":"Contract Term Adjustment"},
+                    {"id":"YOY % Yr 2+", "name":"YOY % Yr 2+", "typeName":"Contract Term Adjustment"},
+                    {"id":"Bridge", "name":"Bridge", "typeName":"Bridge Adjustment"},
+                    {"id":"Bridge Discount", "name":"Bridge Discount", "typeName":"Bridge Adjustment"},
+                    {"id":"Bundle Primary Material", "name":"Bundle Primary Material", "typeName": "Bundle Adjustment"}*/
+                ];
+
+                angular.forEach($scope.fullAdjustmentPicklist, function (item){
+                    $scope.AdjustmentPickVal.push({ 
+                        id: item.Display_Name__c, 
+                        name: item.Display_Name__c, 
+                        typeName: item.Type_Name__c, 
+                        availableInOnline_Software__c: item.Available_in_Online_Software__c,
+                        availableInPrint__c: item.Available_in_Print__c 
+                    });
+                });
+
+
+                // {"id":"Quantity","name":"Quantity","typeName":"Quantity Adjustment"}];
+
+                // parse the Adjustmnet type picklist values from the Line item Adjustmnet variable
+                angular.forEach($scope.linePickVal, function (item){
+                    var ArElement = { id: item, name: item, typeName: "Price Adjustment" };
+                    $scope.AdjustmentPickVal.unshift(ArElement);
+                });
+
+                //Parse the line items and map from the primary material name to number
+                $scope.primaryMaterialNameToNumber = {'':''};
+                $scope.lineItemIdToOriginalContractTerm = {'':''};
+                $scope.lineItemIdToOriginalContractTermByMarkTerms = {};
+                //Map line item id to original line item values
+                //$scope.lineItemIdToOriginalLineItem = {'':''};
+                angular.forEach($scope.tabName, function(tab){
+                    angular.forEach(tab.dataList, function(grpLnWrapper){
+                        angular.forEach(grpLnWrapper.lnItems, function(li){
+                            if(li.APTS_Product_Group_Primary_Material__c != null){
+                                var index = li.APTS_Product_Group_Primary_Material__c.indexOf(':');
+                                var name = li.APTS_Product_Group_Primary_Material__c.substring(0, index);
+                                var num;
+                                if(index+1 < li.APTS_Product_Group_Primary_Material__c.length)
+                                    num = li.APTS_Product_Group_Primary_Material__c.substring(index+1);
+                                $scope.primaryMaterialNameToNumber[name] = num;
+
+                            }
+                            if(li.Id != null){
+                                //Added as part of SOC-3525 - Bridge Discount changes
+                                 $scope.lineItemIdToOriginalContractTerm[li.Id] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_New_Bridge_Discount__c];
+                                //$scope.lineItemIdToOriginalContractTerm[li.Id] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_Bridge_Discount__c];
+
+
+                                var key = li.APTS_Keep_Terms__c ? 'keepTermsSelected' : 'keepTermsUnSelected';
+
+                                if(key == 'keepTermsUnSelected' && li.APTS_Contract_Term__c == 'Existing'){
+                                    li.APTS_Contract_Term__c = li.APTS_Contract_Term_Default__c;                                    
+                                    li.APTS_Years_2_Plus_Adjustment__c = li.APTS_Years_2_Plus_Default__c;
+
+                                    if(li.Apttus_Config2__LineStatus__c == 'Renewed')
+                                        li.APTS_Yr_1_Renewal_Adjustment__c = li.APTS_Yr_1_Renewal_Default__c; 
+                                }
+
+                                if(!$scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id])
+                                    $scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id] = {};
+                                //Added as part of SOC-3525 - Bridge Discount changes
+                                $scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id][key] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_New_Bridge_Discount__c];
+                                //$scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id][key] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_Bridge_Discount__c];
+                            }
+                        });
+                    });
+                });
+
+                // Drag and Drop feature
+                $scope.sortableOptions = createOptions();
+                $scope.ShuffledGroup;
+                $scope.selectedGroupToMove = '';
+                $scope.selectedGroup = {
+                    name: ''
+                };
+                $scope.groupOptionList = [
+                    {'id':'Group A','name':'Group A'},
+                    {'id':'Group B','name':'Group B'},
+                    {'id':'Group C','name':'Group C'},
+                    {'id':'Group D','name':'Group D'}
+                ];
+                $scope.AdjustmnetType = {
+                    '% Discount':'(%)',
+                    'Discount Amount':'($)',
+                    '% Markup':'%',
+                    'Markup Amount':'$',
+                    'Price Override':'$$'
+                };
+                //A.S Change to store in custom setting
+                $scope.AdjustmentTypeToAPIName = {
+                    '% Markup' : 'Apttus_Config2__AdjustmentAmount__c',
+                    '% Discount' : 'Apttus_Config2__AdjustmentAmount__c',
+                    'Contract Term' : 'APTS_Contract_Term__c',
+                    'YOY % Yr 1 Renewal':'APTS_Yr_1_Renewal_Adjustment__c',
+                    'YOY % Yr 2+': 'APTS_Years_2_Plus_Adjustment__c',
+                    'YOY +/-' : 'APTS_YoY_Adjustment_Type__c',
+                    'Bundle Primary Material' : 'APTS_Group_Primary_Material_Name__c',
+                    'Bridge': 'APTS_Bridge__c',
+                    //Added as part of SOC-3525 - Bridge Discount changes
+                    'Bridge Discount' : 'APTS_New_Bridge_Discount__c' //'APTS_Group_Primary_Material__c'
+                    //'Bridge Discount' : 'APTS_Bridge_Discount__c' //'APTS_Group_Primary_Material__c'
+                };
+                //Added as part of SOC-3525 - Bridge Discount changes
+                $scope.contractAndBridgeFields = ['APTS_New_Bridge_Discount__c', 'APTS_Bridge__c', 'APTS_Years_2_Plus_Adjustment__c', 'APTS_Yr_1_Renewal_Adjustment__c', 'APTS_Contract_Term__c'];
+                //$scope.contractAndBridgeFields = ['APTS_Bridge_Discount__c', 'APTS_Bridge__c', 'APTS_Years_2_Plus_Adjustment__c', 'APTS_Yr_1_Renewal_Adjustment__c', 'APTS_Contract_Term__c'];
+
+                $scope.AdjustmentsByGroupName = {};
+
+
+
+
+                // option for UI Shortable
+                function createOptions () {
+                    var options = {
+                        placeholder: "draggable-highlight-row",
+                        connectWith: ".customBody",
+                        handle:".customCell",
+                        axis:"y",
+                        activate: function(event,ui) {
+                        },
+                        beforeStop: function(event,ui) {
+                        },
+                        change: function(event,ui) {
+                        },
+                        create: function(event,ui) {
+                        },
+                        deactivate: function(event,ui) {
+                        },
+                        out: function(event,ui) {
+                        },
+                        over: function(event,ui) {
+                        },
+                        receive: function(event,ui) {
+                        },
+                        remove: function(event,ui) {
+                        },
+                        sort: function(event,ui) {
+                        },
+                        start: function(event, ui) {
+                            ui.placeholder.html('<td colspan="999"></td>');
+                            j$('tbody.customBody').each(function(){
+                                var trCount = j$(this).find('tr').length;
+                                if(trCount == 0){
+                                    j$(this).append('<tr class="dynamic-appended-tr"><td colspan="999"></td></tr>');
+                                }
+                            });
+                        },
+                        stop:function(event,ui){
+                            //console.log('##stop## Event-> ' +event +'ui-> '+ui, event, ui);
+                            var uiSortable = j$(this).data().uiSortable;
+                            var CurrentDraggedEle = j$(this).data().uiSortable.currentItem;
+                            var CurrentContainerEle = j$(this).data().uiSortable.currentContainer.element;
+                            var recId = j$(CurrentDraggedEle).attr('item-lnid');
+                            var containerName = j$(CurrentContainerEle).attr('id');
+
+                            var containerTab = j$(CurrentContainerEle).attr('container-tab');
+                            var itemTab = j$(CurrentDraggedEle).attr('item-tab');
+                            var currentGroup = j$(CurrentDraggedEle).attr('current-group');
+                            
+
+                            if(containerTab != itemTab){
+                                j$(this).sortable( "cancel" );
+                                return;
+                            }
+
+                            j$('tbody.customBody').each(function(){
+                                j$(this).find('tr.dynamic-appended-tr').remove();
+                            });
+
+                            $scope.GradTotalCalc();
+
+                            
+                            var newGroup = j$(CurrentContainerEle).attr('id');
+                            
+                            if(newGroup.indexOf("For Bundle") == -1 && newGroup != currentGroup){
+                                $scope.GrouplevelAdjustmentForAllItems(newGroup, itemTab);
+
+                                var groupId = j$('div.tablePanelDiv[group-name="'+newGroup+'"]').attr('group-id');
+                                var keepTerms = j$("#"+groupId+".keepTermsInput").attr('keep-terms');
+                                $scope.markTerms(itemTab, groupId, keepTerms);
+                            }
+                        
+                        },
+                        update: function(event,ui) {
+                        }
+                    };
+                    return options;
+                }
+
+                // function to enable/disable main group shuffle icon
+                $scope.checkForSlection= function(){
+                    j$('.tablePanelDiv').each(function(){
+                        var selectedRows = 0;
+                        j$(this).find('table.content-table').find('tbody.customBody').find('tr').each(function(){
+                            if(j$(this).hasClass('selected-row')){
+                                selectedRows ++;
+                            }
+                        });
+                        if(selectedRows > 0){
+                            //j$(this).find('table.header-table').find('thead.customHeader').find('th.customCell').find('a').show();
+                        }
+                        else{
+                            j$(this).find('table.header-table').find('thead.customHeader').find('th.customCell').find('a').hide();
+                        }
+                    });
+                }
+
+                // function to enable/disable selection of the row
+                $scope.rowSelectionToggle = function(e){
+                    j$(e.currentTarget).parent().toggleClass('selected-row');
+                    $scope.checkForSlection();
+
+                    $scope.selectedGroup.name = '';
+                }
+
+                // Function to enable/disable selection of Bundle level
+                $scope.bundleRowsSelectionToggle =  function(lineNum){
+                    j$('tr.draggable-row').each(function(){
+                        if(j$(this).attr('item-linenum') == lineNum){
+                            j$(this).toggleClass('selected-row');
+                        }
+                    });
+                    $scope.checkForSlection();
+                }
+                // function to trigger Group Shuffle logic
+                $scope.triggerShuffleGroup =  function(e){
+                    $scope.ShuffledGroup = j$(e.currentTarget).attr('group-name');
+                }
+
+                // function for apply shuffle on the Group items
+                $scope.applyShuffleLogic = function(groupName){
+                    // check for validation
+                    var selectedGroupToShuffle = groupName ? groupName : $scope.selectedGroupToMove.id;
+                    if(typeof selectedGroupToShuffle != 'undefined' && selectedGroupToShuffle != ''){
+                        // get the line items that need to move
+                        var srcElement = j$('div.tablePanelDiv[group-name="'+$scope.ShuffledGroup+'"]').find('table.content-table').find('tbody.customBody');
+                        var targetElement = j$('div.tablePanelDiv[group-name="'+selectedGroupToShuffle+'"]').find('table.content-table').find('tbody.customBody');
+                        var SelectedLnItems = [];
+                        j$(srcElement).find('tr').each(function(){
+                            if(j$(this).hasClass('selected-row')){
+                                SelectedLnItems.push(j$(this).attr('item-lnid'));
+                            }
+                        });
+                        console.log('###SelectedLnItems '+SelectedLnItems);
+                        $scope.exchangeGroup(selectedGroupToShuffle,$scope.ShuffledGroup,SelectedLnItems);
+//                            $scope.exchangeGroupRow(selectedGroupToShuffle,$scope.ShuffledGroup,SelectedLnItems);
+                        j$(srcElement).find('tr').each(function(){
+                            if(j$(this).hasClass('selected-row')){
+                                j$(this).remove();
+                            }
+                        });
+                        j$('#shuffleGroupModal').modal('hide');
+                        $scope.checkForSlection();
+                        $scope.GradTotalCalc();
+                        $scope.highlightMovedLines(SelectedLnItems,2400);
+                    }
+                    else{
+                        alert('Please select the Group where you want to move items');
+                    }
+                }
+
+                // Visible the recently Moved Line Items
+                $scope.highlightMovedLines = function(numLines,duration){
+                    setTimeout(function(){
+                        j$('tr.draggable-row').each(function(){
+                            var getLineId = j$(this).attr('item-lnid');
+                            if(numLines.indexOf(getLineId) > -1){
+                                j$(this).addClass('recently-moved');
+                                setTimeout(function(){
+                                    j$('.recently-moved').removeClass('recently-moved');
+                                },duration);
+                            }
+                        });
+                    },50);
+                }
+
+                // Exchange the Group Ln
+                $scope.exchangeGroup = function(newGroup,oldGroup,lnItems){
+                    $scope.tempdata=[];
+                    $scope.lineItemsExchange=[];
+                    // console.log($scope.GroupWrap);
+                    $scope.indexNum = [];
+                    angular.forEach($scope.tabName, function(tab){
+                        angular.forEach(tab.dataList, function (item){
+                            if(item.grpLn.APTS_Group_Name__c == oldGroup){
+                                var countRec = 0;
+                                angular.forEach(item.lnItems, function (lineItem){
+                                    if(lnItems.indexOf(lineItem.Id) > -1){
+                                        $scope.lineItemsExchange.push(lineItem);
+                                        $scope.indexNum.push(countRec);
+                                    }
+                                    countRec ++;
+                                });
+                                
+                                angular.forEach($scope.indexNum, function(num){
+                                    delete item.lnItems[num];
+                                });
+                                var newObjList = [];
+                                angular.forEach(item.lnItems, function(eachRec){
+                                    if(typeof eachRec != 'undefined'){
+                                        newObjList.push(eachRec);
+                                    }
+                                });
+                                console.log('##item.lnItems '+item.lnItems);
+                                console.log('##newObjList '+newObjList);
+                                item.lnItems = newObjList;
+                                console.log('##item.lnItems '+item.lnItems);
+                            }
+                        });
+                    });
+                    
+                    angular.forEach($scope.tabName, function(tab){
+                        angular.forEach(tab.dataList, function (item){
+                            if(item.grpLn.APTS_Group_Name_Original__c == newGroup){
+                                angular.forEach($scope.lineItemsExchange, function (itemToBeInserted){
+                                    itemToBeInserted.APTS_Group__c=newGroup;
+                                    item.lnItems.unshift(itemToBeInserted);// use unshift to add the elemnt at the top of the list
+                                });
+                            }
+                        });
+                    });
+                    //$scope.$apply();
+                }
+
+                // Exchange the Row Group Data, So we can apply reset functionality
+                $scope.exchangeGroupRow = function(newGroup,oldGroup,lnItems){
+                    $scope.tempdata=[];
+                    $scope.lineItemsExchange=[];
+                    
+                    $scope.indexNum = [];
+                    angular.forEach(G_ParsedRowData, function (item){
+                        if(item.grpLn.APTS_Group_Name__c == oldGroup){
+                            var countRec = 0;
+                            angular.forEach(item.lnItems, function (lineItem){
+                                if(lnItems.indexOf(lineItem.Id) > -1){
+                                    $scope.lineItemsExchange.push(lineItem);
+                                    $scope.indexNum.push(countRec);
+                                }
+                                countRec ++;
+                            });
+                            
+                            angular.forEach($scope.indexNum, function(num){
+                                delete item.lnItems[num];
+                            });
+                        }
+                    });
+                    
+                    angular.forEach(G_ParsedRowData, function (item){
+                        if(item.grpLn.APTS_Group_Name_Original__c == newGroup){
+                            angular.forEach($scope.lineItemsExchange, function (itemToBeInserted){
+                                itemToBeInserted.APTS_Group__c=newGroup;
+                                item.lnItems.push(itemToBeInserted);
+                            });
+                        }
+                    });
+                }
+                /*
+                 // Function for changing the Group name when manual dragging is occured
+                 $scope.ChangelnGrpManual = function(lnId, newGrpName){
+                 angular.forEach(G_ParsedRowData, function (item){
+                 angular.forEach(item.lnItems, function (rec){
+                 if(rec.Id == lnId){
+                 rec.APTS_Group__c = newGrpName;
+                 }
+                 });
+                 });
+                 }*/
+
+
+
+
+                // Apply line level adjustment function
+                $scope.ApplyLinelevelAdjustment = function(rec,adjustmentType){
+                    rec.Apttus_Config2__AdjustmentType__c = adjustmentType;
+                    
+                    if(typeof rec.Apttus_Config2__AdjustmentAmount__c != 'undefined'){
+                        $scope.CalculateAdjustments(rec);
+                    }
+                    else{
+                        // alert('Please provide Adjustmnet which you want to apply');
+                    }
+                    $scope.GradTotalCalc();
+                }
+                //Default the contract term
+                $scope.DefaultContract =  function(lineItemList){
+                    angular.forEach(lineItemList, function(item){
+                        var years = parseInt(item.APTS_Contract_Term__c);
+                        if(typeof years == 'undefined' && item.APTS_Contract_Term_Default__c != null && item.APTS_Contract_Term_Default__c.indexOf('Year') >= 0)
+                            years = item.APTS_Contract_Term_Default__c;
+                        
+                        if(!item.APTS_Years_2_Plus_Adjustment__c){
+                            if(years > 1)
+                                item.APTS_Years_2_Plus_Adjustment__c = item.APTS_Years_2_Plus_Default__c;
+                            else
+                                item.APTS_Years_2_Plus_Adjustment__c = null;
+                        }
+
+                        if(item.APTS_Yr_1_Renewal_Adjustment__c == null && item.Apttus_Config2__LineStatus__c == 'Renewed'){
+                            item.APTS_Yr_1_Renewal_Adjustment__c = item.APTS_Yr_1_Renewal_Default__c;
+                        }
+                    });
+                }
+                // Apply Adjustment on the line level as per the Group
+                $scope.GrouplevelAdjustment = function(grpName, tabLabel){
+                    angular.forEach($scope.tabName, function(tab){
+                        if(tab.name == tabLabel){
+                            angular.forEach(tab.dataList, function (item){
+                                if(item.grpLn.APTS_Group_Name__c == grpName){
+                                    
+                                    if((typeof item.grpLn.APTS_Adjustment_Type__c != 'undefined' && item.grpLn.APTS_Adjustment_Type__c != '' && item.grpLn.APTS_Adjustment_Type__c != 'Select Adjustment') &&
+                                            (item.grpLn.APTS_Adjustment_Type__c.includes('%')||item.grpLn.APTS_Adjustment_Type__c == 'Bridge Discount' ||(typeof item.grpLn.APTS_Adjustment_Value__c != 'undefined' && item.grpLn.APTS_Adjustment_Value__c != ''))){
+
+                                        if(!$scope.AdjustmentsByGroupName[grpName]){
+                                            $scope.AdjustmentsByGroupName[grpName] = {};
+                                        }    
+
+                                        var AdjustmentType = item.grpLn.APTS_Adjustment_Type__c;
+
+                                        if(AdjustmentType == 'Contract Term' && item.keepTerms){
+                                            
+                                            
+                                           ($scope.keepTermsError);
+                                        }
+                                        else{
+                                            var AdjustmentAmount =  item.grpLn.APTS_Adjustment_Value__c;
+                                            if(typeof item.grpLn.APTS_Adjustment_Value__c == 'undefined' || item.grpLn.APTS_Adjustment_Value__c == '')
+                                                AdjustmentAmount = 0;
+
+                                            $scope.AdjustmentsByGroupName[grpName][AdjustmentType] = AdjustmentAmount;
+                                            $scope.AdjustmentChange(AdjustmentType, AdjustmentAmount, item);
+                                           
+                                            item.grpLn.APTS_Adjustment_Value__c = '';
+                                        }
+                                    }
+                                    else{
+                                        alert($scope.adjustmentError);
+                                    }
+                                }
+                            });
+                        }
+                    });
+                };
+
+                $scope.GrouplevelAdjustmentForAllItems = function(grpName, tabLabel){
+                    angular.forEach($scope.tabName, function(tab){
+                        if(tab.name == tabLabel){
+                            angular.forEach(tab.dataList, function (item){
+                                if(item.grpLn.APTS_Group_Name__c == grpName){
+                                    if($scope.AdjustmentsByGroupName[grpName]){
+                                        var adjustments = $scope.AdjustmentsByGroupName[grpName];
+
+                                        if(adjustments){
+                                            angular.forEach(adjustments, function (AdjustmentAmount, AdjustmentType){
+                                                if(AdjustmentType == 'Contract Term' && item.keepTerms){
+                                                    
+                                                }
+                                                else{
+                                                    $scope.AdjustmentsByGroupName[grpName][AdjustmentType] = AdjustmentAmount;
+                                                    $scope.AdjustmentChange(AdjustmentType, AdjustmentAmount, item);
+                                                   
+                                                    item.grpLn.APTS_Adjustment_Value__c = '';
+                                                }
+                                            });
+                                        }
+
+                                        /*var AdjustmentType = item.grpLn.APTS_Adjustment_Type__c;
+
+                                        if(AdjustmentType == 'Contract Term' && item.keepTerms){
+                                            //A.S Change to store in custom setting
+                                            alert('Please uncheck Keep Terms before attempting to change contract terms');
+                                        }
+                                        else{
+                                            var AdjustmentAmount =  item.grpLn.APTS_Adjustment_Value__c;
+                                            if(typeof item.grpLn.APTS_Adjustment_Value__c == 'undefined' || item.grpLn.APTS_Adjustment_Value__c == '')
+                                                AdjustmentAmount = 0;
+
+                                            $scope.AdjustmentsByGroupName[grpName][AdjustmentType] = AdjustmentAmount;
+                                            $scope.AdjustmentChange(AdjustmentType, AdjustmentAmount, item);
+                                           
+                                            item.grpLn.APTS_Adjustment_Value__c = '';
+                                        }*/
+                                    }
+                                }
+                            });
+                        }
+                    });
+                };
+
+                $scope.AdjustmentChange = function(AdjustmentType, AdjustmentAmount, item){
+                    var fieldName = $scope.AdjustmentTypeToAPIName[AdjustmentType];
+                    if(AdjustmentType=='% Markup' || AdjustmentType == '% Discount'){
+
+                        angular.forEach(item.lnItems, function (rec){
+                            if(rec.Apttus_Config2__Quantity__c != null){
+                                rec[fieldName]= AdjustmentAmount;
+                                rec.Apttus_Config2__AdjustmentType__c = AdjustmentType;
+                                $scope.CalculateAdjustments(rec);
+                            }
+                        });
+                    }
+                    else{
+                        angular.forEach(item.lnItems, function(rec){
+                            if(rec.Apttus_Config2__Quantity__c != null){
+                                rec[fieldName]= AdjustmentAmount;
+                                if(AdjustmentType == 'Bundle Primary Material'){
+                                    rec['APTS_Group_Primary_Material__c'] = $scope.primaryMaterialNameToNumber[AdjustmentAmount];
+                                }
+                            }
+                        });
+                        if(fieldName == 'APTS_Contract_Term__c' && AdjustmentAmount.includes('Year'))
+                            $scope.DefaultContract(item.lnItems);
+                        if(AdjustmentType == 'Bundle Primary Material')
+                            item.grpLn.APTS_Primary_Material__c = AdjustmentAmount;
+                    }
+                    if($scope.contractAndBridgeFields.indexOf(fieldName) == -1)
+                        $scope.GradTotalCalc();
+                };
+
+                // fuction for calculate Adjustment
+                $scope.CalculateAdjustments = function (lnRec){
+                    if(lnRec.Apttus_Config2__AdjustmentType__c == '% Discount'){
+                        var calcData = (lnRec.Apttus_Config2__ExtendedPrice__c -((lnRec.Apttus_Config2__AdjustmentAmount__c/100)*lnRec.Apttus_Config2__ExtendedPrice__c));
+                        lnRec.Apttus_Config2__NetPrice__c = calcData;
+                    }
+                    else if(lnRec.Apttus_Config2__AdjustmentType__c == 'Discount Amount'){
+                        var calcData = (lnRec.Apttus_Config2__ExtendedPrice__c - lnRec.Apttus_Config2__AdjustmentAmount__c);
+                        lnRec.Apttus_Config2__NetPrice__c = calcData;
+                    }
+                    if(lnRec.Apttus_Config2__AdjustmentType__c == '% Markup'){
+                        var calcData = (lnRec.Apttus_Config2__ExtendedPrice__c +  ((lnRec.Apttus_Config2__AdjustmentAmount__c/100)*lnRec.Apttus_Config2__ExtendedPrice__c));
+                        lnRec.Apttus_Config2__NetPrice__c = calcData;
+                    }
+                    else if(lnRec.Apttus_Config2__AdjustmentType__c == 'Markup Amount'){
+                        var calcData = (lnRec.Apttus_Config2__ExtendedPrice__c + lnRec.Apttus_Config2__AdjustmentAmount__c);
+                        lnRec.Apttus_Config2__NetPrice__c = calcData;
+                    }
+                    else if(lnRec.Apttus_Config2__AdjustmentType__c == 'Price Override'){
+                        lnRec.Apttus_Config2__NetPrice__c = lnRec.Apttus_Config2__AdjustmentAmount__c;
+                    }
+                    // else if(lnRec.Apttus_Config2__AdjustmentType__c == 'Quantity'){
+                    //     lnRec.Apttus_Config2__Quantity__c = parseInt(AdjustmentAmount);
+                    //                          lnRec.Apttus_Config2__ExtendedPrice__c = (lnRec.Apttus_Config2__ListPrice__c*lnRec.Apttus_Config2__SellingTerm__c)*lnRec.AdjustmentAmount;
+                    //                          lnRec.Apttus_Config2__NetPrice__c = lnRec.Apttus_Config2__ExtendedPrice__c;
+                    //   // lnRec.Apttus_Config2__BasePrice__c = lnRec.Apttus_Config2__AdjustmentAmount__c;
+                    //   // lnRec.Apttus_Config2__NetPrice__c=lnRec.Apttus_Config2__AdjustmentAmount__c;
+                    // }
+                    else if(lnRec.Apttus_Config2__AdjustmentType__c == 'List Price Override'){
+                        lnRec.Apttus_Config2__NetPrice__c = lnRec.Apttus_Config2__AdjustmentAmount__c;
+                    }
+                    else if(lnRec.Apttus_Config2__AdjustmentType__c == 'Base Price Override'){
+                        lnRec.Apttus_Config2__BasePrice__c = lnRec.Apttus_Config2__AdjustmentAmount__c;
+                        lnRec.Apttus_Config2__NetPrice__c=lnRec.Apttus_Config2__AdjustmentAmount__c;
+                    }
+                }
+
+                // Calculate the Total value
+                $scope.GradTotalCalc = function(){
+                    angular.forEach($scope.tabName, function(tab){
+                        angular.forEach(tab.dataList, function (item){
+                            var totalNetPrice = 0;
+                            var optionList = [];
+                            var emptyIndex = 0;
+                            var emptyLI;
+                            var index =0;
+                            var incrementalRevenue = 0;
+                            var incrementalRevenueRequired = 0;
+                            var maxDiscountedAmount = 0;
+                            var grossAmount = 0;
+                            var primaryMat;
+                            var adjHigherThanBlend = false;
+                            var existingAgreementTotal = 0;
+                            var WCMPCurrentMonthlySpend = 0;    //SOC-3875 Added by Chirag 6/2/2017
+                            var WCMPModifiedMonthlySpend = 0;   //SOC-3956 Added by Chirag 6/2/2017
+                            var irrForWcmp = 0;                 //SOC-3876 Added by Punitha/Asha 6/12/2017
+                            var existingShipnCharge =0;         //SOC-4319 
+                            var terminatedLineTotal = 0;         //SOC-4319                                                                      
+                            if(item.lnItems.length == 1){
+                            
+                                primaryMat = null;
+                            }
+                            else if(typeof item.grpLn.APTS_Primary_Material__c != 'undefined'){
+                                  primaryMat= item.grpLn.APTS_Primary_Material__c;
+                               // alert(item.grpLn.APTS_Primary_Material__c);
+                                }
+                            else{
+                                var pseudoRec = item.lnItems[0];
+
+                                if(pseudoRec.Apttus_Config2__Quantity__c != null && pseudoRec.APTS_Group_Primary_Material_Name__c != null){
+                                    primaryMat = pseudoRec.APTS_Group_Primary_Material_Name__c;
+                                    
+                                }
+                                else{
+
+                                    angular.forEach(item.lnItems, function(rec){
+                                        if(rec.Apttus_Config2__Quantity__c != null && (typeof pseudoRec.Apttus_Config2__Quantity__c == 'undefined' || rec.Apttus_Config2__NetPrice__c > pseudoRec.Apttus_Config2__NetPrice__c)){
+                                            pseudoRec = rec;
+                                           // alert('4th');
+                                        }
+                                    });
+
+                                    primaryMat = pseudoRec.APTS_Product_Group_Primary_Material__c!= null ? pseudoRec.APTS_Product_Group_Primary_Material__c.substring(0,pseudoRec.APTS_Product_Group_Primary_Material__c.indexOf(':')) : null;
+                                }
+                            }
+
+                            var primaryNum = $scope.primaryMaterialNameToNumber[primaryMat];
+
+                            item.grpLn.APTS_Existing_Agreement_Product_Code__c = null;
+
+                            //For allow keep term
+                            var allowKeepTerms = false;
+                            var disableKeepTerms = false;
+                            var assetsItemsCount = {};
+
+                            var isWPKItem = false;
+                            var adjustmentAmount = false;
+                            var maxBlendedDiscount = false;
+                            var listPriceSum = 0;                            
+
+                            angular.forEach(item.lnItems, function (rec){
+                          //  alert('SetofWPK' +$scope.setOfWPK);
+                        //   alert('SAPDealtype' +rec.APTS_SAP_Deal_Type__c);
+                                if($scope.setOfWPK.indexOf(rec.APTS_SAP_Deal_Type__c) > -1)
+                                //alert('printing scope.setofwpk.indexof statement' +$scope.setOfWPK.indexOf(rec.APTS_SAP_Deal_Type__c) );
+                                    isWPKItem = true; 
+                            });
+
+                            angular.forEach(item.lnItems, function (rec){
+                                   window.$Label = window.$Label || {};    
+                                   $Label.customLabel= '{!($Label.APTS_Proflex_Materials)}';   
+                                   var x =  $Label.customLabel; 
+                                   if(rec.Apttus_Config2__Quantity__c != null){ 
+                                       //SOC-3956 Added by Chirag 6/2/2017
+                                       //if(rec.APTS_Deal_Type__c == 'WCMP'){
+                                           //WCMPModifiedMonthlySpend += rec.Apttus_Config2__NetPrice__c;
+                                       //}
+                                       
+                                    if(item.grpLn.APTS_Adjustment_Type__c == 'Base Price Override'){
+                                        if(rec.Apttus_Config2__LineType__c == 'Product/Service' && (rec.APTS_Product_Code__c != '40666420' && rec.APTS_Product_Code__c != '41972767' && rec.APTS_Product_Code__c != '41308780' && rec.APTS_Product_Code__c != '42129928' && rec.APTS_Product_Code__c != '40757482' && rec.APTS_Product_Code__c != '41841759')){
+                                            totalNetPrice+=rec.Apttus_Config2__NetPrice__c;
+                                        }
+                                    }
+                                    else if(typeof rec.Apttus_Config2__NetPrice__c != 'undefined' && (rec.APTS_Product_Code__c != '40666420' && rec.APTS_Product_Code__c != '41972767' && rec.APTS_Product_Code__c != '41308780' && rec.APTS_Product_Code__c != '42129928' && rec.APTS_Product_Code__c != '40757482' && rec.APTS_Product_Code__c != '41841759')){
+                                        totalNetPrice += rec.Apttus_Config2__NetPrice__c;
+                                        console.log('1##Product Code '+rec.APTS_Product_Code__c+'##NetPrice ='+rec.Apttus_Config2__NetPrice__c+'##TotalNetPrice'+totalNetPrice+'#BD Flag'+rec.APTS_Is_Primary_in_Bundle__c);
+                                        //SOC-3956 Added by Chirag 6/7/2017
+                                        if(rec.APTS_Deal_Type__c == "WCMP"){
+                                            WCMPModifiedMonthlySpend += rec.Apttus_Config2__NetPrice__c;
+                                            console.log('2##NetPrice ='+rec.Apttus_Config2__NetPrice__c+'##TotalNetPrice'+totalNetPrice);
+                                        }
+                                    }
+                                    //SOC-4319
+                                     if(rec.Apttus_Config2__LineStatus__c=="Amended" && !( x.includes(rec.APTS_Product_Code__c)))  { 
+                                            if(rec.APTS_Deal_Number__c == null && rec.APTS_Deal_Type__c == null){      
+                                              existingShipnCharge += rec.Apttus_Config2__NetPrice__c;
+                                            }
+                                       }  
+                                                                        
+                                    //Option List
+                                    var newName = rec.APTS_Product_Group_Primary_Material__c.substring(0,rec.APTS_Product_Group_Primary_Material__c.indexOf(':'));
+                                    if(optionList.indexOf(newName)<0)
+                                        optionList.push(newName);
+                                    rec.APTS_Group_Primary_Material__c = primaryNum;
+                                    rec.APTS_Group_Primary_Material_Name__c = primaryMat;
+                                    //Incremental revenues
+                                    if(tab.name.includes('Print')){
+                                        //alert('this is print');
+                                        if(rec.Apttus_Config2__LineStatus__c == 'New' && (rec.APTS_Product_Code__c != '40666420' && rec.APTS_Product_Code__c != '41972767' && rec.APTS_Product_Code__c != '41308780' && rec.APTS_Product_Code__c != '42129928' && rec.APTS_Product_Code__c != '40757482' && rec.APTS_Product_Code__c != '41841759')){
+                                            incrementalRevenue += rec.Apttus_Config2__NetPrice__c;
+                                        }
+                                        else{
+                                            if(rec.APTS_SAP_Deal_Number__c == null) {
+                                                //incrementalRevenueRequired += rec.Apttus_Config2__NetPrice__c;
+                                                incrementalRevenueRequired += rec.Apttus_Config2__ExtendedPrice__c-rec.Apttus_Config2__NetPrice__c;
+                                            }
+                                            // SOC-3875 Added by Punitha 6/12/17
+                                            if(rec.APTS_Deal_Type__c == "WCMP"){
+                                           var assetObjectPrints = assetPrintItems; 
+                                           var key1; 
+                                           var key2;                                   
+                                           if(assetObjectPrints){
+                                                WCMPCurrentMonthlySpend = 0;
+                                               
+                                               angular.forEach(assetObjectPrints, function (obj){
+                                             
+                                               for (var item=0;item<obj.length;item++){  
+                                                   key1=rec.APTS_Deal_Number__c+"_"+rec.APTS_Deal_Type__c;
+                                                   key2=obj[item].APTS_Deal_Number__c+"_"+obj[item].APTS_Deal_Type__c; 
+                                                if(key1==key2){  
+                                                                                 
+                                                 if(
+                                                    obj[item].Apttus_Config2__ProductId__r!=null
+                                                   && obj[item].APTS_Deal_Type__c == "WCMP"
+                                                   && obj[item].Apttus_Config2__ProductId__r.APTS_Media_Lower_Level_Code__c == "F4"
+                                                    && obj[item].Apttus_Config2__ProductId__r.APTS_Media_High_Level_Code__c =="07"
+                                                   
+                                                   ){
+                                                        WCMPCurrentMonthlySpend = obj[item].Apttus_Config2__NetPrice__c;                                                
+                                                
+                                                    }
+                                                  }
+                                               }
+                                                });    
+                                             
+                                            }                                                                                       
+                                           }                                                                                    
+                                        }
+                                         var key3;
+                                        var key4;
+                                        var cancllItems = cancelledItems ;
+                                        //alert("second" +JSON.stringify(cancelledItems));
+                                        angular.forEach (cancllItems , function (citem){
+                                         if(terminatedLineTotal==0){//Bijeta SOC-4319
+                                        for (var item=0 ; item<citem.length;item++){
+                                             key3= rec.APTS_Deal_Number__c+"_"+rec.APTS_Deal_Type__c;
+                                            key4= citem[item].APTS_Deal_Number__c+"_"+citem[item].APTS_Deal_Type__c; 
+                                                if(key3==key4){  
+                                                terminatedLineTotal  += citem[item].APTS_Cancelled_Adjustment_Amount__c; 
+                                                }
+                                        }
+                                       } 
+                                    });       
+                                        var discountPercent = $scope.setOfWPK.indexOf(rec.APTS_SAP_Deal_Type__c) <0 ? $scope.maxDiscount : $scope.westPackDiscount;
+
+                                        if(!isWPKItem)
+                                            discountPercent = $scope.maxDiscountNoWestPack;
+
+                                        maxDiscountedAmount += rec.Apttus_Config2__ExtendedPrice__c * discountPercent/100;
+                                        grossAmount += rec.Apttus_Config2__ExtendedPrice__c;
+                                        
+                                        maxBlendedDiscount = discountPercent;
+                                        adjustmentAmount = rec.Apttus_Config2__AdjustmentAmount__c;
+ 
+                                        if(rec.Apttus_Config2__LineStatus__c != 'New')
+                                            listPriceSum += rec.Apttus_Config2__ListPrice__c*rec.Apttus_Config2__Quantity__c;
+                                    } else if(rec.APTS_SAP_MLA_Agreement_Number__c){
+                                        var assetObjects = assetsLineItems[rec.APTS_SAP_MLA_Agreement_Number__c];
+
+                                        if(assetObjects){
+                                            existingAgreementTotal = 0;
+                                            angular.forEach(assetObjects, function (assetObject){
+                                                if(assetObject.Apttus_Config2__ProductId__r 
+                                                    && assetObject.Apttus_Config2__ProductId__r.APTS_Media_Lower_Level_Code__c == 'Q6'){
+                                                    existingAgreementTotal = assetObject.Apttus_Config2__NetPrice__c;
+                                                    item.grpLn.APTS_Existing_Agreement_Product_Code__c = assetObject.Apttus_Config2__ProductId__r.ProductCode;
+                                                }
+                                            });
+                                        }
+                                    }
+
+
+                                    if(rec.Apttus_Config2__LineStatus__c != 'New')
+                                        allowKeepTerms = true;
+
+                                    /*if(rec.APTS_SAP_Deal_Type__c && rec.APTS_SAP_Deal_Number__c){
+                                        var aKey = rec.APTS_SAP_Deal_Type__c+rec.APTS_SAP_Deal_Number__c;
+
+                                        if(!assetsItemsCount[aKey])
+                                            assetsItemsCount[aKey] = 0;
+
+                                        assetsItemsCount[aKey]++;
+                                    }*/
+
+                                    if(rec.APTS_SAP_MLA_Agreement_Number__c){
+                                        var aKey = rec.APTS_SAP_MLA_Agreement_Number__c;
+                                        if(!assetsItemsCount[aKey])
+                                            assetsItemsCount[aKey] = 0;
+
+                                        assetsItemsCount[aKey]++;   
+
+                                        if(!item.grpLn.APTS_SAP_MLA_Agreement_Number__c){
+                                            item.grpLn.APTS_SAP_MLA_Agreement_Number__c = rec.APTS_SAP_MLA_Agreement_Number__c;
+                                        }
+                                    }
+                                }
+                                else{
+                                    emptyIndex = index;
+                                    emptyLI = rec;
+                                }
+                                ++index;
+                            });
+
+                            var existingCounts = 0;
+                            j$.each(assetsItemsCount, function (assetKey, assetCount){
+                                existingCounts++;
+                            });
+
+                            if(existingCounts == 0 || existingCounts > 1)
+                                //disableKeepTerms = true;
+
+                            maxDiscountedAmount = grossAmount == 0 ? 0 : maxDiscountedAmount / grossAmount;
+                            item.grpLn.APTS_Max_Blended_Discount__c = Math.floor(maxDiscountedAmount*100);
+
+                          // alert('check for WPK '+isWPKItem);
+                           if(adjustmentAmount > 0 && adjustmentAmount <= item.grpLn.APTS_Max_Blended_Discount__c && isWPKItem){
+                           // alert('Setting IRR to 0');     
+                             incrementalRevenueRequired = 0;
+                            } else if(adjustmentAmount > 0 && adjustmentAmount > item.grpLn.APTS_Max_Blended_Discount__c && isWPKItem && listPriceSum > 0){
+                                incrementalRevenueRequired = listPriceSum * ( (adjustmentAmount-item.grpLn.APTS_Max_Blended_Discount__c)/100);
+                            }
+                             //SOC-3876 Added by Punitha/Asha 6/12/2017
+                            if(WCMPModifiedMonthlySpend < WCMPCurrentMonthlySpend){                         
+                                irrForWcmp = Math.abs(WCMPModifiedMonthlySpend - WCMPCurrentMonthlySpend);
+                            }
+                            
+
+                          // alert('testing '+incrementalRevenueRequired);
+                            item.lnItems.splice(emptyIndex,1);
+                            item.lnItems.push(emptyLI);
+                            item.grpLn.APTS_NetAmount__c = totalNetPrice;
+                            console.log('3##Net Amount '+item.grpLn.APTS_NetAmount__c);
+                            item.grpLn.APTS_WCMP_Current_Monthly_Spend__c = WCMPCurrentMonthlySpend;   //SOC-3875 Added by Chirag 6/2/2017
+                            item.grpLn.APTS_WCMP_Modified_Monthly_Spend__c = WCMPModifiedMonthlySpend;   //SOC-3956 Added by Chirag 6/2/2017
+                            item.grpLn.APTS_Existing_ship_and_charge_Total__c = existingShipnCharge ;  //SOC-4319 Added by Punitha 11/27/2017
+                            item.grpLn.APTS_Terminated_Lines_Total__c = terminatedLineTotal ;    //SOC-4319 Added by Punitha 
+                            item.grpLn.APTS_Incremental_Revenue__c = incrementalRevenue;
+                            item.grpLn.APTS_Incremental_Revenue_Required__c = $scope.incrementalRevenueRequiredN * (incrementalRevenueRequired + irrForWcmp );//SOC-3876 Added wcmp calc by Asha/Punitha
+                            item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c = item.grpLn.APTS_Incremental_Revenue__c - item.grpLn.APTS_Incremental_Revenue_Required__c;
+                            item.grpLn.APTS_Existing_Agreement_Total__c = existingAgreementTotal;
+                            item.grpLn.APTS_Online_Incremental__c = existingAgreementTotal ? totalNetPrice - existingAgreementTotal : 0;
+                    
+                             
+                            
+                            
+                            
+                            item.allowKeepTerms = allowKeepTerms;
+                            //item.disableKeepTerms = disableKeepTerms;     //SOC-3956 Added by Chirag 5/30/2017
+
+                            if((!allowKeepTerms || (item.grpLn.APTS_Group_Name__c.includes($scope.allName)) && tab.name == 'Online/Software') ){
+                                item.keepTerms = false;
+                                $scope.markTerms(tab.name, item.grpLn.Id, false);
+                            }  
+                          if(item.grpLn.APTS_Primary_Material__c == 'West Complete Library Sub' && !isWPKItem){                                                 
+                           if(item.grpLn.APTS_Max_Blended_Discount__c < 19 || item.grpLn.APTS_Max_Blended_Discount__c == 19){
+                            item.grpLn.APTS_Max_Blended_Discount__c = 20;
+                            }
+                            }                                                      
+                            item.grpLn.Group_Approval_Required__c = false;                            
+                            if(item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c < 0 && !item.grpLn.APTS_Group_Name__c.includes($scope.allName)){
+                            //Added by Prabhu to make the group approval field to True
+                               if(item.grpLn.APTS_Primary_Material__c == 'West Complete Library Sub'){                               
+                                item.grpLn.Group_Approval_Required__c = true;
+                                }
+                                angular.forEach(item.lnItems, function(li){
+                                    if(li){
+                                        li.APTS_Deal_Not_Complete__c = true;
+                                        if(li.Apttus_Config2__AdjustmentAmount__c > item.grpLn.APTS_Max_Blended_Discount__c && li.Apttus_Config2__AdjustmentType__c == '% Discount')
+                                            adjHigherThanBlend = true;                                            
+                                            if(item.grpLn.APTS_Primary_Material__c == 'West Complete Library Sub'){                                           
+                                            item.grpLn.Group_Approval_Required__c = true;
+                                          }                                            
+                                            
+                                    }
+                                });
+                            }
+                            else{
+                                item.grpLn.Group_Approval_Required__c = false;
+                                angular.forEach(item.lnItems, function(li){
+                                    li.APTS_Deal_Not_Complete__c = false;
+                                    if(li.Apttus_Config2__AdjustmentAmount__c > item.grpLn.APTS_Max_Blended_Discount__c && li.Apttus_Config2__AdjustmentType__c == '% Discount'){
+                                        adjHigherThanBlend = true;
+                                       if(item.grpLn.APTS_Primary_Material__c == 'West Complete Library Sub'){                                        
+                                        item.grpLn.Group_Approval_Required__c = true;
+                                        }
+                                    }
+                                           
+                                });
+                            }
+                            item.blendDiscountRed = adjHigherThanBlend;
+                            item.optionList = optionList;
+
+                            // Validating Keep Terms
+                            //assetsLineItems
+                            var assetsCount = {};
+                            angular.forEach(item.lnItems, function(li){
+                                if(li.APTS_SAP_Deal_Number__c && li.APTS_SAP_Deal_Type__c){
+                                    var key = li.APTS_SAP_Deal_Number__c+"_"+li.APTS_SAP_Deal_Type__c;
+                                    if(!assetsCount[key]){
+                                        assetsCount[key] = 0;
+                                    }
+
+                                    assetsCount[key]++;
+                                }
+                            });
+
+                            // Disabling assets logic Online/Software , it will be for future use
+                            if(assetsCount && tab.name != 'Online/Software'){
+                               angular.forEach(assetsCount, function(currentAssetsCount, assetKey){
+                                    var existingAssetsCount = assetsLineItems[assetKey];
+                                    //alert('test ' + item.disableKeepTerms );
+
+                                    if(currentAssetsCount < existingAssetsCount.length){
+                                        //item.disableKeepTerms = true;     //SOC-3956 Added by Chirag 5/30/2017
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+
+                $scope.markTerms = function(tabLabel, groupId, keepTerms){
+                   
+                    angular.forEach($scope.tabName, function(tab){
+                        if(tab.name == tabLabel){
+                            angular.forEach(tab.dataList, function(grpWrapper){
+                                if(grpWrapper.grpLn.Id == groupId){
+                                    grpWrapper.optionList.indexOf('');
+                                    var totalNetPrice = 0;
+                                    var existingAgreementTotal = 0;
+                    
+
+
+                                    angular.forEach(grpWrapper.lnItems, function(li){
+                                        if(li && li.Apttus_Config2__Quantity__c != null){
+                                            li.APTS_Keep_Terms__c = keepTerms;
+                                            if(keepTerms && keepTerms != "false"){
+                                                if(li.Id != null){
+                                                    //Added as part of SOC-3525 - Bridge Discount changes
+                                                    $scope.lineItemIdToOriginalContractTerm[li.Id] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_New_Bridge_Discount__c];
+                                                    //$scope.lineItemIdToOriginalContractTerm[li.Id] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_Bridge_Discount__c];
+                                                    //Added as part of SOC-3525 - Bridge Discount changes
+                                                    $scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsSelected'] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_New_Bridge_Discount__c];
+                                                    //$scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsSelected'] = [li.APTS_Contract_Term__c, li.APTS_Yr_1_Renewal_Adjustment__c, li.APTS_Years_2_Plus_Adjustment__c, li.APTS_Bridge__c, li.APTS_Bridge_Discount__c];
+                                                }
+                                                li.APTS_Contract_Term__c = 'Existing';
+                                                li.APTS_Yr_1_Renewal_Adjustment__c = '';
+                                                li.APTS_Years_2_Plus_Adjustment__c = '';
+                                                li.APTS_Bridge__c = null;
+                                                //Added as part of SOC-3525 - Bridge Discount changes
+                                                li.APTS_New_Bridge_Discount__c = null;
+                                                //li.APTS_Bridge_Discount__c = null;
+                                                window.$Label = window.$Label || {};    
+                                                $Label.customLabel= '{!($Label.APTS_Proflex_Materials)}';   
+                                                var x =  $Label.customLabel;
+
+                                                if(grpWrapper.grpLn.APTS_Adjustment_Type__c == 'Base Price Override'){
+                                                    if(li.Apttus_Config2__LineType__c == 'Product/Service' && (li.APTS_Product_Code__c != '40666420' && li.APTS_Product_Code__c != '41972767' && li.APTS_Product_Code__c != '41308780' && li.APTS_Product_Code__c != '42129928' && li.APTS_Product_Code__c != '40757482' && li.APTS_Product_Code__c != '41841759')){
+                                                        totalNetPrice+=li.Apttus_Config2__NetPrice__c;
+                                                    }
+                                                }
+                                                else if(typeof li.Apttus_Config2__NetPrice__c != 'undefined' && (li.APTS_Product_Code__c != '40666420' && li.APTS_Product_Code__c != '41972767' && li.APTS_Product_Code__c != '41308780' && li.APTS_Product_Code__c != '42129928' && li.APTS_Product_Code__c != '40757482' && li.APTS_Product_Code__c != '41841759')){
+                                                    totalNetPrice += li.Apttus_Config2__NetPrice__c;
+                                                    console.log('4##Product Code '+li.APTS_Product_Code__c+'##NetPrice ='+li.Apttus_Config2__NetPrice__c+'##TotalNetPrice'+totalNetPrice);
+                                                }
+
+                                                if(li.APTS_SAP_MLA_Agreement_Number__c){
+                                                    var assetObjects = assetsLineItems[li.APTS_SAP_MLA_Agreement_Number__c];
+
+                                                    if(assetObjects){
+                                                        existingAgreementTotal = 0;
+                                                        angular.forEach(assetObjects, function (assetObject){
+                                                            if(assetObject.Apttus_Config2__ProductId__r 
+                                                                && assetObject.Apttus_Config2__ProductId__r.APTS_Media_Lower_Level_Code__c == 'Q6'){
+                                                                    existingAgreementTotal = assetObject.Apttus_Config2__NetPrice__c;
+                                                            }
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                            else{
+                                                var grpName = grpWrapper.grpLn.APTS_Group_Name__c;
+                                                var temp = $scope.lineItemIdToOriginalContractTerm[li.Id];
+
+                                                if(!$scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsUnSelected'] || $scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsUnSelected'][0] == 'Existing'){
+                                                    var renewalValue = li.Apttus_Config2__LineStatus__c == 'Renewed' ? li.APTS_Yr_1_Renewal_Default__c : null; 
+                                                    //Added as part of SOC-3525 - Bridge Discount changes
+                                                    $scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsUnSelected'] = [li.APTS_Contract_Term_Default__c, renewalValue, li.APTS_Years_2_Plus_Default__c, li.APTS_Bridge__c, li.APTS_New_Bridge_Discount__c];
+                                                    //$scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsUnSelected'] = [li.APTS_Contract_Term_Default__c, renewalValue, li.APTS_Years_2_Plus_Default__c, li.APTS_Bridge__c, li.APTS_Bridge_Discount__c];
+                                                }
+
+                                                var temp = $scope.lineItemIdToOriginalContractTermByMarkTerms[li.Id]['keepTermsUnSelected'];
+
+                                                var adjustments = {};
+
+                                                var contractTermKey = $scope.getKeyByValue($scope.AdjustmentTypeToAPIName, 'APTS_Contract_Term__c');
+                                                var yr1RenewalKey = $scope.getKeyByValue($scope.AdjustmentTypeToAPIName, 'APTS_Yr_1_Renewal_Adjustment__c');
+                                                var yr2PlusKey = $scope.getKeyByValue($scope.AdjustmentTypeToAPIName, 'APTS_Years_2_Plus_Adjustment__c');
+                                                var bridgeKey = $scope.getKeyByValue($scope.AdjustmentTypeToAPIName, 'APTS_Bridge__c');
+                                                //Added as part of SOC-3525 - Bridge Discount changes
+                                                var bridgeDiscountKey = $scope.getKeyByValue($scope.AdjustmentTypeToAPIName, 'APTS_New_Bridge_Discount__c');
+                                                //var bridgeDiscountKey = $scope.getKeyByValue($scope.AdjustmentTypeToAPIName, 'APTS_Bridge_Discount__c');
+                                                
+
+                                                if($scope.AdjustmentsByGroupName[grpName]){
+                                                    adjustments = $scope.AdjustmentsByGroupName[grpName];
+                                                } 
+
+                                                li.APTS_Contract_Term__c = adjustments[contractTermKey] ? adjustments[contractTermKey] : temp[0];
+                                                li.APTS_Yr_1_Renewal_Adjustment__c = adjustments[yr1RenewalKey] ? adjustments[yr1RenewalKey] : temp[1];
+                                                li.APTS_Years_2_Plus_Adjustment__c = adjustments[yr2PlusKey] ? adjustments[yr2PlusKey] : temp[2];
+                                                li.APTS_Bridge__c = adjustments[bridgeKey] ? adjustments[bridgeKey] : temp[4];
+                                                //Added as part of SOC-3525 - Bridge Discount changes
+                                                li.APTS_New_Bridge_Discount__c = adjustments[bridgeDiscountKey] ? adjustments[bridgeDiscountKey] : temp[5];
+                                                //li.APTS_Bridge_Discount__c = adjustments[bridgeDiscountKey] ? adjustments[bridgeDiscountKey] : temp[5];
+                                            }
+                                        }
+                                    });
+
+                                    if(keepTerms && keepTerms != "false"){
+                                        grpWrapper.grpLn.APTS_Existing_Agreement_Total__c = existingAgreementTotal;
+                                  
+                                        grpWrapper.grpLn.APTS_Online_Incremental__c = totalNetPrice - existingAgreementTotal;
+                                    } else{
+                                        grpWrapper.grpLn.APTS_Existing_Agreement_Total__c = 0;
+                                        grpWrapper.grpLn.APTS_Online_Incremental__c = 0;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+
+                $scope.getKeyByValue = function( obj, value ) {
+                    for( var prop in obj ) {
+                        if( obj.hasOwnProperty( prop ) ) {
+                             if( obj[ prop ] === value )
+                                 return prop;
+                        }
+                    }
+                }
+
+                // Check the MessageShow Functionality
+                $scope.checkForPricingPending = function(){
+                    angular.forEach($scope.tabName, function(tab){
+                        angular.forEach(tab.dataList, function (item){
+                            var pricingCheck = false;
+                            angular.forEach(item.lnItems, function (rec){
+                                if(rec.Apttus_Config2__Quantity__c != null){
+                                    if(rec.APTS_DefaultNetPrice__c != rec.Apttus_Config2__NetPrice__c){
+                                        pricingCheck =  true;
+                                    }
+                                }
+                            });
+                            item.showMessage = pricingCheck;
+                        });
+                    });
+                }
+
+
+
+
+                // function to change quantity and call the adjustment method
+                $scope.adjustRowQuantity =  function(lnRec){
+                    lnRec.Apttus_Config2__ExtendedPrice__c = (lnRec.Apttus_Config2__ListPrice__c*lnRec.Apttus_Config2__SellingTerm__c)*lnRec.Apttus_Config2__Quantity__c;
+                    lnRec.Apttus_Config2__NetPrice__c = lnRec.Apttus_Config2__ExtendedPrice__c;
+                    $scope.CalculateAdjustments(lnRec);
+                    $scope.GradTotalCalc();
+                }
+
+                // Reset the Group Data Adjustments
+                $scope.ResetGroupDataAdjustment = function (CurrentGroupName, tabName){
+                    angular.forEach($scope.tabName, function(tab){
+                        if(tab.name == tabName){
+                            angular.forEach(tab.dataList, function (item){
+                                if(targetItem.grpLn.APTS_Group_Name__c == CurrentGroupName){
+                                    angular.forEach(targetItem.lnItems, function (tarItem){
+                                        angular.forEach(G_ParsedRowData, function (sourceItem){
+                                            angular.forEach(sourceItem.lnItems, function (srcItem){
+                                                if(srcItem.Id == tarItem.Id){
+                                                    tarItem.Apttus_Config2__Quantity__c = srcItem.Apttus_Config2__Quantity__c;
+                                                    tarItem.Apttus_Config2__NetPrice__c = srcItem.Apttus_Config2__NetPrice__c;
+                                                    tarItem.Apttus_Config2__ListPrice__c = srcItem.Apttus_Config2__ListPrice__c;
+                                                    tarItem.Apttus_Config2__ExtendedPrice__c = srcItem.Apttus_Config2__ExtendedPrice__c;
+                                                    tarItem.Apttus_Config2__EndDate__c = srcItem.Apttus_Config2__EndDate__c;
+                                                    tarItem.Apttus_Config2__StartDate__c = srcItem.Apttus_Config2__StartDate__c;
+                                                    tarItem.Apttus_Config2__AdjustmentType__c = srcItem.Apttus_Config2__AdjustmentType__c;
+                                                    tarItem.Apttus_Config2__AdjustmentAmount__c = srcItem.Apttus_Config2__AdjustmentAmount__c;
+                                                }
+                                            });
+                                        });
+                                    });
+                                    targetItem.showMessage = false;
+                                }
+                            });
+                            $scope.GradTotalCalc();
+                        }
+                    });
+                }
+
+                // Function for collapsible panels
+                $scope.CollapsePanel = function(e,grpid){
+                    console.log('###collapsePanel-- '+grpid+' '+e.currentTarget);
+                    if(j$(e.currentTarget).find('i.glyphicon').hasClass('glyphicon-minus') ==  true){
+                        j$('#collapse'+grpid).slideUp('slow',function(){
+                            j$(e.currentTarget).find('i.glyphicon').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+                        });
+                    }
+                    else if(j$(e.currentTarget).find('i.glyphicon').hasClass('glyphicon-plus') ==  true){
+                        j$('#collapse'+grpid).slideDown('slow',function(){
+                            j$(e.currentTarget).find('i.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+                        });
+                    }
+                }
+
+                // Save the Adjustment in Salesforce End
+                $scope.saveGrpAdjustmentData =  function(){
+                    $scope.parseDates();
+
+                    var filteredJson = angular.toJson($scope.tabName);
+                    console.log('###filteredJson-- '+filteredJson);
+                    saveActionFucntion(filteredJson, 'backToCart');
+                }
+                $scope.parseDates = function(){
+                    angular.forEach($scope.tabName, function(tab){
+                        angular.forEach(tab.dataList, function (item){
+                            angular.forEach(item.lnItems, function (rec){
+                                if(rec.Apttus_Config2__Quantity__c != null){
+                                    var startDate = Date.parse(rec.Apttus_Config2__StartDate__c);
+                                    var endDate = Date.parse(rec.Apttus_Config2__EndDate__c);
+                                    rec.Apttus_Config2__StartDate__c = startDate;
+                                    rec.Apttus_Config2__EndDate__c = endDate;
+                                }
+                            });
+                        });
+                    });
+                }
+
+                // Cancel the process and return to back page from where it is redirect
+                $scope.cancelAndRedirect =  function(){
+                    CancelThePage();
+                    //j$('.imgCancelSpinner').show();
+                    //window.location.href = G_retUrl;
+                    
+                    
+                }
+
+                // Function to popup adjustmnet menu
+                $scope.popupAdjustmentMenu = function(e){
+                    var leftPos = e.clientX;
+                    var topPos = e.clientY;
+
+                    var leftPosStr = leftPos-20+'px';
+                    var topPosStr =topPos+5+'px';
+                    j$(e.currentTarget).next().css({'position':'fixed','top':topPosStr,'left':leftPosStr});
+                }
+
+                $scope.calculateTerm=function(rec)
+                {
+                    var startdate =convert(rec.Apttus_Config2__StartDate__c);
+                    var endDate =convert(rec.Apttus_Config2__EndDate__c);
+                    var startDateSplit=startdate.split('-');
+                    var endDateSplit=endDate.split('-');
+
+                    var startDateSplit=startdate.split('-');
+                    var endDateSplit=endDate.split('-');
+                    var startDateStr = startDateSplit[1]+'/'+startDateSplit[2]+'/'+startDateSplit[0];
+                    var endDateStr = endDateSplit[1]+'/'+endDateSplit[2]+'/'+endDateSplit[0];
+                    rec.Apttus_Config2__SellingTerm__c=convertToMonth(startDateStr,endDateStr);
+
+                }
+
+                $scope.addTable = function(tabName){
+                    var showAlert = false;
+                    angular.forEach($scope.tabName, function(tab){
+                        if(tab.name == tabName){
+                            if(tab.notShownDataList.length > 0){
+                                var a = tab.notShownDataList[0];
+
+                                if(a.grpLn){
+                                    if(!a.grpLn.APTS_Incremental_Revenue_Above_Threshold__c)
+                                        a.grpLn.APTS_Incremental_Revenue_Above_Threshold__c = 0;
+
+                                    if(!a.grpLn.APTS_Max_Blended_Discount__c)
+                                        a.grpLn.APTS_Max_Blended_Discount__c = 0;
+
+                                    if(!a.grpLn.APTS_Incremental_Revenue_Required__c)
+                                        a.grpLn.APTS_Incremental_Revenue_Required__c = 0;
+
+                                    if(!a.grpLn.APTS_Incremental_Revenue__c)
+                                        a.grpLn.APTS_Incremental_Revenue__c = 0;
+
+                                    if(!a.grpLn.APTS_NetAmount__c)
+                                        a.grpLn.APTS_NetAmount__c = 0;
+                                }
+
+
+                                tab.notShownDataList.splice(0,1);
+                                tab.dataList.push(a);
+                            }
+                            else{
+                                showAlert = true;
+                            }
+                        }
+                    });
+
+                    if(showAlert){
+                        alert($scope.maximumNumberError);
+                    }
+                }
+
+                $scope.removeTable = function(tabName, groupName){
+                    angular.forEach($scope.tabName, function(tab){
+                        if(tab.name==tabName){
+                            var eligibleDataList;
+                            angular.forEach(tab.dataList, function(item){
+                                if(item.grpLn.APTS_Group_Name__c.includes($scope.allName))
+                                    eligibleDataList = item;
+                            });
+                            angular.forEach(tab.dataList, function(item){
+                                if(item.grpLn.APTS_Group_Name__c == groupName){
+                                    var nonDeleteIndex;
+                                    angular.forEach(item.lnItems, function(rec){
+                                        if(typeof rec.Apttus_Config2__Quantity__c !='undefined'){
+                                            //eligibleDataList.lnItems.push(rec);
+                                            var lnItemsLength = eligibleDataList.lnItems.length;
+
+                                            if(!lnItemsLength){
+                                                eligibleDataList.lnItems.push(rec);
+                                            } else{
+                                                eligibleDataList.lnItems.splice(lnItemsLength-1, 0, rec);    
+                                            }
+                                            
+                                        }
+                                        else
+                                            nonDeleteIndex = item.lnItems.indexOf(rec);
+                                    });
+
+                                    for(i=0; i<nonDeleteIndex; ++i){
+                                        item.lnItems.splice(0,1);
+                                    }
+                                    for(i=nonDeleteIndex; i < item.lnItems.length-1; ++i){
+                                        item.lnItems.splice(1,1);
+                                    }
+                                    var index = tab.dataList.indexOf(item);
+                                    tab.notShownDataList.unshift(item);
+                                    tab.dataList.splice(index,1);
+                                }
+                            });
+                        }
+                    });
+                }
+
+                $scope.moveToAnotherGroup = function(currentGroup){
+                    var newGroup = $scope.selectedGroup.name.grpLn.APTS_Group_Name_Original__c;
+
+                    if(typeof newGroup == 'undefined' || newGroup == ''){
+                        return;
+                    }
+
+                    $scope.selectedGroup.name = '';
+
+                    // get the line items that need to move
+                    var srcElement = j$('div.tablePanelDiv[group-name="'+currentGroup+'"]').find('table.content-table').find('tbody.customBody');
+                    var targetElement = j$('div.tablePanelDiv[group-name="'+newGroup+'"]').find('table.content-table').find('tbody.customBody');
+                    var SelectedLnItems = [];
+                    if(!j$(srcElement).find('tr.selected-row').size()){
+                        alert($scope.selectProductMessage);
+                        return;
+                    }
+
+                    $scope.ShuffledGroup = currentGroup;
+                    $scope.applyShuffleLogic(newGroup);
+
+                    var itemTab = j$(targetElement).attr('container-tab');
+                    
+                    if(newGroup.indexOf("For Bundle") == -1 && newGroup != currentGroup){
+                        $scope.GrouplevelAdjustmentForAllItems(newGroup, itemTab);
+
+                        var groupId = j$('div.tablePanelDiv[group-name="'+newGroup+'"]').attr('group-id');
+                        var keepTerms = j$("#"+groupId+".keepTermsInput").attr('keep-terms');
+                        $scope.markTerms(itemTab, groupId, keepTerms);
+                    }
+                };
+
+                $scope.filterPickList = function(bundleItem){
+                    return function(item){
+                        if(item && item.grpLn.APTS_Group_Name__c != bundleItem.grpLn.APTS_Group_Name__c){
+                            return true;
+                        }
+                        return false;
+                    }
+                };
+
+                $scope.filterAdjustmentPickList = function(bundleItem, tabName){
+                    return function(item){
+                        if(tabName == "Online/Software" && !item.availableInOnline_Software__c){
+                            return false;
+                        } else if(tabName == "Print" && !item.availableInPrint__c){
+                            return false;
+                        }
+
+                        if(bundleItem.keepTerms && item.name &&
+                                (item.name.indexOf("YOY") > -1 || item.name.indexOf("Bridge") > -1 || item.name == "Contract Term")){
+                           return false;
+                        }
+                        return true;
+                    }
+                };
+
+                $scope.selectDeselectAll = function($event){
+                    var table = j$($event.target).parents("table.content-table")[0];
+                    if(!table)
+                        return;
+
+                    j$(table).find("tr.draggable-row").each(function(){
+                        if(j$(this).attr("item-lnid") != "")
+                            j$(this).toggleClass('selected-row');
+                    });
+                    $scope.checkForSlection();
+
+                    $scope.selectedGroup.name = '';
+                };
+
+                $scope.goToMultiLocations = function(groupId){
+                    $scope.parseDates();
+
+                    var filteredJson = angular.toJson($scope.tabName);
+                    console.log('###filteredJson-- '+filteredJson);
+                    saveActionFucntion(filteredJson, 'goToMultiLocation', groupId);
+                };
+
+                $scope.allowMultiLocations = function(item){
+                    if(item.keepTerms){
+                        return true;
+                    }
+
+                    var allow = false;
+                    var allStatusesAreNew = true;
+                    angular.forEach(item.lnItems,function(rec){
+                        if(rec.Id)
+                            allow = true;
+                        if(rec.Id && rec.Apttus_Config2__LineStatus__c != 'New' && allStatusesAreNew)
+                            allStatusesAreNew = false;
+                    });
+
+                    return allStatusesAreNew && allow;
+                };
+
+                $scope.addLocation = function(item){
+                    j$("[name=accountLocation]:checked").removeAttr("checked");
+
+                    $scope.selectedLineItem = item;
+                    $scope.selectedGroupForLocations = null;
+
+                    j$('#myModal').modal();
+                };
+
+                $scope.addLocationForGroupLIs = function(group){
+                    j$("[name=accountLocation]:checked").removeAttr("checked");
+
+                    $scope.selectedLineItem = null;
+                    $scope.selectedGroupForLocations = group;
+                    j$('#myModal').modal();  
+                };
+
+                $scope.saveLocation = function(){
+                    var accountLocation = j$("[name=accountLocation]:checked").val();
+                    if(!accountLocation){
+                        alert('Please select location!');
+                        return false;
+                    }
+
+                    if($scope.selectedLineItem){
+                        $scope.selectedLineItem.APTS_SSD_ship_to__c = accountLocation;
+                    } else if($scope.selectedGroupForLocations){
+                        angular.forEach($scope.selectedGroupForLocations.lnItems, function(li){
+                            if(li && li.Id){
+                                li.APTS_SSD_ship_to__c   = accountLocation;
+                            }
+                        });
+                    }
+                    
+                    j$('#myModal').modal("hide");  
+                };
+
+                $scope.getAccountName = function(item){
+                    if(!item.APTS_SSD_ship_to__c)
+                        return;
+
+                    if(!$scope.accounts[item.APTS_SSD_ship_to__c])
+                        return;
+
+                    var account = $scope.accounts[item.APTS_SSD_ship_to__c];
+
+                    return account.Source_System_Account_Number__c+' '+account.City__c;
+                }
+
+                $scope.getAccountAddress = function(item){
+                    if(!item.APTS_SSD_ship_to__c)
+                        return;
+
+                    if(!$scope.accounts[item.APTS_SSD_ship_to__c])
+                        return;
+
+                    var account = $scope.accounts[item.APTS_SSD_ship_to__c];
+                    var city = account.City__c ? account.City__c : '';
+                    var street = account.Number_Street__c ? account.Number_Street__c : '';
+                    var state = account.State__c ? account.State__c : '';
+                    var postalCode = account.Postal_Code__c ? account.Postal_Code__c : '';
+
+                    return city+' '+street+' '+state+' '+postalCode;
+                }
+
+                $scope.getCustomSettingsValues = function(key, tabName){
+                    
+                    var values = '';
+
+                    angular.forEach($scope.fullAdjustmentPicklist, function (item){
+                        if(item.Display_Name__c == key && tabName == "Online/Software" && item.Available_in_Online_Software__c){
+                            values = item.Available_Values__c;
+                        } else if(item.Display_Name__c == key && tabName == "Print" && item.Available_in_Print__c){
+                            values = item.Available_Values__c;
+                        }
+                    });
+
+                    if(values){
+                        return values.split(";");    
+                    }
+
+                    if(key == 'Contract Term'){
+                        return $scope.AdjustmentValu;    
+                    }
+
+                    if(key == 'YOY +/-'){
+                        return $scope.yoyPickVal;
+                    }
+
+                    if(key == 'Bundle Primary Material'){
+                        return $scope.optionList;
+                    }
+
+                    if(key == 'Bridge'){
+                        return $scope.bridgePickVal;
+                    }
+                }
+
+                $scope.GradTotalCalc();
+            });
+
+            // Write the custom JS
+            j$(document).ready(function(){
+                /*
+                 j$('.overflowDiv').niceScroll({
+                 autohidemode: "true",
+                 cursorwidth: "8px",
+                 cursorcolor: "#000",
+                 cursorborder: "1px solid #000",
+                 cursorborderradius: "0px",
+                 background: "#DDD"
+                 });*/
+
+                setTimeout(function(){
+                    //  DnDFunc();
+                },3000);
+            });
+
+            function convert(str) {
+                var date = new Date(str),
+                        mnth = ("0" + (date.getMonth()+1)).slice(-2),
+                        day  = ("0" + date.getDate()).slice(-2);
+                return [ date.getFullYear(), mnth, day ].join("-");
+            }
+
+            function monthDiff(d1, d2) {
+                var months;
+                months = (d2.getFullYear() - d1.getFullYear()) * 12;
+                months -= d1.getMonth() + 1;
+                months += d2.getMonth();
+                return months <= 0 ? 0 : months;
+            }
+            function convertToMonth(startdate,endDate){
+                //var date1 = new Date("7/11/2010");
+                //var date2 = new Date("12/31/2010"); MM-DD-YYYY
+                var date1=new Date(startdate);
+                var date2=new Date(endDate);
+                var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+                var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                var diffDays=Math.ceil(diffDays/31);
+                return diffDays;
+            }
+
+        </script>
+    </head>
+    <body  id="GroupLineWrap"  ng-controller="GroupLineWrap" class="ng-cloak">
+    <apex:form id="frm">
+        <!-- Top header section bar ###Start### here-->
+
+        <div class="apt-page-header cartTable clearfix" ng-show="tabName != ''">
+            <div class="dropdown apt-pull-left">
+                <div class="apt-hamburger-icon apt-dropdown-toggle" data-toggle="dropdown" id="stepMenu" role="button" style="display: none;">
+                    <div class="icon-utility-list"></div>
+                </div>
+                <ul aria-labelledby="stepMenu" class="apt-list-dropdown dropdown-menu taskPageButtons dropdown-menu-top" role="menu"><li class="aptProductListHeader">&nbsp;&nbsp;&nbsp;Follow these steps:</li></ul>
+            </div>
+            <div class="apt-quote-panel apt-pull-left"><span class="apt-cart-head-label">Proposal:</span>
+                &nbsp;<apex:outputField id="ProposalNameWithLink" value="{!Config.Apttus_QPConfig__Proposald__c}"/><span class="apt-location-text apt-cart-head-label">{!Config.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Proposal_Name__c}</span>
+
+            </div>
+            <div class="apt-aprroval-panel apt-pull-left"><span class="apt-cart-head-label">Approval Status:</span><span class="approvalText"><span>{!Config.Apttus_QPConfig__Proposald__r.Apttus_Proposal__Approval_Stage__c}</span></span>
+            </div>
+            <div id="aptGeneralSpinner"></div>
+            <div class="apt-headerPlacement apt-pull-right">
+            </div>
+            <div class="dropdown apt-help-panel apt-pull-right">
+
+            </div>
+        </div>
+        <!-- Top header section bar ###End### here -->
+        <!--Added/modified as part of SOC-3699 : validation for Non-EDP products in EDP LT Bundle-->
+        <apex:outputPanel id="ErrorPanel"><apex:pageMessages id="ErrorMessages"></apex:pageMessages></apex:outputPanel>
+        
+        <!-- Middle Section for Line Item Grouping ###Start### here -->
+
+        <!-- Start A.S Added -->
+        <md-content class="md-padding main-content">
+            <md-tabs md-dynamic-height="" md-border-bottom="" md-autoselect="" style="margin-top:10px">
+                <md-tab ng-repeat="tab in tabName" label ="{{tab.name}}">
+                    <!--<div style="display:inline-block;padding-bottom:5px;margin-top:30px;">-->
+                    <div ng-repeat="item in tab.dataList" class="aptRoundedDiv" style="margin:6px;margin-top:35px;width:95%;margin-left:2.3%;">
+                        <div class="aptRoundedDiv aptPageTitleBarPanel" style="margin:0px 0px;padding:2px;height:auto !important;" >
+
+                            <div class="left-side">
+                                <div class="InputBoxContainer bundle-group-label">
+                <span class="bundle-group-icon">
+                        <a style="cursor:pointer;" ng-click="CollapsePanel($event,item.grpLn.Id)">
+                            <font color="white">
+                                <span style="float:left;display:block" class="collapseIcon">
+                                    <i class="glyphicon glyphicon-minus"></i>
+                                </span>
+                            </font>
+                        </a>
+                    </span>
+                    <span>
+                    &nbsp;&nbsp;
+                    <label class="customLabelStyle" for="GroupNameSelectList" style="font-size:20px !important; color:#FFFFFF !important;">
+                        {{item.grpLn.APTS_Group_Name__c}}
+                    </label>
+                     </span>
+
+                                </div>
+                            </div>
+
+                            <div class="right-side" >
+                                <div class="InputBoxContainer" style="margin-right: 20px; float:left">
+                                    <span style="padding-top: 2px;">Add to Bundle:</span> <select placeholder="Select Group to Move" class="selectInput" ng-model="selectedGroup.name" style="width:150px;margin-left:10px;" ng-change="moveToAnotherGroup(item.grpLn.APTS_Group_Name_Original__c)"
+                                                                                                  ng-options="itemForPickList as itemForPickList.grpLn.APTS_Group_Name__c for itemForPickList in tab.dataList|filter:filterPickList(item)">
+
+                                </select>
+                                </div>
+                                
+                                <div class="InputBoxContainer" style="margin-right: 20px; float:left" ng-if="!item.grpLn.APTS_Group_Name__c.includes(allName)">
+                                    <select ng-options="pickv.id as pickv.name group by pickv.typeName for pickv in AdjustmentPickVal|filter:filterAdjustmentPickList(item, tab.name)"
+                                            ng-model="item.grpLn.APTS_Adjustment_Type__c"
+                                            class="selectInput" id="AdjustmentTypeSelectList" style="width:150px;margin-left:10px;">
+                                    </select>
+
+
+                                    <input ng-show="item.grpLn.APTS_Adjustment_Type__c !='Bundle Primary Material' && item.grpLn.APTS_Adjustment_Type__c != 'Contract Term' && item.grpLn.APTS_Adjustment_Type__c != 'YOY +/-' && item.grpLn.APTS_Adjustment_Type__c != 'Bridge'" type="number" style="width:100px;margin-left:10px;" class="selectInput InputCustomBox" id="AdjustmentAmountSelectList" ng-model="item.grpLn.APTS_Adjustment_Value__c" placeholder="Adjustment" />
+                                    <select ng-show="item.grpLn.APTS_Adjustment_Type__c == 'Contract Term'" ng-options="pickA for pickA in getCustomSettingsValues('Contract Term', tab.name)" ng-model="item.grpLn.APTS_Adjustment_Value__c" style="width:100px;margin-left:10px;" class="selectInput" id="AdjustmentAmountSelectList" placeholder="Select Year"/>
+                                    <select ng-show="item.grpLn.APTS_Adjustment_Type__c == 'YOY +/-'" ng-options="pickA for pickA in getCustomSettingsValues('YOY +/-', tab.name)" ng-model="item.grpLn.APTS_Adjustment_Value__c" class="selectInput" id="AdjustmentAmountSelectList"/>
+                                    <select ng-show="item.grpLn.APTS_Adjustment_Type__c == 'Bundle Primary Material'" ng-options="pickA for pickA in item.optionList" ng-model="item.grpLn.APTS_Adjustment_Value__c" class="selectInput" id="AdjustmentAmountSelectList"/>
+                                    <select ng-show="item.grpLn.APTS_Adjustment_Type__c == 'Bridge'" ng-options="pickA for pickA in getCustomSettingsValues('Bridge', tab.name)" ng-model="item.grpLn.APTS_Adjustment_Value__c" class="selectInput" id="AdjustmentAmountSelectList"/>
+                                    <a title="Apply Adjustment" class="ApplyIconHeader" href="" ng-click="GrouplevelAdjustment(item.grpLn.APTS_Group_Name__c, tab.name)"><i class="fa fa-check"></i></a>
+                                    <a title="Apply Adjustment" class="ApplyIconHeader" href="" ng-click="removeTable(tab.name, item.grpLn.APTS_Group_Name__c)"> <i class="glyphicon glyphicon-minus"></i></a>
+                                    &nbsp;
+                                    <div style="padding-left: 15px; display:inline-flex;" ng-show="item.allowKeepTerms && tab.name.includes('Online/Software')">
+                                        <input  id="{{item.grpLn.Id}}" type="checkbox" ng-disabled="item.disableKeepTerms && !item.keepTerms" ng-model="item.keepTerms" class="keepTermsInput" keep-terms="{{item.keepTerms}}" ng-change="markTerms(tab.name, item.grpLn.Id, item.keepTerms)" style="display:none !important;"/>
+                                        
+                                        <label class="checkbox keep-term-label" for="{{item.grpLn.Id}}">Keep Terms</label>
+                                    </div>
+                                    <div style="padding-left: 15px; display:inline-flex;" ng-show="!item.allowKeepTerms && tab.name.includes('Online/Software')">
+                                        <label class="checkbox keep-term-label"> Keep terms </label>
+                                    </div>
+
+                                    <div style="padding-left: 15px; display:inline-flex;" ng-show="tab.name.includes('Online/Software')">   
+                                        <input id="mlaInput{{item.grpLn.Id}}" type="checkbox" ng-model="item.grpLn.APTS_MLA__c" class="keepTermsInput" style="display:none !important;"/>
+                                        <label class="checkbox keep-term-label" for="mlaInput{{item.grpLn.Id}}">MLA</label>
+                                    </div>
+                                    <div class="InputBoxContainer" style="padding-left: 15px; display:inline-flex;" ng-if="tab.name.includes('Online/Software') && !item.grpLn.APTS_Group_Name__c.includes(allName) && item.grpLn.APTS_MLA__c">
+                                        <input type="button" style="color: #000000;" value="Multi Locations" ng-click="goToMultiLocations(item.grpLn.Id)" />
+                                    </div>
+                                    
+                                    <!-- SOC-3956 Added by Chirag/Bijeta 5/29/2017 Change Start -->
+                                    
+                                    <div style="padding-left: 15px; display:inline-flex;" ng-show="item.allowKeepTerms && tab.name.includes('Print')">
+                                        <input  id="{{item.grpLn.Id}}" type="checkbox" ng-disabled="item.disableKeepTerms && !item.keepTerms" ng-model="item.keepTerms" class="keepTermsInput" keep-terms="{{item.keepTerms}}" ng-change="markTerms(tab.name, item.grpLn.Id, item.keepTerms)" style="display:none !important;"/>
+                                        
+                                        <label class="checkbox keep-term-label" for="{{item.grpLn.Id}}">Keep Terms</label>
+                                    </div>
+                                    <div style="padding-left: 15px; display:inline-flex;" ng-show="!item.allowKeepTerms && tab.name.includes('Print')">
+                                        <label class="checkbox keep-term-label"> Keep terms </label>
+                                    </div>
+                                    
+                                    <!-- SOC-3956 Change End -->
+
+                                    <div class="InputBoxContainer" style="padding-left: 15px; display:inline-flex;" ng-if="tab.name.includes('Print') && !item.grpLn.APTS_Group_Name__c.includes(allName) &&  item.lnItems.length > 1">
+                                        <a href="javascript:;" class="aptListButton add-location-button" ng-click="addLocationForGroupLIs(item)" style="padding: 0px 15px !important;">Ship&nbsp;To</a>
+                                    </div>
+                                </div>
+
+                                <!--
+                                <div class="InputBoxContainer" style="margin-right: 60px; float:left;">
+                                </div>
+                                -->
+                                <div class="InputBoxContainer" style="margin-right: 20px; float:left;margin-top: 2px;" ng-if="item.grpLn.APTS_Group_Name__c.includes(allName)">
+                                    <a title="Add Row" class="ApplyIconHeader" href="" ng-click="addTable(tab.name)" ng-show="tab.notShownDataList.length > 0"> <i class="glyphicon glyphicon-plus"></i></a>
+
+                                    <!--
+                                        <div  id="addGroup"  style="width:150px;margin-left:10px;"><a href="#" class="selectInput" ng-click="addTable(tab.name)">Add Group</a></div>
+                                        <div  id="removeGroup" style="width:150px;margin-left:100px;"><a href="#" class="selectInput" ng-click="removeTable(tab.name)">Remove Group</a></div>
+                                    -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="panel-body tablePanelDiv" group-name="{{item.grpLn.APTS_Group_Name__c}}" group-id="{{item.grpLn.Id}}" style="float:left;width:100.05%;overflow-x:hidden;">
+                            <div  role="tabpanel" id="collapse{{item.grpLn.Id}}">
+                                <!--<table class="table table-hover table-striped header-table">
+                                    <thead class="customHeader">
+                                       <th class="customCell"><a href="#" style="display:none;" title="Shuffle Group" group-name="{{item.grpLn.APTS_Group_Name__c}}" data-toggle="modal" data-target="#shuffleGroupModal" ng-click="triggerShuffleGroup($event)"><i class="exchangeIcon fa fa-exchange"></i></a></th>
+                                        <th class="cell1">Product</th>
+                                        <th class="cell2">Charge Type</th>
+                                        <th class="cell3">List Price</th>
+                                        <th class="cell4">Quantity</th>
+                                        <th class="cell5" style="width:120px;">Start Date</th>
+                                        <th class="cell6" style="width:120px;">End Date</th>
+                                        <th class="cell11">Term</th>
+                                        <th class="cell7">Extended Price</th>
+                                        <th class="cell8">Adjustment</th>
+                                        <th class="cell9">Net Price</th>
+                                        <th class="cell10">Optional</th>
+                                    </thead>
+                                </table>-->
+                                <div class="overflowDiv" style="max-height:810px; min-height:5px; overflow-y:auto;">
+                                    <table class="table table-hover table-striped content-table">
+                                        <thead class="customHeader">
+                                        <th class="customCell">
+                                            <input type="checkbox" ng-click="selectDeselectAll($event)" title="Select All" style="display: inherit;"  />
+                                            <a href="#" style="display:none;" title="Shuffle Group" group-name="{{item.grpLn.APTS_Group_Name__c}}" data-toggle="modal" data-target="#shuffleGroupModal" ng-click="triggerShuffleGroup($event)"><i class="exchangeIcon fa fa-exchange"></i></a>
+                                        </th>
+                                        <th class="cell1">Product</th>
+                                        <th class="cell1">Existing Bundle</th>
+                                        <th class="cell11">Line Status </th>
+                                        <th class="cell11" ng-show="!item.keepTerms">New Primary</th>
+                                        <!--
+                                        <th class="cell2">Charge Type</th>
+                                        -->
+                                        <th class="cell4" width="60">Qty</th>
+                                        <!--
+                                        <th class="cell5" style="width:120px;">Start Date</th>
+                                        <th class="cell6" style="width:120px;">End Date</th>
+                                        <th class="cell11">Term</th>
+
+                                        <th class="cell7">Extended Price</th>
+                                        -->
+                                        <th class="cell8">Adjustment</th>
+                                        <th class="cell9">Net Price</th>
+                                        <th class="cell11" ng-show="!item.keepTerms">Bridge</th>
+                                        <th class="cell11">Contract Term</th>
+                                        <th class="cell11" ng-show="!item.keepTerms"> YOY</th>
+                                        <th class="cell11" ng-if="tab.name.includes('Print') && !item.grpLn.APTS_Group_Name__c.includes(allName)">Ship To</th>
+                                        <th class="cell11" ng-if="!tab.name.includes('Print') || item.grpLn.APTS_Group_Name__c.includes(allName)"></th>
+
+
+                                        <!--<th class="cell11" ng-show="!item.keepTerms"> YOY % Yr 2</th>
+                                        <th class="cell11" ng-show="!item.keepTerms"> YOY % Yr 3-5</th>
+                                        <th class="cell11" ng-show="!item.keepTerms"> YOY % Yr 6-10</th>-->
+
+                                        <th colspan="2" align="right"></th>
+
+                                        <!--
+                                        <th class="cell10">Optional</th>
+                                        -->
+                                        </thead>
+                                        <tbody ui-sortable="sortableOptions" ng-model="item.lnItems" id="{{item.grpLn.APTS_Group_Name__c}}" class="customBody" container-tab="{{tab.name}}">
+
+                                        <tr item-lnid="{{rec.Id}}" item-tab="{{tab.name}}" item-linenum="{{rec.Apttus_Config2__LineNumber__c}}" current-group="{{item.grpLn.APTS_Group_Name__c}}" class="draggable-row" ng-repeat="rec in item.lnItems" ng-if="rec !='undefined'">
+
+                                            <td class="customCell" ng-if="rec.Apttus_Config2__Quantity__c!=null" ng-dblclick="bundleRowsSelectionToggle(rec.Apttus_Config2__LineNumber__c)"  ng-click="rowSelectionToggle($event)"></td>
+                                            <td ng-if="rec.Apttus_Config2__Quantity__c==null"></td>
+
+                                            <td class="cell1" style="vertical-align: middle;" ng-if="rec.Apttus_Config2__Quantity__c!=null">
+                                                <span ng-if="rec.Apttus_Config2__LineType__c== 'Product/Service'" class="primaryProduct">{{rec.APTS_Product_Or_Option_Name__c}}</span>
+                                                <span ng-if="rec.Apttus_Config2__LineType__c== 'Option'" class="optionProduct"><i class="fa fa-check" style="margin-right:4px;"></i> {{rec.APTS_Product_Or_Option_Name__c}} <i title="Bundle: {{rec.APTS_Product_Name__c}}" class="fa fa-question-circle"></i></span>
+                                            </td>
+                                            <td class="cell1" style="vertical-align: middle;" ng-if="rec.Apttus_Config2__Quantity__c==null"></td>
+
+                                            <td class="cell11" style="text-align: left">
+                                                <div ng-if="rec.APTS_SAP_Deal_Type__c && tab.name.includes('Print')" style="width: 85px;">
+                                                    <div style="display: table-cell;text-align: right;padding-right: 5px;"><b>Type: </b></div>
+                                                    <div style="display: table-cell;">{{rec.APTS_SAP_Deal_Type__c}}</div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div ng-if="rec.APTS_SAP_Deal_Number__c && tab.name.includes('Print')" style="width: 85px;">
+                                                    <div style="display: table-cell;text-align: right;padding-right: 5px;"><b>Number: </b></div>
+                                                    <div style="display: table-cell;">{{rec.APTS_SAP_Deal_Number__c}}</div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+
+                                                <div ng-if="rec.APTS_SAP_MLA_Agreement_Number__c && tab.name.includes('Online/Software')" style="width: 85px;">
+                                                    {{rec.APTS_SAP_MLA_Agreement_Number__c}}
+                                                </div>
+                                            </td>
+
+                                            <td class="cell11"> {{rec.Apttus_Config2__LineStatus__c}} </td>
+                                            <td class="cell11" ng-show="rec.APTS_Group_Primary_Material_Name__c != null && !item.keepTerms"> {{rec.APTS_Group_Primary_Material_Name__c}}</td>
+                                            <td class="cell11" ng-show="rec.APTS_Group_Primary_Material_Name__c == null && !item.keepTerms"> {{rec.APTS_Product_Group_Primary_Material__c.substring(0,rec.APTS_Product_Group_Primary_Material__c.indexOf(':'))}}</td>
+
+
+                                            <td class="cell4" width="60" style="vertical-align: middle;">
+                                                <span ng-if="rec.Apttus_Config2__Quantity__c!=null"> {{rec.Apttus_Config2__Quantity__c}} </span>
+                                            </td>
+
+                                            <td class="cell8" style="vertical-align: middle;"> {{rec.Apttus_Config2__AdjustmentAmount__c+" "+AdjustmnetType[rec.Apttus_Config2__AdjustmentType__c]}}
+
+                                            </td>
+                                            <td class="cell9" style="vertical-align: middle;">{{rec.Apttus_Config2__NetPrice__c | currency}}</td>
+
+                                            <td class="cell11" style="text-align: left" ng-show="!item.keepTerms">
+                                                <div ng-if="rec.APTS_Bridge__c" style="width: 85px;">
+                                                    <div style="display: table-cell;text-align: right;padding-right: 5px;"><b>Bridge: </b></div>
+                                                    <div style="display: table-cell;">{{rec.APTS_Bridge__c}}</div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <!-- Added as part of SOC-3525 - Bridge Discount changes -->
+                                                <div ng-if="rec.APTS_New_Bridge_Discount__c" style="width: 85px;">
+                                                <!--<div ng-if="rec.APTS_Bridge_Discount__c" style="width: 85px;">-->
+                                                    <div style="display: table-cell;text-align: right;padding-right: 5px;"><b>Bridge Discount: </b></div>
+                                                     <!-- Added as part of SOC-3525 - Bridge Discount changes -->
+                                                     <div style="display: table-cell;">{{rec.APTS_New_Bridge_Discount__c}}</div>
+                                                    <!--<div style="display: table-cell;">{{rec.APTS_Bridge_Discount__c}}</div>-->
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </td>
+
+                                            <td class="cell11"> {{rec.APTS_Contract_Term__c}} </td>
+                                            <td class="cell11" ng-show="!item.keepTerms" style="text-align: left">
+                                                <div ng-if="rec.APTS_Yr_1_Renewal_Adjustment__c" style="width: 95px;">
+                                                    <div style="display: table-cell;text-align: right;padding-right: 5px;"><b>1 Renw. %: </b></div>
+                                                    <div style="display: table-cell;">{{rec.APTS_Yr_1_Renewal_Adjustment__c}}</div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div ng-if="rec.APTS_Years_2_Plus_Adjustment__c" style="width: 95px;">
+                                                    <div style="display: table-cell;text-align: right;padding-right: 5px;"><b>Yr 2+ %: </b></div>
+                                                    <div style="display: table-cell;">{{rec.APTS_Years_2_Plus_Adjustment__c}}</div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </td>
+
+                                            <td title="{{getAccountAddress(rec)}}">{{getAccountName(rec)}}</td>
+                                            <td><a href="javascript:;" class="aptListButton add-location-button" ng-click="addLocation(rec)" ng-if="rec.Id && tab.name.includes('Print') && !item.grpLn.APTS_Group_Name__c.includes(allName)">Ship&nbsp;To</a></td>
+                                            <td class="cellEmpty"> <div style="min-height: 28px"/></td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <table class="table table-hover table-strips footer-table">
+                                <tfoot class="customFooter">
+                                <tr>
+                                    <td style="width:76%" colspan="7"><div style="display:inline-flex;"><b>Total</b></div></td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_NetAmount__c | currency}}</b></td>
+                                    <!--
+                                    <td style="width:15%" ng-show="!item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')&& tab.name.includes('Print')"><div style="display:inline-flex;"><b>Incremental Revenue</b></div></td>
+                                    <td class="cellTotal" ng-show="!item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')&& tab.name.includes('Print')"><b>{{item.grpLn.APTS_Incremental_Revenue__c | currency}}</b></td>
+                                    <td style="width:15%" ng-show="!item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')&& tab.name.includes('Print')"><div style="display:inline-flex;"><b>Incremental Revenue Required</b></div></td>
+                                    <td class="cellTotal" ng-show="!item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')&& tab.name.includes('Print')"><b>{{item.grpLn.APTS_Incremental_Revenue_Required__c | currency}}</b></td>
+                                    <td style="width:15%" ng-show="!item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')&& tab.name.includes('Print')"><div style="display:inline-flex; "><b>Incremental Revenue Above Threshold</b></div></td>
+                                    <td class="cellTotal" ng-show="item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c < 0 && !item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')&& tab.name.includes('Print')" style="background-color: rgb(255, 51, 51);text-align:right;"><font color="white"><b>{{item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c | currency}}</b></font></td>
+                                    <td class="cellTotal" ng-show="item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c >= 0&& tab.name.includes('Print') && !item.grpLn.APTS_Group_Name__c.includes('Eligible For Bundle')" style="background-color: rgb(0, 204, 0);text-align:right;"><font color="white"><b>
+                                    {{item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c | currency}}</b></font></td>
+                                    -->
+
+                                </tr>
+                                
+                                <!-- SOC-3875 Added on 5/29/2017 Change Start -->
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7">
+                                        <div style="display:inline-flex;"><b>Existing WCMP Current Monthly Spend</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div>
+                                    </td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_WCMP_Current_Monthly_Spend__c | currency}}</b></td>
+                                </tr>
+                                 <!-- SOC-3875 Change End -->
+                                  <!-- SOC-3956 Added by Chirag 5/29/2017 Change Start -->
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7">
+                                        <div style="display:inline-flex;"><b>Existing WCMP Modified Monthly Spend</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div>
+                                    </td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_WCMP_Modified_Monthly_Spend__c | currency}}</b></td>
+                                </tr>
+                                
+                                <!-- SOC-3956 Change End -->
+                                 <!-- SOC-4319 21/11/2017 Change Start -->
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7">
+                                        <div style="display:inline-flex;"><b>Lapsed Total</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div>
+                                    </td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_Terminated_Lines_Total__c| currency}}</b></td>
+                                </tr>
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7">
+                                        <div style="display:inline-flex;"><b>Existing Ship and Charge Total</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div>
+                                    </td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_Existing_ship_and_charge_Total__c| currency}}</b></td>
+                                </tr>
+                                <!-- SOC-4319 End --> 
+                                
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7"><div style="display:inline-flex;"><b>Incremental Revenue</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div></td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_Incremental_Revenue__c | currency}}</b></td>
+
+                                </tr>
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName)&& tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7"><div style="display:inline-flex;"><b>Incremental Revenue Required</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div></td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_Incremental_Revenue_Required__c | currency}}</b></td>
+
+                                </tr>
+                                
+                                
+                                
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName)&& tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7"><div style="display:inline-flex;"><b>Incremental Revenue Above Threshold</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div></td>
+
+                                    <td class="cell9" style="width: 20.2%;background-color: rgb(0, 204, 0);" ng-show="item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c >= 0"><font color="white"><b>{{item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c | currency}}</b></font></td>
+
+                                    <td class="cell9" style="width: 20.2%; background-color: rgb(255, 51, 51);" ng-show="item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c < 0">
+                                        <font color="white"><b>{{item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c | currency}}</b></font></td>
+
+                                </tr>
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName)&& tab.name.includes('Print')">
+                                    <td style="width:76%" colspan="7"><div style="display:inline-flex;"><b>Max Blended Discount</b></div></td>
+                                    <td class="cell9" style="width: 20.2%;background-color: rgb(0, 204, 0);" ng-show="!item.blendDiscountRed"><font color="white"><b>{{item.grpLn.APTS_Max_Blended_Discount__c }}%</b></font></td>
+                                    <td class="cell9" style="width: 20.2%;background-color: rgb(255, 51, 51);" ng-show="item.blendDiscountRed"><font color="white"><b>{{item.grpLn.APTS_Max_Blended_Discount__c }}%</b></font></td>
+                                    <!--
+ +                                    <td class="cell9" style="width: 20.2%; background-color: rgb(255, 51, 51);" ng-show="item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c < 0">
+ +                                    <font color="white"><b>{{item.grpLn.APTS_Incremental_Revenue_Above_Threshold__c | currency}}</b></font></td>
+ +                                    -->
+                                </tr>
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Online/Software')">
+                                    <td style="width:76%" colspan="7">
+                                        <div style="display:inline-flex;"><b>Existing Agreement Total</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div>
+                                    </td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_Existing_Agreement_Total__c | currency}}</b></td>
+                                </tr>
+                                <tr ng-show="!item.grpLn.APTS_Group_Name__c.includes(allName) && tab.name.includes('Online/Software')">
+                                    <td style="width:76%" colspan="7">
+                                        <div style="display:inline-flex;"><b>Incremental</b><div style="display:inline-block; color:red;" ng-show="item.showMessage==true">
+                                        <i style="margin-left:10px;margin-right:5px;" class="fa fa-exclamation-triangle"></i>Adjustment Applied, Pricing Pending !</div></div>
+                                    </td>
+                                    <td class="cell9" style="width: 20.2%;"><b>{{item.grpLn.APTS_Online_Incremental__c | currency}}</b></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <!--
+                    </div>-->
+                </md-tab>
+            </md-tabs>
+        </md-content>
+
+
+
+
+
+
+
+        <!-- bottom fixed bar ###Start### here -->
+        <div class="idCommands clearfix apt-page-footer">
+            <div id="idCommandButtonsSection">
+
+                <ul class="pageButtons leftPageButtons">
+                    <li id="RemoveItem" class="aptSpinnerBtn">
+
+                    </li>
+                </ul>
+                <ul class="pageButtons centerPageButtons">
+                    <li id="Next" class="aptSpinnerBtn">
+                        <div style="display:inline-flex;">
+                            <div style="display:none;" id="showGroup"><a href="#" class="aptListButton" ng-click="applyChanges()"><div style="display:none;margin-top: -5px;margin-left: -25px;" class="apt-button-action-spinner" id="saveLoader"><img src="/img/loading.gif"/></div>Apply Changes</a></div>
+                            <!--
+                            <div  id="addGroup"><a href="#" class="aptListButton" ng-click="addTable('Print')"><div style="display:none;margin-top: -5px;margin-left: -25px;" class="apt-button-action-spinner" id="saveLoader"><img src="/img/loading.gif"/></div>New Group</a></div>
+                            -->
+                            <div style="display:inline-flex;" ng-show="tabName != ''">
+                            <a href="#" class="aptListButton" ng-click="saveGrpAdjustmentData()"><div class="imgSaveSpinner" style="display:none;"><img src="{!$Resource.APTS_SpinningIcon}" border="0"/></div> Save &amp; Return to Cart</a></div>
+                           <div><a href="#" class="aptListButton" ng-click="cancelAndRedirect()"><div class="imgCancelSpinner" style="display:none;"><img src="{!$Resource.APTS_SpinningIcon}" border="0"/></div>Cancel</a>
+                           <!--<apex:commandButton value="Cancel" action="{!openCartPage}" styleclass="cancelButton" />-->
+                                </div>
+                        </div>
+                    </li>
+                </ul>
+                <div class="apt-button-action-spinner" style="display:none;"><img src="/img/loading.gif"/></div>
+                <div class="apt-powered-logo"><img src="{!URLFOR($Resource.apttus_config2__CPQDelight,'apt-logo.png')}" alt="Powered By Apttus" title="Powered By Apttus"/></div>
+
+                <ul class="pageButtons rightPageButtons"><li>&nbsp;</li></ul>
+            </div>
+        </div>
+        <!-- bottom fixed bar ###End### here -->
+
+        <!-- Model for Shuffle Groups -->
+        <div id="shuffleGroupModal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content" style="border-radius:0px;">
+                    <div class="modal-header" style="padding:8px;background-color: #1797C0;">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <span class="modal-title" id="mySmallModalLabel" style="color:white">Move Items from <strong>{{ShuffledGroup}}</strong></span>
+                    </div>
+                    <div class="modal-body">
+                        <label for="shuffleGroupPicklist">Move To: </label>
+                        <select style="width:120px" id="shuffleGroupPicklist" ng-model="selectedGroupToMove" ng-options="option.name for option in groupOptionList |filter:{id: '!'+ShuffledGroup}">
+                        </select>
+                        <span><a href="#" class="ApplyIcon" ng-click="applyShuffleLogic()" title="Apply Shuffle"><i class="fa fa-check"></i></a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Select account location for 
+                    <span ng-if="selectedLineItem">{{selectedLineItem.APTS_Product_Or_Option_Name__c}}</span>
+                    <span ng-if="!selectedLineItem">all Products</span>
+                </h4>
+              </div>
+              <div class="modal-body">
+                <table class="table table-hover table-striped content-table ml-table">
+                    <thead class="customHeader">
+                        <tr>
+                            <th class="customCell">&nbsp;</th>
+                            <th>Account Name</th>
+                            <th>Account Name 2</th>
+                            <th>Account SAP Number</th>
+                            <th>Address</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="account in accounts" ng-class="account.isSelected ? 'ml-address-selected' : '' ">
+                            <td><input type="radio" name="accountLocation" ng-model="account.isSelected" ng-value="account.Id" /></td>
+                            <td>{{account.Name}}</td>
+                            <td>{{account.Account_Name__r.Account_Name_2__c}}</td>
+                            <td>{{account.Source_System_Account_Number__c}}</td>
+                            <td>
+                                {{account.Number_Street__c}} 
+                                {{account.City__c}} 
+                                {{account.State__c}} 
+                                {{account.Postal_Code__c}} 
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <a href="javascript:;" class="aptListButton" data-dismiss="modal">Close</a>
+                <a href="javascript:;" class="aptListButton" ng-click="saveLocation()">Save changes</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+        <apex:outputPanel id="dummyPanel"></apex:outputPanel>
+        <!--Added/modified as part of SOC-3699 : validation for Non-EDP products in EDP LT Bundle-->
+        <apex:actionFunction action="{!saveAdjustmentData}" id="saveActionFucntion" name="saveActionFucntion"  rerender="dummyPanel, ErrorPanel" status="ProgressStatus">
+            <apex:param name="JSONData" value="" />
+            <apex:param name="ActionType" value="" />
+            <apex:param name="GroupId" value="" />
+        </apex:actionFunction>
+       
+        <apex:actionStatus id="ProgressStatus" onstart="j$('.imgSaveSpinner').show()" onstop="j$('.imgSaveSpinner').hide()">    </apex:actionStatus>
+        
+        <apex:actionFunction action="{!openCartPage}" id="CancelThePage" name="CancelThePage"  rerender="dummyPanel, ErrorPanel" status="ProgressStatusCancelPage">
+        </apex:actionFunction>
+        <apex:actionStatus id="ProgressStatusCancelPage" onstart="j$('.imgCancelSpinner').show()" onstop="j$('.imgCancelSpinner').hide()">    </apex:actionStatus>
+        
+    </apex:form>
+
+    </body>
+    </html>
+
+</apex:page>

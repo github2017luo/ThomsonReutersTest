@@ -1,0 +1,13 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2017-10-27     Harika Devi Kalidindi      created as part of CRM - 10938 to display product name in USLTraining Event Reminder email template
+===============================================================================
+-->
+<apex:component controller="TrainingEventReminderController" access="global">
+{!$Label.This_is_a_reminder_of_your_upcoming } &nbsp;
+    <apex:attribute name="teId" assignTo="{! trainingEventId}" type="ID" description="It is the training event Id"/>
+    <apex:outputText value="{!ProductNames}" />
+       
+</apex:component>

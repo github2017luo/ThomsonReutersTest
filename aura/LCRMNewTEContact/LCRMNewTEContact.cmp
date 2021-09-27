@@ -1,0 +1,104 @@
+<aura:component controller="LCRMContactFromTE" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String"/>
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    
+    <!--aura:attribute name="fields" type="String[]" 
+                            default="['Name','Nickname__c','AccountId','email',
+                                     'ESC_tocLanguage__c','Contact_Group__c',
+                                     'Title','phone','Extension__c','MobilePhone',
+                                     'LCRM_Preferred_Contact_Method__c','DonotCall',
+                                     'Profession__c','Department','Job_Function__c',
+                                     'Job_level__c','Engagement_Level__c','Specialty__c' ]" />
+            
+      <aura:attribute name="recordId" type="String"/>
+            <lightning:notificationsLibrary aura:id="notifLib"/>
+
+            <lightning:recordForm
+                    objectApiName="Contact"
+                    fields="{!v.fields}"
+                    onsuccess="{!c.handleSuccess}" /-->
+    
+ <aura:if isTrue="{!v.Spinner}">
+    <div aura:id="spinnerId" class="slds-spinner_container">
+       <div class="slds-spinner--brand  slds-spinner slds-spinner--small slds-is-relative" role="alert">
+         <span class="slds-assistive-text">Loading</span>
+         <div class="slds-spinner__dot-a"></div>
+         <div class="slds-spinner__dot-b"></div>
+       </div>
+    </div>
+ </aura:if>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <lightning:recordEditForm aura:id="editForm"
+                              onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccess}"
+                              onerror="{!c.handleError}"
+                              objectApiName="Contact"> 
+        
+        <lightning:messages />
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Name"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Nickname__c" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="AccountId"  required="true"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Email" required="true"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="ESC_tocLanguage__c" required="true"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Contact_Group__c" required="true"/>
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Title"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Phone" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Extension__c" />
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="MobilePhone" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="LCRM_Preferred_Contact_Method__c" />
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="DoNotCall"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Profession__c" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Department" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Sales_Org__c" value="GLI"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Job_Function__c" />
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Job_Level__c"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Engagement_Level__c" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Specialty__c" />
+        </div>
+        
+         <center>
+             <div class="slds-m-top_medium">
+             <lightning:button variant="brand" type="submit" name="save" label="Save" />
+             </div>
+        </center>
+    </lightning:recordEditForm>
+    </aura:component>

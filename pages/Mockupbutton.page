@@ -1,0 +1,40 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-03-02   Kumar Shubham     Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+
+
+
+<apex:page standardController="Account" extensions="AccountDetailController" lightningStylesheets="true">
+    <!-- Added for Mockup R4 -Noopur-->
+    <apex:form >
+    <apex:outputpanel id="uslbuttons" >
+       <!-- <apex:commandButton value="Change Request" style="margin-left: 10px;"/>  --><!-- commented aspart of 15244 -->
+        <!--<apex:commandButton value="Core Libraries" style="margin-left: 10px;"/> -->
+        <apex:commandButton value="{!$Label.LTS_CreateNonTrialPromoPassword}" style="margin-left: 10px;" onclick="window.open('/apex/promopassword?id={!Account.id}','_blank')" rendered="{!IF(displayToAdmin || displayNonTrial,true,false)}"/><!--Modified by niket-->        
+        <apex:commandButton value="{!$Label.LTS_Credentialing}" style="margin-left: 10px;" onclick="window.open('/apex/LCRMCredentialInfo?id={!Account.id}','_top')" rendered="{!IF(displayToAdmin || displayCredentialing,true,false)}" />
+        <!-- <apex:commandButton value="Get Paid Notes" style="margin-left: 10px;"/> --><!-- Moved to SSD Record - Niket -->
+        <!--<apex:commandButton value="Map" style="margin-left: 10px;"/>--><!-- Added for Mockup -Noopur -->
+        
+        <!--<apex:commandButton value="Print Discount Analysis" style="margin-left: 10px;"/>  -->     
+        <!--<apex:commandButton value="Quick Quote" style="margin-left: 10px;"/> -->
+       <!-- <apex:commandButton value="Request Archive" style="margin-left: 10px;"/>  --> <!-- commented aspart of 15244 --> <!-- Added for Mockup -Noopur -->
+        <apex:commandButton value="{!$Label.LTS_ServiceNotes}" style="margin-left: 10px;" onclick="window.open('/apex/ServiceNotesESI?id={!Account.id}','_top')" rendered="{!IF(displayToAdmin || displayServiceNotes,true,false)}" /><!-- CRM-7742  -->
+        <!--<apex:commandButton value="Subscriptions" style="margin-left: 10px;" onclick="window.open('/apex/subscriptions?id={!Account.id}','_blank')" />--><!--Modified by Abhirup for opening 'Subsrciptions' page in new tab-->
+ 
+    </apex:outputpanel>
+    <apex:outputpanel id="glibuttons" >
+        <apex:commandButton value="{!$Label.LTS_Orders}" style="margin-left: 10px;" onclick="window.open('/apex/LCRMOrderService?id={!Account.id}','_blank')" rendered="{!IF(displayToAdmin || displayOrders,true,false)}"/><!--Modified by Abhirup for opening 'Orders' page in new tab-->
+        <apex:commandButton value="{!$Label.LTS_Subscriptions}" style="margin-left: 10px;" onclick="window.open('/apex/LCRMSubscriptions?id={!Account.id}','_blank')" rendered="{!IF(displayToAdmin || displaySubscription,true,false)}" />
+    </apex:outputpanel>
+    <!-- As per the CRM-16526 (JIRA) added more criteria  -->
+   <!-- <apex:outputpanel id="USLUserbuttons" rendered="{!IF($Profile.Name='System Administrator'||ISPICKVAL($User.Sub_Bu__c,'USL')||ISPICKVAL($User.Sub_Bu__c,'LMS') || ISPICKVAL($User.Sub_Bu__c,'FindLaw') || ISPICKVAL($User.Sub_Bu__c,'UKI'),true,false)}">
+        <apex:commandButton value="Subscriptions" style="margin-left: 10px;" onclick="window.open('/apex/LCRMSubscriptions?id={!Account.id}','_blank')" />
+    </apex:outputpanel>-->
+    </apex:form>
+    <!-- Added for Mockup R4 -Noopur--> 
+</apex:page>

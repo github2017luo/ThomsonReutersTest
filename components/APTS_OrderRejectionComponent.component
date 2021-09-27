@@ -1,0 +1,17 @@
+<apex:component controller="APTS_OrderRejectionTemplateController" access="global">
+    <apex:attribute name="QuotId" type="Id" description="Id of the quote related to the order" assignTo="{!quoteId}"/>
+    <table border = "2" cellspacing = "5">
+        <tr>
+            <td>Product Name</td>
+            <td>Product Detail</td> 
+            <td>Inventory Available</td>               
+        </tr>
+        <apex:repeat value="{!lineItems}" var="o">
+        <tr>
+            <td>{!o.Apttus_Proposal__Product__r.name}</td>
+            <td>{!o.APTS_Combination_Key__r.Name}</td>
+            <td>{!o.APTS_Combination_Key__r.APTS_Inventory_Available__c}</td>              
+        </tr>
+        </apex:repeat>        
+    </table>
+</apex:component>

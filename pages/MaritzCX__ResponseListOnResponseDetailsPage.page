@@ -1,0 +1,58 @@
+<apex:page standardController="MaritzCX__Survey_Response__c" extensions="MaritzCX.ResponseDetailController" lightningStylesheets="true">  
+    <apex:includeScript value="{!$Resource.MaritzCX__View_Response_Link}"/>
+    <script type='text/javascript' language='javascript'>
+        function deleteResponse()
+        {
+            try{
+                if (confirm("Are you sure?")) {
+                    delResponse();
+                }
+             }catch(err){delResponse();}
+        }
+    </script>    
+    <style>
+        .hideOverflow {
+            white-space: pre-wrap !important;
+            max-width: 150px !important;
+            text-overflow: ellipsis !important;
+            overflow: hidden !important;      
+        }
+        .sticky {
+            position: sticky !important;
+            top:0px !important;
+            background-color: white;
+            z-index:2;
+            border-bottom:1px solid rgb(221, 219, 218);
+        }
+      
+    </style>
+    <apex:form >
+       <apex:pageBlock >            
+                <apex:variable var="isLightning" value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}"/>  
+                <apex:outputPanel id="pan" style="max-height: 520px; display: block; overflow-y: auto;">          
+                    <apex:outputText value="{!$Label.maritzcx__no_records_to_display}" rendered="{!accessibleQuestions.size == 0}"></apex:outputText>
+                    <apex:pageBlockTable id="pageBlockTable1" value="{!accessibleQuestions}" var="question" styleclass="fixme" rendered="{!accessibleQuestions.size > 0}">
+                        <apex:repeat value="{!configCols}" var="c" >
+                            <apex:column styleClass="hideOverflow" headerValue="{!$Label.maritzcx__question}" rendered="{!c == '1'}" headerClass="sticky">                         
+                                <apex:outputText title="{!question.MaritzCX__question__c}" value="{!question.MaritzCX__question__c}" />&nbsp;
+                            </apex:column>
+
+                            <apex:column styleClass="hideOverflow" headerValue="{!$Label.maritzcx__metric_name}" rendered="{!c == '2'}" headerClass="sticky">                         
+                                <apex:outputText title="{!question.Question_Label__c }" value="{!question.Question_Label__c }"/>&nbsp;
+                            </apex:column>
+
+                            <apex:column styleClass="hideOverflow" headerValue="{!$Label.maritzcx__response_table_response}" rendered="{!c == '3'}" headerClass="sticky">                         
+                                    <apex:outputField value="{!responseObject[question.MaritzCX__Field_On_Response__c]}" rendered="{!$ObjectType.Survey_Response__c.fields[question.Field_On_Response__c].accessible }">                                        
+                                    </apex:outputField>
+                            </apex:column>
+
+                            <apex:column id="chart1" headerValue="{!$Label.maritzcx__chart}" rendered="{!c == '4'}" headerClass="sticky">                         
+                                    <apex:outputField style="white-space: nowrap" value="{!responseObject[question.MaritzCX__Alternate_Field_On_Response__c]}" rendered="{!question.MaritzCX__Is_Keymetric__c && $ObjectType.MaritzCX__Survey_Response__c.fields[question.MaritzCX__Alternate_Field_On_Response__c].Accessible}"/>
+                            </apex:column>
+                        </apex:repeat>                        
+                    </apex:pageBlockTable>
+                    <br/>     
+                </apex:outputPanel>                      
+        </apex:pageBlock>
+    </apex:form>  
+</apex:page>

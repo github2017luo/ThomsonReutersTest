@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>standard-home</defaultLandingTab>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <tabs>standard-Chatter</tabs>
+    <tabs>standard-File</tabs>
+    <tabs>standard-Lead</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-Opportunity</tabs>
+    <tabs>Global_Reports</tabs>
+    <tabs>Payment_Reporting</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>standard-Product2</tabs>
+    <tabs>standard-Forecasting3</tabs>
+    <tabs>Training_Event__c</tabs>
+    <tabs>Training_Topic__c</tabs>
+    <tabs>Data_Transformation__c</tabs>
+    <tabs>Quotes</tabs>
+    <tabs>standard-Quote</tabs>
+    <tabs>Apttus_DocuApi__DocuSignUser__c</tabs>
+    <tabs>Asset_Audit__c</tabs>
+    <tabs>Global_Referrals</tabs>
+    <tabs>ESC_GlobalSearch</tabs>
+    <tabs>Home</tabs>
+    <tabs>ESC_Case_Collaborator__c</tabs>
+    <tabs>Core_Home</tabs>
+    <tabs>standard-Case</tabs>
+    <tabs>standard-WaveHome</tabs>
+</CustomApplication>

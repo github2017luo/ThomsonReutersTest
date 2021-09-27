@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <article>Definite</article>
+        <plural>false</plural>
+        <value>Valutakurs</value>
+    </caseValues>
+    <caseValues>
+        <article>Indefinite</article>
+        <plural>false</plural>
+        <value>Valutakurs</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>false</plural>
+        <value>Valutakurs</value>
+    </caseValues>
+    <caseValues>
+        <article>Definite</article>
+        <plural>true</plural>
+        <value>Valutakurser</value>
+    </caseValues>
+    <caseValues>
+        <article>Indefinite</article>
+        <plural>true</plural>
+        <value>Valutakurser</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>true</plural>
+        <value>Valutakurser</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>Denne oppslaget refererer til Valutaposten som den daterte valutakursen gjelder for. Frekvensen er alltid definert som hvor mye av referert Valuta som er lik 1 (en) enhet i Corporate Valuta på den angitte datoen.</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Dato som den daterte valutakursen faktisk gjelder, selv om den brukes til et bredere datoperiode. Valutakonverteringer vil alltid se etter siste rate som ikke er i fremtiden (dvs. i dag eller tidligere).</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Angir datoen som denne valutakursen utløper, hvis noen. Valutakursen gjelder frem til dagen før utløpsdatoen, eller utløper aldri hvis den er tom.</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>Hvis det er markert, indikerer at denne valutakursregistreringen bare brukes i testmodus og ikke skal brukes til &quot;ekte&quot; (produksjon) valutakursomregninger.</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>Hvis markert, indikerer at denne valutakursregistreringen er ugyldig og ikke skal brukes</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>Definerer effektive datoen for den etterfølgende valutakursen for valutaen hvis det er noen. Det vil være tomt for den siste prisen. Dette feltet skal settes automatisk av systemet.</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Definerer den numeriske verdien av den daterte valutakursen mellom den valgte valutaen og bedriftsvalutaen for org.</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Valutakursnummer</nameFieldLabel>
+</CustomObjectTranslation>

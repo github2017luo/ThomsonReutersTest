@@ -1,0 +1,48 @@
+<apex:page sidebar="false" showHeader="false">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.cnx__CnxSfdcResources,'js/ConnectsIntegrationAPI.min.js')}"/>
+        <apex:includeScript value="/soap/ajax/36.0/connection.js"/>
+
+        <script>
+           ConnectsIntegrationAPI.waitReady(function () {
+
+              
+              
+              ConnectsIntegrationAPI.onActivitySave = function (event) {
+                
+                 if (event.created) {
+                       
+                       console.log('call arrived..');
+                       console.log(event.item.PerVar5);
+                       if (event.item.PerVar5 == null || event.item.PerVar5 == 'NA') {
+                           ConnectsIntegrationAPI.screenPopToSearch(event.item.PerVar4);
+                       } else {
+                           sforce.connection.sessionId = '{!$Api.Session_ID}';
+                           var task = sforce.connection.retrieve("Description", "Task", [event.recordId])[0];
+
+                           if (event.item.PerVar5.startsWith('003')) {
+                                task.WhoId = event.item.PerVar5;
+                           }
+                           if (event.item.PerVar2.startsWith('001')) {
+                                task.whatid = event.item.PerVar2;
+                           }
+                           sforce.connection.update([task]);
+                          
+                           ConnectsIntegrationAPI.screenPop(event.item.PerVar5);
+                       }
+                       
+                 }
+                
+              
+                
+              };
+              
+
+            });
+        
+        </script>
+        
+        
+    </head>
+
+</apex:page>

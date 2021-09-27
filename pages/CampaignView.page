@@ -1,0 +1,22 @@
+<apex:page standardController="Campaign" lightningStylesheets="true"> 
+
+	<apex:detail inlineEdit="true" relatedList="true" relatedListHover="true" showChatter="true" title="true" />  
+	<script>
+		if ('{!$Profile.Name}' == 'UKI Users' || '{!$Profile.Name}' == 'UKI Read Only') {          
+			document.getElementById('managedetailButton').style.display ='none';
+			document.getElementById('managedetailCopyButton').style.display ='none';
+			document.getElementById('managerlButton').style.display ='none';
+		}
+		else {
+			if ('{!$Profile.Name}' != 'System Administrator') {
+				var itemCount = document.getElementsByName('add_members_search').length;
+                for (item=0;item<itemCount;item++) {
+                    document.getElementsByName('add_members_search')[item].style.display ='none';
+                    document.getElementsByName('edit_members_search')[item].style.display ='none';
+				}
+			}
+            //document.getElementsByName('add_members_search')[0].style.display ='none';
+			//document.getElementsByName('edit_members_search')[0].style.display ='none';
+		}
+	</script> 
+</apex:page>

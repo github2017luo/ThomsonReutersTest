@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Execução de trabalho agendada</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Execuções de trabalho programadas</value>
+    </caseValues>
+    <fields>
+        <label><!-- Apex Job Id --></label>
+        <name>fferpcore__ApexJobId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process Status --></label>
+        <name>fferpcore__BatchProcessStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process --></label>
+        <name>fferpcore__BatchProcess__c</name>
+        <relationshipLabel><!-- Scheduled Job Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Indica se o controle de lote foi bem-sucedido.</help>
+        <label><!-- Notification --></label>
+        <name>fferpcore__NotificationType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled Job --></label>
+        <name>fferpcore__Process__c</name>
+        <relationshipLabel><!-- Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>fferpcore__Status__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation>Completo</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Error</masterLabel>
+            <translation>Erro</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Processing</masterLabel>
+            <translation>Em processamento</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Número total de lotes abortados com base no número de logs de lote que contêm um tipo de log Abortar.</help>
+        <label><!-- Total Aborted Batches --></label>
+        <name>fferpcore__TotalNumberOfAborts__c</name>
+    </fields>
+    <fields>
+        <help>Número total de registros com erro com base no número de logs em lote que contêm um tipo de log Erro.</help>
+        <label><!-- Total Errors --></label>
+        <name>fferpcore__TotalNumberOfErrors__c</name>
+    </fields>
+    <fields>
+        <help>Número total de lotes que excederam os limites do governador do Salesforce ou contêm outros problemas.</help>
+        <label><!-- Total Number of Batches Exceeding Limits --></label>
+        <name>fferpcore__TotalNumberOfExternal__c</name>
+    </fields>
+    <fields>
+        <help>Número total de logs de lote para este controle de lote.</help>
+        <label><!-- Total Logs --></label>
+        <name>fferpcore__TotalNumberOfLogs__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Número da corrida</nameFieldLabel>
+</CustomObjectTranslation>

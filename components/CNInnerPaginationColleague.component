@@ -1,0 +1,117 @@
+<apex:component id="CNInnerpaginationColleague">
+   <apex:attribute name="rerenderId" description="Comma separated list of ids which will be used for rerender after the Show More link is clicked" type="String" required="required" />
+	<apex:attribute name="tabName" description="Identifies the tab name in which this paginator is placed" type="String" required="required" />	
+	<apex:attribute name="componentSource" description="Identifies if this component is on an Account or Contact" type="String" required="required" />
+	<apex:attribute name="paginator" description="The paginator" type="CNPaginator" />
+	<apex:attribute name="accountId" description="The AccountId for logging purposes" type="String" />
+	<apex:attribute name="contactId" description="The ContactId for logging purposes" type="String" />	
+	<apex:attribute name="iTotalInnerPagesColl" description="total records/innerdatacount" type="Integer" />
+  	<apex:attribute name="iTotalInnerRecordsColl" description="actual returned record count" type="Integer" />
+  	<apex:attribute name="iCurrentInnerPageColl" description="current page" type="Integer" />
+  	<apex:attribute name="iStartInnerPageColl" description="low display# on paginator" type="Integer" />
+  	<apex:attribute name="iEndInnerPagecoll" description="high display# on paginator" type="Integer" />
+  	<apex:attribute name="contactCNID" description="Outer Contact/Colleague CNID" type="Integer" />
+  	<apex:attribute name="colleagueCNID" description="Outer Contact/Colleague CNID" type="Integer" />
+  	<apex:attribute name="innerEndOfPagesColl" description="innerEndOfPagesColl" type="Integer" />
+	<apex:attribute name="innerpageSize" description="innerpageSize" type="Integer" />
+	<apex:outputPanel id="paginationId" style="white-space:nowrap">  
+		<br/>
+		<div class="pagingDiv" style=""> 
+			<table align="left" border="0" width="250px"><tr>
+				<td><div 
+				style=" cursor: pointer; margin: 0px 5px 0px 0px; width: 16px; height: 16px; 
+				display:{!IF(iCurrentInnerPageColl>1,'block','none')};" 
+				class="arrowLineLeftDark"  
+				onclick="children[0].onclick();" 
+				onmouseover="this.className='arrowLineLeftDark hover';" 
+				onmouseout="this.className='arrowLineLeftDark';">
+				<apex:commandLink action="{!innerfirstcoll}" rerender="{!rerenderId}" 
+			      		onclick=""  >
+			      		<apex:param name="pageNo" value="1" assignTo="{!iCurrentInnerPageColl}"/>
+			      		 
+		    			
+			      </apex:commandLink></div> 
+				</td><td><div style="; cursor: pointer; width: 16px; height: 16px; display:{!IF(iCurrentInnerPageColl>1,'block','none')};" class="doubleArrowLeftDark" onmouseover="this.className='doubleArrowLeftDark hover';" onmouseout="this.className='doubleArrowLeftDark';" onclick="children[0].onclick();">
+					<apex:commandLink action="{!innerpreviouscoll}" rerender="{!rerenderId}" onclick=""  >
+					 <apex:param name="pageNo" value="{!iCurrentInnerPageColl-1}" assignTo="{!iCurrentInnerPageColl}"/>
+					 
+		    		
+					</apex:commandLink>	        	
+			      </div> 
+			</td><td><div style="display:{!IF(iStartInnerPageColl>1,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle" onclick="children[0].click()" onmouseover="this.className='circle hover';" onmouseout="this.className='circle ';">
+			<apex:commandLink action="{!innerbackElipsiscoll}" rerender="{!rerenderId}" onclick=""  >		    
+		      <apex:param name="pageNo" value="{!iStartInnerPageColl-1}" assignTo="{!iCurrentInnerPageColl}"/>
+		    
+		    </apex:commandLink>...</div>
+			</td><td><div style="display:{!IF(iTotalInnerPagesColl>=iStartInnerPageColl,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl,'selected','')} hover';" onmouseout="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl,'selected','')}';">
+			<apex:commandLink action="{!innerpagebynumbercoll}" rerender="{!rerenderId}" onclick=""  >
+		    <apex:param name="pageNo" value="{!iStartInnerPageColl}" assignTo="{!iCurrentInnerPageColl}"/>
+		     
+		    
+		    </apex:commandLink>{!iStartInnerPageColl}</div>
+		    </td><td><div style="display:{!IF(iTotalInnerPagesColl>=iStartInnerPageColl+1,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+1,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+1,'selected','')} hover';" onmouseout="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+1,'selected','')}';">
+		    <apex:commandLink action="{!innerpagebynumbercoll}" rerender="{!rerenderId}" onclick=""  >
+		    <apex:param name="pageNo" value="{!iStartInnerPageColl+1}" assignTo="{!iCurrentInnerPageColl}"/>
+		    
+		    
+		    </apex:commandLink>{!iStartInnerPageColl+1}</div>
+		    </td><td><div style="display:{!IF(iTotalInnerPagesColl>=iStartInnerPageColl+2,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+2,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+2,'selected','')} hover';" onmouseout="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+2,'selected','')}';">
+		    <apex:commandLink action="{!innerpagebynumbercoll}" rerender="{!rerenderId}" onclick=""  >
+		    <apex:param name="pageNo" value="{!iStartInnerPageColl+2}" assignTo="{!iCurrentInnerPageColl}"/>
+		    
+		    
+		   </apex:commandLink>{!iStartInnerPageColl+2}</div>
+		    </td><td><div style="display:{!IF(iTotalInnerPagesColl>=iStartInnerPageColl+3,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+3,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+3,'selected','')} hover';" onmouseout="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+3,'selected','')}';">
+		    <apex:commandLink action="{!innerpagebynumbercoll}" rerender="{!rerenderId}" onclick=""  >
+		    <apex:param name="pageNo" value="{!iStartInnerPageColl+3}" assignTo="{!iCurrentInnerPageColl}"/>
+		     
+		    
+		    </apex:commandLink>{!iStartInnerPageColl + 3}</div>
+		    </td><td><div style="display:{!IF(iTotalInnerPagesColl>=iStartInnerPageColl+4,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+4,'selected','')}" onclick="children[0].click()" onmouseover="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+4,'selected','')} hover';" onmouseout="this.className='circle {!IF(iCurrentInnerPageColl==iStartInnerPageColl+4,'selected','')}';">
+		    <apex:commandLink action="{!innerpagebynumbercoll}" rerender="{!rerenderId}" onclick=""  >
+		    <apex:param name="pageNo" value="{!iStartInnerPageColl+4}" assignTo="{!iCurrentInnerPageColl}"/>
+		     
+		    
+		    </apex:commandLink>{!iStartInnerPageColl + 4}</div>
+		    </td><td><div style="display:{!IF(iTotalInnerPagesColl>=iStartInnerPageColl+5,'block','none')}; cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;"  class="circle " onclick="children[0].click()" onmouseover="this.className='circle hover';" onmouseout="this.className='circle ';">
+		    <apex:commandLink action="{!innerElipsiscoll}" rerender="{!rerenderId}" onclick=""  >
+		    	<apex:param name="pageNo" value="{!iStartInnerPageColl+5}" assignTo="{!iCurrentInnerPageColl}"/>
+		      	
+		    	
+		     </apex:commandLink>...</div>
+		    </td>
+		    <td>
+		    <div style="display:{!IF(innerEndOfPagesColl==1,'block','none')}; 
+		    cursor: pointer; width: 16px; height: 16px;"  
+		    class="doubleArrowRightDark" onclick="children[0].onclick();" 
+		    onmouseover="this.className='doubleArrowRightDark hover';" 
+		    onmouseout="this.className='doubleArrowRightDark';">		 
+			<apex:commandLink action="{!innernextcoll}" rerender="{!rerenderId}" onclick=""  >
+			    <apex:param name="pageNo" value="{!iCurrentInnerPageColl+1}" assignTo="{!iCurrentInnerPageColl}"/>
+		      	
+		    	
+			</apex:commandLink>      	
+			</div>
+			</td>
+			<td><div style="display:{!IF(innerEndOfPagesColl==1,'block','none')}; 
+			cursor: pointer; margin: 0 0 0 10px; width: 16px; height: 16px;" 
+			class="arrowLineRightDark"  
+			onclick="children[0].onclick();" 
+			onmouseover="this.className='arrowLineRightDark hover';" 
+			onmouseout="this.className='arrowLineRightDark';">
+			<apex:commandLink action="{!innerlastcoll}" rerender="{!rerenderId}" 
+			      		onclick="" 
+			      		 >
+			      		 <apex:param name="pageNo" value="{!iTotalInnerPagesColl}" assignTo="{!iCurrentInnerPageColl}"/>
+		      	
+		    	
+			      			     </apex:commandLink></div>
+			      			     
+			</td></tr></table>
+		</div>
+		 <div style="float: right; margin: 10px 20px 10px 20px; line-height: 20px;"><label class="lblPageStart">{!((iCurrentInnerPageColl*innerpageSize)-innerpageSize)+1}</label> 
+		 -&nbsp;<label class="lblPageEnd">{!IF((iCurrentInnerPageColl*innerpageSize)>=iTotalInnerRecordsColl,iTotalInnerRecordsColl,iCurrentInnerPageColl*innerpageSize)}</label>&nbsp;of&nbsp;<label class="lblNumResults">{!iTotalInnerRecordsColl}</label>&nbsp;items        
+		 </div>
+		 <!-- <div>iCurrentInnerPageColl={!iCurrentInnerPageColl}, iStartInnerPageColl= {!iStartInnerPageColl}, iEndInnerPageColl={!iEndInnerPageColl} </div> -->
+	</apex:outputPanel>		     
+</apex:component>

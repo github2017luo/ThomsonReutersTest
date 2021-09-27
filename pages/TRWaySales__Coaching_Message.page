@@ -1,0 +1,144 @@
+<apex:page id="mypage" standardController="Opportunity" extensions="TRWaySales.CoachingMessageController">
+    
+    
+    <style>
+        .verticalLine {
+            border-left: thin solid #000;
+            padding-left: 1.3em;  
+        }
+        
+        td{
+            
+            border-collapse: collapse;
+        }
+        
+        #container{width:100%;}
+        #left{float:left;width:100px;}
+        #right{float:right;width:100px;}
+        
+        .Processing
+        {
+            z-index: 9997;
+            left: 50%;
+            top: 30%;
+            text-align: center;
+            position: fixed;
+        }
+        .ProcessingBackground
+        {
+            background-color: black;
+            opacity: 0.50;
+            filter: alpha(opacity = 50);
+            width: 100%;
+            height: 100%;
+            position: fixed; 
+            z-index: 9997;
+            top:0;
+            left:0;
+        } 
+    </style>
+    <script>
+        
+      
+
+        
+        function updateAcknowledge(ackvalue){
+                var responseValue =  ackvalue.checked;
+                updateAcknowledges(responseValue);
+        }
+        //oncomplete="window.location.reload();"
+        
+         window.onload = function(e) {
+             
+                var showAcknowlegdevar = {!showAcknowlegde};
+                var ackValueVar = {!ackVal};
+                var ackExceptionVar = {!ackException};
+                var showExitCriteriaVar = {!showExitCriteria}
+                if(showAcknowlegdevar && ackExceptionVar){
+                    document.getElementById('Ackcheckbox').checked = ackValueVar;
+                }
+                
+            };
+            
+        function reLoadPage(){
+           if (typeof sforce !== 'undefined'){
+                sforce.one.navigateToSObject('{!JSENCODE(oppId)}');
+            }
+        }    
+    </script>
+   
+    <apex:form id="frm">
+        <div id="divProcessing" style="display:none;">
+            <div class="ProcessingBackground"></div>
+            <div class="Processing">
+                <apex:image alt="Processing" url="{!$Resource.TRWaySales__LoadingCircle}" height="20" width="20"/>
+            </div>
+        </div>
+        <apex:actionStatus id="Processing" onstart="document.getElementById('divProcessing').style.display = '';" onstop="document.getElementById('divProcessing').style.display = 'none';">                            
+        </apex:actionStatus> 
+        <apex:actionFunction action="{!updateAckFlag}" name="updateAcknowledges"  status="Processing" rerender="dummy" oncomplete="reLoadPage();">
+            <apex:param name="acknowledgeVal" assignTo="{!acknowledgeVal}" value=""/>
+         </apex:actionFunction>        
+        <div id="container">
+            <apex:outputPanel rendered="{!!showVFPage}">
+            <div id="left"><apex:image url="{!imageUrls}" width="100" height="25" /></div> &nbsp; &nbsp; &nbsp; 
+            <!--<div style="margin: -8px;"><b><apex:outputText value="{!opp.StageName}" /></b></div></apex:outputPanel>-->
+            <div style="margin: -8px;"><b><apex:outputText value="{!salesStageName}" /></b></div></apex:outputPanel>
+           <!-- <apex:outputPanel rendered="{!showVFPage}"><center><b><font color="red" size="6px">{!noCoachingMessage}</font></b></center>
+            </apex:outputPanel> -->
+        </div>
+        <br/><br/>
+        <apex:outputPanel rendered="{!!showExitCriteria}">
+            <apex:outputPanel rendered="{!showAcknowlegde && ackException}">
+                <input type="checkbox"  id="Ackcheckbox" onclick="updateAcknowledge(this)"/><b><font color="red">{!$Label.Opportunity_Ack_Label}</font></b>
+                <br/>
+            </apex:outputPanel>
+            <br/>
+            <table width="80%" style="vertical-align: initial; padding-left: 1.3em;">
+            <tr width="80%">
+               
+                <td  width="40%" style="vertical-align: top; padding-left: 1.3em;">
+                    <apex:outputText value="{!customerActions}" escape="false" />
+                </td>
+                
+                <td  width="40%" class="verticalLine"  style="vertical-align: top;">
+                    <apex:outputText value="{!salesRepsAction}" escape="false" />
+                </td>
+                
+            </tr>
+        </table>
+           
+        </apex:outputPanel>
+        
+        
+        <apex:outputPanel rendered="{!showExitCriteria}" >
+        <apex:outputPanel rendered="{!showAcknowlegde && ackException}">
+                <input type="checkbox"  id="Ackcheckbox" onclick="updateAcknowledge(this)"/><b> <font color="red">{!$Label.Opportunity_Ack_Label}</font></b>
+        </apex:outputPanel>
+    <div  >
+        <br/>
+        <table width="80%" style="vertical-align: initial; padding-left: 1.3em;">
+            
+                <tr width="80%">
+                    
+                        <td  width="40%" style="vertical-align: top; padding-left: 1.3em;">
+                            <apex:outputText value="{!customerActionExitCri}" escape="false" />
+                        </td>
+                   
+                    
+                    <td  width="40%"  class="verticalLine" style="vertical-align: top;" >
+                        <apex:outputText value="{!salesRepExitCri}" escape="false" />
+                    </td>
+                  
+                </tr>
+            
+        </table>
+     </div>
+            
+        </apex:outputPanel>
+        <apex:outputPanel id="dummy"/>
+      
+        
+    </apex:form>
+    
+</apex:page>

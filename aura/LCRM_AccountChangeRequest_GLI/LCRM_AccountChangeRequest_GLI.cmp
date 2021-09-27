@@ -1,0 +1,202 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                controller="LTGS_FetchAccountController" access="global">
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="sObjList" type="sObject"/>
+    <aura:attribute name="caseObj" type="Case" default="{ 'sobjectType': 'Case'}"/>
+    
+    <aura:attribute name="accName" type="string"/>
+    <aura:attribute name="caseSubject" type="string"/>
+    <aura:attribute name="recType" type="List"/>
+    <aura:attribute name="recordCaseId" type="ID"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+     <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:if isTrue="{!v.Spinner}">
+    <div aura:id="spinnerId" class="slds-spinner_container">
+       <div class="slds-spinner--brand  slds-spinner slds-spinner--medium slds-is-relative" role="alert">
+         <span class="slds-assistive-text">Loading</span>
+         <div class="slds-spinner__dot-a"></div>
+         <div class="slds-spinner__dot-b"></div>
+       </div>
+    </div>
+ </aura:if>
+    <lightning:recordEditForm aura:id="editForm"
+                              onsubmit="{!c.handleSubmit}"
+                              onsuccess="{!c.handleSuccess}"
+                              onerror="{!c.handleError}"
+                              objectApiName="Case"> 
+        
+        <center><b><h1 class="slds-section-title--divider">New Case: DQA Case</h1></b></center>
+        <Br/><h3 class="slds-section-title--divider">Case Information</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="AccountId" value="{!v.recordId}" required="true"/>
+                            </div>
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="ContactId"  />
+                            </div>
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="ESC_Click_On_Add_File_to_add_Attachment__c"  />
+                            </div>
+                        </div>
+                         <div class="slds-col slds-size_1-of-2">                         
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="Status" required="true"/>
+                                </div>
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="Priority" required="true" value="Medium"/>
+                                </div>
+                                <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="Type" required="true" value="Edit Account Fields"/>
+                                </div>
+                                        <div class="slds-p-bottom_small">
+                                    <lightning:inputField fieldName="Origin" required="true" value="Internal Users"/>
+                                </div>
+                        </div>
+                    </div>
+             </div>
+        </div>
+        <h3 class="slds-section-title--divider">Description Information</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Subject" required="true"  value="{!v.caseSubject }"/>
+                            </div>
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Description" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <h3 class="slds-section-title--divider">ECM / CDS Field Change Request</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Special_Request_Description__c" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Field_to_Update_1__c" />
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Field_to_Update_2__c"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Field_to_Update_3__c" />
+        </div>
+                        </div>
+                    </div>
+		<div class="slds-col slds-size_1-of-2">
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Existing_Field_Value_1__c" />
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Requested_Field_Value_1__c" />
+        </div>
+                <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Existing_Field_Value_2__c"/>
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Requested_Field_Value_2__c" />
+        </div>
+        <div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Existing_Field_Value_3__c" />
+        </div>
+		<div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Requested_Field_Value_3__c" />
+        </div>
+						
+                    </div>
+                </div>
+            </div>
+        <h3 class="slds-section-title--divider">Description Information</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Test_products_from_sales__c" />
+                            </div>
+                        </div>
+                </div>
+            </div>
+         </div>
+        <!--<div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Days_Since_Last_Modified__c" />
+        </div>-->
+         <h3 class="slds-section-title--divider">Additional Information</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Related_Ticket__c" />
+                            </div>
+                     </div>
+                     <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-p-bottom_small">
+                                <lightning:inputField fieldName="Sales_Org__c" value="GLI" required="true" />
+                            </div>
+                      </div>
+                </div>
+            </div>
+         </div>
+	<h3 class="slds-section-title--divider">Disposition</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">     
+                        <div class="slds-p-bottom_small">
+                            <lightning:inputField fieldName="Closed_Action__c" />
+                        </div>
+				    </div>
+                </div>
+            </div>
+         </div>
+        <h3 class="slds-section-title--divider">Web Information</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">     
+                        <div class="slds-p-bottom_small">
+                            <lightning:inputField fieldName="SuppliedEmail" />
+                        </div>
+				    </div>
+                </div>
+            </div>
+         </div>
+        <h3 class="slds-section-title--divider">System Information</h3>
+        <div class="slds-form--stacked slds-p-around--medium slds-m-bottom--x-small">
+            <div class="slds-form-element">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">     
+                        <div class="slds-p-bottom_small">
+                            <lightning:inputField fieldName="RecordTypeId" value="{!v.recordCaseId}"/>
+                        </div>
+                        <div class="slds-p-bottom_small">
+                            <lightning:inputField fieldName="Source_CreatedBy_Name__c" />
+                        </div>
+				    </div>
+                </div>
+            </div>
+         </div>
+        <!--<div class="slds-p-bottom_small">
+            <lightning:inputField fieldName="Rejected_Reason__c" />
+        </div>-->
+		       
+         <center>
+             <div class="slds-m-top_medium">
+             <lightning:button variant="brand" type="submit" name="save" label="Save" />
+             </div>
+        </center>
+    </lightning:recordEditForm>
+	
+</aura:component>

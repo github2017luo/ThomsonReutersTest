@@ -1,0 +1,1499 @@
+<apex:page sidebar="false" showHeader="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="false" docType="html-5.0"
+    cache="false" controller="DCConfiguratorControllerV2">
+    <apex:variable var="TRResources" value="{!URLFOR($Resource.CXD_Assets_TR)}" />
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Thomson Reuters Legal</title>
+        <link REL="SHORTCUT ICON" HREF="{!URLFOR($Resource.CXD_Assets_TR, 'images/favicon.ico')}"></link>
+
+ 
+        <!-- Bootstrap -->
+        <apex:stylesheet value="{!TRResources}/css/bootstrap.min.css" />
+        <!-- Block CSS -->
+        <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
+        />
+        <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css' />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <apex:includeScript value="{!TRResources}/js/jquery.tools.min.js" />
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script src="https://rawgithub.com/McNull/angular-block-ui/bower/angular-block-ui.min.js"></script>
+        <link rel="stylesheet" href="https://rawgithub.com/McNull/angular-block-ui/bower/angular-block-ui.min.css" />
+        <apex:includeScript value="{!TRResources}/js/jquery.min.js" />
+        <apex:includeScript value="{!TRResources}/js/bootstrap.min.js" />
+        <style>
+            .btn[disabled] {
+                border-color: #afafaf !important;
+                cursor: pointer !important;
+            }
+
+            .text-center {
+                text-align: center !important;
+            }
+
+            #disableTooltip {
+                display: none;
+            }
+
+            #enableTooltip:hover>#disableTooltip {
+                display: block;
+            }
+
+            #disableTooltipForMax {
+                display: none;
+            }
+
+            #enableTooltipForMax:hover>#disableTooltipForMax {
+                display: block;
+            }
+
+            .tooltipster-box {
+                height: auto !important;
+            }
+        </style>
+        <script>
+            Visualforce.remoting.timeout = 120000;
+            // $(window).load(function(){
+
+            // });
+
+            var imgSrc = "{!URLFOR($Resource.CXD_Assets_TR, 'images/loader.gif')}";
+            $('.block-ui-message').html('<img src="' + imgSrc + '" />');
+            var app = angular.module('trApp', []);
+            app.filter('to_trusted', ['$sce', function ($sce) {
+                return function (text) {
+                    return $sce.trustAsHtml(text);
+                };
+            }]);
+            app.filter('abs', function () {
+                return function (val) {
+                    return Math.abs(val);
+                }
+            });
+            app.controller('QuoteController', function ($scope, $http, $window) {
+                $('[data-toggle="tooltip"]').tooltip();
+
+                $('.tooltip').tooltipster({
+                    delay: 100,
+                    maxWidth: 500,
+                    speed: 300,
+                    interactive: true,
+                    animation: 'grow',
+                    trigger: 'hover'
+                });
+
+
+                $scope.getParameterByName = function (name, url) {
+                    if (!url) url = window.location.href; name = name.replace(/[\[\]]/g, "\\$&"); var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"), results = regex.exec(url); if (!results) return null; if (!results[2]) return ''; return decodeURIComponent(results[2].replace(/\+/g, " "));
+                }
+                $scope.quoteDetails = {};
+                $scope.MAX_ATTORNEYS = 0;
+                $scope.firstTitleWord = '';
+                $scope.restTitleWord = '';
+                $scope.resetResponse = '';
+                $scope.totalRepricesRequired = 0;
+                $scope.totalGenDocsRequired = 0;
+                $scope.totalCreateEnvelopesRequired = 0;
+
+
+                $scope.performLoad = function () {
+                    $scope.SELECTED_PRODUCT = [];
+                    $scope.SELECTED_CONTRACT = '';
+                    $scope.selectedProd = [];
+                    // Block UI Start
+                    $('.loader').show();
+                    $('.loader__text').hide();
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.performLoad}', $scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), function (result, event) {
+
+
+                        // Block UI Stop
+                        $('.loader').hide();
+                        $('.loader__text').show();
+                        $('.block-ui-message').html('');
+                        if (event.status) {
+                            // Get DOM IDs for HTML and Visualforce elements like this
+                            $scope.$apply(function () {
+                                $scope.quoteDetails = $.parseJSON(result);
+                                $scope.ATTORNEYS_IN_ACCOUNT = $scope.quoteDetails.defaultNoOfAttorneys;
+                                $scope.attorneysQty = $scope.quoteDetails.noOfAttorneys;
+                                $scope.defaultAttorneysQty = $scope.quoteDetails.noOfAttorneys;
+                                $scope.ATTORNEYS = $scope.quoteDetails.noOfAttorneys;
+                                $scope.MAX_ATTORNEYS = $scope.quoteDetails.maxNoOfAttorneys;
+                                var html = $scope.quoteDetails.pageHeaderTitle;
+                                $scope.firstTitleWord = html.substr(0, html.indexOf(" "));
+                                $scope.restTitleWord = html.substr(html.indexOf(" "));
+                                $scope.matrixPriceamount = [];
+                                $scope.defaultSelectedProds = [];
+                                for (var o = 0; o < $scope.quoteDetails.cartDetails.length; o++) {
+                                    for (var t = 0; t < $scope.quoteDetails.cartDetails[o].subSections.length; t++) {
+                                        var subSectionsdata = $scope.quoteDetails.cartDetails[o].subSections[t];
+                                        for (var p = 0; p < subSectionsdata.cartItems.length; p++) {
+                                            if (subSectionsdata.cartItems[p].isSelected == true) {
+                                                $scope.defaultSelectedProds.push(subSectionsdata.cartItems[p].productId);
+                                            }
+                                        }
+                                    }
+                                }
+                                
+                                $scope.defaultSelectedProds.sort();
+
+                                if ($scope.attorneysQty != 0) {
+                                    for (var j = 0; j < $scope.quoteDetails.cartDetails.length; j++) {
+                                        for (var k = 0; k < $scope.quoteDetails.cartDetails[j].subSections.length; k++) {
+                                            var subSectionsdata = $scope.quoteDetails.cartDetails[j].subSections[k];
+                                            for (var l = 0; l < subSectionsdata.cartItems.length; l++) {
+                                                for (var m = 0; m < subSectionsdata.cartItems[l].matrices.length; m++) {
+                                                    var matrix = subSectionsdata.cartItems[l].matrices[m];
+                                                    if (matrix.quantity == $scope.attorneysQty) {
+                                                        $scope.matrixPriceamount.push({
+                                                            "amount": matrix.amount,
+                                                            "ProductId": matrix.ProductId,
+                                                            "quantity": matrix.quantity,
+                                                            "isSelected": subSectionsdata.cartItems[l].isSelected
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                var contractDetails = $scope.quoteDetails.contractTermDetails;
+                                for (var i = 0; i < contractDetails.length; ++i) {
+                                    if (contractDetails[i].isSelected == true) {
+                                        $scope.indx = i;
+                                        break;
+                                    }
+                                }
+
+                                $scope.defaultContract = $scope.quoteDetails.contractTermDetails[$scope.indx].term;
+                                $scope.SELECTED_CONTRACT = $scope.quoteDetails.contractTermDetails[$scope.indx].term;
+                                //Pricing Based On contract
+                                $scope.sumOfQuotePrice = 0;
+                                $scope.customQuotePrice = [];
+                                $scope.defaultSelectedProducts = [];
+                                if ($scope.attorneysQty != 0) {
+                                    for (var j = 0; j < $scope.matrixPriceamount.length; j++) {
+                                        $scope.sumOfQuotePrice = $scope.matrixPriceamount[j];
+                                        if ($scope.quoteDetails.bestValueAdjustmentType == "% Discount") {
+                                            $scope.amount = parseFloat($scope.sumOfQuotePrice.amount * (100 - ($scope.quoteDetails.bestValueAdjustmentAmount - $scope.quoteDetails.contractTermDetails[$scope.indx].markupPercentage)) / 100);
+                                            $scope.SubcatQuotePrice = $scope.amount;
+                                            $scope.subPriceDollarPart = Math.floor($scope.amount.toFixed(2));
+                                            $scope.subPriceCentPart = ($scope.amount.toFixed(2) + "").split(".")[1];
+                                            $scope.customQuotePrice.push({
+                                                "amount": $scope.amount,
+                                                "subPriceDollarPart": $scope.subPriceDollarPart,
+                                                "subPriceCentPart": $scope.subPriceCentPart,
+                                                "ProductId": $scope.sumOfQuotePrice.ProductId,
+                                                "quantity": $scope.sumOfQuotePrice.quantity,
+                                                "isSelected": $scope.sumOfQuotePrice.isSelected
+                                            });
+                                        } else {
+                                            $scope.amount = parseFloat($scope.sumOfQuotePrice.amount * (100 + ($scope.quoteDetails.bestValueAdjustmentAmount + $scope.quoteDetails.contractTermDetails[$scope.indx].markupPercentage)) / 100);
+                                            $scope.SubcatQuotePrice = $scope.amount;
+                                            $scope.subPriceDollarPart = Math.floor($scope.amount.toFixed(2));
+                                            $scope.subPriceCentPart = ($scope.amount.toFixed(2) + "").split(".")[1];
+                                            $scope.customQuotePrice.push({
+                                                "amount": $scope.amount,
+                                                "subPriceDollarPart": $scope.subPriceDollarPart,
+                                                "subPriceCentPart": $scope.subPriceCentPart,
+                                                "ProductId": $scope.sumOfQuotePrice.ProductId,
+                                                "quantity": $scope.sumOfQuotePrice.quantity,
+                                                "isSelected": $scope.sumOfQuotePrice.isSelected
+                                            });
+                                        }
+                                    }
+
+                                    $scope.TotalPriceAfterDiscnt = 0;
+                                    for (var s = 0; s < $scope.customQuotePrice.length; s++) {
+                                        if ($scope.customQuotePrice[s].isSelected == true) {
+                                            $scope.defaultSelectedProducts.push($scope.customQuotePrice[s].ProductId);
+                                            var productPrice = parseFloat($scope.customQuotePrice[s].amount.toFixed(2));
+                                            var totalPr = parseFloat($scope.TotalPriceAfterDiscnt);
+                                            $scope.TotalPriceAfterDiscnt = parseFloat(totalPr + productPrice);
+                                            //$scope.TotalPriceAfterDiscnt = parseFloat($scope.customQuotePrice[s].amount + $scope.TotalPriceAfterDiscnt);
+                                        }
+                                    }
+                                    $scope.cstmQuotePrice = $scope.TotalPriceAfterDiscnt.toFixed(2);
+                                    $scope.cQPriceDollarPart = Math.floor($scope.cstmQuotePrice);
+                                    $scope.cQPriceCentPart = ($scope.cstmQuotePrice + "").split(".")[1];
+
+                                }
+                            });
+                        } else if (event.type === 'exception') {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        } else {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        }
+                        $('#enableTooltip').mouseover(function () {
+                            if ($("#textinput").val() == $scope.ATTORNEYS_IN_ACCOUNT) {
+                                $('#disableTooltip').css('display', 'block');
+                            } else {
+                                $('#disableTooltip').css('display', 'none');
+                            }
+                        });
+
+                        $('#enableTooltip').mouseout(function () {
+                            $('#disableTooltip').css('display', 'none');
+                        });
+
+                        $('#enableTooltipForMax').mouseover(function () {
+                            if ($("#textinput").val() == $scope.MAX_ATTORNEYS) {
+                                $('#disableTooltipForMax').css('display', 'block');
+                            } else {
+                                $('#disableTooltipForMax').css('display', 'none');
+                            }
+                        });
+
+                        $('#enableTooltipForMax').mouseout(function () {
+                            $('#disableTooltipForMax').css('display', 'none');
+                        });
+                    },
+                        { escape: false }
+                    );
+                }
+ 
+                //Perform Synchronize passing List of Quote Ids (Custom Quote Id ONLY)
+                $scope.synchronizeCart = function () {
+                    // Block UI Start
+                    $('.block-ui-message').html('<img src="' + imgSrc + '" />');
+                    $('.loader').show();
+                    $scope.quoteId = [];
+                    $scope.quoteId.push($scope.getParameterByName('customQuoteId'));
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.synchronizeCarts}',
+                        $scope.quoteId, function (result, event) {
+                            //$('.loader').hide();
+                            // Block UI Stop
+                            $('.block-ui-message').html('');
+                            if (event.status) {
+                                if ($scope.redUrl != null && $scope.redUrl != undefined) {
+                                    $('.loader').show();
+                                    $scope.redirectToParentPage($scope.redUrl);
+                                    //$scope.generateContract();
+                                    //window.top.location.href = $scope.redUrl;
+                                    //$('.loader').hide();
+                                }
+                                if ($scope.resetFlag == "ReSet" && $scope.resetFlag != null && $scope.resetFlag != undefined) {
+                                    $scope.performLoad();
+                                }
+                                /*
+                                if ($scope.selectRUrl != null && $scope.selectRUrl != null && $scope.selectRUrl != undefined) {
+                                    $('.loader').show();
+                                    $scope.generateContract();
+                                }
+                                */
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                        { escape: false }
+                    );
+                }
+
+                // Synchronize passing List of Quote Ids (Custom Quote Id and Best Value Quote Id)
+                $scope.synchronizeCartWithQuoteIdandBestValueQuoteId = function () {
+                    // Block UI Start
+                    $('.block-ui-message').html('<img src="' + imgSrc + '" />');
+                    $('.loader').show();
+                    $scope.quoteId = [];
+                    $scope.quoteId.push($scope.getParameterByName('customQuoteId'));
+                    $scope.quoteId.push($scope.getParameterByName('bestValueQuoteId'));
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.synchronizeCarts}',
+                        $scope.quoteId, function (result, event) {
+                            //$('.loader').hide();
+                            // Block UI Stop
+                            $('.block-ui-message').html('');
+                            if (event.status) {
+                                if ($scope.redUrl != null && $scope.redUrl != undefined) {
+                                    $('.loader').show();
+                                    $scope.redirectToParentPage($scope.redUrl);
+                                    //$scope.generateContractWithQuoteId();
+                                }
+                                if ($scope.resetFlag == "ReSet" && $scope.resetFlag != null && $scope.resetFlag != undefined) {
+                                    $scope.performLoad();
+                                }
+                                
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                        { escape: false }
+                    );
+                }
+
+                //Perform Reprice For Custom Quote Id (Recursively)
+                $scope.repriceByQuoteId = function () {
+                    // Block UI Start
+                    $('.loader').show();
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.repriceByQuoteId}', $scope.getParameterByName('customQuoteId'), function (result, event) {
+                        // $('.loader').hide();
+                        $('.block-ui-message').html('');
+                        if (event.status) {
+                            if (result.isPending == true) {
+                                $scope.repriceByQuoteId();
+                            } else {
+                                $scope.redirectToParentPage($scope.redUrl);
+                                //$scope.synchronizeCart();
+                            }
+
+                        } else if (event.type === 'exception') {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        } else {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        }
+                    },
+                        { escape: false }
+                    );
+                }
+
+
+
+                // Perform Reprice For Custom Quote Id (Recursively) Then Call reprice for Best Value Quote Id
+                $scope.repriceQuoteId = function () {
+                    // Block UI Start
+                    $('.loader').show();
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.repriceByQuoteId}', $scope.getParameterByName('customQuoteId'), function (result, event) {
+                        // $('.loader').hide();
+                        $('.block-ui-message').html('');
+                        if (event.status) {
+                            if (result.isPending == true) {
+                                $scope.repriceQuoteId();
+                            } else {
+                                $scope.repriceByBestValueQuoteId();
+                                // $scope.performLoad();
+                            }
+
+                        } else if (event.type === 'exception') {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        } else {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        }
+                    },
+                        { escape: false }
+                    );
+                }
+
+                //Perform Reprice For Best Value Quote Id (Recursively) Then call Synchronize for all Quotes
+                $scope.repriceByBestValueQuoteId = function () {
+                    // Block UI Start
+                    $('.loader').show();
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.repriceByQuoteId}', $scope.getParameterByName('bestValueQuoteId'), function (result, event) {
+                        // $('.loader').hide();
+                        $('.block-ui-message').html('');
+                        if (event.status) {
+                            if (result.isPending == true) {
+                                $scope.repriceByBestValueQuoteId();
+                            } else {
+                                $scope.redirectToParentPage($scope.redUrl);
+                                //$scope.synchronizeCartWithQuoteIdandBestValueQuoteId();
+                                // $scope.performLoad();
+                            }
+
+                        } else if (event.type === 'exception') {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        } else {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        }
+                    },
+                        { escape: false }
+                    );
+                }
+
+                $scope.openConfirmStartAgainBlock = function () {
+                    $("#confirm-modal").modal('show');
+                }
+                $scope.closeConfirmStartAgainBlock = function () {
+                    $("#confirm-modal").modal('hide');
+                }
+
+                $scope.resetQuote = function () {
+                    // Block UI Start
+                    $scope.resetFlag = "ReSet";
+                    $("#confirm-modal").modal('hide');
+                    $('.loader').show();
+                    $('.block-ui-message').html(' <img src="' + imgSrc + '" />');
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.resetQuotes}', $scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), function (result, event) {
+                        if (event.status)  {
+                            $scope.resetResponse = result;
+                            
+                            for(var i =0; i< $scope.resetResponse.quotePricingStatus.length; i++){
+                                if($scope.resetResponse.quotePricingStatus[i].isPricingPending == true && $scope.resetResponse.quotePricingStatus[i].isPricingPending != undefined) {
+                                    $scope.totalRepricesRequired = $scope.totalRepricesRequired + 1;
+                                }
+                                $scope.totalGenDocsRequired = $scope.totalGenDocsRequired + 1;
+                                $scope.totalCreateEnvelopesRequired = $scope.totalCreateEnvelopesRequired + 1;
+                            }
+                            
+                            if($scope.totalRepricesRequired == 0) {
+                                $scope.performLoad();
+                                //$scope.synchronizeCartOnStartAgain();
+                            } else {                            
+                                for(var i =0; i< $scope.resetResponse.quotePricingStatus.length; i++){
+                                    if($scope.resetResponse.quotePricingStatus[i].isPricingPending == true && $scope.resetResponse.quotePricingStatus[i].isPricingPending != undefined) {                                       
+                                        $scope.repriceByQuoteIdOnStartAgain($scope.resetResponse.quotePricingStatus[i].quoteId);
+                                    }
+                                }
+                            }
+                        } else if (event.type === 'exception') {
+                            $('.loader').hide();
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        } else {
+                            $('.loader').hide();
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        }
+                    },
+                        { escape: false }
+                    );
+
+                }
+
+                //Re-price on Start Again click
+                $scope.repriceByQuoteIdOnStartAgain = function (quoteId) {
+                    // Block UI Start
+                    $('.loader').show();
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.repriceByQuoteId}', quoteId, function (result, event) {
+                        // $('.loader').hide();
+                        $('.block-ui-message').html('');
+                        if (event.status) {
+                            if (result.isPending == true) {
+                                $scope.repriceByQuoteIdOnStartAgain(quoteId); 
+                            } else {
+                                $scope.totalRepricesRequired = $scope.totalRepricesRequired - 1;
+                                if($scope.totalRepricesRequired == 0) {
+                                    $scope.performLoad();
+                                    //$scope.synchronizeCartOnStartAgain();
+                                }
+                            }                            
+                        } else if (event.type === 'exception') {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        } else {
+                            window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                        }
+                    },
+                        { escape: false }
+                    );
+                }
+
+                //Perform Synchronize for all Quotes on start Again Click
+                $scope.synchronizeCartOnStartAgain = function () {
+                    // Block UI Start
+                    $('.block-ui-message').html('<img src="' + imgSrc + '" />');
+                    $('.loader').show();
+                    $scope.quoteId = [];
+                    for(var i=0; i< $scope.resetResponse.quotePricingStatus.length; i++){
+                        if($scope.quoteId != $scope.resetResponse.quotePricingStatus[i].quoteId){
+                            $scope.quoteId.push($scope.resetResponse.quotePricingStatus[i].quoteId);
+                        }
+                    }
+                    Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.synchronizeCarts}',
+                        $scope.quoteId, function (result, event) {
+                            //$('.loader').hide();
+                            // Block UI Stop
+                            $('.block-ui-message').html('');
+                            if (event.status) {
+                                $scope.performLoad();
+                                //$scope.generateContractStartAgain();
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                        { escape: false }
+                    );
+                }
+                
+                $scope.addToCart = function (addProductId, removeProductId) {
+                    $('.loader').show();
+                    var remProductId = '';
+                    var curProductId
+
+                    var selectedProducts = [];
+
+                    $(".product_badge_box:checked").each(function () {
+                        var idSplit = $(this).attr("id").split('-')[1];
+                        selectedProducts.push(idSplit);
+                    });
+                    var selContract = '';
+                    $scope.quoteDetails.contractTermDetails.forEach(function (val, key) {
+
+                        if (val.isSelected) {
+                            selContract = val.term;
+                        }
+                    });
+
+
+                    remProductId = removeProductId;
+
+                }
+
+                $scope.performLoad();
+                
+                $("#enableTooltipForMax").mouseleave(function() {
+                    $('#disableTooltipForMax').css({ display: "none" });
+                });
+                $("#enableTooltipForMax").click(function() {
+                    if($('#enableTooltipForMax').children().attr('disabled') == 'disabled' && $scope.plusCount++ > 0 ){
+                            $('#disableTooltipForMax').css({ display: "block" });
+                    }
+                });
+                
+                $("#enableTooltip").mouseleave(function() {
+                    $('#disableTooltip').css({ display: "none" });
+                });
+                $("#enableTooltip").click(function() {
+                    if( $('#enableTooltip').children().attr('disabled') == 'disabled' && $scope.minusCount++ > 0 ){
+                            $('#disableTooltip').css({ display: "block" });
+                    }
+                });
+                
+                $scope.minusCount = 0;
+                $scope.plusCount = 0;
+                
+                $scope.plusMinusAttorneys = function (type) {
+                    $scope.minusCount = 0;
+                    $scope.plusCount = 0;
+                    if (type == 'minus') {
+                        if ($scope.ATTORNEYS_IN_ACCOUNT < $scope.ATTORNEYS) {
+                            $scope.ATTORNEYS--;
+                        }
+                        if ($scope.ATTORNEYS <= 0) {
+                            $scope.ATTORNEYS = 0;
+                        }
+                    }
+                    if (type == 'plus') {
+                        $scope.ATTORNEYS++;
+                    }
+                    $scope.attorneysQty = $scope.ATTORNEYS;
+
+                    $scope.matrixPriceamount = [];
+                    if ($scope.attorneysQty != 0) {
+                        for (var j = 0; j < $scope.quoteDetails.cartDetails.length; j++) {
+                            for (var k = 0; k < $scope.quoteDetails.cartDetails[j].subSections.length; k++) {
+                                var subSectionsdata = $scope.quoteDetails.cartDetails[j].subSections[k];
+                                for (var l = 0; l < subSectionsdata.cartItems.length; l++) {
+                                    for (var m = 0; m < subSectionsdata.cartItems[l].matrices.length; m++) {
+                                        var matrix = subSectionsdata.cartItems[l].matrices[m];
+                                        if (matrix.quantity == $scope.attorneysQty) {
+                                            $scope.matrixPriceamount.push({
+                                                "amount": matrix.amount,
+                                                "ProductId": matrix.ProductId,
+                                                "quantity": matrix.quantity,
+                                                "isSelected": subSectionsdata.cartItems[l].isSelected
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+                    //Pricing Based On contract
+                    $scope.sumOfQuotePrice = 0;
+                    $scope.customQuotePrice = [];
+                    if ($scope.attorneysQty != 0) {
+                        for (var j = 0; j < $scope.matrixPriceamount.length; j++) {
+                            $scope.sumOfQuotePrice = $scope.matrixPriceamount[j];
+                            if ($scope.quoteDetails.bestValueAdjustmentType == "% Discount") {
+                                $scope.amount = parseFloat($scope.sumOfQuotePrice.amount * (100 - ($scope.quoteDetails.bestValueAdjustmentAmount - $scope.quoteDetails.contractTermDetails[$scope.indx].markupPercentage)) / 100);
+                                $scope.SubcatQuotePrice = $scope.amount;
+                                $scope.subPriceDollarPart = Math.floor($scope.amount.toFixed(2));
+                                $scope.subPriceCentPart = ($scope.amount.toFixed(2) + "").split(".")[1];
+                                $scope.customQuotePrice.push({
+                                    "amount": $scope.amount,
+                                    "subPriceDollarPart": $scope.subPriceDollarPart,
+                                    "subPriceCentPart": $scope.subPriceCentPart,
+                                    "ProductId": $scope.sumOfQuotePrice.ProductId,
+                                    "quantity": $scope.sumOfQuotePrice.quantity,
+                                    "isSelected": $scope.sumOfQuotePrice.isSelected
+                                });
+                            } else {
+                                $scope.amount = parseFloat($scope.sumOfQuotePrice.amount * (100 + ($scope.quoteDetails.bestValueAdjustmentAmount + $scope.quoteDetails.contractTermDetails[$scope.indx].markupPercentage)) / 100);
+                                $scope.SubcatQuotePrice = $scope.amount;
+                                $scope.subPriceDollarPart = Math.floor($scope.amount.toFixed(2));
+                                $scope.subPriceCentPart = ($scope.amount.toFixed(2) + "").split(".")[1];
+                                $scope.customQuotePrice.push({
+                                    "amount": $scope.amount,
+                                    "subPriceDollarPart": $scope.subPriceDollarPart,
+                                    "subPriceCentPart": $scope.subPriceCentPart,
+                                    "ProductId": $scope.sumOfQuotePrice.ProductId,
+                                    "quantity": $scope.sumOfQuotePrice.quantity,
+                                    "isSelected": $scope.sumOfQuotePrice.isSelected
+                                });
+                            }
+                        }
+                        $scope.TotalPriceAfterDiscnt = 0;
+                        for (var s = 0; s < $scope.customQuotePrice.length; s++) {
+                            if ($scope.customQuotePrice[s].isSelected == true) {
+                                var productPrice = parseFloat($scope.customQuotePrice[s].amount.toFixed(2));
+                                var totalPr = parseFloat($scope.TotalPriceAfterDiscnt);
+                                $scope.TotalPriceAfterDiscnt = parseFloat(totalPr + productPrice);
+                                //$scope.TotalPriceAfterDiscnt = parseFloat($scope.customQuotePrice[s].amount + $scope.TotalPriceAfterDiscnt);
+                            }
+                        }
+                        $scope.cstmQuotePrice = $scope.TotalPriceAfterDiscnt.toFixed(2);
+                        $scope.cQPriceDollarPart = Math.floor($scope.TotalPriceAfterDiscnt);
+                        $scope.cQPriceCentPart = ($scope.cstmQuotePrice + "").split(".")[1];
+
+                    }
+                }
+                $scope.SELECTED_PRODUCT = [];
+                $scope.activateCurrentItem = function (categoryId, event, cartItem, cartItems) {
+
+                    if (cartItem.isDisabled == true) {
+                        return false;
+                    }
+                    var removedCartItem = '';
+                    var recommendedCount = 0;
+                    cartItems.forEach(function (value, key) {
+                        if (value.isBestValue == true) {
+                            recommendedCount++;
+                        }
+                        if (value.isSelected == true) {
+                            removedCartItem = value.productId;
+                        }
+
+                    });
+
+                    if (recommendedCount != 0 && cartItem.productId == removedCartItem) {
+                        return false;
+                    }
+
+                    cartItems.forEach(function (value, key) {
+
+                        if (value.productId == cartItem.productId) {
+
+                            if (value.isSelected == true) {
+                                value.isSelected = false;
+                            } else {
+                                value.isSelected = true;
+                            }
+
+                        } else {
+                            value.isSelected = false;
+                        }
+                    });
+
+                    if (recommendedCount == 0 && cartItem.productId == removedCartItem) {
+                        $scope.SELECTED_PRODUCT[categoryId] = '';
+                    } else {
+                        $scope.SELECTED_PRODUCT[categoryId] = cartItem.productId;
+                    }
+                    for (var s = 0; s < $scope.customQuotePrice.length; s++) {
+                        if ($scope.customQuotePrice[s].ProductId == cartItem.productId) {
+                            $scope.customQuotePrice[s].isSelected = true;
+                        }
+
+                        if ($scope.customQuotePrice[s].ProductId == removedCartItem) {
+                            $scope.customQuotePrice[s].isSelected = false;
+                        }
+                    }
+
+                    if ($scope.attorneysQty != 0) {
+
+                        if ((removedCartItem != null) && (removedCartItem != '')) {
+                            for (var n = 0; n < $scope.customQuotePrice.length; n++) {
+                                if ($scope.customQuotePrice[n].ProductId == removedCartItem) {
+                                    $scope.removedProd = $scope.customQuotePrice[n].amount;
+                                }
+                            }
+                        } else {
+                            $scope.removedProd = 0;
+                        }
+
+                        if ((cartItem != null) && (cartItem != '')) {
+                            for (var n = 0; n < $scope.customQuotePrice.length; n++) {
+                                if ($scope.customQuotePrice[n].ProductId == cartItem.productId) {
+                                    $scope.SelProd = $scope.customQuotePrice[n].amount;
+                                }
+                            }
+                        } else {
+                            $scope.SelProd = 0;
+                        }
+                        if (cartItem.productId == removedCartItem) {
+                            $scope.TotalPriceAfterDiscnt = $scope.TotalPriceAfterDiscnt - ($scope.removedProd);
+                            $scope.cstmQuotePrice = $scope.TotalPriceAfterDiscnt.toFixed(2);
+                            $scope.cQPriceDollarPart = Math.floor($scope.TotalPriceAfterDiscnt);
+                            $scope.cQPriceCentPart = ($scope.cstmQuotePrice + "").split(".")[1];
+                        } else {
+                            $scope.TotalPriceAfterDiscnt = $scope.TotalPriceAfterDiscnt - ($scope.removedProd) + ($scope.SelProd);
+                            $scope.cstmQuotePrice = $scope.TotalPriceAfterDiscnt.toFixed(2);
+                            $scope.cQPriceDollarPart = Math.floor($scope.TotalPriceAfterDiscnt);
+                            $scope.cQPriceCentPart = ($scope.cstmQuotePrice + "").split(".")[1];
+                        }
+                    }
+                }
+
+                $scope.sorterFunc = function (cartItem) {
+                    return parseInt(cartItem.sequenceNo);
+                }
+                $scope.sortCategoryFunc = function (category) {
+                    return parseInt(category.sectionLevel);
+                }
+
+
+                $scope.SELECTED_CONTRACT;
+                $scope.selectContract = function (contract, ind, contractTerms) {
+                    contractTerms.forEach(function (val, key) {
+                        val.isSelected = false;
+                    });
+                    contract.isSelected = true;
+                    $scope.indx = ind;
+
+                    $scope.matrixPriceamount = [];
+                    if ($scope.attorneysQty != 0) {
+                        for (var j = 0; j < $scope.quoteDetails.cartDetails.length; j++) {
+                            for (var k = 0; k < $scope.quoteDetails.cartDetails[j].subSections.length; k++) {
+                                var subSectionsdata = $scope.quoteDetails.cartDetails[j].subSections[k];
+                                for (var l = 0; l < subSectionsdata.cartItems.length; l++) {
+                                    for (var m = 0; m < subSectionsdata.cartItems[l].matrices.length; m++) {
+                                        var matrix = subSectionsdata.cartItems[l].matrices[m];
+                                        if (matrix.quantity == $scope.attorneysQty) {
+                                            $scope.matrixPriceamount.push({
+                                                "amount": matrix.amount,
+                                                "ProductId": matrix.ProductId,
+                                                "quantity": matrix.quantity,
+                                                "isSelected": subSectionsdata.cartItems[l].isSelected
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $scope.SELECTED_CONTRACT = $scope.quoteDetails.contractTermDetails[$scope.indx].term;
+                    //Pricing Based On contract
+                    $scope.sumOfQuotePrice = 0;
+                    $scope.customQuotePrice = [];
+                    if ($scope.attorneysQty != 0) {
+                        for (var j = 0; j < $scope.matrixPriceamount.length; j++) {
+                            $scope.sumOfQuotePrice = $scope.matrixPriceamount[j];
+                            if ($scope.quoteDetails.bestValueAdjustmentType == "% Discount") {
+                                $scope.amount = parseFloat($scope.sumOfQuotePrice.amount * (100 - ($scope.quoteDetails.bestValueAdjustmentAmount - $scope.quoteDetails.contractTermDetails[$scope.indx].markupPercentage)) / 100);
+                                $scope.SubcatQuotePrice = $scope.amount;
+                                $scope.subPriceDollarPart = Math.floor($scope.amount.toFixed(2));
+                                $scope.subPriceCentPart = ($scope.amount.toFixed(2) + "").split(".")[1];
+                                $scope.customQuotePrice.push({
+                                    "amount": $scope.amount,
+                                    "subPriceDollarPart": $scope.subPriceDollarPart,
+                                    "subPriceCentPart": $scope.subPriceCentPart,
+                                    "ProductId": $scope.sumOfQuotePrice.ProductId,
+                                    "quantity": $scope.sumOfQuotePrice.quantity,
+                                    "isSelected": $scope.sumOfQuotePrice.isSelected
+                                });
+                            } else {
+                                $scope.amount = parseFloat($scope.sumOfQuotePrice.amount * (100 + ($scope.quoteDetails.bestValueAdjustmentAmount + $scope.quoteDetails.contractTermDetails[$scope.indx].markupPercentage)) / 100);
+                                $scope.SubcatQuotePrice = $scope.amount;
+                                $scope.subPriceDollarPart = Math.floor($scope.amount.toFixed(2));
+                                $scope.subPriceCentPart = ($scope.amount.toFixed(2) + "").split(".")[1];
+                                $scope.customQuotePrice.push({
+                                    "amount": $scope.amount,
+                                    "subPriceDollarPart": $scope.subPriceDollarPart,
+                                    "subPriceCentPart": $scope.subPriceCentPart,
+                                    "ProductId": $scope.sumOfQuotePrice.ProductId,
+                                    "quantity": $scope.sumOfQuotePrice.quantity,
+                                    "isSelected": $scope.sumOfQuotePrice.isSelected
+                                });
+                            }
+                        }
+                        $scope.TotalPriceAfterDiscnt = 0;
+                        for (var s = 0; s < $scope.customQuotePrice.length; s++) {
+                            if ($scope.customQuotePrice[s].isSelected == true) {
+                                var productPrice = parseFloat($scope.customQuotePrice[s].amount.toFixed(2));
+                                var totalPr = parseFloat($scope.TotalPriceAfterDiscnt);
+                                $scope.TotalPriceAfterDiscnt = parseFloat(totalPr + productPrice);
+                                //$scope.TotalPriceAfterDiscnt = parseFloat($scope.customQuotePrice[s].amount + $scope.TotalPriceAfterDiscnt);
+                            }
+                        }
+                        $scope.cstmQuotePrice = $scope.TotalPriceAfterDiscnt.toFixed(2);
+                        $scope.cQPriceDollarPart = Math.floor($scope.TotalPriceAfterDiscnt);
+                        $scope.cQPriceCentPart = ($scope.cstmQuotePrice + "").split(".")[1];
+
+                    }
+                }
+
+                $scope.showMoreLess = [];
+                var maxHeight = function (elems) {
+                    return Math.max.apply(null, elems.map(function () {
+                        return $(this).outerHeight();
+                    }).get());
+                }
+
+                $scope.showLessContent = function (catId) {
+                    $(".prod_section_" + catId).each(function () { $(this).removeAttr("style") });
+                }
+
+                $scope.showMoreContent = function (catId) {
+                    setTimeout(function () {
+                        var max = -1;
+                        $(".prod_section_" + catId).each(function () {
+                            var h = $(this).height();
+                            max = h > max ? h : max;
+                        });
+
+                        $(".prod_section_" + catId).each(function () { $(this).css("height", max + "px") });
+                    }, 100);
+                }
+                $scope.redirectToParentPage = function (redUrl) {
+                    window.top.location.href = redUrl;
+                }
+                $scope.updateEnvelope = function (rediUrl) {
+                    $scope.redUrl = rediUrl;
+                    $('.loader').show();
+                    $('.block-ui-message').html(' <img src="' + imgSrc + '" />');
+                    var selectedProducts = [];
+                    var deltaSelectedProducts = [];
+                    var count = 0;
+                    for (var s = 0; s < $scope.customQuotePrice.length; s++) {
+                        if ($scope.customQuotePrice[s].isSelected == true) {
+                            selectedProducts[count] = $scope.customQuotePrice[s].ProductId;
+                            count = count + 1;
+                        }
+                    }
+                    selectedProducts.sort();
+                                        
+                    if(selectedProducts.join('|') != $scope.defaultSelectedProds.join('|')) {
+                        $scope.prodIds = selectedProducts;
+                    } else {
+                        $scope.prodIds = null;
+                    }
+
+                    // Checking Conditon To send attorneysQty null or Not
+                    if ($scope.defaultAttorneysQty == $scope.attorneysQty) {
+                        $scope.iQty = null;
+                    } else {
+                        $scope.iQty = $scope.attorneysQty;
+                    }
+
+                    // Checking Conditon To send Contract null or Not
+                    if ($scope.defaultContract == $scope.SELECTED_CONTRACT) {
+                        $scope.contract = null;
+                    } else {
+                        $scope.contract = $scope.SELECTED_CONTRACT;
+                    }
+
+                    if ($scope.prodIds != null && $scope.contract != null && $scope.iQty == null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceByQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    } else if ($scope.prodIds != null && $scope.iQty == null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceByQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    } else if ($scope.contract != null && $scope.iQty == null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceByQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    }
+
+                    if ($scope.iQty != null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    }
+
+                    if ($scope.prodIds == null && $scope.contract == null && $scope.iQty == null) {
+                        window.top.location.href = $scope.redUrl;
+                        $('.loader').hide();
+                    }
+                }
+                
+                $scope.saveAndCompare = function (redUrl) {
+                    $scope.redUrl = redUrl;
+                    $("#confirm-modal").modal('hide');
+                    // Block UI Start
+                    $('.loader').show();
+                    $('.block-ui-message').html(' <img src="' + imgSrc + '" />');
+                    var selectedProducts = [];
+                    var deltaSelectedProducts = [];
+                    var count = 0;
+                    for (var s = 0; s < $scope.customQuotePrice.length; s++) {
+                        if ($scope.customQuotePrice[s].isSelected == true) {
+                            selectedProducts[count] = $scope.customQuotePrice[s].ProductId;
+                            count = count + 1;
+                        }
+                    }
+                    selectedProducts.sort();
+                                        
+                    if(selectedProducts.join('|') != $scope.defaultSelectedProds.join('|')) {
+                        $scope.prodIds = selectedProducts;
+                    } else {
+                        $scope.prodIds = null;
+                    }
+
+                    // Checking Conditon To send attorneysQty null or Not
+                    if ($scope.defaultAttorneysQty == $scope.attorneysQty) {
+                        $scope.iQty = null;
+                    } else {
+                        $scope.iQty = $scope.attorneysQty;
+                    }
+
+                    // Checking Conditon To send Contract null or Not
+                    if ($scope.defaultContract == $scope.SELECTED_CONTRACT) {
+                        $scope.contract = null;
+                    } else {
+                        $scope.contract = $scope.SELECTED_CONTRACT;
+                    }
+
+                    if ($scope.prodIds != null && $scope.contract != null && $scope.iQty == null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceByQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    } else if ($scope.prodIds != null && $scope.iQty == null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceByQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    } else if ($scope.contract != null && $scope.iQty == null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceByQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    }
+
+                    if ($scope.iQty != null) {
+                        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.DCConfiguratorControllerV2.updateCart}',$scope.getParameterByName('customQuoteId'), $scope.getParameterByName('bestValueQuoteId'), $scope.prodIds, $scope.contract, $scope.iQty, function (result, event) {
+                            // Block UI Stop
+                            if (event.status) {
+                                if (result.code == 200) {
+                                    $scope.repriceQuoteId();
+                                } else {
+                                    $('.loader').hide();
+                                    window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                                }
+                            } else if (event.type === 'exception') {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            } else {
+                                $('.loader').hide();
+                                window.top.location.href = "{!$Label.DC_AEM_ERROR_PAGE_URL}";
+                            }
+                        },
+                            { escape: false }
+                        );
+                    }
+
+                    if ($scope.prodIds == null && $scope.contract == null && $scope.iQty == null) {
+                        window.top.location.href = $scope.redUrl;
+                        $('.loader').hide();
+                    }
+                }
+            });
+        </script>
+        <apex:stylesheet value="{!TRResources}/css/bootstrap.min.css" />
+        <apex:stylesheet value="{!TRResources}/css/custom.css" />
+        <apex:stylesheet value="{!TRResources}/css/tooltipster.bundle.min.css" />
+        <apex:stylesheet value="{!TRResources}/css/tooltipster-sideTip-light.min.css" />
+        <style type="text/css">
+            .jurisdiction {
+                height: 17px;
+                /* overflow: hidden; */
+                display: block;
+                top: 8px;
+                position: relative;
+                margin-bottom: -15px !important;
+            }
+
+            .customize-desc-2 {
+                color: #4D4D4D;
+                font-size: 15px;
+                line-height: 22px;
+                margin-top: 30px;
+            }
+
+            .cost-h {
+                height: 51px;
+            }
+
+
+            .block-ui-message {
+                background-color: transparent !important;
+                color: #000;
+            }
+
+            .block-ui-overlay.block-ui-visible {
+                background-color: #fff;
+                opacity: .7;
+                -ms-filter: "alpha(opacity=50)";
+                cursor: wait;
+            }
+
+
+            .custom-badge-active {
+                border: 1px solid #0099c4;
+            }
+
+            .cost-product {
+                height: 35px
+            }
+
+            .help-q {
+                border: 1px solid #4D4D4D;
+                border-radius: 50px;
+                margin-left: 6px;
+                width: 16px;
+                margin-top: -4px;
+                padding: 2px;
+                z-index: 0;
+            }
+
+            .help-q:hover {
+                background: #4d4d4d;
+            }
+
+            .minus-plus-btn
+            {
+                z-index: 0;
+            }
+
+
+            .tooltipster-sidetip .tooltipster-box {
+                border-radius: 5px;
+                background-color: #4D4D4D;
+                box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
+                border: none;
+            }
+
+
+
+            .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
+                border-top-color: #4D4D4D;
+            }
+
+            .tooltipster-sidetip.tooltipster-top .tooltipster-box {
+                margin-bottom: 8px;
+                top: -2px;
+                left: 52px;
+            }
+
+            .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
+                border-top-color: #4D4D4D;
+            }
+
+            .tooltipster-sidetip.tooltipster-bottom .tooltipster-box {
+                top: 2px;
+                left: 52px;
+            }
+
+            .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
+                border-top-color: #4D4D4D;
+            }
+
+            .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
+                border-bottom-color: #4D4D4D;
+            }
+
+            .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
+                background: none;
+            }
+
+            .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
+                border-bottom-color: #4D4D4D;
+            }
+
+            .tooltipster-sidetip.tooltipster-right .tooltipster-box {
+                top: 10px;
+                left: 2px;
+            }
+
+            .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-background {
+                border-right-color: #4D4D4D;
+            }
+
+
+            .tooltipster-sidetip.tooltipster-left .tooltipster-box {
+                top: 20px;
+            }
+
+
+            .tooltipster-sidetip .tooltipster-content {
+
+                color: #FFFFFF;
+                font-weight: normal;
+                font-size: 15px;
+                line-height: 24px;
+                padding: 20px
+            }
+
+
+
+
+            ol,
+            ul {
+                padding-left: 18px;
+            }
+
+            .paragraph-full {
+                height: auto;
+                -webkit-transition: all 1s ease;
+                -moz-transition: all 1s ease;
+                -o-transition: all 1s ease;
+                -ms-transition: all 1s ease;
+                transition: all 1s ease;
+            }
+        </style>
+    </head>
+
+    <body data-ng-app="trApp">
+
+        <div class="container tr-hero-container" data-ng-controller="QuoteController">
+            <div class="sub-container">
+                <section class="page-section">
+                    <div class="col-lg-12 col-md-12col-xs-12 col-sm-12">
+                        <div class="col-lg-12" style="margin-bottom: 10px;">
+                            <span class="customize">{{firstTitleWord}} </span>
+                            <span class="your-plan">{{restTitleWord}}</span>
+                        </div>
+                        <div class="col-lg-12">
+                            <p class="customize-desc" data-ng-bind-html="quoteDetails.pageHeaderText | to_trusted"></p>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12col-xs-12 col-sm-12">&nbsp;</div>
+                </section>
+
+                <section class="page-section">
+                    <div class="col-lg-12 col-md-12col-xs-12 col-sm-12">
+                        <h2 class="font-300 font-3001 titles">1. Add attorney(s)</h2>
+                        <br />
+                        <div class="section-1-div">
+                            <div class="top-1">
+                                <div class="minus text-left" id="enableTooltip">
+                                    <button type="button" class="btn minus-plus-btn text-center tooltip min-attr" data-ng-click="plusMinusAttorneys('minus')"
+                                        data-ng-disabled="ATTORNEYS_IN_ACCOUNT>=ATTORNEYS">
+                                        <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-minus.svg')}"  style="padding: 20px; margin:-10px" styleClass="" />
+                                    </button>
+                                </div>
+                                <div class="input-enter text-left">
+                                    <input id="textinput" name="textinput" readonly="readonly" type="text" placeholder="0" data-ng-model="ATTORNEYS" class="text-center input-box form-control textbox-readonly"></input>
+                                </div>
+                                <div class="plus text-left" id="enableTooltipForMax">
+                                    <button type="button" class="btn minus-plus-btn text-center" data-ng-click="plusMinusAttorneys('plus')" data-ng-disabled="ATTORNEYS>=MAX_ATTORNEYS">
+                                        <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-plus.svg')}" style="padding: 20px;  margin:-10px" />
+                                    </button>
+                                </div>
+                                <div class="text-tool text-left">
+                                    <span class="attor-span" ng-cloak="">
+                                        <a href="">
+                                            <span ng-if="ATTORNEYS_IN_ACCOUNT == ATTORNEYS">Currently {{ATTORNEYS_IN_ACCOUNT}} {{(ATTORNEYS_IN_ACCOUNT==1)?'Attorney':'Attorneys'}}</span>
+                                            <span ng-if="ATTORNEYS_IN_ACCOUNT != ATTORNEYS">
+                                                You've added {{ATTORNEYS - ATTORNEYS_IN_ACCOUNT}} {{((ATTORNEYS - ATTORNEYS_IN_ACCOUNT|abs)==1)?'Attorney':'Attorneys'}}
+                                            </span>
+                                            <img src="https://lh3.googleusercontent.com/-h0p74Jgy3n0/WcT3CFBHpgI/AAAAAAAABmk/WvLFkKq_MeoETvrhCmTYskK4YJNfthW3wCL0BGAYYCw/h280/info-q.png"
+                                                id="demo-interact" class="tooltip help-q" title="{!$Label.DC_TXT_ATTORNEY_GENERAL_INFO}"
+                                            />
+                                        </a>
+                                        <!-- <a href="" ng-if="defaultAttorneysQty != ATTORNEYS">You've added {{ATTORNEYS - defaultAttorneysQty}} {{(ATTORNEYS==1)?'Attorney':'Attorneys'}}
+                                        <img src="https://lh3.googleusercontent.com/-h0p74Jgy3n0/WcT3CFBHpgI/AAAAAAAABmk/WvLFkKq_MeoETvrhCmTYskK4YJNfthW3wCL0BGAYYCw/h280/info-q.png"
+                                            id="demo-interact" class="tooltip help-q" title="You certify that your number of attorneys  includes partners, shareholders, associates, contract or staff attorneys, of counsel, corporate users, personnel and full-time-equivalent students."
+                                        />
+                                    </a> -->
+                                    </span>
+                                </div>
+                                <div class="col-lg-12 col-md-12col-xs-12 col-sm-12">&nbsp;
+                                    <br/>
+                                    <br/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page-section">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 cboxes">
+                        <h2 class="font-300 titles">2. Contract length</h2>
+                        <br />
+                        <div class="row section-1-div">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-padding cboxes" data-ng-repeat="contract in quoteDetails.contractTermDetails">
+                                <label for="check-{{$index}}" class="btn {{(contract.isSelected==true)?'check-box-c-length-active':'check-box-c-length-inactive'}} {{(contract.isBestValue==true)?'recommended-product':''}} ">
+                                    <span class="contract-year">{{contract.term}}</span>
+                                    <input type="radio" data-ng-click="selectContract(contract,$index,quoteDetails.contractTermDetails);$event.stopPropogation();"
+                                        id="check-{{$index}}" ng-checked="contract.isSelected" name="contract" class="badgebox"></input>
+                                    <span class="badge {{(contract.isSelected==true)?'custom-badge-active':'custom-badge'}} label-margin-0">
+                                        <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-check.svg')}" style="width: 10px" />
+                                    </span>
+                                </label>
+                                <span data-ng-if="contract.isBestValue==true" class="tr-blue recommended">Lowest price</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page-section" data-ng-repeat="quoteItem in quoteDetails.cartDetails  | orderBy:sortCategoryFunc">
+                    <h2 class="font-300 mar-lft-9 titles">&nbsp;{{$index+3}}. {{quoteItem.sectionTitle}}</h2>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12" ng-if="quoteItem.subSections.length>0" ng-repeat="subsection in quoteItem.subSections  | orderBy:sortCategoryFunc">
+                        <div class="row section-1-div">
+                            <h3 class="color-4d4d4d">
+                                <strong class="second-heading" ng-if="subsection.isSectionTitleVisible==true">{{subsection.sectionTitle}}</strong>&nbsp;</h3>
+                            <div data-ng-init="showMoreLess[subsection.categoryId]=false" class="col-lg-{{12/subsection.cartItems.length}} col-md-{{12/subsection.cartItems.length}} col-sm-12 col-xs-12 no-padding"
+                                ng-if="subsection.cartItems.length>0" ng-repeat="cartItem in subsection.cartItems  | orderBy:sorterFunc">
+                                <label style="cursor: pointer;" for="check-{{cartItem.productId}}" class="{{(cartItem.isSelected==true || SELECTED_PRODUCT[subsection.categoryId]==cartItem.productId)?'check-box-primary-law-active':'check-box-primary-law-inactive'}} {{(cartItem.isBestValue==true)?'recommended-product':''}}">
+                                    <span class="sub-sub-title">{{cartItem.title}}</span>
+                                    <p class="paragraph-product prod_section_{{subsection.categoryId}} {{(showMoreLess[subsection.categoryId])?'paragraph-full':''}}"
+                                        data-ng-bind-html="cartItem.description | to_trusted"> </p>
+                                    <span class="show-more more_{{subsection.categoryId}}" data-ng-if="showMoreLess[subsection.categoryId]==false">
+                                        <a href="javascript:void(0)" data-ng-click="showMoreLess[subsection.categoryId]=true;showMoreContent(subsection.categoryId)">Show More &nbsp;
+                                            <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-chevron-down.svg')}" style="width: 9px;" />
+                                        </a>
+                                    </span>
+                                    <span class="show-more less_{{subsection.categoryId}}" data-ng-if="showMoreLess[subsection.categoryId]==true;">
+                                        <a href="javascript:void(0)" data-ng-click="showMoreLess[subsection.categoryId]=false;showLessContent(subsection.categoryId)">Show Less &nbsp;
+                                            <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-chevron-up.svg')}" style="width: 9px;" />
+                                        </a>
+                                    </span>
+                                    <div class="col-lg-12 no-padding">
+                                        <div class="col-lg-8 col-md-8 col-xs-6 col-sm-6 no-padding cost-h">
+                                            <span class="tr-blue jurisdiction" data-ng-show="cartItem.jurisdiction != 'National/Federal'">{{cartItem.jurisdiction}} &nbsp; </span>
+                                            <br />
+                                            <span class="" data-ng-class="(cartItem.isSelected==true)?'tr-blue tr-blue-strong cost-product':'tr-black-cost cost-product'">
+                                                <span class="dollar">$</span><span data-ng-repeat="matrixdicPrice in customQuotePrice" class="cost" data-ng-if="matrixdicPrice.ProductId == cartItem.productId">{{matrixdicPrice.subPriceDollarPart}}</span><span data-ng-repeat="matrixdicPrice in customQuotePrice" class="pm" data-ng-if="matrixdicPrice.ProductId == cartItem.productId">.{{matrixdicPrice.subPriceCentPart}}/mo</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-xs-6 col-sm-6 text-right no-padding">
+                                            <input data-ng-click="activateCurrentItem(subsection.categoryId,$event,cartItem,subsection.cartItems)" type="radio" id="check-{{cartItem.productId}}"
+                                                ng-checked="{{(cartItem.isSelected==true)?'1':'0'}}" name="primary_{{subsection.categoryId}}"
+                                                class="badgebox product_badge_box"></input>
+                                            <span class="badge {{(cartItem.isSelected==true  || SELECTED_PRODUCT[subsection.categoryId]==cartItem.productId)?'custom-badge-active':'custom-badge'}}">
+                                                <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-check.svg')}" style="width: 10px" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                </label>
+                                <span class="tr-blue recommended" data-ng-if="cartItem.isBestValue==true">{!$Label.DC_TXT_RECOMMENDED}</span>
+                                <div class="col-lg-12 col-md-12col-xs-12 col-sm-12">&nbsp;
+                                    <br/>
+                                    <br/>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </section>
+
+
+                <div class="empty-box"></div>
+                <div class="">
+                    <div class="price-go">
+                        <div class="" style="width: 788px; margin: 0 auto;">
+
+                            <div class="col-lg-12 no-padding" style="margin-left: 20px;  margin-top: 15px; margin-bottom:15px;">
+                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6">
+                                    <button type="button" class="btn btn-default save-compare" data-ng-disabled="!quoteDetails.landingPageURL" data-ng-click="saveAndCompare(quoteDetails.landingPageURL)">{!$Label.DC_BTN_SAVE_AND_COMPARE}</button>
+                                </div>
+                                <div class="col-lg-3 col-md-2 col-xs-6 col-sm-6 text-center">
+                                    <h4 class="start-again" data-ng-if="quoteDetails.updatedOnConfigurator" data-ng-click="openConfirmStartAgainBlock()">
+                                        <u style="cursor:pointer;">{!$Label.DC_LINK_START_AGAIN}</u>
+                                    </h4>
+                                </div>
+                                <div class="col-lg-5 col-xs-6 col-sm-6 text-right" style="margin-left: -4%;margin-top: -4px">
+                                    <span class="total-price-dollar">$</span><span class="total-price">{{(cQPriceDollarPart)?cQPriceDollarPart:0}}</span><span class="per-month-total">.{{(cQPriceDollarPart)?cQPriceCentPart:0}}/mo</span>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-xs-6 col-sm-6 text-right">
+                                    <button type="button" class="btn btn-default review-confirm" data-ng-disabled="!quoteDetails.summaryPageURL" data-ng-click="updateEnvelope(quoteDetails.summaryPageURL)">{!$Label.DC_BTN_SELECT}</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="confirm-modal">
+                <div class="modal-dialog modal-sm modal-c">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">
+                                    <apex:image url="{!URLFOR($Resource.CXD_Assets_TR,'images/icon-close.svg')}" />
+                                </span>
+                            </button>
+                            <h4 class="modal-title modal-title-c" id="myModalLabel">{!$Label.DC_TXT_RESET_POPUP_TITLE}</h4>
+                            <p style="margin-top: 10%;" class="text-center">{!$Label.DC_TXT_RESET_POPUP_MESSAGE}</p>
+                            <div class="col-lg-12 modal-confirm">
+                                <div class="col-lg-offset-1 col-lg-4">
+                                    <button type="button" class="btn btn-default modal-no" id="modal-btn-no" data-ng-click="closeConfirmStartAgainBlock()">{!$Label.DC_BTN_RESET_POPUP_NO}</button>
+                                </div>
+                                <div class="col-lg-7">
+                                    <button type="button" class="btn btn-default modal-yes" id="modal-btn-si" data-ng-click="resetQuote()">{!$Label.DC_BTN_RESET_POPUP_YES}</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="loader loader--main" style="display:none;">
+            <span class="loader__icon">
+                <svg class="loader__svg" height="50" width="50">
+                    <circle class="loader__path" cx="25" cy="25" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+                </svg>
+            </span>
+            <span class="loader__text">{!$Label.DC_TXT_LOADER_TEXT}</span>
+        </div>
+        <apex:includeScript value="{!TRResources}/js/tooltipster.bundle.min.js" />
+
+        <div class="tooltipster-base tooltipster-sidetip tooltipster-top tooltipster-grow tooltipster-show min-attr-2" id="disableTooltip"
+            style="max-width: 500px; pointer-events: auto; z-index: 9999999; left: 134px; top: 242.297px; height: 96px; width: 335px; animation-duration: 350ms; transition-duration: 350ms;">
+            <div class="tooltipster-box">
+                <div class="tooltipster-content">{!$Label.DC_TXT_REDUCE_ATTORNEYS}</div>
+            </div>
+            <div class="tooltipster-arrow" style="left: 168px;">
+                <div class="tooltipster-arrow-uncropped">
+                    <div class="tooltipster-arrow-border"></div>
+                    <div class="tooltipster-arrow-background"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tooltipster-base tooltipster-sidetip tooltipster-top tooltipster-grow tooltipster-show min-attr-2" id="disableTooltipForMax"
+            style="max-width: 500px; pointer-events: auto; z-index: 9999999; left: 312px; top: 242.297px; height: 96px; width: 335px; animation-duration: 350ms; transition-duration: 350ms;">
+            <div class="tooltipster-box">
+                <div class="tooltipster-content">{!$Label.DC_TXT_INCREASE_ATTORNEYS}</div>
+            </div>
+            <div class="tooltipster-arrow" style="left: 168px;">
+                <div class="tooltipster-arrow-uncropped">
+                    <div class="tooltipster-arrow-border"></div>
+                    <div class="tooltipster-arrow-background"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    </html>
+</apex:page>

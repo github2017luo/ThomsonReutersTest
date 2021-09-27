@@ -1,0 +1,56 @@
+<apex:page standardController="Tax_Document__c" extensions="TaxDocumentLoadController" showHeader="true" title="Tax Documents">
+    <apex:sectionHeader subtitle="Tax Documents"/>
+    <apex:form >
+    <apex:pageMessages ></apex:pageMessages>
+    
+    <apex:pageBlock title="Upload Tax Documents" id="pb">
+    <apex:pageBlockButtons >
+    <apex:commandButton value="Save" action="{!save}"/>
+    <apex:commandButton value="Cancel" action="{!Cancel}"/>
+    </apex:pageBlockButtons>
+    
+    <apex:outputText ><b> Please select atleast one tax document type </b></apex:outputText>  
+    <br/> <br/> <br/>
+    <apex:pageBlockSection >     
+    <apex:inputField value="{!acc.Tax_Document_Type__c}"/>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="CM-05 certificate">
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel >CM-05 Certificate</apex:outputLabel>
+    <apex:inputFile value="{!cm_05_file.body}" fileName="{!cm_05_file.name}"/>
+    </apex:pageBlockSectionItem>
+    <apex:inputField value="{!tax1.Tax_Document_Expiration_Date__c}"/>
+    <apex:inputField value="{!tax1.Tax_Document_Effective_Date__c}"/>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Turnover certificate">
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel >Turnover Certificate</apex:outputLabel>
+    <apex:inputFile value="{!turnover_file.body}" fileName="{!turnover_file.name}"/>
+    </apex:pageBlockSectionItem>
+    <apex:inputField value="{!tax2.Tax_Document_Expiration_Date__c}"/>
+    <apex:inputField value="{!tax2.Tax_Document_Effective_Date__c}"/>
+    </apex:pageBlockSection>
+        
+    <apex:pageBlockSection title="Exemption certificate">
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel >Exemption Certificate</apex:outputLabel>
+    <apex:inputFile value="{!exemption_file.body}" fileName="{!exemption_file.name}"/>
+    </apex:pageBlockSectionItem>
+    <apex:inputField value="{!tax3.Tax_Document_Expiration_Date__c}"/>
+    <apex:inputField value="{!tax3.Tax_Document_Effective_Date__c}"/>
+    </apex:pageBlockSection>
+    
+    <apex:pageBlockSection title="Others">
+    <apex:pageBlockSectionItem >
+    <apex:outputLabel >Other Certificates</apex:outputLabel>
+    <apex:inputFile value="{!other_file.body}" fileName="{!other_file.name}"/>
+    </apex:pageBlockSectionItem>
+    <apex:inputField value="{!tax4.Tax_Document_Expiration_Date__c}"/>
+    <apex:inputField value="{!tax4.Tax_Document_Effective_Date__c}"/>
+    </apex:pageBlockSection>
+    </apex:pageBlock>
+    </apex:form>
+  
+</apex:page>

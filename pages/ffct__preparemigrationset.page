@@ -1,0 +1,40 @@
+<apex:page sidebar="false" standardStylesheets="true" standardController="ffct__MigrationSet__c" extensions="ffct.MigrationSetControllerExtension" doctype="html-5.0" lightningStylesheets="true">
+	<apex:sectionHeader title="{!$ObjectType.ffct__MigrationSet__c.label}" help="helploader?topicid=1047"/>
+        <apex:pagemessages id="pgMsg"/>
+    <apex:form id="frm">
+    
+    <!-- Confirmation Dialog -->
+    <apex:outputPanel rendered="{!ShowConfirmation}">
+        <c:fflib_LoadIndicator startLoadFn="startLoad" stopLoadFn="stopLoad" asSlds="true"/>
+        <c:confirming onCancel="{!cancel}" message="{!ConfirmMessage}">
+            <apex:commandButton action="{!isToolMustBeActivated}" value="{!$Label.ffct__continue}" onclick="startLoad('{!JSINHTMLENCODE($Label.ffct__loading)}');" oncomplete="stopLoad('{!JSINHTMLENCODE($Label.ffct__loading)}');" reRender="frm"/>
+        </c:confirming>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!!ShowConfirmation}">
+        <apex:pageBlock >
+            <apex:pageBlockSection collapsible="false" columns="2" title="{!$Label.ffct__migrationdetails}" id="MigrationSetInfoSection">
+            <apex:outputField value="{!MigrationSetObj.Name}" />
+            <apex:outputField value="{!MigrationSetObj.OwnerId}" />
+            <apex:outputField value="{!MigrationSetObj.ffct__StartDate__c}" />
+            <apex:outputField value="{!MigrationSetObj.ffct__EndDate__c}" />
+        </apex:pageBlockSection>
+        <apex:pageBlockSection collapsible="false" columns="1" id="ProgressSection" title="{!$Label.ffct__preparemigrationsetprogressinformation}" rendered="{!MigrationSetJobId!=null}">
+                <c:fflib_batchInfo id="jobStatus" batchControlRecordId="{!MigrationSetJobId}"
+                                                batchJobClass="MigrationSetJob"/>
+                
+        </apex:pageBlockSection> 
+        <apex:outputPanel id="trackPanel" rendered="{!MigrationSetJobId!=null && (ProcessStatus!='complete' || ProcessStatus!='error')}">
+            <apex:actionPoller action="{!hideProgressOnComplete}" interval="5" rerender="pgMsg, errorLink"/>
+        </apex:outputPanel>
+        </apex:pageBlock>
+        
+        <apex:outputPanel id="errorLink" >
+            <apex:outputLink style="color: #015BA7; text-decoration: underline;" value="{!URLFOR($Action.ffct__MigrationSet__c.View, MigrationSetObj.Id)}" rendered="{!ProcessStatus=='error'}">
+                    {!$Label.ffct__gotomigrationset}
+            </apex:outputLink>
+        </apex:outputPanel>
+    </apex:outputPanel>
+    
+    </apex:form>
+</apex:page>

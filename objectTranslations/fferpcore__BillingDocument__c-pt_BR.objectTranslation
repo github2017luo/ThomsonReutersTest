@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Documento de Faturamento</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Documentos de cobrança</value>
+    </caseValues>
+    <fields>
+        <help>Procure a conta Salesforce à qual este documento está relacionado.</help>
+        <label><!-- Account --></label>
+        <name>fferpcore__Account__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Indica que a nota de crédito permite o recarregamento. Não edite esta caixa de seleção. É definido pelo processo Converter em nota de crédito.</help>
+        <label><!-- Allow Rebilling --></label>
+        <name>fferpcore__AllowRebilling__c</name>
+    </fields>
+    <fields>
+        <help>Usado para subanálise de documentos de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 1 --></label>
+        <name>fferpcore__AnalysisItem1__c</name>
+        <relationshipLabel><!-- Related Documents 1 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanalisar documentos de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 2 --></label>
+        <name>fferpcore__AnalysisItem2__c</name>
+        <relationshipLabel><!-- Related Documents 2 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanalisar documentos de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 3 --></label>
+        <name>fferpcore__AnalysisItem3__c</name>
+        <relationshipLabel><!-- Related Documents 3 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Usado para subanalisar documentos de faturamento e pode ser usado para representar vários conceitos de negócios diferentes.</help>
+        <label><!-- Analysis Item 4 --></label>
+        <name>fferpcore__AnalysisItem4__c</name>
+        <relationshipLabel><!-- Related Documents 4 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Nome da conta a ser exibida no documento de faturamento como a conta que está sendo faturada.</help>
+        <label><!-- Billing Account --></label>
+        <name>fferpcore__BillingAccountName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing City --></label>
+        <name>fferpcore__BillingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Country --></label>
+        <name>fferpcore__BillingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Zip/Postal Code --></label>
+        <name>fferpcore__BillingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing State/Province --></label>
+        <name>fferpcore__BillingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Street --></label>
+        <name>fferpcore__BillingStreet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company --></label>
+        <name>fferpcore__Company__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Consulte o registro de rastreamento do processo ao qual este documento de faturamento está relacionado atualmente.</help>
+        <label><!-- Completion Process --></label>
+        <name>fferpcore__CompletionProcessTracking__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Motivo da nota de crédito. Também pode ser definido em faturas negativas.</help>
+        <label><!-- Credit Note Reason --></label>
+        <name>fferpcore__CreditNoteReason__c</name>
+        <picklistValues>
+            <masterLabel>Damaged Goods</masterLabel>
+            <translation>Mercadorias estragadas</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Goods Returned</masterLabel>
+            <translation>Bens Devolvidos</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Incorrect Shipment</masterLabel>
+            <translation>Remessa Incorreta</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Overcharge</masterLabel>
+            <translation>Sobrecarga</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Retrospective Discount</masterLabel>
+            <translation>Desconto retrospectivo</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Referência de cliente externo.</help>
+        <label><!-- Customer Reference --></label>
+        <name>fferpcore__CustomerReference__c</name>
+    </fields>
+    <fields>
+        <help>Data em que o documento de faturamento foi enviado.</help>
+        <label><!-- Date Issued --></label>
+        <name>fferpcore__DateIssued__c</name>
+    </fields>
+    <fields>
+        <help>Descrição da fatura de venda ou nota de crédito.</help>
+        <label><!-- Description --></label>
+        <name>fferpcore__Description__c</name>
+    </fields>
+    <fields>
+        <help>A economia total de todos os itens de linha do documento de faturamento associados a este documento de faturamento.</help>
+        <label><!-- Discount Total --></label>
+        <name>fferpcore__DiscountTotal__c</name>
+    </fields>
+    <fields>
+        <help>Data em que o documento foi criado.</help>
+        <label><!-- Document Date --></label>
+        <name>fferpcore__DocumentDate__c</name>
+    </fields>
+    <fields>
+        <help>Data em que o pagamento é esperado.</help>
+        <label><!-- Document Due Date --></label>
+        <name>fferpcore__DocumentDueDate__c</name>
+    </fields>
+    <fields>
+        <help>Indica a origem deste documento de faturamento.</help>
+        <label><!-- Document Source --></label>
+        <name>fferpcore__DocumentSource__c</name>
+        <picklistValues>
+            <masterLabel>Order Management</masterLabel>
+            <translation>Gestão de Pedidos</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Services</masterLabel>
+            <translation>Serviços</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Subscriptions</masterLabel>
+            <translation>Assinaturas</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Status do documento de faturamento. O status pode ser Rascunho ou Concluído. Quando o status for concluído, você só poderá editar a Data de Vencimento do Documento, a Referência do Cliente e a Descrição.</help>
+        <label><!-- Document Status --></label>
+        <name>fferpcore__DocumentStatus__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation>Completo</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discarded</masterLabel>
+            <translation>Descartado</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation>Esboço, projeto</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Superseded</masterLabel>
+            <translation>Suplantada</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Valor total de todos os itens de linha do documento de faturamento neste documento de faturamento.</help>
+        <label><!-- Document Total --></label>
+        <name>fferpcore__DocumentTotal__c</name>
+    </fields>
+    <fields>
+        <label><!-- Document Type Prefix --></label>
+        <name>fferpcore__DocumentTypePrefix__c</name>
+    </fields>
+    <fields>
+        <help>Indica se o documento é uma fatura de venda ou uma nota de crédito de venda.</help>
+        <label><!-- Document Type --></label>
+        <name>fferpcore__DocumentType__c</name>
+        <picklistValues>
+            <masterLabel>Credit Note</masterLabel>
+            <translation>Nota de crédito</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Invoice</masterLabel>
+            <translation>Fatura</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Compromisso ao qual este documento de faturamento está relacionado.</help>
+        <label><!-- Engagement --></label>
+        <name>fferpcore__Engagement__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- External Document Number --></label>
+        <name>fferpcore__ExternalDocumentNumber__c</name>
+    </fields>
+    <fields>
+        <help>Status do cálculo de imposto externo se estiver usando um sistema externo para calcular o imposto no documento de faturamento. O valor pode ser Não Calculado, Calculado, Finalizado ou Anulado.</help>
+        <label><!-- External Tax Status --></label>
+        <name>fferpcore__ExternalTaxStatus__c</name>
+        <picklistValues>
+            <masterLabel>Calculated</masterLabel>
+            <translation>Calculado</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Finalized</masterLabel>
+            <translation>Finalizado</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Calculated</masterLabel>
+            <translation>Não Calculado</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Voided</masterLabel>
+            <translation>Anulado</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Texto a ser mostrado no final dos documentos de faturamento impressos.</help>
+        <label><!-- Footer Text --></label>
+        <name>fferpcore__FooterText__c</name>
+    </fields>
+    <fields>
+        <help>Texto a ser mostrado no início dos documentos de faturamento impressos.</help>
+        <label><!-- Header Text --></label>
+        <name>fferpcore__HeaderText__c</name>
+    </fields>
+    <fields>
+        <help>Indica se o endereço de cobrança foi validado em relação aos endereços no serviço de cálculo de imposto externo.</help>
+        <label><!-- Billing Address Validated --></label>
+        <name>fferpcore__IsBillingAddressValidated__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Complete --></label>
+        <name>fferpcore__IsComplete__c</name>
+    </fields>
+    <fields>
+        <help>Indica se o endereço de entrega foi validado em relação aos endereços no serviço de cálculo de imposto externo.</help>
+        <label><!-- Shipping Address Validated --></label>
+        <name>fferpcore__IsShippingAddressValidated__c</name>
+    </fields>
+    <fields>
+        <help>Indica se o imposto foi calculado para o documento de faturamento.</help>
+        <label><!-- Tax Calculated --></label>
+        <name>fferpcore__IsTaxCalculated__c</name>
+    </fields>
+    <fields>
+        <help>O valor líquido total de todos os itens de linha do documento de faturamento associados a este documento de faturamento.</help>
+        <label><!-- Net Total --></label>
+        <name>fferpcore__NetTotal__c</name>
+    </fields>
+    <fields>
+        <help>Número de itens de linha do documento de faturamento atualmente associados a este documento de faturamento.</help>
+        <label><!-- Number Of Billing Document Line Items --></label>
+        <name>fferpcore__NumberOfBillingDocumentLineItems__c</name>
+    </fields>
+    <fields>
+        <label><!-- Creating Tax Breakdown Records --></label>
+        <name>fferpcore__ProcessingTaxDetails__c</name>
+    </fields>
+    <fields>
+        <help>Consulte a fatura ou nota de crédito relacionada.</help>
+        <label><!-- Related Document --></label>
+        <name>fferpcore__RelatedDocument__c</name>
+        <relationshipLabel><!-- Related Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Valor total de todos os itens de linha do documento de faturamento neste documento de faturamento com base no tipo de documento.</help>
+        <label><!-- Reporting Document Total --></label>
+        <name>fferpcore__ReportingDocumentTotal__c</name>
+    </fields>
+    <fields>
+        <help>Nome da conta a ser exibida no documento de faturamento como Conta de Remessa.</help>
+        <label><!-- Shipping Account --></label>
+        <name>fferpcore__ShippingAccountName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping City --></label>
+        <name>fferpcore__ShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Country --></label>
+        <name>fferpcore__ShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping State/Province --></label>
+        <name>fferpcore__ShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Street --></label>
+        <name>fferpcore__ShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help>A data a ser usada para fins de cálculo de imposto, se diferente da Data do documento.</help>
+        <label><!-- Tax Point Date --></label>
+        <name>fferpcore__TaxPointDate__c</name>
+    </fields>
+    <fields>
+        <help>O valor total do imposto de todos os itens de linha do documento de faturamento associados a este documento de faturamento.</help>
+        <label><!-- Tax Value Total --></label>
+        <name>fferpcore__TaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing City --></label>
+        <name>fferpcore__ValidatedBillingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing Country --></label>
+        <name>fferpcore__ValidatedBillingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing Zip/Postal Code --></label>
+        <name>fferpcore__ValidatedBillingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing State/Province --></label>
+        <name>fferpcore__ValidatedBillingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing Street --></label>
+        <name>fferpcore__ValidatedBillingStreet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping City --></label>
+        <name>fferpcore__ValidatedShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping Country --></label>
+        <name>fferpcore__ValidatedShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ValidatedShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping State/Province --></label>
+        <name>fferpcore__ValidatedShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping Street --></label>
+        <name>fferpcore__ValidatedShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help>Registra a chave de correlação do Evento de cobrança PSA usada no sistema Foundations.</help>
+        <label><!-- Billing Event Correlation ID --></label>
+        <name>pse__Billing_Event_Correlation_Id__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>número do documento</nameFieldLabel>
+    <webLinks>
+        <label><!-- CalculateTax --></label>
+        <name>fferpcore__CalculateTax</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- CalculateTaxList --></label>
+        <name>fferpcore__CalculateTaxList</name>
+    </webLinks>
+</CustomObjectTranslation>

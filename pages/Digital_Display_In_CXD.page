@@ -1,0 +1,20 @@
+<!--
+ - This page is used to generate an order form and then call process builder via a field update 
+ - to create the DocuSign envelope.  This process is used to include manual proposal in 
+ - Digital offers
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-04-27   Brenda Shields          DLT-19727 - Created vf page to initiate the process to include manual proposal types into a Digital offer
+ - 27-06-2020   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+<apex:page showHeader="true" sidebar="true" controller="Digital_Display_In_CXD_Controller" action="{!createOrderForm}" standardStylesheets="true" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form >
+        <div align="center">
+            <apex:commandButton value="OK" onclick="window.location='/{!quote.id}'; return false;" action="{!createOrderForm}" rendered="{!quote.id!=null}" />
+        </div>
+    </apex:form>
+</apex:page>

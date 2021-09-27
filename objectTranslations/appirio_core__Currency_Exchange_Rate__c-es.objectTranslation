@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Tasa de cambio de moneda</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Los tipos de cambio</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>Esta búsqueda hace referencia al registro de moneda para el que se aplica el tipo de cambio de moneda con fecha. La tasa siempre se define como la cantidad de la Moneda a la que se hace referencia es igual a 1 (una) unidad de la Moneda corporativa en la fecha efectiva especificada.</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Fecha para la cual se aplica realmente el tipo de cambio de fecha, incluso si se utiliza para un intervalo de fechas más amplio. Las conversiones de moneda siempre buscarían la tasa más reciente que no está en el futuro (es decir, hoy o antes).</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Especifica la fecha en que caduca este tipo de cambio, si corresponde. El tipo de cambio es válido hasta el día anterior a la fecha de caducidad, o nunca caduca si está en blanco.</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>Si está tildado, indica que este registro de tipo de cambio de divisa solo se usa en modo de prueba y no se debe usar para conversiones de tipo de cambio &quot;real&quot; (producción).</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>Si está tildado, indica que este registro de la tasa de cambio no es válido y no debe utilizarse</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>Define la fecha de vigencia de la tasa de cambio posterior para la moneda, si corresponde. Estará en blanco para la tarifa más reciente. Este campo debe ser configurado automáticamente por el sistema.</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Define el valor numérico de la tasa de cambio fechada entre la moneda referenciada y la moneda corporativa para la organización.</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Número de cambio de moneda</nameFieldLabel>
+</CustomObjectTranslation>

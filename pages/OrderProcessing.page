@@ -1,0 +1,109 @@
+<apex:page showHeader="false" sidebar="false" standardController="Opportunity" extensions="OrderProcessingController" language="{!sCurrentUserLanguage}" lightningStylesheets="true">
+<apex:includeScript value="/support/console/22.0/integration.js"/>
+
+<apex:form id="mainForm" >
+<apex:outputpanel id="OrderProcessingSection">
+
+<script> 
+    function apexComplete(){
+      var status = '{!JSENCODE(sStatus)}';
+      alert(status);
+      if(status == 'Customer successfully created.'){
+        window.top.location.href = '/{!JSENCODE(oOpportunity.AccountId)}';
+      }
+      else if(status == 'Create Quote service is succesfully called.'){
+        window.top.location.reload();
+      }
+    }
+    function redirecttoLInk(){
+      var link = '{!JSENCODE(sPageReference)}';
+      window.open(link);
+    }
+    
+    //Adding the below function for [SFD-16] [Rajashree]
+    
+  function openInSubtab() {
+        //First find the ID of the primary tab to put the new subtab in
+         if(window.parent.sforce.console.isInConsole()) {
+           window.parent.sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        }
+       else {
+            var url = '/0Q0/e?&oppid={!Opportunity.Id}&retURL=%2F{!Opportunity.Id}'; 
+            window.open(url,'_top');
+        }
+    }
+
+    var openSubtab = function openSubtab(result) {
+        //Now that we have the primary tab ID, we can open a new subtab in it
+        var primaryTabId = result.id;
+        var url = '/0Q0/e?&oppid={!Opportunity.Id}&retURL=%2F{!Opportunity.Id}&isdtp=vw'; 
+        window.parent.sforce.console.openSubtab(primaryTabId , url, true, 'Create Quote', null);
+    };
+</script>
+
+    <apex:actionStatus id="OrderProcessingStatus">
+        <apex:facet name="start">
+            <div><img class="waitingImage" src="/img/loading.gif" title="Processing...Please Wait..."/>Processing...Please Wait...</div>
+        </apex:facet>
+    </apex:actionStatus>
+    <!-- <apex:pageMessage rendered="{!(sCurrentUserProfile == 'LatAm User')}" severity="info" strength="1" summary="{!$Label.Insufficient_Privilages}"/> -->
+    <!--<apex:pageMessage rendered="{!(sCurrentUserProfile == 'LatAm User')}" severity="info" strength="1" summary="Insufficient Privileges: You do not have the level of access necessary to perform the operation you requested. Please contact the owner of the record or your administrator if access is necessary."/>    -->
+    <apex:pageBlock mode="maindetail" >
+        <apex:pageBlockSection columns="2" > 
+             <apex:outputField value="{!Opportunity.Order_Status__c}" rendered="{!IF((sCurrentUserProfile == 'LatAm User' || sCurrentUserProfile == 'Partner Portal User'),sSalesOrg == 'LLEY',AND(sSalesOrg != 'BKRS',sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law'))}"/>
+             <apex:outputField value="{!Opportunity.Manual_Quote_Trigger_Flag__c}" rendered="{!IF((sCurrentUserProfile == 'LatAm User' || sCurrentUserProfile == 'Partner Portal User'),sSalesOrg == 'LLEY',AND(sSalesOrg != 'BKRS',sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law'))}"/>
+            <apex:pageBlockSectionItem rendered="{!AND(sCurrentUserProfile != 'LatAm User',sCurrentUserProfile != 'Partner Portal User',OR(sSalesOrg == 'BKRS',sSalesOrg == 'LRA',sSalesOrg == 'SMHK', sCurrentUserProfile == 'System Administrator',sCurrentUserProfile == 'MIS Operations'))}" >
+                <apex:outputLabel for="ProdmanLink">AUS Prodman Quote</apex:outputLabel>
+               <apex:commandLink id="ProdmanLink" value="Create" action="{!getAUSProdmanLink}"   rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="redirecttoLInk();" style="color:blue; font-weight:bold"/>
+                
+            </apex:pageBlockSectionItem>  
+             <apex:pageBlockSectionItem rendered="{!AND(sCurrentUserProfile != 'LatAm User',sCurrentUserProfile != 'Partner Portal User',OR(sSalesOrg == 'BKRS',sSalesOrg == 'LRA',sSalesOrg == 'SMHK', sCurrentUserProfile == 'System Administrator',sCurrentUserProfile == 'MIS Operations'))}" >
+                
+                <apex:outputLabel for="ProdmanLink">NZ Prodman Quote</apex:outputLabel>
+                <apex:commandLink id="ProdmanLink" value="Create" action="{!getNZProdmanLink}"  rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="redirecttoLInk();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem> 
+             <apex:pageBlockSectionItem rendered="{!IF((sCurrentUserProfile == 'LatAm User' || sCurrentUserProfile == 'Partner Portal User'),sSalesOrg == 'LLEY',AND(sCurrentUserProfile != 'TR Legal Read-Only User',sSalesOrg != 'BKRS',sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law'))}" >
+                <apex:outputLabel for="SAPAccountLink">{!$Label.Convert_Prospect}</apex:outputLabel>
+                <apex:commandLink id="SAPAccountLink" value="Initiate" action="{!CreateSAPCustomer}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="apexComplete();" style="color:blue; font-weight:bold"/>
+              </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem rendered="{!AND(sCurrentUserProfile != 'TR Legal Read-Only User',sCurrentUserProfile != 'LatAm User',sCurrentUserProfile != 'Partner Portal User',sSalesOrg != 'BKRS',sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law')}" >
+                <apex:outputLabel for="CreateQuoteLink">Manual Quote ID Creation</apex:outputLabel>
+                <apex:commandLink id="CreateQuoteLink" value="Initiate" action="{!CreateSAPQuote}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="apexComplete();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem>         
+            <apex:pageBlockSectionItem rendered="{!AND(sCurrentUserProfile != 'LatAm User', sCurrentUserProfile != 'TR Legal Read-Only User',sCurrentUserProfile != 'TR Legal FindLaw User',sCurrentUserProfile != 'Partner Portal User',sSalesOrg != 'BKRS',sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law')}" >
+                <apex:outputLabel for="OrdermationLink">Ordermation Link</apex:outputLabel>
+                <apex:commandLink id="OrdermationLink" value="Launch" action="{!getOrdermationLink}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="redirecttoLInk();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem>
+            
+           
+           <!-- 5/21/14 Shawn Gray Commented out the PIC links because these aren't ready for Prod yet PER Nick Bjerken 
+            <apex:pageBlockSectionItem rendered="{!AND(OR(sCurrentUserProfile == 'TR Legal FindLaw User', sCurrentUserProfile == 'System Administrator', sCurrentUserProfile == 'TR Business Administrator', sCurrentUserProfile == 'MIS Operations'),sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law')}" >
+                <apex:outputLabel for="PIClink">PIC</apex:outputLabel>
+                <apex:commandLink id="PIClink" value="Launch" action="{!getPIClink}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="redirecttoLInk();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!AND(OR(sCurrentUserProfile == 'TR Legal FindLaw User', sCurrentUserProfile == 'System Administrator', sCurrentUserProfile == 'TR Business Administrator', sCurrentUserProfile == 'MIS Operations'),sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law')}" >
+                <apex:outputLabel for="PICAMlink">PIC - AM</apex:outputLabel>
+                <apex:commandLink id="PICAMlink" value="Launch" action="{!getPICAMlink}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="redirecttoLInk();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem>
+            
+            <apex:pageBlockSectionItem rendered="{!AND(OR(sCurrentUserProfile == 'TR Legal FindLaw User', sCurrentUserProfile == 'System Administrator', sCurrentUserProfile == 'TR Business Administrator', sCurrentUserProfile == 'MIS Operations'),sSalesOrg != 'LRA',sSalesOrg != 'SMHK',oOpportunity.Account.Source__c != 'Practical Law',oOpportunity.Account.NameTwo__c != 'Practical Law')}" >
+                <apex:outputLabel for="PICCorporatelink">PIC - Corporate</apex:outputLabel>
+                <apex:commandLink id="PICCorporatelink" value="Launch" action="{!getPICCorporatelink}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="redirecttoLInk();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem>
+            -->
+            <apex:pageBlockSectionItem rendered="{!OR(sCurrentUserProfile == 'LatAm User', sCurrentUserProfile == 'System Administrator', sCurrentUserProfile == 'Partner Portal User')}">
+                <apex:outputLabel for="NewQuote">{!$Label.Create_New_Quote}</apex:outputLabel>                
+               <!-- Commenting this line for SFD-16 and adding the below href instaed of outputLink
+                apex:outputLink id="NewQuote" value="/0Q0/e?&oppid={!Opportunity.Id}&retURL=%2F{!Opportunity.Id}" target="_top" title="Create New Quote" style="color:blue; font-weight:bold">Initiate</apex:outputLink -->
+                <a href="#" id="NewQuote" onclick ="openInSubtab();" title="Create New Quote" style="color:blue; font-weight:bold">Initiate</a>
+            </apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem rendered="{!AND(OR(sCurrentUserProfile == 'LatAm User', sCurrentUserProfile == 'System Administrator', sCurrentUserProfile == 'Partner Portal User'),OR(sStage =='95%' , sStage =='90%'))}">
+                <apex:outputLabel for="ereader">{!$Label.Create_E_Reader}</apex:outputLabel>                
+                <apex:commandLink id="ereader" value="Initiate" action="{!createEReader}" rerender="OrderProcessingSection" status="OrderProcessingStatus" onComplete="apexComplete();" style="color:blue; font-weight:bold"/>
+            </apex:pageBlockSectionItem>
+
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:outputpanel></apex:form>
+</apex:page>

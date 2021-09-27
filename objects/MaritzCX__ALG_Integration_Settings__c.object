@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>This setting is used to manage integration settings between MaritzCX and Salesforce.</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>MaritzCX__Case_Record_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This field stores Salesforce Case Record Type Id to which MaritzCX cases should get assigned.</description>
+        <externalId>false</externalId>
+        <label>Case Record Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Create_New_Contact_On_Survey_Response__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When enabled a new Contact/PersonAccount will be created for a Response for which an associated Contact/PersonAccount is not found. This setting will work only if &apos;Insert Unmapped Responses&apos; setting is enabled.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When enabled a new Contact/PersonAccount will be created for a Response for which an associated Contact/PersonAccount is not found. This setting will work only if &apos;Insert Unmapped Responses&apos; setting is enabled.</inlineHelpText>
+        <label>Create New Contact On Survey Response</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Create_New_Lead_On_Survey_Response__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When enabled a new Lead will be created for a Response for which an associated Lead is not found. This setting will work only if &apos;Insert Unmapped Responses&apos; setting is enabled.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When enabled a new Lead will be created for a Response for which an associated Lead is not found. This setting will work only if &apos;Insert Unmapped Responses&apos; setting is enabled.</inlineHelpText>
+        <label>Create New Lead On Survey Response</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Feed_Message__c</fullName>
+        <defaultValue>&apos;A new case was created and has been assigned to you.&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Feed Message</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Help_Link__c</fullName>
+        <defaultValue>&apos;https://help.allegiancetech.com/webhelp/Allegiance_V7.htm&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Help Link</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Insert_Unmapped_Cases_in_Salesforce__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If Checked, the Cases will be inserted into Salesforce even if the matching record (Contact/Person Account/Lead) is not found.
+If Unchecked, the Cases with no mapped record will not be inserted into Salesforce.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If Checked, the Cases will be inserted into Salesforce even if the matching record (Contact/Person Account/Lead) is not found.
+If Unchecked, the Cases with no mapped record will not be inserted into Salesforce.</inlineHelpText>
+        <label>Insert Unmapped Cases in Salesforce</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Insert_Unmapped_Responses_in_Salesforce__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If Checked, the Responses will be inserted into Salesforce even if the matching record (Contact/Person Account/Lead) is not found.
+If Unchecked, the Responses with no mapped record will not be inserted into Salesforce.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If Checked, the Responses will be inserted into Salesforce even if the matching record (Contact/Person Account/Lead) is not found.
+If Unchecked, the Responses with no mapped record will not be inserted into Salesforce.</inlineHelpText>
+        <label>Insert Unmapped Responses in Salesforce</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Is_Integration_Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is deprecated from the package version 2.5 .</inlineHelpText>
+        <label>Integration Active [DEPRECATED]</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Package_Version__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Stores the package version number of installing or upgrading package.</description>
+        <externalId>false</externalId>
+        <label>Package Version</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Post_To_Chatter__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Post To Chatter</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Re_Associate_Responses__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This setting is used during ODRP(On Demand Response Push):
+If Checked, already associated Responses will also be considered for association along with the Orphan Responses.
+If Unchecked, only the Orphan Responses will be considered for the association.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This setting is used during ODRP(On Demand Response Push):
+If Checked, already associated Responses will also be considered for association along with the Orphan Responses.
+If Unchecked, only the Orphan Responses will be considered for the association.</inlineHelpText>
+        <label>Re-Associate Responses</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Service_Endpoint__c</fullName>
+        <defaultValue>&apos;api100lb.allegiancetech.com&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Service Endpoint</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Support_Business_And_Person_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When enabled Responses/Cases will be associated with their respective Business/Person Account.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When enabled Responses/Cases will be associated with their respective Business/Person Account.</inlineHelpText>
+        <label>Support Business And Person Account</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>MaritzCX__Support_Email__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>This email address is used to send a copy of failure emails to MCX support.</inlineHelpText>
+        <label>Support Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <label>2.MaritzCX: Integration Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

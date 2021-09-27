@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <name>Check_if_the_previous_lead_owner_Queue_developer_name</name>
+        <label>Check if the previous lead owner Queue developer name is equal to BDR Lead queue or BDR Prospect Queue</label>
+        <locationX>481</locationX>
+        <locationY>45</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Condition_to_check</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>varGrouprecordSingleVar.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>varBDRLeadQueue</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>varGrouprecordSingleVar.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>varBDRProspectQueue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Lead_Collection_var</targetReference>
+            </connector>
+            <label>Condition to check if the previous Lead Owner Queue developer name is equal to BDR Lead queue or BDR Prospect Queue</label>
+        </rules>
+    </decisions>
+    <description>This flow has been created to set the Most Recent Qualified Date field in the Lead record based on the certain criteria. It is autolaunched from the process builder . Jira story: CRM-18102</description>
+    <interviewLabel>Flow to update the Most Recent Qualified Lead Date {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Flow to update the Most Recent Qualified Lead Date</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>This lookup is used to find if the Lead record pervious owner is equal to the Queue id. If yes, then it maps the Developer name -which is the API name to the Flow variable to be used later in the process to check the criteria</description>
+        <name>Find_the_Queue_which_is_equal_to_the_previous_Lead_Owner_Id</name>
+        <label>Find the Queue which is equal to the previous Lead Owner Id</label>
+        <locationX>315</locationX>
+        <locationY>43</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_the_previous_lead_owner_Queue_developer_name</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varPreviousQueueID</elementReference>
+            </value>
+        </filters>
+        <object>Group</object>
+        <outputReference>varGrouprecordSingleVar</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>DeveloperName</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <description>This lookup is used to fetch the Lead record which triggered the process and assign it to the Sobject variable</description>
+        <name>Lookup_to_get_the_current_Lead_record_related_to_this_process</name>
+        <label>Lookup to get the current Lead record related to this process</label>
+        <locationX>168</locationX>
+        <locationY>45</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Find_the_Queue_which_is_equal_to_the_previous_Lead_Owner_Id</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCurrentLeadID</elementReference>
+            </value>
+        </filters>
+        <object>Lead</object>
+        <outputReference>varCurrentLeadrecordvar</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Most_Recent_Qualified_Date__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordUpdates>
+        <description>Lead record field &quot;Most recent Qualified date&quot; values to be updated</description>
+        <name>Update_Lead_Collection_var</name>
+        <label>Finally update the Lead Record based on the Queue name</label>
+        <locationX>718</locationX>
+        <locationY>51</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCurrentLeadID</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Most_Recent_Qualified_Date__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Lead</object>
+    </recordUpdates>
+    <startElementReference>Lookup_to_get_the_current_Lead_record_related_to_this_process</startElementReference>
+    <status>Draft</status>
+    <variables>
+        <description>To store the BDR Lead Queue name used in the decision element</description>
+        <name>varBDRLeadQueue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>BDR_Lead_Queue</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>To store the BDR prospect Queue name used in the decision element</description>
+        <name>varBDRProspectQueue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>BDR_Prospect_Queue</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>Variable to store the current Lead Id</description>
+        <name>varCurrentLeadID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>sobject variable to store the current lead record values</description>
+        <name>varCurrentLeadrecordvar</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <description>Variable to store the group record values</description>
+        <name>varGrouprecordSingleVar</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Group</objectType>
+    </variables>
+    <variables>
+        <description>Collection var of the Lead object to store all the records to be updated</description>
+        <name>varLeadCollectionVar</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <description>Variable to store the Lead record matched and assigned to the collection variable</description>
+        <name>varLeadrecordMatchedWithGroup</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <description>variable to store the previous record queue id</description>
+        <name>varPreviousQueueID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>Collection variable to handle the bulk records</description>
+        <name>varQueueRecordsCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Group</objectType>
+    </variables>
+</Flow>

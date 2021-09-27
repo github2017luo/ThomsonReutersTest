@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>ORG wide settings for Timecard UI. These settings will derive the Timecard UI behavior for everyone in organization.</description>
+    <enableEnhancedLookup>false</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Allow_timecard_with_negative_hours__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Given config is used to control the saving/submiting of timecard with negative hours. If it is true, timecards with negative hours are saved/submited else not(warning will be shown on ui).</description>
+        <externalId>false</externalId>
+        <label>Allow timecard with negative hours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_Lookup_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the name of a field set containing assignment fields to display as columns in the Project/Assignment lookup on the Timecard Entry page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the name of a field set containing assignment fields to display as columns in the Project/Assignment lookup on the Timecard Entry page.</inlineHelpText>
+        <label>Assignment Lookup Fieldset Name</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_load_limit__c</fullName>
+        <defaultValue>200</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Number of Assignments to be loaded for the timecard assignment drop down</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Number of Assignments to be loaded for the timecard assignment drop down</inlineHelpText>
+        <label>Assignment load limit</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignment_lookup_columns__c</fullName>
+        <defaultValue>&apos;Name,Nick_Name__c&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>List of API names of assignment fields to display as columns on the Project/Assignment  lookup in the enhanced  Time Entry page. Do not include the pse__ namespace prefix in the API name of a field. The default value is Name, Nick_Name__c.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of API names of assignment fields to display as columns on the Project/Assignment  lookup in the enhanced  Time Entry page. Do not include the pse__ namespace prefix in the API name of a field. The default value is Name, Nick_Name__c.</inlineHelpText>
+        <label>Assignment lookup columns</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Assignments_load_date_restriction__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Assignment start and end date restriction while loading the Assignments in the Timecard UI.  If true, only Assignments whose start/end dates either contain or overlap with the Timecard date range are loaded.  This affects the UI only, not Admin edit or manual/native Timecard creation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Assignment start and end date restriction while loading the Assignments in the Timecard UI.  If true, only Assignments whose start/end dates either contain or overlap with the Timecard date range are loaded.  This affects the UI only, not Admin edit.</inlineHelpText>
+        <label>Assignments load date restriction</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Assignments_load_status_values__c</fullName>
+        <defaultValue>&quot;Tentative,Scheduled&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>List of assignment status values to be used while loading the assignments from db.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of assignment status values to be used while loading the assignments from db.</inlineHelpText>
+        <label>Assignments load status values</label>
+        <length>250</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Check_For_Previous_Week_Timecards__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true,  on initial load of  new Timecard UI it will check for previous week timecards. If there is no timecards filled for the previous week, UI will show confirmation window asking user to load previous week or current week.  If false, work as normal i.e no confirmation window and load current week.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true,  on initial load of  new Timecard UI it will check for previous week timecards. If there is no timecards filled for the previous week, UI will show confirmation window asking user to load previous week or current week.  If false, work as normal.</inlineHelpText>
+        <label>Check For Previous Week Timecards</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Day_hour_auto_revert_ceiling__c</fullName>
+        <defaultValue>24</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Config  to control max auto-revert hour value on the new TC UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Config  to control max auto-revert hour value on the new TC UI.</inlineHelpText>
+        <label>Day hour auto revert ceiling</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Day_hour_auto_revert_floor__c</fullName>
+        <defaultValue>-24</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Config  to control min auto-revert hour value on the new TC UI.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Config  to control min auto-revert hour value on the new TC UI.</inlineHelpText>
+        <label>Day hour auto revert floor</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Display_account_on_resource_lookup__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines whether Resource Account is shown as a column for search results in the Resource lookup pop-up.</description>
+        <externalId>false</externalId>
+        <label>Display account on resource lookup</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Enforce_submit_all_timecards__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Controls the submission of timecards for approval. If true, all timecards are submitted. If false, only timecards that the user selects are submitted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, all timecards are submitted for approval. If false, only timecards that the user selects are submitted.</inlineHelpText>
+        <label>Enforce Submit All Timecards</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Project_Lookup_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the name of a field set containing project fields to display as columns in the Project/Assignment lookup on the Timecard Entry page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the name of a field set containing project fields to display as columns in the Project/Assignment lookup on the Timecard Entry page.</inlineHelpText>
+        <label>Project Lookup Fieldset Name</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Project_lookup_columns__c</fullName>
+        <defaultValue>&apos;Name, Account__r.Name&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>List of API names of project fields to display as columns on the Project/Assignment  lookup in the enhanced  Time Entry page. Do not include the pse__ namespace prefix in the API name of a field. The default value is Name, Account__r.Name.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of API names of project fields to display as columns on the Project/Assignment  lookup in the enhanced  Time Entry page. Do not include the pse__ namespace prefix in the API name of a field. The default value is Name, Account__r.Name.</inlineHelpText>
+        <label>Project lookup columns</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Projects_load_date_restriction__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Project start and end date restriction while loading the project/assignments from db.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Project start and end date restriction while loading the project/assignments from db.</inlineHelpText>
+        <label>Projects load date restriction</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_Lookup_Fieldset_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Defines the name of a field set containing resource fields to display as columns in the Resource lookup on the Sencha Timecard Entry page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the name of a field set containing resource fields to display as columns in the Resource lookup on the Sencha Timecard Entry page.</inlineHelpText>
+        <label>Resource Lookup Fieldset Name</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_access__c</fullName>
+        <defaultValue>&quot;all&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If config value equals to &apos;all&apos; , means all resources along with current user resources will be loaded. Else if value equals to &apos;resource&apos; or null, only current user resources will be loaded.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If config value equals to &apos;all&apos; , means all resources along with current user resources will be loaded. Else if value equals to &apos;resource&apos; or null, only current user resources will be loaded.</inlineHelpText>
+        <label>Resource access</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Resource_lookup_columns__c</fullName>
+        <defaultValue>&apos;Name,Region__r.Name,Practice__r.Name,Group__r.Name&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>List of Resource fields (fully-qualified API names/paths) to display on columns for Resource lookup pop-up in new Timecard UI. Recommend at most 4 fields/columns. Default value: Name, Region__r.Name, Practice__r.Name, Group__r.Name</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of Resource fields (fully-qualified API names/paths) to display on columns for Resource lookup pop-up in new Timecard UI. Recommend at most 4 fields/columns. Default value: Name, Region__r.Name, Practice__r.Name, Group__r.Name</inlineHelpText>
+        <label>Resource lookup columns</label>
+        <length>200</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Save_submit_batch_size__c</fullName>
+        <defaultValue>10</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Size of Number of timecards to be save/submit in one batch execution.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Size of Number of timecards to be save/submit in one batch execution.</inlineHelpText>
+        <label>Save submit batch size</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Save_timecard_with_zero_hours__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Config is used to control the saving of timecard with zero hours. If it is true, timecards with zero are saved else not saved(warning will be shown on ui).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Config is used to control the saving of timecard with zero hours. If it is true, timecards with zero are saved else not saved(warning will be shown on ui).</inlineHelpText>
+        <label>Save timecard with zero hours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Schedule_editable__c</fullName>
+        <defaultValue>&quot;ALL&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Schedule editable</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Entry_Save_Batch_Size__c</fullName>
+        <defaultValue>15</defaultValue>
+        <deprecated>false</deprecated>
+        <description>The number of timecard records, not including related records, saved in a single request.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of timecard records, not including related records, saved in a single request.</inlineHelpText>
+        <label>Time Entry UI Save Batch Size</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__TC_Sorted_By_Order__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Config for holding the timecard sorted by order field API names. Multiple coma separated fields can be entered for sorting. Ex : CreatedDate, Project__r.Name</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Config for holding the timecard sorted by order fields API names. Multiple coma separated fields can be entered for sorting. Ex : CreatedDate, Project__r.Name</inlineHelpText>
+        <label>TC Sorted By Order</label>
+        <length>246</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_edit_status_values__c</fullName>
+        <defaultValue>&quot;saved&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>CSV List of status values for which the timecard entry rows can be edited.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>CSV List of status values for which the timecard entry rows can be edited.</inlineHelpText>
+        <label>Timecard edit status values</label>
+        <length>60</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_save_button_action__c</fullName>
+        <defaultValue>&quot;Saved&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Used to determines what status the timecards will be set to on save button click</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to determines what status the timecards will be set to on save button click</inlineHelpText>
+        <label>Timecard save button action</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_submit_button_action__c</fullName>
+        <defaultValue>&quot;Submitted&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Used to determines what status the timecards will be set to on submit button click</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Used to determines what status the timecards will be set to on submit button click</inlineHelpText>
+        <label>Timecard submit button action</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Local_Storage_For_Column_Preferences__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If selected (true), Time Entry UI column preferences are saved locally. If deselected (false), the preferences are saved on the server.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If selected (true), Time Entry UI column preferences are saved locally. If deselected (false), the preferences are saved on the server.</inlineHelpText>
+        <label>Use Local Storage For Column Preferences</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Project_Location_Records__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If true, then Location drop-downs will bind to Project Location object instead of location picklists on TC UI</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If true, then Location drop-downs will bind to Project Location object instead of location picklists on TC UI</inlineHelpText>
+        <label>Use Project Location Records</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Project_Methodology_Records__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Use Project Methodology Records</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Project_Phase_Records__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Use Project Phase Records</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Week_start_day__c</fullName>
+        <defaultValue>&quot;Sunday&quot;</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Default week start day value used when a resource does not have a work calendar, or has a work calendar without a week start day.c</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Default week start day value used when a resource does not have a work calendar, or has a work calendar without a week start day.</inlineHelpText>
+        <label>Week start day</label>
+        <length>10</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__submit_timecard_with_zero_hours__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Config is used to control the submit of timecard with zero hours. If it is true, timecards with zero can be submitted else warning will be shown on ui.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Config is used to control the submit of timecard with zero hours. If it is true, timecards with zero can be submitted else warning will be shown on ui.</inlineHelpText>
+        <label>Submit timecard with zero hours</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Timecard Entry UI Global</label>
+    <visibility>Public</visibility>
+</CustomObject>

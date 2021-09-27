@@ -1,0 +1,240 @@
+<!--
+* {Purpose} - Used to manage the entries from CN_App_Settings custom setting
+*
+* @author   Shah Kadirmohideen
+* @version  2012-01-05 
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                    Description
+* 2012-01-05    Shah Kadirmohideen      Created  
+* 2012-01-05    Mike Eaton              Updated with UI changes   
+* 2012-01-25	Shah Kadirmohideen		Included 3 new fields related to phase 1.5 changes
+* 2012-01-26	Shah Kadirmohideen		Added inline style to increase the length for some of the fields.
+* 2012-02-03	Mike Eaton				Updated section header description
+* 2012-05-03	Shah Kadirmohideen		Added 'Delete All Cache' button
+* 2012-09-30	Shah Kadirmohideen		Added two variables (Display_General_Error__c, General_Error_User_Msg__c) 
+*											to enhance error handling
+* 2013-08-19	Mike Eaton				Added Data_Missing_Display_Value field to app settings
+* 2014-06-01	Mike Eaton				Added obfuscation behavior to credentials
+* 2014-07-08    Mike Eaton              Added Reset Security Token
+* 2014-07-13    Mike Eaton              Added Support Notification Email field
+* 2014-07-04    Mike Eaton              Removed all Security Token logic for initial WSQ release
+* 2014-09-09    David Sarbello          Added additional fields related to Audit Log
+* 2014-09-10	Mike Eaton				Added View Audit Log button and Reset Security Token button
+* 2014-09-11	Mike Eaton				Removed emailAuditLog button
+* 2014-12-12	Mike Eaton				Added apex:pageMessages component
+* 2015-10-25	Glen Cunningham			Added additional column show/hide functions 
+* 2015-10-25	Glen Cunningham			removed "feedback" functionality 
+* =============================================================================
+-->
+<apex:page controller="CNAppSettingsController" showHeader="true" sidebar="false" action="{!loadCustomSetting}" 
+            setup="true" title="Customize Business Development Premier Settings">
+<script language="javascript">
+	function deleteCacheConfirmation() {
+		var ans = confirm('You are attempting to delete all the cached Business Development Premier relationship records from this instance. Do you want to proceed?');
+		return ans;
+	}
+</script>
+<apex:form forceSSL="true" >
+
+    <apex:variable var="isDemoEditable" value="true" />
+    <apex:sectionHeader title="Business Development Premier for Salesforce" subtitle="Application Settings"
+            description="Business Development Premier's Enterprise Relationship Management platform has been integrated with Salesforce.com CRM.  
+            The application supports a number of configuration settings that can be customized below.  Please refer to the tooltips
+            for individual setting information. <br></br>
+            <b>IMPORTANT:  Regarding package updates - you will need to disable the Data Cleanup Job before attempting to install 
+            any Business Development Premier for Salesforce package updates.</b>" />
+ 
+ <!--  Edit Mode -->           
+    <apex:pageBlock mode="edit" rendered="{!bEditMode}">
+    	<apex:pageMessages />
+        <apex:pageBlockSection columns="1" title="Display Settings" collapsible="false">
+            <apex:outputField value="{!oAppSetup.Name}" rendered="false"/>
+            <apex:inputField value="{!oAppSetup.Data_Cache_Size__c}"/>
+            <apex:inputField value="{!oAppSetup.Data_Display_Size__c}"/>
+            <apex:inputField value="{!oAppSetup.Inner_Relationship_Data_Display_Size__c}"/>
+            <!-- <apex:inputField value="{!oAppSetup.Enhanced_List_Data_Display_Size__c}"/> -->
+            <apex:inputField value="{!oAppSetup.Data_Sensitive_Display_Value__c}"/> 
+            <apex:selectRadio value="{!oAppSetup.Recency_as_Date__c}" layout="pageDirection">
+            	<apex:selectOption itemValue="false" itemLabel="as # of Days" />
+            	<apex:selectOption itemValue="true" itemLabel="as Date" />
+            </apex:selectRadio>
+            <!-- <apex:inputField value="{!oAppSetup.Recency_as_Date__c}"/>   -->
+        </apex:pageBlockSection>
+
+		<apex:pageBlockSection columns="1" title="Contact Component Settings" collapsible="false">
+        	<apex:inputField value="{!oAppSetup.Enable_Contact_Add_Action__c}"/>
+        	<apex:inputField value="{!oAppSetup.Enable_Contact_Search_Action__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Contact_Relationship_Strength__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Contact_Title__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Contact_Email_Data__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Contact_Phone_Data__c}"/>
+        	<!-- <apex:inputField value="{!oAppSetup.Show_Contact_Location__c}"/> --> 
+        	<apex:inputField value="{!oAppSetup.Show_Contact_Source__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Contact_Recency__c}"/>
+        </apex:pageBlockSection> 
+               
+        <apex:pageBlockSection columns="1" title="Colleague Component Settings" collapsible="false">
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Relationship_Strength__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Title__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Email_Data__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Phone_Data__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Location__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Source__c}"/>
+        	<apex:inputField value="{!oAppSetup.Show_Colleague_Recency__c}"/>
+        </apex:pageBlockSection>
+         
+        <apex:pageBlockSection columns="1" title="Notification Settings" collapsible="false">                     
+            <apex:inputField value="{!oAppSetup.Error_Notification__c}" style="width:400px"/>
+            <!--  <apex:inputField value="{!oAppSetup.Feedback_Notification_Email__c}" style="width:400px"/>
+            <apex:inputField value="{!oAppSetup.Feedback_Notification_Subject__c}" style="width:400px"/>-->
+            <apex:inputField value="{!oAppSetup.Display_General_Error_Message__c}" />
+            <apex:inputField value="{!oAppSetup.General_Error_Message__c}" style="width:600px"/>
+            <apex:inputField value="{!oAppSetup.Support_Notification_Email__c}" style="width:400px" rendered="false"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="Error Message Descriptions" collapsible="false">      
+        	<apex:inputField value="{!oAppSetup.Contact_Relationship__c}" />
+        	<apex:inputField value="{!oAppSetup.Account__c}" />
+        	<apex:inputField value="{!oAppSetup.Login_Failed__c}" />
+        	<apex:inputField value="{!oAppSetup.OA_company__c}" />
+        	<apex:inputField value="{!oAppSetup.Corp_Insight__c}" />
+        	<apex:inputField value="{!oAppSetup.Account_Rel__c}" /> 
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="Web Service Settings" collapsible="false">
+            <!--  <apex:inputField value="{!oAppSetup.WS_Consumer_Name__c}" rendered="{!isDemoEditable}" />
+            <apex:inputSecret value="{!oAppSetup.WS_Auth_Key__c}" rendered="{!isDemoEditable}"/>
+            <apex:pageBlockSectionItem helpText="Should a security token be included in the WS credentials?">
+	            <apex:outputLabel value="Use Security Token" for="chkUST" />
+	            <apex:inputCheckbox value="{!bUseSecurityToken}" rendered="{!isDemoEditable}" id="chkUST"/>
+	        </apex:pageBlockSectionItem>-->
+            <apex:inputField value="{!oAppSetup.WS_Endpoint__c}" rendered="{!isDemoEditable}" style="width:400px"/>    
+            <!-- <apex:inputField value="{!oAppSetup.CN_User_Name__c}" rendered="{!isDemoEditable}" style="width:120px"/> 
+            <apex:inputField value="{!oAppSetup.CN_Password__c}" rendered="{!isDemoEditable}" style="width:120px"/> -->     
+            <apex:inputField value="{!oAppSetup.WS_Is_Active__c}" /> 
+            <apex:inputField value="{!oAppSetup.WS_Timeout__c}"/>
+            <apex:inputField value="{!oAppSetup.WS_Unavailable_Message__c}" style="width:600px"/>
+            <apex:outputField value="{!oAppSetup.WS_API_Version__c}"/>
+          </apex:pageBlockSection>
+		<apex:pageBlockSection columns="1" title="OAuth Settings" collapsible="false">
+            <apex:inputField value="{!oAppSetup.OAUTH_URL__c}" rendered="{!isDemoEditable}" />
+             <apex:inputField value="{!oAppSetup.APP_OAUTH_CLIENTID__c}" rendered="{!isDemoEditable}" />
+            <apex:inputField value="{!oAppSetup.APP_OAUTH_SECRET__c}" rendered="{!isDemoEditable}"/>             
+            <!-- <apex:inputField value="{!oAppSetup.APP_OAUTH_TOKEN__c}" rendered="{!isDemoEditable}" style="width:400px"/>    
+            <apex:inputField value="{!oAppSetup.APP_PASSWORD__c}" rendered="{!isDemoEditable}" style="width:120px"/> 
+            <apex:inputField value="{!oAppSetup.APP_USERNAME__c}" />  -->
+            <apex:inputField value="{!oAppSetup.OAUTH_GRANTTYPE__c}"/>
+          </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="Data Storage Settings" collapsible="false">                     
+            <apex:inputField value="{!oAppSetup.Data_Expiration_Hours__c}"/>
+            <apex:inputField value="{!oAppSetup.Max_Data_Storage__c}"/>
+            <apex:inputField value="{!oAppSetup.Enable_Data_Cleanup_Job__c}"/>
+            <apex:inputField value="{!oAppSetup.Audit_Log_Expiration_Age_Days__c}"/>
+            <apex:inputField value="{!oAppSetup.Exclude_Sensitive_Audit_Log_Data__c}"/>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockButtons > 
+                <apex:commandButton action="{!savePage}" value="Save" />
+                <apex:commandButton action="{!cancelPage}" value="Cancel" />
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+
+<!--  View Mode -->
+    <apex:pageBlock mode="maindetail" rendered="{!bEditMode==false}">
+        <apex:pageBlockSection columns="1" title="Display Settings" collapsible="false">
+            <apex:outputField value="{!oAppSetup.Name}" rendered="false"/>
+            <apex:outputField value="{!oAppSetup.Data_Cache_Size__c}"/>
+            <apex:outputField value="{!oAppSetup.Data_Display_Size__c}"/>
+            <apex:outputField value="{!oAppSetup.Inner_Relationship_Data_Display_Size__c}"/>
+            <!-- <apex:outputField value="{!oAppSetup.Enhanced_List_Data_Display_Size__c}"/> -->
+            <apex:outputField value="{!oAppSetup.Data_Sensitive_Display_Value__c}"/>
+            <apex:selectRadio value="{!oAppSetup.Recency_as_Date__c}" layout="pageDirection" disabled="true">
+            	<apex:selectOption itemValue="false" itemLabel="as # of Days" />
+            	<apex:selectOption itemValue="true" itemLabel="as Date" />
+            </apex:selectRadio>
+            <!-- <apex:inputField value="{!oAppSetup.Recency_as_Date__c}"/>   -->
+        </apex:pageBlockSection>
+		
+		<apex:pageBlockSection columns="1" title="Contact Component Settings" collapsible="false">
+        	<apex:outputField value="{!oAppSetup.Enable_Contact_Add_Action__c}"/>
+        	<apex:outputField value="{!oAppSetup.Enable_Contact_Search_Action__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Contact_Relationship_Strength__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Contact_Title__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Contact_Email_Data__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Contact_Phone_Data__c}"/>
+        	<!-- <apex:outputField value="{!oAppSetup.Show_Contact_Location__c}"/> -->
+        	<apex:outputField value="{!oAppSetup.Show_Contact_Source__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Contact_Recency__c}"/>
+        </apex:pageBlockSection>        
+        <apex:pageBlockSection columns="1" title="Colleague Component Settings" collapsible="false">
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Relationship_Strength__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Title__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Email_Data__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Phone_Data__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Location__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Source__c}"/>
+        	<apex:outputField value="{!oAppSetup.Show_Colleague_Recency__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="Notification Settings" collapsible="false">                          
+            <apex:outputField value="{!oAppSetup.Error_Notification__c}"/>
+           <!-- <apex:outputField value="{!oAppSetup.Feedback_Notification_Email__c}"/>
+            <apex:outputField value="{!oAppSetup.Feedback_Notification_Subject__c}"/> --> 
+            <apex:outputField value="{!oAppSetup.Display_General_Error_Message__c}" />
+            <apex:outputField value="{!oAppSetup.General_Error_Message__c}"/>
+            <apex:outputField value="{!oAppSetup.Support_Notification_Email__c}" rendered="false"/>
+        </apex:pageBlockSection> 
+        <apex:pageBlockSection columns="1" title="Error Message Descriptions" collapsible="false">      
+        	<apex:outputField value="{!oAppSetup.Contact_Relationship__c}" />
+        	<apex:outputField value="{!oAppSetup.Account__c}" />
+        	<apex:outputField value="{!oAppSetup.Login_Failed__c}" />
+        	<apex:outputField value="{!oAppSetup.OA_company__c}" />
+        	<apex:outputField value="{!oAppSetup.Corp_Insight__c}" />
+        	<apex:outputField value="{!oAppSetup.Account_Rel__c}" /> 
+        </apex:pageBlockSection>
+        <!-- [TODO] - Do not render credentials replace rendered="{!isDemoEditable}" with FALSE -->
+        <apex:pageBlockSection columns="1" title="Web Service Settings" collapsible="false">      
+            <!-- <apex:outputField value="{!oAppSetup.WS_Consumer_Name__c}" rendered="{!isDemoEditable}"/> 
+            <apex:outputField value="{!oAppSetup.WS_Auth_Key__c}" rendered="false"/> -->
+            <apex:outputField value="{!oAppSetup.WS_Endpoint__c}" rendered="{!isDemoEditable}" style="width:600px"/>
+            <!-- <apex:pageBlockSectionItem >
+	            <apex:outputLabel value="" />   
+	            <apex:commandButton action="{!ResetSecurityToken}" value="Reset Security Token" rendered="{!bUseSecurityToken}"/>
+            </apex:pageBlockSectionItem>
+            <apex:outputField value="{!oAppSetup.CN_User_Name__c}" />  -->
+           
+            <apex:outputField value="{!oAppSetup.WS_Is_Active__c}" />
+            <apex:outputField value="{!oAppSetup.WS_Timeout__c}"/>
+            <apex:outputField value="{!oAppSetup.WS_Unavailable_Message__c}"/>
+            <apex:outputField value="{!oAppSetup.WS_API_Version__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="OAuth Settings" collapsible="false">
+            <apex:outputField value="{!oAppSetup.OAUTH_URL__c}"  />
+             <apex:outputField value="{!oAppSetup.APP_OAUTH_CLIENTID__c}"  />
+            <apex:outputField value="{!oAppSetup.APP_OAUTH_SECRET__c}" />             
+            <!-- <apex:outputField value="{!oAppSetup.APP_OAUTH_TOKEN__c}" />    
+            <apex:outputField value="{!oAppSetup.APP_PASSWORD__c}" /> 
+            <apex:outputField value="{!oAppSetup.APP_USERNAME__c}" />  -->
+            <apex:outputField value="{!oAppSetup.OAUTH_GRANTTYPE__c}"/>
+        </apex:pageBlockSection>
+        <apex:pageBlockSection columns="1" title="Data Storage Settings" collapsible="false">                     
+            <apex:outputField value="{!oAppSetup.Data_Expiration_Hours__c}"/>
+            <apex:outputField value="{!oAppSetup.Max_Data_Storage__c}"/>
+            <apex:outputField value="{!oAppSetup.Enable_Data_Cleanup_Job__c}"/>
+            <apex:outputField value="{!oAppSetup.Audit_Log_Expiration_Age_Days__c}"/>
+            <apex:outputField value="{!oAppSetup.Exclude_Sensitive_Audit_Log_Data__c}"/>
+        </apex:pageBlockSection>
+        
+        <apex:pageBlockButtons > 
+                <apex:commandButton action="{!editPage}" value="Edit" />
+                <!-- Deprecated on 07/07/2014 by M.Eaton 
+                <apex:commandButton action="{!gotoWSQueuePage}" value="View Webservice Queues" rendered="false"/>
+                -->
+                <apex:commandButton action="{!gotoDeleteAllCachePage}" value="Delete All Relationship Cache" onClick="return deleteCacheConfirmation()"/>
+                <apex:commandButton action="{!gotoViewAuditLogPage}" value="View Audit Log"/>
+        </apex:pageBlockButtons>
+    </apex:pageBlock>
+
+</apex:form>
+</apex:page>

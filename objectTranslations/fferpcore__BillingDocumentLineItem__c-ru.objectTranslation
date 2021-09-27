@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <caseType>Nominative</caseType>
+        <plural>false</plural>
+        <value>Позиция документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Nominative</caseType>
+        <plural>true</plural>
+        <value>Позиции документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Accusative</caseType>
+        <plural>false</plural>
+        <value>Позиция документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Accusative</caseType>
+        <plural>true</plural>
+        <value>Позиции документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Genitive</caseType>
+        <plural>false</plural>
+        <value>Позиция документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Genitive</caseType>
+        <plural>true</plural>
+        <value>Позиции документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Dative</caseType>
+        <plural>false</plural>
+        <value>Позиция документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Dative</caseType>
+        <plural>true</plural>
+        <value>Позиции документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Instrumental</caseType>
+        <plural>false</plural>
+        <value>Позиция документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Instrumental</caseType>
+        <plural>true</plural>
+        <value>Позиции документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Prepositional</caseType>
+        <plural>false</plural>
+        <value>Позиция документа фактуры</value>
+    </caseValues>
+    <caseValues>
+        <caseType>Prepositional</caseType>
+        <plural>true</plural>
+        <value>Позиции документа фактуры</value>
+    </caseValues>
+    <fields>
+        <help>Учетная запись Salesforce, представляющая место доставки продукта. Учетная запись должна быть потомком соответствующей учетной записи платежного документа и содержать полную информацию об адресе. Допускаются потомки до пяти отношений в глубине иерархии.</help>
+        <label><!-- Shipping Account --></label>
+        <name>fferpcore__Account__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Используется для субанализа строк документа фактуры и может использоваться для представления ряда различных бизнес-концепций.</help>
+        <label><!-- Analysis Item 1 --></label>
+        <name>fferpcore__AnalysisItem1__c</name>
+        <relationshipLabel><!-- Related Document Lines 1 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Используется для субанализа строк документа фактуры и может использоваться для представления ряда различных бизнес-концепций.</help>
+        <label><!-- Analysis Item 2 --></label>
+        <name>fferpcore__AnalysisItem2__c</name>
+        <relationshipLabel><!-- Related Document Lines 2 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Используется для субанализа строк документа фактуры и может использоваться для представления ряда различных бизнес-концепций.</help>
+        <label><!-- Analysis Item 3 --></label>
+        <name>fferpcore__AnalysisItem3__c</name>
+        <relationshipLabel><!-- Related Document Lines 3 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Используется для субанализа строк документа фактуры и может использоваться для представления ряда различных бизнес-концепций.</help>
+        <label><!-- Analysis Item 4 --></label>
+        <name>fferpcore__AnalysisItem4__c</name>
+        <relationshipLabel><!-- Related Document Lines 4 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Внешний налоговый статус документа фактуры, которому принадлежит данная позиция строки документа фактуры.</help>
+        <label><!-- Billing Document External Tax Status --></label>
+        <name>fferpcore__BillingDocumentExternalTaxStatus__c</name>
+    </fields>
+    <fields>
+        <help>Статус документа фактуры, которому принадлежит данная позиция строки документа фактуры.</help>
+        <label><!-- Billing Document Status --></label>
+        <name>fferpcore__BillingDocumentStatus__c</name>
+    </fields>
+    <fields>
+        <help>Документ фактуры, которому принадлежит данная позиция документа фактуры.</help>
+        <label><!-- Billing Document --></label>
+        <name>fferpcore__BillingDocument__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Сайт компании, представляющий место доставки товара. Сайт должен быть дочерним по отношению к соответствующей компании, производящей платежные документы, и содержать полную информацию об адресе.</help>
+        <label><!-- Company Site --></label>
+        <name>fferpcore__CompanySite__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Общая скидка для данной позиции документа фактуры.</help>
+        <label><!-- Discount Total --></label>
+        <name>fferpcore__DiscountTotal__c</name>
+    </fields>
+    <fields>
+        <help>Указывает, что выбранный сайт компании не является дочерним по отношению к компании документа фактуры.</help>
+        <label><!-- Invalid Company Site --></label>
+        <name>fferpcore__InvalidCompanySite__c</name>
+    </fields>
+    <fields>
+        <help>Указывает, что выбранная учетная запись доставки не является потомком учетной записи документа фактуры.</help>
+        <label><!-- Invalid Shipping Account --></label>
+        <name>fferpcore__InvalidShippingAccount__c</name>
+    </fields>
+    <fields>
+        <help>Описание позиции документа фактуры.</help>
+        <label><!-- Description --></label>
+        <name>fferpcore__LineDescription__c</name>
+    </fields>
+    <fields>
+        <help>Указывает, что вы хотите ввести и сохранить адрес доставки вручную. Если этот параметр не выбран и указана учетная запись доставки, адрес доставки учетной записи сохраняется в строке.</help>
+        <label><!-- Enter Shipping Address Manually --></label>
+        <name>fferpcore__ManualAddressOverride__c</name>
+    </fields>
+    <fields>
+        <help>Чистая стоимость отдельной позиции документа фактуры до применения скидок.</help>
+        <label><!-- Net Value Before Discount --></label>
+        <name>fferpcore__NetValueBeforeDiscount__c</name>
+    </fields>
+    <fields>
+        <help>Необязательный ручной расчет чистой стоимости.</help>
+        <label><!-- Net Value Override --></label>
+        <name>fferpcore__NetValueOverride__c</name>
+    </fields>
+    <fields>
+        <help>Общая стоимость данной позиции документа фактуры до налогообложения. Формула, используемая для его вычисления: Количество x Цена за единицу.</help>
+        <label><!-- Net Value --></label>
+        <name>fferpcore__NetValue__c</name>
+    </fields>
+    <fields>
+        <help>Найдите продукт или услугу Salesforce.</help>
+        <label><!-- Product or Service --></label>
+        <name>fferpcore__ProductService__c</name>
+        <relationshipLabel><!-- Product Service Relationship --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Количество позиций, включенных в эту позицию строки документа фактуры. Это используется для расчета общей стоимости отдельной позиции документа фактуры.</help>
+        <label><!-- Quantity --></label>
+        <name>fferpcore__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reporting Net Value Number --></label>
+        <name>fferpcore__ReportingNetValueNumber__c</name>
+    </fields>
+    <fields>
+        <help>Общая стоимость данной позиции документа фактуры до налогообложения на основе типа документа документа фактуры.</help>
+        <label><!-- Reporting Net Value --></label>
+        <name>fferpcore__ReportingNetValue__c</name>
+    </fields>
+    <fields>
+        <help>Значение налога 1 соответствующей ставки налога на основе типа документа фактуры.</help>
+        <label><!-- Reporting Tax Value 1 --></label>
+        <name>fferpcore__ReportingTaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>Значение налога 2 соответствующей ставки налога на основе типа документа фактуры.</help>
+        <label><!-- Reporting Tax Value 2 --></label>
+        <name>fferpcore__ReportingTaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>Значение налога 3 соответствующей налоговой ставки в зависимости от типа документа фактуры.</help>
+        <label><!-- Reporting Tax Value 3 --></label>
+        <name>fferpcore__ReportingTaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>Общий налог для отдельной позиции документа фактуры на основе Типа документа документа фактуры.</help>
+        <label><!-- Reporting Tax Value Total --></label>
+        <name>fferpcore__ReportingTaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>Общая стоимость данной позиции документа фактуры, включая налог, на основе типа документа документа фактуры.</help>
+        <label><!-- Reporting Total Value --></label>
+        <name>fferpcore__ReportingTotalValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping City --></label>
+        <name>fferpcore__ShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Country --></label>
+        <name>fferpcore__ShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping State/Province --></label>
+        <name>fferpcore__ShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Street --></label>
+        <name>fferpcore__ShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help>Код налога для использования при расчете налога для данной позиции документа фактуры. Вы можете использовать налоговые коды для обозначения налоговых органов штата, округа или города.</help>
+        <label><!-- Tax Code 1 --></label>
+        <name>fferpcore__TaxCode1__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Код налога для использования при расчете налога для данной позиции документа фактуры. Вы можете использовать налоговые коды для обозначения налоговых органов штата, округа или города.</help>
+        <label><!-- Tax Code 2 --></label>
+        <name>fferpcore__TaxCode2__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Код налога для использования при расчете налога для данной позиции документа фактуры. Вы можете использовать налоговые коды для обозначения налоговых органов штата, округа или города.</help>
+        <label><!-- Tax Code 3 --></label>
+        <name>fferpcore__TaxCode3__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Ставка налога, используемая при расчете налога для данной позиции документа фактуры.</help>
+        <label><!-- Tax Rate 1 --></label>
+        <name>fferpcore__TaxRate1__c</name>
+    </fields>
+    <fields>
+        <help>Ставка налога, используемая при расчете налога для данной позиции документа фактуры.</help>
+        <label><!-- Tax Rate 2 --></label>
+        <name>fferpcore__TaxRate2__c</name>
+    </fields>
+    <fields>
+        <help>Ставка налога, используемая при расчете налога для данной позиции документа фактуры.</help>
+        <label><!-- Tax Rate 3 --></label>
+        <name>fferpcore__TaxRate3__c</name>
+    </fields>
+    <fields>
+        <help>Общая налоговая ставка для отдельной позиции документа фактуры.</help>
+        <label><!-- Tax Rate Total --></label>
+        <name>fferpcore__TaxRateTotal__c</name>
+    </fields>
+    <fields>
+        <help>Стоимость налога рассчитывается на основе соответствующей ставки налога по формуле: Чистая стоимость * (Ставка налога / 100).</help>
+        <label><!-- Tax Value 1 --></label>
+        <name>fferpcore__TaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>Стоимость налога рассчитывается на основе соответствующей ставки налога по формуле: Чистая стоимость * (Ставка налога / 100).</help>
+        <label><!-- Tax Value 2 --></label>
+        <name>fferpcore__TaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>Стоимость налога рассчитывается на основе соответствующей ставки налога по формуле: Чистая стоимость * (Ставка налога / 100).</help>
+        <label><!-- Tax Value 3 --></label>
+        <name>fferpcore__TaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>Общий налог для отдельной позиции документа фактуры.</help>
+        <label><!-- Tax Value Total --></label>
+        <name>fferpcore__TaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>Общая стоимость данной позиции документа фактуры. Формула, используемая для его расчета: чистая стоимость + общая сумма налога.</help>
+        <label><!-- Total Value --></label>
+        <name>fferpcore__TotalValue__c</name>
+    </fields>
+    <fields>
+        <help>Цена одной позиции для отдельной позиции документа фактуры. Это используется для расчета общей стоимости отдельной позиции документа фактуры.</help>
+        <label><!-- Unit Price --></label>
+        <name>fferpcore__UnitPrice__c</name>
+    </fields>
+    <fields>
+        <help>Записывает ключ корреляции элемента события биллинга PSA, используемый в системе Foundations.</help>
+        <label><!-- Billing Event Item Correlation ID --></label>
+        <name>pse__Billing_Event_Item_Correlation_Id__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Строка документа</nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,263 @@
+<apex:page standardController="Case" extensions="ESC_RelatedCaseController">
+    <apex:includeScript value="/support/console/41.0/integration.js" />
+
+    <body>
+        <apex:pagemessages />
+        <apex:form >
+        
+            <apex:outputPanel id="myPNL" style="font-size: 150%;font-weight: 450;color: red;">
+                <apex:pageMessages id="myMsgs"></apex:pageMessages>
+                <apex:outputText rendered="false">{!$Label.ESC_ParentExistingAlready}</apex:outputText>
+                <div style="text-align: center">
+                    <apex:commandButton value="Close" rendered="{!hasError}"  onclick="Showerror();return false;" >
+                    </apex:commandButton>
+                </div>
+                
+                <apex:inputText style="display:none" value="{!hasError}" styleClass="myTXT"></apex:inputText>
+                <apex:inputText style="display:none" value="{!primaryTabid}" styleClass="myTXTPT"></apex:inputText>
+                <apex:inputText style="display:none" value="{!SubTabtitle}" styleClass="myTXTST"></apex:inputText>
+                <apex:inputText style="display:none" value="{!idOfRecord}" styleClass="myTXTSTI"></apex:inputText>
+            </apex:outputPanel>
+            <apex:actionFunction action="{!CreateRelatedCase}" name="myACTN" rerender="myPNL"
+                oncomplete="checkNow();"></apex:actionFunction>
+        </apex:form>
+    </body>
+    <script>
+        var primaryTabid;
+        var currentTabID;
+        
+        (function() {
+            // your page initialization code here
+            // the DOM will be available here
+
+            myACTN();
+
+
+
+        })();
+        var secondaryID;
+        var count = 0
+        function setTimer(){
+        var myVar = setInterval(function() {
+            console.log("Hello" + secondaryID
+
+            );
+            if (secondaryID) {
+                sforce.console.focusSubtabById(secondaryID);
+
+                if (count == 3000) {
+                    sforce.console.getEnclosingPrimaryTabId(
+                        function(result) {
+
+                            primaryTabidE = result.id;
+                           
+                      
+                    console.log(primaryTabidE + "Hello timer action" +
+                        secondaryID
+
+                    );
+                   initiateClosing(primaryTabidE);
+                      
+                        });
+                    clearInterval(myVar);
+                    
+                }
+
+                count += 500;
+            }
+        }, 500);
+        }
+        function initiateClosing(obt){
+           console.log('currentTabID'+currentTabID);
+            console.log('secondaryID'+secondaryID);
+             sforce.console.getSubtabIds(null,sids);
+
+            //
+
+        }
+        
+         var sids = function sids(result) {
+             if(currentTabID != result.ids[0]){
+                 console.log('closing');
+             sforce.console.closeTab(currentTabID);
+             }
+            
+            };
+
+        function checkNow() {
+            var updateStatus = document.getElementsByClassName("myTXT")[0];
+            console.log(updateStatus);
+
+            if (updateStatus.value == 'true') {
+                showErrorAndReturn();
+            } else {
+                setTimer();
+                executeNormal();
+            }
+
+        }
+
+        function showErrorAndReturn() {
+        setTimeout(function(){
+            /*sforce.console.getEnclosingPrimaryTabId(
+                function(result) {
+
+                    primaryTabidE = result.id;
+                    sforce.console.openPrimaryTab(primaryTabidE,
+                        '{!JSENCODE(primaryTabid)}', true,
+                        '{!JSENCODE(primaryTabtitle)}', openSuccessPR);
+                });*/
+                Showerror();
+                
+        },4000);
+       
+            var alertText = "{!$Label.ESC_ParentExistingAlready}";
+            
+        }
+
+
+        function executeNormal() {
+            // alert('Hi');
+             sforce.console.getEnclosingTabId(closeSubtab);
+
+      
+
+            sforce.console.getEnclosingPrimaryTabId(
+                function(result) {
+                    var idOfRecord = document.getElementsByClassName(
+                        "myTXTSTI")[0].value;
+                    var SubTabtitle = document.getElementsByClassName(
+                        "myTXTST")[0].value;
+                    primaryTabId = result.id;
+                    //alert(primaryTabId);
+                    sforce.console.openSubtab(
+                        primaryTabId,
+                        idOfRecord,
+                        true,
+                        SubTabtitle,
+                        null,
+                        openSuccess
+                    );
+                });
+
+
+
+        }
+
+        var openSuccessPR = function openSuccessPR(
+            result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                //  sforce.console.focusPrimaryTabById(primaryTabidE);
+            } else {
+                // alert('subtab cannot be opened');
+            }
+        };
+
+        var openSuccess = function openSuccess(
+            result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                // alert('subtab successfully opened');
+                secondaryID = result.id;
+                sforce.console.openSubtab(
+                    primaryTabId,
+                    '{!JSENCODE(primaryTabid)}',
+                    true,
+                    'Details', null,
+                    openSuccess3,
+                    'salesforceSubtab3'
+                );
+                sforce.console.setTabIcon("{!URLFOR($Resource.ESC_CaseIcon)}", result.id);
+            } else {
+                // alert('subtab cannot be opened');
+            }
+        };
+
+        var openSuccess2 = function openSuccess2(
+            result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                // alert('Prim successfully opened');
+
+            } else {
+                //alert('Prim cannot be opened');
+            }
+        };
+
+
+        var openSuccess3 = function openSuccess3(
+            result) {
+            //Report whether we succeeded in opening the subtab
+            if (result.success == true) {
+                //alert('subtab2 successfully opened');
+
+            } else {
+                // alert('subtab2 cannot be opened');
+            }
+        };
+        
+          var closeSubtab = function closeSubtab(result) {
+            //Now that we have the tab ID, we can close it
+           currentTabID = result.id;
+          //  alert('currentTabID '+currentTabID);
+        };
+        
+        function Showerror(){
+             sforce.console.getEnclosingPrimaryTabId(function(result) {
+
+                primaryTabidE = result.id;
+                sforce.console.getSubtabIds(primaryTabidE, function(
+                    subtabs) {
+                    
+                    if (subtabs.ids.length == 1) {
+                        //debugger;
+                        sforce.console.openPrimaryTab(
+                            primaryTabidE,
+                            '{!JSENCODE(primaryTabid)}', true,
+                            '{!JSENCODE(primaryTabtitle)}',
+                            function(res) {
+                                sforce.console.setTabIcon(
+                                    "{!URLFOR($Resource.ESC_CaseIcon)}",
+                                    res.id)
+                            });
+
+                    } else {
+                        sforce.console.openSubtab(
+                            primaryTabidE,
+                            '{!JSENCODE(primaryTabid)}',
+                            true,
+                            '{!JSENCODE(primaryTabtitle)}',
+                            null,
+                            function(res) {
+                                sforce.console.setTabIcon(
+                                    "{!URLFOR($Resource.ESC_CaseIcon)}",
+                                    res.id)
+                            });
+                            
+                        sforce.console.getEnclosingTabId(
+                            function closeSubtab(
+                                subTabToCLose) {
+                                //Now that we have the tab ID, we can close it
+                                var tabId = subTabToCLose.id;
+                                setTimeout(function() {
+                                    sforce.console.closeTab(
+                                        tabId);
+                                }, 500);
+                            });
+                     }
+                });
+            });
+
+                            
+        }
+                
+        
+
+    </script>
+<style>
+    .myCLS {
+  
+}
+</style>
+</apex:page>

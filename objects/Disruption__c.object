@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Account__c</fullName>
+        <deleteConstraint>Restrict</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Disruptions</relationshipLabel>
+        <relationshipName>Disruptions</relationshipName>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Affected_Customer_Segment__c</fullName>
+        <externalId>false</externalId>
+        <label>Affected Customer Segment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <controllingField>Disruption__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Tax</fullName>
+                    <default>false</default>
+                    <label>Tax</label>
+                </value>
+                <value>
+                    <fullName>Corp</fullName>
+                    <default>false</default>
+                    <label>Corp</label>
+                </value>
+                <value>
+                    <fullName>Legal</fullName>
+                    <default>false</default>
+                    <label>Legal</label>
+                </value>
+                <value>
+                    <fullName>Legal, Corp</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Legal, Corp</label>
+                </value>
+                <value>
+                    <fullName>Tax, Corp</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Tax, Corp</label>
+                </value>
+                <value>
+                    <fullName>Tax, Legal, Corp</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Tax, Legal, Corp</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <valueName>Tax</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <valueName>Corp</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <valueName>Legal</valueName>
+            </valueSettings>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Affected_LOBs__c</fullName>
+        <externalId>false</externalId>
+        <label>Affected LOBs</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <controllingField>Disruption__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Tax</fullName>
+                    <default>false</default>
+                    <label>Tax</label>
+                </value>
+                <value>
+                    <fullName>Corp</fullName>
+                    <default>false</default>
+                    <label>Corp</label>
+                </value>
+                <value>
+                    <fullName>Legal</fullName>
+                    <default>false</default>
+                    <label>Legal</label>
+                </value>
+                <value>
+                    <fullName>Investigative</fullName>
+                    <default>false</default>
+                    <label>Investigative</label>
+                </value>
+                <value>
+                    <fullName>Legal, Corp</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Legal, Corp</label>
+                </value>
+                <value>
+                    <fullName>Tax, Corp</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Tax, Corp</label>
+                </value>
+                <value>
+                    <fullName>Tax, Legal, Corp</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Tax, Legal, Corp</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Change in leadership.</controllingFieldValue>
+                <controllingFieldValue>Chief Accounting Officer</controllingFieldValue>
+                <controllingFieldValue>Chief Risk Officer</controllingFieldValue>
+                <controllingFieldValue>Chief security officer</controllingFieldValue>
+                <controllingFieldValue>Collections Manager/Operations Manager</controllingFieldValue>
+                <controllingFieldValue>Corporate Security Officer</controllingFieldValue>
+                <controllingFieldValue>Fraud</controllingFieldValue>
+                <controllingFieldValue>Global Trade Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>Global Trade Non-Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>KYC (Know Your Customer)</controllingFieldValue>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Turnover KeyStaff</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <controllingFieldValue>Anti Money Laundering Officer (AML Officer)</controllingFieldValue>
+                <controllingFieldValue>Bank Secrecy Act Officer (BSA Officer)</controllingFieldValue>
+                <valueName>Tax</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Change in leadership.</controllingFieldValue>
+                <controllingFieldValue>Chief Accounting Officer</controllingFieldValue>
+                <controllingFieldValue>Chief Risk Officer</controllingFieldValue>
+                <controllingFieldValue>Chief security officer</controllingFieldValue>
+                <controllingFieldValue>Collections Manager/Operations Manager</controllingFieldValue>
+                <controllingFieldValue>Corporate Security Officer</controllingFieldValue>
+                <controllingFieldValue>Fraud</controllingFieldValue>
+                <controllingFieldValue>Global Trade Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>Global Trade Non-Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>KYC (Know Your Customer)</controllingFieldValue>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Turnover KeyStaff</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <controllingFieldValue>Anti Money Laundering Officer (AML Officer)</controllingFieldValue>
+                <controllingFieldValue>Bank Secrecy Act Officer (BSA Officer)</controllingFieldValue>
+                <valueName>Corp</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Change in leadership.</controllingFieldValue>
+                <controllingFieldValue>Chief Accounting Officer</controllingFieldValue>
+                <controllingFieldValue>Chief Risk Officer</controllingFieldValue>
+                <controllingFieldValue>Chief security officer</controllingFieldValue>
+                <controllingFieldValue>Collections Manager/Operations Manager</controllingFieldValue>
+                <controllingFieldValue>Corporate Security Officer</controllingFieldValue>
+                <controllingFieldValue>Fraud</controllingFieldValue>
+                <controllingFieldValue>Global Trade Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>Global Trade Non-Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>KYC (Know Your Customer)</controllingFieldValue>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Turnover KeyStaff</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <controllingFieldValue>Anti Money Laundering Officer (AML Officer)</controllingFieldValue>
+                <controllingFieldValue>Bank Secrecy Act Officer (BSA Officer)</controllingFieldValue>
+                <valueName>Legal</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Change in leadership.</controllingFieldValue>
+                <controllingFieldValue>Chief Accounting Officer</controllingFieldValue>
+                <controllingFieldValue>Chief Risk Officer</controllingFieldValue>
+                <controllingFieldValue>Chief security officer</controllingFieldValue>
+                <controllingFieldValue>Collections Manager/Operations Manager</controllingFieldValue>
+                <controllingFieldValue>Corporate Security Officer</controllingFieldValue>
+                <controllingFieldValue>Fraud</controllingFieldValue>
+                <controllingFieldValue>Global Trade Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>Global Trade Non-Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>KYC (Know Your Customer)</controllingFieldValue>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Turnover KeyStaff</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <controllingFieldValue>Anti Money Laundering Officer (AML Officer)</controllingFieldValue>
+                <controllingFieldValue>Bank Secrecy Act Officer (BSA Officer)</controllingFieldValue>
+                <valueName>Investigative</valueName>
+            </valueSettings>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Detail__c</fullName>
+        <externalId>false</externalId>
+        <label>Detail</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Disruption__c</fullName>
+        <externalId>false</externalId>
+        <label>Disruption</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Acquisition/Disposition/Merger</fullName>
+                    <default>false</default>
+                    <label>Acquisition/Disposition/Merger</label>
+                </value>
+                <value>
+                    <fullName>Anti Money Laundering Officer (AML Officer)</fullName>
+                    <default>false</default>
+                    <label>Anti Money Laundering Officer (AML Officer)</label>
+                </value>
+                <value>
+                    <fullName>AP Mgmt Change w/1099 Responsibility</fullName>
+                    <default>false</default>
+                    <label>AP Mgmt Change w/1099 Responsibility</label>
+                </value>
+                <value>
+                    <fullName>Bankruptcy or Receivership</fullName>
+                    <default>false</default>
+                    <label>Bankruptcy or Receivership</label>
+                </value>
+                <value>
+                    <fullName>Bank Secrecy Act Officer (BSA Officer)</fullName>
+                    <default>false</default>
+                    <label>Bank Secrecy Act Officer (BSA Officer)</label>
+                </value>
+                <value>
+                    <fullName>CFO/CIO Change</fullName>
+                    <default>false</default>
+                    <label>CFO/CIO Change</label>
+                </value>
+                <value>
+                    <fullName>Change/move of Chief Compliance Officer</fullName>
+                    <default>false</default>
+                    <label>Change/move of Chief Compliance Officer</label>
+                </value>
+                <value>
+                    <fullName>Change/move of General Counsel or Assistant General Counsel</fullName>
+                    <default>false</default>
+                    <label>Change/move of General Counsel or Assistant General Counsel</label>
+                </value>
+                <value>
+                    <fullName>Change in leadership.</fullName>
+                    <default>false</default>
+                    <label>Change in leadership.</label>
+                </value>
+                <value>
+                    <fullName>Change in regulatory scheme or regulations affecting the legal operations</fullName>
+                    <default>false</default>
+                    <label>Change in regulatory scheme or regulations affecting the legal operations</label>
+                </value>
+                <value>
+                    <fullName>Chief Accounting Officer</fullName>
+                    <default>false</default>
+                    <label>Chief Accounting Officer</label>
+                </value>
+                <value>
+                    <fullName>Chief Risk Officer</fullName>
+                    <default>false</default>
+                    <label>Chief Risk Officer</label>
+                </value>
+                <value>
+                    <fullName>Chief security officer</fullName>
+                    <default>false</default>
+                    <label>Chief security officer</label>
+                </value>
+                <value>
+                    <fullName>Collections Manager/Operations Manager</fullName>
+                    <default>false</default>
+                    <label>Collections Manager/Operations Manager</label>
+                </value>
+                <value>
+                    <fullName>Company Audit</fullName>
+                    <default>false</default>
+                    <label>Company Audit</label>
+                </value>
+                <value>
+                    <fullName>Corporate Security Officer</fullName>
+                    <default>false</default>
+                    <label>Corporate Security Officer</label>
+                </value>
+                <value>
+                    <fullName>Creation or change of a legal operations role</fullName>
+                    <default>false</default>
+                    <label>Creation or change of a legal operations role</label>
+                </value>
+                <value>
+                    <fullName>Cutting Workforce &gt;10%</fullName>
+                    <default>false</default>
+                    <label>Cutting Workforce &gt;10%</label>
+                </value>
+                <value>
+                    <fullName>Fines or Penalties Imposed</fullName>
+                    <default>false</default>
+                    <label>Fines or Penalties Imposed</label>
+                </value>
+                <value>
+                    <fullName>Fraud</fullName>
+                    <default>false</default>
+                    <label>Fraud</label>
+                </value>
+                <value>
+                    <fullName>Global Trade Mgmt Change</fullName>
+                    <default>false</default>
+                    <label>Global Trade Mgmt Change</label>
+                </value>
+                <value>
+                    <fullName>Global Trade Non-Mgmt Change</fullName>
+                    <default>false</default>
+                    <label>Global Trade Non-Mgmt Change</label>
+                </value>
+                <value>
+                    <fullName>Growing Companies Nearing $250M Revenue</fullName>
+                    <default>false</default>
+                    <label>Growing Companies Nearing $250M Revenue</label>
+                </value>
+                <value>
+                    <fullName>KYC (Know Your Customer)</fullName>
+                    <default>false</default>
+                    <label>KYC (Know Your Customer)</label>
+                </value>
+                <value>
+                    <fullName>Large litigation filed or potentially being filed</fullName>
+                    <default>false</default>
+                    <label>Large litigation filed or potentially being filed</label>
+                </value>
+                <value>
+                    <fullName>Management Change</fullName>
+                    <default>false</default>
+                    <label>Management Change</label>
+                </value>
+                <value>
+                    <fullName>Personnel Change (non-mgmt)</fullName>
+                    <default>false</default>
+                    <label>Personnel Change (non-mgmt)</label>
+                </value>
+                <value>
+                    <fullName>Relocating HQ or Tax/Legal Department</fullName>
+                    <default>false</default>
+                    <label>Relocating HQ or Tax/Legal Department</label>
+                </value>
+                <value>
+                    <fullName>Retail or Telecom Growing &gt;50%</fullName>
+                    <default>false</default>
+                    <label>Retail or Telecom Growing &gt;50%</label>
+                </value>
+                <value>
+                    <fullName>Settlement or verdict</fullName>
+                    <default>false</default>
+                    <label>Settlement or verdict</label>
+                </value>
+                <value>
+                    <fullName>Turnover KeyStaff</fullName>
+                    <default>false</default>
+                    <label>Turnover KeyStaff</label>
+                </value>
+                <value>
+                    <fullName>US-Based Company Expanding Overseas</fullName>
+                    <default>false</default>
+                    <label>US-Based Company Expanding Overseas</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Urgency__c</fullName>
+        <externalId>false</externalId>
+        <label>Urgency</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Disruption__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Short-Term</fullName>
+                    <default>false</default>
+                    <label>Short-Term</label>
+                </value>
+                <value>
+                    <fullName>Long-Term</fullName>
+                    <default>false</default>
+                    <label>Long-Term</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Change in leadership.</controllingFieldValue>
+                <controllingFieldValue>Chief Accounting Officer</controllingFieldValue>
+                <controllingFieldValue>Chief Risk Officer</controllingFieldValue>
+                <controllingFieldValue>Chief security officer</controllingFieldValue>
+                <controllingFieldValue>Collections Manager/Operations Manager</controllingFieldValue>
+                <controllingFieldValue>Corporate Security Officer</controllingFieldValue>
+                <controllingFieldValue>Fraud</controllingFieldValue>
+                <controllingFieldValue>Global Trade Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>Global Trade Non-Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>KYC (Know Your Customer)</controllingFieldValue>
+                <controllingFieldValue>Cutting Workforce &gt;10%</controllingFieldValue>
+                <controllingFieldValue>Turnover KeyStaff</controllingFieldValue>
+                <controllingFieldValue>Fines or Penalties Imposed</controllingFieldValue>
+                <controllingFieldValue>Large litigation filed or potentially being filed</controllingFieldValue>
+                <controllingFieldValue>Settlement or verdict</controllingFieldValue>
+                <controllingFieldValue>Acquisition/Disposition/Merger</controllingFieldValue>
+                <controllingFieldValue>AP Mgmt Change w/1099 Responsibility</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Anti Money Laundering Officer (AML Officer)</controllingFieldValue>
+                <controllingFieldValue>Bank Secrecy Act Officer (BSA Officer)</controllingFieldValue>
+                <valueName>Short-Term</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Change in leadership.</controllingFieldValue>
+                <controllingFieldValue>Chief Accounting Officer</controllingFieldValue>
+                <controllingFieldValue>Chief Risk Officer</controllingFieldValue>
+                <controllingFieldValue>Chief security officer</controllingFieldValue>
+                <controllingFieldValue>Collections Manager/Operations Manager</controllingFieldValue>
+                <controllingFieldValue>Corporate Security Officer</controllingFieldValue>
+                <controllingFieldValue>Fraud</controllingFieldValue>
+                <controllingFieldValue>Global Trade Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>Global Trade Non-Mgmt Change</controllingFieldValue>
+                <controllingFieldValue>KYC (Know Your Customer)</controllingFieldValue>
+                <controllingFieldValue>Turnover KeyStaff</controllingFieldValue>
+                <controllingFieldValue>Growing Companies Nearing $250M Revenue</controllingFieldValue>
+                <controllingFieldValue>Management Change</controllingFieldValue>
+                <controllingFieldValue>Personnel Change (non-mgmt)</controllingFieldValue>
+                <controllingFieldValue>Relocating HQ or Tax/Legal Department</controllingFieldValue>
+                <controllingFieldValue>Retail or Telecom Growing &gt;50%</controllingFieldValue>
+                <controllingFieldValue>US-Based Company Expanding Overseas</controllingFieldValue>
+                <controllingFieldValue>Bankruptcy or Receivership</controllingFieldValue>
+                <controllingFieldValue>CFO/CIO Change</controllingFieldValue>
+                <controllingFieldValue>Change in regulatory scheme or regulations affecting the legal operations</controllingFieldValue>
+                <controllingFieldValue>Change/move of Chief Compliance Officer</controllingFieldValue>
+                <controllingFieldValue>Change/move of General Counsel or Assistant General Counsel</controllingFieldValue>
+                <controllingFieldValue>Company Audit</controllingFieldValue>
+                <controllingFieldValue>Creation or change of a legal operations role</controllingFieldValue>
+                <controllingFieldValue>Anti Money Laundering Officer (AML Officer)</controllingFieldValue>
+                <controllingFieldValue>Bank Secrecy Act Officer (BSA Officer)</controllingFieldValue>
+                <valueName>Long-Term</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <label>Disruption</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>D-{000000}</displayFormat>
+        <label>Disruption Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Disruptions</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

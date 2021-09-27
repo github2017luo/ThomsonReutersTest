@@ -1,0 +1,128 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2019-02-12       Tejasree                  DPS-1836 : Added custom labels instead of Hard Coded values
+===============================================================================
+-->
+<apex:page standardController="Training_Event__c" recordSetVar="Training Events" extensions="massUpdateTEController" showHeader="false" id="mutevnt">
+
+    <apex:form id="muform1" rendered="{!NOT(IsRecords)}">
+        
+        <apex:pageBlock >
+            
+            <apex:pageMessage summary="{!$Label.Select_atleast_1_training_event_record}" 
+            severity="info" id="mupmst"/><br></br><br></br>
+            
+            <apex:commandButton value="{!$Label.Go_Back_to_List_View}" action="{!cancel}" id="butcan1" />
+        
+        </apex:pageBlock>
+    
+    </apex:form>
+     
+    <apex:form id="muform2" rendered="{!IsRecords}">
+        
+        <apex:pageMessage summary="{!$Label.Editable_Collection_Size} {!EditSize}" severity="info" id="mupms"/>
+       
+        <apex:pageMessage rendered="{!IsNonEdit}" summary="{!$Label.Non_Editable_Collection_Size} {!NonEditSize}" 
+            severity="info" id="mupm1"/>        
+        
+        <apex:pageBlock id="muselectedlist1" rendered="{!IsNonEdit}">
+            
+           <apex:pageBlockSection collapsible="true" title="Non Editable Training Events">
+           <!--Harika 19 Dec 2017  Removed 'Discarded Status and Added Cancelled Status as part of CRM -10860 -->
+            <apex:pageMessage summary="{!$Label.Training_Event_Status}" severity="info" id="mupms3"/><br></br>
+            
+            <apex:pageBlockTable value="{!NonEditList}" var="tet" id="mutab1">
+                <apex:column value="{!tet.name}" id="tnameid" width="15%"/>
+                <apex:column value="{!tet.Training_Name__c}" id="tname" width="25%"/>
+                <apex:column value="{!tet.Account__c}" id="acc" width="20%"/>
+                <apex:column value="{!tet.OwnerId}" id="owner1" width="15%"/>
+                <apex:column value="{!tet.Status__c}" id="status1" width="15%"/>
+                <apex:column value="{!tet.LCRM_Start_Time__c}" id="trdate1" width="10%" />
+                
+                            
+            </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:pageBlock title="{!$Label.Training_Event_Mass_Update}" mode="edit" id="mub1" rendered="{!IsEdit}">
+            
+            <apex:pageMessages />
+            
+            <apex:actionRegion >
+            
+                <apex:selectRadio value="{!RadioOption}">
+                    <apex:selectOptions value="{!RadioItems}"/>                   
+                    <apex:actionSupport event="onclick" rerender="mub1,muselectedlist" action="{!Test}" status="ActionStatus"/>               
+                </apex:selectRadio>
+                
+            </apex:actionRegion><br></br><br></br>
+            
+            <apex:pageBlockSection id="mus1" columns="4">
+                        
+                    <apex:inputField value="{!Training_Event__c.Status__c}" id="stagename" required="true"  rendered="{!isNotAll}">                 
+                    </apex:inputField>
+                <!-- Harika  : Added cancelled reason field  a part of CRM-10860 -->
+                
+                <apex:inputField value="{!Training_Event__c.LCRM_Cancelled_Reason__c}" id="trcancelreason" rendered="{!isNotAll}" required="true"  style="text-align:center;"> 
+                </apex:inputField>
+                 
+                <apex:inputField value="{!Training_Event__c.LCRM_Start_Time__c}" id="trdate" rendered="{!isNotAll}" > 
+                </apex:inputField>
+               
+                               
+            </apex:pageBlockSection> 
+            
+        </apex:pageBlock>
+          
+        
+        <apex:pageBlock title="{!$Label.Selected_Training_Events}" id="muselectedlist">
+            
+            <apex:pageMessage summary="{!$Label.No_editable_Training_Event_selected}" severity="info" id="mupms3" rendered="{!NOT(IsEdit)}"/><br></br>
+         
+            <apex:actionStatus id="ActionStatus" startText="{!$Label.Refreshing}" startStyle="color:red;font-weight:bold"></apex:actionStatus>        
+    
+            <apex:pageBlockTable value="{!EditList}" var="tet" id="mutab" >
+                <apex:column value="{!tet.name}" id="tnameids" width="15%"/>
+                <apex:column value="{!tet.Training_Name__c}" id="tname" width="25%"/>
+                <apex:column value="{!tet.Account__c}" id="acc" width="20%"/>
+                <apex:column value="{!tet.OwnerId}" id="owner" width="15%"/>
+                <apex:column value="{!tet.Status__c}" id="stat" rendered="{!isNotAll}" width="15%"/>
+                 <apex:column rendered="{!NOT(isNotAll)}" title="{!$Label.Status}" headerValue="{!$Label.Status}" width="15%" > 
+                    <apex:inputField value="{!tet.Status__c}" id="stst"/>
+                </apex:column> 
+                 <!--Harika : Added cancelled reason field  a part of CRM-10860 -->
+                <apex:column value="{!tet.LCRM_Cancelled_Reason__c}" id="cancelledreason" rendered="{!isNotAll}" width="10%"/>
+                 <apex:column rendered="{!NOT(isNotAll)}" title="{!$Label.Cancelled_Reason}" headerValue="{!$Label.Cancelled_Reason}" width="15%" > 
+                    <apex:inputField value="{!tet.LCRM_Cancelled_Reason__c}" id="Reason" required="true"/>
+                </apex:column>  
+                <apex:column value="{!tet.LCRM_Start_Time__c}" id="trdate"   rendered="{!isNotAll}" width="10%"/>
+                 <apex:column rendered="{!NOT(isNotAll)}"  headerValue="{!$Label.Training_Date_Start_Time}" width="15%" > 
+                    <apex:inputField value="{!tet.LCRM_Start_Time__c}" id="trdat"/>
+                </apex:column>
+                    
+               
+            </apex:pageBlockTable>
+            
+            <apex:pageBlockButtons id="mubut1" rendered="{!IsEdit}">
+
+                <apex:commandButton value="{!$Label.Save}" action="{!saveTEvnts}" id="butsav1" rendered="{!NOT(isNotAll)}"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                <apex:commandButton value="{!$Label.Cancel}" action="{!cancel}" id="butcan1" rendered="{!NOT(isNotAll)}"/>            
+                <apex:commandButton value="{!$Label.Save}" action="{!saveTEvnts}" id="butsav" rendered="{!isNotAll}"/>&nbsp;&nbsp;&nbsp;&nbsp;                                
+                <apex:commandButton value="{!$Label.Cancel}" action="{!cancel}" id="butcan" rendered="{!isNotAll}"/>
+            </apex:pageBlockButtons><br></br>
+                                               
+            
+        </apex:pageBlock>
+           <apex:pageBlock id="mu445" rendered="{!NOT(IsEdit)}">
+          <apex:pageBlockButtons id="mubutfdg1" location="top">
+
+         <apex:commandButton value="Cancel" action="{!cancel}" id="butcadvdn1"/>            
+                </apex:pageBlockButtons><br></br>
+            
+          </apex:pageBlock>   
+        
+    </apex:form>
+    
+</apex:page>

@@ -1,0 +1,19 @@
+<apex:page standardcontroller="Source_System_Detail__c" standardStylesheets="false" showHeader="false" applyHtmlTag="false">
+    <apex:includeLightning />
+    <div id="lightning" class="slds"></div>
+    <script type="text/javascript">
+     var islivenote = true;
+      $Lightning.use("c:ESCLwcvf", function() {
+           $Lightning.createComponent(
+                  "c:ESC_AssociateProductKeyCodeAuraComp",
+                       {
+                        recId: "{!$CurrentPage.parameters.id}",
+                        islivenote: islivenote
+                       },
+                  "lightning",
+                 function(cmp) {
+                 console.log('component created');
+               });
+             });
+       </script>
+      </apex:page>

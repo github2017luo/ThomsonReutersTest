@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>fferpcore__Custom__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This mapping is custom when checked.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This mapping is custom when checked.</inlineHelpText>
+        <label>Custom</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__Key__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The generic key that the source data can be accessed with.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>The generic key that the source data can be accessed with.</inlineHelpText>
+        <label>Key</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__Obsolete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This mapping is obsolete when checked.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>This mapping is obsolete when checked.</inlineHelpText>
+        <label>Obsolete</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>fferpcore__Provider__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The source of the data, such as an SObjectType.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The source of the data, such as an SObjectType.</inlineHelpText>
+        <label>Provider</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__Source__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The key of the data inside the source.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The key of the data inside the source.</inlineHelpText>
+        <label>Source</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__TargetVirtualObject__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The virtual object of any child mappings, necessary for lookup and list mappings.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The virtual object of any child mappings, necessary for lookup and list mappings.</inlineHelpText>
+        <label>Target Virtual Object</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>fferpcore__Type__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The type of mapping. Field for single values. Lookup for pointing to another record. List for pointing to multiple associated records.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The type of mapping. Field for single values. Lookup for pointing to another record. List for pointing to multiple associated records.</inlineHelpText>
+        <label>Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Field</fullName>
+                    <default>true</default>
+                    <label>Field</label>
+                </value>
+                <value>
+                    <fullName>List</fullName>
+                    <default>false</default>
+                    <label>List</label>
+                </value>
+                <value>
+                    <fullName>Lookup</fullName>
+                    <default>false</default>
+                    <label>Lookup</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>fferpcore__VirtualObject__c</fullName>
+        <deprecated>false</deprecated>
+        <description>The generic name of the resulting data object.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>The generic name of the resulting data object.</inlineHelpText>
+        <label>Virtual Object</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Virtual Data Object Source Mapping</label>
+    <pluralLabel>Virtual Data Object Source Mappings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

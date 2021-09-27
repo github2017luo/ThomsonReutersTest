@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Contains records that specify information required for Concur to PSA Expense Type Mapping</description>
+    <fields>
+        <fullName>pse__Active__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Active</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_Expense_Category__c</fullName>
+        <deprecated>false</deprecated>
+        <description>This value is ignored if the Concur Expense Type field is populated.</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>If the value for Concur Expense Type is provided then the value for Concur Expense Category is ignored.</inlineHelpText>
+        <label>Concur Expense Category</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Concur_Expense_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Concur Expense Type</inlineHelpText>
+        <label>Concur Expense Type</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__FF_Expense_Type__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Financial Force Expense Type</inlineHelpText>
+        <label>PSA Expense Type</label>
+        <length>255</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>Concur Expense Type Mapping</label>
+    <pluralLabel>Concur Expense Type Mappings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

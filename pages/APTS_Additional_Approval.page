@@ -1,0 +1,27 @@
+<apex:page title="Additional Approvals" showHeader="false" sidebar="false" controller="APTS_AdditionalApprovalController" action="{!doSave}" lightningStylesheets="true">
+    <apex:sectionHeader title="Additional Approvals"/>
+    <apex:form >
+    <!--styleClass="hidden"-->
+    <apex:pageBlock >
+        <apex:outputText rendered="{!initialApprovalFlag == False}">
+            An additional Approval Request will be submitted to the respective approval queue upon submitting for approvals.<br />
+            You can enter comments for this request during the approval submission process.
+        </apex:outputText> 
+        <apex:outputText rendered="{!initialApprovalFlag}">
+            This quote is already flagged for Additional Approval.<br />
+            You can cancel the additional Approval request prior to approval submission by clicking “Cancel Additional Approval” button.
+        </apex:outputText> <br/><br/>
+         <div style="float:left">
+                <apex:pageBlockSection >
+                    <apex:inputCheckbox label="Legal Language Change" value="{!legalLanguageChangeFlag}"/>
+                    <apex:inputCheckbox label="Other" value="{!otherFlag}"/> 
+                </apex:pageBlockSection>
+         </div> <br/>    
+         <apex:pageBlockButtons >
+             <apex:commandButton value="Back to Cart" action="{!doSave}" oncomplete="history.back()"/>
+             <apex:commandButton value="Cancel Additional Approval" action="{!doCancel}" oncomplete="history.back()"/>
+         </apex:pageBlockButtons>
+     </apex:pageBlock>        
+        
+    </apex:form>
+</apex:page>

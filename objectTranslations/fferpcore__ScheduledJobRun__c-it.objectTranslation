@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Esecuzione programmata del lavoro</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Corse di lavoro pianificate</value>
+    </caseValues>
+    <fields>
+        <label><!-- Apex Job Id --></label>
+        <name>fferpcore__ApexJobId__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process Status --></label>
+        <name>fferpcore__BatchProcessStatus__c</name>
+    </fields>
+    <fields>
+        <label><!-- Batch Process --></label>
+        <name>fferpcore__BatchProcess__c</name>
+        <relationshipLabel><!-- Scheduled Job Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Indica se il controllo batch ha avuto successo.</help>
+        <label><!-- Notification --></label>
+        <name>fferpcore__NotificationType__c</name>
+    </fields>
+    <fields>
+        <label><!-- Scheduled Job --></label>
+        <name>fferpcore__Process__c</name>
+        <relationshipLabel><!-- Runs --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Status --></label>
+        <name>fferpcore__Status__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation>Completare</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Error</masterLabel>
+            <translation>Errore</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Processing</masterLabel>
+            <translation>In lavorazione</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>Numero totale di batch interrotti in base al numero di registri di batch che contengono un tipo di registro di Abort.</help>
+        <label><!-- Total Aborted Batches --></label>
+        <name>fferpcore__TotalNumberOfAborts__c</name>
+    </fields>
+    <fields>
+        <help>Numero totale di record con un errore in base al numero di registri di batch che contengono un tipo di registro di errore.</help>
+        <label><!-- Total Errors --></label>
+        <name>fferpcore__TotalNumberOfErrors__c</name>
+    </fields>
+    <fields>
+        <help>Numero totale di batch che hanno superato i limiti del Governor Salesforce o contengono altri problemi.</help>
+        <label><!-- Total Number of Batches Exceeding Limits --></label>
+        <name>fferpcore__TotalNumberOfExternal__c</name>
+    </fields>
+    <fields>
+        <help>Numero totale di registri batch per questo controllo batch.</help>
+        <label><!-- Total Logs --></label>
+        <name>fferpcore__TotalNumberOfLogs__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Numero di corsa</nameFieldLabel>
+    <startsWith>Vowel</startsWith>
+</CustomObjectTranslation>

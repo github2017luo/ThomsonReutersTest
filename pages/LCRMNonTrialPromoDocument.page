@@ -1,0 +1,191 @@
+<!--
+===============================================================================
+Date         Name                    Description
+2017-10-17   Niket Kapasi            The 'LCRMNonTrialPromoDocument' visualforce page
+                                     is used to generate document for trial and non 
+                                     trial document
+
+===============================================================================
+-->
+<apex:page controller="IncentivePasswordDocument" contentType="application/msword#PromoPasswordDocument.doc" sidebar="false" standardStylesheets="false"
+           applyHtmlTag="false" applyBodyTag="false" showHeader="false" cache="true">
+    <!-- <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>-->
+    <meta charset="utf-8"></meta>
+<!--Trial Document for one contact-->
+<apex:pageblock rendered="{!AND($CurrentPage.parameters.Type='Individual',$CurrentPage.parameters.Indicator='trial')}">
+    <html>
+        <style type = "text/css">
+            p {font-family: "Times New Roman" ; margin-left: 1.0cm;} 
+            div {font-family: "Times New Roman"; }
+            h4 {font-family: "Times New Roman"; font-size:18.5px}
+        </style>
+        <body>
+            
+            <!--<apex:image id="theImage" value="https://c.cs94.content.force.com/servlet/servlet.ImageServer?id=0150R0000008xlq&oid=00D0R0000000MQq" width="600" height="200"/>-->
+            <!-- <apex:image url="{!URLFOR($Resource.TRlogo, 'TRlogo.png')}"/>-->
+            <!--<apex:image id="theImage1" url="https://c.cs94.content.force.com/servlet/servlet.ImageServer?id=0150R0000008xlq&oid=00D0R0000000MQq&lastMod=1507900997000" width="600" height="200"/>  -->
+            <!--<img src="https://thomsonreutersglis2e--c.na68.content.force.com/servlet/servlet.ImageServer?id=015130000037yE5&oid=00D30000000pLSL&lastMod=1443130592000" width="400" height="150"/>-->
+                        <apex:image url="{!$Label.LCRMTemplateLogo}" width="400" height="150"/>
+            <br/>
+            
+            <div>{!$Label.DearM} {!oPassword.Contact__r.Name}<!-- {!relatedTo.Contact__r.Name} -->,</div>
+            <p>
+                {!$Label.You_have_qualified_for_a_trial_of_Thomson_Reuters} {!oPromotion.Description__c} <br/><br/>
+                {!$Label.Your_trial_access_starts_on} &nbsp;<apex:outputText value="{!sToday}  {!$Label.and_will_end_on} {!sEndDate}"> </apex:outputText> {!$Label.or_when_the_usage_limits_of_the_access_are_met_This_trial_is_governed_by_Thomso} <a href = "http://static.legalsolutions.thomsonreuters.com/static/general-terms-conditions.pdf">{!$Label.General_Terms_and_ConditionsN}</a><br/>
+                <br/>               
+                To_start_your_trial_sign_in_with_the_following_credentials<br/>
+                {!$Label.Promotional_UsernameN} {!oPassword.Name}<!-- {!relatedTo.Name} --><br/> 
+                {!$Label.Promotional_PasswordN} {!oPassword.Password__c}<!-- {!relatedTo.Password__c} --><br/><br/>               
+            </p>
+            
+            {!$Label.If_you_have_any_questions_regarding_your_trial_or_our_services_please_contact_m}<br/><br/>
+            
+            {!$Label.Thank_youM}<br/>
+            {!oPassword.Owner.Name}
+            <!-- {!relatedTo.Owner.Name} --> <br/><br/><br/> 
+            
+            {!$Label.X1_Any_folders_or_annotations_you_create_will_not_be_saved_after_your_promotionN}<br/>  
+            {!$Label.X2_This_promotion_CANNOT_be_used_with_an_existing_Westlaw_OnePass_password_You_N}<br/> 
+            
+        </body>
+    </html>
+</apex:pageblock>
+<!--Trial Document for multiple contacts-->
+<apex:pageBlock rendered="{!AND($CurrentPage.parameters.Type='Promo',$CurrentPage.parameters.Indicator='trial')}">
+    <html>
+        <style type = "text/css">
+            p {font-family: "Times New Roman"; margin-left: 1.0cm;} 
+            div {font-family: "Times New Roman"; }
+            h4 {font-family: "Times New Roman"; font-size:18.5px}
+        </style>
+        <body>
+            <!--<img src="https://thomsonreutersglis2e--c.na68.content.force.com/servlet/servlet.ImageServer?id=015130000037yE5&oid=00D30000000pLSL&lastMod=1443130592000" width="400" height="150"/>-->
+                        <apex:image url="{!$Label.LCRMTemplateLogo}" width="400" height="150"/>
+            <div>{!$Label.DearM} {!accountName},</div>
+            <br/>
+            <p>
+                {!$Label.The_following_people_at_your_organization_have_qualified_for_trial_access_to_Tho}<br/>
+                {!oPromotion.description__C}
+                <br/>
+                <br/>                    
+            </p>
+            
+            <p>
+                {!$Label.Their_access_starts_on} &nbsp;<apex:outputText value="{!sToday}  {!$Label.and_will_end_on} {!sEndDate}"> </apex:outputText>  {!$Label.or_when_the_usage_limits_of_the_access_are_met_This_access_is_governed_by_Thoms} <a href = "http://static.legalsolutions.thomsonreuters.com/static/general-terms-conditions.pdf">{!$Label.General_Terms_and_ConditionsN}</a>.
+            </p>
+            
+            <p>{!$Label.To_start_the_trial_access_each_user_can_sign_in_with_the_following_credentials}</p>
+            <p>
+                <apex:dataTable value="{!oPasswordList}" var="pwd" rendered="{!oPasswordList.size != 0}" border="1">
+                    <apex:column headerValue="Contact Name" value="{!pwd.Contact__r.Name}"/>
+                    <apex:column headerValue="Promotional Username" value="{!pwd.Name}"/>
+                    <apex:column headerValue="Promotional Password" value="{!pwd.Password__c}"/>
+                </apex:dataTable>  
+            </p>
+            <p>{!$Label.If_you_have_any_questions_about_this_access_or_our_services_please_contact_N}</p>
+            
+            {!$Label.Thank_youM}<br/>
+            {!oPromotion.owner.name}
+            <!-- {!relatedTo.Owner.Name} --> <br/><br/>
+            
+           {!$Label.X1_Any_folders_or_annotations_you_create_will_not_be_saved_after_your_promotionN}<br/>  
+           {!$Label.X2_This_promotion_CANNOT_be_used_with_an_existing_Westlaw_OnePass_password_You_N}<br/> 
+            
+            <br/>
+            <br/>
+        </body>
+    </html>
+    
+</apex:pageBlock> 
+<!--Non Trial Document for one contact-->
+<apex:pageblock rendered="{!AND($CurrentPage.parameters.Type='Individual',$CurrentPage.parameters.Indicator='nontrial')}">
+    <html>
+        <style type = "text/css">
+            p {font-family: "Times New Roman"; margin-left: 1.0cm;} 
+            div {font-family: "Times New Roman"; }
+            h4 {font-family: "Times New Roman"; font-size:18.5px}
+        </style>
+        <body>
+            <!--Non Trial Promo Password Document -->
+            <!--<apex:image id="theImage" value="https://c.cs94.content.force.com/servlet/servlet.ImageServer?id=0150R0000008xlq&oid=00D0R0000000MQq" width="600" height="200"/>-->
+            <!-- <apex:image url="{!URLFOR($Resource.TRlogo, 'TRlogo.png')}"/>-->
+            <!--<apex:image id="theImage1" url="https://c.cs94.content.force.com/servlet/servlet.ImageServer?id=0150R0000008xlq&oid=00D0R0000000MQq&lastMod=1507900997000" width="600" height="200"/>  -->
+            <!--<img src="https://thomsonreutersglis2e--c.na68.content.force.com/servlet/servlet.ImageServer?id=015130000037yE5&oid=00D30000000pLSL&lastMod=1443130592000" width="400" height="150"/>-->
+                        <apex:image url="{!$Label.LCRMTemplateLogo}" width="400" height="150"/>
+            <br/>
+            
+            <div>{!$Label.DearM} {!oPassword.Contact__r.Name}<!-- {!relatedTo.Contact__r.Name} -->,</div>
+            <p>
+                {!$Label.You_have_qualified_for_short_term_access_to_Thomson_Reuters} {!oPromotion.Description__c}<!-- {!relatedTo.Promotion__r.Description__c} -->.<br/><br/>
+                {!$Label.Your_access_starts_on} &nbsp;<apex:outputText value="{!sToday}  {!$Label.and_will_end_on} {!sEndDate}"> </apex:outputText><!-- {!relatedTo.Start_Date__c}--><!-- {!relatedTo.End_Date__c}--> {!$Label.or_when_the_usage_limits_of_the_access_are_met_This_access_is_governed_by_Thoms} <a href="http://static.legalsolutions.thomsonreuters.com/static/general-terms-conditions.pdf">{!$Label.General_Terms_and_ConditionsN}</a>
+                <br/><br/>
+                {!$Label.To_start_your_short_term_access_sign_in_with_the_following_credentials}<br/>
+                {!$Label.Promotional_UsernameN} {!oPassword.Name}<!-- {!relatedTo.Name} --><br/> 
+                {!$Label.Promotional_PasswordN} {!oPassword.Password__c}<!-- {!relatedTo.Password__c} --><br/><br/>
+            </p>
+            <p>
+            {!$Label.If_you_have_any_questions_about_this_access_or_our_services_please_contact_N}
+            <br/><br/>
+            
+            {!$Label.Thank_youM}<br/>
+            {!oPassword.Owner.Name}
+            <!-- {!relatedTo.Owner.Name} --> <br/><br/><br/> 
+            
+            {!$Label.X1_Any_folders_or_annotations_you_create_will_not_be_saved_after_your_promotionN}<br/>  
+            {!$Label.X2_This_promotion_CANNOT_be_used_with_an_existing_Westlaw_OnePass_password_You_N} 
+            </p>
+            
+            <!--End of non trial promo password document -->
+        </body>
+    </html>
+</apex:pageblock>
+<!--Non Trial Document for multiple contacts-->
+<apex:pageBlock rendered="{!AND($CurrentPage.parameters.Type='Promo',$CurrentPage.parameters.Indicator='nontrial')}">
+    <html>
+        <style type = "text/css">
+            p {font-family: "Times New Roman"; margin-left: 1.0cm;} 
+            div {font-family: "Times New Roman"; }
+            h4 {font-family: "Times New Roman"; font-size:18.5px}
+        </style>
+        <body>
+            <!--<img src="https://thomsonreutersglis2e--c.na68.content.force.com/servlet/servlet.ImageServer?id=015130000037yE5&oid=00D30000000pLSL&lastMod=1443130592000" width="400" height="150"/>-->
+            <apex:image url="{!$Label.LCRMTemplateLogo}" width="400" height="150"/>
+            <div>{!$Label.DearM} {!accountName},</div>
+            <br/>
+            <p>
+                {!$Label.The_following_people_at_your_organization_have_qualified_for_short_term_access_t}<br/>
+                {!oPromotion.description__C}
+                <br/>
+                <br/>                    
+            </p>
+            
+            <p>
+                {!$Label.Their_access_starts_on}  &nbsp;<apex:outputText value="{!sToday}  {!$Label.and_will_end_on} {!sEndDate}"> </apex:outputText>  {!$Label.or_when_the_usage_limits_of_the_access_are_met_This_access_is_governed_by_Thoms}{!$Label.To_start_the_trial_access_each_user_can_sign_in_with_the_following_credentials}
+ <a href = "http://static.legalsolutions.thomsonreuters.com/static/general-terms-conditions.pdf">{!$Label.General_Terms_and_ConditionsN}</a>.
+            </p>
+            
+            <p>{!$Label.To_start_the_short_term_access_each_user_can_sign_in_with_the_following_credent}</p>
+            <p>
+                <apex:dataTable value="{!oPasswordList}" var="pwd" rendered="{!oPasswordList.size != 0}" border="1">
+                    <apex:column headerValue="Contact Name" value="{!pwd.Contact__r.Name}"/>
+                    <apex:column headerValue="Promotional Username" value="{!pwd.Name}"/>
+                    <apex:column headerValue="Promotional Password" value="{!pwd.Password__c}"/>
+                </apex:dataTable>  
+            </p>
+            <p>{!$Label.If_you_have_any_questions_about_this_access_or_our_services_please_contact_N}</p>
+            <p>
+            {!$Label.Thank_youM}<br/>
+            {!oPromotion.owner.name}
+            <!-- {!relatedTo.Owner.Name} --> <br/><br/>
+            
+            {!$Label.X1_Any_folders_or_annotations_you_create_will_not_be_saved_after_your_promotionN}<br/>  
+            {!$Label.X2_This_promotion_CANNOT_be_used_with_an_existing_Westlaw_OnePass_password_You_N} 
+            </p>
+            <br/>
+            <br/>
+        </body>
+    </html>
+    
+</apex:pageBlock>
+ 
+</apex:page>

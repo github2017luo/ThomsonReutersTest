@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <submitter>Brazil_Sales_Admin</submitter>
+        <type>group</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Created_Date__c</field>
+        <field>Name</field>
+        <field>QuoteNumber</field>
+        <field>Status</field>
+        <field>CreatedBy</field>
+        <field>TotalPrice</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>Reservation_Manager__c</name>
+                <type>relatedUserField</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>1 OR 2 OR 3 OR 4</booleanFilter>
+            <criteriaItems>
+                <field>Quote.Business_Unit__c</field>
+                <operation>equals</operation>
+                <value>Revista - Print</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Quote.Business_Unit__c</field>
+                <operation>equals</operation>
+                <value>Revista - Online</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Quote.Business_Unit__c</field>
+                <operation>equals</operation>
+                <value>TEDESCO</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Quote.Business_Unit__c</field>
+                <operation>equals</operation>
+                <value>Novaprolink</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Partner-Manager Approval for Quote Revista - Print</label>
+        <name>Manager_Approval_for_Quote_Revista_Print</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>Manager_of_Reservation_Manager__c</name>
+                <type>relatedUserField</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Quote.Business_Unit__c</field>
+                <operation>equals</operation>
+                <value>MasterSaf</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Quote.Business_Unit__c</field>
+                <operation>equals</operation>
+                <value>GTM</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Partner-Manager Approval for Quote</label>
+        <name>Manager_Approval_for_Quote</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>Approval Process for Partners.</description>
+    <emailTemplate>LatAm_Order_Form/Sent_for_Manager_Approval_English</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>OR( 
+AND( 
+$Profile.Name = &quot;LatAm User&quot;, 
+Opportunity.Owner.Profile.Name = &apos;Partner Portal User&apos;,  
+OR( 
+$RecordType.Name = &quot;LATAM New Quote&quot;, 
+AND( 
+$RecordType.Name = &quot;LATAM Renewal Quote&quot;, 
+Renewal_Flag_Formula__c = true 
+) 
+),
+OR(
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;Revista - Print&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;MasterSaf&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;Revista - Online&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;TEDESCO&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;Novaprolink&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;GTM&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;Mexico - Corporate&quot;),
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;Mexico - Print&quot;)
+), 
+ISPICKVAL(Opportunity.StageName,&quot;90%&quot;), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;EDIC&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;SCSI&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;SFWS&quot;)), 
+NOT(ISPICKVAL(Opportunity.Sales_Org__c , &quot;TSCE&quot;)), 
+Primary_Quote__c =True, 
+Is_Child_Quote_MSaf__c &lt;&gt;True, Opportunity.Is_Child_Opportunity__c &lt;&gt; true, 
+OR( 
+AND( 
+OR( 
+ISPICKVAL( Status ,&quot;Prevalidate for Final Approval&quot;), 
+ISPICKVAL( Status ,&quot;Sales Admin - Pending Review&quot;), 
+ISPICKVAL( Status ,&quot;OP Rejected&quot;), 
+ISPICKVAL( Approval_Status__c ,&quot;Quote Rejected&quot;) 
+), 
+OR(  
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;BEJE&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLEY&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPCL&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPTC&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLPA&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLUR&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;DFCL&quot;)
+), 
+OR( 
+Pricing_Approval_Required__c = False, 
+AND( 
+Pricing_Approval_Required__c = True, 
+Pricing_Approval_Complete__c = True 
+) 
+), 
+NOT(ISBLANK(Sales_Admin_Approval_Date__c)) 
+), 
+AND( 
+OR( 
+Pricing_Approval_Required__c = False, 
+AND( 
+Pricing_Approval_Required__c = True, 
+Pricing_Approval_Complete__c = True 
+) 
+), 
+OR( 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;RV01&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;TSL&quot;) 
+) 
+)	
+) 
+) 
+)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Set_Purchase_Order_Date</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Approval_Status_to_QuoteApproved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>UpdateQuoteStatusSubmittedforProcessing</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Update_Approval_Status_to_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Status_to_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Update_Approval_Status_to_MGT_Approval</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Quote_Status_to_MGT_Approval</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Submitted_Manager_Approval_Date</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>FINAL MANAGER APPROVAL – Partners</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>true</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>20</processOrder>
+    <recallActions>
+        <action>
+            <name>Update_Approval_Status_to</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Status_to_Draft</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

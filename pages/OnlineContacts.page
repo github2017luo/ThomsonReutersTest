@@ -1,0 +1,441 @@
+<!--- Created By Sreenu Daram --->
+<!--
+* CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 2019-04-03   Kumar Shubham          Jira no-DPS-4099-Enabled LightningStylesheets as part of Sales Lightning   
+* =============================================================================
+-->
+<apex:page id="OnlineContactsPage" standardController="Apttus_Proposal__Proposal__c" extensions="OnlineContactsController" action="{!validateBandedMaterials}"  title="Online Contacts" sidebar="false" lightningStylesheets="true" >
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+    <apex:sectionHeader title="" subtitle="Products with Online Contacts" rendered="{!$User.UIThemeDisplayed == 'Theme3'}"/>
+    <apex:sectionHeader title="Products with Online Contacts" subtitle="" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}"/>
+    <Style>
+        .rich-tab-header, .slds-vf-scope .rich-tab-header {
+        max-width: 100% !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        display: block !important;
+        height: calc(2.5rem - 0.5rem + 0.25rem - 2px) !important;
+        line-height: calc(2.5rem - 0.5rem + 0.25rem) !important;
+        text-decoration: none !important;
+        color: currentColor !important;
+        cursor: pointer !important;
+        font-size: 1.25em !important;
+        padding: 2px 10px 2px 10px;
+        text-align: center;
+    }
+     .rich-tab-active {
+        background-image: url(/faces/a4j/g/3_3_3.Finalorg.richfaces.renderkit.images.TabGradientA/DATB/eAFbe3btx48fmQAVbAT9);
+        background-color: #f1f1f1;
+        border-color: #fff;
+        border-width: 1px;
+        border-style: inset;
+        padding: 3px 10px 4px 10px;
+        background-repeat: repeat-x;
+        background-position: top;
+        border-bottom-width: 0;
+        cursor: default;
+    }
+    .rich-tab-inactive {
+        background-color: #ADCDAD;
+        border-color: #fff;
+        background-image: url(/faces/a4j/g/3_3_3.Finalorg.richfaces.renderkit.images.TabGradientB/DATB/eAH7-PHj2rNrmQAXcAT9);
+        border-width: 1px;
+        border-style: inset;
+        background-repeat: repeat-x;
+        background-position: top;
+        border-bottom-width: 0;
+        cursor: default;
+    }   
+    body .bPageBlock .pbBody .pbSubheader {
+        border-width: 2px 0 0 !important;
+        border-style: solid !important;
+        color: white !important;
+        padding: 4px 3px !important;
+        font-size:1.055em !important;
+        font-weight:inherit !important;
+    }
+    .Custom29Tab .tertiaryPalette, .individualPalette .Custom29Block .tertiaryPalette, .layoutEdit .individualPalette .Custom29Block .tertiaryPalette {
+        background-color: #acbf40 !important;
+        border-color: #acbf40 !important;
+    }
+    
+    .apexp .detailList .list .headerRow th {
+        border-bottom: 2px solid #ccc !important;
+        white-space: nowrap !important;
+    }
+    
+    body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th {
+        background: #f2f3f3 !important;
+        border-width: 0 0 1px 1px !important;
+        border-color: #e0e3e5 !important;
+        color: #000 !important;
+        font-size: 1.2rem !important;
+        font-weight: bold !important;
+        padding: 5px 2px 4px 5px !important;
+    }
+    
+    body input[type="submit"], body .pbButton .btn, body .pbButtonb .btn, body input.btn,  .slds-vf-scope input[type="submit"], .slds-vf-scope .pbButton .btn, .slds-vf-scope .pbButtonb .btn, .slds-vf-scope input.btn, .slds-vf-scope .menuButton {
+        -webkit-appearance: none !important;
+        position: relative !important;
+        display: inline-block !important;
+        border: 1px solid transparent !important;
+        padding: 0 !important;
+        font-size: 1.3rem !important;
+        line-height: 2.495rem !important;
+        text-decoration: none !important;
+        white-space: normal !important;
+        border-radius: .25rem !important;
+        background: transparent !important;
+        background-clip: border-box !important;
+        color: rgba(27, 82, 151, 1) !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+        user-select: none !important;
+        -webkit-transition: color .05s linear,background-color .05s linear !important;
+        transition: color .05s linear,background-color .05s linear !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        text-align: center !important;
+        vertical-align: middle !important;
+        border: 1px solid rgb(221, 219, 218) !important;
+        -webkit-transition: border 0.15s linear !important;
+        transition: border 0.15s linear !important;
+        border-color: rgb(221, 219, 218) !important;
+        background-color: rgb(255, 255, 255) !important;
+    }
+    button, html input[type=button], input[type=reset], input[type=submit] {
+        -webkit-appearance: button !important;
+        cursor: pointer !important;
+    }
+    body .message td, .slds-vf-scope .message td {
+        vertical-align: top;
+        text-align: left;
+        font-size: 1.185rem;
+    }
+    body label, .slds-vf-scope label {
+        display: inline-block;
+        margin-right: .75rem;
+        font-size: 1.195rem;
+        line-height: 1.5;
+        color: rgb(62, 62, 60);
+    }
+    
+    body .list, body .list table, body .detailList, body .detailList table, body .listViewport table, body .listViewport table table, .slds-vf-scope .list, .slds-vf-scope .list table, .slds-vf-scope .detailList, .slds-vf-scope .detailList table, .slds-vf-scope .listViewport table, .slds-vf-scope .listViewport table table {
+        min-width: 100%;
+    }
+
+    body .list, body .detailList, body .listViewport table, .slds-vf-scope .list, .slds-vf-scope .detailList, .slds-vf-scope .listViewport table {
+        background-color: rgb(255, 255, 255);
+        font-size: inherit;
+    }
+    table {
+        table-layout: auto !important;
+    }
+    body .rich-tabhdr-cell-active, .slds-vf-scope .rich-tabhdr-cell-active {
+        border-bottom-color: rgb(255 255 255);
+    }
+    body .rich-tabhdr-side-cell, .slds-vf-scope .rich-tabhdr-side-cell {
+        position: relative;
+        padding: 0 .05rem;
+        color: rgb(62, 62, 60);
+    }
+    </Style> 
+    <script>
+        function callAction() {                   
+            mapLogic();                      
+        }
+        function setTabB() {                   
+            setTabBanded();                      
+        }
+        function setTabP() {                   
+            setTabPerseat();                      
+        }
+       jQuery.noConflict();
+    </script>
+    <body> 
+    <apex:pageMessages id="msgs" escape="false" />   
+    <apex:form id="form">
+        <apex:actionFunction name="mapLogic" action="{!mappingLogic}" reRender="form, banded, perSeat" rendered="{!isError == False}" status="loadStatus"/>
+        <apex:actionFunction name="setTabBanded" action="{!setBandedTab}" reRender="form,banded,pb,pbs,PaginationC" status="loadStatus">
+        </apex:actionFunction>
+        <apex:actionFunction name="setTabPerseat" action="{!setPerseatTab}" reRender="form,perseat,pb1,pspbs1,PaginationC" status="loadStatus">
+        </apex:actionFunction>  
+        <apex:actionFunction name="setTabNAIC" action="{!setNAICTab}" reRender="form,naic,naic1,naicpbs" status="loadStatus">
+        </apex:actionFunction>
+        <apex:actionstatus id="loadStatus">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                    <div class="waitingHolder" style="position: fixed; margin-left: 500px; margin-top: 100px;">
+                        <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="35" width="35" style="opacity: 1.0;"/>
+                        <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+        <div align="center" draggable="false" >
+            <apex:commandButton value="Save" action="{!Save}" status="loadStatus" reRender="msgs,pb,pb1,form" style="font-size:16px"/>
+            <apex:commandButton value="Cancel" action="{!Cancel}" immediate="true" status="loadStatus" style="font-size:16px"/> 
+            <apex:commandButton value="Copy" onclick="if(!confirm('This will copy all selected password holders to all per seat products and replace what was there previously. Do you want to continue?')){return false};" action="{!copypscontacts}" oncomplete="setTabPerseat();" reRender="msgs" rendered="{!AND(perseatsize == true,tabName == 'Per Seat Products')}" status="loadStatus" style="font-size:16px" />
+       </div> 
+       <apex:outputLabel ></apex:outputLabel>
+       <apex:pageBlock id="PaginationC" rendered="{! OR(AND(totalbandedList.size>100,tabName=='Banded Products'), AND(totaldspmaterialsList.size>100,tabName=='Per Seat Products'))}" >
+       <apex:outputLabel style="float:right;font-family: Calibri;font-weight:12px;"  >Page {!pageNum}</apex:outputLabel>
+       <div class="container" align="center"  draggable="false"> 
+          <ul class="pagination" style=" align:center;padding-left:300px;"  >
+            <li  class="page-item "><apex:commandLink id="prev" value="Previous"   action="{!previous}" rendered="{!hasPrevious}" tabindex="-1" status="loadStatus"  reRender="pb,pb1,container,PaginationC"></apex:commandLink></li>
+            <li class="page-item "><apex:commandLink value="1"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>100}"  tabindex="-1" status="loadStatus"  reRender="pb,pb1,container,PaginationC">
+            <apex:param value="1" assignTo="{!paramDigit}"/>  </apex:commandLink></li>
+            <li class="page-item "><apex:commandLink value="2"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>100}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC">
+            <apex:param value="2" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="3"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>200}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="3" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="4"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>300}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="4" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="5"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>400}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="5" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="6"   action="{!OnclickDigit}" rendered="{!sizeOfWrapper>500}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="6" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="7"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>600}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="7" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="8"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>700}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="8" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="9"  action="{!OnclickDigit}" rendered="{!sizeOfWrapper>800}"  status="loadStatus"   reRender="pb,pb1,container,PaginationC"> 
+            <apex:param value="9" assignTo="{!paramDigit}"/></apex:commandLink></li>
+            <li class="page-item"><apex:commandLink value="Next"  action="{!next}" status="loadStatus" rendered="{!hasNext}" reRender="pb,pb1,container,PaginationC">
+            </apex:commandLink></li>
+         </ul>
+         </div>
+        </apex:pageBlock>
+        <div align="center" draggable="false">
+            <br/>
+            <apex:outputLabel for="ldroplist" title="Locations" rendered="{!AND(location != NULL, location != '')}" style="font-size:1.45rem !important;"><b>Locations : </b></apex:outputLabel>
+            <apex:selectList id="ldroplist" title="Locations" value="{!location}" multiselect="false" size="1" rendered="{!AND(location != NULL, location != '')}">
+               <apex:actionSupport event="onchange" action="{!locationEvent}" rerender="form,msgs" status="loadStatus" oncomplete="callAction()"/>
+               <apex:selectOptions value="{!locationList}">
+               
+               </apex:selectOptions>
+            </apex:selectList> <br/>
+            <br/>   
+        </div> 
+        <br/>  
+    <apex:tabPanel id="tabpanel" value="{!tabName}">
+    <!-- Banded Products Tab --->   
+       
+    <apex:tab id="banded" name="Banded Products" label="Banded Products" status="loadStatus" switchType="ajax" labelWidth="150px" ontabEnter="setTabB();return false;">   
+    <apex:actionRegion >
+        <apex:pageBlock id="pb" >            
+           <apex:pageBlockSection columns="1" id="pbs" title="Banded Products - You are allowed {!IF(maxBandedProdQnt != NULL, maxBandedProdQnt, 0)} Passwords" collapsible="false">
+  
+                <apex:repeat value="{!bandedProducts}" var="bp">
+                   <b>{!bp}</b><br></br>
+                </apex:repeat>
+                
+               <apex:pageBlockTable style="width:100%" value="{!lstbandedSetController}" var="apli">
+                    <apex:column style="width:01%;">
+                        <apex:facet name="header">Select All <apex:inputCheckbox id="bp" value="{!isBandedSelectAll}" immediate="true">
+                           <apex:actionSupport event="onchange" action="{!getBandedSelected}" status="loadStatus" rerender="pb"/> 
+                            </apex:inputCheckbox> 
+                        </apex:facet>
+                         <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                         </apex:inputCheckbox> 
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">First Name</apex:facet> 
+                        <apex:outputText value="{!apli.onlineContact.First_Name__c}" rendered="{!apli.isNewContact == false}"/>                       
+                        <apex:inputField value="{!apli.onlineContact.First_Name__c}" rendered="{!apli.isNewContact == true}"/>    
+                    </apex:column>
+                   
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Last Name</apex:facet>
+                        <apex:outputText value="{!apli.onlineContact.Last_Name__c}" rendered="{!apli.isNewContact == false}" />                       
+                        <apex:inputField value="{!apli.onlineContact.Last_Name__c}"  rendered="{!apli.isNewContact == true}"/>                            
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Position</apex:facet>   
+                        
+                        <apex:outputText value="{!apli.onlineContact.Position__c}" rendered="{!AND(apli.isNewContact == false, NOT(ISBLANK(apli.onlineContact.Position__c)))}"/>
+                        <apex:inputField value="{!apli.onlineContact.Position__c}" rendered="{!OR(apli.isNewContact == true, ISBLANK(apli.onlineContact.Position__c))}"/>   
+                      
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Type</apex:facet>
+                       
+                       <apex:inputField value="{!apli.onlineContact.Type__c}" /> 
+                       
+                    </apex:column>
+                  
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">WLEc Juris</apex:facet>                        
+                        <apex:inputField value="{!apli.onlineContact.WLEc_Juris__c}"/>
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Email</apex:facet> 
+                        <apex:inputText value="{!apli.strEmail}" />                        
+                    </apex:column>
+                    </apex:pageblocktable>
+                
+                
+                 
+            </apex:pageBlocksection>
+            <div align="center" draggable="false" >
+               <apex:commandButton value="Add Online Contacts" action="{!addOnlineContacts}" rendered="{!isExCon}" status="loadStatus" reRender="pb,form,msgs" /> <br/> 
+           </div>
+           
+       </apex:pageblock>       
+       
+       </apex:actionRegion>
+       
+      </apex:tab>
+      
+      <!-- End Banded Product Tab -->      
+            <!-- Per seat products Tab --->
+      <apex:tab id="perSeat" name="Per Seat Products" label="Per Seat Products" status="loadStatus" switchType="ajax" labelWidth="150px" ontabEnter="setTabP();return false;"   >       
+       
+       <apex:actionRegion >
+       <apex:pageBlock id="pb1" > 
+        <apex:outputLabel for="droplist" title="Per Seat Products"><b>Per Seat products: </b></apex:outputLabel>
+           <apex:selectList id="droplist" title="Per seat Products" value="{!perSeatProducts}" multiselect="false" size="1" >
+               <apex:actionSupport event="onchange" action="{!displayMaterialContacts}" rerender="form, pb1, pspbs1,msgs,PaginationC" status="loadStatus"/>
+               <apex:selectOptions value="{!psProductsList}">
+               
+               </apex:selectOptions>
+           </apex:selectList> <br/>
+           <br/>
+            <!-- dropdown -->
+                <apex:pageBlockSection id="pspbs1" collapsible="false" columns="1" title="Per Seat Products" rendered="{!AND(totalRecinAllBatchesPerSeat!= null, totalRecinAllBatchesPerSeat > 0,perSeatProducts!=null)}">
+                <apex:pageBlockTable style="width:50%" value="{!PSMaterial}" var="psm" columns="2">
+                    <apex:column headerValue="No. of Passwords" style="width:03%">
+                    <b>{!psm.quantity}</b>
+                    </apex:column>
+                    <apex:column style="width:20%">
+                    <b>{!psm.productName}</b>
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:pageBlockTable style="width:100%" value="{!lstperSeatController}" var="apli" border="2" id="eachproduct">
+                    
+                    <apex:column style="width:01%">
+                        <apex:facet name="header">Select All <apex:inputCheckbox id="psp" value="{!isPerSheetSelectAll}">
+                           <apex:actionSupport event="onchange" action="{!getperSheetSelectedPS}" status="loadStatus" rerender="pb1"/>
+                            </apex:inputCheckbox>
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone1" >
+                           <!-- <apex:actionSupport event="onclick" action="{!getpspSelectedPS}" status="loadStatus" rerender="pb1"/> -->
+                        </apex:inputCheckbox>
+                    </apex:column>
+                   
+                    <apex:column style="width:20%">
+                       <apex:facet name="header">First Name</apex:facet> 
+                       
+                        <apex:outputText value="{!apli.onlineContact.First_Name__c}" rendered="{!apli.isNewContact == false}" />                       
+                        <apex:inputField value="{!apli.onlineContact.First_Name__c}" rendered="{!apli.isNewContact == true}"/>
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Last Name</apex:facet>
+                        <apex:outputText value="{!apli.onlineContact.Last_Name__c}" rendered="{!apli.isNewContact == false}" />                       
+                        <apex:inputField value="{!apli.onlineContact.Last_Name__c}" rendered="{!apli.isNewContact == true}"/>                       
+                       
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Position</apex:facet>                     
+                        <apex:outputText value="{!apli.onlineContact.Position__c}" rendered="{!AND(apli.isNewContact == false, NOT(ISBLANK(apli.onlineContact.Position__c)))}"/>
+                        <apex:inputField value="{!apli.onlineContact.Position__c}" rendered="{!OR(apli.isNewContact == true, ISBLANK(apli.onlineContact.Position__c))}"/>                  
+                       
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Type</apex:facet>                       
+                         <apex:inputField value="{!apli.onlineContact.Type__c}" />                       
+                    </apex:column>
+                  
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">WLEc Juris</apex:facet>                       
+                        <apex:inputField value="{!apli.onlineContact.WLEc_Juris__c}" /> 
+                    </apex:column>
+                    <apex:column style="width:20%">
+                        <apex:facet name="header">Email</apex:facet>
+                        <apex:inputText value="{!apli.strEmail}" />
+                    </apex:column>                                   
+                   
+                </apex:pageblocktable>  
+            </apex:pageblocksection>
+            
+           <div align="center" draggable="false" >
+           <apex:commandButton value="Add Online Contacts" action="{!addNAPSContact}" rendered="{!AND(NOT(isAddReq), isExPSCon)}" status="loadStatus" style="float:centre;" reRender="pb1, msgs,form" />    
+           </div>
+          
+           <div align="center" draggable="false" >
+           <apex:commandButton value="Add Online Contacts" action="{!addPSContacts}" rendered="{!isAddReq}" status="loadStatus" style="float:centre;" reRender="pb1, msgs,form" />    
+           </div>
+      
+        </apex:pageblock>        
+       </apex:actionRegion>
+        
+       </apex:tab>
+        <!-- End Per Seat Products Tab -->
+   <!-- NAIC Tab --->
+      <apex:tab id="naic" name="NAIC" label="NAIC" status="loadStatus" switchType="ajax" labelWidth="150px" ontabEnter="setTabNAIC();">       
+       <apex:actionRegion >
+       <apex:pageBlock id="naic1"> 
+           <apex:outputLabel for="droplist" title="Oden Products"><b>Oden Products: </b></apex:outputLabel>
+           <apex:selectList id="droplist1" title="Oden Products" value="{!odenProducts}" multiselect="false" size="1" >
+               <apex:actionSupport event="onchange" action="{!displayMaterialContacts}" rerender="form, naic1, naicpbs" status="loadStatus"/>  
+               <apex:selectOptions value="{!odProductsList}">
+               
+               </apex:selectOptions>
+           </apex:selectList> <br/>
+           <br/>
+           <apex:pageBlockSection id="naicpbs" collapsible="false" columns="1" title="NAIC Information" >
+            <apex:pageBlockTable style="width:100%" value="{!oddspMaterials}" var="apli" border="2" id="eachproduct">
+                <apex:column style="width:01%">
+                        <apex:facet name="header">Select All <apex:inputCheckbox id="psp" value="{!isodenSelectAll}">
+                           <apex:actionSupport event="onchange" action="{!getodenSelectedOD}" status="loadStatus" rerender="od1"/>
+                            </apex:inputCheckbox>
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone1" >
+                           </apex:inputCheckbox>
+                    </apex:column>
+                <apex:column style="width:20%">
+                       <apex:facet name="header">NAIC Number</apex:facet> 
+                       <apex:outputPanel >
+                            <div class="requiredInput">
+                                <div class="requiredBlock"></div>
+                        <apex:inputField value="{!apli.onlineContact.NAIC_Number__c}" />
+                        </div>
+                        </apex:outputPanel>
+                    </apex:column>
+                <apex:column style="width:20%">
+                        <apex:facet name="header">NAIC Name</apex:facet>
+                        <apex:inputField value="{!apli.onlineContact.NAIC_Name__c}" />                       
+                    </apex:column>
+            </apex:pageblocktable>
+            <div align="Center" draggable="false">
+                    <apex:pageBlockSectionItem >
+                        <apex:commandButton value="Add Row" action="{!addrows}"   rendered="{! aptProposal.Apttus_Proposal__Approval_Stage__c <> 'Accepted'}">
+                            <apex:param name="eventid" value="True" assignTo="{!apli.evnetIdToAdd}"/> 
+                        </apex:commandButton>
+                    </apex:pageBlockSectionItem>
+                </div>  
+            </apex:pageBlockSection> 
+           <!-- <div align="center" draggable="false" >
+           <apex:commandButton value="Add Online Contacts" action="{!addODContacts}" rendered="{!isodAddReq}" status="loadStatus" style="float:centre;" reRender="naic1, msgs"/>    
+           </div> -->
+       </apex:pageBlock> 
+       </apex:actionRegion>
+       </apex:tab>
+  <!-- End NAIC Tab -->
+      </apex:tabPanel>  
+     </apex:form>
+     </body>
+  
+    
+</apex:page>

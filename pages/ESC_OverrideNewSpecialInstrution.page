@@ -1,0 +1,28 @@
+<!--**********************************
+Page Name: OverrideNewSpecialInstrution
+Purpose: VF page to override a new Special Instuction when invoked from New button
+Author:Mousumi Panda
+Date Created:11/05/2017
+Date Updated:V0:
+***********************************-->
+<apex:page standardController="ESC_Special_Instruction__c" extensions="ESC_OverrideNewSpecialInstController" action="{!redirctToSPInstruvtion}">
+ <!--<script src="../../soap/ajax/27.0/connection.js" type="text/javascript"></script>-->
+ <apex:includeScript value="/support/console/30.0/integration.js"/>
+<script>
+function openCa(PrimaryId)
+            { 
+                if(sforce.console.isInConsole())               
+                    sforce.console.openPrimaryTab(null, '/'+PrimaryId, true);   
+                else
+                    location.href = '/'+PrimaryId;                            
+            }
+</script>
+  <apex:form >
+    <apex:outputLabel rendered="{!errormessage}">This functionality is not available. Please navigate to related Account or Contact record to create a new related Special Instruction</apex:outputLabel>
+      <br/>
+    <!-- get the retURL and put in a link for returning back-->
+    <!--<apex:commandLink action="{!onGoBack}" value="<< Previous" id="theCommandLink" />-->
+    <apex:outputLink target="_self" onclick="openCa('{!JSENCODE(ParentId)}');" value="{!ParentId}"> Previous
+                 </apex:outputLink>
+  </apex:form>  
+</apex:page>

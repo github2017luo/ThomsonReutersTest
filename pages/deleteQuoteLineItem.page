@@ -1,0 +1,7 @@
+<apex:page standardController="QuotelineItem" extensions="deleteQuoteLineItemController" action="{!restrictDelete}">
+  <apex:pageMessages />
+  <apex:form >
+      <apex:inputField id="quoteid" rendered="false" required="false" value="{!QuoteLineItem.quoteid}"/>
+      <apex:commandLink value="Back" action="{!returntoQuote}"/>
+  </apex:form>
+</apex:page>

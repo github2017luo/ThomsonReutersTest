@@ -1,0 +1,2382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AutoResponseRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <autoResponseRule>
+        <fullName>Auto Response Cases</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email Abeledo/Laley</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>clientes@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters - Atención al Cliente</senderName>
+            <template>LATAM_Mail/Customer_Care_LLEY_and_AP</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email SupportRT,Email contentRT,Email SACRT,Email contactusRT,Email SupportOnline,Email SACRTOnline,Email feedbackRT</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>noreply@rt.com.br</senderEmail>
+            <senderName>At.Cliente RT</senderName>
+            <template>LATAM_Mail/Auto_Response_RT_SAC</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>startsWith</operation>
+                <value>EverydayLegal</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>everydaysupport@thomsonreuters.com</senderEmail>
+            <senderName>EverydayLegal Support</senderName>
+            <template>FindLaw_Marketing/EverydayLegal_com_Support_Web_to_Case_Reply</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 OR 2</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Findlaw.com</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Product__c</field>
+                <operation>equals</operation>
+                <value>FindLaw</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>suggest@supportrt.findlaw.com</senderEmail>
+            <senderName>FindLaw Support</senderName>
+            <template>FindLaw_Marketing/FindLaw_com_Support_Web_to_Case_Reply</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ Contact</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>care.anz.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Legal ANZ Customer Care</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_Customer_Care</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ ServiceFirst</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>servicefirst.anz.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Legal ANZ ServiceFirst</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_ServiceFirst</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ TechCare</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>techcare.anz.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Legal ANZ Technical Care</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_Technical_Care</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>BR_LE_HelpDesk</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportggo@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>LatAm_Service_Email/GGO_Portuguese_Case_Auto_Response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <formula>IF( ISNEW() &amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))= &apos;ar&apos; || LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))= &apos;ch&apos; || LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))= &apos;py&apos; || LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))= &apos;ur&apos;)) , True, False)</formula>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportggo@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>LatAm_Service_Email/GGO_Spanish_Case_Auto_Response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <formula>IF( ISNEW() &amp;&amp; ((ISPICKVAL(Origin , &quot;Web&quot;)) &amp;&amp; (LCRM_Sub_BU__c = &apos;GGO&apos;) &amp;&amp; (LOWER(MID(ESC_Origin_Name__c, FIND(&quot;=&quot;,ESC_Origin_Name__c)+1, (FIND(&quot;&amp;&quot;,ESC_Origin_Name__c)-FIND(&quot;=&quot;,ESC_Origin_Name__c))-1))=&apos;br&apos;)) , True, False)</formula>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportggo@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>LatAm_Service_Email/GGO_Portuguese_Case_Auto_Response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI MOJ &amp; Key Accounts</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.ESC_Case_Type__c</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>1 - High</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalmoj@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Technical Helpdesk</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI NPS Feedback</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegaltechsupport@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Cash Application remittances-GenPact</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalbacsremittance@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Credit Management - Legal issues</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcreditmanagementlegal@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC International</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalinternational@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Key Trade</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalkeytrade@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Print</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalprintorders@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Customer Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcustomersupport@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI MOJ &amp; Key Accounts</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>3 - Low</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalkeyaccounts@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Online Strategic Customer Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalpremierservice@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Bespoke</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalbespokeorders@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Print</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Incident</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcouriers@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Online Order Management</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Tech Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>1 - High</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalonlineorders@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Intercompany</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalism@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Ops Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalopssupport@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI CMD - Customer Master Data</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcmd@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI PPO - Product &amp; Pricing Operations</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalppo@tr.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Cash Application queries - GenPact</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcashapps@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CTS Transparent Authentication</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_CTS_Transparent_Authentication</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Online Access</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalaccess@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Online Customer Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>csonlinesupport@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI OTC Admin support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcopyinvoice@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Credit Management</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalcm@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Online Order Management</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>3 - Low</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalonlinebillingqueries@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Strategic</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>2 - Medium</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalstrategic@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Inside Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>2 - Medium</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalinsidesales@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Field sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>2 - Medium</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalfieldsales@tr.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Print Sales</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>2 - Medium</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalprintsales@thomsonreuters.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI New business and print</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Request for Action</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>2 - Medium</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalnewbusandprint@thomsonreuters.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Software</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Tech Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Priority</field>
+                <operation>equals</operation>
+                <value>2 - Medium</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>trlegalsoftware@thomsonreuters.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Solcara UKI Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>solcara.support@thomsonreuters.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/Solcara_UKI_Support_Auto_Response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>UKI Firmstyle</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>firmstyle@thomsonreuters.com</replyToEmail>
+            <senderEmail>customersupportuki@tr.com</senderEmail>
+            <senderName>Customer Support UKI</senderName>
+            <template>GLI_Service_Email_templates/GLI_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CTS Westlaw Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_WestlawSupportQueue</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CTS Litigation Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_LitigationSupportQueue</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS CORP Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Corp_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Customer Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_CustomerService</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Fed Govt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Fedgovt</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Findlaw Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Findlaw_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Govt Correctional</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Govt_Correctional</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS KeyAccount Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_KeyAccount_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS STATE Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_State_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Support Clerks</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Support_Clerks</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL RSA BLR Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Autoresponse_RSA_BLR_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL RSA Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Autoresponse_RSA_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Default 2</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Default</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL RSA Book Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Autoresponse_RSA_Book_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL RSA Specialty Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Autoresponse_RSA_Specialty_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL RSA CLEAR Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Autoresponse_RSA_CLEAR_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL Credit Debit Adjustments</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Cash_Apps</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL Credit Card</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Cash_Apps</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL Cash Fed Govt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Cash_Apps</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL CashApp</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Cash_Apps</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL Prepayments</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Cash_Apps</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C Legal Americas Billing</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Billing</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp - BigRedSky</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>hrsolutions.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters ANZ CustExp-BigRedSky</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_CustExp_BigRedSky_Auto_Acknowledgement</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email ANZ HRSolutions</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>hrsolutions.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters ANZ HRSolutions</senderName>
+            <template>unfiled$public/ANZ_HRSolutions</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL Digital Success Customer Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_USL_CS_SCM_Consultants</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL Orders Fed Govt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_EBO_Orders_Fed_Govt</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Findlaw LI</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Findlaw_LI</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Findlaw SL</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Findlaw_SL</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Findlaw SO</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Findlaw_SO</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp - CVMail</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>hrsolutions.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters ANZ CustExp-CVMail</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_CustExp_CVMail_Auto_Acknowledgement</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp - IworkForSA</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>hrsolutions.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters ANZ CustExp-IworkForSA</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_CustExp_IWorkForSA_Auto_Acknowledgement</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp - RAMS</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>ramshelpdesk@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters ANZ CustExp-RAMS</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_CustExp_RAMS_Auto_Acknowledgement</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>ANZ CustExp - OnBoardWA</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>hrsolutions.autogen@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters ANZ CustExp-OnBoardWA</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_CustExp_OnBoardWA_Auto_Acknowledgement</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS SCM Consultants</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_USL_CS_SCM_Consultants</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 6</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Goldline_1_5_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Research Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Research_Support_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Sales Service Escalations</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Sales_Service_Escalations_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Technical Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Technical_Support_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN FR Customer Service</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_FR_Customer_Service_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 AND (2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8)</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 1</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 2</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 3</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 4</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 5</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 7</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Premier 8</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Goldline_1_5_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Business Recovery</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Business_Recovery_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN ISM</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_ISM_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN Print Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_Print_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN EYB Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_EYB_Online_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN CLB Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_CLB_Online_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN EREADER Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_EREADER_Online_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN EREF Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_EREF_Online_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN PLC Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_PLC_Online_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN TNP Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_TNP_Online_Order_Mgmt</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN WLNC Online Order Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_WLNC_Online_Order_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN Accounts Receivables&apos;</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/CDN_C2C_Collections</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Customer Master</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Customer_Master_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Customer Master New Account</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Customer_Master_New_Account_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN Credit Mgmt</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_Credit_Mgmt_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN Cash Apps</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_Cash_Apps_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN Credit Approval</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_Credit_Approvals_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN Payroll Consultant</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_Payroll_Consultant_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CDN EN Customer Service</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>CDN_service_auto_response_email/CDN_EN_Customer_Service_auto_Response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1</booleanFilter>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Corp_OS_GTM_IP_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>integrationpoint@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>Corp_Internal_Templates/Corp_Auto_Acknowledgement_generic</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Corp_OS_GTM_IP_Support_Monitoring</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>monitoring_integrationpoint@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>Corp_Internal_Templates/Corp_Auto_Acknowledgement_generic</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CS Default</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Default</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 AND (2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 OR 10 OR 11 OR 12 OR 13 OR 14 OR 15 OR 16 OR 17)</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL OrderManagement</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL ISM CORRESP</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL ISM ORDERS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL FED TRSS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL HELD ORDERS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL MSA ORDERS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL SPECIALTY PROCESSING</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL INTERNAL ENTITLEMENT</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL EXTERNAL ENTITLEMENT</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL DPEARTMENT FAX</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL PRIORITY SHIP</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL SPECIAL OFFERS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL CLEAR SPECIAL OFFER</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL OP CONSULTANTS</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL LMA</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL ORDER CORRECTIONS</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_USL_CS_SCM_Consultants</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 AND (2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 OR 10 OR 11 OR 12 OR 13 OR 14 OR (15 AND 16))</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP AdvanceFlow</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Onvio Technical Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Checkpoint Engage Tech Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Legacy KS Customer Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Checkpoint Engage Usage</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Checkpoint Edge</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP CS Autopay</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Checkpoint Marketing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C TAP Order Management</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C TAP Billing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C TAP Collections</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C TAP Credit</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C TAP Cash Apps</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Subject</field>
+                <operation>notContain</operation>
+                <value>ESC-Professional Tax - Failure for</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>TAX_Prof_Service_Auto_Response/TXP_Auto_Acknowledgement_generic</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Legal_HIGHQ_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>HighQ_Service_Templates/HighQ_Auto_Acknowledgement_generic</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Web</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>TAP Checkpoint Research</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>TAX_Prof_Service_Auto_Response/TXP_Auto_Acknowledgement_generic</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C West Credentialing</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C Clear Credentialing</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_C2C_Credentialing</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C CDN Billing</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>globalcustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>C2C_CDN_service_auto_response/C2C_CDN_Billing_auto_response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Corp_Risk_RegulatoryIntel_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>regulatoryintelligence@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>Risk_Service_Templates/Regulatory_Intelligence</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C Elite Collections</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>elitedisputes@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupportelite@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/Elite_C2C_Email_To_Case_Acknowlegement</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Corp_Risk_CLMS_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>compliance.learning@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>Risk_Service_Templates/Compliance_Learning</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CORP_Risk_Oden_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>odensupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>Risk_Service_Templates/Oden_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>ANZ Banking</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>tlranz.banking@thomsonreuters.com</replyToEmail>
+            <senderEmail>care.anz.autogen@thomsonreuters.com</senderEmail>
+            <senderName>ANZ Banking</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_Banking</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>ANZ Credit Services</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>anz.creditservices@tr.com</replyToEmail>
+            <senderEmail>care.anz.autogen@thomsonreuters.com</senderEmail>
+            <senderName>ANZ Credit Services</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_Credit_Services</template>
+        </ruleEntry>
+        <ruleEntry>
+            <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Elite - EbillingHub</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Elite - SF Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>ebhsupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupportelite@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/Elite_Auto_Response_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>legaltracker-support@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/LegalTracker_Support_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_BO_AR</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>tracker-ar@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/ESC_Tracker_AR_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_CSM</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>legaltracker.clientsuccess@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/ESC_LegalTracker_ClientSuccess_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_BO_Renewals</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>legaltracker-renewals@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/ESC_LegalTracker_ClientSuccess_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_PS_Training</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>tracker.training@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/ESC_LegalTracker_ClientSuccess_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_ProfServ_Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>trackerpssupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/ESC_LegalTracker_ClientSuccess_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>CaseLines - Cust Support</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>decsupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>CaseLines Auto Response</senderName>
+            <template>Caselines/Caselines_Customer_Support</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>ANZ CRM MID Retention and Renewals</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ANZ_Legal_CustExp/ANZ_Client_Relationship_Managements</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>C2C USL PPS Online</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupport@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_MasterData</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL Print Subscription</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_Auto_Response_Print_Subscription</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>HighQ_Legal_Tracker_Managed_Services</value>
+            </criteriaItems>
+            <notifyCcRecipients>true</notifyCcRecipients>
+            <replyToEmail>legaltracker-support@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>ESC_Legal_Tracker/HighQ_Legal_Tracker_Managed_Services_Auto_Ack</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>NL Customer Support</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportggo@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>LatAm_Service_Email/GGO_Spanish_Case_Auto_Response</template>
+        </ruleEntry>
+        <ruleEntry>
+            <criteriaItems>
+                <field>Case.Origin</field>
+                <operation>equals</operation>
+                <value>Email</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>USL CTS West KM</value>
+            </criteriaItems>
+            <notifyCcRecipients>false</notifyCcRecipients>
+            <replyToEmail>thomsonreuterscustomersupportusl@thomsonreuters.com</replyToEmail>
+            <senderEmail>thomsonreuterscustomersupport@thomsonreuters.com</senderEmail>
+            <senderName>Thomson Reuters Customer Support</senderName>
+            <template>USL_Service_Cloud_Internal_Templates/USL_AutoResponse_West_KM</template>
+        </ruleEntry>
+    </autoResponseRule>
+</AutoResponseRules>

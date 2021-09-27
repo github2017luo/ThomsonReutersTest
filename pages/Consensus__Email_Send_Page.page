@@ -1,0 +1,31 @@
+<apex:page sidebar="false" showHeader="false">
+    <apex:includeLightning />
+    <head>
+        <title>Create Demo Invite</title>
+    </head>
+    <div id="content">
+        <div id="EmailSendComponent"/>
+    </div>
+    <script>
+        var recordId = '{! JSINHTMLENCODE($CurrentPage.parameters.id) }';
+        var invitationId = '{! JSINHTMLENCODE($CurrentPage.parameters.invId) }';
+        $Lightning.use("Consensus:DemosOutApp", function () {
+            $Lightning.createComponent("Consensus:EmailSend",
+                    {
+                        recipient: {
+                            id: recordId
+                        },
+                        invitationId: invitationId,
+                        isClassic: true
+                    },
+                    "EmailSendComponent",
+                    function (cmp) {
+                        console.log('Component created!');
+                        console.log(cmp);
+                    });
+        });
+        window.addEventListener("beforeunload", function (e) {
+            this.window.opener.$A.get("e.force:refreshView").fire();
+        });
+    </script>
+</apex:page>

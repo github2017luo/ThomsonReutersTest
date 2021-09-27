@@ -1,0 +1,17 @@
+@isTest
+global class CreateSSDMockHttpResponseGenerator implements HttpCalloutMock {
+    // Implement this interface method
+    public static HTTPResponse respond(HTTPRequest req) {
+        // Optionally, only send a mock response for a specific endpoint
+        // and method.
+        //System.assertEquals('https://api.thomsonreuters.com/ebs/account/qa/createAccount', req.getEndpoint());
+        System.assertEquals('POST', req.getMethod());
+        
+        // Create a fake response
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        res.setBody('{"ESIHeader":{"applicationId":"SF03"},"customerNumber":"null","prevAcct":"test","partnerFunction":[{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"AG","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"RE","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"RG","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"WE","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"ZB","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"ZC","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"ZE","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"ZP","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"ZU","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null},{"salesOrg":"WEST","distChannel":"W","division":"W","functionId":"ZW","counter":"000","businessPartner":"1005215581","vendorCreditorNumber":null,"contactNumber":"0000000000","personnalNumber":"00000000","description":null,"defaultPartner":null}]}');
+        res.setStatusCode(200);
+        return res;
+    }
+}

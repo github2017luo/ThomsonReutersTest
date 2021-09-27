@@ -1,0 +1,88 @@
+<apex:component controller="LCRMCancelEmailTemplateController" access="global">
+     <apex:attribute name="OpptId" type="Id" description="Id of the Opportunity" assignTo="{!opptyId}"/>
+      <apex:attribute name="from" type="String" description="Which template the flow is coming from" assignTo="{!templateFrom}"/>
+    Hello&nbsp;<apex:outputText value="{!oppty[0].Owner.Manager.Name}" />,<br/><br/>
+
+
+A request has been made to cancel the below opportunity, please review the opportunity details and action as appropriate.
+<br/><br/>
+<u><b>SELLING TEAM</b></u><br/>
+<table >
+<tr><td>Account Manager: </td><td></td><td>{!oppty[0].Owner.Name}</td></tr>
+</table>
+<br/><br/>
+<u><b>CUSTOMER</b></u><br/>
+<table >
+<tr><td>Account Name:  </td><td></td><td>{!oppty[0].Account.Name}</td></tr>
+</table>
+<br/><br/>
+<u><b>OPPORTUNITY</b></u><br/>
+<table >
+<tr><td>Opportunity ID:  </td><td></td><td>{!oppty[0].ID}</td></tr>
+<tr><td>Opportunity Name:  </td><td></td><td>{!oppty[0].Name}</td></tr>
+<tr><td>Opportunity Transaction Type:  </td><td></td><td>{!oppty[0].LCRM_Transaction_Type__c}</td></tr>
+<tr><td>Opportunity Expected start Date:  </td><td></td><td><apex:outputText value="{!DAY(oppty[0].Expected_Start_Date__c)}/{!CASE(MONTH(oppty[0].Expected_Start_Date__c),1,"01/",2,"02/",3,"03/",4,"04/",5,"05/",6,"06/",7,"07/",8,"08/",9,"09/",10,"10/",11,"11/",12,"12/","??/")}{!YEAR(oppty[0].Expected_Start_Date__c)}" rendered="{!chkStartDate}"/></td></tr>
+<tr><td>Opportunity Expected End Date:  </td><td></td><td><apex:outputText value="{!DAY(oppty[0].Expected_End_Date__c)}/{!CASE(MONTH(oppty[0].Expected_End_Date__c),1,"01/",2,"02/",3,"03/",4,"04/",5,"05/",6,"06/",7,"07/",8,"08/",9,"09/",10,"10/",11,"11/",12,"12/","??/")}{!YEAR(oppty[0].Expected_End_Date__c)}" rendered="{!chkEndDate}" /></td></tr>
+<tr><td>Total Current ACV:  </td><td></td><td>{!oppty[0].LCRM_Total_Current_ACV__c}</td></tr>
+</table>
+<br/><br/>
+<u><b>CONTRACT</b></u><br/>
+<table >
+<tr><td>Contract Expiration Date:  </td><td></td><td><apex:outputText value="{!DAY(oppty[0].Expiration_Date__c)}/{!CASE(MONTH(oppty[0].Expiration_Date__c),1,"01/",2,"02/",3,"03/",4,"04/",5,"05/",6,"06/",7,"07/",8,"08/",9,"09/",10,"10/",11,"11/",12,"12/","??/")}{!YEAR(oppty[0].Expiration_Date__c)}" rendered="{!chkExpDate}" /></td></tr>
+<tr><td>Days to Contract Expiry:  </td><td></td><td>{!NoOfDays}</td></tr>
+<tr><td>Total Incremental %:  </td><td></td><td>{!oppty[0].LCRM_Incremental_percent__c}</td></tr>
+</table>
+<br/><br/>
+    <u><b>OPPORTUNITY PRODUCTS</b></u><br/>
+<apex:repeat value="{!oppty[0].OpportunityLineItems}" var="o">
+    <apex:outputText value="{!o.Name}"></apex:outputText><br/>
+
+</apex:repeat>
+<br/><br/>
+<apex:outputPanel rendered="{!approvalTemplate}">
+<b>ACTION:</b><br/>
+To approve or reject this item, click this link <apex:outputLink value="{!url}">click this link</apex:outputLink><br/><br/>
+
+ 
+<b><style="margin: 0;"/>NOTES:</b><br/>
+1. If the above cancellation is approved after the current contract expiration date, it will become Closed Lost immediately.<br/>
+2. If rejected, the Sales Representative is expected to follow up with the customer to renegotiate and win back the Opportunity.<font color="red">Please note that rejecting the cancellation does not stop the cancellation being processed by the ‘Order Processing Team’.</font><br/>
+3. A DocuSign will be required by the customer to authorize any further billing past the current contractual agreement.
+    
+</apex:outputPanel>
+    
+<apex:outputPanel rendered="{!NOT(approvalTemplate)}">
+<b>ACTION:</b><br/>
+
+1. Liaise with the Opportunity owner to discuss options for winning this opportunity back.<br/><br/>
+ 
+<b>NOTES:</b><br/>
+1. The opportunity will be set to ‘Closed Lost’ on the contract expiration date if the customer does not sign a DocuSign, resulting in the need to create a new opportunity /order for the existing opportunity.   
+</apex:outputPanel>
+<br/><br/>
+<!--
+<font face="calibri" size="3px">Opportunity :&nbsp;<apex:outputlink value="{!LEFT($Api.Partner_Server_URL_140,FIND('.com',$Api.Partner_Server_URL_140)+4)+relatedTo.Id}" target="_blank"><b><apex:outputText value="{!relatedTo.name}" style="font-family:calibri;font-size:medium;"/></b></apex:outputLink>&nbsp;&nbsp;
+
+<br/>will be expiring on&nbsp;<apex:outputText value="{0, date, MM/dd/yyyy}" style="font-family:calibri;font-size:medium;"><apex:Param value="{!relatedTo.Expiration_Date__c }" /></apex:OutputText>&nbsp; and has been marked as&nbsp;<apex:outputText value="{!relatedTo.LCRM_Status__c}" style="font-family:calibri;font-size:medium;"/>.<br/><br/>
+
+An approval is required since the expiration date is within 45 days. <br/><br/>
+
+Please approve if you wish to mark this as a Closed Lost opportunity on the expiration date. <br/><br/>
+
+Please reject if you wish to mark this as open and want to continue further discussions with customer.<br/><br/> 
+
+To approve or reject this item,<apex:outputlink value="{!LEFT($Api.Partner_Server_URL_270,FIND('.com',$Api.Partner_Server_URL_270)+4)+relatedTo.id}">click this link</apex:outputlink>.
+or reply to this email with one of these words in the first line of the email message: APPROVE, APPROVED, YES, REJECT, REJECTED, NO <br/><br/>
+
+If replying via email,you can also add comments on the second line. Comments will be stored with the approval request in Salesforce CRM.</font><br/><br/>
+
+<font face="calibri" size="3px"><b>Note:</b></font><br/>
+<font face="calibri" size="2px">If it is approved past the expiration date, it will become Closed Lost immediately.<br/>
+If rejected, the Sales Representative is expected to follow up with customer to move forward with the Opportunity.</font><br/><br/>-->
+
+
+Your Sincerely,<br/>
+Support Team
+<br/><br/>
+
+</apex:component>

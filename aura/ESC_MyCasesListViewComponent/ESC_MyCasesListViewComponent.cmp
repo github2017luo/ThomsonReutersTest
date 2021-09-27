@@ -1,0 +1,72 @@
+<aura:component controller="ESC_ListViewController" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	<aura:attribute name="currentUser" type="User" />
+    <aura:attribute name="objectName" type="string" default="Case" description="Enter the API name of the object for which you want to show the List View."/>
+    <aura:attribute name="listViewName" type="string" description="Enter the API name of the List View you want to display. Keep it as blank if you want to show Queues."/>
+    <aura:attribute name="viewName" type="String" />
+    <aura:attribute name="isQueue" type="boolean" default="false" description="Enable this option if you want to show Queues for the selected object."/>
+    <aura:attribute name="showMyListView" type="boolean" default="false" description="Enable this option if you want to show List Views Created by User."/>
+    <aura:handler name="init" value="{!this}" action="{!c.showData}"/>     
+   
+    <lightning:card title="{!v.queueName}">
+    	<aura:set attribute="title">
+          
+    <aura:if isTrue ="{!(v.isQueue || v.showMyListView)}">
+     <div class="slds-box slds-theme_default" >
+    	<aura:if isTrue = "{!and(v.objectName == 'Case',not(v.showMyListView))}" >
+          <lightning:icon iconName="action:new_case" size="small"/>
+            &nbsp; <span class="listViewTitle slds-text-color--default slds-p-right--x-large slds-truncate" style="font-size:19px; font-weight: bold; color:rgba(0, 97, 193, 1);">
+            	{!$Label.c.ESC_HPQ_MyQueue}
+            </span>
+        </aura:if>
+         <aura:if isTrue = "{!and(v.objectName == 'ESC_Case_Collaborator__c',not(v.showMyListView))}" >
+          <lightning:icon iconName="action:new_case" size="small"/>
+             &nbsp; <span class="listViewTitle slds-text-color--default slds-p-right--x-large slds-truncate" style="font-weight: bold; color:rgba(0, 97, 193, 1);">
+                {!$Label.c.ESC_HPQ_CRMQ}
+            </span>
+        </aura:if>
+        <aura:if isTrue = "{!v.showMyListView}">
+          <lightning:icon iconName="action:new_case" size="small"/>
+            &nbsp; <span class="listViewTitle slds-text-color--default slds-p-right--x-large slds-truncate" style="font-weight: bold; color:rgba(0, 97, 193, 1);">
+                {!$Label.c.ESC_HP_MyOwnListView}
+            </span>
+        </aura:if>
+
+        <br/><br/>
+         <div class="slds-theme_default slds-form-element slds-hide slds-text-body_small" aura:id="div1">
+            
+              <span>{!$Label.c.ESC_ShowQueueHeader}</span>  
+            <div class="slds-select_container slds-text-body_small" style="margin-top: 5px;">
+                <ui:inputSelect  aura:id="selectvalues" class="slds-select slds-text-body_small"  change="{!c.onListViewChange}"/>
+            </div>
+            <div class="slds-text-color--default slds-p-right--x-small slds-truncate slds-box slds-theme_default">
+                <aura:If isTrue="{!v.viewName != null}">    
+                    {!v.body}
+                </aura:If> 
+            </div>
+        </div>
+         <div class="slds-theme_default slds-form-element slds-hide" aura:id="div2">
+            <div class="slds-text-body_small">
+                <span>{!$Label.c.ESC_NoQueueFoundMsg}</span>  
+            </div>
+         </div>
+         </div>
+        </aura:if>
+       
+   <aura:if isTrue ="{!and(not(v.isQueue),not(v.showMyListView))}">
+       <div class="slds-text-body_small">
+        <lightning:listView objectApiName="{!v.objectName}"
+                            listName="{!v.listViewName}" 
+                            
+                            showSearchBar="true"
+                            showActionBar="true"
+                            enableInlineEdit="false"
+                            showRowLevelActions="true"
+                            
+                        
+       />
+       </div>
+    </aura:if>
+     </aura:set>
+  </lightning:card> 
+
+</aura:component>

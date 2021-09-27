@@ -1,0 +1,129 @@
+<apex:component allowDML="true">
+    <apex:attribute name="result" type="ESC_VFComponentAttributable"
+        description="The HomePageRecord To fetch" />
+         <apex:attribute name="showHeader" type="Boolean"
+        description="wether or not to render the headers" />
+ <div id="success" style="display:none" ></div>
+    <apex:pageBlock title="{! result.iblockName}" id="MyBlock">
+     
+
+<div id="error"></div>
+
+     
+        <apex:pageBlockButtons location="top" rendered="{!showHeader}">
+            <div class="flash">
+                <apex:outputText value="{! result.iownerIdentifiers }"
+                    id="theHiddenInput" styleClass="theHiddenInput"
+                    style="visibility:hidden"
+                    html-objectIdentifier="{! result.iobjectPrefix}"
+                    html-overRiddenPushTopic="{! result.ipushTopicName}" />
+                <input type="image"
+                    style="float: right; font-size: 24px; border: none; background: none; padding: 0;"
+                    src="{! URLFOR($Resource.ESC_UniversalResource, '/Extras/refresh.png')}"
+                    onclick="pageRefresh();" class="myBtn fa fa-refresh fa-spin">
+                </input>
+            </div>
+            
+           
+        </apex:pageBlockButtons>
+        <apex:pageBlockSection title="" columns="1">
+
+            <apex:outputPanel styleClass="myPanel {!if(showHeader == true,'hidden','')}" >
+               
+                <apex:dataTable width="100%" value="{!result.iresultObj}" var="resultRow"
+                    id="theTable"
+                   StyleClass="{! result.iStyleClass} display compact nowrap" html-lname="{!result.IblockLocalName}"
+                   html-truncateInfo="{!result.ItruncateColumnsSize}" html-defaultSortCol="{!result.IsortDefCol}"
+                   html-sortOrder="{!result.ISortASC}"   html-isHidden="{!result.IHideColumn}" >
+ 
+                    <apex:column id="myCol1" rendered="{!result.ishowAccept || result .IHasToShowAccept}"  html-data-search="">
+                        <apex:facet name="header">{!$Label.ESC_Action}</apex:facet>
+                        <span> <a style="float: left; color: blue" target="_self"
+                            onclick="showProcessing();updateOwner('{!resultRow['id']}' , '{!result.iblockName}' ,this);return false;">{!$Label.ESC_Accept}</a>
+                        </span>
+                    </apex:column>
+                    <apex:column id="myCol2" rendered="{!result.ishowApproval}"  html-data-search="">
+                        <apex:facet name="header">{!$Label.ESC_Action}</apex:facet>
+                         <span>
+                        <a style="float:left; color: blue" target="_self"
+                           data-search=""  onclick="showProcessing();openApprovalRec('{!resultRow['id']}' , '{!result.iblockName}' ,this,'reassign');return false;">{!$Label.ESC_HomeReassignLabel}  </a> 
+                       
+                        
+                        <a style="float:left; color: blue" target="_self"
+                            data-search="" onclick="showProcessing();openApprovalRec('{!resultRow['id']}' , '{!result.iblockName}' ,this,'approve');return false;"> | {!$Label.ESC_HomeApprovalRejectionLabel}</a>
+                        </span> 
+                        
+                    </apex:column>
+                    
+                    <apex:column id="myCol3" styleClass="myCol myFirst" rendered="true" html-data-search="{!resultRow[result.iapiNames[0]]}"  html-data-order="{!resultRow[(result.iapiNames[0])]}">
+                        <apex:facet name="header">
+                        <apex:outputPanel rendered="{!showHeader}" >
+                                <apex:outputText rendered="{! !begins(result.iapiNamesMap[result.iapiNames[0]],'xxx|')}" >{!result.iapiNamesMap[result.iapiNames[0]]}</apex:outputText>
+                                <apex:outputText rendered="{! begins(result.iapiNamesMap[result.iapiNames[0]],'xxx|')}" >{!$ObjectType[trim(Right(result.iapiNamesMap[result.iapiNames[0]],Len(result.iapiNamesMap[result.iapiNames[0]])-4))].fields[Right(result.iapiNames[0],len(result.iapiNames[0])-Find(".", result.iapiNames[0]))].label}</apex:outputText>
+                                </apex:outputPanel>
+                        </apex:facet>
+                        <span> <apex:outputLink rendered="{!result.iapiNames[0] != 'name'}" onclick="openCa('{!resultRow['id']}') ;return false;"
+                               html-fieldName="{!result.iapiNames[0]}" html-rowID="{!resultRow['id']}" styleClass="myAnchor" title="{!resultRow[(result.iapiNames[0])]}" >{!resultRow[(result.iapiNames[0])]}</apex:outputLink>
+                              <apex:outputPanel rendered="{!result.iapiNames[0] == 'name'}">
+                               <a id="{!resultRow['name']}" onclick="openCa('{!resultRow['id']}') ;return false;" onfocus="LookupHoverDetail.getHover('{!resultRow['name']}', '/{!resultRow['id']}/m?retURL={!resultRow['id']}&isAjaxRequest=1').show();" onblur="LookupHoverDetail.getHover('{!resultRow['name']}').hide();" onmouseover="LookupHoverDetail.getHover('{!resultRow['name']}', '/{!resultRow['id']}/m?retURL={!resultRow['id']}&isAjaxRequest=1').show();" onmouseout="LookupHoverDetail.getHover('{!resultRow['Name']}').hide();" >{!resultRow[(result.iapiNames[0])]}</a>   
+                               </apex:outputPanel>
+                        </span>
+                        <!-- <input type="hidden" id="myHidden2" value="{!resultRow['id']}" />-->
+                    </apex:column>
+                    
+                    <apex:repeat value="{!result.iapiNames}" var="fieldAPI" first="1">
+                       
+                        <apex:column id="myCol4" styleClass="myCol"
+                            rendered="true" html-data-search="{!resultRow[fieldAPI]}"   >
+                            <apex:facet name="header">
+                                <apex:outputPanel rendered="{!showHeader}" >
+                                <apex:outputText rendered="{! !begins(result.iapiNamesMap[fieldAPI],'xxx|')}" >{!result.iapiNamesMap[fieldAPI]}</apex:outputText>
+                                <apex:outputText rendered="{! begins(result.iapiNamesMap[fieldAPI],'xxx|')}" >{!$ObjectType[trim(Right(result.iapiNamesMap[fieldAPI],Len(result.iapiNamesMap[fieldAPI])-4))].fields[Right(fieldAPI,len(fieldAPI)-Find(".", fieldAPI))].label}</apex:outputText>
+                                </apex:outputPanel>
+                            </apex:facet>
+                            <apex:outputpanel rendered="{!fieldAPI == 'esc_upd__c'}" >
+                            <img data-search="{!resultRow[fieldAPI]}" rowID="{!resultRow['id']}" src="/img/checkbox_{!IF(resultRow[fieldAPI], '', 'un')}checked.gif" title="{!resultRow['esc_upd_action__c']}" />
+                            </apex:outputpanel>
+                            <apex:outputpanel rendered="{!fieldAPI =='esc_case__r.esc_upd__c'}" >
+                            <img data-search="{!resultRow[fieldAPI]}" rowID="{!resultRow['id']}" src="/img/checkbox_{!IF(resultRow[fieldAPI], '', 'un')}checked.gif" title="{!resultRow['esc_case__r.esc_upd_action__c']}" />
+                            </apex:outputpanel>
+                            <apex:outputpanel rendered="{!fieldAPI == 'esc_upd_resolver__c'}" >
+                            <img data-search="{!resultRow[fieldAPI]}" rowID="{!resultRow['id']}" src="/img/checkbox_{!IF(resultRow[fieldAPI], '', 'un')}checked.gif" title="{!resultRow['esc_resolver_upd_action__c']}" />
+                            </apex:outputpanel>
+                            <apex:outputpanel rendered="{!fieldAPI =='esc_case__r.esc_upd_resolver__c'}" >
+                            <img data-search="{!resultRow[fieldAPI]}" rowID="{!resultRow['id']}" src="/img/checkbox_{!IF(resultRow[fieldAPI], '', 'un')}checked.gif" title="{!resultRow['esc_case__r.esc_resolver_upd_action__c']}" />
+                            </apex:outputpanel>
+                            <apex:outputpanel rendered="{!fieldAPI == 'esc_upd_customer__c'}" >
+                            <img data-search="{!resultRow[fieldAPI]}" rowID="{!resultRow['id']}" src="/img/checkbox_{!IF(resultRow[fieldAPI], '', 'un')}checked.gif" title="{!resultRow['esc_customer_upd_action__c']}" />
+                            </apex:outputpanel>
+                            <apex:outputpanel rendered="{!fieldAPI =='esc_case__r.esc_upd_customer__c'}" >
+                            <img data-search="{!resultRow[fieldAPI]}" rowID="{!resultRow['id']}" src="/img/checkbox_{!IF(resultRow[fieldAPI], '', 'un')}checked.gif" title="{!resultRow['esc_case__r.esc_customer_upd_action__c']}" />
+                            </apex:outputpanel>
+                            <apex:outputField style="min-width:35px" html-rowID="{!resultRow['id']}" html-dimension="{!result.IColumnsDimensions[fieldAPI]}" 
+                            value="{!resultRow[fieldAPI]}" rendered="{!(fieldAPI != 'esc_upd_resolver__c' && fieldAPI != 'esc_case__r.esc_upd_resolver__c' && fieldAPI !='esc_upd_customer__c' && fieldAPI !='esc_case__r.esc_upd_customer__c' && fieldAPI !='esc_upd__c' && fieldAPI !='esc_case__r.esc_upd__c')}"></apex:outputField>
+                        </apex:column>
+                    </apex:repeat>
+                   
+                </apex:dataTable>
+                    <apex:outputPanel >  
+                <apex:outputLink styleClass="alink" html-limit="" html-blocktitle="{! result.iblockName}"
+ html-index="" html-fullQuery="{!result.IfullQuery}" html-btntype="prevbutton" html-lname="{!result.IblockLocalName}" onclick="fetchMoreRecords(this,event,true,false);" value="#">Show Previous Batch</apex:outputLink>
+        
+                 <apex:outputLink styleClass="alink" html-limit="" html-blocktitle="{! result.iblockName}"
+ html-index="" html-fullQuery="{!result.IfullQuery}" html-lname="{!result.IblockLocalName}" onclick="fetchMoreRecords(this,event,false,true);" value="#" >Show Next Batch</apex:outputLink>
+                                 </apex:outputPanel></apex:outputPanel>
+                      
+        </apex:pageBlockSection>
+        
+    </apex:pageBlock>
+    <style>
+        .alink{
+            float:inherit;
+            padding:5px;
+        }
+        
+        .hidden{
+            display:none;
+        }
+    </style>
+</apex:component>

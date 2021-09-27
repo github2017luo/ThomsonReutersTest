@@ -1,0 +1,15 @@
+<apex:component controller="USL_ChargeCExceptionController" allowDML="true">
+<apex:attribute name="ipageController" type="ESC_PageControllerBase" assignTo="{!pageController}"
+        required="true" description="The controller for the page." />
+<apex:attribute name="caseid" type="string" assignTo="{!recid}"
+        required="true" description="caseid." />
+<apex:attribute name="formId" type="string" assignTo="{!formsId}"
+        required="true" description="formId." />
+       <b><apex:outputText value="Total Amount:" /></b>
+       <apex:commandButton value="Calculate" action="{!calculate}" />
+           <apex:variable value="{!Cals}" var="myV" />
+           
+          
+           <apex:inputtext id="myTotal" value="{!totalamt}" disabled="true"/>
+        
+</apex:component>

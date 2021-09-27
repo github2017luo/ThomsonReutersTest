@@ -1,0 +1,315 @@
+<!-- 
+    Apttus Deal Approvals Management
+    DealTermPreview
+     
+    @2012-2013 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page standardController="Apttus_DealMgr__DealTerm__c"
+		   extensions="Apttus_DLApprov.DealTermPreviewController" 
+		   recordSetVar="DealTermList" 
+		   action="{!doPreviewDealTerm}">
+		   
+    <apex:includeScript value="{!URLFOR($Resource.Apttus_Approval__JQueryUILibrary, 'js/jquery-1.6.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Apttus_Approval__JQueryUILibrary, 'js/jquery-ui-1.8.16.custom.min.js')}"/>
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Approval__JQueryUILibrary, 'css/ui-lightness/jquery-ui-1.8.16.custom.css')}"/>
+    
+    <style>
+        
+        /* hide the close x on the loading screen */
+        .generateWaitDialog .ui-dialog-titlebar-close {
+            display: none;
+        }
+        
+        .aptProductListHeader h2 {
+			padding-left:1em;
+			font-weight: normal;
+		}
+        
+        .aptMainBlockHeader {
+			background: -moz-linear-gradient(top,  rgba(30,87,153,1) 0%, rgba(125,185,232,0) 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(100%,rgba(125,185,232,0)));
+			background: -webkit-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%);
+			background: -o-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%);
+			background: -ms-linear-gradient(top,  rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%);
+			background: linear-gradient(to bottom,  rgba(30,87,153,1) 0%,rgba(125,185,232,0) 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#007db9e8',GradientType=0 );
+			border-radius: 3px;
+			height:40px;
+			color:white;
+			padding-top: 5px;
+		}
+		
+        .aptListButton {
+			-moz-box-shadow: 0px 1px 0px 0px #ffffff;
+			-webkit-box-shadow: 0px 1px 0px 0px #ffffff;
+			box-shadow: 0px 1px 0px 0px #ffffff;
+			background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #71b2f6), color-stop(1, #236fbd) );
+			background: -moz-linear-gradient( center top, #71b2f6 5%, #236fbd 100% );
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#71b2f6', endColorstr='#236fbd');
+			background-color: #71b2f6;
+			-moz-border-radius: 2px;
+			-webkit-border-radius: 2px;
+			border-radius: 2px;
+			display: inline-block;
+			color: #ffffff;
+			font-family: arial;
+			font-size: 12px;
+			font-weight: normal;
+			padding: 5px 24px;
+			text-decoration: none;
+			margin-right: 5px;
+		}
+		
+		.aptRoundedDiv {
+			background-color: white;
+			border: 1px solid #DDD;
+			margin-bottom: 5px;
+			-webkit-border-radius: 3px; /* Safari 3-4, iOS 1-3.2, Android â‰¤1.6 */
+          	border-radius: 3px; /* Opera 10.5, IE9+, Safari 5, Chrome, Firefox 4+, iOS 4, Android 2.1+ */
+		  	/* useful if you don't want a bg color from leaking outside the border: */
+			/* -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box; */
+			/*-webkit-box-shadow: 0px 0px 4px 0px #000;  Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+	        /*box-shadow: 0px 0px 4px 0px #000; /* Opera 10.5, IE9+, Firefox 4+, Chrome 6+, iOS 5 */
+			
+			/* IE Stuff */		
+		 	zoom: 1; 
+		 	width:100%;
+	      	filter: 
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=0,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=45,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=90,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=135,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=180,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=225,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=270,strength=2),
+	          progid:DXImageTransform.Microsoft.Shadow(color=#000000,direction=315,strength=2); 
+    	}
+		
+		.aptListButton:hover {
+			background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #89bff8), color-stop(1, #4a88c9) );
+			background: -moz-linear-gradient( center top, #89bff8 5%, #4a88c9 100% );
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#89bff8', endColorstr='#4a88c9');
+			background-color: #89bff8;
+			text-decoration: none;
+			color: #ffffff;
+		}
+		
+		div.aptProductListHeader {
+    		cursor: pointer;
+
+	    	width:100%;
+	    	padding: 6px 0px;
+			font-size: 1em;
+			line-height: 1.5em;
+			color: #6f6f6f;
+			-webkit-border-top-left-radius: 2px;
+			-webkit-border-top-right-radius: 2px;
+			-moz-border-radius-topleft: 2px;
+			-moz-border-radius-topright: 2px;
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px; 
+			
+		}
+		
+		.buttonsBlock{
+			width:100%;
+			text-align: center;
+		}
+		
+		.tableLineItems{
+			width:100%;
+			padding-left: 10px;
+		}
+		
+    </style>
+    
+    <script type="text/javascript">
+    
+        // This to make sure jQuery doesn't conflict with any other JS libraries
+        var j$ = jQuery.noConflict();
+        
+        j$(document).ready(function(){
+            
+            // setup namespace
+            j$.APTTUS = {};
+            
+            // setup the generate wait panel and set autoOpen to false
+            j$("#processingWaitPanel").dialog({
+                autoOpen: false,    // set this to false so we can manually open it
+                dialogClass: "generateWaitDialog",
+                closeOnEscape: false,
+                draggable: false,
+                width: 300,
+                minHeight: 50,
+                modal: true,
+                buttons: {},
+                resizable: false,
+                position: 'center',
+                open: function() {
+                    // scrollbar fix for IE
+                    j$('body').css('overflow','hidden');
+                },
+                close: function() {
+                    // reset overflow
+                    j$('body').css('overflow','auto');
+                }
+            });
+            
+            
+        });
+        
+        /**
+         * Show generate wait dialog
+         */
+        function showProcessingWaitDialog(msg) {
+            
+            j$("#processingWaitPanel").html('<center><img src="{!URLFOR($Resource.Apttus_Approval__Image_LoadingPage)}" /></center>');
+            j$("#processingWaitPanel").dialog("open");
+            j$("#processingWaitPanel").dialog("option" , "title" , "Proceassing " + msg + "   -   Please wait...");
+            j$("#processingWaitPanel").dialog("option", "position", "center");
+            
+            return false;
+            
+        }
+        
+        /**
+         * Hide the generate wait dialog
+         */
+        function hideProcessingWaitDialog(){
+            // close the generate wait dialog dialog
+            j$("#processingWaitPanel").dialog("close");
+          
+        }
+        
+	   	/**
+		 * Initializes the call
+		 */
+		function initCall() {
+		
+			try {
+				sforce.connection.sessionId = "{!$Api.Session_ID}"; //to avoid session timeout
+			} catch(e) {
+				ap_erroralert(ap_cERROR_UNKNOWN,e);
+			}
+		
+		}
+		
+    </script>
+		
+    <apex:form >
+    
+        <apex:outputPanel id="idPreviewPage" >
+	        <apex:pageBlock title="{!pageTitle}" rendered="{!NOT(doPreviewEach)}" >
+	            <apex:pageMessages />
+	    		
+	            <apex:pageBlockButtons >
+	                    <apex:commandButton action="{!doContinue}" value="{!$Label.Apttus_Approval__OK}" 
+	                    		rendered="{!previewList.size > 0}" rerender="idPreviewPage"/>
+	                   <apex:commandButton action="{!doCancel}" value="{!$Label.Apttus_Approval__Return}" />
+	            </apex:pageBlockButtons>
+	        	 
+				<apex:pageBlockTable value="{!processedList}" var="processedDealTerm" >
+				    <apex:column value="{!processedDealTerm.Name}"/>
+				    <apex:column value="{!processedDealTerm.Apttus_DealMgr__TermDetails__c}"/>
+				    <apex:column value="{!processedDealTerm.Apttus_DLApprov__Approval_Status__c}"/>
+				</apex:pageBlockTable>
+				
+			</apex:pageBlock>
+		
+			<apex:outputPanel rendered="{!doPreviewEach}" >
+			
+				<script type="text/javascript">
+					
+					// init 
+					initCall();
+					
+					// get deal term SObject type
+					var sObjectType = "{!dealTermSObjectType}";
+									
+					// get deal terms
+					var dealTermList = new Array();
+					
+				</script>	
+				
+				<apex:repeat value="{!previewList}" var="previewDealTerm">
+				
+					<script  type="text/javascript">
+					  	var dealTerm = new Object();
+					  	
+					  	dealTerm.id = "{!previewDealTerm.Id}";
+					  	dealTerm.name = "{!JSENCODE(previewDealTerm.Apttus_DealMgr__TermDetails__c)}";
+			  			
+					  	dealTermList.push(dealTerm);
+					</script>	
+				
+				</apex:repeat>
+				
+				<script type="text/javascript">
+					
+					if (dealTermList.length > 0) {
+					
+						// display progress message
+			    		showProcessingWaitDialog("{!busyMessage}");
+			    		
+			    		// delay to allow the progress bar to be shown	
+		           		setTimeout(function() {
+		           			var previewedIds = "";
+		           			var currentId = "";
+							try {
+								
+								var count = dealTermList.length;
+								
+								// invoke preview for each
+								for (var i = 0; i < count; i++) {
+								
+									currentId = dealTermList[i].id;
+									
+									ap_previewApprovals(sObjectType,currentId);
+											
+									if (previewedIds > 0) {
+										previewedIds += "," + currentId;
+										
+									} else {
+										previewedIds = currentId;
+										
+									}		
+										
+								}
+								
+							} catch(e) {
+								ap_erroralert(ap_cERROR_UNKNOWN,e);
+							} finally {
+								
+								// hide the progress section
+								hideProcessingWaitDialog();
+								
+								// done preview, proceed to approvals page
+								invokeDonePreviewEach(previewedIds);
+							}
+		         			
+		          		}, 500);	
+	          		}
+				</script>	
+				
+			</apex:outputPanel>
+			
+		</apex:outputPanel>
+        
+		<apex:actionFunction name="invokeDonePreviewEach" 
+							 action="{!donePreviewEach}"
+							 immediate="true" 
+							 rerender="idPreviewPage">
+			<apex:param name="param1" assignTo="{!previewedIds}" value="" />
+							 
+		</apex:actionFunction>
+		
+	</apex:form>
+	
+    <!-- This panel represents the waiting dialog that will pop up -->
+    <apex:outputPanel >
+        <div id="processingWaitPanel"></div>
+    </apex:outputPanel>
+    
+</apex:page>

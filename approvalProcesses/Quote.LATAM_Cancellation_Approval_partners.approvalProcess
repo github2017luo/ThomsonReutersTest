@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <submitter>Brazil_Sales_Admin</submitter>
+        <type>group</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>Dir_Comercial_Cono_Sur</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>Reservation_Manager__c</name>
+                <type>relatedUserField</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <label>Reservation Manager Approval for Cancellation</label>
+        <name>Reservation_Manager_Approval_for_Cancellation</name>
+    </approvalStep>
+    <description>This is the approval processes that need to be created to ensure the correct steps are taken for approvals for cancelling a product for partner users.</description>
+    <emailTemplate>LATAM_Mail/Sent_for_Cancellation_Approval_Partners</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND( 
+OR( 
+$Profile.Name = &quot;Partner Portal User&quot;, 
+$Profile.Name = &quot;System Administrator&quot; 
+), 
+$RecordType.Name = &quot;LATAM Renewal Quote&quot;, 
+Renewal_Flag_Formula__c = True, 
+Is_Child_Quote_MSaf__c &lt;&gt;True,
+Is_Master_Quote__c &lt;&gt; TRUE,
+Product_Count__c &gt;0,
+OR( 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;RV01&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPCL&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPTC&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;TSL&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLEY&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLPA&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;ABEP&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;LLUR&quot;), 
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;BEJE&quot;),
+ISPICKVAL(Opportunity.Sales_Org__c , &quot;DFCL&quot;)
+), 
+Primary_Quote__c =True, 
+OR(
+ISPICKVAL(Opportunity.StageName,&quot;25%&quot;), 
+ISPICKVAL(Opportunity.StageName,&quot;50%&quot;), 
+ISPICKVAL(Opportunity.StageName,&quot;75%&quot;), 
+ISPICKVAL(Opportunity.StageName,&quot;90%&quot;)
+), 
+
+ISPICKVAL(Approval_Status__c,&quot;Pending Cancellation Approval&quot;)
+ 
+)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Cancellation_Approval_Notification</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>QuoteApproval_Status_Cancellation_Approv</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Submitted_for_processing_Cancellation</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>BJ_Final_QuoteStatus_to_In_Review</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Quote_ApprovalStatus_CancellationRejecte</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Rejection_Notification_Cancellation</name>
+            <type>Alert</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Update_Submitted_Manager_Approval_Date</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>LATAM Cancellation Approval Partners</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>21</processOrder>
+    <recallActions>
+        <action>
+            <name>Cancellation_Recall_Email</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Update_Approval_Status_to</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Update_Status_to_Draft</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>false</showApprovalHistory>
+</ApprovalProcess>

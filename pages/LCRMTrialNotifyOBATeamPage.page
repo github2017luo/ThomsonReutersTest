@@ -1,0 +1,133 @@
+<!--
+CHANGE HISTORY
+=================================================================================
+  
+2019-02-25   Vinodhini    Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page id="mainPage" standardController="Opportunity" extensions="LCRMTrialNotifyOBATeamCtrl" lightningStylesheets="true">
+  <apex:sectionHeader id="title" title="{!$Label.LCRM_TrialNotifyOBAHeader}" subtitle="{!opp.Name}"/> 
+    <apex:outputPanel rendered="{!NOT(opp=NULL)}">
+        <div class="ptBreadcrumb" style="">
+            &laquo;
+            <apex:outputLink value="/{!opp.Id}" style="color:#015BA7;">{!$Label.LCRM_TrialNotifyOBAGoBack}&nbsp;{!opp.Name}</apex:outputLink>         
+        </div>
+    </apex:outputPanel>
+    <br/>
+    <apex:form id="mainForm">
+        <apex:outputPanel id="mainPanel">
+            
+            <apex:Pagemessages id="errorMsg"/>
+            <apex:outputPanel id="stagesPanel" rendered="{!errorFlag=false}">
+                <apex:pageBlock id="pageBlock" title="{!$Label.LCRM_TrialNotifyOBATypeBlockLbl}" rendered="{!AND(errorFlag=false,showTemplateScreen=false)}">
+                    <apex:pageBlockButtons >
+                        <apex:commandButton action="{!selectNotifyType}" value="{!$Label.LCRM_TrialNotifyOBATypeBlockNextBtn}" status="loadStatus"/>
+                    </apex:pageBlockButtons>
+                    <apex:pageBlockSection id="pbsNotifyType" title="{!$Label.LCRM_TrialNotifyOBATypeSecLbl}" collapsible="false" columns="1">
+                        <apex:pageBlockSectionItem id="topbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBATypeFieldLbl}"></apex:outputLabel>
+                            <apex:selectList value="{!notifyType}" size="1" multiselect="false" onchange="selectNotifyType();">
+                                <apex:selectOptions value="{!NotifyTypesList}"/>
+                            </apex:selectList>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="topbsicontractField" rendered="{!notifyType='Update Trial'}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBATypeContractFieldLbl}"></apex:outputLabel>
+                            <apex:outputPanel >
+                                <apex:inputHidden value="{!contractID}" id="inputid" />
+                                <apex:inputText size="20" value="{!contractNo}" id="inputname" />
+                                <a href="#" onclick="openLookupPopup('{!$Component.inputname}', '{!$Component.inputid}');return false ">
+                                    <img src="/s.gif"  class="lookupIcon" onmouseout="this.className='lookupIcon';" alt="Account Name Lookup (New Window)" onmouseover="this.className='lookupIconOn';"/>
+                                </a>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+                <apex:pageBlock id="pageBlock1" title="{!$Label.LCRM_TrialNotifyOBAEmailPBLbl}" rendered="{!AND(errorFlag=false,showTemplateScreen=true)}">
+                    <apex:pageBlockButtons >
+                        <apex:commandButton action="{!sendEmail}" value="{!$Label.LCRM_TrialNotifyOBASendEmailBtn}" status="loadStatus"/>
+                    </apex:pageBlockButtons>
+                    <apex:pageBlockSection id="pbsEmail" title="{!$Label.LCRM_TrialNotifyOBAEmailBlocklbl}" collapsible="false" columns="1">
+                        <apex:pageBlockSectionItem id="frompbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBAFromLbl}"></apex:outputLabel>
+                            <apex:outputText value="{!emailTemplateObj.fromAddName + ' <' + emailTemplateObj.fromAddEmail + '>'}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="topbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBAToLbl}"></apex:outputLabel>
+                            <apex:outputText value="{!emailTemplateObj.toAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="relTopbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBARelToOppLbl}"/>
+                            <apex:outputText value="{!emailTemplateObj.relatedToOpp}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="addTopbsi" helpText="{!$Label.LCRM_TrialNotifyOBAHelpText}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBAAddToLbl}"></apex:outputLabel>
+                            <apex:inputText value="{!emailTemplateObj.addToAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="ccpbsi" helpText="{!$Label.LCRM_TrialNotifyOBAHelpText}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBACcLbl}"></apex:outputLabel>
+                            <apex:inputText value="{!emailTemplateObj.ccAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="bccpbsi" helpText="{!$Label.LCRM_TrialNotifyOBAHelpText}">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBABccLbl}"></apex:outputLabel>
+                            <apex:inputText value="{!emailTemplateObj.bccAdd}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="mailSubjectpbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBASubjectLbl}"></apex:outputLabel>
+                            <apex:inputText size="100" value="{!emailTemplateObj.subject}"/>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem id="bodypbsi">
+                            <apex:outputLabel value="{!$Label.LCRM_TrialNotifyOBABodyLbl}"></apex:outputLabel>
+                            <apex:inputTextarea rows="15" cols="120" value="{!emailTemplateObj.body}" richText="true"/>
+                        </apex:pageBlockSectionItem>
+                        <!--<apex:outputText value="{!templateBodyPreview}" escape="false"/>-->
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:outputPanel>
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+        <apex:actionFunction name="selectNotifyType" action="{!dummy}" status="loadStatus" reRender="mainForm"/>
+    </apex:form>
+    <script type="text/javascript"> 
+        var newWin=null;
+        function openLookupPopup(name,id){
+            var inid1=document.getElementById("{!$Component.mainPage.mainForm.pageBlock.pbsNotifyType.topbsicontractField.inputid}").value;
+            var inname=document.getElementById("{!$Component.mainPage.mainForm.pageBlock.pbsNotifyType.topbsicontractField.inputname}").value;
+            var url="/apex/LCRMCustomContractLookupPage?namefield=" + name + "&idfield=" +id+"&parentid="+inid1+"&parentname="+inname+"&oppid="+"{!opp.id}";
+            newWin=window.open(url, 'Popup','height=500,width=900,left=100,top=100,resizable=no,scrollbars=yes,toolbar=no,status=no');
+            if (window.focus)
+            {
+                newWin.focus();
+            }
+            return false;
+        }
+         
+        function closeLookupPopup(){
+            if (null!=newWin)
+            {
+                newWin.close();
+            }
+        }
+    </script>
+    <style>
+        .container {
+            position: relative;
+        }
+        #clip {
+            position: absolute;
+            clip: rect(0, 100px, 200px, 0);
+            /* clip: shape(top, right, bottom, left); NB 'rect' is the only available option */
+        }
+    </style>
+</apex:page>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Wisselkoers</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Valuta wisselkoersen</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>Deze opzoeking verwijst naar het valutarecord waarvoor de gedateerde wisselkoers geldt. Het tarief wordt altijd gedefinieerd als hoeveel van de valuta waarnaar wordt verwezen, gelijk is aan 1 (één) eenheid van de bedrijfsvaluta op de aangegeven ingangsdatum.</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Datum waarvoor de gedateerde wisselkoers van toepassing is, zelfs als deze voor een breder datumbereik wordt gebruikt. Valutaconversies zouden altijd zoeken naar de meest recente koers die niet in de toekomst ligt (vandaag of eerder).</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Geeft de datum aan waarop deze wisselkoers vervalt, indien van toepassing. De Wisselkoers is geldig tot de dag vóór de Vervaldatum, of verloopt nooit indien blanco.</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>Indien ingeschakeld, geeft dit aan dat deze wisselkoersrecord alleen in de testmodus wordt gebruikt en niet voor &apos;echte&apos; (productie) wisselkoersconversies.</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>Indien aangevinkt geeft dit aan dat dit valutaruilverslag ongeldig is en niet mag worden gebruikt</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>Definieert de ingangsdatum van de latere wisselkoers voor de valuta, indien van toepassing. Het is leeg voor het meest recente tarief. Dit veld moet automatisch door het systeem worden ingesteld.</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>Definieert de numerieke waarde van de gedateerde wisselkoers tussen de valuta waarnaar wordt verwezen en de bedrijfsvaluta voor de organisatie.</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel>Wisselkoersnummer</nameFieldLabel>
+</CustomObjectTranslation>

@@ -1,0 +1,24 @@
+<apex:page >
+     <apex:includeLightning />
+
+    <div id="lightning" />
+
+    <script>
+        $Lightning.use("c:additionalClausesMultiSelectApp", function() {
+          $Lightning.createComponent("c:multiSelectLookUpLWC",
+              { recordid : '{!$CurrentPage.parameters.businessObjectId}',
+              objectName: 'APTS_Additional_Clauses__c',
+              fieldName:'APTS_Clause_Title__c',
+              loadedfromcart:true},
+              "lightning",
+              function(cmp) {
+                console.log("button was created: "+'{!$CurrentPage.parameters.businessObjectId}');
+                  console.log("button was created2: "+'{!$CurrentPage.URL}');
+                  
+                // do some stuff
+                  //additionalClausesMultiSelectApp
+              }
+          );
+        });
+    </script>
+</apex:page>

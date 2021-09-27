@@ -1,0 +1,44 @@
+<!--
+* {Purpose} – Displays page loading message for Contact and Account pages so that the user is aware that the data is being loaded.
+*               While this message is displayed, the relationship data will be loaded asynchronously.
+*
+* @author   Shah Kadirmohideen
+* @version  2011-12-13
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                    Description
+* 2011-12-13    Shah Kadirmohideen      Created
+* 2011-01-03    Shah Kadirmohideen      Applied replace() function for proper browser navigation      
+* 2014-09-04    David Sarbello          Added logEntry calls
+* =============================================================================
+
+-->
+<apex:component >
+    <apex:attribute name="renderPage" description="{!$Label.LTS_Rendered}
+" type="Boolean" required="required" />
+    <apex:attribute name="pageLoadingMessage" description="{!$Label.LTS_DisplaymsgLabel
+}" type="String" required="required" />
+    <apex:attribute name="vfPageName" description="{!$Label.LTS_VfNameLabel
+}" type="String" required="required" />
+    <apex:attribute name="recordId" description="{!$Label.LTS_RecordIdMsg
+}" type="String" required="required" />
+
+    <apex:pageBlock id="pageLoadingBlock" mode="mainDetail" rendered="{!renderPage==true}">
+        <apex:outputPanel >
+            <apex:outputText value="{!pageLoadingMessage}"/>
+            <apex:image value="{!$Resource.CN_IMAGE_Async_Loading_Icon}" width="16" height="16"/>
+        </apex:outputPanel>
+        <script language="javascript">
+            function invokeVFPage() {
+                window.location.replace("/apex/{!vfPageName}?id={!recordId}&mode=load");
+                logEntry('{!IF(vfPageName=='CNAccountRelationshipView', 'Account', 'Contact')} Component', 'Initial Load', 'Initial load of Component', '{!IF(vfPageName=='CNAccountRelationshipView', recordId, '')}', '{!IF(vfPageName!='CNAccountRelationshipView', recordId, '')}');
+            }
+            
+            setTimeout("invokeVFPage()", 1000);
+        </script>
+    </apex:pageBlock>
+
+</apex:component>

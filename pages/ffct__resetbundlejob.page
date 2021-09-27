@@ -1,0 +1,31 @@
+<apex:page standardController="ffct__BundleJob__c" extensions="ffct.BundleJobControllerExtension">
+    <apex:form id="form" >
+        <apex:sectionHeader title="Reset Bundle Job"/>
+        <apex:pageMessages id="messageDiv"/>
+        <apex:outputPanel id="progressDiv" layout="block" >
+            <apex:outputLink style="padding-top:50px;padding-left:50px;color: #015BA7;" value="{!URLFOR($Action.ffct__BundleJob__c.View,ffct__BundleJob__c.Id)}" rendered="{!isProcessed}">
+                 {!$Label.ffct__gotobundlejob}
+            </apex:outputLink>
+        </apex:outputPanel>
+        <br/>
+        <apex:pageBlock rendered="{!!isProcessed}">
+			<apex:pageMessage summary="{!ConfirmMessage}" severity="info" strength="1"/>
+			<apex:pageBlockButtons location="bottom">
+				<apex:actionStatus id="eventStatus">
+					<apex:facet name="start">
+						<apex:outputPanel >
+							<apex:commandButton value="{!$Label.ffct__inprocesstext}" disabled="true" />
+							<apex:commandButton value="{!$Label.ffct__inprocesstext}" disabled="true" />
+						</apex:outputPanel>
+					</apex:facet>
+					<apex:facet name="stop">
+						<apex:outputPanel >
+							<apex:commandButton action="{!cancel}" value="{!$Label.ffct__cancel}" rerender="form" status="eventStatus" />
+	                      	<apex:commandButton action="{!resetBundleJob}" value="{!$Label.ffct__continue}" rerender="form" status="eventStatus" />
+						</apex:outputPanel>
+					</apex:facet>
+				</apex:actionStatus>
+			</apex:pageBlockButtons>
+		</apex:pageBlock>
+    </apex:form>
+</apex:page>

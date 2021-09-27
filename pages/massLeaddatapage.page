@@ -1,0 +1,74 @@
+<!--
+CHANGE HISTORY
+==========================================================================================================
+   Date             Name                      Description
+ 2019-01-28      Lovedeep Singh               Modified Code[DPS-3229] Modified code. Added lightningStylesheets="true" to enable lightning for this page. 
+
+==========================================================================================================
+-->
+
+<apex:page id="page" standardController="AdvancedSearch__c" extensions="AdvancedSearchController" lightningStylesheets="true">
+  <apex:includeScript value="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js" /> 
+    <apex:stylesheet value="{!$Resource.CalendarControl}"/>
+    <apex:includeScript value="{!$Resource.Datepicker}"/> 
+    <apex:includeScript value="{!URLFOR($Resource.jQueryPopup, 'popbox.min.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.jQueryPopup, 'popbox.css')}" />
+    <apex:sectionHeader id="pageTitle"
+        title="" />
+   
+    <apex:form >
+     <div>
+         &nbsp;&laquo;&nbsp;<apex:commandLink style="color:#015BA7;" action="{!AdvancedSearchListLeadURL}" value="Back to List: Advanced Search" /> 
+     </div>   
+    </apex:form>
+    <apex:form id="form" >
+     
+         <apex:pageBlock title="Selected Accounts" id="muselectedlist" >
+             <apex:pageBlockButtons >
+             <apex:commandButton action="{!saveLead}" value="Save" onclick="if(! confirm('The Leads associated with your selected Accounts have been created.')) return false;"/>
+             <apex:commandButton action="{!cancel}" value="Cancel" />   
+             </apex:pageBlockButtons>    
+            <!--   -->
+           <apex:pageBlockTable value="{!oAdvancedSearcSelected}" var="accSelected" id="mutab"  >
+            
+             <apex:column value="{!accSelected.Name}" id="accname" width="12%" headerValue="Account Name"/>
+             <apex:column value="{!accSelected.Name2}" id="accName2" width="12%" headerValue=" Name 2  "/>
+             <apex:column value="{!accSelected.Name3}" id="accName3" width="12%" headerValue=" Name 3  "/>
+             <apex:column value="{!accSelected.SAPAccountNumber}" id="accSAP" width="12%" headerValue=" SAP Account Number "/>
+             <apex:column value="{!accSelected.Phone1}" id="accphone" width="12%" headerValue=" Phone 1  "/>
+             <apex:column value="{!accSelected.AddressLine1}" id="accstreet" width="12%" headerValue="Address Line 1"/>
+             <apex:column value="{!accSelected.City}" id="acccity" width="10px" headerValue="City"/>
+             <apex:column value="{!accSelected.State}" id="accstate" width="10px" headerValue=" State "/>
+             <apex:column value="{!accSelected.ContactName}" width="12%" headerValue="Contact" />
+            <!--
+             <apex:column headerValue="Contact" width="12%">
+             <apex:repeat value="{!accSelected.Contacts}" var="c" rows="1">
+             {!c.name}"
+             </apex:repeat>
+             </apex:column>   -->
+             <apex:column value="{!accSelected.ZipCode}" id="acccode" width="12%" headerValue=" zip "/>
+             </apex:pageBlockTable>  
+           <!-- 
+         <apex:pageBlockTable value="{!listAcc}" var="accSelected" id="mutab"  >
+            
+             <apex:column value="{!accSelected.Name}" id="accname" width="12%" headerValue="Account Name"/>
+             <apex:column value="{!accSelected.Account_Name_2__c}" id="accName2" width="12%" headerValue=" Name 2  "/>
+             <apex:column value="{!accSelected.Account_Name_3__c}" id="accName3" width="12%" headerValue=" Name 3  "/>
+             <apex:column value="{!accSelected.SAPAccountNumber__c}" id="accSAP" width="12%" headerValue=" SAP Account Number "/>
+             <apex:column value="{!accSelected.Account_SAP_Phone_1__c}" id="accphone" width="12%" headerValue=" Phone 1  "/>
+             <apex:column value="{!accSelected.BillingStreet}" id="accstreet" width="12%" headerValue="Address Line 1"/>
+             <apex:column value="{!accSelected.BillingCity}" id="acccity" width="10px" headerValue="City"/>
+             <apex:column value="{!accSelected.BillingState}" id="accstate" width="10px" headerValue=" State "/>
+             
+             <apex:column headerValue="Contact" width="12%">
+             <apex:repeat value="{!accSelected.Contacts}" var="c" rows="1">
+             {!c.name}"
+             </apex:repeat>
+             </apex:column>
+             <apex:column value="{!accSelected.BillingPostalCode}" id="acccode" width="12%" headerValue=" zip "/>
+             </apex:pageBlockTable>    -->
+        </apex:pageBlock>
+    </apex:form>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+     
+</apex:page>

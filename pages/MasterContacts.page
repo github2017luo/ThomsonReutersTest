@@ -1,0 +1,650 @@
+<!-- Created By Sreenu Daram --->
+<!--
+* CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 2019-04-03   Kumar Shubham          Jira no-DPS-4099-Enabled LightningStylesheets as part of Sales Lightning   
+* =============================================================================
+-->
+<apex:page id="masterContacts" standardController="Apttus_Proposal__Proposal__c" extensions="MasterContactsController" title="Master Contacts" name="Master Contacts" lightningStylesheets="true" sidebar="false">
+    <apex:sectionHeader title="" subtitle="Master Contacts" rendered="{!$User.UIThemeDisplayed == 'Theme3'}"/>
+    <apex:sectionHeader title="Master Contacts" subtitle="" rendered="{!$User.UIThemeDisplayed == 'Theme4d'}"/>
+    <Style>
+        .Custom29Tab .secondaryPalette, .individualPalette .Custom29Block .secondaryPalette {
+            border-color: #990 !important;
+            border-width: medium;
+        }
+        body .bPageBlock, body .secondaryPalette.bPageBlock, body .individualPalette .secondaryPalette.bPageBlock {
+            background-color: #f8f8f8 !important;
+            border-bottom: 1px solid #eaeaea !important;
+            border-left: 1px solid #eaeaea !important;
+            border-right: 1px solid #eaeaea !important;
+            -moz-border-radius: 4px !important;
+            -webkit-border-radius: 4px !important;
+            border-radius: 4px !important;
+        }
+        .rich-tabpanel-content {
+            background-color: #f1f1f1 !important;
+            color: #000 !important;
+            border-bottom-color: #C0C0C0 !important;
+            border-right-color: #C0C0C0 !important;
+            border-left-color: #C0C0C0 !important;
+            font-size: 11px !important;
+            font-family: Arial,Verdana,sans-serif !important;
+        }
+        .rich-tabpanel-content {
+            border-bottom-width: 1px !important;
+            border-bottom-style: solid !important;
+            border-left-width: 1px !important;
+            border-left-style: solid !important;
+            border-right-width: 1px !important;
+            border-right-style: solid !important;
+            vertical-align: top !important;
+        }
+        body .pbBody table.list tr.headerRow th {
+            
+            color: #000;
+            font-size: 1.03em;
+            font-weight: bold; 
+        }
+        .rich-tab-active {
+            background-image: url(/faces/a4j/g/3_3_3.Finalorg.richfaces.renderkit.images.TabGradientA/DATB/eAFbe3btx48fmQAVbAT9);
+            background-color: #f1f1f1;
+            color: #000;
+            border-color: #fff;
+            border-width: 1px;
+            border-style: inset;
+            height: auto !important;
+            line-height: inherit !important;
+            padding: 3px 10px 4px 10px;
+            background-repeat: repeat-x;
+            background-position: top;
+            border-bottom-width: 0;
+            cursor: default;
+        }
+        .rich-tab-inactive {
+            background-color: #ADCDAD;
+            border-color: #fff;
+            background-image: url(/faces/a4j/g/3_3_3.Finalorg.richfaces.renderkit.images.TabGradientB/DATB/eAH7-PHj2rNrmQAXcAT9);
+            border-width: 1px;
+            border-style: inset;
+            height: auto !important;
+            line-height: inherit !important;
+            background-repeat: repeat-x;
+            background-position: top;
+            border-bottom-width: 0;
+            cursor: default;
+        }
+        .rich-tab-header {
+            color: #000;
+            font-size: .85rem !important;
+            font-family: Arial,Verdana,sans-serif !important;
+            padding: 2px 10px 2px 10px;
+            text-align: center;
+        }
+       body .pbBody table.list tr.dataRow td:first-child {
+            border-left-width: 0;
+        }
+        
+        body .pbBody table.list tr.dataRow td {
+            border-width: 0 0 1px 0;
+            vertical-align: middle;
+        }
+        .apexp .detailList .list td {
+            padding: 4px 2px 4px 5px;
+            color: #333;
+            border-bottom: 1px solid #e3deb8;
+        }
+        body .pbBody table.list tr td {
+            border: 1px solid #ededed;
+            color: #000;
+        }
+        body .rich-tabhdr-cell-active, .slds-vf-scope .rich-tabhdr-cell-active {
+            border-bottom-color: rgb(255 255 255);
+        }
+        table {
+            table-layout: auto !important;
+        }
+        body .rich-tabhdr-side-cell, .slds-vf-scope .rich-tabhdr-side-cell {
+            position: relative;
+            padding: 0 .05rem;
+            color: rgb(62, 62, 60);
+        }
+        input {
+            font-size: .80rem;
+        }
+    </Style>
+    <apex:form id="form">
+        <apex:pageMessages id="msgs" escape="false">
+        </apex:pagemessages>
+        
+        <apex:actionstatus id="loadStatus">
+            <apex:facet name="start">
+                <div class="waitingSearchDiv" id="el_loading" style="background-color: #DCD6D6; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                    <div class="waitingHolder" style="position: fixed; margin-left: 500px; margin-top: 100px;">
+                        <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="35" width="35" style="opacity: 1.0;"/>
+                        <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading...</span>
+                    </div>
+                </div>
+            </apex:facet>
+        </apex:actionstatus>
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageblockbuttons>
+        </apex:pageblock>
+        <!-- Tab panel for the Tabs -->
+        <apex:tabPanel id="panelTab" switchType="ajax">
+        
+            <!-- Psw Email Contact Tab -->
+            <apex:tab id="pswEmailContact" rendered="{!isPwdEmailCon}" name="Psw Email Contact" label="Psw Email Contact" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="pepb">
+                    <apex:pageBlockSection id="pepbs" columns="1">
+                
+                        <apex:pageBlockTable value="{!pwdEmailList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                 <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                 <!--  <apex:actionSupport event="onclick" action="{!getbpSelected}" rerender="pb"/> --> 
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                                                       
+                                <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                                
+                            </apex:column>                   
+                            
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                               
+                               <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                               
+                            </apex:column>
+                           
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+                   
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+           
+            <!-- Patron Access Tab -->
+            <apex:tab id="patronAccess" rendered="{!isPatronAccCon}" name="Patron Access" label="Technical Contact"  status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="papb">
+                    <br/>
+                    <apex:pageBlockSection id="ipSection" columns="2">
+                    <!--<b><apex:outputLabel value="  IP Addresses : " for="fipac"/></b> -->                    
+                    <apex:inputText value="{!patIps.fromIp}" id="fipac" label="IP Addresses : "/ >
+                    <!-- <b><apex:outputLabel value="  To :" for="tipac"/></b> -->
+                    <apex:inputText value="{!patIps.toIp}" id="tipac" label="To :"/>
+                    <apex:inputText value="{!patIps.fromIp1}" id="fipac1" label="IP Addresses : "/ >
+                    <apex:inputText value="{!patIps.toIp1}" id="tipac1" label="To :"/>
+                    <apex:inputText value="{!patIps.fromIp2}" id="fipac2" label="IP Addresses : "/ > 
+                    <apex:inputText value="{!patIps.toIp2}" id="tipac2" label="To :"/>                   
+                    </apex:pageBlockSection> 
+                    <br/> 
+                    <apex:pageBlockSection id="papbs" columns="1">
+                        
+                        <apex:pageBlockTable value="{!patronConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                 <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                 <!--  <apex:actionSupport event="onclick" action="{!getbpSelected}" rerender="pb"/> --> 
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                                                       
+                                <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                                
+                            </apex:column>                   
+                            
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                               
+                               <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                               
+                            </apex:column>
+                           
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+                   
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- eBillity Tab -->
+            <apex:tab id="eBillity" rendered="{!isEbillityCon}" name="eBillity" label="eBillity" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="ebpb">
+                    <apex:pageBlockSection id="ebpbs" columns="1">
+                
+                        <apex:pageBlockTable value="{!ebConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                 <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                 <!--  <apex:actionSupport event="onclick" action="{!getbpSelected}" rerender="pb"/> --> 
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                                                       
+                                <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                                
+                            </apex:column>                   
+                            
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                               
+                               <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                               
+                            </apex:column>
+                           
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+                   
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Clear Primary Tab -->
+            <apex:tab id="clearPrimary" rendered="{!isClrPrimary}" name="CLEAR Primary" label="CLEAR Primary" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="clrpb">
+                    <br/>
+                    <apex:pageBlockSection id="ipClrSection" columns="2" >                    
+                        <apex:inputText value="{!clrIps.fromIp}" id="fip" label="IP Addresses : "/ >                    
+                        <apex:inputText value="{!clrIps.toIp}" id="tip" label="To :"/>
+                        <apex:inputText value="{!clrIps.fromIp1}" id="fip1" label="IP Addresses : "/ >
+                        <apex:inputText value="{!clrIps.toIp1}" id="tip1" label="To :"/>
+                        <apex:inputText value="{!clrIps.fromIp2}" id="fip2" label="IP Addresses : "/ > 
+                        <apex:inputText value="{!clrIps.toIp2}" id="tip2" label="To :"/>                   
+                    </apex:pageBlockSection> 
+                    <br/>  
+                    <apex:pageBlockSection id="clrpbs" columns="1">
+                      <!--  <apex:inputText value="{!fromIP}" id="fip" label="IP Address :"/ >   
+                        <apex:inputText value="{!toIP}" id="tip" label="To :"/> -->                    
+                        <apex:pageBlockTable value="{!clrPrimaryList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                 <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                 <!--  <apex:actionSupport event="onclick" action="{!getbpSelected}" rerender="pb"/> --> 
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                                                       
+                                <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                                
+                            </apex:column>                   
+                            
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                               
+                               <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                               
+                            </apex:column>
+                           
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+                   
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            
+            <!-- Print Ip Tab -->
+            <apex:tab id="GLPPrimary" rendered="{!isGLPProduct}" name="Proview IP" label="Proview IP" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="GLPpb">
+                    <br/>
+                    <apex:pageBlockSection id="ipGLPSection" columns="2" >                    
+                        <apex:inputText value="{!glpIps.fromIp}" id="fGLPip" label="IP Addresses : "/ >                    
+                        <apex:inputText value="{!glpIps.toIp}" id="tGLPip" label="To :"/>
+                        <apex:inputText value="{!glpIps.fromIp1}" id="fGLPip1" label="IP Addresses : "/ >
+                        <apex:inputText value="{!glpIps.toIp1}" id="tGLPip1" label="To :"/>
+                        <apex:inputText value="{!glpIps.fromIp2}" id="fGLPip2" label="IP Addresses : "/ > 
+                        <apex:inputText value="{!glpIps.toIp2}" id="tGLPip2" label="To :"/>                   
+                    </apex:pageBlockSection> 
+                    <br/>  
+                    <apex:pageBlockSection id="glppbs" columns="1">
+                                         
+                        <apex:pageBlockTable value="{!glpPrimaryList}" var="apliGlp">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                 <apex:inputCheckbox value="{!apliGlp.isSelected}" id="checkedoneGLP" >
+                                 
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                                                       
+                                <apex:inputField value="{!apliGlp.mstrCon.First_Name__c}"/>                       
+                                
+                            </apex:column>                   
+                            
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apliGlp.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apliGlp.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                               
+                               <apex:outputField value="{!apliGlp.mstrCon.Customer_Type_Description__c}" /> 
+                               
+                            </apex:column>
+                           
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>
+                   
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Technical Contact Tab -->
+            <apex:tab id="TechnicalContact" rendered="{!isTechContact}" name="Technical Contact" label="Technical Contact" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="tcpb">
+                    <apex:pageBlockSection id="tcpbs" columns="1">
+                
+                        <apex:pageBlockTable value="{!techConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                 <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                 <!--  <apex:actionSupport event="onclick" action="{!getbpSelected}" rerender="pb"/> --> 
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                                                       
+                                <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                                
+                            </apex:column>                   
+                            
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                               
+                               <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                               
+                            </apex:column>
+                           
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+                   
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Update Contact Tab -->
+            <apex:tab id="updateContact" rendered="{!isUpdateCon}" name="{!$Label.Apts_MasterContact_Update_Contact}" label="{!$Label.Apts_MasterContact_Update_Contact}" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="ucpb">
+                    <apex:pageBlockSection id="ucpbs" columns="1">
+                        <apex:pageBlockTable value="{!updateConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                    <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                               <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                            </apex:column>                   
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                                <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                            </apex:column>
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Password Contact Tab -->
+            <apex:tab id="interContact" rendered="{!isInterCon}" name="{!$Label.Apts_MasterContact_Inter_Contact}" label="{!$Label.Apts_MasterContact_Inter_Contact}" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="intercpb">
+                    <apex:pageBlockSection id="intercpbs" columns="1">
+                        <apex:pageBlockTable value="{!interConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                    <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                               <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                            </apex:column>                   
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                                <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                            </apex:column>
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Technical Update Contact Tab -->
+            <apex:tab id="intraContact" rendered="{!isIntraCon}" name="{!$Label.Apts_MasterContact_Intra_Contact}" label="{!$Label.Apts_MasterContact_Intra_Contact}" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="intracpb">
+                    <apex:pageBlockSection id="intracpbs" columns="1">
+                        <apex:pageBlockTable value="{!intraConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                    <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                               <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                            </apex:column>                   
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                                <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                            </apex:column>
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Sentry Contact Tab -->
+            <apex:tab id="sentryContact" rendered="{!isSentryCon}" name="{!$Label.Apts_MasterContact_DataFetchSentry_Contact}" label="{!$Label.Apts_MasterContact_DataFetchSentry_Contact}" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="scpb">
+                    <apex:pageBlockSection id="scpbs" columns="1">
+                        <apex:pageBlockTable value="{!sentryConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                    <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                               <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                            </apex:column>                   
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                                <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                            </apex:column>
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+            <!-- Implementation Contact Tab -->
+            <apex:tab id="compLearnContact" rendered="{!isCompLearnCon}" name="{!$Label.Apts_MasterContact_Implementation_Contact}" label="{!$Label.Apts_MasterContact_Implementation_Contact}" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="clpb">
+                    <apex:pageBlockSection id="clpbs" columns="1">
+                        <apex:pageBlockTable value="{!compLearnConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                    <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                               <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                            </apex:column>                   
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                                <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                            </apex:column>
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+        <!-- Filing Contact Tab -->
+            <apex:tab id="filingContact" rendered="{!isFilingCon}" name="{!$Label.Apts_MasterContact_Filing_Contact}" label="{!$Label.Apts_MasterContact_Filing_Contact}" status="loadStatus" switchType="ajax" labelWidth="150px">
+                <apex:actionRegion >
+                <apex:pageBlock id="flpb">
+                    <apex:pageBlockSection id="flpbs" columns="1">
+                        <apex:pageBlockTable value="{!filingConList}" var="apli">
+                            <apex:column >
+                                <apex:facet name="header">Select</apex:facet>
+                                    <apex:inputCheckbox value="{!apli.isSelected}" id="checkedone" >
+                                </apex:inputCheckbox> 
+                            </apex:column>                  
+                            <apex:column >
+                                <apex:facet name="header">First Name</apex:facet>                  
+                               <apex:inputField value="{!apli.mstrCon.First_Name__c}"/>                       
+                            </apex:column>                   
+                            <apex:column >
+                                <apex:facet name="header">Last Name</apex:facet>                        
+                                <apex:inputField value="{!apli.mstrCon.Last_Name__c}"/>                            
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Email</apex:facet>
+                                <apex:inputField value="{!apli.mstrCon.Email_Address__c}"/>  
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Contact Type Description</apex:facet>
+                                <apex:outputField value="{!apli.mstrCon.Customer_Type_Description__c}" /> 
+                            </apex:column>
+                        </apex:pageblocktable>
+                         
+                    </apex:pageblocksection>           
+               </apex:pageblock> 
+               </apex:actionRegion>
+            </apex:tab>
+            
+        </apex:tabpanel> 
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageblockbuttons>
+        </apex:pageblock> 
+    </apex:form>
+</apex:page>

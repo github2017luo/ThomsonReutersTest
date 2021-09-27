@@ -1,0 +1,238 @@
+<!--
+ - Used To End Trial
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page standardController="Trial__c" extensions="ODT_TrialEndCon" id="thePage" lightningStylesheets="true">
+    <apex:detail subject="{!trialID}" relatedList="true" title="true" />
+    <apex:form id="theForm">
+
+
+        <apex:actionFunction action="{!showOtherReason}" reRender="reasonSection" name="showOther" Status="myStatus" />
+
+        <apex:actionFunction action="{!closeOtherReason}" reRender="reasonSection" name="closeOther" />
+
+        <apex:actionFunction action="{!endTrial}" reRender="SuccessMsg,errMsg,reasonSection" name="end" Status="myStatus">
+            <apex:param name="a" value="" assignTo="{!trialEndReason}" />
+            <apex:param name="b" value="" assignTo="{!trialEndOtherReason}" />
+        </apex:actionFunction>
+
+        <apex:outputPanel id="reasonSection">
+            <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!displayPopUp}" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!displayPopUp}">
+
+                <apex:outputLabel rendered="{!displayReason}"><b>Select a reason    </b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <apex:inputField id="reasons" value="{!Trial__c.Early_End_Reason__c}" onchange="fetchReason(this.value);" /></apex:outputLabel> <br/><br/>
+                <apex:outputLabel rendered="{!displayOtherReason}"><b>Enter other reason </b>
+                    <apex:inputTextarea id="otherReason" html-maxlength="30" value="{!Trial__c.Early_End_Other_Reason__c}" /></apex:outputLabel> <br/><br/>
+                <apex:commandButton value="Cancel" action="{!closePopup}" /> &nbsp;&nbsp;
+                <apex:commandButton value="End" id="yesButton" onclick="checkReason();" rerender="SuccessMsg" Status="myStatus" />
+
+
+            </apex:outputPanel>
+
+
+        </apex:outputPanel>
+
+    </apex:form>
+
+
+    <apex:form >
+        <apex:outputPanel id="SuccessMsg">
+            <apex:outputPanel styleClass="popupBackground" layout="block" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isEnded}">
+                <table>
+                    <tr>
+
+                        <td>
+                            <h1>&nbsp;&nbsp;&nbsp; {!$Label.ODT_Trial_end} </h1>
+
+                        </td>
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            <br/><br/>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;&nbsp;
+                            <apex:commandButton value="Back To Trial" action="{!backToTrial}" styleClass="successbutton" Status="myStatus" />
+
+                        </td>
+                    </tr>
+
+                </table>
+
+            </apex:outputPanel>
+
+        </apex:outputPanel>
+        <apex:outputPanel id="errMsg">
+            <apex:outputPanel styleClass="popupBackground" layout="block" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!error}">
+
+
+
+
+                <table>
+                    <tr>
+
+                        <td align='centre'>
+                            <apex:pageMessages id="errMsg3" />
+
+                        </td>
+                    </tr>
+
+                    <tr>
+
+                        <td>
+                            <br/><br/>
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td align='centre'>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <apex:commandButton value="Back To Trial" action="{!backToTrial}" styleClass="successbutton" Status="myStatus" />
+
+                        </td>
+                    </tr>
+
+                </table>
+
+
+
+
+            </apex:outputPanel>
+
+        </apex:outputPanel>
+    </apex:form>
+
+    <script>
+        var reason = "";
+        var secondClick = false;
+
+        window.onload = function() {
+
+            reason = document.getElementById("{!$Component.theForm.reasons}").value;
+
+            if (reason == 'Other') {
+                showOther();
+            }
+        };
+
+        function fetchReason(f) {
+            reason = f;
+
+            if (reason == 'Other') {
+                showOther();
+            } else {
+                closeOther();
+            }
+
+        }
+
+
+
+        function checkReason() {
+            var a = "";
+            reason = document.getElementById("{!$Component.theForm.reasons}").value;
+
+            if (reason == "") {
+                alert("Select a valid reason");
+
+            } else if (reason == 'Other') {
+                a = document.getElementById("{!$Component.theForm.otherReason}").value;
+                if (!a) {
+                    alert("Please enter a valid reason");
+                    return false;
+                }
+
+                end(reason, a);
+
+
+            } else {
+
+                end(reason, a);
+
+            }
+
+
+        }
+    </script>
+
+    <style type="text/css">
+        .custPopup {
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9001;
+            left: 50%;
+            padding: 10px;
+            position: absolute;
+            width: 300px;
+            margin-left: -250px;
+            top: 100px;
+        }
+
+        .popupBackground {
+            background-color: black;
+            opacity: 0.20;
+            filter: alpha(opacity=20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9000;
+        }
+
+        .successbutton {
+            width: 250px;
+        }
+    </style>
+    <apex:form >
+        <apex:outputText >
+            <apex:actionStatus id="myStatus">
+                <apex:facet name="start">
+                    <div id="loadingDivStatus" />
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputText>
+    </apex:form>
+
+
+    <style>
+        #loadingDivStatus {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%; //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)
+        }
+
+        ) 50% 50% no-repeat #666;
+
+        z-index:9999;
+        opacity: 0.4;
+        /* You can adjust the opacity */
+
+        filter: alpha(opacity=40);
+        /* For IE8 and earlier */
+
+        }
+    </style>
+
+
+</apex:page>

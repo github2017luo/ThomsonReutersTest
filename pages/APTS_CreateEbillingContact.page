@@ -1,0 +1,28 @@
+<!-- Author : Bijeta Lenka, 10/31/2017 - Created for Jira SOC- 4320 FEB-2018 release
+   ***************************************************************************************************
+   Modification Log:
+   *
+   *    Bijeta Lenka, 10/31/2017 - Created APTS_CreateEbillingContact.
+   *    2019-04-03   Kumar Shubham          Jira no-DPS-4099-Enabled LightningStylesheets as part of Sales Lightning  
+   ***************************************************************************************************
+-->
+<apex:page controller="APTS_CreateEbillingContactCtrl" showHeader="true" sidebar="true" tabStyle="Contact" action="{!doAction}"  lightningStylesheets="true">   
+    <apex:sectionHeader title="Contact" subtitle="New Contact"/>
+    <apex:messages />
+    <apex:form >
+        <apex:pageBlock title="New Contact">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Save" action="{!doSave}" rendered="{!NOT(isSaving)}"></apex:commandButton>
+                <apex:commandButton value="Cancel" action="{!doCancel}" immediate="true"></apex:commandButton>
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection columns="1">
+                <apex:inputField value="{!contactObj.Salutation}"/>
+                <apex:inputField value="{!contactObj.FirstName}"/>
+                <apex:inputField value="{!contactObj.LastName}"/>
+                <apex:inputField value="{!contactObj.Email}" required="true"/>
+                <apex:inputField value="{!contactObj.AccountId}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

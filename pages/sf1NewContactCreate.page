@@ -1,0 +1,139 @@
+<apex:page id="sf1pageNewContact" standardController="Account" extensions="ContactCreateController_SF1" docType="html-5.0">
+<vs:importvisualstrap />  
+<style type="text/css">
+.lookup-custom-control{
+display:grid;
+width:80%;
+border: 1px solid #cccccc;
+border-radius: 4px;
+padding: 6px 12px;
+font-size:14px !important;
+height:34px;
+}
+</style>
+<vs:visualstrapblock >
+<apex:form id="formEdit">
+    <script type='text/javascript' >  
+     function goToDetailPage(contactId){  
+       if(typeof sforce != 'undefined' && typeof sforce.one != 'undefined'){  
+         sforce.one.navigateToSObject(contactId);  
+       }  
+       
+     }  
+     
+     function goToSavedRecord(){
+       if(typeof sforce != 'undefined' && typeof sforce.one != 'undefined'){  
+         var contactId = ('{!oContact.Id}') ;
+         //alert(contactId == '');
+         if(contactId != 'undefined' && contactId != '' && contactId != null)
+           sforce.one.navigateToSObject('{!oContact.Id}');  
+
+       }  
+       else{
+           var contactId = ('{!oContact.Id}') ;
+           if(contactId != 'undefined' && contactId != '' && contactId != null){
+               
+              window.top.location.href = '/apex/AccountDetail?id='+'{!oContact.AccountId}'; 
+              }
+       }  
+     }
+     function goToAccount(){
+       if(typeof sforce != 'undefined' && typeof sforce.one != 'undefined'){  
+         alert('{!oAccount .Id}') ;
+         sforce.one.navigateToSObject('{!oAccount .Id}');  
+       }  
+       else{  
+          window.location.href = '/apex/AccountDetail?id='+'{!oAccount .Id}'; 
+       }  
+     } 
+   </script>
+<apex:sectionHeader id="pageTitle" title="Create Contact"  />
+
+    <vs:panel title="Contact Info" type="primary" rendered="{!NOT(HasMatchingContacts)}">
+        <vs:row >
+            <vs:column type="col-md-12" >
+                <vs:formgroup >
+                    <apex:outputLabel >{!$ObjectType.Contact.Fields.FirstName.Label}*</apex:outputLabel>
+                    <vs:row >
+                        <vs:column type="col-md-2">
+                            <apex:inputField value="{!oContact.salutation}" styleClass="form-control" />
+                        </vs:column>
+                        <vs:column type="col-md-10">
+                            <apex:inputField value="{!oContact.FirstName}" styleClass="form-control" html-placeholder=""/>
+                        </vs:column>
+                    </vs:row>
+                </vs:formgroup>
+                <vs:formgroup >
+                    <apex:outputLabel >{!$ObjectType.Contact.Fields.LastName.Label}</apex:outputLabel>
+                    <apex:inputField value="{!oContact.LastName}" styleClass="form-control" html-placeholder=""/>
+                </vs:formgroup>
+                <vs:formgroup >
+                    <apex:outputLabel >{!$ObjectType.Contact.Fields.Email.Label}*</apex:outputLabel>
+                    <apex:inputField value="{!oContact.Email}" styleClass="form-control" html-placeholder=""/>
+                </vs:formgroup>
+                <vs:formgroup >
+                    <apex:outputLabel >Account *</apex:outputLabel><br/>
+                    <apex:outputField value="{!oContact.accountId}" styleClass="lookup-custom-control" html-placeholder="" />
+                </vs:formgroup>
+            </vs:column>
+        </vs:row>
+    </vs:panel>
+    <vs:panel id="panelButtons"  type="Default" rendered="{!NOT(HasMatchingContacts)}">   
+        <apex:actionStatus id="statusValidateContact">
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">
+                        <apex:panelGroup >
+                            <!--img class="loadingIcon" src="/s.gif" /-->
+                            <img src="/img/loading.gif" height="12px" width="12px"/>
+                        </apex:panelGroup>
+                         <apex:panelGroup >
+                           <div class="messageText">Validating contact please wait...</div>
+                       </apex:panelGroup>  
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:commandButton id="btnSave" value="Save" action="{!save}" rerender="formEdit" status="statusValidateContact" styleClass="btn-primary" onComplete="goToSavedRecord()"/>   
+        
+        
+    </vs:panel>
+    <vs:panel rendered="{!HasMatchingContacts}" >
+        <div style="overflow:auto; width:100%; height:130% word-wrap:break-word">
+            <apex:dataTable id="tableMatchedAccounts" value="{!MatchedContacts}" var="match"  rows="10" styleClass="table table-condensed table-hover table-bordered breakWord " headerClass="breakWord"> 
+                <apex:column headervalue="Contact Name">
+                    <apex:outputText id="textContactName" value="{!match.ContactInfo.Name}" rendered="{!ISNULL(match.Contact.Id)}" />
+                    <apex:outputLink id="linkContactName1" onclick="goToDetailPage('{!match.Contact.Id}')"                            
+                            rendered="{!NOT(ISNULL(match.Contact.Id))}">{!match.ContactInfo.Name}</apex:outputLink>
+                </apex:column>
+                 <apex:column headervalue="Email">
+                    <apex:outputText id="textEmail" value="{!match.ContactInfo.Email}" />
+                </apex:column>
+                 <apex:column headervalue="Account">
+                    <apex:outputText id="AccountName" value="{!match.Contact.Account.Name}" />
+                </apex:column>
+            </apex:dataTable>
+        </div>
+    </vs:panel>
+    <vs:panel id="panelCreateButtons"  type="Default" rendered="{!HasMatchingContacts}">
+         <apex:actionStatus id="statusCreateContact">
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">
+                        <apex:panelGroup >
+                            <!--img class="loadingIcon" src="/s.gif" /-->
+                            <img src="/img/loading.gif" height="12px" width="12px"/>
+                        </apex:panelGroup>
+                         <apex:panelGroup >
+                           <div class="messageText">Creating contact please wait...</div>
+                       </apex:panelGroup>  
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:commandButton id="buttonCreate" value="Create Contact" action="{!continueSave}" rerender="formEdit" onComplete="goToSavedRecord()" rendered="{!HasMatchingContacts}" styleClass="btn-primary" status="statusCreateContact" />
+        <!--<apex:commandButton id="btnCancel" value="Cancel" rerender="formEdit" onComplete="goToAccount()" styleClass="btn-primary" />    -->
+    </vs:panel>  
+</apex:form>
+</vs:visualstrapblock>
+</apex:page>

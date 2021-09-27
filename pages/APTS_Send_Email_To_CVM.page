@@ -1,0 +1,8 @@
+<apex:page showHeader="true" sidebar="true" controller="APTS_SendMailToCVM" action="{!sendMail}" lightningStylesheets="true">
+    <apex:messages />
+    <apex:form >  
+        <div align="center">     
+            <apex:commandButton value="OK" onclick="window.location='/{!proposal.id}'; return false;" rendered="{!proposal.id!=null}"/>              
+        </div> 
+    </apex:form>      
+</apex:page>

@@ -1,0 +1,615 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+28-Feb-2019 All the next buttons and Finsh button has provided with a style when the pagee is loaded in lightning. Also added lightningStylesheets="true" to make the complete page as VF compatible.
+
+2019-02-12       Tejasree                  DPS-1836 : Added custom labels instead of Hard Coded values
+===============================================================================
+-->
+<apex:page id="LeadConvert"     
+           standardController="Lead" lightningStylesheets="true"  standardStylesheets="false" 
+           extensions="LCRMConvertLeadController">
+    <head>
+       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript">
+       </script>
+    </head>
+    
+    <apex:form id="theForm" >
+        
+        
+        <apex:pagemessages id="msgs" escape="false">
+            
+        </apex:pagemessages>
+
+        <apex:outputPanel id="errorPanel">
+           <apex:outputLink id="errorLink" value="/{!leadId}" rendered="{!bError}" style="color:blue;font-weight:bold;">{!$Label.Click_Here_to_go_Back_To_Lead}</apex:outputLink>
+        </apex:outputPanel>
+        <apex:outputPanel id="ContactSelection">
+            <apex:pageBlock id="OuterPageBlock" rendered="{!displayContact && !bError}" >
+                
+                <script type="text/javascript">
+                
+                jQuery.noConflict();
+                jQuery(document).ready(function() {
+                    
+                    
+                    jQuery('.ContactNext').click(function() {
+                        //  jQuery(document).on('click','.ContactNext', function()
+                        console.log('+++ Inside contactNext ');
+                        if(jQuery('.radioSFDCCon').is(':checked')) 
+                        { 
+                            console.log('+++ Inside IF');
+                            gotoAccountsPage();
+                        }else{
+                            console.log('+++ Inside Else');
+                            //alert('Please select a Contact before proceeding to the next screen');
+                            alert('{!$Label.Lead_Convert_Contact_Selection_Error}');
+                        }
+                        console.log('+++ Completed click');
+                    });
+                    
+                    });
+                    
+                    function setSelectedContactId(hiddenInputElementId, typehiddenInputElementId,  radioElement, typeOfContact) {
+                        var elRadio = jQuery(radioElement);
+                        console.log('+++ Inside setSelectedContactId ');
+                        if (elRadio.is(':checked')) {
+                            console.log('+++ Inside setSelectedContactId Checked ');
+                            var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId)); 
+                            elHiddenInput.val(elRadio.val()); 
+                            var elHiddenInputType = jQuery(document.getElementById(typehiddenInputElementId));                
+                            elHiddenInputType.val(typeOfContact); 
+                            
+                            //jQuery(document.getElementById('cdscontactDetails')).val('');
+                            //jQuery(document.getElementById('cdscontactDetailsType')).val('');
+                            passStringToController();
+                        }
+                    }
+                    
+                    </script>
+                <apex:outputText >{!$Label.Lead_Conversion_Contact_Selection_Screen}</apex:outputText> <br /><br />
+                <!-- Existing Salesforce Contacts received from CDS -->
+                <apex:outputPanel id="main">
+                    <apex:inputHidden id="contactDetails" value="{!selectedContact}" />
+                    <apex:inputHidden id="contactDetailsType" value="{!selectedType}" />
+                    <apex:pageBlockSection id="sectionSalesforceContact"
+                                           columns="1">
+                        
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Select_Existing_Salesforce_Contact}"></apex:outputText>
+                                <apex:outputText styleClass="recommendclass" value="{!$Label.Recommended}"></apex:outputText>
+                                <apex:outputText styleClass="recordsclass" value="{!$Label.Displaying} {!maxSFDCConRecordsDisplayed} {!$Label.of} {!maxSFDCConRecordsDisplayed}"></apex:outputText>
+                                
+                            </apex:outputPanel>
+                        </apex:facet>
+                        
+                        <apex:outputPanel id="sfdccontactpanel" layout="none">
+                            <!-- LeadSFDCContactOptions -->
+                            <apex:pageBlockTable id="tableAccounts123"  value="{!oResponse.SFDCContacts}" var="option" styleClass="tableClass">
+                                <apex:column headerValue="{!$Label.Selected}">
+                                    <input type="radio" class="radioSFDCCon"
+                                           value="{!option.source_system_id}" 
+                                           name="radio_options"                                         
+                                           onchange="javascript: setSelectedContactId('{!$Component.contactDetails}', '{!$Component.contactDetailsType}', this, 'SFDCContact');" /> 
+                                </apex:column>
+                                
+                                <!--<apex:column value="{!option.source_system_id}" headerValue="Source System ID" /> -->
+                                <apex:column value="{!option.First_Name}" headerValue="{!$Label.First_Name}" />  
+                                <apex:column value="{!option.Last_Name}" headerValue="{!$Label.Last_Name}" /> 
+                                <apex:column value="{!option.Account_Name}" headerValue="{!$Label.Account_NameN}" /> 
+                                <apex:column value="{!option.Account_Address}" headerValue="{!$Label.Account_Address}" /> 
+                                <apex:column value="{!option.City},{!option.State}" headerValue="{!$Label.Account_City_State}" /> 
+                                <!-- <apex:column value="{!option.State}" headerValue="Account State" /> 
+                                <apex:column value="{!option.Country}" headerValue="Account Country" /> -->
+                                <apex:column value="{!option.Contact_Email}" headerValue="{!$Label.Email}" /> 
+                                <apex:column value="{!option.Contact_Phone}" headerValue="{!$Label.Phone}" /> 
+                                <apex:column value="{!option.Job_Function}" headerValue="{!$Label.Job_Function}" /> 
+                                <apex:column value="{!option.Title}" headerValue="{!$Label.Title}" />
+                                <apex:column headerValue="{!$Label.Contact_Inactive}"><!--Added by Shovon for CRM-6056-->
+                                    <img src="/img/checkbox_{!IF(option.Contact_Inactive == false, 'un', '')}checked.gif" />
+                                </apex:column>
+                                <!--<apex:column value="{!option.Party_ID}" headerValue="Party ID" /> 
+                                <apex:column value="{!option.PERSON_ID}" headerValue="Person ID" /> -->
+                                
+                                
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    <apex:actionFunction name="passStringToController" action="{!optionSelected}" rerender="contactDetails" status="loadStatus"/>            
+                    <!-- New Contacts received from CDS -->
+                    
+                    <apex:pageBlockSection id="sectionCDSContact"
+                                           columns="1">
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Copy_a_Contact_from_Another_System}"></apex:outputText>
+                                <apex:outputText styleClass="recordsclass" value="{!$Label.Displaying} {!maxCDSConRecordsDisplayed} {!$Label.of} {!maxCDSConRecordsDisplayed}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:outputPanel >
+                            
+                            
+                            
+                            <!--LeadSFDCContactOptions -->
+                            <apex:pageBlockTable id="tableAccounts"  value="{!oResponse.CDSContacts}" var="cds" styleClass="tableClass">
+                                
+                                <apex:column headerValue="{!$Label.Selected}"> 
+                                    <!-- {!cds.CDSContacts.First_Name} -->
+                                    <input id="contactRadioButton" type="radio"
+                                           class="radioSFDCCon"
+                                           value="{!cds.source_system_id}" 
+                                           name="radio_options"    
+                                           onchange="javascript: setSelectedContactId('{!$Component.contactDetails}', '{!$Component.contactDetailsType}', this,'CDSContact');"
+                                           /> 
+                                    
+                                </apex:column>
+                                <!--<apex:column value="{!cds.source_system_id}" headerValue="Source System ID"/> -->
+                                <apex:column value="{!cds.First_Name}" headerValue="First Name"/>  
+                                <apex:column value="{!cds.Last_Name}" headerValue="Last Name"/> 
+                                <apex:column value="{!cds.Account_Name}" headerValue="Account Name"/> 
+                                <apex:column value="{!cds.Contact_Email}" headerValue="Email"/> 
+                                <apex:column value="{!cds.Contact_Phone}" headerValue="Phone"/> 
+                                <apex:column value="{!cds.Job_Function}" headerValue="Job Function"/> 
+                                <apex:column value="{!cds.Title}" headerValue="Title" />  
+                                <apex:column headerValue="Contact Inactive"><!--Added by Shovon for CRM-6056-->
+                                    <img src="/img/checkbox_{!IF(cds.Contact_Inactive == false, 'un', '')}checked.gif" />
+                                </apex:column>
+                                <!--
+                                <apex:column value="{!cds.Party_ID}" headerValue="Party ID"/>
+                                <apex:column value="{!cds.PERSON_ID}" headerValue="Person ID" /> -->
+                                
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    <!-- New Contact Create Section -->
+                    
+                    <apex:pageBlockSection id="sectionNewContact"
+                                           columns="1">
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Create_a_New_Contact_with_the_Information_from_the_Lead}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+
+                        <apex:outputPanel >
+                            
+                            
+                            <!--LeadSFDCContactOptions -->
+                            <apex:pageBlockTable id="tableContactsNew"  value="{!newContactDetails}" var="conRec"  styleClass="tableClass">
+                                
+                                <apex:column headerValue="{!$Label.Selected}"> 
+                                    <!-- {!cds.CDSContacts.First_Name} -->
+                                    <input type="radio" 
+                                           class="radioSFDCCon"
+                                           value="NewContact" 
+                                           name="radio_options"  
+                                           onchange="javascript: setSelectedContactId('{!$Component.contactDetails}', '{!$Component.contactDetailsType}', this, 'NEWContact');"
+                                           />
+                                </apex:column>
+                                <apex:column value="{!conRec.firstName}" headerValue="First Name"/>  
+                                <apex:column value="{!conRec.LastName}" headerValue="Last Name"/>  
+                                <apex:column value="{!conRec.email}" headerValue="Email"/> 
+                                <apex:column value="{!conRec.title}" headerValue="Title"/> 
+                                <apex:column value="{!conRec.function}" headerValue="Job Function"/> 
+                                <apex:column value="{!conRec.phone}" headerValue="Phone"/> 
+                                
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    
+                </apex:outputPanel>
+                
+                <apex:pageBlockButtons >
+                    <!--  <apex:commandButton value="Next"  action="{!goToAccountSelection}" styleClass="ContactNext"/> status="statusValidateAccount" -->
+                    <apex:commandButton id="ContactNextId" value="{!$Label.Next}" styleClass="ContactNext" style="{!IF($User.UITheme == 'Theme4d','background-color: #ffffff; color: #2966ca; border-radius: 4px; font-size: 12px; padding: 7px 17px; border: 1px solid #e7e7e7;','')}"   reRender="errorPanel" />
+                    <apex:commandButton value="{!$Label.Cancel}" action="{!cancelOperation}"/>
+                </apex:pageBlockButtons>
+                <apex:actionFunction name="gotoAccountsPage" action="{!goToAccountSelection}" status="loadStatus" rerender="errorPanel, ContactSelection, AccountSelection, msgs, OpptyBlock" />            
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <apex:outputPanel id="AccountSelection">
+            <apex:pageBlock rendered="{!displayAccount && !bError}" >
+  
+                <table>
+                    <tr><th><apex:outputText styleClass="selectedContacts">{!$Label.Selected_Contact}</apex:outputText></th></tr>
+                    <tr><td><apex:outputLabel value="{!$Label.Name}" /> {!selectedContactName}</td></tr>
+                    <tr><td><apex:outputLabel value="{!$Label.Email1}" /> {!selectedContactEmail}</td></tr>
+                </table>
+                
+                <!--<apex:outputText styleClass="selectedContacts">Selected Contacts</apex:outputText> <br />
+                <apex:outputLabel value="{!$Label.Name}" /> {!selectedContactName} <br />
+                <apex:outputLabel value="{!$Label.Email1}" /> {!selectedContactEmail} <br /> 
+                -->
+                <br />
+                <apex:outputPanel id="main1">
+                    
+                                <script type="text/javascript">
+        
+            jQuery.noConflict();
+            jQuery(document).ready(function() {
+
+               
+                jQuery(document).on('click','.AccountNext', function() {
+                    if(jQuery('.radioAccount').is(':checked')) 
+                    { 
+                        console.log('+++ Inside AccountNext If');
+                        gotoOpptyPage();
+                    }else{
+                        console.log('+++ Inside AccountNext else');
+                        //alert('Please select an Account before proceeding to the next screen');
+                        alert('{!$Label.Lead_Convert_Account_Selection_Error}');
+                    }
+                    
+                    
+                });
+                
+                /*
+                jQuery(document).unbind().on('click','.ManualAccSearch', function() {
+                    if(jQuery('.searchAccountName').val() == '' 
+                      || jQuery('.searchAccountCountry').val() == ''
+                      || jQuery('.searchAccountState').val() == '' ) 
+                    { 
+                        alert('++ size of state '+ {!countryRegionSearchOptions.size});
+                        alert('Please enter Account Name, Country and State for ECM account search.');
+                    }else{
+                        alert('=== everything alrite');
+                        }
+                });
+                */
+                
+            });
+            
+            function setSelectedAccountId(hiddenInputElementId, typehiddenInputElementId,  radioElement, typeOfAccount) {
+                var elRadio = jQuery(radioElement);
+                console.log('+++ Inside setSelectedAccountId');
+                if (elRadio.is(':checked')) {
+                    console.log('+++ Inside setSelectedAccountId Checked');
+                    var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId)); 
+                    elHiddenInput.val(elRadio.val()); 
+                    var elHiddenInputType = jQuery(document.getElementById(typehiddenInputElementId));                
+                    elHiddenInputType.val(typeOfAccount); 
+                    passStringToController1();
+                }
+            }
+            
+            </script>  
+                    
+                    <apex:actionFunction name="passStringToController1" action="{!optionSelected}" rerender="accountDetails" status="loadStatus" />            
+                    
+                    <apex:inputHidden id="accountDetails" value="{!selectedAccountId}" />
+                    <apex:inputHidden id="accountDetailsType" value="{!selectedAccountType}" />
+                    <!-- Existing Salesforce Account received from CDS -->
+                    <apex:pageBlockSection id="sectionSalesforceAccount"
+                                            columns="1">
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Select_Existing_Salesforce_Account}"></apex:outputText>
+                                <apex:outputText styleClass="recommendclass" value=" (**Recommended**)"></apex:outputText>
+                                <apex:outputText styleClass="recordsclass" value="Displaying {!maxSFDCAcctRecordsDisplayed} of {!maxSFDCAcctRecordsDisplayed}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:outputPanel >
+                        <apex:pageBlockTable id="tableAccounts1"  value="{!oResponseAccount.SFDCAccounts}" var="sfdcAccount" styleClass="tableClass">
+                            <apex:column headerValue="{!$Label.Selected}">
+                                
+                                <input type="radio" 
+                                       class="radioAccount"
+                                       value="{!sfdcAccount.SourceSystemId}" 
+                                       name="account_options"  
+                                       onchange="javascript: setSelectedAccountId('{!$Component.accountDetails}', '{!$Component.accountDetailsType}', this, 'SFDCAccount');" /> 
+                                
+                            </apex:column>
+                            
+                            <apex:column value="{!sfdcAccount.Name}" headerValue="Account Name" />
+                            <apex:column value="{!sfdcAccount.Street1}" headerValue="{!$Label.Street_Address}"/>  
+                            <!--<apex:column value="{!sfdcAccount.Street2}" headerValue="Street 2"/> -->
+                            <apex:column value="{!sfdcAccount.City}" headerValue="{!$Label.City_New}"/> 
+                            <apex:column value="{!sfdcAccount.State}" headerValue="{!$Label.State_Region}"/> 
+                            <apex:column value="{!sfdcAccount.PostalCode}" headerValue="{!$Label.Postal_Code}"/> 
+                            <apex:column value="{!sfdcAccount.Country}" headerValue="{!$Label.Country}"/> 
+                            <!--<apex:column value="{!sfdcAccount.SourceSystemId}" headerValue="Source System ID"/> -->
+                        </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    
+                    
+                    <!-- New Contacts received from CDS -->
+                    <apex:pageBlockSection id="sectionECMAccount"
+                                            columns="1">
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Copy_an_Account_from_Another_System}"></apex:outputText>
+                                <apex:outputText styleClass="recordsclass" value="{!$Label.Displaying} {!maxECMAcctRecordsDisplayed} {!$Label.of} {!maxECMAcctRecordsDisplayed}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:outputPanel >
+                        <apex:pageBlockTable id="tableAccounts1"  value="{!oResponseAccount.ECMAccounts}" var="ecmAccount" styleClass="tableClass">
+                            <apex:column headerValue="Selected">
+                                
+                                <input type="radio" 
+                                       class="radioAccount"
+                                       value="{!ecmAccount.SourceSystemId}" 
+                                       name="account_options"  
+                                       onchange="javascript: setSelectedAccountId('{!$Component.accountDetails}', '{!$Component.accountDetailsType}', this, 'ECMAccount');"
+                                       /> 
+                                
+                            </apex:column>
+                            
+                            <apex:column value="{!ecmAccount.Name}" headerValue="Account Name"/>
+                            <apex:column value="{!ecmAccount.Street1}" headerValue="Street Address"/>  
+                            <!--<apex:column value="{!ecmAccount.Street2}" headerValue="Street 2"/> -->
+                            <apex:column value="{!ecmAccount.City}" headerValue="{!$Label.City_New}"/> 
+                            <apex:column value="{!ecmAccount.State}" headerValue="{!$Label.State_Region}"/> 
+                            <apex:column value="{!ecmAccount.PostalCode}" headerValue="{!$Label.Postal_Code}"/> 
+                            <apex:column value="{!ecmAccount.Country}" headerValue="Country"/> 
+                           <!-- <apex:column value="{!ecmAccount.SourceSystemId}" headerValue="Source System ID"/>  -->
+                        </apex:pageBlockTable> 
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                    
+                    
+                    <!-- Option to search for new account -->
+                    
+                    <apex:pageBlockSection >
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Search_for_a_Different_Account}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+
+                        <apex:outputPanel layout="block">
+                            <table>
+                                <tr>
+                                    <td>Account Name <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock" layout="block"/> <apex:inputText styleClass="searchAccountName" title="Account Name" value="{!newAccountSearchDetails.accountName}"></apex:inputText> </apex:outputPanel></td>
+                                    <td>City <apex:inputText title="{!$Label.City_New}" value="{!newAccountSearchDetails.city}"></apex:inputText></td>
+                                    
+                                    <td>Country <apex:actionRegion >  
+                                        <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                                        <apex:selectList styleClass="searchAccountCountry" id="selectBillingCountry" 
+                                                         value="{!newAccountSearchDetails.country}" 
+                                                         size="1"
+                                                         multiselect="false">
+                                            
+                                            <apex:selectOptions value="{!countrySearchOptions}" />
+                                            
+                                            <apex:actionSupport id="supportBillingCountryOnChange1"
+                                                                event="onchange"
+                                                                action="{!addressSearchCountryChanged}"
+                                                                rerender="selectBillingStateSearch1"
+                                                                status="statusLoadingCountryRegions1" />
+                                        </apex:selectList>
+                                        </apex:outputPanel>
+                                        </apex:actionRegion></td>
+                                    <td>
+                                    {!$Label.State_Region}
+                                        <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock" layout="block"/>
+                                        <apex:selectList id="selectBillingStateSearch1" styleClass="searchAccountState"
+                                                         value="{!newAccountSearchDetails.state}" 
+                                                         size="1"
+                                                         multiselect="false" >
+                                            
+                                            <apex:selectOptions value="{!countryRegionSearchOptions}" />
+                                        </apex:selectList>
+                                        </apex:outputPanel>
+                                        <apex:actionStatus id="statusLoadingCountryRegions1">
+                                            <apex:facet name="start">
+                                                <span>&nbsp;&nbsp;</span>
+                                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                                            </apex:facet>
+                                        </apex:actionStatus>
+                                        
+                                    </td> 
+                                    
+                                    <td><apex:outputLabel style="visibility: hidden;">Button</apex:outputLabel> 
+                                        <!--action="{!searchAccount}" status="loadStatus"  styleClass="ManualAccSearch"-->
+                                        <apex:commandButton title="{!$Label.Search}" value="{!$Label.Search}" action="{!searchAccount}"  reRender="errorPanel, AccountSelection, msgs" status="loadStatus" />
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </apex:outputPanel>
+                        
+                    </apex:pageBlockSection>
+                    
+                    <!-- Option to create new Account -->
+                     <apex:pageBlockSection id="sectionNewAccount1"
+                                            columns="1">
+                         <apex:facet name="header">
+                             <apex:outputPanel >
+                                 <apex:outputText styleClass="salesclass" value="{!$Label.Create_a_New_Account_with_the_Information_from_the_Lead}"></apex:outputText>
+                             </apex:outputPanel>
+                         </apex:facet>
+
+                         <apex:outputPanel >
+                            <apex:pageBlockTable id="tableAccountsNew"  value="{!newAccountDetails}" var="accNewRec" styleClass="tableClass">
+                                <apex:column headerValue="{!$Label.Selected}"> 
+                                    <input type="radio" 
+                                           class="radioAccount"
+                                           value="NewAccount" 
+                                           name="account_options"   
+                                           onchange="javascript: setSelectedAccountId('{!$Component.accountDetails}', '{!$Component.accountDetailsType}', this, 'NewAccount');"
+                                           />
+                                </apex:column>
+                                <apex:column value="{!accNewRec.accountName}" headerValue="Account Name" />  
+                                <apex:column value="{!accNewRec.billingStreet}" headerValue="Street Address" />  
+                                <apex:column value="{!accNewRec.billingCity}" headerValue="{!$Label.City_New}" /> 
+                                <apex:column value="{!accNewRec.billingState}" headerValue="{!$Label.State_Region}" /> 
+                                <apex:column value="{!accNewRec.billingCountry}" headerValue="Country" /> 
+                            </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                   
+                    
+                    
+                    <!-- Test ENDS -->
+                </apex:outputPanel>
+                <apex:pageBlockButtons >
+                   <!-- <apex:commandButton value="Previous" action="{!gotoContacts}"  /> -->
+                    <apex:commandButton value="Next"  style="{!IF($User.UITheme == 'Theme4d','background-color: #ffffff; color: #2966ca; border-radius: 4px; font-size: 12px; padding: 7px 17px; border: 1px solid #e7e7e7;','')}"  id="AccountNextId" styleClass="AccountNext" reRender="errorPanel"/>
+                    <apex:commandButton value="Cancel" action="{!cancelOperation}"/>
+                </apex:pageBlockButtons>
+                <apex:actionFunction name="gotoOpptyPage" action="{!goToOptySelection}" rerender="errorPanel, ContactSelection, AccountSelection, msgs, OpptyBlock" status="loadStatus" />            
+            </apex:pageBlock>
+        </apex:outputPanel>
+        <!--Opportunity Block -->
+        <apex:outputPanel id="OpptyBlock">
+            <apex:pageBlock rendered="{!displayOpportunity && !bError}">
+                
+                <table>
+                    <tr>
+                        <th>
+                            <apex:outputText styleClass="selectedContacts">{!$Label.Selected_Contact }</apex:outputText>
+                        </th>
+                        <th>
+                            <apex:outputText styleClass="selectedAccounts">{!$Label.Selected_Account}</apex:outputText>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td><apex:outputLabel value="{!$Label.Name}" /> {!selectedContactName}</td>
+                        <td style="margin-left:20px"><apex:outputLabel value="{!$Label.Name}" /> {!selectedAccountName}</td>
+                    </tr>
+                    <tr>
+                        <td><apex:outputLabel value="Email:" /> {!selectedContactEmail}</td>
+                        <td><apex:outputLabel value="{!$Label.Address}" /> {!selectedAccountAddress}</td>
+                    </tr>
+                </table>
+                <br />
+                
+                <apex:outputPanel id="main_Oppty">
+                    
+                <script type="text/javascript">
+                        
+                    jQuery.noConflict();
+                    function setSelectedOpptyId(hiddenInputElementId, typehiddenInputElementId,  radioElement, typeOfOppty) {
+                        var elRadio = jQuery(radioElement);
+                        console.log('+++ inside setSelectedOpptyId');
+                        if (elRadio.is(':checked')) {
+                            console.log('+++ inside setSelectedOpptyId checked '+ typeOfOppty);
+                            var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId)); 
+                            elHiddenInput.val(elRadio.val()); 
+                            var elHiddenInputType = jQuery(document.getElementById(typehiddenInputElementId));                
+                            elHiddenInputType.val(typeOfOppty); 
+                            passStringToController2();
+                        }
+                    }
+
+                   
+                    </script> 
+                
+                    <apex:actionFunction name="passStringToController2" action="{!optionSelected}" rerender="opptyDetails" status="loadStatus"/>            
+                    <apex:inputHidden id="opptyDetails" value="{!selectedOpptyId}" />
+                    <apex:inputHidden id="opptyDetailsType" value="{!selectedOpptyType}" />
+                    <!-- Existing Salesforce Opportunities  -->
+                    <apex:pageBlockSection id="sectionSalesforceOpportunity" 
+                                           columns="1">
+                        
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Select_existing_Opportunity}}"></apex:outputText>
+                                <apex:outputText styleClass="recordsclass" value="{!$Label.Displaying} {!maxOpptyRecordsDisplayed} {!$Label.of} {!maxOpptyRecordsRetrieved}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        
+                        <apex:pageBlockTable id="tableOpportunitys" value="{!LeadOpportunityOptions}"
+                                             var="option" styleClass="tableClass">
+                            <apex:column headerValue="{!$Label.Selected}">
+                                <input type="radio" value="{!option.Opportunity.Id}" name="Opportunity_options" 
+                                       class="OpptyRadio"
+                                       onchange="javascript: setSelectedOpptyId('{!$Component.opptyDetails}', '{!$Component.opptyDetailsType}', this, 'SFDCOppty');"/>
+                                
+                            </apex:column>
+                            
+                            <apex:column headerValue="{!$Label.Opportunity_Name}" value="{!option.Opportunity.Name}" />
+                            <apex:column headerValue="{!$Label.Stage}" value="{!option.Opportunity.StageName}" />
+                            <apex:column headerValue="{!$Label.Opportunity_Owner}" value="{!option.Opportunity.Owner.name}"/>
+                            <!--<apex:column headerValue="Created By Role" value="{!option.Opportunity.Created_by_Role__c}"/>-->
+                            <apex:column headerValue="{!$Label.Primary_Contact}" value="{!option.Opportunity.Key_Contact__c}"/>
+                            <apex:column headerValue="{!$Label.Close_Date}" value="{!option.Opportunity.CloseDate}" />
+                            <apex:column headerValue="{!$Label.Total_Incremental}" value="{!option.Opportunity.Total_Incremental__c}" />
+                            <apex:column headerValue="{!$Label.Total_Renewal}" value="{!option.Opportunity.Total_Renewal__c}" 
+                            rendered="{!NOT(OR($Profile.Name='GLI Sales User',$Profile.Name='GLI Sales Ops User'))}"/>
+                            <apex:column headerValue="{!$Label.Total_New_ACV_Sales_Price}" value="{!option.Opportunity.LCRM_Total_New_ACV_Sales_Price__c}" rendered="{!OR($Profile.Name='GLI Sales User',$Profile.Name='GLI Sales Ops User')}" /> <!--Added for CRM-6333-->
+                            <apex:column headerValue="{!$Label.Opportunity_Account_Name}" value="{!option.Opportunity.Account.Name}"/>
+                            <apex:column headerValue="{!$Label.City_New}" value="{!option.Opportunity.Billing_City__c}" />
+                            <apex:column headerValue="{!$Label.State_Region}" value="{!option.Opportunity.City_State__c}"/>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                    
+                    
+                    <apex:pageBlockSection id="sectionNewOppty">
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Create_a_New_Opportunity}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+
+                        <apex:panelGrid columns="2">
+                            <div>
+                                <input type="radio" value="NewOpportunity" name="Opportunity_options" 
+                                       class="OpptyRadio"
+                                       onchange="javascript: setSelectedOpptyId('{!$Component.opptyDetails}', '{!$Component.opptyDetailsType}', this, 'NewOppty');"/>
+                                <apex:outputText >Create a New Opportunity</apex:outputText>
+                            </div>
+                            
+                        </apex:panelGrid>
+                    </apex:pageBlockSection>
+                    
+                    <apex:pageBlockSection id="sectionNoOppty">
+                        <apex:facet name="header">
+                            <apex:outputPanel >
+                                <apex:outputText styleClass="salesclass" value="{!$Label.Do_Not_Create_Opportunity_Convert_Lead_to_a_Contact_and_or_Account_Only}"></apex:outputText>
+                            </apex:outputPanel>
+                        </apex:facet>
+                        <apex:panelGrid columns="2">
+                            <div class="abc" id="abcId">
+                                <input type="radio" value="NoOpportunity" name="Opportunity_options" 
+                                       class="OpptyRadio"
+                                       onchange="javascript: setSelectedOpptyId('{!$Component.opptyDetails}', '{!$Component.opptyDetailsType}', this, 'NoOppty');"/>
+                                <apex:outputText >{!$Label.Convert_to_Account_Contact_without_Opportunity}</apex:outputText>
+                            </div>
+                        </apex:panelGrid>
+                    </apex:pageBlockSection>
+                </apex:outputPanel>
+                <apex:pageBlockButtons >
+
+                    <apex:commandButton value="{!$Label.Finish_Convert}" action="{!convertLead}" style="{!IF($User.UITheme == 'Theme4d','background-color: #ffffff; color: #2966ca; border-radius: 4px; font-size: 12px; padding: 7px 17px; border: 1px solid #e7e7e7;','')}" status="loadStatus" reRender="msgs, errorPanel" />
+                    <apex:commandButton value="Cancel" action="{!cancelOperation}" />
+                </apex:pageBlockButtons>
+
+
+
+            </apex:pageBlock>
+            
+        </apex:outputPanel>
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">{!$Label.Loading}</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+
+    </apex:form>
+    
+    <script src="{!URLFOR($Resource.LCRM_Freeze, 'jquery-2.1.3.js')}" />
+    <script src="{!URLFOR($Resource.LCRM_Freeze, 'tableHeadFixer.js')}" />
+    <style>
+        .salesclass {font-size: 1.1em; color: black}
+        .recommendclass {font-size: 1.1em; color: blue}
+        .recordsclass {float:right;font-size: 1.1em; color: black}
+    </style>
+    
+</apex:page>

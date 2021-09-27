@@ -1,0 +1,65 @@
+<!--
+CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 
+* 2/7/2019   Raju Mahapatra            Enabled lightningstylesheets attribute
+=================================================================================
+-->
+<apex:page Controller="EliteCaseRedirectController" action="{!redirectPage}" lightningStylesheets="true">
+
+<style>
+    body .bPageBlock .pbBody .heading .pbSubheader{
+        background-color:#5399E2;
+    }
+            
+</style>
+
+    <apex:form >
+    <apex:pageBlock >
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="{!$Label.Saves}"/>
+            <apex:commandButton action="{!cancel}" value="{!$Label.Cancels}"/>
+        </apex:pageBlockButtons>
+        <apex:outputPanel styleClass="heading" layout="block">
+            <apex:pageBlockSection title="{!$Label.Quote_Information}" columns="2" id="section1">
+                <apex:pageBlockSection columns="1">
+                        
+                        <apex:outputField value="{!newcase.OwnerId}"/>
+                        
+                        <!-- Commented out by Aman Bhansali - 1/23
+                        <apex:inputField value="{!newcase.ContactId}"/>
+                        -->
+                        <apex:outputField value="{!newcase.Opportunity__c}"/>
+                        <apex:outputField value="{!newcase.AccountId}"/>
+                </apex:pageBlockSection>
+                <apex:pageBlockSection columns="1">
+                <apex:inputField value="{!newcase.Subject}" />
+                        <apex:inputField value="{!newcase.Status}" required="true"/>
+                        <apex:inputField value="{!newcase.Priority}" required="true"/>
+                        <apex:inputField value="{!newcase.Due_DateTime__c}"/>
+                        
+                        
+                       
+                </apex:pageBlockSection>   
+            </apex:pageBlockSection>
+        </apex:outputPanel>
+       <!-- <apex:outputPanel styleClass="heading" layout="block">
+            <apex:pageBlockSection title="Additional Information" columns="2" id="section2">
+                <apex:pageBlockSection columns="1">
+                    
+                    <!-- Commented out by Aman Bhansali - 1/23
+                    <apex:inputField value="{!newcase.Origin}" required="true" />
+                    -->
+                    
+             <!--   </apex:pageBlockSection>
+                <!-- Commented out by Aman Bhansali - 1/23
+                <apex:pageBlockSection columns="1">
+                    <apex:inputField value="{!newcase.Description}" />
+                </apex:pageBlockSection>
+                -->
+            <!--</apex:pageBlockSection> 
+        </apex:outputPanel>    --> 
+    </apex:pageBlock>
+    </apex:form>  
+</apex:page>

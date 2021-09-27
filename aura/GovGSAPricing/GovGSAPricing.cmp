@@ -1,0 +1,22 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" >
+    <aura:attribute name="fieldsSetPricing" type="String[]" default="['Set_Price__c','Set_Notes__c','Set_Effective_Date_Begin__c','Set_Effective_Date_End__c']" />
+    <aura:attribute name="fieldsSubPricing" type="String[]" default="['Sub_Price__c','Sub_Notes__c','Sub_Effective_Date_Begin__c','Sub_Effective_Date_End__c']" />
+    <aura:attribute name="fieldsFederalPrice" type="String[]" default="['Federal_Government_Price__c','Federal_Government_Notes__c','Additional_Information__c']" />
+    <aura:attribute name="fieldsGSAService" type="String[]" default="['GSA_Free_Service__c','Additional_Pricing__c']" />
+    
+    <lightning:accordion aura:id="accordion" activeSectionName="Fedlink and GSA Set Pricing">
+        <lightning:accordionSection name="Fedlink and GSA Set Pricing" label="Fedlink and GSA Set Pricing">
+            <lightning:recordForm aura:id="GSASetPricingForm" recordId="{!v.recordId}" objectApiName="Product2" fields="{!v.fieldsSetPricing}" columns="2" mode="view" />
+        </lightning:accordionSection>
+        <lightning:accordionSection name="Fedlink and GSA Sub Pricing" label="Fedlink and GSA Sub Pricing">
+            <lightning:recordForm aura:id="GSASubPricingForm" recordId="{!v.recordId}" objectApiName="Product2" fields="{!v.fieldsSubPricing}" columns="2" mode="view" />
+        </lightning:accordionSection>
+        <lightning:accordionSection name="Federal Government Pricing" label="Federal Government Pricing">
+            <lightning:recordForm aura:id="GSAFederalPricingForm" recordId="{!v.recordId}" objectApiName="Product2" fields="{!v.fieldsFederalPrice}" columns="2" mode="view" />
+        </lightning:accordionSection>
+        <lightning:accordionSection name="GSA Free Service &amp; Additional Pricing" label="GSA Free Service &amp; Additional Pricing">
+            <lightning:recordForm aura:id="GSAServicePriceForm" recordId="{!v.recordId}" objectApiName="Product2" fields="{!v.fieldsGSAService}" columns="2" mode="view" />
+        </lightning:accordionSection>
+    </lightning:accordion>
+</aura:component>

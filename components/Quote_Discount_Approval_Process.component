@@ -1,0 +1,24 @@
+<apex:component controller="QuoteDiscountApprovalProcessController" access="global">
+  <apex:attribute name="QuoteId" description="This is the Quote Id." type="Id" assignTo="{!thisQuoteId }"/>
+            
+   <apex:datatable value="{!thisQLIs}" var="QLI" cellPadding="4" border="1">
+    <apex:column value="{!QLI.PriceBookEntry.Product2.Name}">
+      <apex:facet name="header">{!$Label.DP_LineItemName}</apex:facet>
+    </apex:column>
+    <apex:column value="{!QLI.PriceBookEntry.Product2.ProductCode}">
+       <apex:facet name="header">{!$Label.DP_MaterialNumber}</apex:facet>
+    </apex:column>
+    <apex:column value="{!QLI.Discount}">
+      <apex:facet name="header">{!$Label.DP_Discount}</apex:facet>
+    </apex:column>
+    <apex:column value="{!QLI.Quantity}">
+      <apex:facet name="header">{!$Label.DP_Quantity}</apex:facet>
+    </apex:column>
+    <apex:column value="{!QLI.UnitPrice}">
+      <apex:facet name="header">{!$Label.DP_SalesPrice}</apex:facet>
+    </apex:column>
+    <apex:column value="{!QLI.TotalPrice}">
+      <apex:facet name="header">{!$Label.DP_TotalPice}</apex:facet>
+    </apex:column>
+   </apex:datatable> 
+</apex:component>

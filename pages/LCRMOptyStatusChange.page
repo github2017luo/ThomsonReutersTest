@@ -1,0 +1,50 @@
+<apex:page id="mainPage" standardController="Opportunity" extensions="LCRMOptyStatusChangeCtrl" >
+    <apex:includeScript value="{!URLFOR($Resource.LCRMOptyStatusChangeResource,'LCRMOptyStatusChangeResource/LCRMOptyStatusChangePage/LCRMclosePopupBox.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.LCRMOptyStatusChangeResource,'LCRMOptyStatusChangeResource/LCRMOptyStatusChangePage/LCRMmodal.css')}"/>
+    <apex:form id="mainForm">
+        <apex:Pagemessages id="errorMsg"/> 
+        <apex:outputPanel id="errorPanel">
+            <apex:outputLink id="errorLink" value="/{!oppId}" rendered="{!errors}" style="color:blue;font-weight:bold;" title="">{!$Label.LCRMLinkToGoToOppty}</apex:outputLink>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="popupBox" style="display:block;" rendered="{!!errors}">
+            
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span></span>
+                    <!--<p>&nbsp;</p>-->
+                    <p></p>
+                    <apex:outputPanel >
+                        <table border="0" width="100%">
+                            <tr>
+                                <td><center><b>{!$Label.LCRMRevertStatusToOpen}</b></center></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </table>
+                        <center>
+                            <apex:commandButton id="yesBtn" value="Yes" onclick="this.disabled = true; closePopupBox(); updateStatus();" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                            <apex:commandButton id="cancelBtn" value="No" action="{!gotoOpty}" reRender="mainForm" style="padding: 5px 30px 5px 30px;" status="loadStatus"/>
+                        </center>
+                    </apex:outputPanel>
+                </div>
+            </div>
+        </apex:outputPanel>
+        <apex:outputpanel >
+            <apex:actionstatus id="loadStatus">
+                <apex:facet name="start">
+                    <div class="waitingSearchDiv" id="el_loading" style="position:fixed; background-color: #FFFFFF; height: 100%;opacity:0.65;width:100%;filter: alpha(opacity=50);">
+                        <div class="waitingHolder" style="top: 274.2px; width: 91px;">
+                            <img class="waitingImage" src="/img/loading.gif"     title="Please Wait..." height="30" width="30" style="opacity: 1.0;Padding-bottom:15px"/>
+                            <span class="waitingDescription" style="font-size:24px;color: #000000; Padding-top:30px;">Loading..</span>
+                        </div>
+                    </div>
+                </apex:facet>
+            </apex:actionstatus>
+        </apex:outputpanel>
+        <apex:actionFunction name="updateStatus" action="{!updateStatus}" status="loadStatus" reRender="errorMsg, errorPanel" />
+        
+    </apex:form>
+    
+</apex:page>

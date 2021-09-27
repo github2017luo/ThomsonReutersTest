@@ -1,0 +1,26 @@
+<template >
+  <lightning-card title="My Approvals" icon-name="standard:approval" >
+       <template if:false={flag}>
+         <div style="height:500px">
+         <lightning-datatable 
+                   data={data} 
+                   columns={columns} 
+                   key-field="id" 
+                   class="example"
+                   id="table_id"
+                   hide-checkbox-column="true"
+                   onsort={updateColumnSorting}
+                   sorted-direction={sortDirection}
+                   sorted-by={sortBy}
+                    
+           >
+           </lightning-datatable>
+         </div>
+       </template>
+       <template if:true={flag}>
+           <div class="slds-m-vertical_medium" style="text-align: center;">
+           <p>No approval requests need your attention right now!</p>
+           </div>
+       </template>
+   </lightning-card>
+</template>

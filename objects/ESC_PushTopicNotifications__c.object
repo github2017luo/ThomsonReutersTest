@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>PushTopicName__c</fullName>
+        <description>CSV listing of PushTopicName</description>
+        <externalId>false</externalId>
+        <label>PushTopicNames in CSV:</label>
+        <length>255</length>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>PushTopicNotifications</label>
+    <listViews>
+        <fullName>All_fields</fullName>
+        <columns>SETUP_OWNER_NAME</columns>
+        <columns>SETUP_TYPE</columns>
+        <columns>PushTopicName__c</columns>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>All fields</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>PushTopicNotificationsView</fullName>
+        <columns>SETUP_OWNER_NAME</columns>
+        <columns>PushTopicName__c</columns>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>PushTopicName__c</field>
+            <operation>notContain</operation>
+            <value>email</value>
+        </filters>
+        <label>PushTopicNotificationsView</label>
+        <language>en_US</language>
+    </listViews>
+    <visibility>Public</visibility>
+</CustomObject>

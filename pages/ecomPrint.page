@@ -1,0 +1,39 @@
+<apex:page standardStylesheets="false" controller="Apttus_WebStore.RemoteDispatcher" showHeader="false" sidebar="false" docType="html-5.0" applyHtmlTag="false" applyBodyTag="false">
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <title>GettingStarted</title>
+
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="{!URLFOR($Resource.ecom, '/favicon.ico')}" />
+        <!-- <script>
+    window.sv = JSON.parse("{ \"accessToken\":\"00Df4000004IH5Y!ARAAQFfGb5zi9AfDwsgGexhKz4Lbhl90_J9LYL5DJct8rN7QcbcduWaYmRxmPZa48_x8YprfqoK1kn.yAQYgWrAPVJhAdqse\",\"params\":\"?retURL=%2Fecomm%2Fapex%2FAPTS_eCommerceHome&fromFrontdoor=1&setupid=ChangePassword\",\"user\":\"005f4000002AgY0AAK\",\"resource\":\"/ecomm/resource/1529299982000/GettingStarted\",\"organizationId\":\"00Df4000004IH5YEAW\",\"salesforceEndpoint\":\"apttuscommunities-163960c9372.force.com\",\"baseURL\":\"\"}");
+  </script> -->
+        <link rel="manifest" href="{!URLFOR($Resource.ecom, '/manifest.json')}" />
+        <meta name="theme-color" content="#1976d2" />
+        <link rel="stylesheet" href="{!URLFOR($Resource.ecom, '/styles.a853ab330a1544eee019.css')}" />
+        <script>
+            window.sv = {
+                accessToken: '{!$Api.Session_ID}',
+                params: window.location.search,
+                user: '{!$User.Id}',
+                resource: '{!URLFOR($Resource.ecom)}',
+                organizationId: '{!$Organization.Id}',
+                salesforceEndpoint: '{!$Site.Domain}',
+                baseURL: '{!$Site.BaseCustomUrl}'
+            }
+        </script>
+    </head>
+
+    <body>
+        <app-root></app-root>
+        <script type="text/javascript" src="{!URLFOR($Resource.ecom, 'runtime.d346056cf4d2b1e05d0b.js')}"></script>
+        <script type="text/javascript" src="{!URLFOR($Resource.ecom, 'polyfills.aa06dd35c51d37ac4956.js')}"></script>
+        <script type="text/javascript" src="{!URLFOR($Resource.ecom, 'scripts.134ef3136d088d23f9fe.js')}"></script>
+        <script type="text/javascript" src="{!URLFOR($Resource.ecom, 'main.9d9223e94c78a0b8dc11.js')}"></script>
+    </body>
+
+    </html>
+</apex:page>

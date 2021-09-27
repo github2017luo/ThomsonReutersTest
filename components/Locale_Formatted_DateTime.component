@@ -1,0 +1,23 @@
+<!--
+
+This visualforce component can be used to format the DateTime format into the current user's locale.
+It makes use of an apex class "controller_locale_formatted_datetime" where it returns the formatted DateTime.
+
+ @author  Sudhir Kumar
+ @version 02-Sep-2013
+ 
+ 
+-->
+
+
+<apex:component access="global" controller="Locale_Formatted_DateTime_Controller"> 
+
+    <apex:attribute assignTo="{!date_time}" 
+                description="The DateTime value to be rendered based upon the user's locale" 
+                name="date_time_value" 
+                type="DateTime">
+    </apex:attribute>
+    
+    {!TimeZoneValue}
+    
+</apex:component>

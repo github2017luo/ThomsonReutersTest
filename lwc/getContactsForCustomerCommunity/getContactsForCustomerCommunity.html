@@ -1,0 +1,115 @@
+<template >
+  <div if:true={errorMsg} >
+    <p style="color: red;">{errorMsg}</p>
+  </div>
+  <div style="height:400px; Width:1130px;">
+    <div class="slds-page-header">
+      <div class="slds-page-header__row">
+        <div class="slds-page-header__col-title">
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <lightning-icon icon-name="standard:contact" class="slds-icon slds-page-header__icon slds-icon_small"></lightning-icon>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-page-header__name">
+                <div class="slds-page-header__name-title slds-text-heading_medium">
+                  <h1>
+                    <span>Contacts</span>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    </div>
+    <!--<div slot="actions" class="slds-no-print">
+      <lightning-button label="Printable View" slot="actions" onclick={printableView}></lightning-button>
+      </div>
+      <div if:true={data} class="slds-form--stacked">
+        <lightning-input type="search"
+           value={searchKey}
+           label=""
+           onchange={searchKeyword}
+           placeholder="Search the List"
+           ></lightning-input>
+      </div> 
+      <lightning-button-group>
+        <lightning-button label="Search"
+      onclick={handleSearchKeyword}
+      variant="brand"></lightning-button>
+      <div><lightning-button label="Show All"
+        onclick={showAll}
+        variant="brand"></lightning-button> </div>
+      </lightning-button-group> -->
+     <!-- <div if:true={data} onkeyup={handleSearchKeyword} class="class2">-->
+      <div style="width:1110px;padding-left:860px;">
+        <lightning-input 
+        name="enter-search" type="search" value={searchKey} onkeyup={handleSearchKeyword}
+    ></lightning-input>
+      </div>      
+      
+          <!--</div> -->
+          <div if:true={flag} class="class1">
+           <lightning-datatable 
+                     data={data} 
+                     columns={columns} 
+                     key-field="Id" 
+                     class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                     id="table_id"
+                     hide-checkbox-column="true" 
+                     onsort={updateColumnSorting}
+                     sorted-direction={sortDirection}
+                     sorted-by={sortBy}      
+             >
+             </lightning-datatable>
+            </div>
+            <div if:true={flag1} class="class1">
+              <lightning-datatable 
+                        data={data} 
+                        columns={columns} 
+                        key-field="Id" 
+                        class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                        id="table1_id"
+                        hide-checkbox-column="true" 
+                        onsort={updateColumnSorting}
+                        sorted-direction={sortDirection}
+                        sorted-by={sortBy}
+                        enable-infinite-loading
+                        onloadmore={loadMoreData}        
+                >
+                </lightning-datatable>
+               </div>  
+               <div if:true={flag3} class="class1">
+                <lightning-datatable 
+                          data={dataser} 
+                          columns={columns} 
+                          key-field="Id" 
+                          class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                          id="table3_id"
+                          hide-checkbox-column="true" 
+                          onsort={updateColumnSorting1}
+                          sorted-direction={sortDirection}
+                          sorted-by={sortBy}
+                                  
+                  >
+                  </lightning-datatable>
+                 </div>   
+                 <div if:true={flag4} class="class1">
+                  <lightning-datatable 
+                            data={dataser} 
+                            columns={columns} 
+                            key-field="Id" 
+                            class="slds-table_col-bordered slds-table_striped slds-no-row-hover slds-scrollable"
+                            id="table4_id"
+                            hide-checkbox-column="true" 
+                            onsort={updateColumnSorting1}
+                            sorted-direction={sortDirection}
+                            sorted-by={sortBy}
+                            enable-infinite-loading
+                            onloadmore={loadMoreData1}        
+                    >
+                    </lightning-datatable>
+                   </div>    
+    </div>
+  </template>

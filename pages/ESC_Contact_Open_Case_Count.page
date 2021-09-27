@@ -1,0 +1,21 @@
+<apex:page standardController="Contact" extensions="ESC_ContactOpenCaseCountController" showHeader="false" lightningStylesheets="true">
+<apex:outputPanel rendered="{!NOT($User.UITheme == 'Theme4u')}">
+    <table align="left" width="50%">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tr>
+    <td style="font-family: Arial,Helvetica,sans-serif; color: #4a4a56; font-weight: bold;font-size: 85%;text-align: left">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!$Label.Open_Case_Count}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {!casCountCont}</td>
+    </tr>
+    </table>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!$User.UITheme == 'Theme4u'}">
+    <table >
+    <tr>
+    <td class="test-id__field-label">
+    {!$Label.Open_Case_Count}&nbsp;&nbsp;&nbsp;&nbsp; {!casCountCont}</td>
+    <td>
+    
+    </td>
+    </tr>
+    </table>
+</apex:outputPanel>
+</apex:page>

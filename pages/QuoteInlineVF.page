@@ -1,0 +1,18 @@
+<apex:page showHeader="false" sidebar="false" standardcontroller="Quote">   
+  <style>
+        .radiusDiv {
+            border-radius: 25px;
+            border: 2px solid #ff4000;
+            background-color:#ffff00;
+            padding-top: 10px;  
+            padding-bottom: 10px;   
+            padding-left: 20px;  
+            padding-right: 20px;       
+        }
+  </style>  
+  <apex:outputPanel rendered="{!Quote.Reseller_Discount_Config_Is_Valid_F__c == False && ($Profile.Name == 'LatAm User' || $Profile.Name == 'Partner Portal User')}">
+      <div class="radiusDiv">
+          {!$Label.AccountMRDPEmptyMsg}
+      </div>
+  </apex:outputPanel>  
+</apex:page>

@@ -1,0 +1,377 @@
+<apex:page id="opportunityProduct" standardStylesheets="true"  tabStyle="Opportunity" controller="ProductSelectionController">
+    <apex:includeScript value="/support/console/36.0/integration.js"/>
+    
+    <apex:includeScript value="/soap/ajax/26.0/connection.js"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Autocomplete,'Autocomplete/css/ui-lightness/jquery-ui-1.8.18.custom.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Autocomplete,'Autocomplete/js/jquery-1.7.1.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Autocomplete,'Autocomplete/js/jquery-ui-1.8.18.custom.min.js')}"/>
+    <style type="text/css">
+           .displayNone {
+                display:none;
+            }
+            .displayBlock {
+                display:block;
+            }
+            .ui-autocomplete-loading {
+                background: White url(/img/loading32.gif) right center no-repeat;
+                background-size:15px 15px;
+            }
+
+
+            .ui-autocomplete.ui-widget-content .ui-menu-item.ui-state-focus a, .ui-autocomplete.ui-widget-content a:hover {
+              color: rgb(243, 128, 0) !important;
+            }
+            .ui-autocomplete.ui-widget-content a {
+              color: #000 !important;
+            }
+            .col1 {width:10%;text-align:left;}
+            .col2 {width:30%;text-align:left;}
+            .col3 {width:30%;}
+            .col4 {width:50%;}
+            
+    </style>
+  
+  
+           <apex:form id="theForm">
+            <apex:actionFunction name="callCancelActionFunc" action="{!cancel}" />
+            <apex:actionFunction name="callSaveActionFunc" action="{!SaveClose}" />
+            <apex:sectionHeader id="pageTitle" title="{!$Label.Product_Selection}" subtitle="{!oppty.name}" description="{!$Label.Opp_Prod_Desc}" rendered="{!objectName = 'Opportunity'}"/>
+            <apex:sectionHeader title="{!$Label.Product_Selection}" subtitle="{!oQuote.name}" description="{!$Label.Opp_Prod_Desc}" rendered="{!objectName = 'Quote'}"/>
+            <!--<apex:variable var="product" value="{!$ObjectType.Product2.Fields}" />-->
+            <apex:pageBlock id="productFilter" title="{!$Label.Product_Filters}">
+                <apex:actionStatus id="ProcessingStatus">
+                    <apex:facet name="start">
+                        <div><img class="waitingImage" src="/img/loading.gif" title="Processing...Please Wait..."/>Processing...Please Wait...</div>
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:pageBlockSection id="productFilter" columns="1" >
+                    <apex:selectList value="{!priceBook}" multiselect="false" size="1" id="PriceBk" style="width:18%;" label="{!$Label.Price_Book}" required="true"  onchange="myPicklistChanged(this.id);" disabled="{! boolChckRenew = true}">
+                        <apex:selectOptions value="{!ActivePricebookList}" />
+                    </apex:selectList>
+                    <apex:selectList id="MatrlType" value="{!matrlType}" multiselect="false"  size="1" style="width:18%;" label="{!$Label.Material_Type}">
+                        <apex:selectOptions value="{!MaterialTypeSelectList}" />
+                    </apex:selectList>
+                    <apex:selectList id="medHighLvl" value="{!medHighLvl}" multiselect="false"  size="1" style="width:18%;" label="{!$Label.Media_High_Level}" >
+                        <apex:selectOptions value="{!MediahighLevelSelectList}" />
+                    </apex:selectList>
+                    <apex:selectList id="businessChannel" value="{!prodBusinesschannel}" multiselect="false"  size="1" style="width:18%;" label="{!$Label.Business_Channel}" >
+                        <apex:selectOptions value="{!BusinessChannelList}" />
+                    </apex:selectList>
+                    <apex:inputHidden id="currencyId" value="{!prodCurrency}" />
+                </apex:pageBlockSection>
+            </apex:pageBlock>    
+            <apex:pageBlock title="{!$Label.Renewal_Partial_Cancel_Details}" rendered="{!boolChckRenew}">                
+                <apex:pageBlockSection >
+                <apex:pageblocksectionItem >
+                        <apex:outputLabel value="{!$Label.Cancel_Reason}" style="font-weight:bold;"/> 
+                        <apex:inputField value="{!objOpportunityLI.Cancel_Reason__c}" />                                           
+                    </apex:pageblocksectionItem>
+                     <apex:pageblocksectionItem >                       
+                        <apex:outputLabel value="{!$Label.Cancel_Comments}" style="font-weight:bold;"/>
+                        <apex:inputTextArea value="{!cancelComments}" label="Comments"/>
+                    </apex:pageblocksectionItem>
+                </apex:pageBlockSection>                      
+            </apex:pageBlock>
+            <apex:pageBlock id="products" title="{!$Label.Products}">
+                <apex:actionFunction name="deleteAllLines" action="{!deleteExistinglines}" status="ProcessingStatus" rerender="theForm"  />
+                <apex:pageBlockButtons >
+                    <apex:commandButton id="addProduct" action="{!AddProduct}" value="{!$Label.Add_Product}" reRender="thePanel"/>
+                    <apex:commandButton id="save" value="{!$Label.Save}" action="{!SaveAndValidate}" /> <!-- Added as part of MPC -->
+                    <!--apex:commandButton id="saveClose" value="{!$Label.Save_Close}" action="{!SaveClose}" /-->
+                    <!--apex:commandButton id="cancel" value="{!$Label.Cancel}" action="{!Cancel}"/-->
+                    <input type = "button" onclick="javascript:saveClose();" value="{!$Label.Save_Close}" class="btn" />
+                    <input type = "button" onclick="javascript:cancel();" value="{!$Label.Cancel}" id="theCommandButton" class="btn" />
+                </apex:pageBlockButtons>
+                <apex:pageMessages showDetail="false" escape="true"/>
+                <apex:outputPanel id="thePanel">
+                    <apex:variable var="rowNum" value="{!0}"  />
+                    <apex:pageBlockSection id="thesectionTable" columns="1"  >
+                        <apex:pageBlockTable value="{!latamProductList}" var="latamProduct"  id="theTable" rendered="{!AND(NOT(ISNULL(latamProductList)),latamProductList.size>0)}">
+                            <apex:column headerValue="{!$Label.Action}" rendered="{!objectName = 'Opportunity'}" >
+                                <apex:commandLink style="font-size:11px; font-weight:bold; text-align:center;color:black;" value="{!$Label.Del}" action="{!delRow}" reRender="thePanel" rendered="{! IF(OR(latamProduct.oppline.Activity_Type__c = 'Cancelled',latamProduct.oppline.Activity_Type__c = 'Renewed',latamProduct.oppline.Activity_Type__c = 'Uplift',latamProduct.oppline.Activity_Type__c = 'Downgrade',latamProduct.oppline.Activity_Type__c = 'Removed'),FALSE,TRUE)}">
+                                    <apex:param value="{!rowNum}" name="index" />
+                                </apex:commandLink>
+                                <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                            </apex:column>
+                            
+                            <apex:column headerValue="{!$Label.Action}" rendered="{!objectName = 'Quote'}" >
+                                <apex:commandLink style="font-size:11px; font-weight:bold; text-align:center;color:black;" value="{!$Label.Del}" action="{!delRow}" reRender="thePanel" rendered="{! IF(OR(latamProduct.qLine.Item_Activity_Type__c = 'Cancelled',latamProduct.qLine.Item_Activity_Type__c = 'Renewed',latamProduct.qLine.Item_Activity_Type__c = 'Uplift',latamProduct.qLine.Item_Activity_Type__c = 'Downgrade',latamProduct.qLine.Item_Activity_Type__c = 'Removed'),FALSE,TRUE)}">
+                                    <apex:param value="{!rowNum}" name="index" />
+                                </apex:commandLink>
+                                <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.Partial_Cancel}" rendered="{!objectName = 'Opportunity' && boolChckRenew = true}">
+                                <apex:inputCheckbox value="{!latamProduct.isSelected}" disabled="{! latamProduct.oppline.Activity_Type__c = 'New'}" />
+                            </apex:column> 
+                            <apex:column headerValue="{!$Label.Partial_Cancel}" rendered="{!objectName = 'Quote' && boolChckRenew = true}">
+                                <apex:inputCheckbox value="{!latamProduct.isSelected}" disabled="{! latamProduct.qLine.Item_Activity_Type__c = 'New'}" />
+                            </apex:column> 
+                            <apex:column headerValue="{!$Label.Product_Name}" >
+                                <apex:inputText value="{!latamProduct.productName}" id="productName" onclick="autoCompleteFeature(this.id)" rendered="{!OR(And(ISNULL(latamProduct.qLine.Id),objectName = 'Quote'),And(ISNULL(latamProduct.oppLine.Id),objectName = 'Opportunity'))}" style="width: 250px;">
+                                </apex:inputText>
+                                <apex:inputhidden id="productPricebookEntry" value="{!latamProduct.oppLine.pricebookentryId}" rendered="{!objectName = 'Opportunity'}"/>
+                                <apex:inputhidden id="productPricebookEntryQLi" value="{!latamProduct.qLine.pricebookentryId}" rendered="{!objectName = 'Quote'}"/>
+                                <apex:OutputText value="{!latamProduct.productName}"  rendered="{!OR(And(objectName = 'Quote',Not(ISNULL(latamProduct.qLine.Id))),And(objectName = 'Opportunity',Not(ISNULL(latamProduct.oppLine.Id))))}"></apex:OutputText>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.Material}" >
+                                <apex:inputText style="width: 155px;" value="{!latamProduct.materialCode}" id="productCode" rendered="{!OR(And(ISNULL(latamProduct.qLine.Id),objectName = 'Quote'),And(ISNULL(latamProduct.oppLine.Id),objectName = 'Opportunity'))}">
+                                </apex:inputText>
+                                <apex:outputText style="width: 155px;" value="{!latamProduct.materialCode}"  rendered="{!OR(And(objectName = 'Quote',Not(ISNULL(latamProduct.qLine.Id))),And(objectName = 'Opportunity',Not(ISNULL(latamProduct.oppLine.Id))))}">
+                                </apex:outputText>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Quantity.Label}" rendered="{!objectName = 'Opportunity'}" style="width : 80px;">
+                                <!--<apex:panelGroup ><span style="background-color:red;padding: 3px 0px;">&nbsp;</span><apex:inputfield value="{!latamProduct.oppline.Quantity}"  style="width : 70px;" />
+                                </apex:panelGroup> -->
+                                <apex:inputfield value="{!latamProduct.oppline.Quantity}" style="width : 70px;" id="productQuantityOpp" rendered="{! latamProduct.oppline.Activity_Type__c != 'Cancelled'}"/>
+                                <apex:outputField value="{!latamProduct.oppline.Quantity}" style="width : 70px;" rendered="{! latamProduct.oppline.Activity_Type__c = 'Cancelled'}"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.UnitPrice.Label}" rendered="{!objectName = 'Opportunity'}" style="width : 80px;">
+                                <apex:panelGroup rendered="{! latamProduct.oppline.Activity_Type__c != 'Cancelled'}" >
+                                    <span style="background-color:red;padding: 3px 0px;">&nbsp;</span>                                                                         
+                                    <apex:inputfield id="productPrice" value="{!latamProduct.oppline.unitPrice}"  style="width : 70px;" />                                    
+                                </apex:panelGroup>
+                                <apex:panelGroup rendered="{! latamProduct.oppline.Activity_Type__c = 'Cancelled'}" >                                    
+                                    <apex:outputfield value="{!latamProduct.oppline.unitPrice}"  style="width : 70px;" />
+                                </apex:panelGroup>
+                            </apex:column>
+                            <!--    <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Revenue_Type__c.Label}" rendered="{!objectName = 'Opportunity'}" style="width : 80px;">
+                                <apex:panelGroup ><apex:inputField id="RevenueType" value="{!latamProduct.oppline.Revenue_Type__c}"  style="width : 70px;"/>
+                                </apex:panelGroup>
+                            </apex:column> -->
+                            <apex:column headerValue="{!$ObjectType.Quotelineitem.Fields.Quantity.Label}" rendered="{!objectName = 'Quote'}" style="width : 80px;">
+                                <apex:inputfield value="{!latamProduct.qLine.Quantity}" id="productQuantityQuote" style="width : 70px;" rendered="{! latamProduct.qLine.Item_Activity_Type__c != 'Cancelled'}"/>
+                                <apex:outputfield value="{!latamProduct.qLine.Quantity}"  style="width : 70px;" rendered="{! latamProduct.qLine.Item_Activity_Type__c = 'Cancelled'}"/>
+                            </apex:column>
+                            <apex:column headerValue="{!$ObjectType.Quotelineitem.Fields.UnitPrice.Label}" rendered="{!objectName = 'Quote'}" style="width : 80px;">
+                                <apex:inputfield id="productPriceQLi" value="{!latamProduct.qLine.unitPrice}" style="width : 70px;" rendered="{!latamProduct.qLine.Item_Activity_Type__c != 'Cancelled'}"/>
+                                <apex:outputfield value="{!latamProduct.qLine.unitPrice}"  style="width : 70px;" rendered="{!latamProduct.qLine.Item_Activity_Type__c = 'Cancelled'}"/>
+                            </apex:column>             
+                            <apex:repeat value="{!$ObjectType.OpportunityLineItem.fieldsets.Product_Selection}" var="fieldValue" >
+                                <apex:column headervalue="{!fieldValue.label}" rendered="{!IF(AND(objectName == 'Opportunity',boolChckNotRenew == TRUE),TRUE,FALSE)}" >
+                                    <apex:inputField value="{!latamProduct.oppLine[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="width: 100px;"  />
+                                    
+                                </apex:column>
+                            </apex:repeat>                 
+                            <apex:repeat value="{!$ObjectType.QuoteLineItem.fieldsets.Product_Selection}" var="fieldValue">
+                                <apex:column headervalue="{!fieldValue.label}" rendered="{!IF(AND(objectName == 'Quote',boolChckNotRenew == TRUE),TRUE,FALSE)}">
+                                    <apex:inputField value="{!latamProduct.qLine[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="width: 100px;" />                                    
+                                </apex:column>
+                            </apex:repeat>
+                            <apex:repeat value="{!$ObjectType.OpportunityLineItem.fieldsets.Product_Selection_Renewals}" var="fieldValue" >
+                                <!--apex:variable var="chck" value="{!AND(NOT(latamProduct.oppline.Activity_Type__c = 'New'),OR(fieldValue.label = 'Subscription End Date' ,fieldValue.label = 'Subscription Start Date'))}"/-->
+                              <apex:column headervalue="{!fieldValue.label}" rendered="{!IF(AND(objectName == 'Opportunity',boolChckRenew == TRUE),TRUE,FALSE)}">                                    
+                                    <apex:inputField value="{!latamProduct.oppLine[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="width: 100px;" rendered="{!IF(OR(latamProduct.oppline.Activity_Type__c = 'New',AND(OR(latamProduct.oppline.Activity_Type__c = 'Renewed',latamProduct.oppline.Activity_Type__c = 'Uplift',latamProduct.oppline.Activity_Type__c = 'Downgrade'),AND(fieldValue.label != 'Subscription End Date' ,fieldValue.label != 'Subscription Start Date'))),TRUE,FALSE)}" />                            
+                                    <apex:outputField value="{!latamProduct.oppLine[fieldValue]}"  style="width : 70px;" rendered="{!IF(OR(latamProduct.oppline.Activity_Type__c = 'Cancelled',latamProduct.oppline.Activity_Type__c = 'Removed',AND(OR(latamProduct.oppline.Activity_Type__c = 'Renewed',latamProduct.oppline.Activity_Type__c = 'Uplift',latamProduct.oppline.Activity_Type__c = 'Downgrade'),OR(fieldValue.label = 'Subscription End Date' ,fieldValue.label = 'Subscription Start Date'))),TRUE,FALSE)}"/>                                    
+                                </apex:column>
+                            </apex:repeat>                 
+                            <apex:repeat value="{!$ObjectType.QuoteLineItem.fieldsets.Product_Selection_Renewals}" var="fieldValue">
+                                <apex:column headervalue="{!fieldValue.label}" rendered="{!IF(AND(objectName == 'Quote',boolChckRenew == TRUE),TRUE,FALSE)}">
+                                    <apex:inputField value="{!latamProduct.qLine[fieldValue]}" required="{!OR(fieldValue.required, fieldValue.dbrequired)}" style="width: 100px;" rendered="{!IF(OR(latamProduct.qLine.Item_Activity_Type__c = 'New',AND(OR(latamProduct.qLine.Item_Activity_Type__c = 'Renewed',latamProduct.qLine.Item_Activity_Type__c = 'Uplift',latamProduct.qLine.Item_Activity_Type__c = 'Downgrade'),AND(fieldValue.label != 'Subscription End Date' ,fieldValue.label != 'Subscription Start Date'))),TRUE,FALSE)}"/>
+                                    <apex:outputfield value="{!latamProduct.qLine[fieldValue]}"  style="width : 70px;" rendered="{!IF(OR(latamProduct.qLine.Item_Activity_Type__c = 'Cancelled',latamProduct.qLine.Item_Activity_Type__c = 'Removed',AND(OR(latamProduct.qLine.Item_Activity_Type__c = 'Renewed',latamProduct.qLine.Item_Activity_Type__c = 'Uplift',latamProduct.qLine.Item_Activity_Type__c = 'Downgrade'),OR(fieldValue.label = 'Subscription End Date' ,fieldValue.label = 'Subscription Start Date'))),TRUE,FALSE)}"/>
+                                </apex:column>
+                            </apex:repeat>               
+                            
+                            <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Annual_Price__c.Label}" rendered="{!AND(objectName = 'Opportunity',NOT(oppty.RecordType.Name='LATAM Renewal Opportunity'))}" >
+                                <apex:inputField value="{!latamProduct.oppLine.Annual_Price__c}" />
+                             </apex:column>
+                             
+                             <apex:column headerValue="{!$ObjectType.Quotelineitem.Fields.Annual_Price__c.Label}" rendered="{!AND(objectName = 'Quote',oQuote.RecordType.Name='LATAM New Quote')}">
+                                <apex:inputField value="{!latamProduct.qLine.Annual_Price__c}" />
+                             </apex:column>
+                             
+                                 <!--- Added as part of MPC -->
+                             <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Monthly_Charge_Calc__c.Label}" rendered="{!AND(objectName = 'Opportunity',showWarning)}" >
+                                <apex:outputField value="{!latamProduct.oppLine.Monthly_Charge_Calc__c}" />
+                             </apex:column>
+                             
+                             <apex:column headerValue="{!$ObjectType.Quotelineitem.Fields.Monthly_Charge_Calc__c.Label}" rendered="{!AND(objectName = 'Quote',showWarning)}">
+                                <apex:outputField value="{!latamProduct.qLine.Monthly_Charge_Calc__c}" />
+                             </apex:column>
+                             
+                            <apex:column headerValue="{!$ObjectType.OpportunityLineItem.Fields.Monthly_Charge_Suggested_Total_Price_Msg__c.Label}" rendered="{!AND(objectName = 'Opportunity',showWarning)}" >
+                                <apex:outputPanel rendered="{!AND(latamProduct.oppLine.Monthly_Charge_Suggested_Total_Price_Msg__c != '',latamProduct.oppLine.Monthly_Charge_Suggested_Total_Price_Msg__c != null)}">
+                                    <apex:image url="{!$Resource.Warning}" />&nbsp;
+                                        <apex:outputText value="{!$Label.LatAm_Product_Selection_Screen_Warning}"  escape="false">
+                                        </apex:outputText>
+                                    <apex:outputField value="{!latamProduct.oppLine.Monthly_Charge_Suggested_Price__c}" />
+                                </apex:outputPanel>
+                            </apex:column>
+
+                            <apex:column headerValue="{!$ObjectType.Quotelineitem.Fields.Monthly_Charge_Suggested_Total_Price_Msg__c.Label}" rendered="{!AND(objectName = 'Quote',showWarning)}">
+                                <apex:outputPanel rendered="{!AND(latamProduct.qLine.Monthly_Charge_Suggested_Total_Price_Msg__c != '',latamProduct.qLine.Monthly_Charge_Suggested_Total_Price_Msg__c != null)}">
+                                    <apex:image url="{!$Resource.Warning}" />&nbsp;
+                                    <apex:outputText value="{!$Label.LatAm_Product_Selection_Screen_Warning}"
+                                    escape="false">
+                                    </apex:outputText>
+                                    <apex:outputField value="{!latamProduct.qLine.Monthly_Charge_Suggested_Price__c}" />
+                                </apex:outputPanel>
+                            </apex:column> 
+                <!-- Ends here -->
+                        </apex:pageBlockTable>
+                    </apex:pageblocksection>
+                </apex:outputPanel>
+            </apex:pageBlock>
+        </apex:form>
+        
+    <script type="text/javascript">
+        //To remove conflictions of jquery
+        function autoCompleteFeature(e){
+        //console.log(e);
+        var productCode = e.substring(0,e.length -4) + 'Code';
+        var priceBookEntry = e.substring(0,e.length -4) + 'PricebookEntry';
+        var priceBookEntryQli = e.substring(0,e.length -4) + 'PricebookEntryQLi';
+        var productPrice = e.substring(0,e.length -4) + 'Price';
+        var productPriceQli = e.substring(0,e.length -4) + 'PriceQLi';
+        var e= document.getElementById(e);
+        productCode = document.getElementById(productCode);
+        priceBookEntry = document.getElementById(priceBookEntry);
+        priceBookEntryQli = document.getElementById(priceBookEntryQli);
+        productPrice = document.getElementById(productPrice);
+        productPriceQli = document.getElementById(productPriceQli);
+        //alert(e);
+        var j$ = jQuery.noConflict();
+        j$(document).ready(function() {
+            //Auto complete textbox component
+            //var autoCompleteTextBoxId = "input[id$='productInputId']";
+            var autoCompleteTextBoxId = e;
+            //alert(autoCompleteTextBoxId);
+            //var productId = "input[id$='productId']";
+            var materialTypeId = "[id$='MatrlType']";
+            var mediaHighLevelId = "[id$='medHighLvl']";
+            var priceBookId = "[id$='PriceBk']";
+            var prodCurrencyId= "[id$='currencyId']";
+            var businessChannelId = "[id$='businessChannel']";
+            var queryTerm;
+             //auto complete method
+            j$(autoCompleteTextBoxId).autocomplete({
+                minLength: 2,
+                source: function(request, response) {
+                            queryTerm = request.term;
+                            var sObjects;
+                            var searchText = j$(autoCompleteTextBoxId).val();
+                            var materialTypeValue = j$(materialTypeId).val();
+                            var mediaHighLevelValue = j$(mediaHighLevelId).val();
+                            var pricebookvalue = j$(priceBookId).val();
+                            var currencyValue = j$(prodCurrencyId).val();
+                            var businessChannelValue = j$(businessChannelId).val();
+                            var renewal = {!renewalOpty};
+                      //alert('Renewal'+' '+renewal+'MTV '+materialTypeValue +' MHLV '+mediaHighLevelValue +' PB '+pricebookvalue+' CV'+currencyValue  );
+                            ProductSelectionController.searchProdut(searchText,materialTypeValue,mediaHighLevelValue,pricebookvalue,currencyValue,businessChannelValue,renewal,function(result, event){
+                                if(event.type == 'exception') {
+                                     // alert(event.message);
+                                } else {
+                                     sObjects = result;
+                                     response(sObjects);
+                                }
+                            });
+                       },
+                focus: function( event, ui ) {
+                        j$(autoCompleteTextBoxId).val(ui.item.pbe.Product2.Name);
+                        return false;
+                        },
+                select: function( event, ui ) {
+                    //alert('Hi' + ui);
+                            j$(autoCompleteTextBoxId).val(ui.item.pbe.Product2.Name);
+                            j$(priceBookEntry).val(ui.item.pbe.Id);
+                            j$(priceBookEntryQli).val(ui.item.pbe.Id);
+                            j$(productCode).val(ui.item.pbe.Product2.ProductCode);
+                            j$(productPrice).val(ui.item.unitPriceInLocale);
+                            j$(productPriceQli).val(ui.item.unitPriceInLocale);
+                            //j$(productCode).append(ui.item.Product2.ProductCode);
+                            //var myValue = ui.item.Product2.ProductCode;
+                            //productCode.innerHTML = myValue;
+
+                            return false;
+                        },
+             })
+             .data( "autocomplete" )._renderItem = function( ul, item ) {
+                var entry = "<a>" +item.pbe.Product2.ProductCode+' - '+ item.pbe.Product2.Name;
+
+                entry = entry + "</a>";
+                entry = entry.replace(queryTerm, "<b>" + queryTerm + "</b>");
+                return j$( "<li></li>" )
+                    .data( "item.autocomplete", item )
+                    .append( entry )
+                    .appendTo( ul );
+            };
+        });
+    }
+        //used to change the pricebook and retain as per user selection
+        function myPicklistChanged(e) {
+            var myPicklistElement = document.getElementById(e);
+            var myPicklistValue = myPicklistElement.options[myPicklistElement.selectedIndex].value;
+            var oldvalue = '{!priceBook}';
+            //alert(oldvalue + myPicklistValue);
+            var changeValue = confirm('{!$Label.Changing_Price_Book}');
+            if(changeValue == true){
+            //update the opportunity pricebook2Id to the selected pricebook and click Save action function .
+                deleteAllLines();
+            } else {
+                for (i=0;i<myPicklistElement.options.length;i++) {
+                    if (myPicklistElement.options[i].value == oldvalue) {
+                        myPicklistElement.options[i].selected = true;
+                    } else {
+                        myPicklistElement.options[i].selected = false;
+                    }
+                }
+            }
+        }
+
+        function getRowIndex (e){
+            var inputcheck = document.getElementById(e).checked;
+            // alert(inputcheck);
+            deleteSelectedLines();
+        }
+        
+   // window.onload = $(document).ready(function(){
+    //    jQuery('[id$=productQuantityOpp]').first().focus();
+    //     jQuery('[id$=productQuantityQuote]').first().focus();
+            
+            
+    //    });
+    var pageLoad = window.onload;
+    window.onload = $(document).ready(function(){
+        
+         //setFocusToTextBox();
+         //alert('1111');
+           if (pageLoad) {
+               pageLoad();
+           }
+           jQuery('[id$=productQuantityOpp]').first().focus();
+         jQuery('[id$=productQuantityQuote]').first().focus();
+            //alert('3333');
+           OpenSubtab_IP();
+        });
+        
+        function OpenSubtab_IP() {
+            //alert('4444');
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        }
+        
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Product Selection');            
+        } 
+        
+        function cancel(){
+            if({!objectName = 'Quote'}){
+                sforce.console.setTabTitle('{!oQuote.name}');
+                callCancelActionFunc();
+            }
+            else{
+                callCancelActionFunc();
+            }
+        }
+        
+        function saveClose(){
+            if({!objectName = 'Quote'}){
+                sforce.console.setTabTitle('{!oQuote.name}');
+                callSaveActionFunc();
+            }
+            else{
+                callSaveActionFunc();
+            }
+        }
+        
+    </script>
+</apex:page>

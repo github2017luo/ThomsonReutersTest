@@ -1,0 +1,41 @@
+<!--
+============================================================================================== 
+FLS DIAGNOSTICS CHECKING
+
+Improved Apps
+May 2020
+Copyright (c.) Improved Apps Limited 2020. All Rights Reserved.
+============================================================================================== 
+ -->
+
+<apex:page Controller="ianb.ServiceSecurity" action="{!FLSCheck}" sidebar="false">
+
+   <head>
+        <meta name='Description' content='Improved NoticeBoard Copyright (c.) Improved Apps Limited 2020. All Rights Reserved.' /> 
+        
+        <style>
+            .NBPanel          {border-radius: 10px; color: grey; background-color: white; box-shadow: 0px 2px 5px #fc4f59;}
+            .NBPanelHeader    {border-radius: 10px 10px 0 0; background: #fc4f59; color: white; height: 28px; padding: 15px 0 0 20px;}
+            .NB-H3            {font-size: 1.2em; font-weight: bold;}
+            
+        </style>    
+    </head>    
+
+    <body class='Dialogue'>
+        <apex:form >
+            
+            <div id="MessageDialogue" class='NBDialogue NBPanel'>
+                <div class='NBPanelHeader'><div class='NB-H3'>FLS Checker</div></div>
+                                                
+                <div class="NBPanelBody" style="padding: 10px;">
+                    <span><apex:outputText value="{!Diags}" escape="true" /></span>
+                </div>
+        
+                <div class="NBPanelFooter" style="height: 16px;">
+                </div>              
+            </div>
+            
+        </apex:form>        
+    </body>    
+    
+</apex:page>

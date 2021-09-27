@@ -1,0 +1,32 @@
+<apex:component controller="RenewalTemplateShipBillAddressPopulation" access="global">
+    <apex:attribute name="accId" type="Id" description="Id of the acc" assignTo="{!accountId}"/> 
+        <apex:repeat value="{!addressMapping}" var="a">
+            <apex:outputLabel rendered="{!(LEN(a.BillingStreet) > 1) && (LEN(a.BillingCity) > 1 || LEN(a.BillingState) > 1 || LEN(a.BillingPostalCode) > 1 || LEN(a.BillingCountry) > 1)}">
+                {!a.BillingStreet},          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingStreet) > 1) && LEN(a.BillingCity) < 1 && LEN(a.BillingState) < 1 && LEN(a.BillingPostalCode) < 1 && LEN(a.BillingCountry) < 1}">
+                {!a.BillingStreet}          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingCity) > 1) && (LEN(a.BillingState) > 1 || LEN(a.BillingPostalCode) > 1 || LEN(a.BillingCountry) > 1)}">
+                {!a.BillingCity},          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingCity) > 1) && LEN(a.BillingState) < 1 && LEN(a.BillingPostalCode) < 1 && LEN(a.BillingCountry) < 1}">
+                {!a.BillingCity}          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingState) > 1) && (LEN(a.BillingPostalCode) > 1 || LEN(a.BillingCountry) > 1)}">
+                {!a.BillingState},          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingState) > 1) && LEN(a.BillingPostalCode) < 1 && LEN(a.BillingCountry) < 1}">
+                {!a.BillingState}          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingPostalCode) > 1) && (LEN(a.BillingCountry) > 1)}">
+                {!a.BillingPostalCode},          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!(LEN(a.BillingPostalCode) > 1) && LEN(a.BillingCountry) < 1}">
+                {!a.BillingPostalCode}          
+            </apex:outputLabel>
+            <apex:outputLabel rendered="{!LEN(a.BillingCountry) > 1}">
+                {!a.BillingCountry}             
+            </apex:outputLabel> 
+        </apex:repeat> 
+</apex:component>

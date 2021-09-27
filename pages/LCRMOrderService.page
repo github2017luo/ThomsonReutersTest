@@ -1,0 +1,170 @@
+<apex:page standardController="Account" extensions="LCRMOrderServiceController"  id="pageOrders" tabStyle="Account" sidebar="false" action="{!changeDisplayOrders}" lightningStylesheets="true">
+    <apex:includeScript value="/support/console/42.0/integration.js"/>
+    <style type="text/css">
+.loadingIcon {
+    background-image: url(/img/loading.gif);
+    width: 16px;
+    height: 16px;
+}
+</style>
+    <script type="text/javascript"> 
+        var closeSubtab = function closeSubtab(result) {            
+        var tabId = result.id;
+        sforce.console.closeTab(tabId);
+        };            
+        function testOpenSubtab(){
+            if('Theme4u' == '{!JSENCODE($User.UIThemeDisplayed)}'){
+             sforce.console.getEnclosingTabId(closeSubtab);
+            }else{
+            if (sforce.console.isInConsole()) { 
+                var url = '/{!Account.Id}?isdtp=vw'; 
+                srcSelf(url); 
+            } else { 
+                var url = '/{!Account.Id}';
+                window.open(url,'_top'); 
+            } 
+         }
+         
+        }
+          
+          
+    </script>
+    <apex:form id="formOrders">
+        <apex:sectionHeader id="pageTitle" title=""   subtitle="{!$Label.Orders}" />
+        <apex:pageMessages id="messagesGlobal" />
+        <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 2px;">
+            <span>&nbsp;&laquo;&nbsp;</span>
+            <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_to_Account}: {!Account.Name}</a> <!--SFD-16-->
+           <span>&nbsp;|&nbsp;</span>
+            
+        </div>
+        <apex:actionFunction name="rerenderOrders"  reRender="sectionOrders,sectionFilters,messagesGlobal" status="statusOrders" action="{!changeDisplayOrders}" rendered="{!ssdList.size>0}"  />
+
+      
+           <apex:actionStatus id="statusOrders">
+                     <apex:facet name="start">
+                          <apex:outputPanel layout="block" styleClass="message infoM4">
+                               <apex:panelGrid columns="2"  styleClass="messageTable"  columnClasses="messageCell" style="padding:0px;margin:0px;">
+                                  <apex:panelGroup >
+                                     <img class="loadingIcon" src="/s.gif" />
+                                      </apex:panelGroup>
+                                      <apex:panelGroup >
+                                       <div class="messageText">{!$Label.Loading_Orders}</div>
+                                    </apex:panelGroup>
+                                  </apex:panelGrid>
+                              </apex:outputPanel>
+                         </apex:facet>         
+                 </apex:actionStatus>                   
+                      <!--   <apex:facet name="stop">  -->
+        <apex:pageBlock id="blockOrder" mode="edit">
+            <apex:facet name="header">
+                <apex:panelGrid id="gridSnapshotHeader"  styleclass="vertical-align: middle;" columns="1"  columnClasses="pbTitle, pbButton, pbHelp">
+                    <apex:panelGroup layout="none">
+                        <h2>{!$Label.Orders}</h2>
+                    </apex:panelGroup>
+                    <apex:panelGroup layout="none">
+                        <!--buttons go here if needed-->
+                    </apex:panelGroup>
+                    <apex:panelGroup layout="none">
+                        <apex:outputLabel for="selectViewOptions" value="{!$Label.View}: "  style="font-weight:bold;" />
+                        <apex:selectList id="selectViewOptions" value="{!sSelectedOption}"  size="1">
+                            <apex:actionSupport event="onchange" status="statusLoadingView" rerender="sectionFilters,sectionOrders,globalMessages" />
+                            <apex:selectOptions value="{!OrderListOptions}" />
+                        </apex:selectList>
+                        <apex:actionStatus id="statusLoadingView">
+                            <apex:facet name="start">
+                                <img src="/img/loading.gif" height="14px" width="14px" />
+                            </apex:facet>
+                            <apex:facet name="stop">
+                                <img src="/img/s.gif" height="14px" width="14px" />
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:panelGroup>
+                </apex:panelGrid>
+            </apex:facet>
+            <apex:pageBlockSection columns="6" id="sectionFilters" collapsible="true" title="{!$Label.Filters}">
+                <apex:inputField value="{!oAccount.Order_Type__c}" label="{!$Label.Order_Type}"  rendered="{!sSelectedOption == 'All'}" required="true" />
+                <apex:inputtext id="newBeginDate" value="{!NewBegindt}"  rendered="{!sSelectedOption == 'New'}"   onfocus="DatePicker.pickDate(true, 'pageOrders:formOrders:blockOrder:sectionFilters:newBeginDate', false);" label="{!$Label.Begin_Date}" />
+                <apex:inputtext id="newEndDate" value="{!NewEnddt}"  rendered="{!sSelectedOption == 'New'}"  onfocus="DatePicker.pickDate(true, 'pageOrders:formOrders:blockOrder:sectionFilters:newEndDate', false);" label="{!$Label.End_Date}" />
+                <apex:inputtext id="allBeginDate" value="{!AllBegindt}"  rendered="{!sSelectedOption == 'All'}"  onfocus="DatePicker.pickDate(true, 'pageOrders:formOrders:blockOrder:sectionFilters:allBeginDate', false);"   label="{!$Label.Begin_Date}" />
+                <apex:inputtext id="allEndDate" value="{!AllEnddt}"  rendered="{!sSelectedOption == 'All'}"  onfocus="DatePicker.pickDate(true, 'pageOrders:formOrders:blockOrder:sectionFilters:allEndDate', false);" label="{!$Label.End_Date}" />
+                
+                <apex:commandButton value="{!$Label.Go}"  reRender="messagesGlobal,sectionOrders,pagebuttons" status="statusOrders"  action="{!changeDisplayOrdersGo}" disabled="{!ssdList.size==0}" />
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" title="{!sTranslatedSelectOption} {!$Label.Orders} " id="sectionOrders" >
+                <apex:outputPanel layout="none">
+                    <apex:pageblockSectionItem >
+                        <apex:outputPanel layout="block"   rendered="{!DisplayOrders.size==0 }"  style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.No_Records_to_Display}</apex:outputPanel>
+                        <apex:pageblocktable value="{!DisplayOrders}" var="ord" id="tableSubscription" rendered="{!DisplayOrders.size!=0}">
+                              <apex:column headerValue="{!$Label.View}">
+                                <apex:outputpanel >
+                                   
+                                    <!--<apex:commandlink onclick="window.open('/apex/IXOS_Document?AccId={!account.id}&AcctSapId={!ord.accSAPNo}&OrderNumber={!ord.OrderNo}&ContractNumber={!ord.OrderNo}','IXOS_Document');"  rerender="none">
+                                              {!$Label.Images}
+                                            </apex:commandlink>-->
+                                   <apex:commandlink onclick="window.open('/apex/LCRMIXOS_Document?AccId={!JSENCODE(account.id)}&AcctSapId={!JSENCODE(ord.accSAPNo)}&OrderNumber={!JSENCODE(ord.OrderNo)}&ContractNumber={!JSENCODE(ord.OrderNo)}&SalesOrg={!JSENCODE(strSalesOrgCode)}&MessageId=Order','LCRMIXOS_Document');"  rerender="none">
+                                              {!$Label.Images}
+                                            </apex:commandlink>
+                                            
+                                </apex:outputpanel>
+                            </apex:column>
+                            <apex:column headervalue="{!$Label.Order_Date}" value="{!ord.OrderDate}" >
+                            
+                            </apex:column>
+                            
+                            <apex:column headerValue="{!$Label.Order_Type}" value="{!ord.OrderType}" />
+                            <apex:column headerValue="{!$Label.Order_Number}" >
+                                <apex:outputLink value="/apex/LCRMOrderDetail" target="_blank">
+                                    <apex:param name="Id" value="{!Account.id}" />
+                                        <apex:param name="OD" value="{!ord.OrderDate}" />
+                                        <apex:param name="OT" value="{!ord.OrderType}" />
+                                        <apex:param name="ON" value="{!ord.OrderNo}" />
+                                        <apex:param name="SR" value="{!ord.submittingRep}" />
+                                        <apex:param name="RC" value="{!ord.revenueChannel}" />
+                                        <apex:param name="PO" value="{!ord.poNo}" />
+                                        <apex:param name="PON" value="{!ord.purchaserName}" />
+                                        <apex:param name="SD" value="{!ord.ShipDate}" />
+                                        <apex:param name="ssdSalesOrg" value="{!strSalesOrgCode}" />
+                                        <apex:param name="SAP" value="{!ord.accSAPNo}" />
+                                                {!ord.OrderNo}
+                                </apex:outputLink>
+                        </apex:column>
+                         <apex:column rendered="{!IF($Profile.Name='System Administrator'||(($Profile.Name='USL Helpdesk Manager' || $Profile.Name='USL Accountable Resolver' || $Profile.Name='USL Hybrid Agent' || $Profile.Name='USL Helpdesk Agent') && (ISPICKVAL($User.Sub_Bu__c,'USL'))) ,true,false)}" headerValue="{!$Label.DeliveryNum}" value="{!ord.DeliveryNum}" />
+                         <apex:column headerValue="{!$Label.Material_Description}" value="{!ord.MaterialDesc}" />
+                        <apex:column headerValue="Purchaser's Name" value="{!ord.purchaserName}"  />
+                            <apex:column headerValue="{!$Label.Net_Value}" value="${!ord.netValue}">
+                               
+                             
+                            </apex:column>
+                        <apex:column headerValue="{!$Label.Submitting_Rep}" value="{!ord.submittingRep}" />
+                        <apex:column headerValue="{!$Label.Revenue_Channel}" value="{!ord.revenueChannel}"  />
+                        <apex:column headerValue="{!$Label.PO}"  value="{!ord.poNo}" />
+                        <apex:column headerValue="{!$Label.Ship_Date}" value="{!ord.ShipDate}"/>
+                        <apex:column headerValue="{!$Label.SAP_Number}" value="{!ord.accSAPNo}"/>
+                     </apex:pageblocktable>
+                 </apex:pageblockSectionItem>
+                <!-- <apex:commandButton value="Next" rerender="sectionOrders" action="{!nextPage}" rendered="true"/> -->
+              </apex:outputpanel>
+                   <!-- Pagination Data  -->
+        <apex:outputPanel id="pagebuttons" rendered="{!AND(IF(ordPaginater.isAll, false, true), IF(ordPaginater.totalPage == 1, false, true),IF(DisplayOrders.size == 0, false, true))}">
+            <apex:commandButton value="{!$Label.Previous}" rerender="blockOrder" action="{!previousPage}" rendered="{!ordPaginater.showPrevious}"/>
+
+        &nbsp;&nbsp;&nbsp;
+            <apex:repeat value="{!ordPaginater.pageList}" var="pl">
+               <apex:outputText rendered="{!!pl.isActive}">
+                    <apex:commandLink action="{!updatePage}" rerender="blockOrder">
+                        {!pl.pageNum}                                
+                        <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!ordPaginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                    </apex:commandLink>
+                </apex:outputText>
+                <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+            </apex:repeat>
+            &nbsp;&nbsp;&nbsp;
+            <apex:commandButton value="{!$Label.Next}" rerender="blockOrder" action="{!nextPage}" rendered="{!ordPaginater.showNext}"/>
+        </apex:outputPanel>
+      </apex:pageBlockSection>
+     
+    </apex:pageBlock>
+    </apex:form>
+    <script>function setFocusOnLoad() {}</script>
+</apex:page>

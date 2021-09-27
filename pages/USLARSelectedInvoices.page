@@ -1,0 +1,188 @@
+<apex:page id="pageInvoice" standardController="Case" extensions="USLARController" doctype="html-5.0" sidebar="false" lightningStylesheets="true" >
+    <apex:includeScript value="/support/console/22.0/integration.js"/>
+    <apex:sectionHeader id="title" title="{!$Label.AccountRec_Title}" subtitle="{!Case.Account.Name}"/> 
+    <script>
+        function setFocusOnLoad(){}        
+    </script>
+    <script type="text/javascript">
+        function callAction() {                   
+            mapLogic(); 
+       }
+        function Opendocurl(docUrl){ 
+            if(docUrl=='' || docUrl == null){
+                alert('{!$Label.AccountRec_ImageError}');
+            }else {
+                window.open(docUrl);
+            }
+        }
+    function testOpenSubtab(){
+        // alert('Hi');
+                if (sforce.console.isInConsole()) { 
+                  alert('Hi Console');
+                    window.self.close();
+                    //var url = '/{!Case.Account.Id}?isdtp=vw'; 
+                    //alert(url);
+                    // srcSelf(url); 
+                } else { 
+                   alert('Hi Sales');                 
+                    
+                    var url = '/{!Case.Id}';
+                    //alert(url); 
+                    window.open(url,'_top'); 
+                } 
+             }
+    </script>   
+    <apex:form >
+     <apex:actionFunction name="mapLogic" action="{!Calculate}"/>
+                       <apex:commandLink styleClass="btn" value="goback" action="{!goback}"/>
+   <br> </br>
+        
+       <apex:variable value="{!0}" var="total1"/>
+        <apex:actionStatus id="statusInvoice">                
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">                       
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>                        
+                        <apex:panelGroup >
+                            <div class="messageText">{!$Label.AccountRec_LoadingInv}</div>
+                        </apex:panelGroup>                        
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>            
+        </apex:actionStatus> 
+        
+         <apex:actionStatus id="statusImage">                
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">                
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">                       
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>                        
+                        <apex:panelGroup >
+                            <div class="messageText">{!$Label.AccountRec_LoadingInvImg}</div>
+                        </apex:panelGroup>                        
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet>            
+        </apex:actionStatus>
+         <apex:pageBlock id="pageBlock">
+           <!--  <apex:actionRegion >-->
+       <apex:pageMessages id="msg"/>
+     
+        
+        <!-- PageBlockSection for OPEN ITEM Items --> 
+     
+                 
+   <!-- PageBlockSection for OPEN Items -->  
+              <apex:pageBlockSection collapsible="false" columns="1" id="clinelist" title="Custom Line Item Section" >
+                <apex:pageBlockTable value="{!customLineList}" var="li" id="linetable">                     
+                    <apex:variable var="rowNumber" value="{!0}"/>                                        
+                    <apex:column >
+                        <apex:facet name="header">Billing Doc</apex:facet> 
+                        <apex:inputField required="true" value="{!li.ESC_Billing_Doc__c}" />
+                    </apex:column>                
+                    <apex:column >
+                         <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                         <apex:inputField value="{!li.USL_OAmount__c}" onchange="callAction();"/>
+                         <apex:actionSupport event="onchange" action="{!Calculate}" rerender="summation" />
+                    </apex:column>
+                    <apex:column >
+                         <apex:facet name="header">Line Number</apex:facet>
+                         <apex:inputField value="{!li.Billing_Line_Item_Number__c}"/>
+                    </apex:column>
+                    <apex:column >
+                         <apex:facet name="header">Reference Number</apex:facet>
+                         <apex:inputField value="{!li.USL_CRefNumber__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Debit Credit Indicator</apex:facet>
+                        <apex:inputText list="{!IndicatorList}" value="{!li.USL_Credit_Debit_Indicator__c}" />
+                    </apex:column>                
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:inputField value="{!li.USL_ONetArrears__c}"/>
+                    </apex:column>  
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:inputField value="{!li.USL_ODocType__c}"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:inputField value="{!li.USL_OShortDescription__c}"/>
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:inputField value="{!li.USL_OBaseline_Date__c}"/>
+                    </apex:column>
+                     
+                     <apex:column >
+                        <apex:commandLink value="{!$Label.USL_Delete}" reRender="linetable" immediate="true" action="{!deleteRow}">
+                            <apex:param name="rn" value="{!rowNumber}"/>
+                        </apex:commandLink> 
+                    <apex:variable var="rowNumber" value="{!rowNumber+1}" />                                    
+                    </apex:column>                        
+                </apex:pageBlockTable>
+                <apex:commandlink value="{!$Label.USL_AddRow}" style="margin-left: 30%;" rerender="linetable" action="{!addRow}" />
+                                
+            </apex:pageBlockSection>
+             <!-- PageBlockSection for Selected Items -->
+              <apex:pageBlockSection columns="1" id="bPageBlockSectionSelectedItems" title="Selected Invoices" 
+                  rendered="{!(NoInv=false)}" collapsible="false">
+                   <apex:pageBlockTable value="{!OSelectedlist}" var="slist" id="tableARInfo" >
+                      <apex:column >
+                          <apex:facet name="header">docNumber</apex:facet>
+                          <apex:outputText value="{!slist.document.docNumber}"/>
+                     </apex:column>
+                     <!-- added for Tax Hana-->
+                     <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!slist.lineNumber}" />
+                    </apex:column>
+                     <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceListNumber}</apex:facet>
+                        <apex:outputText value="{!slist.referencekey}" />
+                    </apex:column>
+                       <apex:column >
+                          <apex:facet name="header">{!$Label.USL_PostingDate}</apex:facet>
+                          <apex:outputText value="{!slist.postingDate}"/>
+                     </apex:column>
+                      <apex:column >
+                          <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                          <apex:outputText value="{!slist.amount}"/>
+                     </apex:column>            
+                      <apex:column >
+                          <apex:facet name="header">NewAmount</apex:facet>
+                          <apex:inputText value="{!slist.NewAmount}" onchange="callAction()"/>
+                          <apex:actionSupport event="onchange" action="{!Calculate}" rerender="summation" />
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">{!$Label.USL_RenderedDate}</apex:facet>
+                          <apex:outputText value="{!slist.servicesRenderedDate}"/>
+                     </apex:column>
+                       <apex:column >
+                          <apex:facet name="header">netArrers</apex:facet>
+                          <apex:outputText value="{!slist.netArrers}"/>
+                     </apex:column>
+                     <apex:column >
+                          <apex:facet name="header">shortDescription</apex:facet>
+                          <apex:outputText value="{!slist.shortDescription}"/>
+                     </apex:column>
+                      <apex:column >
+                          <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                          <apex:outputText value="{!slist.baselineDate}"/>
+                     </apex:column>
+         </apex:pageBlockTable>
+           <apex:outputPanel layout="block">
+                    {!$Label.USL_TotalAmount}:<apex:outputText value="{!NewAmount1}" />&nbsp;&nbsp; 
+                </apex:outputPanel>
+                <apex:outputPanel layout="block" rendered="{!OResponseopenlist.size==0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.AccountRec_NoRecordsMsg}
+                </apex:outputPanel>
+                  <apex:commandLink styleClass="btn" value="Submit" action="{!Submit}"/>
+     </apex:pageBlockSection>
+<!--</apex:actionRegion>-->
+   </apex:pageBlock>
+    </apex:form>
+  </apex:page>

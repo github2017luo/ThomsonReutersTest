@@ -1,0 +1,81 @@
+<!--
+===============================================================================
+ $ANZContactRole.page$
+===============================================================================
+
+PURPOSE:        Allow users to view, add, edit and delete opportunity contact roles.        
+
+FUNCTIONALITY:  1.  Displays a list of opportunity contact roles.
+                2.  Allows user to add new opportunity contact role.
+                3.  Allows user to edit and delete opportunity contact roles.
+
+CHANGE HISTORY
+===============================================================================
+Date           Name                    Description
+2017-01-02     Nitesh Choudhary        To overide the standard Contact Role related list with custom inline visualforce page.                                                                                                            
+===============================================================================
+-->
+
+<apex:page standardController="Opportunity">
+ 
+    <script src="/soap/ajax/51.0/connection.js" type="text/javascript"></script>
+    <script>
+        function PerformDelete(ConRoleid){
+              sforce.connection.sessionId = "{!$Api.Session_ID}";
+              var contactRole = new sforce.SObject("ContactRole");
+              contactRole.Id = ConRoleid;
+              
+              var delResult = sforce.connection.deleteIds([contactRole.Id]);
+              window.top.location.href = "/" + "{!Opportunity.Id}";
+         }
+         
+        function changeStyle(x) {
+            x.style.textDecoration="underline";
+        }
+         
+    </script>
+    
+    <style>
+        a.EditLinkStyle {
+            text-decoration: none;
+            color: #015ba7;
+        }
+    </style>
+    
+    <apex:form >
+        <apex:pageBlock title="Contact Roles" mode="edit">
+            <apex:pageBlockTable value="{!Opportunity.OpportunityContactRoles}" var="ContactRole">
+            
+                <apex:column >
+                    <apex:facet name="header">Action</apex:facet>
+                    <a href="/p/opp/ContactRoleEditUi/e?oppid={!Opportunity.Id}&retURL=%2F{!Opportunity.Id}" target="_top" class="EditLinkStyle">Edit</a>         
+                    <apex:outputText > &nbsp;|&nbsp;</apex:outputText>
+                    <apex:outputLink onclick="if(confirm('Are you sure?'))
+                                        PerformDelete('{!ContactRole.Id}');
+                                        else return" style="color:#015ba7;text-decoration:none" onmouseover="changeStyle(this)" >Del</apex:outputLink>          
+                </apex:column>
+                
+                <apex:column >
+                    <apex:facet name="header"> Contact Name </apex:facet>
+                    <a href="/{!ContactRole.Contact.Id}" target="_top">{!ContactRole.Contact.Name} </a>
+                </apex:column>
+                
+                <apex:column >
+                    <apex:facet name="header"> Account Name </apex:facet>
+                    <a href="/{!ContactRole.Contact.Account.Id}" target="_top">{!ContactRole.Contact.Account.Name} </a>
+                </apex:column>
+                                
+                <apex:column value="{!ContactRole.Contact.Email}" headerValue="Email 2"/>
+                <apex:column value="{!ContactRole.Contact.Phone}" headerValue="Contact SAP Phone 1"/>
+                <apex:column value="{!ContactRole.Contact.Work_Direct__c}" headerValue="Work Direct"/>
+                <apex:column value="{!ContactRole.Role}" headerValue="Role"/>                
+                <apex:column value="{!ContactRole.IsPrimary}" headerValue="Primary"/>
+            </apex:pageBlockTable>   
+            
+            <apex:pageBlockButtons location="top">
+                <input type="button" class="btn" value="New" onclick="javascript:window.open('/p/opp/ContactRoleEditUi/e?oppid={!Opportunity.Id}&retURL=%2F{!Opportunity.Id}','_parent');"/>
+            </apex:pageBlockButtons>
+            
+        </apex:pageBlock>    
+    </apex:form>
+</apex:page>

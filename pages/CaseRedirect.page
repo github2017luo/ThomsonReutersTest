@@ -1,0 +1,27 @@
+<apex:page standardController="Case" extensions="CaseRedirectController" recordSetVar="var" tabStyle="Case" action="{!redirectToANZrecordtype}" sidebar="true" showHeader="true" title="New Case">
+
+<script>
+function goBack()
+  {
+  window.history.back()
+  }
+</script>
+<apex:sectionHeader subtitle="Select Case Record Type" title="New Case"/>
+<br></br>
+Select a record type for the new case. To skip this page in the future, change your record type settings on your personal setup page.
+<br></br>
+<br></br>
+
+    <apex:form >
+        <apex:pageBlock title="Select Case Record Type">
+            <apex:pageBlockSection >
+                <apex:selectList label="Record Type of new record" title="Record Type of new record" value="{!selectedRtype}" size="1">
+                <apex:selectOptions value="{!items}"></apex:selectOptions>
+                </apex:selectList>
+            </apex:pageBlockSection>
+            <center><apex:commandButton value="Continue" action="{!redirectToPage}"/>&nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Cancel" onclick="goBack();"/></center>
+        </apex:pageBlock>
+        
+    </apex:form> 
+</apex:page>

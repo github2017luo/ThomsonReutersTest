@@ -1,0 +1,103 @@
+<apex:page standardController="TR_Retention__Retention_Parent_Criteria__c" extensions="TR_Retention.RetentionContractRuleController">    
+    
+    <apex:form >
+        <apex:pageBlock title="Retention Rule Engine">
+        <apex:pageMessages ></apex:pageMessages>
+
+            <apex:pageBlockSection title="Information">
+                
+                <!--
+                <apex:outputField value="{!rentParCrt.Name}" rendered="{!rentParCrt.Name != ''}"/>
+                <apex:inputField label="Owner" value="{!rentParCrt.Owner.Name}" rendered="{!rentParCrt.Owner.Name != ''}"/>
+                -->
+                                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.Name.inlineHelpText}" rendered="{!rentParCrt.Name != ''}">
+                    <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.Name.Label}</apex:outputtext>
+                    <apex:inputField value="{!rentParCrt.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem rendered="{!rentParCrt.Owner.Name != ''}">
+                    <apex:outputtext >Owner</apex:outputtext>
+                    <apex:inputField value="{!rentParCrt.Owner.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <!--
+                <apex:selectList value="{!rentParCrt.TR_Retention__Contract_Value__c}" size="1" required="true">
+                    <apex:selectOptions value="{!contractValues}" />
+                </apex:selectList>    
+                -->
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Retention_Rule_Engine_Description__c.inlineHelpText}">
+                    <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Retention_Rule_Engine_Description__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:inputField value="{!rentParCrt.TR_Retention__Retention_Rule_Engine_Description__c}" required="false"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Contract_Value__c.inlineHelpText}">
+                <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Contract_Value__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!rentParCrt.TR_Retention__Contract_Value__c}" size="1" required="true" label="Contract Value" >
+                            <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                            <apex:selectOptions value="{!contractValues}" />
+                        </apex:selectList>
+                    </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <!--
+                <apex:selectList value="{!rentParCrt.TR_Retention__Product_Family__c}" size="1" required="true">
+                    <apex:selectOptions value="{!assetProductFamily}" />
+                </apex:selectList>
+                -->
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Product_Family__c.inlineHelpText}">
+                <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Product_Family__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!rentParCrt.TR_Retention__Product_Family__c}" size="1" required="true" label="Product Family" >
+                            <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                            <apex:selectOptions value="{!assetProductFamily}" />
+                        </apex:selectList>
+                    </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                                
+                <!--                
+                <apex:selectList value="{!rentParCrt.TR_Retention__Sub_BU__c}" size="1" required="true">
+                    <apex:selectOptions value="{!assetSubBU}" />
+                </apex:selectList>
+                -->
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Sub_BU__c.inlineHelpText}">
+                <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Parent_Criteria__c.fields.TR_Retention__Sub_BU__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!rentParCrt.TR_Retention__Sub_BU__c}" size="1" required="true" label="SUB BU" >
+                            <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                            <apex:selectOptions value="{!assetSubBU}" />
+                        </apex:selectList>
+                    </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:inputField value="{!rentParCrt.TR_Retention__Is_Enabled__c}"/>
+                
+            </apex:pageBlockSection>    
+        
+            <apex:pageblockButtons >
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Save & New" action="{!saveAndNew}"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </apex:pageblockButtons>
+        </apex:pageBlock>     
+    </apex:form>
+   
+</apex:page>

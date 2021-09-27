@@ -1,0 +1,9 @@
+<apex:page standardController="Quote" extensions="RetriggerEntitlementController" action="{!setProviewEntitlementCallOut}">
+<apex:form >
+    <apex:outputPanel rendered="{!blnShowpage}">
+        <apex:pageMessages />
+        <apex:commandLink action="{!showQuoteDetail}" value="Back"/>
+    </apex:outputPanel>
+    <apex:inputHidden value="{!Quote.OpportunityId}"/>
+</apex:form>
+</apex:page>

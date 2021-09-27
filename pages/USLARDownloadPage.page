@@ -1,0 +1,103 @@
+<apex:page id="pageInvoice" pageStyle="PDFCSS" standardController="Source_System_Detail__c" extensions="USLARController"
+   renderas="pdf" readOnly="true" tabstyle="Source_System_Detail__c">
+  
+<apex:stylesheet value="{!URLFOR($Resource.ESC_USLResource,'/USLARDownloadPage/PDFCSS.css')}"/>
+<apex:messages ></apex:messages>
+<apex:outputPanel layout="block" style="overflow:hidden scroll;width: 600px;"> 
+         <apex:outputText value="Accounts Receivable Items" style="font-weight:bold;font-size:30px;text-align: center;"></apex:outputText>
+         <br/>
+         <br/>
+         <apex:outputPanel layout="block" rendered="{!sizeOfOpenMap>0}" > 
+         <apex:outputText value="Open Items" style="font-weight:bold;font-size: 20px;"></apex:outputText>
+        <table id="pdfTable">
+        <tr>
+            <th>{!$Label.USL_docNumber}</th>
+            <th>{!$Label.USL_PostingDate}</th>
+            <th>{!$Label.AccountRec_Amount}</th>
+            <th>{!$Label.USL_RenderedDate}</th>            
+            <th>D/C Ind</th>
+            <th>RefKey</th>
+            <th>{!$Label.USL_netArrers}</th>
+            <th>{!$Label.USL_DocDate}</th>
+            <th>{!$Label.USL_docNumber}</th>
+            <th>{!$Label.USL_DocType}</th>
+            <th>{!$Label.USL_Sdec}</th>
+            <th>{!$Label.USL_Ldes}</th>
+            <th>{!$Label.USL_BillingDate}</th>
+            <th>{!$Label.USL_InvoiceNumber}</th>
+        </tr>
+        <apex:repeat var="Olist" value="{!oSelectedmap}">
+        <tr>
+            <td>{!oSelectedmap[Olist].document.docNumber}</td>
+            <td>{!oSelectedmap[Olist].postingDate}</td>
+            <td>{!oSelectedmap[Olist].amount}</td>
+            <td>{!oSelectedmap[Olist].servicesRenderedDate}</td>
+            <td>{!IF(oSelectedmap[Olist].debitCreditInd == 'H','C', IF(oSelectedmap[Olist].debitCreditInd == 'S','D',oSelectedmap[Olist].debitCreditInd))}</td>
+            <td>{!oSelectedmap[Olist].referencekey}</td>
+            <td>{!oSelectedmap[Olist].netArrers}</td>
+            <td>{!oSelectedmap[Olist].document.docDate}</td>
+            <td>{!oSelectedmap[Olist].document.docNumber}</td>
+            <td>{!oSelectedmap[Olist].document.type}</td>
+            <td>{!oSelectedmap[Olist].shortDescription}</td>
+            <td>{!oSelectedmap[Olist].longDescription}</td>
+            <td>{!oSelectedmap[Olist].baselineDate}</td>
+            <td>{!oSelectedmap[Olist].document.additionalPdfDocumentId}</td>
+        </tr>
+        </apex:repeat> 
+        
+    </table>
+     </apex:outputPanel>
+    <apex:outputPanel layout="block">
+                    {!$Label.USL_TotalAmount}:<apex:outputText value="{!OResponsealllist.totalOpenItemAmount}" />&nbsp;&nbsp; 
+                    {!$Label.USL_TopenAmount}: <apex:outputText value="{!OResponsealllist.totalOpenItemAmountInvoiced}" />&nbsp;&nbsp; 
+                    {!$Label.USL_pastDueBalance} <apex:outputText value="{!OResponsealllist.pastDueBalance}" />
+                </apex:outputPanel>
+    <br/>
+    <br/>
+    <br/>
+    <apex:outputPanel layout="block" rendered="{!sizeOfCloseMap>0}">
+    <apex:outputText value="Cleared Items" style="font-weight:bold;font-size: 20px;"></apex:outputText> 
+    <table id="pdfTable">
+        <tr>
+            <th>{!$Label.USL_docNumber}</th>
+            <th>{!$Label.USL_DocDate}</th>
+            <th>{!$Label.USL_Rnum}</th>
+            <th>{!$Label.USL_PostingDate}</th>
+            <th>RefKey1</th>
+            <th>{!$Label.AccountRec_Amount}</th>
+            <th>{!$Label.USL_ClearingDate}</th>
+            <th>{!$Label.USL_ClearingDocNumber}</th>
+            <th>{!$Label.USL_DocType}</th>
+            <th>{!$Label.USL_AllocationNumber}</th>
+            <th>C/D Ind</th>
+            <th>{!$Label.USL_netArrers}</th>
+            <th>{!$Label.USL_Sdec}</th>     
+            <th>{!$Label.USL_Ldes}</th>
+            <th>{!$Label.USL_BillingDate}</th>
+            <th>{!$Label.USL_InvoiceNumber}</th>
+        </tr>
+        <apex:repeat var="Clist" value="{!cSelectedmap}">
+        <tr>
+            <td>{!cSelectedmap[Clist].document.docNumber}</td>
+            <td>{!cSelectedmap[Clist].document.docDate}</td>
+            <td>{!cSelectedmap[Clist].document.referenceNumber}</td>
+            <td>{!cSelectedmap[Clist].postingDate}</td>
+            <td>{!cSelectedmap[Clist].referencekey}</td>
+            <td>{!cSelectedmap[Clist].amount}</td>
+            <td>{!cSelectedmap[Clist].clearingDate}</td>
+            <td>{!cSelectedmap[Clist].clearingDocumentNumber}</td>
+            <td>{!cSelectedmap[Clist].document.type}</td>
+            <td>{!cSelectedmap[Clist].allocationNumber}</td>
+            <td>{!IF(cSelectedmap[Clist].debitCreditInd == 'H','C', IF(cSelectedmap[Clist].debitCreditInd == 'S','D',cSelectedmap[Clist].debitCreditInd))}</td>
+            <td>{!cSelectedmap[Clist].netArrers}</td>
+            <td>{!cSelectedmap[Clist].shortDescription}</td>
+            <td>{!cSelectedmap[Clist].longDescription}</td>
+            <td>{!cSelectedmap[Clist].baselineDate}</td>
+            <td>{!cSelectedmap[Clist].document.additionalPdfDocumentId}</td>
+        </tr>
+        </apex:repeat> 
+    </table>
+     </apex:outputPanel>
+    </apex:OutputPanel>
+    
+</apex:page>

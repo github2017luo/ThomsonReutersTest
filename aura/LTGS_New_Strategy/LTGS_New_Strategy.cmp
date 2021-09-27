@@ -1,0 +1,24 @@
+<aura:component implements="force:hasRecordId,force:appHostable,force:lightningQuickActionWithoutHeader,flexipage:availableForAllPageTypes" access="global" >
+	
+    <aura:attribute name="recordError" type="String" access="private"/>
+    <aura:attribute name="Oppty" type="Object" access="public"/>
+    
+   <!-- <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> -->
+    
+    <force:recordData aura:id="opportunityRecordLoader"
+                      mode="VIEW"
+                      recordId="{!v.recordId}"
+                      fields="Id,Name,AccountId"
+                      targetFields="{!v.Oppty}"
+                      targetError="{!v.recordError}"
+                      recordUpdated="{!c.recordUpdated}"
+                      />
+    <aura:html tag="style">
+    .slds-backdrop {
+    background: rgba(43, 40, 38, 0) !important;  
+    }
+    .slds-fade-in-open {
+    display:none !important;
+   }
+</aura:html>
+</aura:component>

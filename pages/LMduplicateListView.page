@@ -1,0 +1,120 @@
+<apex:page controller="LMDuplicateLEadsListViewCon" standardStylesheets="true">
+<apex:includeScript value="/support/console/22.0/integration.js"/> 
+<script type="text/javascript">
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");
+            for(var i=0; i<inputCheckBox.length; i++){
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+      var pageLoad = window.onload;
+      window.onload = function() {
+                if (pageLoad) {
+                        pageLoad();
+                }
+              OpenSubtab_IP();
+         };
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Viewing Leads');
+        }; 
+
+    </script>
+    <style>
+        .labelClass{
+            color : red;
+            font-weight: bold;  
+            font-style: italic;  
+        
+        }
+        .linkClass{
+            color : red;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function callme(){
+            var lError='{!leadError}';
+            if(lError== true){
+                alert('error occured');
+                return false;
+            
+            }     
+        }
+    </script>
+
+    <apex:form >
+      <apex:outputLabel styleClass="labelClass" rendered="{!NOT(wrapLeadList.size>0)}"> No Duplicate Leads Found</apex:outputLabel>
+    <apex:pageBlock title="Viewing Leads" rendered ="{!wrapLeadList.size>0}">
+        <apex:pageMessages id="msgs"/>
+         <apex:pageBlockButtons >
+                <apex:commandButton value="Merge Leads to Opportunity" action="{!processSelected}" onclick="callme();" rerender="table1,msgs"/>
+                <apex:commandButton value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+         
+            <apex:pageBlockSection >
+
+                <apex:pageblocktable value="{!wrapLeadList}" var="l" id="table1">
+                <apex:column >
+              
+                        <apex:facet name="header">
+                            <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!l.selected}" id="inputId"/>
+                    </apex:column>
+                <apex:column headerValue="Action" width="10%" >
+                    <a  href="/{!l.leadRec.id}/e?retURL=%2Fapex%2F{!$CurrentPage.Name}%3Fid={!oppId}%26accId%3D{!accId}" style="color:blue;">Edit</a>|
+                    <chatter:follow entityId="{!l.leadRec.id}"/>
+
+                  <!--   <apex:commandLink action="{!deleteLead}" style="color:blue;" onclick="if(!confirm('Are you sure?')) return false;">Del
+                        <apex:param value="{!l.leadRec.Id}" name="idToDel" assignTo="{!SelectedLeadId}"/>
+                    </apex:commandLink> -->
+                </apex:column> 
+                <apex:column headerValue="Lead Name"> <apex:outputLink value="/{!l.leadRec.id}" > {!l.leadRec.Name}</apex:outputLink> </apex:column>           
+                <apex:column value="{!l.leadRec.Company}"/>
+                <apex:column value="{!l.leadRec.status}"/>
+                <apex:column value="{!l.leadRec.Accept_By__c}"/>
+                <apex:column value="{!l.leadRec.Convert_By__c}"/>
+                <apex:column value="{!l.leadRec.Contact__c}"/>
+                <apex:column value="{!l.leadRec.Source__c}"/>
+                <apex:column value="{!l.leadRec.Source_Desc__c}"/>
+                <!-- <apex:column headerValue="Created By" value="{!l.leadRec.createdBy.Name}"/>   -->             
+                <apex:column Headervalue="Lead Owner" value="{!l.leadRec.owner.name}"/>
+                <apex:column value="{!l.leadRec.Lead_Scoring_Combined__c}"/>                
+                  <apex:inputHidden value="{!l.leadRec.Acceptance_SLA_Violation__c}" />
+            <apex:inputHidden value="{!l.leadRec.Accept_By_Date__c}"/>
+            <apex:inputHidden value="{!l.leadRec.Convert_By_Date__c}" />
+            <apex:inputHidden value="{!l.leadRec.Business_Org__c}" />
+            <apex:inputHidden value="{!l.leadRec.Contact_SAP_ID__c}" />  
+            <apex:inputHidden value="{!l.leadRec.Contact__c}" />  
+            <apex:inputHidden value="{!l.leadRec.Convert_SLA_violation__c}" />  
+            <apex:inputHidden value="{!l.leadRec.Discard_Reason__c}"/>
+            <apex:inputHidden value="{!l.leadRec.External_Id__c}"/>
+            <apex:inputHidden value="{!l.leadRec.LeadID18__c}"/>
+            <apex:inputHidden value="{!l.leadRec.LastModifiedBy.Name}"/>
+            <apex:inputHidden value="{!l.leadRec.owner.name}"/>
+            <apex:inputHidden value="{!l.leadRec.LeadSource}"/>
+            <apex:inputHidden value="{!l.leadRec.Type__c}"/>
+            <apex:inputHidden value="{!l.leadRec.Primary_Campaign_Source__c}"/>
+            <apex:inputHidden value="{!l.leadRec.Priority__c}"/>
+            <apex:inputHidden value="{!l.leadRec.Tracking_Code__c}"/>
+            <apex:inputHidden value="{!l.leadRec.External_Contact_ID__c}"/>
+            
+         
+                </apex:pageblocktable>
+            
+            </apex:pageBlockSection>
+ 
+
+    </apex:pageBlock>
+    </apex:form>
+      <apex:pageMessages />
+
+</apex:page>

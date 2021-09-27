@@ -1,0 +1,31 @@
+<apex:page id="pageAdvancedSearch"
+    standardController="AdvancedSearch__c"
+    extensions="AdvancedSearchController"
+    action="{!onPageLoad}"
+    sidebar="false"
+    showHeader="false"
+    standardStyleSheets="false"
+    title="{!AdvancedSearch__c.Name}"
+    cache="true"
+    contentType="application/vnd.ms-excel#advanced_search_export.xls">
+    
+    <apex:dataTable id="tableSearchResults"
+        value="{!SearchResults.Accounts}"
+        var="data">
+        
+        <apex:column headerValue="Account" value="{!data.Name}" />
+        <apex:column headerValue="Name 2" value="{!data.Name2}" />
+        <apex:column headerValue="Name 3" value="{!data.Name3}" />
+        <apex:column headerValue="SAP Account Number" value="{!data.SAPAccountNumber}" />
+        <apex:column headerValue="Phone 1" value="{!data.Phone1}" />
+        <apex:column headerValue="Address Line 1" value="{!data.AddressLine1}" />
+        <apex:column headerValue="City" value="{!data.City}" />
+        <apex:column headerValue="State" value="{!data.State}" />
+        <!-- apex:column headerValue="Number of Attorneys - Location" value="{!data.NumberOfAttorneyLocations}" /-->
+        <apex:column headerValue="Number of Attorneys - Org" value="{!data.NumberOfAttorneyOrg}" />
+        <apex:column headerValue="Total Active Subscriptions" value="{!data.TotalActiveSubs}" />
+        <apex:column headerValue="Total Lapsed Subscriptions" value="{!data.TotalLapsedSubs}" />
+        <apex:column headerValue="Contact Name" value="{!data.ContactName}" />
+        <apex:column headerValue="Zip Code" value="{!data.ZipCode}" />
+    </apex:dataTable>
+</apex:page>

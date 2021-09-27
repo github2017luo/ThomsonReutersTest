@@ -1,0 +1,183 @@
+@isTest
+public class USL_ChargeCExceptionController_Test{
+           
+ public Id recid ='5002D000003osli';
+            public Id formId;
+    static testmethod void RunSupportClass4(){
+        test.starttest();
+    GenerateForm__c form1 = new GenerateForm__c(Name ='Transfer Credits12',LabelName__c='Transfer Credits12',ESC_Executer__c='ESC_ChargeCancellation',Description__c='Test');
+    insert form1; 
+    Account Acc1 = new Account();
+    Contact Con = new Contact();
+    Acc1 = ESC_GenericTestutility.TestAccountUtil('test account', '12345','9876543210');
+    insert Acc1;
+    Con =ESC_GenericTestutility.TestContactUtil(Acc1.ID, 'test','contact','test7365@gmail.com');
+    insert Con;
+    Case case1=new Case();
+    case1 = ESC_GenericTestutility.TestCaseUtil(Con.ID,Acc1.ID,'Work In Progress');
+    insert case1; 
+    ApexPages.currentPage().getParameters().put('formid',form1.Id);
+    ApexPages.currentPage().getParameters().put('Id',case1.Id);    
+    ESC_Section__c TestSection1=new ESC_Section__c(Name='Sec-00801',ESC_Referenced_Object__c='ESC_Case_Form_Extension_line_item__c');
+    ESC_Section__c TestSection2=new ESC_Section__c(Name='Charge Cancellation Exception Form',ESC_Referenced_Object__c='Case');
+    insert TestSection1; 
+    insert TestSection2;   
+    Form_Section__c FormEscSec=new Form_Section__c(GenerateForm__c = form1.id ,Is_Active__c = true,Sequence__c = 5,Section__c=TestSection1.id );
+    insert FormEscSec;
+    Form_Section__c FormEscSec1=new Form_Section__c(GenerateForm__c = form1.id ,Is_Active__c = true,Sequence__c = 5,Section__c=TestSection2.id,ESC_IsFormOrigin_del__c=true,ESC_QPIdentfier__c ='Id' );
+    insert FormEscSec1;
+    ESC_Section_Special_Events__c secevent= new ESC_Section_Special_Events__c(ESC_URL__c = 'test@test.com',ESC_Field_API__c='ESC_Sales_Org__c',ESC_Section__c=TestSection1.id,ESC_RerenderedSection__c=TestSection1.id,ESC_Value__c='WEST');
+    insert secevent;
+    ESC_Case_Form_Extension__c Cextn = new ESC_Case_Form_Extension__c(USL_Total_Amount__c= 590,Correction_Required__c = 'Price Correction',ESC_case__c = case1.id,ESC_Segment__c='Academic',ESC_Sales_Org__c='West',Reason_for_Request__c='Reason for Request',ESC_Instructions__c='Comments',esc_form__c=form1.id,USL_Approval_Type__c = 'TRTA_Corporates',ESC_CC_Form_BU__c = 'EMEA',ESC_CC_Line_of_Business__c='EMEA Digita');
+    insert Cextn ;
+    System.assertEquals(Cextn.USL_Total_Amount__c,590);
+    ESC_Case_Form_Extension_Line_Item__c ExtLineitem = new ESC_Case_Form_Extension_Line_Item__c(ESC_Case_Form_Extension__c= cextn.id,Name='Cextn.Name',ESC_Material_Number__c='test',Billing_Line_Item_Number__c='12345',Per_Line__c='test',ESC_Tax_Amount__c=120,ESC_Net_Amount__c=700);
+    insert ExtLineitem ;
+    ESC_FormGenratorController compcon = new ESC_FormGenratorController ();
+    ESC_FormGeneratorCompController compconbase = new ESC_FormGeneratorCompController ();
+    ESC_FormGeneratorCompController compconbase1 = new ESC_FormGeneratorCompController ();
+    compconbase.fieldDescpn = new map<String,String>();
+    List<ESC_Case_Form_Extension_line_item__c> lineitemlist = new List<ESC_Case_Form_Extension_line_item__c>();
+    lineitemlist.add(ExtLineitem);
+    List<ESC_FormGeneratorCompController.FieldDescriber> eventsDescribed = new List<ESC_FormGeneratorCompController.FieldDescriber>();   
+    ESC_FormGeneratorCompController.FieldDescriber fld = new ESC_FormGeneratorCompController.FieldDescriber();    
+    fld.sectionToReRender = secevent.ESC_RerenderedSection__c;
+    fld.fieldRerenederValue =secevent.ESC_Value__c;
+    fld.url = secevent.ESC_URL__c;
+    eventsDescribed.add(fld);
+    List<ESC_Case_Form_Extension__c > caseextlist = new List<ESC_Case_Form_Extension__c> ();
+    caseextlist.add(cextn);
+    ESC_SectionDescriber secdesc= new ESC_SectionDescriber();            
+    secdesc.objectname = 'ESC_Case_Form_Extension_line_item__c';
+    secdesc.isEditableSection = true;
+    secdesc.sobj = ExtLineitem ;
+    secdesc.sobjlist = lineitemlist;
+    ESC_SectionDescriber secdesc1= new ESC_SectionDescriber();            
+    secdesc1.objectname = 'ESC_Case_Form_Extension_line_item__c';
+    secdesc1.isEditableSection = true;
+    secdesc1.sobj = Cextn ;
+    secdesc1.sobjlist = caseextlist;
+    compconbase.currentDescribedSection = secdesc;
+    compconbase.fieldDescpn.put('ESC_Sales_Org__c',json.serialize(eventsDescribed));
+    //compconbase1.currentDescribedSection = secdesc;
+    //compconbase.preDescribedFieldMap.put('ContactId',FieldDescriber:[fieldAPI=null, fieldRerenederValue=xxx, isMandatory=false, labelName=xxx, sectionToReRender=xxx, url=xxx], ContactPhone=FieldDescriber:[fieldAPI=null, fieldRerenederValue=xxx, isMandatory=false, labelName=xxx, sectionToReRender=xxx, url=xxx]} 
+    compcon.adderrorMessage();
+    compcon.setComponentControllerMap('Corp Charge Cancellation Exception Form 2',compconbase );
+    //compcon.setComponentControllerMap('Charge Cancellation Exception Form',compconbase );
+    //compcon.setComponentControllerMap('Sec-00801',compconbase);
+    compcon.onloadrerender();
+    compcon.saveTheResults();
+    compcon.getMyComponentController();
+    //compcon.setComponentController(compconbase);
+    compconbase.key = 'test';
+    compconbase1.key = 'test1';
+    
+    compconbase.pageController = compcon;
+    ESC_SectionDetails secdet = new ESC_SectionDetails();
+    secdet.getSectionDetails(cextn.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(cextn.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(case1.id,form1.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(case1.id,form1.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(case1.id,form1.id,'ESC_Material_Number__c','ESC_Case_Form_Extension_Line_Item__c');
+     ESC_FormGenratorController fgc = new  ESC_FormGenratorController ();
+            USL_ChargeCExceptionController  Myobj=new USL_ChargeCExceptionController ();
+            Myobj.formsId=form1.id;
+            Myobj.recid=case1.id;
+            Myobj.Formtitle='gfhg';
+            Myobj.pagecontroller = compcon;
+            Myobj.getCals();
+            
+            Myobj.calculate();
+    test.stoptest();
+        
+    }
+    
+    static testmethod void RunSupportClass2(){
+        test.starttest();
+    GenerateForm__c form1 = new GenerateForm__c(Name ='Transfer Credits12',LabelName__c='Transfer Credits12',ESC_Executer__c='ESC_ChargeCancellation',Description__c='Test');
+    insert form1; 
+    Account Acc1 = new Account();
+    Contact Con = new Contact();
+    Acc1 = ESC_GenericTestutility.TestAccountUtil('test account', '12345','9876543210');
+    insert Acc1;
+    Con =ESC_GenericTestutility.TestContactUtil(Acc1.ID, 'test','contact','test7365@gmail.com');
+    insert Con;
+    Case case1=new Case();
+    case1 = ESC_GenericTestutility.TestCaseUtil(Con.ID,Acc1.ID,'Work In Progress');
+    insert case1; 
+    ApexPages.currentPage().getParameters().put('formid',form1.Id);
+    ApexPages.currentPage().getParameters().put('Id',case1.Id);    
+    ESC_Section__c TestSection1=new ESC_Section__c(Name='Sec-00801',ESC_Referenced_Object__c='ESC_Case_Form_Extension_line_item__c');
+    ESC_Section__c TestSection2=new ESC_Section__c(Name='Charge Cancellation Exception Form',ESC_Referenced_Object__c='Case');
+    insert TestSection1; 
+    insert TestSection2;   
+    Form_Section__c FormEscSec=new Form_Section__c(GenerateForm__c = form1.id ,Is_Active__c = true,Sequence__c = 5,Section__c=TestSection1.id );
+    insert FormEscSec;
+    Form_Section__c FormEscSec1=new Form_Section__c(GenerateForm__c = form1.id ,Is_Active__c = true,Sequence__c = 5,Section__c=TestSection2.id,ESC_IsFormOrigin_del__c=true,ESC_QPIdentfier__c ='Id' );
+    insert FormEscSec1;
+    ESC_Section_Special_Events__c secevent= new ESC_Section_Special_Events__c(ESC_URL__c = 'test@test.com',ESC_Field_API__c='ESC_Sales_Org__c',ESC_Section__c=TestSection1.id,ESC_RerenderedSection__c=TestSection1.id,ESC_Value__c='WEST');
+    insert secevent;
+    ESC_Case_Form_Extension__c Cextn = new ESC_Case_Form_Extension__c(USL_Total_Amount__c= 590,Correction_Required__c = 'Price Correction',ESC_case__c = case1.id,ESC_Segment__c='Academic',ESC_Sales_Org__c='West',Reason_for_Request__c='Reason for Request',ESC_Instructions__c='Comments',esc_form__c=form1.id,USL_Approval_Type__c = 'TRTA_Corporates',ESC_CC_Form_BU__c = 'EMEA',ESC_CC_Line_of_Business__c='EMEA Digita');
+    insert Cextn ;
+    System.assertEquals(Cextn.USL_Total_Amount__c,590);
+    ESC_Case_Form_Extension_Line_Item__c ExtLineitem = new ESC_Case_Form_Extension_Line_Item__c(ESC_Case_Form_Extension__c= cextn.id,Name='Cextn.Name',ESC_Material_Number__c='test',Billing_Line_Item_Number__c='12345',Per_Line__c='test',ESC_Tax_Amount__c=120,ESC_Net_Amount__c=700);
+    insert ExtLineitem ;
+    ESC_FormGenratorController compcon = new ESC_FormGenratorController ();
+    ESC_FormGeneratorCompController compconbase = new ESC_FormGeneratorCompController ();
+    ESC_FormGeneratorCompController compconbase1 = new ESC_FormGeneratorCompController ();
+    compconbase.fieldDescpn = new map<String,String>();
+    List<ESC_Case_Form_Extension_line_item__c> lineitemlist = new List<ESC_Case_Form_Extension_line_item__c>();
+    lineitemlist.add(ExtLineitem);
+    List<ESC_FormGeneratorCompController.FieldDescriber> eventsDescribed = new List<ESC_FormGeneratorCompController.FieldDescriber>();   
+    ESC_FormGeneratorCompController.FieldDescriber fld = new ESC_FormGeneratorCompController.FieldDescriber();    
+    fld.sectionToReRender = secevent.ESC_RerenderedSection__c;
+    fld.fieldRerenederValue =secevent.ESC_Value__c;
+    fld.url = secevent.ESC_URL__c;
+    eventsDescribed.add(fld);
+    List<ESC_Case_Form_Extension__c > caseextlist = new List<ESC_Case_Form_Extension__c> ();
+    caseextlist.add(cextn);
+    ESC_SectionDescriber secdesc= new ESC_SectionDescriber();            
+    secdesc.objectname = 'ESC_Case_Form_Extension_line_item__c';
+    secdesc.isEditableSection = true;
+    secdesc.sobj = ExtLineitem ;
+    secdesc.sobjlist = lineitemlist;
+    ESC_SectionDescriber secdesc1= new ESC_SectionDescriber();            
+    secdesc1.objectname = 'ESC_Case_Form_Extension_line_item__c';
+    secdesc1.isEditableSection = true;
+    secdesc1.sobj = Cextn ;
+    secdesc1.sobjlist = caseextlist;
+    compconbase.currentDescribedSection = secdesc;
+    compconbase.fieldDescpn.put('ESC_Sales_Org__c',json.serialize(eventsDescribed));
+    //compconbase1.currentDescribedSection = secdesc;
+    //compconbase.preDescribedFieldMap.put('ContactId',FieldDescriber:[fieldAPI=null, fieldRerenederValue=xxx, isMandatory=false, labelName=xxx, sectionToReRender=xxx, url=xxx], ContactPhone=FieldDescriber:[fieldAPI=null, fieldRerenederValue=xxx, isMandatory=false, labelName=xxx, sectionToReRender=xxx, url=xxx]} 
+    compcon.adderrorMessage();
+    //compcon.setComponentControllerMap('Corp Charge Cancellation Exception Form 2',compconbase );
+    //compcon.setComponentControllerMap('Charge Cancellation Exception Form',compconbase );
+    compcon.setComponentControllerMap('Sec-00801',compconbase);
+    compcon.onloadrerender();
+    compcon.saveTheResults();
+    compcon.getMyComponentController();
+    //compcon.setComponentController(compconbase);
+    compconbase.key = 'test';
+    compconbase1.key = 'test1';
+    
+    compconbase.pageController = compcon;
+    ESC_SectionDetails secdet = new ESC_SectionDetails();
+    secdet.getSectionDetails(cextn.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(cextn.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(case1.id,form1.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(case1.id,form1.id,'Correction_Required__c','ESC_Case_Form_Extension__c');
+    secdet.getSectionDetailsSOBJ(case1.id,form1.id,'ESC_Material_Number__c','ESC_Case_Form_Extension_Line_Item__c');
+     ESC_FormGenratorController fgc = new  ESC_FormGenratorController ();
+            USL_ChargeCExceptionController  Myobj=new USL_ChargeCExceptionController ();
+            Myobj.formsId=form1.id;
+            Myobj.recid=case1.id;
+            Myobj.Formtitle='gfhg';
+            Myobj.pagecontroller = compcon;
+            Myobj.getCals();
+            
+            Myobj.calculate();
+    test.stoptest(); 
+        
+    }
+}

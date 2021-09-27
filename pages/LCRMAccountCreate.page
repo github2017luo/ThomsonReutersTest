@@ -1,0 +1,633 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+Date         Name                    Description 
+2019-02-07   Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page id="pageNewAccountmod"
+           standardController="Account"
+           action="{!onPageLoad}"
+           
+           extensions="AccountCreateController" lightningStylesheets="true">
+    
+    <apex:sectionHeader id="pageTitle"
+                        title="{!$Label.Create_Account}"
+                        subtitle="{!$Label.AccountCreate_page_New_Account_Label}"/>
+    
+    <apex:form id="formEdit">
+        <apex:pageMessages id="globalMessages" escape="false" />
+        
+        <apex:actionStatus id="statusValidateAccount">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="{!$Label.LCRMAccountCreate_Validating_account_please_wait}" />
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:actionStatus id="statusValidateAccountAddress">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating Address please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:pageMessage summary="{!$Label.Dup_Tax_Number_Msg}"
+                          severity="warning" strength="1" id="taxnumwarning" rendered="{!isDupTaxNum}"/>
+        
+        
+        <apex:pageBlock id="blockAccount"
+                        title="{!$Label.AccountCreate_page_New_Account_Label}"
+                        mode="edit"
+                        rendered="{!NOT(displayMatchesPage)}" >
+            
+            <apex:pageBlockButtons >
+            <div class="slds-align--absolute-center">
+                 <apex:commandButton id="buttonSave" value="{!$Label.LCRMAccountCreate_Save}" action="{!save}" status="statusValidateAccount" rendered="{!NOT(HasServiceErrors)}" rerender="formEdit"  />
+                <apex:commandButton id="buttonRetry" value="{!$Label.LCRMAccountCreate_Save}" action="{!retrySave}" status="statusValidateAccount" rendered="{!HasServiceErrors}" rerender="formEdit" /> <!--Replaced "Save" name in "Retry" --> 
+                <apex:commandButton id="buttonCancel" value="{!$Label.LCRMAccountCreate_Cancel}" action="{!cancel}" />
+        </div>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="sectionAccount2" columns="2">
+                
+                <apex:inputField value="{!Account.Name}" required="true" />
+                <apex:inputField value="{!Account.Fiscal_Year_End__c}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionAddress"
+                                   columns="2"
+                                   collapsible="false"
+                                   title="{!$Label.AccountCreate_Page_Address_section}">
+                
+                <apex:pageBlockSectionItem id="street" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Street}"/>
+                    <apex:inputField value="{!Account.BillingStreet}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="City" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_City}"/>
+                    <!--<apex:inputField value="{!Account.BillingCity}" label="City" required="true"/>-->
+                    <apex:inputField value="{!Account.BillingCity}" label="City" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="sectionItemCountry" >
+                    <apex:outputLabel for="selectBillingCountry" 
+                                      value="{!$Label.LCRMAccountCreate_Country}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" label="{!$Label.LCRMAccountCreate_Country}" 
+                                             value="{!Account.BillingCountry}" 
+                                             size="1"
+                                             required="true"
+                                             multiselect="false">
+                                
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                                    event="onchange"
+                                                    action="{!addressCountryChanged}"
+                                                    rerender="selectBillingState"
+                                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                
+                <apex:pageBlockSectionItem id="sectionItemState" >
+                    <apex:outputLabel for="selectBillingState" value="{!$Label.LCRMAccountCreate_State_Province}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <div class="requiredInput">
+                            <div class="requiredBlock"></div>
+                            <apex:selectList id="selectBillingState" label="{!$Label.LCRMAccountCreate_State_Province}" 
+                                             value="{!Account.BillingState}" 
+                                             size="1"
+                                             required="{!CountryRegionOptions.size>1}"
+                                             multiselect="false" >
+                                
+                                <apex:selectOptions value="{!CountryRegionOptions}" />
+                            </apex:selectList>
+                        </div>
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="PostalCode" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Zip_Postal_Code}"/>
+                    <apex:inputField value="{!Account.BillingPostalCode}" />
+                </apex:pageBlockSectionItem>
+                <!--<apex:inputField value="{!Account.Province__c}" rendered="{!$Profile.Name != 'LatAm User'}"/>-->
+                <apex:inputField value="{!Account.County__c}" />
+            </apex:pageBlockSection>
+            <!--CRM-7109 Starts Author: Abhirup Banik-->
+            <apex:pageBlockSection id="SegmentSection" title="{!$Label.LCRM_Ac_Create_Page_Segment_Section}" collapsible="false"> <!--Modified as per CRM-7103-->
+                <apex:inputField value="{!Account.Bu_Segment__c}" required="true"/>
+                <apex:inputField value="{!Account.ECC_Top_Named_Law_Firms__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Number_of_Attorneys__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Number_Of_Employees__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Top_Named_Corporations__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Annual_Revenue__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Government_Type__c}" required="true"/>
+                <apex:pageBlockSectionItem id="GLISegment" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops'  || $Profile.Name=='DQA User'
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_GLI_Segment}"/>
+                    <apex:inputField value="{!Account.GLI_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="GLISubSegment" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops'  || $Profile.Name=='DQA User'
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_GLI_Sub_Segment}"/>
+                    <apex:inputField value="{!Account.GLI_Sub_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!--***START***Kept Sales Org during creation, as per DPS-17417 -->
+                <apex:pageBlockSectionItem id="SalesOrg" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops'  || $Profile.Name=='DQA User'
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Sales_Org}"/>
+                    <apex:inputField value="{!Account.Sales_Org__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!--***FINISH***Kept Sales Org during creation, as per DPS-17417 -->
+                <apex:pageBlockSectionItem id="BUMarketingSegment" rendered="{!IF($Profile.Name=='UKI Users' || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='Elite User' || $Profile.Name=='DQA User',false,true)}"> <!--Added as per CRM-7103, Author: Abhirup Banik-->
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_BU_Marketing_Segment}"/>
+                    <apex:inputField value="{!Account.BU_Marketing_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!-- 1709-->
+                <!--<apex:pageBlockSectionItem id="Bu_Segment__c"  rendered="{!IF(segmentVisibilityCheck == true,true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Bu_Segment}"/>
+                    <apex:inputField value="{!Account.Bu_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>-->
+                <!-- 1709 -->
+                <!--<apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_TaxCorpIndustry}"/>
+                    <apex:inputField value="{!Account.Tax_Corp_Industry__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Tax_Corp_Customer_Group}"/>
+                    <apex:inputField value="{!Account.Tax_Corp_Customer_Group__c}"/>
+                </apex:pageBlockSectionItem>-->
+                <!-- CRM-7103-->
+                <!--***START***Kept Industry and Customer Group as per Sales Org field removal, DPS-17417 -->
+                <apex:pageBlockSectionItem id="CustomerGroup" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User',true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Customer_Group}"/>
+                    <apex:inputField value="{!Account.Customer_Group__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                 
+                <apex:pageBlockSectionItem id="Dummy_Blank" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User' ,true,false)}"/>
+                <apex:pageBlockSectionItem id="Industry" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User',true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Industry}"/>
+                    <apex:inputField value="{!Account.Industry}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!--***FINISH***Kept Industry and Customer Group as per Sales Org field removal, DPS-17417 -->
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <!--CRM-7109 Ends-->
+        
+        <!-- Required fields Start -->
+        <apex:pageBlock id="blockAccountCreate"
+                        title="{!$Label.AccountCreate_page_New_Account_Label}"
+                        mode="edit"
+                        rendered="{!displayEditPage}">
+            
+            <apex:pageBlockButtons >
+                <apex:commandButton value="{!$Label.LCRMAccountCreate_Save}" action="{!saveSelectedAccount}" status="statusValidateAccount" rerender="formEdit" />
+                <apex:commandButton value="{!$Label.LCRMAccountCreate_Cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection columns="2">
+                <apex:inputField value="{!selAccount.Name}" required="true"/>
+                <apex:inputField value="{!selAccount.Fiscal_Year_End__c}"/>
+                <!--<apex:outputField value="{!Account.RecordTypeId}"/>-->
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2"
+                                   collapsible="false"
+                                   title="{!$Label.AccountCreate_Page_Address_section}">
+                
+                <apex:pageBlockSectionItem id="street" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Street}"/>
+                    <apex:inputField value="{!selAccount.BillingStreet}" label="Street"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="City" rendered="{!$Profile.Name != 'LatAm User'}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_City}" for="BillingCity"/>
+                    <!--<apex:inputField id="BillingCity" value="{!selAccount.BillingCity}"  required="{!isRequired}" label="City"/>-->
+                    <apex:inputField id="BillingCity" value="{!selAccount.BillingCity}" label="{!$Label.LCRMAccountCreate_City}"/>
+                </apex:pageBlockSectionItem>                    
+                
+                <apex:pageBlockSectionItem id="selectBillingState"> 
+                    <apex:outputLabel for="selectBillingCountry" 
+                                      value="{!$Label.LCRMAccountCreate_Country}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <div class="requiredBlock"></div>
+                        
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" value="{!selAccount.BillingCountry}" size="1" required="true" multiselect="false" label="{!$Label.LCRMAccountCreate_Country}">
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                <apex:actionSupport event="onchange" action="{!addressCountryChanged}" rerender="selectBillingState" status="statusLoadingCountryRegions"/>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="sectionItemState1" >
+                    <apex:outputLabel for="selectBillingState1" value="{!$Label.LCRMAccountCreate_State_Province}" />
+                    
+                    <apex:outputPanel layout="block">
+                        <div class="requiredInput"> 
+                            <div class="requiredBlock"></div>
+                            <apex:selectList id="selectBillingState1" label="{!$Label.LCRMAccountCreate_State_Province}"
+                                             value="{!selAccount.BillingState}" 
+                                             size="1"
+                                             required="{!CountryRegionOptions.size>1}"
+                                             multiselect="false" >
+                                
+                                <apex:selectOptions value="{!CountryRegionOptions}" />
+                            </apex:selectList>
+                        </div>  
+                        <apex:actionStatus id="statusLoadingCountryRegions1">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="PostalCode" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Zip_Postal_Code}"/>
+                    <apex:inputField value="{!selAccount.BillingPostalCode}" label="{!$Label.LCRMAccountCreate_Zip_Postal_Code}"/>
+                </apex:pageBlockSectionItem>
+                <!--<apex:inputField value="{!selAccount.Province__c}" rendered="{!$Profile.Name != 'LatAm User'}"/>-->
+                <apex:inputField value="{!selAccount.County__c}" />
+            </apex:pageBlockSection>
+            <!--CRM-7109 Starts Author: Abhirup Banik-->
+            <apex:pageBlockSection id="SegmentSection" title="{!$Label.LCRM_Ac_Create_Page_Segment_Section}" collapsible="false" 
+                                   > <!--Modified as per CRM-7103-->
+                <apex:inputField value="{!Account.Bu_Segment__c}" required="true"/>
+                <apex:inputField value="{!Account.ECC_Top_Named_Law_Firms__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Number_of_Attorneys__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Number_Of_Employees__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Top_Named_Corporations__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Annual_Revenue__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Account.ECC_Government_Type__c}" required="true"/>
+                <apex:pageBlockSectionItem id="GLISegment" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='DQA User'
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_GLI_Segment}"/>
+                    <apex:inputField value="{!Account.GLI_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="GLISubSegment" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='DQA User'
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_GLI_Sub_Segment}"/>
+                    <apex:inputField value="{!Account.GLI_Sub_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!--***START***Kept Sales Org during creation, as per DPS-17417 -->
+                <apex:pageBlockSectionItem id="SalesOrg" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='DQA User'
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Sales_Org}"/>
+                    <apex:inputField value="{!selAccount.Sales_Org__c}" required="true"/> 
+                </apex:pageBlockSectionItem>-
+                <!--***FINISH***Kept Sales Org during creation, as per DPS-17417 -->
+                <apex:pageBlockSectionItem id="BUMarketingSegment" rendered="{!IF($Profile.Name=='UKI Users' || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='Elite User' || $Profile.Name=='DQA User',false,true)}"> <!--Added as per CRM-7103, Author: Abhirup Banik-->
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_BU_Marketing_Segment}"/>
+                    <apex:inputField value="{!Account.BU_Marketing_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>
+                <!-- 1709-->
+                <!--<apex:pageBlockSectionItem id="Bu_Segment__c"  rendered="{!IF(segmentVisibilityCheck == true,true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Bu_Segment}"/>
+                    <apex:inputField value="{!Account.Bu_Segment__c}" required="true"/>
+                </apex:pageBlockSectionItem>-->
+                <!-- 1709 -->
+                <!--<apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_TaxCorpIndustry}"/>
+                    <apex:inputField value="{!Account.Tax_Corp_Industry__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Tax_Corp_Customer_Group}"/>
+                    <apex:inputField value="{!Account.Tax_Corp_Customer_Group__c}"/>
+                </apex:pageBlockSectionItem>-->
+                <!-- CRM-7103-->
+                <!--***START***Kept Industry and Customer Group as per Sales Org field removal, DPS-17417 -->
+                <apex:pageBlockSectionItem id="CustomerGroup" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User',true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Customer_Group}"/>
+                    <apex:inputField value="{!selAccount.Customer_Group__c}" required="true"/> 
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="Dummy_Blank" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User' ,true,false)}"/>
+                <apex:pageBlockSectionItem id="Industry" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User',true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Industry}"/>
+                    <apex:inputField value="{!selAccount.Industry}" required="true"/> 
+                </apex:pageBlockSectionItem>
+                <!--***FINISH***Kept Industry and Customer Group as per Sales Org field removal, DPS-17417 -->
+            </apex:pageBlockSection>
+
+            <!--CRM-7109 Ends-->
+        </apex:pageBlock>
+        
+        <!-- Required fields End-->                 
+        
+        <apex:pageBlock id="blockMatchedAccounts"
+                        mode="mainDetail"
+                        title="{!$Label.AccountCreate_page_New_Account_Label}"
+                        rendered="{!AND(displayMatchesPage,NOT(displayeditpage))}" >
+            
+            <apex:pageBlockButtons >
+                <!-- <apex:commandButton id="buttonCreate" value="Create Account" action="{!continueSave}" /> -->
+                <apex:commandButton id="buttonCreate" title="{!$Label.Create_Account}"  value="{!$Label.Create_Account}"  oncomplete="checkSelected('{!isAnyrecordSelected}','{!HasMatchingECMAccounts}')" />
+                <apex:commandButton id="buttonEdit1" value="Edit" action="{!editAction}" />
+                <apex:commandButton id="buttonCancel1" value="{!$Label.LCRMAccountCreate_Cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="sectionAccountDetail"
+                                   columns="2"
+                                   title="{!$Label.LCRMAccountCreate_Account_Information}">
+                
+                <apex:outputField value="{!Account.Name}" />                              
+                <apex:outputField value="{!Account.Fiscal_Year_End__c}"/>                           
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionAddressDetail"
+                                   columns="2"
+                                   title="{!$Label.AccountCreate_Page_Address_section}">
+                <apex:pageBlockSectionItem id="street" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Street}"/>
+                    <apex:outputField value="{!Account.BillingStreet}" />
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="city" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_City}"/>
+                    <apex:outputField value="{!Account.BillingCity}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="Country" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Country}"/>
+                    <apex:outputField value="{!Account.BillingCountry}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="State" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_State_Province}"/>
+                    <apex:outputField value="{!Account.BillingState}" />
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="PostalCode" >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Zip_Postal_Code}"/>
+                    <apex:outputField value="{!Account.BillingPostalCode}" />
+                </apex:pageBlockSectionItem>
+                <!--<apex:outputField value="{!Account.Province__c}" rendered="{!$Profile.Name != 'LatAm User'}"/>-->
+                <apex:outputField value="{!Account.County__c}" />
+            </apex:pageBlockSection>
+            <!--CRM-7109 Starts Author: Abhirup Banik-->
+            <apex:pageBlockSection id="SegmentSection" title="{!$Label.LCRM_Ac_Create_Page_Segment_Section}" collapsible="true" 
+                                   > <!--Modified as per CRM-7103-->
+                <apex:outputField value="{!Account.Bu_Segment__c}"/>
+                <apex:outputField value="{!Account.ECC_Top_Named_Law_Firms__c}"/>
+                <apex:pageBlockSectionItem />
+                <apex:outputField value="{!Account.ECC_Number_of_Attorneys__c}"/>
+                <apex:pageBlockSectionItem />
+                <apex:outputField value="{!Account.ECC_Number_Of_Employees__c}"/>
+                <apex:pageBlockSectionItem />
+                <apex:outputField value="{!Account.ECC_Top_Named_Corporations__c}"/>
+                <apex:pageBlockSectionItem />
+                <apex:outputField value="{!Account.ECC_Annual_Revenue__c}"/>
+                <apex:pageBlockSectionItem />
+                <apex:outputField value="{!Account.ECC_Government_Type__c}"/>
+                <apex:pageBlockSectionItem id="GLISegment" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='DQA User' 
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_GLI_Segment}"/>
+                    <apex:outputField value="{!Account.GLI_Segment__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="GLISubSegment" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='DQA User' 
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_GLI_Sub_Segment}"/>
+                    <apex:outputField value="{!Account.GLI_Sub_Segment__c}"/>
+                </apex:pageBlockSectionItem>
+                <!--***START***Kept Sales Org during creation, as per DPS-17417 -->
+                <apex:pageBlockSectionItem id="SalesOrg" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User'
+                                             || $Profile.Name=='System Administrator' || $Profile.Name=='UKI Users' 
+                                             || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='DQA User' 
+                                             || $Profile.Name=='Elite User' || segmentVisibilityCheck == true, true, false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Sales_Org}"/>
+                    <apex:outputField value="{!Account.Sales_Org__c}"/>
+                </apex:pageBlockSectionItem>
+                <!--***FINISH***Kept Sales Org during creation, as per DPS-17417 -->
+                <apex:pageBlockSectionItem id="BUMarketingSegment" rendered="{!IF($Profile.Name=='UKI Users' || $Profile.Name=='UKI Sales Ops' || $Profile.Name=='Elite Sales Ops' || $Profile.Name=='Elite User' || $Profile.Name=='DQA User',false,true)}"> <!--Added as per CRM-7103, Author: Abhirup Banik-->
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_BU_Marketing_Segment}"/>
+                    <apex:outputField value="{!Account.BU_Marketing_Segment__c}"/>
+                </apex:pageBlockSectionItem>
+                <!-- 1709-->
+                <!--<apex:pageBlockSectionItem id="Bu_Segment__c"  rendered="{!IF(segmentVisibilityCheck == true,true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Bu_Segment}"/>
+                    <apex:outputField value="{!Account.Bu_Segment__c}"/>
+                </apex:pageBlockSectionItem>-->
+                <!-- 1709 -->
+                <!--<apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_TaxCorpIndustry}"/>
+                    <apex:outputField value="{!Account.Tax_Corp_Industry__c}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Tax_Corp_Customer_Group}"/>
+                    <apex:outputField value="{!Account.Tax_Corp_Customer_Group__c}"/>
+                </apex:pageBlockSectionItem>-->
+                <!--CRM-7103-->
+                <!--***START***Kept Industry and Customer Group as per Sales Org field removal, DPS-17417 -->
+                <apex:pageBlockSectionItem id="CustomerGroup" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User',true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Customer_Group}"/>
+                    <apex:outputField value="{!Account.Customer_Group__c}"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem id="Dummy_Blank" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User' ,true,false)}"/>
+                <apex:pageBlockSectionItem id="Industry" rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User',true,false)}">
+                    <apex:outputLabel value="{!$Label.LCRMAccountCreate_Industry}"/>
+                    <apex:outputField value="{!Account.Industry}"/>
+                </apex:pageBlockSectionItem>
+                <!--***FINISH***Kept Industry and Customer Group as per Sales Org field removal, DPS-17417 -->             
+            </apex:pageBlockSection>
+            <!--CRM-7109 Ends-->
+            <!-- Added by Sripriya for SFDC potential matches **START**-->
+            <apex:pageBlockSection id="SfdcSectionDuplicates"
+                                   columns="1"
+                                   title="{!$Label.LCRMAccountCreate_Potential_Salesforce_Matches}">
+                <!-- <apex:outputText rendered="{!NOT(OR(HasServiceErrors, HasMatchingSFDCAccounts))}"> No records to display </apex:outputText> -->
+                
+                <apex:outputText rendered="{!MatchedSFDCAccounts.size == 0}"> 
+                    <apex:outputLabel value="{!$Label.ECM_No_Records_to_Display}"/> 
+                </apex:outputText>
+                
+                
+                <apex:pageBlockTable id="SfdcTableMatchedAccounts"
+                                     value="{!MatchedSFDCAccounts}"
+                                     rendered="{!MatchedSFDCAccounts.size > 0}"
+                                     var="sfdcmatch">                    
+                    <apex:column headervalue="{!$Label.LCRMAccountCreate_Account_Name}">
+                        <apex:outputLink id="linkAccount"
+                                         value="/{!sfdcmatch.Account.Id}" 
+                                         rendered="{!NOT(ISNULL(sfdcmatch.Account.Id))}">{!sfdcmatch.Account.Name} </apex:outputLink>
+                    </apex:column>                    
+                    
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Street}" value="{!sfdcmatch.Account.BillingStreet}" />
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_City}" value="{!sfdcmatch.Account.BillingCity}" />
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_State}" value="{!sfdcmatch.Account.BillingState}" />
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Postal_Code}" value="{!sfdcmatch.Account.BillingPostalCode}" />
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Country}" value="{!sfdcmatch.Account.BillingCountry}" />
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_SalesOrg}" value="{!Account.Sales_Org__c}" />
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Record_Type}" value="{!sfdcmatch.Account.RecordType.Name}" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <!-- Added by Sripriya for SFDC potential matches **END**-->
+            
+            <apex:actionStatus id="processingAccount">
+                <apex:facet name="start">
+                    <c:PageStatusMessage message="{!$Label.LCRMAccountCreate_Validating_account_please_wait}" />
+                </apex:facet>
+            </apex:actionStatus>
+            
+            <!-- Added by Sripriya for ECM potential matches **START**--> 
+            <apex:pageBlockSection id="ECMSectionDuplicates"
+                                   columns="1"
+                                   title="{!$Label.LCRMAccountCreate_Potential_ECM_Matches}">                               
+                <apex:pageBlockTable id="ECMTableMatchedAccounts"
+                                     value="{!ECMAccountResults.CurrentPage}" rendered="{!ECMAccountResults.listMatchedECMAccounts.size > 0}"               
+                                     var="ecmMatch"> 
+                    
+                    <apex:facet name="footer">
+                        <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">                 
+                            
+                            <apex:outputPanel layout="inline" rendered="{!ECMAccountResults.AllowMovePrev}">
+                                <span>&nbsp;|&nbsp;</span>
+                                <apex:commandLink id="linkMovePrev"
+                                                  value="{!$Label.LCRMAccountCreate_Prev}"
+                                                  immediate="true"
+                                                  status="statusPaging"
+                                                  action="{!ECMAccountResults.movePrev}"
+                                                  rerender="ECMTableMatchedAccounts" />
+                            </apex:outputPanel>
+                            
+                            <apex:outputPanel layout="inline" rendered="{!ECMAccountResults.AllowMoveNext}">
+                                <span>&nbsp;|&nbsp;</span>
+                                <apex:commandLink id="linkMoveNext"
+                                                  value="{!$Label.LCRMAccountCreate_Next}"
+                                                  immediate="true"
+                                                  status="statusPaging"
+                                                  action="{!ECMAccountResults.moveNext}"
+                                                  rerender="ECMTableMatchedAccounts" />
+                            </apex:outputPanel>
+                            
+                            <span>&nbsp;&nbsp;</span>
+                            
+                            <apex:actionStatus id="statusPaging">
+                                <apex:facet name="start">
+                                    <img src="/img/loading.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                                
+                                <apex:facet name="stop">
+                                    <img src="/img/s.gif" height="14px" width="14px"/>
+                                </apex:facet>
+                            </apex:actionStatus>
+                            <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;">
+                                {!ECMAccountResults.RecordStart}-{!ECMAccountResults.RecordEnd} of {!ECMAccountResults.listMatchedECMAccounts.size}
+                            </apex:outputPanel>
+                            
+                        </apex:outputPanel>
+                    </apex:facet>      
+                    <apex:column > 
+                        <apex:inputcheckbox value="{!ecmMatch.isSelected}" id="chxBox" onclick="calJSFunction('{!JSENCODE(ecmMatch.ECMAccountInfo.AddressId)}')">  
+                        </apex:inputcheckbox>   
+                    </apex:column>  
+                    
+                    <apex:column headervalue="{!$Label.LCRMAccountCreate_Account_Name}">
+                        <apex:outputText id="textAccountName" value="{!ecmMatch.ECMAccountInfo.Name}" />                        
+                    </apex:column>
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_ECM_Address_RowId}" rendered="false"> {!ecmMatch.ECMAccountInfo.AddressId} </apex:column>  
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Street}"> {!ecmMatch.ECMAccountInfo.Street1} </apex:column>  
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_City}"> {!ecmMatch.ECMAccountInfo.City} </apex:column> 
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_State}">{!ecmMatch.ECMAccountInfo.State}</apex:column> 
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Postal_Code}">{!ecmMatch.ECMAccountInfo.PostalCode}</apex:column> 
+                    <apex:column headerValue="{!$Label.LCRMAccountCreate_Country}">{!ecmMatch.ECMAccountInfo.Country}</apex:column> 
+                </apex:pageBlockTable>                
+                
+                <apex:outputText rendered="{!MatchedECMAccounts.size == 0}">
+                    <apex:outputLabel value="{!$Label.ECM_No_Records_to_Display}"/>
+                </apex:outputText>
+                
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <apex:actionFunction name="calAF" status="processingAccount" action="{!creatAccount}"  reRender="formEdit">           
+        </apex:actionFunction>       
+        
+        <apex:actionFunction name="updList" status="processingAccount" action="{!updateList}" reRender="formEdit">
+            <apex:param name="conId" value="" assignTo="{!conId}"/>
+        </apex:actionFunction> 
+    </apex:form>
+    
+    <apex:outputPanel layout="none" rendered="{!NOT(ISNULL($CurrentPage.parameters.isdtp))}">
+        <apex:includeScript value="/support/console/25.0/integration.js"/>
+        <script>
+        try {
+            sforce.console.setTabTitle('{!$Label.AccountCreate_page_New_Account_Label}');
+        }
+        catch (e) { /*Ignore Error*/ }
+        </script> 
+    </apex:outputPanel>  
+    
+    <script>
+    window.$Label = window.$Label || {};
+    $Label.ECM_Warning_Message = '{!JSENCODE($Label.ECM_Warning_Message)}';
+    </script>
+    
+    <script>
+    function calJSFunction(ab){
+        updList(ab);
+    }
+    
+    function selectId(frst){
+        alert(frst);
+    }
+    
+    function checkSelected(isSel, hasECMAccounts){                   
+        if(isSel=='true'){                     
+            calAF();                 
+        }
+        else{                
+            var res = confirm($Label.ECM_Warning_Message);
+            if(res == true){
+                calAF();
+            }
+        }
+    }   
+    
+    </script>
+</apex:page>

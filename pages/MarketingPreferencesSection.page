@@ -1,0 +1,58 @@
+<!--
+Name               Description                                                                                            Date
+Singh Raghawendra   JIRA NO:DPS-2008 Enabling Lightning as part of Sales Lightning Project..need to include lightning stylesheet    31-Jan-2019
+-->
+<apex:page standardController="Contact" extensions="MarketingPreferencesController" lightningStylesheets="true" >
+
+    <apex:form >
+        <apex:commandButton value="{!$Label.LTS_EditMPS}" action="{!changeToEdit}" rendered="{! AND(NOT(isEditable),CheckPermission)}" style="margin-left:15cm;"/>
+        <apex:commandButton value="{!$Label.LTS_SaveMPS}" action="{!save}" rendered="{! isEditable}" style="margin-left:15cm;"/>
+        <apex:commandButton value="{!$Label.LTS_CancelMPS}" action="{!cancel}" rendered="{! isEditable}"/>
+        <!-- Onload Page its looks like-->
+        <apex:pageBlock rendered="{!NOT(isEditable)}">
+            <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LTS_DoNotEmail}"   />
+                    <apex:outputLink target="_blank" value="{!preferenceCenterLink}">{!$Label.LTS_PreferenceCenter}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{! Contact.DoNotCall}"/>
+             </apex:pageBlockSection>
+             <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                 <!---- Added as a part of DPS-19132 --->
+                 <apex:outputField value="{! Contact.HasOptedOutOfEmail}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+              <apex:outputField value="{! Contact.Do_not_Mail__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$Label.LTS_DoNotEmail}"   />
+                    <apex:outputLink target="_blank" value="{!preferenceCenterLink}">{!$Label.LTS_PreferenceCenter}</apex:outputLink>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection> 
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+                 <!---- Added as a part of DPS-19132 --->
+                 <apex:outputField value="{! Contact.HasOptedOutOfEmail}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+              <apex:outputField value="{! Contact.LCRM_Consent_To_Landline_Call__c}"/>
+              <apex:outputField value="{! Contact.LCRM_Consent_To_Mail__c}"/>
+              <apex:outputField value="{! Contact.LCRM_Consent_To_Mobile_Call__c}"/>
+              <apex:outputField value="{! Contact.LCRM_Consent_To_SMS__c}"/>
+            </apex:pageBlockSection> 
+         </apex:pageBlock>
+       <!-- On Edit Page-->
+     <apex:pageBlock rendered="{!isEditable}">
+            <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                  <apex:inputField value="{! Contact.DoNotCall}" />
+                  <apex:inputField value="{! Contact.Do_not_Mail__c}" /> 
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+                  <apex:inputField value="{! Contact.LCRM_Consent_To_Landline_Call__c}"/>
+                  <apex:inputField value="{! Contact.LCRM_Consent_To_Mail__c}"/>
+                  <apex:inputField value="{! Contact.LCRM_Consent_To_Mobile_Call__c}"/>
+                  <apex:inputField value="{! Contact.LCRM_Consent_To_SMS__c}"/> 
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,10 @@
+<!-- 
+Page : Response_On_Case 
+Description: This apex page displays Survey Response section on Case detail page with custom question labels
+Last Modified By:  Rounak Sethiya (19 November, 2018) | DEV-52037 
+-->
+<apex:page standardController="Case" sidebar="false" showHeader="false" applyHtmlTag="false" lightningStylesheets="true">
+<apex:form >
+    <c:ResponseListComponent vfPageName="" sobject="{!$ObjectType.Case.Name}"></c:ResponseListComponent>       
+</apex:form>
+</apex:page>

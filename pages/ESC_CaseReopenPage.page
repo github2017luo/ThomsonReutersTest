@@ -1,0 +1,29 @@
+<!--**********************************
+Page Name: CaseReopenPage
+Purpose: VF page to Update Case to Reopen
+Author:Mousumi Panda
+Date Created:07/06/2017
+Date Updated:V0:
+***********************************-->
+<apex:page standardController="Case" extensions="ESC_CaseReopenPageController" id="page" action="{!InitializeCaseRecordForBtn}" >
+<apex:includeScript value="/support/console/28.0/integration.js"/>
+<script type='text/javascript' src='/canvas/sdk/js/28.0/publisher.js'/> 
+<apex:form id="form">
+<script> function refreshFeed() {
+    console.log('refreshFeed');
+   if('{!Result}'=='Pass'){
+    Sfdc.canvas.publisher.publish({name : 'publisher.refresh', payload : {feed: true}}); 
+    var tabid;
+    sforce.console.getFocusedPrimaryTabId(function(result){
+    tabid=result.id;
+    sforce.console.refreshPrimaryTabById(tabid,true);
+    });
+    }}    
+    function checkDoubleSubmit(obj){
+    obj.className = 'btnDisabled';
+    }
+</script>
+<apex:outputText value="{!callfunc}" escape="false"></apex:outputText>
+<apex:pageMessages ></apex:pageMessages>
+</apex:form>
+</apex:page>

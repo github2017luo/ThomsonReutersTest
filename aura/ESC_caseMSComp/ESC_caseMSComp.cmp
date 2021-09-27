@@ -1,0 +1,39 @@
+<aura:component controller="ESC_CaseMSListltngController" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:attribute name="caseMSTable" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+   <div class="slds" style="background:white;">
+    <div class="slds-page-header">
+  <div class="slds-page-header__row">
+    <div class="slds-page-header__col-title">
+      <div class="slds-media">
+        
+        <div class="slds-media__body">
+          <div class="slds-page-header__name">
+            <div class="slds-page-header__name-title">
+              <h1>
+                  
+                  <span class="slds-page-header__title slds-truncate" title="Case Milestones">Case Milestones</span>
+              </h1>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="slds slds-scrollable slds-m-left_medium">
+	    <aura:iteration items="{!v.caseMSTable}" var="obj" indexVar="d">
+        <ul>
+          <li><span class="slds-p-right_xx-large">Name :</span> <a onclick="{!c.handleClick}" id="{!obj.Id}" >{!obj.MilestoneType.Name}</a></li>
+          <li><span class="slds-p-right_x-large">Target Date :</span>  <ui:outputDate format="MM/dd/YYYY" value="{!obj.TargetDate}"/></li>
+          <li><span class="slds-p-right_medium">Completion Date :</span>  <ui:outputDate format="MM/dd/YYYY" value="{!obj.CompletionDate}"/></li>
+          <li><span class="slds-p-right_medium">Time Remaining(MM:SS) :</span>  {!obj.TimeRemainingInMins}</li>
+          <li><span class="slds-p-right_x-large">Violation :</span>{!obj.IsViolated}</li> 
+          <li><span class="slds-p-right_x-large">Completed :</span>{!obj.IsCompleted}</li> 
+            <br/>
+		</ul>
+        </aura:iteration>
+    </div>
+    </div>
+</aura:component>

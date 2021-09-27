@@ -1,0 +1,86 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-02-14   Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page standardController="Account" extensions="CoreLibraryController" id="pageCoreLibrary" lightningStylesheets="true" tabStyle="Account" sidebar="false">    <style type="text/css">
+     <apex:includeScript value="/support/console/22.0/integration.js"/>
+.loadingIcon {
+    background-image: url(/img/loading.gif);
+    width: 16px;
+    height: 16px;
+}
+</style>
+<script>
+    function backToAccount(){
+       // alert('Hi');
+        if (sforce.console.isInConsole()) { 
+          //  alert('Hi Console');
+            var url = '/{!Account.Id}?isdtp=vw'; 
+            //alert(url);
+            srcSelf(url); 
+        } else { 
+          //  alert('Hi Sales');                 
+            var url = '/{!Account.Id}';
+            //alert(url); 
+            window.open(url,'_top'); 
+        } 
+     }
+</script>
+    <apex:form id="formCoreLibrary">
+        <apex:pageMessages id="messagesGlobal" />
+        <apex:sectionHeader id="pageTitle" title="Core Libraries" subtitle="{!Account.Name}" />
+        <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 2px;">
+            <span>&nbsp;&laquo;&nbsp;</span>
+            <a href="#" onclick="backToAccount();" style="color:#015BA7;">Back to {!Account.Name}</a> <!--SFD-16-->
+            <!--<apex:outputLink value="/{!Account.Id}">Back to {!Account.Name}</apex:outputLink>-->
+        </div>
+        <apex:actionFunction name="rerenderCoreLibrary"   reRender="sectionCoreLibrary,sectionFilters,messagesGlobal"  status="statusCoreLibrary" action="{!changeDisplayCoreLibraryList}" />
+        <apex:pageBlock id="blockCoreLibrary" mode="edit">
+            <apex:pageBlockSection columns="2" id="sectionFilters"  collapsible="true" title="Core Library Selection">
+                <apex:selectList id="selectViewOptions" value="{!Code1}"  size="1" label="Core Library Code 1"  multiselect="false">
+                    <apex:selectOptions value="{!selectcodes}" />
+                    <apex:actionSupport event="onchange" status="statusLoadingView"  rerender="selectLibrary, globalMessages" />
+                </apex:selectList>
+                <apex:selectList id="selectLibrary" value="{!Desc1}" size="1" label="Core Library Description 1"   multiselect="false">
+                    <apex:selectOptions value="{!SelectLibraries1}" />  
+                </apex:selectList>
+                <apex:selectList id="selectViewOptions2" value="{!Code2}"   size="1"  label="Core Library Code 2"   multiselect="false">
+                    <apex:selectOptions value="{!selectcodes}" />
+                <apex:actionSupport event="onchange" status="statusLoadingView2"  rerender="selectLibrary2, globalMessages" />
+                </apex:selectList>
+                <apex:selectList id="selectLibrary2" value="{!Desc2}"  size="1"  label="Core Library Description 2"  multiselect="false">
+                    <apex:selectOptions value="{!SelectLibraries2}" />  
+                </apex:selectList>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1">
+                <apex:outputPanel layout="block" style="text-align: center">
+                    <apex:commandButton value="Get Core Libraries"  reRender="messagesGlobal,sectionCoreLibrary" status="statusCoreLibrary" action="{!changeDisplayCoreLibraryList}" />
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" title="Core Library Material List" id="sectionCoreLibrary">
+                <apex:outputPanel layout="none">
+                    <apex:pageblockSectionItem >
+                        <apex:outputPanel layout="block"  rendered="{!CoreLibraryMaterials.size==0}"  style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No Core Library records to display</apex:outputPanel>
+                        <apex:pageblocktable value="{!CoreLibraryMaterials}" var="core" id="tableSubscription" rendered="{!CoreLibraryMaterials.size!=0}">
+                            <apex:column headerValue="Sub Status" value="{!core.SubStatus}" />
+                            <apex:column headerValue="Quantity"  value="{!core.Quantity}" />
+                            <apex:column headerValue="Material Number"  value="{!core.MaterialNumber}" />
+                            <apex:column headerValue="Material Desc / CPC Link">
+                                <apex:outputLink value="http://cpc.int.westgroup.com/default.aspx?mode=searchSS&Submit=yes&search=west&sHistoricalInd=0&nosplash=true&sSapMaterialNum={!core.MaterialNumber}" target="_blank">
+                                         {!core.MaterialDesc}
+                                </apex:outputLink>
+                            </apex:column>
+                            <apex:column headerValue="Core Library Desc"  value="{!core.CoreLibraryDesc}" />
+                            <apex:column headerValue="Priority"  value="{!core.Priority}" />                               
+                        </apex:pageblocktable>
+                    </apex:pageblockSectionItem>
+                    </apex:outputpanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <script>function setFocusOnLoad() {}</script>
+</apex:page>

@@ -1,0 +1,119 @@
+<apex:page showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false">
+<apex:outputPanel >
+        <style>
+            html           { height: 90% }
+            body           { margin-top:10px; margin-left:10px; background-image: none; background-color: transparent; height: 100% }
+            #footer        { position: absolute;bottom: 2px; height:17px; width: 98%; margin-bottom:2px; }
+            #footer p,a    { color: #666666; font: 10px Arial; }
+            #footer p      { float: right;  margin: 0px; margin-right:5px; }
+            ul li, ul, li  { margin-left: -5px; }
+        </style>
+        <h1>
+            Congratulations
+        </h1>
+        <p>
+            The b+s Connects for Cisco Contact Center package has been successfully installed.
+            <br />
+            <br />
+            <b>Next steps:</b>
+            <ul type="square">
+                <li>Create a SoftPhone Layout for your users (<b>Customize | Call Center | SoftPhone Layout</b>)</li>
+                <br />
+                <li>Configure the imported Call Center (<b>Customize | Call Center | Call Centers</b>):
+                    <ul>
+                        <br />
+                        <li>for CRM Hosted Deployment: (Requires Finesse 11.5 or later)
+                            <ul>
+                                <li>Configure the link "Finesse Server URL A" to your primary Cisco Finesse server</li>
+                                <li>Configure the link "Finesse Server URL B" to your secondary Cisco Finesse server</li>
+                                <li>Configure the "Finesse Server Timeout" according to your network configuration</li>
+                                <li>If you want to enable SSO: (Requires Finesse 11.6 ES 5 or later)
+                                    <ul>
+                                        <li>Download the generated Finesse SSO Frame and copy it to you Finesse server</li>
+                                        <li>Configure the link "Finesse SSO Frame URL" to the path to which you copied the Finesse SSO Frame HTML file</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <br />
+                        <li>for Finesse Hosted Deployment:
+                            <ul>
+                                <li>Download Connects Gadget and install it on your Cisco Finesse servers</li>
+                                <li>Configure the link "Connects Gadget URL A" to the Connects Gadget on your primary Cisco Finesse server</li>
+                                <li>Configure the link "Connects Gadget URL B" to the Connects Gadget on your secondary Cisco Finesse server</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <br />
+                <li>Add users to the Call Center</li>
+                <br />
+                <li>Assign license for this package to the users</li>
+                <br />
+            </ul>
+            <br />
+            <br />
+            Further details can be found in the Installation Guide.
+        </p>
+        <p>
+            <h1>Downloads</h1>
+            <ul type="square">
+                <li>
+                    <a href="{!URLFOR($Resource.CnxSfdcResources, 'downloads/ConnectsGadget.zip')}">Connects Gadget (to copy on Finesse server)</a>
+                </li>
+                <li>
+                    <a id="finesseSsoFrameLink" href="#">Generated Finesse SSO Frame (to copy on Finesse server)</a>
+                </li>
+                <li>
+                    <a href="{!URLFOR($Resource.CnxSfdcResources, 'downloads/ConnectsSalesforce_OpenSource_4-8_Rev1.pdf')}">Open Source information</a>
+                </li>
+            </ul>
+        </p>
+        <div id="footer">
+            <p>
+                powered by&nbsp;&nbsp;<img src="{!URLFOR($Resource.CnxSfdcResources, 'images/bs-logo_cmyk.png')}" />
+            </p>
+        </div>
+        <script type="text/javascript">
+            // Checks on how to detect browsers are copied from Bowser (a browser detector)
+            // [https://github.com/lancedikson/bowser/blob/master/src/parser-browsers.js].
+            var isIE = /msie|trident/i.test(navigator.appVersion);
+            var isEdge = /edg([ea]|ios)/i.test(navigator.appVersion);
+            window.onload = generateFinesseFrameDownload;
+            function generateFinesseFrameDownload () {
+                var req = new XMLHttpRequest();
+                req.open('GET', '{!URLFOR($Resource.CnxSfdcResources, "downloads/finesseSSOFrame.html")}');
+                req.setRequestHeader('Accept', 'text/html');
+                req.onreadystatechange = handleStateUpdate;
+                req.send();
+
+                function  handleStateUpdate (req) {
+                    if (req.currentTarget && req.currentTarget.readyState === 4) {
+                        var linkElement = document.getElementById('finesseSsoFrameLink');
+                        if (req.currentTarget.status === 200) {
+                            var data = req.currentTarget.response;
+                            var fileName = 'finesseSSOFrame.html';
+                            var fileContent = data.replace('https://sfdcurlplaceholder', window.location.origin);
+                            if (isIE || isEdge) {
+                                // Workaround for Internet Explorer and Microsoft Edge. As of May 2019, Internet
+                                // Explorer and Microsoft Edge do not support Data URI with HTML content.
+                                // [https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs#Browser_compatibility]
+                                // Workaround source from
+                                // https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/samples/hh779016(v=vs.85)
+                                linkElement.addEventListener('click', function () {
+                                    window.navigator.msSaveBlob(new Blob([fileContent]), fileName);
+                                    return false;
+                                });
+                            } else {
+                                linkElement.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(fileContent));
+                                linkElement.setAttribute('download', fileName);
+                            }
+                        } else if (req.currentTarget.status >= 400) {
+                            alert('Finesse SSO Frame download not available!');
+                        }
+                    }
+                }
+            }
+        </script>
+    </apex:outputPanel>
+</apex:page>

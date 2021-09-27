@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <content>ESC_OverrideNewSpecialInstrution</content>
+        <skipRecordTypeSelect>true</skipRecordTypeSelect>
+        <type>Visualforce</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>AccountSpecialInstruction_LEX</fullName>
+        <fields>Name</fields>
+        <fields>ESC_Status__c</fields>
+        <fields>ESC_Category_Account__c</fields>
+        <fields>LastModifiedById</fields>
+        <label>AccountSpecialInstruction_LEX</label>
+    </compactLayouts>
+    <compactLayouts>
+        <fullName>ContactSpecialInstruction_LEX</fullName>
+        <fields>Name</fields>
+        <fields>ESC_Status__c</fields>
+        <fields>ESC_Category__c</fields>
+        <fields>LastModifiedById</fields>
+        <label>ContactSpecialInstruction_LEX</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ReadWrite</externalSharingModel>
+    <fields>
+        <fullName>Category__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( ISBLANK(TEXT(ESC_Category_Account__c)), TEXT(ESC_Category__c), TEXT(ESC_Category_Account__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Category</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Account_Inst__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(isblank(ESC_Account__c),false,true)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account Inst</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Account__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Account</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipLabel>Special Instructions</relationshipLabel>
+        <relationshipName>Special_Instructions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Category_Account__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Category</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Access Instructions</fullName>
+                    <default>false</default>
+                    <label>Access Instructions</label>
+                </value>
+                <value>
+                    <fullName>No Remote Support</fullName>
+                    <default>false</default>
+                    <label>No Remote Support</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Remote Support</fullName>
+                    <default>false</default>
+                    <label>Remote Support</label>
+                </value>
+                <value>
+                    <fullName>TLC</fullName>
+                    <default>false</default>
+                    <label>TLC</label>
+                </value>
+                <value>
+                    <fullName>Premium Support Account</fullName>
+                    <default>false</default>
+                    <label>Premium Support Account</label>
+                </value>
+                <value>
+                    <fullName>Customer Defense Process</fullName>
+                    <default>false</default>
+                    <label>Customer Defense Process</label>
+                </value>
+                <value>
+                    <fullName>Customer Defense Hypercare</fullName>
+                    <default>false</default>
+                    <label>Customer Defense Hypercare</label>
+                </value>
+                <value>
+                    <fullName>Bejerman Customized Customer</fullName>
+                    <default>false</default>
+                    <label>Bejerman Customized Customer</label>
+                </value>
+                <value>
+                    <fullName>Distributor</fullName>
+                    <default>false</default>
+                    <label>Distributor</label>
+                </value>
+                <value>
+                    <fullName>Financial</fullName>
+                    <default>false</default>
+                    <label>Financial</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ESC_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Contact Category</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Remote Support</fullName>
+                    <default>false</default>
+                    <label>Remote Support</label>
+                </value>
+                <value>
+                    <fullName>No Remote Support</fullName>
+                    <default>false</default>
+                    <label>No Remote Support</label>
+                </value>
+                <value>
+                    <fullName>Contact Preference – Telephone</fullName>
+                    <default>false</default>
+                    <label>Contact Preference – Telephone</label>
+                </value>
+                <value>
+                    <fullName>Contact Preference – eMail</fullName>
+                    <default>false</default>
+                    <label>Contact Preference – eMail</label>
+                </value>
+                <value>
+                    <fullName>TLC</fullName>
+                    <default>false</default>
+                    <label>TLC</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+                <value>
+                    <fullName>Specialist Support</fullName>
+                    <default>false</default>
+                    <label>Specialist Support</label>
+                </value>
+                <value>
+                    <fullName>Mediator</fullName>
+                    <default>false</default>
+                    <label>Mediator</label>
+                </value>
+                <value>
+                    <fullName>Premium Support</fullName>
+                    <default>false</default>
+                    <label>Premium Support</label>
+                </value>
+                <value>
+                    <fullName>Administrator</fullName>
+                    <default>false</default>
+                    <label>Administrator</label>
+                </value>
+                <value>
+                    <fullName>Do Not Contact</fullName>
+                    <default>false</default>
+                    <label>Do Not Contact</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ESC_Contact_Inst__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(isblank( ESC_Contact__c) , false, true)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact Inst</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>Special Instructions</relationshipLabel>
+        <relationshipName>Special_Instructions</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Detailed_Instructions__c</fullName>
+        <externalId>false</externalId>
+        <label>Detailed Instructions</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ESC_External_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>External ID</label>
+        <length>50</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Instructions__c</fullName>
+        <externalId>false</externalId>
+        <label>Instructions</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Active</fullName>
+                    <default>true</default>
+                    <label>Active</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <label>Inactive</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Special Instruction</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>SI-{00000}</displayFormat>
+        <label>Id</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Special Instructions</pluralLabel>
+    <recordTypes>
+        <fullName>ESC_Account_Instruction</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>AccountSpecialInstruction_LEX</compactLayoutAssignment>
+        <label>Account Instruction</label>
+        <picklistValues>
+            <picklist>ESC_Category_Account__c</picklist>
+            <values>
+                <fullName>Access Instructions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bejerman Customized Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Defense Hypercare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Defense Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Distributor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Premium Support Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TLC</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ESC_Category__c</picklist>
+            <values>
+                <fullName>Administrator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contact Preference %E2%80%93 Telephone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contact Preference %E2%80%93 eMail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do Not Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mediator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Premium Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Specialist Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TLC</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ESC_Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>ESC_Contact_Instruction</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>ContactSpecialInstruction_LEX</compactLayoutAssignment>
+        <label>Contact Instruction</label>
+        <picklistValues>
+            <picklist>ESC_Category_Account__c</picklist>
+            <values>
+                <fullName>Access Instructions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bejerman Customized Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Defense Hypercare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Customer Defense Process</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Premium Support Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TLC</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ESC_Category__c</picklist>
+            <values>
+                <fullName>Administrator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contact Preference %E2%80%93 Telephone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Contact Preference %E2%80%93 eMail</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do Not Contact</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mediator</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Premium Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Remote Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Specialist Support</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TLC</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>ESC_Status__c</picklist>
+            <values>
+                <fullName>Active</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Inactive</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <excludedStandardButtons>New</excludedStandardButtons>
+        <listViewButtons>ESC_New</listViewButtons>
+        <listViewButtons>ESC_New_Instruction</listViewButtons>
+    </searchLayouts>
+    <sharingModel>ReadWrite</sharingModel>
+    <validationRules>
+        <fullName>ESC_Special_Instruction_Acc_Con_Change</fullName>
+        <active>true</active>
+        <description>Account and Contact Special Instruction cannot be changed after create</description>
+        <errorConditionFormula>OR( ISCHANGED(ESC_Account__c ),ischanged( ESC_Contact__c ))</errorConditionFormula>
+        <errorMessage>The account Or contact linked to Special Instructions cannot be changed After Creatiion.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>ESC_Special_Instruction_Status_Mandatory</fullName>
+        <active>true</active>
+        <description>Special Instruction Status Cannot Be Empty.</description>
+        <errorConditionFormula>OR(ISPICKVAL(ESC_Status__c,&quot;&quot;), ISBLANK(TEXT(ESC_Status__c)) )</errorConditionFormula>
+        <errorDisplayField>ESC_Status__c</errorDisplayField>
+        <errorMessage>Special Instruction Status Cannot Be Empty.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>ESC_New</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0G/e?CF00N0Y00000GFY2m={!Contact.Name}&amp;00N0Y00000GFY2m_lkid={!Contact.Id}&amp;RecordType=0120Y000000xuDf</url>
+    </webLinks>
+    <webLinks>
+        <fullName>ESC_New_Instruction</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>New</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>false</requireRowSelection>
+        <url>/a0G/e?CF00N0Y00000GFY2j={!Account.Name}&amp;CF00N0Y00000GFY2j_lkid={!Account.Id}&amp;RecordType=0120Y000000xuDe</url>
+    </webLinks>
+</CustomObject>

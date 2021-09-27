@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>AddCampaign</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ConvertLead</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ConvertLead</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>ConvertLead</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CreateOpportunity</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CreateOpportunity</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CreateOpportunity</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>CampaignId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Campaign_Cell__c</fullName>
+        <externalId>false</externalId>
+        <formula>Campaign.Cell__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Campaign Cell</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Campaign_Cell_from_Lead__c</fullName>
+        <description>Field to record the Campaign cell  from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Campaign cell  from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Campaign Cell from Lead</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Campaign_Tracking_Code__c</fullName>
+        <externalId>false</externalId>
+        <formula>Campaign.Tracking_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Campaign Tracking Code</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>City</fullName>
+    </fields>
+    <fields>
+        <fullName>Cloned_from_Lead__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This field is to identify if the Campaign member record is created from the cloned lead. Based on this checkbox value, the process rule will be triggered. CRM-13377</description>
+        <externalId>false</externalId>
+        <label>Cloned from Lead</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>CompanyOrAccount</fullName>
+    </fields>
+    <fields>
+        <fullName>ContactId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Country</fullName>
+    </fields>
+    <fields>
+        <fullName>Description</fullName>
+    </fields>
+    <fields>
+        <fullName>DoNotCall</fullName>
+    </fields>
+    <fields>
+        <fullName>ESC_Active_Campaign1__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Active Campaign</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Active_Campaign__c</fullName>
+        <externalId>false</externalId>
+        <formula>Campaign.IsActive</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Active Campaign</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Case__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Case</label>
+        <referenceTo>Case</referenceTo>
+        <relationshipLabel>Campaign Members</relationshipLabel>
+        <relationshipName>Campaign_Members_del</relationshipName>
+        <required>false</required>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Contact_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>&apos;&apos;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact Name</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Description__c</fullName>
+        <description>Custom field created to cater for character limitation on Description</description>
+        <externalId>false</externalId>
+        <label>Description</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>ESC_Last_Upd_By__c</fullName>
+        <description>Formula to get Last Modified By name</description>
+        <externalId>false</externalId>
+        <formula>&apos;&apos;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Last Modified By</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Origin__c</fullName>
+        <externalId>false</externalId>
+        <label>Origin</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Case</fullName>
+                    <default>true</default>
+                    <label>Case</label>
+                </value>
+                <value>
+                    <fullName>Customer Visit</fullName>
+                    <default>false</default>
+                    <label>Customer Visit</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ESC_Outcome__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Outcome of Campaign delivery</inlineHelpText>
+        <label>Outcome</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Delivered</fullName>
+                    <default>false</default>
+                    <label>Delivered</label>
+                </value>
+                <value>
+                    <fullName>Rejected</fullName>
+                    <default>false</default>
+                    <label>Rejected</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ESC_Responded__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( OR( ISPICKVAL( ESC_Outcome__c , &apos;Delivered&apos;) , ISPICKVAL( ESC_Outcome__c , &apos;Rejected&apos;) ) , TRUE, FALSE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Responded</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Start_Date__c</fullName>
+        <description>Formula field to bring Start Date from Campaign to Campaign Member</description>
+        <externalId>false</externalId>
+        <formula>NOW()</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Start Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Status__c</fullName>
+        <description>Campaign Member Status</description>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1-New</fullName>
+                    <default>false</default>
+                    <label>1-New</label>
+                </value>
+                <value>
+                    <fullName>2-In Progress</fullName>
+                    <default>false</default>
+                    <label>2-In Progress</label>
+                </value>
+                <value>
+                    <fullName>3-Completed</fullName>
+                    <default>false</default>
+                    <label>3-Completed</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ESC_Type__c</fullName>
+        <description>Formula field to bring Type from Campaign to Campaign Member</description>
+        <externalId>false</externalId>
+        <formula>&apos;&apos;</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Type</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email</fullName>
+    </fields>
+    <fields>
+        <fullName>External_Id__c</fullName>
+        <externalId>true</externalId>
+        <label>External Id</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fax</fullName>
+    </fields>
+    <fields>
+        <fullName>FirstName</fullName>
+    </fields>
+    <fields>
+        <fullName>FirstRespondedDate</fullName>
+    </fields>
+    <fields>
+        <fullName>Form_Organization_Type__c</fullName>
+        <description>Field to record the Form Organization Type value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Form Organization Type value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Form Organization Type</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfEmail</fullName>
+    </fields>
+    <fields>
+        <fullName>HasOptedOutOfFax</fullName>
+    </fields>
+    <fields>
+        <fullName>HasResponded</fullName>
+    </fields>
+    <fields>
+        <fullName>LCRM_Delivery_Failure_Date__c</fullName>
+        <description>Failure date of the delivery.</description>
+        <externalId>false</externalId>
+        <label>Delivery Failure Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Delivery_Failure_Reason__c</fullName>
+        <externalId>false</externalId>
+        <label>Delivery Failure Reason</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Undelivered</fullName>
+                    <default>false</default>
+                    <label>Undelivered</label>
+                </value>
+                <value>
+                    <fullName>Person Moved</fullName>
+                    <default>false</default>
+                    <label>Person Moved</label>
+                </value>
+                <value>
+                    <fullName>Wrong Number</fullName>
+                    <default>false</default>
+                    <label>Wrong Number</label>
+                </value>
+                <value>
+                    <fullName>No Answer</fullName>
+                    <default>false</default>
+                    <label>No Answer</label>
+                </value>
+                <value>
+                    <fullName>Not Sent</fullName>
+                    <default>false</default>
+                    <label>Not Sent</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LastName</fullName>
+    </fields>
+    <fields>
+        <fullName>LeadId</fullName>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>LeadSource</fullName>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Line_of_Business__c</fullName>
+        <description>Field to record the Line of Business value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Line of Business value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Line of Business</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Marketing_Cloud_ID__c</fullName>
+        <description>Field to record the Marketing Cloud ID value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Marketing Cloud ID value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Marketing Cloud ID</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Media_Code__c</fullName>
+        <description>Field to track an individual&apos;s tactic relationship through Hive9 campaign planning system</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to track an individual&apos;s tactic relationship through Hive9 campaign planning system</inlineHelpText>
+        <label>Media Code</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>MobilePhone</fullName>
+    </fields>
+    <fields>
+        <fullName>Operating_Unit__c</fullName>
+        <description>Field to record the Operating Unit value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Operating Unit value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Operating Unit</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Phone</fullName>
+    </fields>
+    <fields>
+        <fullName>PostalCode</fullName>
+    </fields>
+    <fields>
+        <fullName>Product_of_Interest__c</fullName>
+        <description>Field to record the Product of Interest value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Product of Interest value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Product of Interest</label>
+        <length>32768</length>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Salutation</fullName>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Source_CreatedBy_Name__c</fullName>
+        <description>This field is used to store created by name in a text form.</description>
+        <externalId>false</externalId>
+        <label>Source CreatedBy Name</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_Created_Date__c</fullName>
+        <description>This field is used to store Source created date in a Date form.</description>
+        <externalId>false</externalId>
+        <label>Source Created Date</label>
+        <required>false</required>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Source_Description__c</fullName>
+        <description>Field to record the Source Description value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Source Description value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Source Description</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_Type__c</fullName>
+        <description>Field to record the Source type value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Source type value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Source Type</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source__c</fullName>
+        <description>Field to record the Source value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Source value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Source</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State</fullName>
+    </fields>
+    <fields>
+        <fullName>Status</fullName>
+        <type>Picklist</type>
+    </fields>
+    <fields>
+        <fullName>Street</fullName>
+    </fields>
+    <fields>
+        <fullName>Tele_Interaction__c</fullName>
+        <description>Field to record the Tele Interaction value from the Lead record when the Campaign Member is first associated</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the Tele Interaction value from the Lead record when the Campaign Member is first associated</inlineHelpText>
+        <label>Tele Interaction</label>
+        <length>100</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Title</fullName>
+    </fields>
+    <fields>
+        <fullName>Type__c</fullName>
+        <externalId>false</externalId>
+        <formula>Text(Campaign.Type)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Type</label>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <sharingModel>ControlledByCampaign</sharingModel>
+    <webLinks>
+        <fullName>Add_Members_Search</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Add Members - Search</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/ui/campaign/CampaignManageMembersAddTab?campaignId={!Campaign.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Edit_Members_Search</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Edit Members - Search</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>/ui/campaign/CampaignManageMembersAddTab?campaignId={!Campaign.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LTGS_Add_Members_Search</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Add Members - Search</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/36.0/connection.js&quot;)}
+window.top.location =&apos;/ui/campaign/CampaignManageMembersAddTab?campaignId={!Campaign.Id}&apos;;</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LTGS_Edit_Members_Search</fullName>
+        <availability>online</availability>
+        <displayType>massActionButton</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Edit Members - Search</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <requireRowSelection>true</requireRowSelection>
+        <url>{!REQUIRESCRIPT(&quot;/soap/ajax/36.0/connection.js&quot;)} 
+window.top.location =&apos;/ui/campaign/CampaignManageMembersAddTab?campaignId={!Campaign.Id}&apos;;</url>
+    </webLinks>
+</CustomObject>

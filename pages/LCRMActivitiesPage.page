@@ -1,0 +1,28 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-03-15   Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page lightningStylesheets="true" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"/>
+    <script>
+        $j = jQuery.noConflict();
+        $j('[name="actionForm"]').ready(function(){hideButtons();});
+        $j(document).on('click','a',function(){hideButtons();});
+        $j(document).on('click','input',function(){hideButtons();});
+        $j(document).on('click','tr',function(){hideButtons();});
+        function hideButtons(){
+            for (var i = 0; i < 40; i++) {
+                setTimeout(function(){
+                    $j('[name="qbdialer__manage_lists"]').css({"display":"none"});
+                    $j('[name="qbdialer__create_list"]').css({"display":"none"});
+                }, i*50);
+            }
+        } 
+    </script>
+    <apex:enhancedList type="Activity" height="600" />
+    
+</apex:page>

@@ -1,0 +1,31 @@
+<apex:page standardController="Training_Event__c" extensions="TrainingEventContactUpdate" 
+tabStyle="Training_Event__c" showHeader="false" sidebar="false">
+    <apex:form >   
+        <apex:pageBlock rendered="{!IsUpdate}" title="Update Training Contacts">     
+            <apex:pageBlockSection collapsible="false" columns="1">
+                <apex:outputText value="Please confirm if you would like to 
+                 update following fields on associated training contacts:"/>
+                <apex:outputText value="1.Trained date"/>
+                <apex:outputText value="2.Trained(checkbox)"/>
+           </apex:pageBlockSection>
+          <apex:pageBlockButtons location="bottom">
+              <apex:commandButton action="{!saveCon}" value="Yes"/>
+              <apex:commandButton action="{!cancel}" value="No" />
+          </apex:pageBlockButtons>      
+      </apex:pageBlock>
+  
+    <apex:pageBlock rendered="{!NOT(IsUpdate)}">
+        <apex:pageBlockSection collapsible="false" columns="1">
+       
+            <apex:outputText value="Training Event Contact Fields should be updated only
+            when the Training Event status is any of following values:"/>
+            <apex:outputText value="1.Completed"/>
+            <apex:outputText value="2.Completed-Duplicate"/>
+      </apex:pageBlockSection>
+      <apex:pageBlockButtons location="bottom">
+          <apex:commandButton action="{!cancel}" value="Back To Training Event" />
+      </apex:pageBlockButtons>
+      </apex:pageBlock>
+  </apex:form>
+  
+</apex:page>

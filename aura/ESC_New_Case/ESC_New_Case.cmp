@@ -1,0 +1,20 @@
+<aura:component controller = "ESC_UpdateCaseltng" implements="force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+	<!--<aura:attribute name="recId" type="String" default=""/>-->
+    <!--<aura:registerEvent name="refreshView" type="force:refreshView" />-->
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:attribute name="Spinner" type="boolean" default="false"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}"></aura:handler>
+    
+    <ui:message severity="info" closable="false">
+			Processing...
+	</ui:message>
+    <aura:if isTrue="{!v.Spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+           <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+             <span class="slds-assistive-text">Loading</span>
+             <div class="slds-spinner__dot-a"></div>
+             <div class="slds-spinner__dot-b"></div>
+           </div>
+        </div>
+    </aura:if>
+</aura:component>

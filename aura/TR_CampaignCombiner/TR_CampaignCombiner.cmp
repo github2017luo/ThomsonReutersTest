@@ -1,0 +1,931 @@
+<aura:component controller="TR_CampaignCombinerController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                access="global" >
+    <aura:attribute name="relatedList" type="Boolean" default="false" />
+    <aura:attribute name="camp" type="Campaign" default="{'sobjectType':'Campaign', 
+                                                         'Status': '',
+                                                         'Type':''}"/>
+    <aura:attribute name="campMem" type="CampaignMember" default="{'sobjectType':'CampaignMember', 
+                                                                  'Status': ''}"/>
+    <aura:attribute name="statusMap" type="Map"/>
+    <aura:attribute name="typeMap" type="Map"/>
+    <aura:attribute name="statusMemMap" type="Map"/>
+    <aura:attribute name="multiselectedAddCurrentLookUpRecords" type="sObject[]" default="[]"/>
+    <aura:attribute name="multiselectedExcludeCurrentLookUpRecords" type="sObject[]" default="[]"/>
+    <aura:attribute name="multiselectedAddExistingLookUpRecords" type="sObject[]" default="[]"/>
+    <aura:attribute name="multiselectedExcludeExistingLookUpRecords" type="sObject[]" default="[]"/>
+    <aura:attribute name="multiselectedAddNewLookUpRecords" type="sObject[]" default="[]"/>
+    <aura:attribute name="multiselectedExcludeNewLookUpRecords" type="sObject[]" default="[]"/>
+    <aura:attribute name="listOfSelectedCampaignsAdd" type="List"/>
+    <aura:attribute name="listOfSelectedCampaignsExclude" type="List"/>
+    <aura:attribute name="isLoadTable" type="Boolean" default="false"/>
+    <aura:attribute name="mycolumns" type="List"/>
+    <aura:attribute name="currentrecordId" type="String" />
+    <aura:attribute name="validationState" type="Boolean" default="false"/>
+    <aura:attribute name="getSelectedCurrentCombineCampaign" type="Campaign" />
+    <aura:attribute name="currentCampaign" type="Campaign" />
+    <aura:attribute name="newselectedStatus" type="String" default="Sent"/>
+    <aura:attribute name="newCampaignstate" type="Boolean" default="false"/>
+    <aura:attribute name="isSelectedRecord" type="Boolean" default="false"/>
+    <aura:attribute name="isSelectedExclude" type="Boolean" default="false"/>
+    <aura:attribute name="isCombined" type="Boolean" default="false"/>
+    <aura:attribute name="isCampaignCreated" type="Boolean" default="false"/>
+    <aura:attribute name="newCreatedCampaignId" type="Id" />
+    <aura:attribute name="combineresponsestate" type="List" />
+    <aura:attribute name="selectedtableCampaign" type="String" />
+    <aura:attribute name="CombineCurrentCampaign" type="Boolean" default="false"/>
+    <aura:attribute name="CombineSelectedCampaign" type="Boolean" default="false"/>
+    <aura:attribute name="currentcmpcheckbox" type="Boolean" default="false"/>
+    <aura:attribute name="existingcmpcheckbox" type="Boolean" default="false"/>
+    <aura:attribute name="newcmpcheckbox" type="Boolean" default="false"/>
+    <aura:attribute name="currentcmpcheckboxstatus" type="Boolean" default="false"/>
+    <aura:attribute name="existingcmpcheckboxstatus" type="Boolean" default="false"/>
+    <aura:attribute name="newcmpcheckboxstatus" type="Boolean" default="false"/>
+    <aura:attribute name="currentcmpcheckboxModal" type="Boolean" default="false"/>
+    <aura:attribute name="existingcmpcheckboxModal" type="Boolean" default="false"/>
+    <aura:attribute name="newcmpcheckboxModal" type="Boolean" default="false"/>
+    <aura:attribute name="selectedStatus" type="String" default="Conference"/>
+    <aura:attribute name="selectedType" type="String" default="Planned"/>
+    <aura:attribute name="currentCampaignName" type="String" />
+    <aura:attribute name="currentCampaignOwner" type="String" />
+    <aura:attribute name="currentCampaignOwnerName" type="String" />
+    <aura:attribute name="currentCampaignParent" type="String" />
+    <aura:attribute name="currentCampaignParentName" type="String" />
+    <aura:attribute name="currentCampaignStatus" type="String" />
+    <aura:attribute name="currentCampaignStartDate" type="String" />
+    <aura:attribute name="currentCampaignEndDate" type="String" />
+    <aura:attribute name="currentCampaignContacts" type="String" />
+    <aura:attribute name="currentCampaignLeads" type="String" />
+    <aura:attribute name="currentCampaignActive" type="Boolean" default="false" />
+    <aura:attribute name="currentCampaignType" type="String" />
+    <aura:attribute name="selectedCampaignName" type="String" />
+    <aura:attribute name="selectedCampaignOwner" type="String" />
+    <aura:attribute name="selectedCampaignParent" type="String" />
+    <aura:attribute name="selectedCampaignStatus" type="String" />
+    <aura:attribute name="selectedCampaignStartDate" type="String" />
+    <aura:attribute name="selectedCampaignEndDate" type="String" />
+    <aura:attribute name="selectedCampaignContacts" type="String" />
+    <aura:attribute name="selectedCampaignLeads" type="String" />
+    <aura:attribute name="selectedCampaignActive" type="Boolean" default="false" />
+    <aura:attribute name="selectedCampaignType" type="String" />
+    <aura:attribute name="selectedCampaignOwnerName" type="String" />
+    <aura:attribute name="selectedCampaignParentName" type="String" />
+    <aura:attribute name="newCampaignName" type="String" />
+    <aura:attribute name="newCampaignOwner" type="String" />
+    <aura:attribute name="newCampaignOwnerName" type="String" />
+    <aura:attribute name="newCampaignParent" type="String" />
+    <aura:attribute name="newCampaignParentName" type="String" />
+    <aura:attribute name="newCampaignStatus" type="String" />
+    <aura:attribute name="newCampaignStartDate" type="String" />
+    <aura:attribute name="newCampaignEndDate" type="String" />
+    <aura:attribute name="newCampaignContacts" type="String" />
+    <aura:attribute name="newCampaignLeads" type="String" />
+    <aura:attribute name="newCampaignActive" type="Boolean" default="false"/>
+    <aura:attribute name="newCampaignType" type="String"/>
+    <aura:attribute name="currentCampActivestatus" type="Boolean" default="false"/>
+    <aura:attribute name="currentCampExcludestatus" type="Boolean" default="false"/>
+    <aura:attribute name="existingCampActivestatus" type="Boolean" default="false" />
+    <aura:attribute name="existingCampExcludeStatus" type="Boolean" default="false" />
+    <aura:attribute name="newCampActiveStatus" type="Boolean" default="false"/>
+    <aura:attribute name="newCampExcludeStatus" type="Boolean" default="false"/>
+    <aura:attribute name="selectedCurrentCombineCampaignLookUpRec" type="Campaign" default="{}"/>
+    <aura:attribute name="selectedCampaignCombineWithNewCampaignLookUpRec" type="Campaign" default="{}"/>
+    <aura:attribute name="selectedCombineCampaignLookUpRec" type="Campaign" default="{}"/>
+    <aura:attribute name="selectedCampaignLookUpRec" type="Campaign" default="{}"/>
+    <aura:attribute name="selectedCurrentExcludeCampaignLookUp" type="Campaign" default="{}"/>
+    <aura:attribute name="newCampaign" type="Campaign" default="{'sobjectType':'Campaign'}"/>
+    <aura:attribute name="campName" type="String" />
+    <aura:attribute name="combinereturn" type="Boolean" />
+    <aura:attribute name="campStartDate" type="String" />
+    <aura:attribute name="campStatus" type="String" />
+    <aura:attribute name="campType" type="String" />
+    <aura:attribute name="campEndDate" type="String" />
+    <aura:attribute name="showCheckBoxModal" type="Boolean" />
+    <aura:attribute name="noRecordsClearMessage" type="String" />
+    <aura:attribute name="recordsClearMessage" type="String" />
+    <aura:attribute name="successMessage" type="String" />
+    <aura:attribute name="combinesuccessMessage" type="String" default="" />
+    <aura:attribute name="errorMessage" type="String" />
+    <aura:attribute name="newCampId" type="String" />
+    <aura:attribute name="selectedCampId" type="String" />
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }"/>
+    <aura:html tag="style">
+        .cuf-content {
+        padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }  
+        .slds-modal__content{
+        height:unset !important;
+        max-height:unset !important;
+        } 
+        .slds-section-title--divider{
+        min-width: 90vw;
+        text-align: center;
+        }
+        .slds-modal__container {
+        min-width: 90vw;
+        min-height: 42vw;
+        }
+        .slds-col modal-body {
+        min-width: 90vw;
+        }
+        .slds-col__modal-checkboxbody {
+        min-width: 5vw;
+        }
+        .slds-modal__checkboxcontainer{
+        min-width: 5vw;
+        min-height: 10vw;
+        }
+        .slds-modal__checkboxheightcontainer{
+        min-height: 10vw;
+        }
+        .slds-modal__checkboxwidthcontainer{
+        min-width: 5vw;
+        }
+        .site-header{
+        background:#f2d4a7;
+        }
+    </aura:html>
+    <aura:if isTrue="{! !empty(v.combinesuccessMessage)}">
+        <ui:message title="Success" severity="success" closable="true">
+            {!v.combinesuccessMessage}
+        </ui:message>
+    </aura:if>
+    <aura:if isTrue="{! !empty(v.errorMessage)}">
+        <ui:message title="Error" severity="error" closable="true">       
+            {!v.errorMessage}
+        </ui:message>
+    </aura:if>
+    <aura:if isTrue="{! !empty(v.successMessage)}">
+        <ui:message title="Success" severity="success" closable="true">
+            {!v.successMessage}
+        </ui:message>
+    </aura:if>
+    <aura:if isTrue="{! !empty(v.clearMessage)}">
+        <ui:message title="Success" severity="success" closable="true">
+            {!v.clearMessage}
+        </ui:message>
+    </aura:if>
+    <aura:if isTrue="{! !empty(v.recordsClearMessage)}">
+        <ui:message title="Success" severity="success" closable="true">
+            {!v.recordsClearMessage}
+        </ui:message>
+    </aura:if>
+    <aura:if isTrue="{! !empty(v.noRecordsClearMessage)}">
+        <ui:message title="Error" severity="error" closable="true">
+            {!v.noRecordsClearMessage}
+        </ui:message>
+    </aura:if>
+    <aura:if isTrue="{!v.showCheckBoxModal}">
+        <div class="slds-modal__checkboxcontainer">
+            <header class="slds-modal__header">
+                <h2 class="title slds-text-heading--medium" style="color:#FF8C00;font-weight:bold;">Campaign Combiner</h2>
+            </header> 
+            <div class="slds-col__modal-checkboxbody slds-modal__checkboxheightcontainer slds-modal__checkboxwidthcontainer">
+                <div class="slds-grid slds-wrap">
+                    <div style="padding-left:3%; padding-right:0%; padding-top:2%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="currentcmp" class="myCheckbox" disabled="{!v.currentcmpcheckbox}" text="Combine With Current Campaign" label="Combine With Current Campaign"  change="{!c.handlecurrentcmpcheckbox}"/>
+                        <br/>
+                        <ui:inputCheckbox aura:id="existingcmp" class="myCheckbox" disabled="{!v.existingcmpcheckbox}" text="Combine With Selected Campaign" label="Combine With Selected Campaign" change="{!c.handleexistingcmpcheckbox}"/>
+                        <br/>
+                        <ui:inputCheckbox aura:id="newcmp" class="myCheckbox" disabled="{!v.newcmpcheckbox}" text="Combine With New Campaign" label="Combine With New Campaign" change="{!c.handlenewcmpcheckbox}"/>
+                    </div>
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning:button variant="neutral" label="OK" title="OK" onclick="{!c.closeCheckBoxModal}"/>
+            </footer>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.currentcmpcheckboxModal}">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 class="title slds-text-heading--medium" style="color:#FF8C00;font-weight:bold;">Combine With Current Campaign</h2>
+            </div>
+            <div class="slds-col modal-body slds-modal__heightcontainer slds-modal__widthcontainer">
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" variant="neutral" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Target Campaign">Target Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampId" type="text" name="name" label="Campaign Name" disabled="true" value="{!v.currentCampaignName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampOwner" type="text" name="name" label="Campaign Owner" disabled="true" value="{!v.currentCampaignOwnerName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampParent" type="text" name="name" label="Parent Campaign" disabled="true" value="{!v.currentCampaignParentName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampStatus" type="text" name="name" label="Status" disabled="true" value="{!v.currentCampaignStatus}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampStartDate" type="text" name="name" label="Start Date" disabled="true" value="{!v.currentCampaignStartDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampEndDate" type="text" name="name" label="End Date" disabled="true" value="{!v.currentCampaignEndDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampType" type="text" name="name" label="Type" disabled="true" value="{!v.currentCampaignType}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampContacts" type="text" name="name" label="Total Contacts" disabled="true" value="{!v.currentCampaignContacts}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="currentCampLead" type="text" name="name" label="Open Leads" disabled="true" value="{!v.currentCampaignLeads}"/>
+                        </div>
+                    </div>
+                    
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:2%; padding-bottom:0%">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="currentCampActive">Active</label>
+                                <div class="slds-form-element__control">
+                                    <ui:inputCheckbox aura:id="currentCampActive" class="myCheckbox" disabled="true" text="Active" label="" value="{!v.currentCampaignActive}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <!--  <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                    <lightning:button class="slds-button" label="Combine with Current Campaign" title="Combine with Current Campaign" type="text" onclick="{!c.handleCombineCurrentCampaign}" />
+                </div>-->
+                
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Add Members from these Campaign">Add Members from these Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <c:TR_MultiSelectLookUp objectAPIName="campaign" IconName="standard:campaign" lstSelectedRecords="{!v.multiselectedAddCurrentLookUpRecords}" label="Campaign Name"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{! !empty(v.multiselectedAddCurrentLookUpRecords)}">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="currentCampActiveStatus" class="myCheckbox" text="Add Members only if they belong to all Campaigns" label="Add Members only if they belong to all Campaigns" change="{!c.handleAddCurrentCmpCheckbox}"/>
+                    </div>
+                    <aura:if isTrue="{!v.isLoadTable}">
+                        <div class="campaignTableAdd">
+                            <div class="slds-modal__header">
+                                <h1 id="header99" class="slds-text-heading--medium" style="color:#808000;">Campaigns to Add</h1>
+                            </div>
+                            <lightning:datatable data="{!v.multiselectedAddCurrentLookUpRecords}" 
+                                                 columns="{!v.mycolumns}" 
+                                                 keyField="id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{!c.navigateCampaign}"/>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <!-- <div class="slds-col slds-size_6-of-12">-->
+                    <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Load Table" title="Load Table" type="text" onclick="{!c.handleCurrentAdd}"/>
+                        <lightning:button class="slds-button" label="Clear List" title="Clear List" type="text" onclick="{!c.handleClear}"/>
+                        <!--<lightning:button class="slds-button" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />-->
+                        <!--</div>-->
+                    </div>
+                    <!-- <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:button class="slds-button" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineCurrentCampaignCancel}" />
+                        </div>-->
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Exclude Members from these Campaign">Exclude Members from these Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <c:TR_MultiSelectLookUp objectAPIName="campaign" IconName="standard:campaign" lstSelectedRecords="{!v.multiselectedExcludeCurrentLookUpRecords}" label="Campaign Name"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{! !empty(v.multiselectedExcludeCurrentLookUpRecords)}">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="currentCampExcludeStatus" class="myCheckbox" text="Exclude Members only if they belong to all Campaigns" label="Exclude Members only if they belong to all Campaigns" change="{!c.handleExcludeCurrentCmpCheckbox}"/>
+                    </div>
+                    <aura:if isTrue="{!v.isSelectedExclude}">
+                        <div class="campaignTableExclude">
+                            <div class="slds-modal__header">
+                                <h1 id="header99" class="slds-text-heading--medium" style="color:#808000;">Campaigns to Exclude</h1>
+                            </div>
+                            <lightning:datatable data="{!v.multiselectedExcludeCurrentLookUpRecords}" 
+                                                 columns="{!v.mycolumns}" 
+                                                 keyField="id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{!c.navigateCampaign}"/>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <!-- <div class="slds-col slds-size_6-of-12">-->
+                    <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Load Table" title="Load Table" type="text" onclick="{!c.handleCurrentExclude}"/>
+                        <lightning:button class="slds-button" label="Clear List" title="Clear List" type="text" onclick="{!c.handleClearExclude}"/>
+                        <!--<lightning:button class="slds-button" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />-->
+                        <!--</div>-->
+                    </div>
+                    <!-- <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:button class="slds-button" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineCurrentCampaignCancel}" />
+                        </div>-->
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Options">Options</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:select aura:id="newstatus" name="status for New Campaign Members" label="Status for New Campaign Members" onchange="{!c.handleNewStatus}"  value="{!v.campMem.Status}">
+                                <aura:iteration items="{!v.statusMemMap}" var="statusMem" indexVar="key">
+                                    <option text="{!statusMem.value}" value="{!statusMem.key}" selected="{!statusMem.key==v.campMem.Status}" />
+                                </aura:iteration>
+                            </lightning:select>
+                            <!--<lightning:select aura:id="newstatus" name="status for New Campaign Members" label="Status for New Campaign Members" onchange="{!c.handleNewStatus}">
+                                <option>Sent</option>
+                                <option>Responded</option>
+                            </lightning:select>-->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" variant="neutral" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    
+    
+    <aura:if isTrue="{!v.existingcmpcheckboxModal}">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 class="title slds-text-heading--medium" style="color:#FF8C00;font-weight:bold;">Combine With Selected Campaign</h2>
+            </div>
+            <div class="slds-col modal-body slds-modal__heightcontainer slds-modal__widthcontainer">
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:25%; padding-right:0%; padding-top:4%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Combine with Selected Campaign" title="Combine with Selected Campaign" type="text" onclick="{!c.handleCombineSelectedCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:3%; padding-right:0%; padding-top:6%; padding-bottom:0%">
+                            <c:TR_CampaignLookup aura:id="nameId" objectAPIName="campaign" IconName="standard:campaign" label="Campaign Name" selectedCampaignRecord="{!v.selectedCampaignLookUpRec}"/>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:25%; padding-right:0%; padding-top:8%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Combine with Selected Campaign" title="Combine with Selected Campaign" type="text" onclick="{!c.handleCombineSelectedCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.CombineSelectedCampaign}">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 class="title slds-text-heading--medium" style="color:#FF8C00;font-weight:bold;">Combine With Selected Campaign</h2>
+            </div>
+            <div class="slds-col modal-body slds-modal__heightcontainer slds-modal__widthcontainer">
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" variant="neutral" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithSelectedCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Target Campaign">Target Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampId" type="text" name="name" label="Campaign Name" disabled="true" value="{!v.selectedCampaignName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampOwner" type="text" name="name" label="Campaign Owner" disabled="true" value="{!v.selectedCampaignOwnerName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampParent" type="text" name="name" label="Parent Campaign" disabled="true" value="{!v.selectedCampaignParentName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampStatus" type="text" name="name" label="Status" disabled="true" value="{!v.selectedCampaignStatus}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampStartDate" type="text" name="name" label="Start Date" disabled="true" value="{!v.selectedCampaignStartDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampEndDate" type="text" name="name" label="End Date" disabled="true" value="{!v.selectedCampaignEndDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampType" type="text" name="name" label="Type" disabled="true" value="{!v.selectedCampaignType}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampContacts" type="text" name="name" label="Total Contacts" disabled="true" value="{!v.selectedCampaignContacts}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="selectedCampLead" type="text" name="name" label="Open Leads" disabled="true" value="{!v.selectedCampaignLeads}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:2%; padding-bottom:0%">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="currentCampActive">Active</label>
+                                <div class="slds-form-element__control">
+                                    <ui:inputCheckbox aura:id="selectedCampActive" class="myCheckbox" disabled="true" text="Active" label="" value="{!v.selectedCampaignActive}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <!--  <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                    <lightning:button class="slds-button" label="Combine with Current Campaign" title="Combine with Current Campaign" type="text" onclick="{!c.handleCombineCurrentCampaign}" />
+                </div>-->
+                
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Add Members from these Campaign">Add Members from these Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <c:TR_MultiSelectLookUp objectAPIName="campaign" IconName="standard:campaign" lstSelectedRecords="{!v.multiselectedAddExistingLookUpRecords}" label="Campaign Name"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{! !empty(v.multiselectedAddExistingLookUpRecords)}">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="selectedCampActiveStatus" class="myCheckbox" text="Add Members only if they belong to all Campaigns" label="Add Members only if they belong to all Campaigns" change="{!c.handleAddExistingCmpCheckbox}"/>
+                    </div>
+                    <aura:if isTrue="{!v.isLoadTable}">
+                        <div class="campaignTableAdd">
+                            <div class="slds-modal__header">
+                                <h1 id="header99" class="slds-text-heading--medium" style="color:#808000;">Campaigns to Add</h1>
+                            </div>
+                            <lightning:datatable data="{!v.multiselectedAddExistingLookUpRecords}" 
+                                                 columns="{!v.mycolumns}" 
+                                                 keyField="id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{!c.navigateCampaign}"/>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <!-- <div class="slds-col slds-size_6-of-12">-->
+                    <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Load Table" title="Load Table" type="text" onclick="{!c.handleCurrentAdd}"/>
+                        <lightning:button class="slds-button" label="Clear List" title="Clear List" type="text" onclick="{!c.handleClear}"/>
+                        <!--<lightning:button class="slds-button" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />-->
+                        <!--</div>-->
+                    </div>
+                    <!-- <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:button class="slds-button" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineCurrentCampaignCancel}" />
+                        </div>-->
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Exclude Members from these Campaign">Exclude Members from these Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <c:TR_MultiSelectLookUp objectAPIName="campaign" IconName="standard:campaign" lstSelectedRecords="{!v.multiselectedExcludeExistingLookUpRecords}" label="Campaign Name"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{! !empty(v.multiselectedExcludeExistingLookUpRecords)}">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="selectedCampExcludeStatus" class="myCheckbox" text="Exclude Members only if they belong to all Campaigns" label="Exclude Members only if they belong to all Campaigns" change="{!c.handleExcludeExistingCmpCheckbox}"/>
+                    </div>
+                    <aura:if isTrue="{!v.isSelectedExclude}">
+                        <div class="campaignTableExclude">
+                            <div class="slds-modal__header">
+                                <h1 id="header99" class="slds-text-heading--medium" style="color:#808000;">Campaigns to Exclude</h1>
+                            </div>
+                            <lightning:datatable data="{!v.multiselectedExcludeExistingLookUpRecords}" 
+                                                 columns="{!v.mycolumns}" 
+                                                 keyField="id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{!c.navigateCampaign}"/>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <!-- <div class="slds-col slds-size_6-of-12">-->
+                    <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Load Table" title="Load Table" type="text" onclick="{!c.handleCurrentExclude}"/>
+                        <lightning:button class="slds-button" label="Clear List" title="Clear List" type="text" onclick="{!c.handleClearExclude}"/>
+                        <!--<lightning:button class="slds-button" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />-->
+                        <!--</div>-->
+                    </div>
+                    <!-- <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:button class="slds-button" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineCurrentCampaignCancel}" />
+                        </div>-->
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Options">Options</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:select aura:id="newstatus" name="status for New Campaign Members" label="Status for New Campaign Members" onchange="{!c.handleNewStatus}"  value="{!v.campMem.Status}">
+                                <aura:iteration items="{!v.statusMemMap}" var="statusMem" indexVar="key">
+                                    <option text="{!statusMem.value}" value="{!statusMem.key}" selected="{!statusMem.key==v.campMem.Status}" />
+                                </aura:iteration>
+                            </lightning:select>
+                            <!--   <lightning:select aura:id="newstatus" name="status for New Campaign Members" label="Status for New Campaign Members" onchange="{!c.handleNewStatus}">
+                                <option>Sent</option>
+                                <option>Responded</option>
+                            </lightning:select>-->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" variant="neutral" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithSelectedCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    
+    
+    
+    
+    <aura:if isTrue="{!v.newcmpcheckboxModal}">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 class="title slds-text-heading--medium" style="color:#FF8C00;font-weight:bold;">Combine With New Campaign</h2>
+            </div>
+            <div class="slds-col modal-body slds-modal__heightcontainer slds-modal__widthcontainer">
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Create New Campaign" title="Create New Campaign" type="text" onclick="{!c.handleCreateCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="name" type="text" name="name" label="Name" required="true" onchange="{!c.handleName}"/>
+                            <!--<lightning:inputField aura:id="name" fieldName="Name" onchange="{!c.handleName}"/>-->
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">  
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:select aura:id="type" name="type" label="Type" onchange="{!c.handleType}"  value="{!v.camp.Type}">
+                                <aura:iteration items="{!v.typeMap}" var="type" indexVar="key">
+                                    <option text="{!type.value}" value="{!type.key}" selected="{!type.key==v.camp.Type}" />
+                                </aura:iteration>
+                            </lightning:select>
+                            <!--  <lightning:select aura:id="type" name="type" label="Type" onchange="{!c.handleType}">
+                                <option>Conference</option>
+                                <option>Webinar</option>
+                                <option>Trade Show</option>
+                                <option>Public Relations</option>
+                                <option>Partners</option>
+                                <option>Referral Program</option>
+                                <option>Advertisement</option>
+                                <option>Banner Ads</option>
+                                <option>Direct Mail</option>
+                                <option>Email</option>
+                                <option>Telemarketing</option>
+                                <option>Other</option>
+                            </lightning:select>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12"> 
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="start" type="date" name="start" label="StartDate" onchange="{!c.handleStartDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12"> 
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="end" type="date" name="end" label="EndDate" onchange="{!c.handleEndDate}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:select aura:id="status" name="Status" label="Status" onchange="{!c.handleStatus}"  value="{!v.camp.Status}">
+                                <aura:iteration items="{!v.statusMap}" var="status" indexVar="key">
+                                    <option text="{!status.value}" value="{!status.key}" selected="{!status.key==v.camp.Status}" />
+                                </aura:iteration>
+                            </lightning:select>
+                            <!-- <lightning:select aura:id="status" name="status" label="Status" onchange="{!c.handleStatus}">
+                                <option>Planned</option>
+                                <option>In Progress</option>
+                                <option>Completed</option>
+                                <option>Aborted</option>
+                            </lightning:select>-->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Create New Campaign" title="Create New Campaign" type="text" onclick="{!c.handleCreateCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCancel}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <aura:if isTrue="{!v.newCampaignstate}">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h2 class="title slds-text-heading--medium" style="color:#FF8C00;font-weight:bold;">Combine With New Campaign</h2>
+            </div>
+            <div class="slds-col modal-body slds-modal__heightcontainer slds-modal__widthcontainer">
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" variant="neutral" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithNewCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineWithNewCampaignCancel}" />
+                    </div>
+                </div>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Target Campaign">Target Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampId" type="text" name="name" label="Campaign Name" disabled="true" value="{!v.newCampaignName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampOwner" type="text" name="name" label="Campaign Owner" disabled="true" value="{!v.newCampaignOwnerName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampParent" type="text" name="name" label="Parent Campaign" disabled="true" value="{!v.newCampaignParentName}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampStatus" type="text" name="name" label="Status" disabled="true" value="{!v.newCampaignStatus}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampStartDate" type="text" name="name" label="Start Date" disabled="true" value="{!v.newCampaignStartDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampEndDate" type="text" name="name" label="End Date" disabled="true" value="{!v.newCampaignEndDate}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampType" type="text" name="name" label="Type" disabled="true" value="{!v.newCampaignType}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampContacts" type="text" name="name" label="Total Contacts" disabled="true" value="{!v.newCampaignContacts}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:input aura:id="newCampLead" type="text" name="name" label="Open Leads" disabled="true" value="{!v.newCampaignLeads}"/>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:15%; padding-right:0%; padding-top:2%; padding-bottom:0%">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label" for="currentCampActive">Active</label>
+                                <div class="slds-form-element__control">
+                                    <ui:inputCheckbox aura:id="newCampActive" class="myCheckbox" disabled="true" text="Active" label="Active" value="{!v.newCampaignActive}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <!--  <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                    <lightning:button class="slds-button" label="Combine with Current Campaign" title="Combine with Current Campaign" type="text" onclick="{!c.handleCombineCurrentCampaign}" />
+                </div>-->
+                
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Add Members from these Campaign">Add Members from these Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <c:TR_MultiSelectLookUp objectAPIName="campaign" IconName="standard:campaign" lstSelectedRecords="{!v.multiselectedAddNewLookUpRecords}" label="Campaign Name"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{! !empty(v.multiselectedAddNewLookUpRecords)}">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="newCampActiveStatus" class="myCheckbox" text="Add Members only if they belong to all Campaigns" label="Add Members only if they belong to all Campaigns" change="{!c.handleAddNewCmpCheckbox}"/>
+                    </div>
+                    <aura:if isTrue="{!v.isLoadTable}">
+                        <div class="campaignTableAdd">
+                            <div class="slds-modal__header">
+                                <h1 id="header99" class="slds-text-heading--medium" style="color:#808000;">Campaigns to Add</h1>
+                            </div>
+                            <lightning:datatable data="{!v.multiselectedAddNewLookUpRecords}" 
+                                                 columns="{!v.mycolumns}" 
+                                                 keyField="id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{!c.navigateCampaign}"/>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <!-- <div class="slds-col slds-size_6-of-12">-->
+                    <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Load Table" title="Load Table" type="text" onclick="{!c.handleCurrentAdd}"/>
+                        <lightning:button class="slds-button" label="Clear List" title="Clear List" type="text" onclick="{!c.handleClear}"/>
+                        <!--<lightning:button class="slds-button" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />-->
+                        <!--</div>-->
+                    </div>
+                    <!-- <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:button class="slds-button" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineCurrentCampaignCancel}" />
+                        </div>-->
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Exclude Members from these Campaign">Exclude Members from these Campaign</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <c:TR_MultiSelectLookUp objectAPIName="campaign" IconName="standard:campaign" lstSelectedRecords="{!v.multiselectedExcludeNewLookUpRecords}" label="Campaign Name"/>
+                        </div>
+                    </div>
+                </div>
+                <aura:if isTrue="{! !empty(v.multiselectedExcludeNewLookUpRecords)}">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <ui:inputCheckbox aura:id="newCampExcludeStatus" class="myCheckbox" text="Exclude Members only if they belong to all Campaigns" label="Exclude Members only if they belong to all Campaigns" change="{!c.handleExcludeNewCmpCheckbox}"/>
+                    </div>
+                    <aura:if isTrue="{!v.isSelectedExclude}">
+                        <div class="campaignTableExclude">
+                            <div class="slds-modal__header">
+                                <h1 id="header99" class="slds-text-heading--medium" style="color:#808000;">Campaigns to Exclude</h1>
+                            </div>
+                            <lightning:datatable data="{!v.multiselectedExcludeNewLookUpRecords}" 
+                                                 columns="{!v.mycolumns}" 
+                                                 keyField="id"
+                                                 hideCheckboxColumn="true"
+                                                 onrowaction="{!c.navigateCampaign}"/>
+                        </div>
+                    </aura:if>
+                </aura:if>
+                <br/>
+                <div class="slds-grid slds-wrap">
+                    <!-- <div class="slds-col slds-size_6-of-12">-->
+                    <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" label="Load Table" title="Load Table" type="text" onclick="{!c.handleCurrentExclude}"/>
+                        <lightning:button class="slds-button" label="Clear List" title="Clear List" type="text" onclick="{!c.handleClearExclude}"/>
+                        <!--<lightning:button class="slds-button" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithCurrentCampaign}" />-->
+                        <!--</div>-->
+                    </div>
+                    <!-- <div style="padding-left:3%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:button class="slds-button" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineCurrentCampaignCancel}" />
+                        </div>-->
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <h1>
+                    <div style="padding-left:0%; padding-right:0%; padding-top:1%; padding-bottom:1%">
+                        <span class="slds-page-header__title slds-truncate slds-section-title--divider slds-align_absolute-center site-header" title="Options">Options</span>
+                    </div>
+                </h1>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12">
+                        <div style="padding-left:5%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                            <lightning:select aura:id="newstatus" name="status for New Campaign Members" label="Status for New Campaign Members" onchange="{!c.handleNewStatus}"  value="{!v.campMem.Status}">
+                                <aura:iteration items="{!v.statusMemMap}" var="statusMem" indexVar="key">
+                                    <option text="{!statusMem.value}" value="{!statusMem.key}" selected="{!statusMem.key==v.campMem.Status}" />
+                                </aura:iteration>
+                            </lightning:select>
+                            <!-- </lightning:select>
+                            <lightning:select aura:id="newstatus" name="status for New Campaign Members" label="Status for New Campaign Members" onchange="{!c.handleNewStatus}">
+                                <option>Sent</option>
+                                <option>Responded</option>
+                            </lightning:select>-->
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-align_absolute-center">
+                    <div style="padding-left:20%; padding-right:0%; padding-top:1%; padding-bottom:0%">
+                        <lightning:button class="slds-button" variant="neutral" label="Combine Campaign" title="Combine Campaign" type="text" onclick="{!c.CombineWithNewCampaign}" />
+                        <lightning:button class="slds-button" variant="neutral" label="Cancel" title="Cancel" type="text" onclick="{!c.handleCombineWithNewCampaignCancel}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

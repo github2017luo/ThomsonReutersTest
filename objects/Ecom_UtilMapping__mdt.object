@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Bypass__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>For this business segment, do not update the Opportunity Owner and do not send out the NSE email.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Do not Update the Opportunity owner and do not send them the NSE email.</inlineHelpText>
+        <label>Bypass</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Digital_Firm__c</fullName>
+        <description>Segment field to hold the values from the Account SSD Digital Firm Field</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Digital Firm</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_AccountTeamRole__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Ecom_AccountTeamRole</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_CustPricingSegment__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Ecom CustPricingSegment</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_DigitalQuoteType__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Ecom DigitalQuoteType</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ecom_ProposalBU__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Ecom ProposalBU</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Exclude__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>For the selected business segments, do not update the Opportunity owner.  Let it as it is, but signal them to get the NSE email.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>Do not Update the Opportunity owner, but send them the NSE email.</inlineHelpText>
+        <label>Exclude</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Priority__c</fullName>
+        <description>If there are multiple territory roles for a business segment, this is the priority that should be used when selecting the correct role to pick.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>For Business segments with more than one territory role defined, use this priority when selecting which role to choose.</inlineHelpText>
+        <label>Priority</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>Ecom UtilMapping</label>
+    <pluralLabel>Ecom Util Mapping</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

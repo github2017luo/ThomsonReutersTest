@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Update Contact on Case</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Contact Association</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>ESC_CaseContactAssociation</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>cases</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>cases</name>
+            <value>
+                <elementReference>myVariable_current.Parent</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Contact Association</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND(
+	NOT($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c) ,
+	[EmailMessage].Incoming,
+	BEGINS([EmailMessage].ParentId, &apos;500&apos;),
+	ISPICKVAL([EmailMessage].Parent.Origin, &apos;Email&apos;),
+	BEGINS([EmailMessage].Parent.OwnerId , &apos;00G&apos;),
+	[EmailMessage].Parent.BU_Segment__c =$Setup.ESC_segment_Region_Lotus__c.SegmentLegal__c,
+	OR(
+	NOT(CONTAINS([EmailMessage].TextBody, &quot;ref:_00D&quot;)),
+	NOT(CONTAINS([EmailMessage].Subject, &quot;ref:_00D&quot;))
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(
+	NOT({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c}) ,
+	{!myVariable_current.Incoming},
+	BEGINS({!myVariable_current.ParentId}, &apos;500&apos;),
+	ISPICKVAL({!myVariable_current.Parent.Origin}, &apos;Email&apos;),
+	BEGINS({!myVariable_current.Parent.OwnerId} , &apos;00G&apos;),
+	{!myVariable_current.Parent.BU_Segment__c} ={!$Setup.ESC_segment_Region_Lotus__c.SegmentLegal__c},
+	OR(
+	NOT(CONTAINS({!myVariable_current.TextBody}, &quot;ref:_00D&quot;)),
+	NOT(CONTAINS({!myVariable_current.Subject}, &quot;ref:_00D&quot;))
+	)
+)</expression>
+    </formulas>
+    <interviewLabel>HighQ_Email2Case_Updates-1_InterviewLabel</interviewLabel>
+    <label>HighQ_Email2Case_Updates</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>EmailMessage</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onCreateOnly</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>EmailMessage</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>EmailMessage</objectType>
+    </variables>
+</Flow>

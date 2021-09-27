@@ -1,0 +1,441 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-02-14  Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page id="pageNewAccountmod" standardController="Account" LightningStylesheets="true" action="{!onPageLoad}"  extensions="AccountCreateController">
+
+    <apex:sectionHeader id="pageTitle"  title="Create Account"  subtitle="{!$Label.AccountCreate_page_New_Account_Label}"/>
+    <apex:form id="formEdit">
+        <apex:pageMessages id="globalMessages" escape="false" />
+        <apex:actionStatus id="statusValidateAccount">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating account please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:actionStatus id="statusValidateAccountAddress">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating Address please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+        <!-- apex:pageMessage summary="{!$Label.Dup_Tax_Number_Msg}"
+            severity="warning" strength="1" id="taxnumwarning" rendered="{!isDupTaxNum}"/ -->
+        <apex:pageMessage summary="{!SUBSTITUTE($Label.AccountTaxNumSalOrgCheckErrorMsg,'<Sales Org value>',Account.Sales_Org__c)}" severity="ERROR" strength="1" id="taxnumerror" rendered="{!isDupTaxNum}" />
+        <!-- SFD-18 Rajashree Adding the below code to show warning message and made some changes to above page message also-->
+        <apex:pageMessage summary="{!SUBSTITUTE($Label.AccountTaxNumSalOrgCheckErrorMsg,'<Sales Org value>',Account.Sales_Org__c)}" severity="Warning" strength="1" id="taxnumwarning" rendered="{!isDupTaxNumWarn}"/>
+        <apex:pageBlock id="blockAccount"  title="{!$Label.AccountCreate_page_New_Account_Label}"  mode="edit" rendered="{!NOT(displayMatchesPage)}" >
+            <apex:pageBlockButtons >
+                <apex:commandButton id="buttonSave" value="{!$Label.ESC_Save}" action="{!save}" status="statusValidateAccount" rendered="{!NOT(HasServiceErrors)}" rerender="formEdit"  />
+                <apex:commandButton id="buttonRetry" value="{!$Label.ESC_Save}" action="{!retrySave}" status="statusValidateAccount" rendered="{!HasServiceErrors}" rerender="formEdit" /> <!--Replaced "Save" name in "Retry" --> 
+                <apex:commandButton id="buttonCancel" value="{!$Label.ESC_Cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+         <!--   <apex:pageBlockSection id="sectionAccount1" columns="2">
+                <apex:inputField value="{!Account.Name}" required="true" />
+                <apex:outputField value="{!Account.RecordTypeId}" />
+             </apex:pageBlockSection> -->
+            <apex:pageBlockSection id="sectionAccount2" columns="2">
+               <apex:inputField value="{!Account.Name}" required="true" />
+               <apex:outputField value="{!Account.RecordTypeId}" /> 
+               <apex:inputField value="{!Account.Sales_Org__c}"/>                          
+               <apex:inputField value="{!Account.Tax_Number_Type__c}" rendered="{!($Profile.Name != 'LMS - User')}"/>
+               <apex:inputField value="{!Account.Phone}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+               <apex:inputField value="{!Account.Customer_Type__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+               <apex:inputField value="{!Account.Tax_Number__c}" rendered="{!($Profile.Name != 'LMS - User')}"/>
+               <!--Harshitha adding new field "Customer Sub Type" also making some changes in positions for Latam Segmentation Project>> SCL 2-->
+                   <apex:inputField value="{!Account.Customer_Sub_Type__c}" required="true" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                   <apex:inputField value="{!Account.Extension__c}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/> 
+                   <apex:inputField value="{!Account.Tax_4__c}" rendered="{!($Profile.Name != 'LMS - User')}"/>
+                   <apex:inputField value="{!Account.Customer_Group__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                   <apex:inputField value="{!Account.Tax_3__c}" rendered="{!($Profile.Name != 'LMS - User')}"/>
+                   <apex:inputField value="{!Account.Website}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/> 
+                   <apex:inputField value="{!Account.Customer_Class_c__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/> 
+                   <apex:pageblockSectionItem rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"> 
+                   </apex:pageblockSectionItem>
+               <!-- SCL 2 end -->
+                   
+               <!-- Harshitha making changes for LatAm segmentation Project>> SCL 7, SCL 21-->
+               <!-- apex:inputField value="{!Account.Industry_Code_1__c}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAm User',$Profile.Name != 'Partner Portal User')}"/>  --> 
+                    <apex:inputField value="{!Account.Industry_Code_1__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'Partner Portal User')}"/>  
+                    <!-- <apex:inputField value="{!Account.Customer_Class_c__c}" rendered="{!$Profile.Name != 'LatAm User'}"/>  -->
+                         <apex:inputField value="{!Account.Industry_LMS__c}" rendered="{!$Profile.Name == 'LMS - User'}" />
+                         <!-- [Date:27] apex:inputField value="{!Account.Industry}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAm User')}"/> -->
+                         <apex:inputField value="{!Account.Industry}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'Partner Portal User')}"/>
+                         <apex:inputField value="{!Account.Industry_LatAm__c}" rendered="{!OR($Profile.Name == 'TR Business Administrator',$Profile.Name == 'System Administrator',$Profile.Name == 'Partner Portal User')}" required="true"/>               
+                         <apex:inputField value="{!Account.NameTwo__c}" rendered="{!($Profile.Name == 'LMS - User')}"/>
+                         <!-- Date27 -->
+                            <apex:outputLabel ></apex:outputLabel> <!-- For BLANK Column -->
+                         <!-- -->
+                         <apex:inputField value="{!Account.Practice_Areas__c}" rendered="{!AND($Profile.Name != 'Partner Portal User', $Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                         <apex:inputField value="{!Account.Sub_Industry_LatAm__c}" rendered="{!$Profile.Name == 'Partner Portal User'}"/>
+               <!-- SCL 7, SCL 21 end --> 
+            </apex:pageBlockSection>
+                
+                <apex:pageBlockSection id="sectionSegmentation"
+                    columns="2"
+                    collapsible="false"
+                    title="{!$Label.AccountCreate_page_Segmentation}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}">
+                    <apex:inputField value="{!Account.Customer_Type__c}" />
+                    <apex:inputField value="{!Account.Customer_Group__c}" />
+                   <!--  [Date:27] Harshitha making changes for LatAm segmentation Project(fields "Industry and Industry Code1" rendered)>> SCL 7  and also adding new field "Customer Sub-Type" for LatAm segmentation Project>>SCL 2 -->
+                    <apex:inputField value="{!Account.Industry}" html-disabled="true" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Customer_Sub_Type__c}" required="true" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Industry_Code_1__c}" html-disabled="true" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Customer_Class_c__c}" /><apex:pageBlockSection />
+                    <apex:inputField value="{!Account.Industry_LatAm__c}"  required="true"/><apex:pageBlockSection />
+                    
+                   <!--   Harshitha adding new field "Sub-Industry LatAm" for LatAm segmentation Project>> SCL 21 and also making changes for LatAm segmentation Project (field "Practice Area" rendered) >> SCL 21 -->
+                    <apex:inputField value="{!Account.Sub_Industry_LatAm__c}"  rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Practice_Areas__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/> 
+                   <!-- SCL end --> 
+                </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionAddress"   columns="2" collapsible="false"  title="{!$Label.AccountCreate_Page_Address_section}">
+                <apex:inputField value="{!Account.BillingStreet}" />
+                <apex:inputField value="{!Account.Street_Address_2__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.Street_Address_3__c}" />
+                <apex:inputField value="{!Account.Street_Address_4__c}" />
+                <apex:inputField value="{!Account.Street_Address_5__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.PO_Box__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.ANZ_Building__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.ANZ_DX_Number__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.ANZ_Level__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.ANZ_Suburb__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}" />
+                <apex:inputField value="{!Account.BillingCity}"/>
+                 <apex:pageBlockSectionItem id="sectionItemCountry" >
+                    <apex:outputLabel for="selectBillingState"  value="{!$ObjectType.Account.Fields.BillingCountry.Label}" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" value="{!Account.BillingCountry}"  size="1"  required="true" multiselect="false">
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                <apex:actionSupport id="supportBillingCountryOnChange" event="onchange" action="{!addressCountryChanged}" rerender="selectBillingState"  status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Account.BillingPostalCode}" />
+                <apex:pageBlockSectionItem id="sectionItemState" >
+                    <apex:outputLabel for="selectBillingState" value="{!$ObjectType.Account.Fields.BillingState.Label}" />
+                    <apex:outputPanel layout="block" >
+                        <div class="requiredInput">
+                    <div class="requiredBlock"></div>
+                        <apex:selectList id="selectBillingState"   value="{!Account.BillingState}"   size="1"  required="{!CountryRegionOptions.size>1}"  multiselect="false" >
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        </div>
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Account.Province__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!Account.County__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+        <!-- Required fields Start -->
+        <apex:pageBlock id="blockAccountCreate" title="{!$Label.AccountCreate_page_New_Account_Label}"  mode="edit"  rendered="{!displayEditPage}">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="{!$Label.ESC_Save}" action="{!saveSelectedAccount}" status="statusValidateAccount" rerender="formEdit" />
+                <apex:commandButton value="{!$Label.ESC_Cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="2">
+                <apex:inputField value="{!selAccount.Name}" required="true"/>
+                <apex:outputField value="{!Account.RecordTypeId}"/>
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2">
+               <apex:inputField value="{!selAccount.Sales_Org__c}" required="{!isRequired}"/>
+               <apex:inputField value="{!selAccount.Tax_Number_Type__c}" required="{!isRequired}"/>
+               <apex:inputField value="{!selAccount.Phone}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/> 
+               <apex:inputField value="{!selAccount.Customer_Type__c}" required="{!isRequired}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+               <apex:inputField value="{!selAccount.Tax_Number__c}" required="{!isRequired}"/>
+               <!--Harshitha adding new field "Customer Sub Type" also making some changes in positions for Latam Segmentation Project>> SCL 2-->
+                   <apex:inputField value="{!Account.Customer_Sub_Type__c}" required="true" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                   <apex:inputField value="{!selAccount.Extension__c}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/> 
+                   <apex:inputField value="{!selAccount.Website}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/> 
+                   <apex:inputField value="{!selAccount.Tax_4__c}"/>
+                   <apex:inputField value="{!selAccount.Customer_Group__c}" required="{!isRequired}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                   <apex:inputField value="{!selAccount.Tax_3__c}"/>
+                   <apex:inputField value="{!selAccount.Customer_Class_c__c}" required="{!isRequired}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                    
+               <!-- SCL 2 end -->
+              <apex:pageblockSectionItem rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"> 
+              </apex:pageblockSectionItem>
+                <apex:inputField value="{!selAccount.Industry_Code_1__c}" required="{!isRequired}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'LatAm User',$Profile.Name != 'Partner Portal User')}"/>
+                <apex:inputField value="{!Account.Industry_LatAm__c}" rendered="{!OR($Profile.Name == 'TR Business Administrator',$Profile.Name == 'System Administrator',$Profile.Name == 'Partner Portal User')}" required="true"/>
+                    <!-- Harshitha SCL 7 -->            
+                       <apex:inputField value="{!selAccount.Industry}" required="{!isRequired}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'LatAm User',$Profile.Name != 'Partner Portal User' )}"/> 
+                    <!-- SCL 7 end -->
+               <apex:inputField value="{!selAccount.Industry_LMS__c}" required="{!isRequired}" rendered="{!$Profile.Name == 'LMS - User'}"/>
+               <apex:inputField value="{!Account.NameTwo__c}" rendered="{!($Profile.Name == 'LMS - User')}"/>
+                <!--[date:27] Harshitha adding new field "Sub-Industry LatAm" for LatAm segmentation Project>> SCL 21 and also making changes for LatAm segmentation Project (field "Practice Area" rendered) >> SCL 21 -->
+                    <apex:outputLabel ></apex:outputLabel> <!-- For BLANK Column -->
+                    <apex:inputField value="{!Account.Sub_Industry_LatAm__c}"  rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                    <apex:inputField value="{!Account.Practice_Areas__c}" rendered="{!AND($Profile.Name != 'Partner Portal User', $Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <!-- SCL 21 end -->
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2" title="{!$Label.AccountCreate_page_Segmentation}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}">
+                <apex:inputField value="{!selAccount.Customer_Type__c}" required="true"/>
+                <apex:inputField value="{!selAccount.Customer_Group__c}" required="true"/>
+                  <!-- [date:27]  Harshitha making changes for LatAm segmentation Project(fields "Industry and Industry Code1" rendered)>> SCL 7  and also adding new field "Customer Sub-Type" for LatAm segmentation Project>>SCL 2 -->
+                    <apex:inputField value="{!Account.Industry}" html-disabled="true" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Customer_Sub_Type__c}" required="true" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Industry_Code_1__c}" html-disabled="true" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                    <apex:inputField value="{!Account.Customer_Class_c__c}" required="true"/><apex:pageBlockSection />
+                    <apex:inputField value="{!Account.Industry_LatAm__c}"  required="true"/><apex:pageBlockSection />
+                  <!--   Harshitha adding new field "Sub-Industry LatAm" for LatAm segmentation Project>> SCL 21 and also making changes for LatAm segmentation Project (field "Practice Area" rendered) >> SCL 21 -->
+                     <apex:inputField value="{!Account.Sub_Industry_LatAm__c}"  rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                     <!-- <apex:inputField value="{!Account.Practice_Areas__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/> -->
+                  <!-- SCL end --> 
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2" collapsible="false" title="{!$Label.AccountCreate_Page_Address_section}">
+                <apex:inputField value="{!selAccount.BillingStreet}" />
+                <apex:inputField value="{!selAccount.Street_Address_2__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.Street_Address_3__c}" />
+                <apex:inputField value="{!selAccount.Street_Address_4__c}" />
+                <apex:inputField value="{!selAccount.Street_Address_5__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.PO_Box__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.ANZ_Building__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.ANZ_DX_Number__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.ANZ_Level__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.ANZ_Suburb__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.BillingCity}"  required="{!isRequired}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.BillingCity}"  required="true" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                 <apex:pageBlockSectionItem id="selectBillingState"> 
+                    <apex:outputLabel for="selectBillingState"  value="{!$ObjectType.Account.Fields.BillingCountry.Label}" />
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:actionRegion >    
+                            <apex:selectList id="selectBillingCountry" value="{!selAccount.BillingCountry}" size="1" required="true" multiselect="false">
+                              <apex:selectOptions value="{!CountryOptions}" />
+                              <apex:actionSupport event="onchange" action="{!addressCountryChanged}" rerender="selectBillingState" status="statusLoadingCountryRegions"/>
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+               <apex:inputField value="{!selAccount.BillingPostalCode}" />
+                <apex:pageBlockSectionItem id="sectionItemState1" >
+                    <apex:outputLabel for="selectBillingState1" value="{!$ObjectType.Account.Fields.BillingState.Label}" />
+                    <apex:outputPanel layout="block">
+                         <div class="requiredInput"> 
+                    <div class="requiredBlock"></div>
+                        <apex:selectList id="selectBillingState1"  value="{!selAccount.BillingState}"  size="1" required="{!CountryRegionOptions.size>1}" multiselect="false" >
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        </div>  
+                        <apex:actionStatus id="statusLoadingCountryRegions1">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel> 
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!selAccount.Province__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:inputField value="{!selAccount.County__c}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        <!-- Required fields End-->
+        
+        <apex:pageBlock id="blockMatchedAccounts"  mode="mainDetail"  title="{!$Label.AccountCreate_page_New_Account_Label}" rendered="{!AND(displayMatchesPage,NOT(displayeditpage))}">
+            <apex:pageBlockButtons >
+               <!-- <apex:commandButton id="buttonCreate" value="Create Account" action="{!continueSave}" /> -->
+                <apex:commandButton id="buttonCreate" title="Create Account"  value="Create Account"  oncomplete="checkSelected('{!isAnyrecordSelected}','{!HasMatchingECMAccounts}')" />
+                <apex:commandButton id="buttonEdit1" value="Edit" action="{!editAction}" />
+                <apex:commandButton id="buttonCancel1" value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection id="sectionAccountDetail"  columns="2"  title="Account Information">
+                <apex:outputField value="{!Account.Name}" />
+                    <apex:outputField value="{!Account.RecordTypeId}" />
+                    <apex:outputField value="{!Account.Sales_Org__c}" />
+                    <apex:outputField value="{!Account.Tax_Number_Type__c}" />
+                    <apex:outputField value="{!Account.Phone}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}" />
+                    
+                    <apex:outputField value="{!Account.Customer_Type__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}" />
+                    
+                    <apex:outputField value="{!Account.Tax_Number__c}" />
+                    
+                       <!-- Harshitha adding new field "Customer Sub Type" SCL 2 -->
+                            <apex:outputField value="{!Account.Customer_Sub_Type__c}"  rendered="{!$Profile.Name == 'Partner Portal User'}"/>
+                       <!-- SCL 2 end -->
+                    <apex:outputField value="{!Account.Extension__c}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                    
+                    <apex:outputField value="{!Account.Website}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}" />
+                    <apex:outputField value="{!Account.Tax_4__c}" />
+                    <apex:outputField value="{!Account.Customer_Group__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/> 
+                    <apex:outputField value="{!Account.Tax_3__c}" />  
+                    <apex:outputField value="{!Account.Customer_Class_c__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>       
+                    
+                    <apex:outputField value="{!Account.Industry_LatAm__c}" rendered="{!OR($Profile.Name == 'TR Business Administrator',$Profile.Name == 'System Administrator',$Profile.Name == 'Partner Portal User')}"/>
+                    <!--  Date:27 Harshitha adding new field "Sub-Industry LatAm" for LatAm segmentation Project>> SCL 21 -->
+                          <apex:outputLabel ></apex:outputLabel> <!-- For BLANK Column -->  
+                          <apex:outputField value="{!Account.Sub_Industry_LatAm__c}"  rendered="{!$Profile.Name == 'Partner Portal User'}"/>
+                          <apex:outputField value="{!Account.Industry_Code_1__c}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'Partner Portal User')}"/>
+                          <apex:outputField value="{!Account.Industry_LMS__c}" rendered="{!$Profile.Name == 'LMS - User'}" />
+                          <apex:outputField value="{!Account.Industry}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'Partner Portal User')}"/>
+                          <apex:outputField value="{!Account.NameTwo__c}" rendered="{!($Profile.Name == 'LMS - User')}"/>
+                          <apex:outputField value="{!Account.Practice_Areas__c}" rendered="{!AND($Profile.Name != 'Partner Portal User', $Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                    <!-- SCL 21 end -->
+                    <!--  <apex:outputField value="{!Account.Tax_Type_Number__c}" /> -->
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionSegmentationDetail"  columns="2" title="{!$Label.AccountCreate_page_Segmentation}" rendered="{!OR($Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}">
+                <apex:outputField value="{!Account.Customer_Type__c}" />
+                <apex:outputField value="{!Account.Industry}" html-disabled="true" rendered="{!AND($Profile.Name != 'Partner Portal User',$Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.Customer_Group__c}" />
+                 <!--  Harshitha adding new field "Customer Sub-Type" for LatAm segmentation Project>>SCL 2  -->
+                    <apex:outputField value="{!Account.Customer_Sub_Type__c}"  rendered="{!OR($Profile.Name == 'Partner Portal User',$Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                    <apex:outputField value="{!Account.Industry_Code_1__c}" html-disabled="true" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager',$Profile.Name != 'Partner Portal User')}"/>
+                    <apex:outputField value="{!Account.Customer_Class_c__c}" /><apex:pageBlockSection />
+                    <apex:outputField value="{!Account.Industry_LatAm__c}" /><apex:pageBlockSection />
+                 <!--  Date:27 Harshitha adding new field "Sub-Industry LatAm" for LatAm segmentation Project>> SCL 21 -->
+                    
+                    <apex:outputField value="{!Account.Sub_Industry_LatAm__c}"  rendered="{!OR($Profile.Name == 'Partner Portal User',$Profile.Name == 'LatAm User',$Profile.Name == 'LatAM Helpdesk Agent',$Profile.Name == 'LatAM Help Desk Manager')}"/>
+                    <apex:outputField value="{!Account.Practice_Areas__c}" rendered="{!AND($Profile.Name != 'LMS - User',$Profile.Name != 'LatAm User',$Profile.Name != 'Partner Portal User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                 <!-- SCL end -->
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection id="sectionAddressDetail" columns="2" title="{!$Label.AccountCreate_Page_Address_section}">
+                <apex:outputField value="{!Account.BillingStreet}" />
+                <apex:outputField value="{!Account.Street_Address_2__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.Street_Address_3__c}" />
+                <apex:outputField value="{!Account.Street_Address_4__c}" />
+                <apex:outputField value="{!Account.Street_Address_5__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.PO_Box__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.ANZ_Building__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.ANZ_DX_Number__c}"  rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}" />
+                <apex:outputField value="{!Account.ANZ_Level__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.ANZ_Suburb__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.BillingCity}" />
+                <apex:outputField value="{!Account.BillingState}" />
+                <apex:outputField value="{!Account.BillingPostalCode}" />
+                <apex:outputField value="{!Account.BillingCountry}" />
+                <apex:outputField value="{!Account.Province__c}" rendered="{!AND($Profile.Name != 'LatAm User',$Profile.Name != 'LatAM Helpdesk Agent',$Profile.Name != 'LatAM Help Desk Manager')}"/>
+                <apex:outputField value="{!Account.County__c}" />
+            </apex:pageBlockSection>
+            <!-- Added by Sripriya for SFDC potential matches **START**-->
+        <apex:pageBlockSection id="SfdcSectionDuplicates" columns="1"   title="Potential Salesforce Matches">
+           <!-- <apex:outputText rendered="{!NOT(OR(HasServiceErrors, HasMatchingSFDCAccounts))}"> No records to display </apex:outputText> -->
+                <apex:outputText rendered="{!MatchedSFDCAccounts.size == 0}"> 
+                   <apex:outputLabel value="{!$Label.ECM_No_Records_to_Display}"/> 
+                </apex:outputText>
+            <apex:pageBlockTable id="SfdcTableMatchedAccounts" value="{!MatchedSFDCAccounts}" rendered="{!MatchedSFDCAccounts.size > 0}" var="sfdcmatch">                    
+                    <apex:column headervalue="Account Name">
+                        <apex:outputLink id="linkAccount" value="/{!sfdcmatch.Account.Id}"  rendered="{!NOT(ISNULL(sfdcmatch.Account.Id))}">{!sfdcmatch.Account.Name} </apex:outputLink>
+                    </apex:column>                    
+                    <apex:column headerValue="Street" value="{!sfdcmatch.Account.BillingStreet}" />
+                    <apex:column headerValue="City" value="{!sfdcmatch.Account.BillingCity}" />
+                    <apex:column headerValue="State" value="{!sfdcmatch.Account.BillingState}" />
+                    <apex:column headerValue="Postal Code" value="{!sfdcmatch.Account.BillingPostalCode}" />
+                    <apex:column headerValue="Country" value="{!sfdcmatch.Account.BillingCountry}" />
+                    <apex:column headerValue="SalesOrg" value="{!Account.Sales_Org__c}" />
+                    <apex:column headerValue="Record Type" value="{!sfdcmatch.Account.RecordType.Name}" />
+                    </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <!-- Added by Sripriya for SFDC potential matches **END**-->
+            <apex:actionStatus id="processingAccount">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating account please wait..." />
+            </apex:facet>
+        </apex:actionStatus>
+           <!-- Added by Sripriya for ECM potential matches **START**--> 
+            <apex:pageBlockSection id="ECMSectionDuplicates" columns="1" title="Potential ECM Matches">                               
+                <apex:pageBlockTable id="ECMTableMatchedAccounts"  value="{!ECMAccountResults.CurrentPage}" rendered="{!ECMAccountResults.listMatchedECMAccounts.size > 0}"  var="ecmMatch"> 
+                     <apex:facet name="footer">
+                    <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">                 
+                   <apex:outputPanel layout="inline" rendered="{!ECMAccountResults.AllowMovePrev}">
+                                        <span>&nbsp;|&nbsp;</span>
+                                        <apex:commandLink id="linkMovePrev" value="Prev" immediate="true" status="statusPaging"  action="{!ECMAccountResults.movePrev}"  rerender="ECMTableMatchedAccounts" />
+                  </apex:outputPanel>
+                  <apex:outputPanel layout="inline" rendered="{!ECMAccountResults.AllowMoveNext}">
+                                        <span>&nbsp;|&nbsp;</span>
+                                        <apex:commandLink id="linkMoveNext" value="Next"  immediate="true" status="statusPaging" action="{!ECMAccountResults.moveNext}" rerender="ECMTableMatchedAccounts" />
+                  </apex:outputPanel>
+                  <span>&nbsp;&nbsp;</span>
+                  <apex:actionStatus id="statusPaging">
+                                        <apex:facet name="start">
+                                            <img src="/img/loading.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                        
+                                        <apex:facet name="stop">
+                                            <img src="/img/s.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                  </apex:actionStatus>
+                   <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;">
+                                            {!ECMAccountResults.RecordStart}-{!ECMAccountResults.RecordEnd} of {!ECMAccountResults.listMatchedECMAccounts.size}
+                   </apex:outputPanel>
+                   </apex:outputPanel>
+              </apex:facet>      
+                    <apex:column > 
+                    <apex:inputcheckbox value="{!ecmMatch.isSelected}" id="chxBox" onclick="calJSFunction('{!ecmMatch.ECMAccountInfo.AddressId}')">  
+                    </apex:inputcheckbox>   
+                    </apex:column>  
+                    <apex:column headervalue="Account Name">
+                        <apex:outputText id="textAccountName" value="{!ecmMatch.ECMAccountInfo.Name}" />                        
+                    </apex:column>
+                <apex:column headerValue="ECM Address RowId" rendered="false"> {!ecmMatch.ECMAccountInfo.AddressId} </apex:column>  
+                <apex:column headerValue="Street"> {!ecmMatch.ECMAccountInfo.Street1} </apex:column>  
+                <apex:column headerValue="City"> {!ecmMatch.ECMAccountInfo.City} </apex:column> 
+                <apex:column headerValue="State">{!ecmMatch.ECMAccountInfo.State}</apex:column> 
+                <apex:column headerValue="Postal Code">{!ecmMatch.ECMAccountInfo.PostalCode}</apex:column> 
+                <apex:column headerValue="Country">{!ecmMatch.ECMAccountInfo.Country}</apex:column> 
+                </apex:pageBlockTable>                
+                 <apex:outputText rendered="{!MatchedECMAccounts.size == 0}">
+                    <apex:outputLabel value="{!$Label.ECM_No_Records_to_Display}"/>
+                 </apex:outputText>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+         <apex:actionFunction action="{!creatAccount}" name="calAF" reRender="formEdit">           
+              </apex:actionFunction>       
+        <apex:actionFunction name="updList" status="processingAccount" action="{!updateList}" reRender="formEdit">
+          <apex:param name="conId" value="" assignTo="{!conId}"/>
+         </apex:actionFunction> 
+    </apex:form>
+    <apex:outputPanel layout="none" rendered="{!NOT(ISNULL($CurrentPage.parameters.isdtp))}">
+        <apex:includeScript value="/support/console/25.0/integration.js"/>
+            <script>
+                try {
+                    sforce.console.setTabTitle('New Account');
+                }
+                catch (e) { /*Ignore Error*/ }
+            </script> 
+    </apex:outputPanel>  
+            <script>
+                window.$Label = window.$Label || {};
+                $Label.ECM_Warning_Message = '{!JSENCODE($Label.ECM_Warning_Message)}';
+             </script>
+            <script>
+                function calJSFunction(ab){
+                    updList(ab);
+                }
+           
+                function selectId(frst){
+                    alert(frst);
+                }
+       
+                function checkSelected(isSel, hasECMAccounts){                   
+                    if(isSel=='true'){                     
+                        calAF();                 
+                    }
+                    else{                
+                        var res = confirm($Label.ECM_Warning_Message);
+                        if(res == true){
+                            calAF();
+                        }
+                    }
+                }
+    </script>
+</apex:page>

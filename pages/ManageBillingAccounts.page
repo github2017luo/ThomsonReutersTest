@@ -1,0 +1,385 @@
+<apex:page id="page1" standardController="Billing_Account_Split__c" extensions="ManageBillingAccountsController" recordSetVar="BillingAccounts" tabStyle="Opportunity" docType="html-5.0" sidebar="false" >
+    
+    <apex:includeScript value="{!URLFOR($Resource.Autocomplete,'Autocomplete/js/jquery-1.7.1.min.js')}"/>
+    
+    <style type="text/css">
+        .clsReadonlyText{
+            background-color: lightgray;
+            width:65px;
+        }
+        .clsNumTextboxStyle{
+            width:80px;
+        }
+        .scroll {
+           width: 100%;
+           height: 500px;           
+           overflow: scroll;
+        }
+        .scroll::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .scroll::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+            border-radius: 10px;
+        }
+        .scroll::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        
+        }
+               
+        .readonly { 
+            width:79% !important;
+        }
+        emptyDependentLookup readonly { 
+           width:85% !important;
+        }
+        hr.style-three {
+            padding: 0;
+            border: none;
+            border-top: medium double #333;
+            color: #333;
+            text-align: center;
+        }
+        
+        hr.style-four {
+              height: 10px;
+              border: 0;
+              box-shadow: 0 10px 10px -10px #8c8c8c inset;
+            }
+            
+        hr.style-five { 
+              border: 0; 
+              height: 30px; 
+              border-style: solid; 
+              border-color: #8c8c8c; 
+              border-width: 1px 0 0 0; 
+              border-radius: 20px; 
+        }        
+
+        .message {
+            margin-left:0px!important;
+            margin-right:0px!important;
+        }
+    </style>
+    
+    <script type="text/javascript">        
+                
+        var j$ = jQuery.noConflict();
+        var userCurrency = '';
+        
+        j$(document).ready(function() {                               
+           userCurrency = j$('#hdnUserCurrency').val();
+           //alert(j$('#hdnProductTotalPrice').val());
+           j$('.clsCheckNumeric').keypress(function(event){                                       
+                if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which != 8) && (event.which < 48 || event.which > 57)) {
+                   event.preventDefault();
+                }
+           });
+           
+           j$('.clsPrevTyping').attr("disabled","disabled");
+           
+        }); //End Ready function.      
+          
+        //Function calculate Sub Total and Amount percentage ok keyup of product price.  
+        function calSubtotal(textId)
+        {  
+           
+          // alert("textId:>>"+textId);
+           var txtPriceIdStr1 = textId.substring(textId.length -53, textId.length);   
+           //alert(txtPriceIdStr1);       
+           var txtPriceIdStr2 = txtPriceIdStr1.substring(txtPriceIdStr1.length -40, txtPriceIdStr1.length);
+           //alert(txtPriceIdStr2);        
+           var txtPriceIdStr3 = txtPriceIdStr1.replace(txtPriceIdStr2,'').replace('rptBillAcc','');
+           //alert(txtPriceIdStr3);
+           txtPriceIdStr3 = txtPriceIdStr3.replace('ptBillAcc','').replace('tBillAcc','');
+           //alert(txtPriceIdStr3);
+                                
+           var repeatRow = txtPriceIdStr3.replace(':','').replace(':','');
+           //alert("repeatRow:>>"+repeatRow);
+          
+           var numOfProd = 0;
+           if(j$('#hdnOppProductNum').val().trim() !=""){
+               numOfProd = parseInt(j$('#hdnOppProductNum').val());
+           }
+           //alert("numOfProd:>>"+numOfProd);
+           
+           if(numOfProd == 3){
+               var txt1 = document.getElementsByClassName('clsNumTextboxStyle')[0].id;
+               var txt2 = document.getElementsByClassName('clsNumTextboxStyle')[1].id;
+               var txt3 = document.getElementsByClassName('clsNumTextboxStyle')[2].id;
+               txt1 = txt1.charAt(txt1.length-1);
+               txt2 = txt2.charAt(txt2.length-1);
+               txt3 = txt3.charAt(txt3.length-1);
+           }
+           if(numOfProd == 2){
+               var txt1 = document.getElementsByClassName('clsNumTextboxStyle')[0].id;
+               var txt2 = document.getElementsByClassName('clsNumTextboxStyle')[1].id;
+               //var txt3 = document.getElementsByClassName('clsNumTextboxStyle')[2].id;
+               txt1 = txt1.charAt(txt1.length-1);
+               txt2 = txt2.charAt(txt2.length-1);
+               //txt3 = txt3.charAt(txt3.length-1);
+           }
+           if(numOfProd == 1){
+               var txt1 = document.getElementsByClassName('clsNumTextboxStyle')[0].id;
+               //var txt2 = document.getElementsByClassName('clsNumTextboxStyle')[1].id;
+               //var txt3 = document.getElementsByClassName('clsNumTextboxStyle')[2].id;
+               txt1 = txt1.charAt(txt1.length-1);
+               //txt2 = txt2.charAt(txt2.length-1);
+               //txt3 = txt3.charAt(txt3.length-1);
+           }
+           
+           
+           //alert("txt1:>>"+txt1);
+           //alert("txt2:>>"+txt2);
+           //alert("txt3:>>"+txt3);
+          
+           var subTotal = '0.00';
+           for(var i=0; i < numOfProd; i++)
+           { 
+               var txtProductPrice = null;
+               
+               if(i == 0)                
+                   txtProductPrice = 'rptBillAcc:' + repeatRow + ':pbsProduct:pbtProduct:' + i.toString() + ':txtProductPrice' + txt1.toString();   
+               if(i == 1)
+                   txtProductPrice = 'rptBillAcc:' + repeatRow + ':pbsProduct:pbtProduct:' + i.toString() + ':txtProductPrice' + txt2.toString();   
+               if(i == 2)
+                   txtProductPrice = 'rptBillAcc:' + repeatRow + ':pbsProduct:pbtProduct:' + i.toString() + ':txtProductPrice' + txt3.toString();   
+               
+              // alert("txtProductPrice:>>"+txtProductPrice);                           
+               txtProductPrice = 'input[id*="' + txtProductPrice + '"]';
+               //alert("txtProductPrice:>>>>"+txtProductPrice);
+               var productPrice = j$(txtProductPrice).val().trim();
+              // alert("productPrice:>>"+productPrice);
+               if(productPrice != ''){  
+                   if(j$('#hdnCommaCurrUser').val() == '1'){   
+                       productPrice = productPrice.replace('.', '');                       
+                       productPrice = productPrice.replace(',', '.');                      
+                       subTotal = parseFloat(subTotal) + parseFloat(productPrice);
+                   }
+                   else{
+                       subTotal = parseFloat(subTotal) + parseFloat(productPrice);
+                   }                   
+               }
+           }
+           //alert("subTotal:>>"+subTotal);            
+           
+           var txtSubTotal = 'rptBillAcc:' + repeatRow + ':txtSubTotal';
+            
+           var txtAmtPercentage = 'rptBillAcc:' + repeatRow + ':txtAmtPercentage';              
+                      
+           txtSubTotal = 'input[id*="' + txtSubTotal + '"]'; 
+           txtAmtPercentage = 'input[id*="' + txtAmtPercentage + '"]';
+                   
+           if(parseFloat(subTotal) > 0.00){
+               subTotal = subTotal.toFixed(2);
+           }
+           
+           var tempSubTotal = subTotal; 
+           
+           if(j$('#hdnCommaCurrUser').val() == '1'){                      
+               subTotal = subTotal.replace('.',',');
+           }
+               
+           j$(txtSubTotal).val(subTotal); 
+          
+           var amtPer = 0.00;
+           amtPer  = parseFloat(tempSubTotal)*100;           
+           amtPer = (amtPer / parseFloat(j$('#hdnProductTotalPrice').val())).toFixed(2); 
+           
+           if(j$('#hdnCommaCurrUser').val() == '1'){                      
+               amtPer = amtPer.replace('.',',');
+           }
+           
+           j$(txtAmtPercentage).val(amtPer);  
+        } 
+        
+        //Function close the child window and refresh the parent window.
+        /*function CloseAndRefresh() {
+            window.opener.location.href="/{!$CurrentPage.parameters.id}";
+            window.open('', '_self', ''); 
+            window.close();  
+        }*/           
+        //++++++++++++     
+		//SFD-16---Added By Priyanka
+		var pageLoad = window.onload;
+        window.onload = function(){
+           if (pageLoad) {
+                pageLoad();
+            }
+           OpenInSubtab();
+        };
+
+        function OpenInSubtab() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('Manage Billing Accounts');
+            sforce.console.getEnclosingPrimaryTabId(function(result) {
+                console.log('primary tab id is: ', result.id);
+                currentPrimaryTabId = result.id;
+            });
+        };
+        //SFD-16---Added By Priyanka   		
+            
+    </script>
+    
+    
+    <apex:form id="form1">
+    <c:customSectionHeader iconsrc="/img/icon/opportunities32.png" title="{!$Label.BA_Opportunity}" subTitle="{!opp.Name}"/>
+    <apex:pageMessage summary="{!$Label.BA_products_associated_with_this_Master_Opportunity_are}" strength="2" severity="info"/>
+    <apex:actionFunction name="afDeleteBA" action="{!deleteBillAcct}" />
+    <apex:pageBlock title="{!$Label.BA_Products_Standard}">
+        <apex:variable value="{!1}" var="num"/>
+        <apex:pageBlockTable value="{!lstOppLineItem}" var="op">
+            <apex:column headerValue="#">
+                {!num}
+                <apex:variable var="num" value="{!num+1}"/>
+            </apex:column>
+            <apex:column value="{!op.Product2Id}" headerValue="{!$Label.BA_Product}"/> 
+            <apex:column value="{!op.ListPrice}" headerValue="{!$Label.BA_List_Price}"/> 
+            <apex:column value="{!op.UnitPrice}" headerValue="{!$Label.BA_Sales_Price}"/> 
+            <apex:column value="{!op.Quantity}" headerValue="{!$Label.BA_Quantity}"/> 
+            <apex:column value="{!op.Subtotal}" headerValue="Subtotal"/> 
+            <apex:column value="{!op.Discount}" headerValue="{!$Label.BA_Discount}"/> 
+            <apex:column value="{!op.TotalPrice}" headerValue="{!$Label.BA_Total_Price}"/>   
+        </apex:pageBlockTable> <br />
+        <apex:panelGrid columns="3" style="margin-left:79.8%;">
+            <apex:outputLabel style="text-align:center; width:10%; font-weight: bold;" value="{!$Label.BA_Amount}"  />
+            <apex:outputText style="text-align:center; width:10%; " value="{!opp.Opportunity_currency__c}"/>
+            <apex:outputText value="{!strProdTotPrice}"/>
+        </apex:panelGrid>        
+    </apex:pageBlock>
+    
+    <apex:pageBlock >
+        <apex:pageBlockSection collapsible="true" title="{!$Label.BA_Oppty_Management_Details}">
+            <apex:outputField value="{!opp.Oppty_Mgmt_Type__c}"/>
+            <apex:outputField value="{!opp.BA_Split_Amount_Subtotal__c}"/>
+            <apex:inputHidden />
+            <apex:outputField value="{!opp.BA_Split_Amount_Subtotal_Variance__c}"/>
+            <apex:inputHidden />
+            <apex:outputField value="{!opp.BA_Split_Variance_Status__c}"/>
+    </apex:pageBlockSection>
+    </apex:pageBlock>
+    <apex:pageMessage summary="{!$Label.BA_Add_Edit_Billing_Accounts}" title="{!$Label.BA_Instructions}" severity="info" strength="2" rendered="{!(opp.Oppty_Mgmt_Type__c == 'Split Billing')}"/>    
+    <apex:pageMessages ></apex:pageMessages>
+        
+    <apex:pageBlock id="pbBillAcct" rendered="{!(opp.Oppty_Mgmt_Type__c == 'Split Billing')}" >
+       
+        <apex:pageBlockButtons >
+            <apex:commandButton id="buttonAdd" value="{!$Label.BA_Add_Billing_Account}" action="{!addBillAcct}"/>
+            <apex:commandButton id="buttonSave" value="{!$Label.BA_Save}" action="{!saveBillAccts}" /> <!--{!$Label.BA_Save}-->
+            <apex:commandButton id="buttonSaveClose" value="{!$Label.BA_Save_Close}" action="{!saveCloseBillAccts}" />
+            <apex:commandButton id="buttonCancel" value="{!$Label.BA_Cancel}" action="{!cancel}" />                               
+        </apex:pageBlockButtons>   
+        
+        <apex:outputPanel rendered="{!IF(lstwrapBillAcc.size > 0, true, false)}"> 
+            <div style="width:100%;">                
+                 <div id="divSubTotal" style="background-color:lightgray; text-align: center; width:17%; margin-left:78.6%; font-weight: bold;">Sub Total</div>
+            </div>
+            
+            <table style="width:100%">
+                    <tr>
+                        <td style="width:5%;"></td>
+                        <td style="width:24.6%; font-weight: bold;">                            
+                            <span id="spnBillAccount">{!$Label.BA_Billing_Account}</span>
+                        </td>
+                        <td style="width: 14.8%; font-weight: bold;">                            
+                            <span id="spnPONumber">{!$Label.BA_PO_Number}</span>
+                        </td>
+                        <td style="width: 14.8%; font-weight: bold;padding-left:.3%;">
+                            <span id="spnEBillContact">{!$Label.BA_E_Billing_Contact}</span>
+                        </td>
+                        <td id="tdBoletoContact" style="width: 20.8%; font-weight: bold;padding-left:.3%;">
+                            <span id="spnBoletoContact">{!$Label.BA_Boleto_Contact}</span>                           
+                        </td>
+                        <td style="width: 10%; font-weight: bold;">                            
+                            <span id="spnAmount">{!$Label.BA_Amount}</span>
+                        </td>
+                        <td style="width: 10%;font-weight: bold;">                           
+                            <span id="spnAmtPer">%</span>
+                        </td>
+                    </tr>
+            </table>
+            
+            <div class="scroll">
+                <apex:variable value="{!0}" var="num"/>
+                <apex:repeat id="rptBillAcc" value="{!lstwrapBillAcc}" var="ba">                     
+                    <apex:variable var="num" value="{!num+1}"/>                                     
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:5%;">
+                                <apex:commandLink value="{!$Label.BA_Delete}" action="{!deleteBillAcct}" immediate="true" style="color:blue; width:10%;">
+                                   <apex:param value="{!ba.objBillAcc.Id}" name="idToDel" assignTo="{!baId}" />
+                                   <apex:param value="{!num}" name="rowNum" />
+                                </apex:commandLink>
+                            </td>
+                            <td style="width: 25%;">
+                                <apex:inputField value="{!ba.objBillAcc.Account__c}" style="width: 100%;" />
+                            </td>
+                            <td style="width: 15%;">                            
+                                <apex:inputField value="{!ba.objBillAcc.PO_Number__c}" style="width: 90%;"/>
+                            </td>
+                            <td id="tdBoletoContact" style="width: 15%; height: 20px">
+                                <apex:inputField value="{!ba.objBillAcc.E_Billing_Contact__c}" style="width: 80%;"/>                     
+                            </td>
+                            <td style="width: 20%;"> 
+                                <apex:inputField value="{!ba.objBillAcc.Boleto_Contact__c}" style="width: 60%;"/>
+                            </td>
+                            <td style="width: 10%;"> 
+                                <apex:inputText value="{!ba.strSubTotal}" id="txtSubTotal" styleClass="clsSubTotal clsReadonlyText clsPrevTyping" />
+                            </td>
+                            <td style="width: 10%;">
+                                <apex:inputText value="{!ba.strAmtPercentage}" id="txtAmtPercentage" styleClass="clsReadonlyText clsPrevTyping" />
+                            </td>
+                        </tr>
+                    </table>
+                    <br/> <br/>                   
+                    <apex:pageBlockSection id="pbsNotes" title="{!$Label.BA_Notes}" collapsible="true">                
+                        <table>
+                            <tr>                        
+                                <td>
+                                    <apex:inputTextarea value="{!ba.objBillAcc.Opportunity_Notes__c}" style="height:70px; width:770px;"  />
+                                </td>
+                            </tr>
+                            <tr>                        
+                                <td>
+                                    <apex:inputTextarea value="{!ba.objBillAcc.Invoice_Notes__c}" style="height:70px; width:770px;" />
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <script>
+                           twistSection(document.getElementById('{!$Component.pbBillAcct.rptBillAcc.pbsNotes}').getElementsByTagName('img')[0])
+                       </script>
+                    </apex:pageBlockSection>                   
+                    
+                    <apex:pageBlockSection id="pbsProduct" title="{!$Label.BA_Products}">
+                        <apex:pageblockTable id="pbtProduct" value="{!ba.lstWrpPro}" var="wp" style="width: 130%;">                    
+                            <apex:column value="{!wp.productName}" headerValue="{!$Label.BA_Product_Name}" /> 
+                            <apex:column headerValue="{!$Label.BA_Quantity}">
+                                <apex:outputText value="{!wp.productQty}" id="txtProductQty"  />                        
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.BA_Price}">
+                                <apex:inputField value="{!wp.objBAS.Product_1_Sales_Price__c}" id="txtProductPrice1" onkeyup="calSubtotal(this.id)" styleClass="clsNumTextboxStyle" rendered="{!IF(wp.priceNumber == '1',true, false)}"/> 
+                                <apex:inputField value="{!wp.objBAS.Product_2_Sales_Price__c}" id="txtProductPrice2" onkeyup="calSubtotal(this.id)" styleClass="clsNumTextboxStyle" rendered="{!IF(wp.priceNumber == '2', true, false)}"/> 
+                                <apex:inputField value="{!wp.objBAS.Product_3_Sales_Price__c}" id="txtProductPrice3" onkeyup="calSubtotal(this.id)" styleClass="clsNumTextboxStyle" rendered="{!IF(wp.priceNumber == '3', true, false)}"/> 
+                            </apex:column>
+                        </apex:pageblockTable>
+                    </apex:pageBlockSection> <br />   
+                    <hr class="style-three" style = "display:{!IF( num < lstwrapBillAcc.size,"" , "none")}"/>                            
+                    <br />                                                                   
+                </apex:repeat>
+            </div>
+        </apex:outputPanel> 
+    </apex:pageBlock>
+    
+    <input type="hidden" id="hdnProductTotalPrice" value="{!strOppTotPrice}" />
+    <input type="hidden" id="hdnOppProductNum" value="{!lstOppLineItem.size}" />
+    <input type="hidden" id="hdnUserCurrency" value="{!strUserCurrency}" />
+    <input type="hidden" id="hdnCommaCurrUser" value="{!strIsCommaCurrUser}" />
+  </apex:form> 
+</apex:page>

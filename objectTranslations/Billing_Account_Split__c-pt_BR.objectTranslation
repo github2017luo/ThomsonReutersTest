@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Conta de Faturamento</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Contas de Faturamento</value>
+    </caseValues>
+    <fields>
+        <help>Selecione a Conta para esta Oportunidade.</help>
+        <label>Conta</label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- Billing Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Contato Boleto</label>
+        <name>Boleto_Contact__c</name>
+        <relationshipLabel><!-- Billing Accounts (Boleto Contact) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Nome da Sub-Oportunidade criada após Gerar as Sub-oportunidades</help>
+        <label>Sub-oportunidade</label>
+        <name>Child_Opportunity__c</name>
+        <relationshipLabel><!-- Billing Accounts (Child Oppportunity) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Contato E-billing</label>
+        <name>E_Billing_Contact__c</name>
+        <relationshipLabel><!-- Billing Accounts (E-Billing Contact) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Inclua neste campo as Informações que serão inseridas na Nota Fiscal</help>
+        <label>Informações para Notas Fiscais</label>
+        <name>Invoice_Notes__c</name>
+    </fields>
+    <fields>
+        <help>Indica o nome da Oportunidade Mestre relacionada a esta Sub-Oportunidade</help>
+        <label>Oportunidade Mestre</label>
+        <name>Master_Opportunity__c</name>
+        <relationshipLabel>Contas de Faturamento (Oportunidade Mestre)</relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- OLI_id_1 --></label>
+        <name>OLI_id_1__c</name>
+    </fields>
+    <fields>
+        <label><!-- OLI_id_2 --></label>
+        <name>OLI_id_2__c</name>
+    </fields>
+    <fields>
+        <label><!-- OLI_id_3 --></label>
+        <name>OLI_id_3__c</name>
+    </fields>
+    <fields>
+        <help>Este campo é uma cópia da informação colocada na Descrição da Oportunidade</help>
+        <label>Notas da Oportunidade</label>
+        <name>Opportunity_Notes__c</name>
+    </fields>
+    <fields>
+        <help>Inclua neste campo o Número do Pedido (PO) fornecido pelo cliente (se necessário)</help>
+        <label>Número PO</label>
+        <name>PO_Number__c</name>
+    </fields>
+    <fields>
+        <help>Indica a porcentagem do valor comparado a Oportunidade Mestre</help>
+        <label>% do Valor da Oportunidade Mestre</label>
+        <name>Percentage_MO_Amount__c</name>
+    </fields>
+    <fields>
+        <label>Produto 1 - Quantidade</label>
+        <name>Product_1_Quantity__c</name>
+    </fields>
+    <fields>
+        <label>Produto 1 - Preço de Venda</label>
+        <name>Product_1_Sales_Price__c</name>
+    </fields>
+    <fields>
+        <label>Produto 1</label>
+        <name>Product_1__c</name>
+        <relationshipLabel><!-- Billing Accounts --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Produto 2 - Quantidade</label>
+        <name>Product_2_Quantity__c</name>
+    </fields>
+    <fields>
+        <label>Produto 2 - Preço de Venda</label>
+        <name>Product_2_Sales_Price__c</name>
+    </fields>
+    <fields>
+        <label>Produto 2</label>
+        <name>Product_2__c</name>
+        <relationshipLabel><!-- Billing Accounts (Product 2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <label>Produto 3 - Quantidade</label>
+        <name>Product_3_Quantity__c</name>
+    </fields>
+    <fields>
+        <label>Produto 3 - Preço de Venda</label>
+        <name>Product_3_Sales_Price__c</name>
+    </fields>
+    <fields>
+        <label>Produto 3</label>
+        <name>Product_3__c</name>
+        <relationshipLabel><!-- Billing Accounts (Product 3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Indica o valor total desta Sub-oportunidade</help>
+        <label>Valor Subtotal</label>
+        <name>Subtotal_Amount__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel><!-- BAS # --></nameFieldLabel>
+    <validationRules>
+        <errorMessage><!-- You cannot edit any information on Child Opportunities or Quotes when the Master Quote has been submitted for approval or at Opportunity stage 95% &amp; 100% . --></errorMessage>
+        <name>LatAm_Mastersaf_BAS_Lock</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>A Conta selecionada não atende os critérios mínimos para ser considerada uma Conta de Faturamento. Contas de Faturamento devem ter o Tipo de Registro como Cliente e ter um Número de Conta SAP.</errorMessage>
+        <name>LatAm_Mastersaf_BillingAccount_Selection</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>O Contato selecionado não atende os critérios mínimos para ser considerado um Contato E-billing (falta e-mail e/ou telefone de trabalho)</errorMessage>
+        <name>LatAm_Mastersaf_Validate_E_Billing_Cont</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage>Contato Boleto precisa ter um valor no campo E-mail.</errorMessage>
+        <name>LatAm_Mastersaf_Validate_E_Boleto_Cont</name>
+    </validationRules>
+    <webLinks>
+        <label>Gerar Sub-Oportunidades</label>
+        <name>Generate_Child_Opportunities</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Generate_Child_Opportunities_1 --></label>
+        <name>Generate_Child_Opportunities_1</name>
+    </webLinks>
+    <webLinks>
+        <label>Gerenciar Contas de Faturamento</label>
+        <name>Manage_Billing_Accounts</name>
+    </webLinks>
+</CustomObjectTranslation>

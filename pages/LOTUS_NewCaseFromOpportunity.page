@@ -1,0 +1,21 @@
+<apex:page standardController="Case" extensions="LOTUS_NewCaseFromOpportunityController" action="{!redirectCase}"  recordSetVar="var" tabStyle="Case">
+     <style type="text/css">
+        .warning {
+            font-weight: Bold;
+            color: #FF0000;
+            font-size : 15px;
+            text-decoration: none;
+        }
+    </style>
+     
+    <apex:pageMessages escape="false"></apex:pageMessages>
+    
+    
+    <!--<apex:form rendered="{!sowCase}">
+        <apex:outputText styleClass="warning" value="{!$Label.LOTUS_SoWCaseWarning}" /><BR/>
+        <apex:commandButton value="Back" action="{!backMethod}"/>
+    </apex:form>
+    <apex:form rendered="{!NOT(sowCase)}">
+        <apex:actionFunction name = 'test' action='{!redirectCase}' />
+    </apex:form>-->
+</apex:page>

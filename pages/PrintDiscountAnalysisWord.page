@@ -1,0 +1,111 @@
+<!--
+
+Name           Description                                                                                              Date
+Samarpreet Singh      JIRA NO: Enabling Lightning as part of Sales Lightning Project..added lightning stylesheet               14-Feb-2019
+-->
+
+<apex:page standardController="Account" extensions="PrintDiscountAnalysisController" sidebar="false" showHeader="false" lightningStylesheets="true"   standardStyleSheets="false" cache="true" contentType="application/vnd.ms-word#PDA_Export.rtf">
+     <apex:form >
+    <html>
+        <head>
+            <h1 align="center"  style="text-align:center;font-size:22px">Print Discount Analysis</h1>
+            <h2 align="center" style="text-align:center;font-size:18px">(to be used in conjunction with a WestPack/PPL Proposal)</h2>
+        </head>
+        <br/><br/>
+        <p style="text-align:left;font-size:16px">
+        <b><apex:outputField value="{!oAccount.SAPAccountNumber__c}" /></b><br></br><br></br>
+        <b><apex:outputField value="{!oAccount.Name}" /></b><br></br>
+        <b><apex:outputField value="{!oAccount.BillingStreet }" /></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_2__c}" /></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_3__c}" /></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_4__c}"/></b>
+        <b><apex:outputField value="{!oAccount.Street_Address_5__c}" /></b><br></br>
+        <b><apex:outputField value="{!oAccount.BillingCity}"  /></b>
+        <b><apex:outputField value="{!oAccount.BillingState}" /></b>
+        <b><apex:outputField value="{!oAccount.BillingPostalCode}" /></b></p><br/>
+        <table>
+        <tr><td><apex:outputLabel value="Main Phone" style="text-align:left;font-size:16px" /></td>
+        <td><apex:outputText value="{!oAccount.Phone}" style="text-align:left;font-size:16px" /></td></tr>
+        <tr><td width="60%"><apex:outputLabel value="Alternate Phone" style="text-align:left;font-size:16px"  /></td>
+        <td width ="40%"><apex:outputText value="{!oAccount.PhoneNumberTwo__c}" style="text-align:left;font-size:16px" /></td></tr> 
+        <tr><td><apex:outputLabel value="Fax" style="text-align:left;font-size:16px"  /></td>
+        <td><apex:outputText value="{!oAccount.Fax}" style="text-align:left;font-size:16px" /></td></tr> 
+        </table><br/><br/>
+         <apex:pageBlock >
+             <b><apex:outputLabel value="Print Discount Estimation" style="text-align:left;font-size:16px"/></b>
+            <apex:pageBlockSection collapsible="false" >
+            <apex:pageBlockTable value="{!listSelectedVal}" var="PDASubItem" align="left" cellspacing="10" style="font-size:16px;text-align:center;" border="0">
+                    <apex:column width="10%" headerValue="SAP Acc #" value="{!oAccount.SAPAccountNumber__c}" />
+                    <apex:column width="15%" headerValue="Material #" value="{!PDASubItem.oSubItem.MaterialNumber}" />
+                    <apex:column width="20%" headerValue="Description" value="{!PDASubItem.oSubItem.MaterialDesc}" />
+                    <apex:column width="5%" headerValue="Qty" value="{!PDASubItem.oSubItem.Quantity}" />
+                    <apex:column width="10%" headerValue="*General Estimated Unit Upkeep" value="${!PDASubItem.oSubItem.EstimatedUnitUpKeep}" />
+                    <apex:column width="10%" headerValue="Total Estimated UpKeep"  value="${!PDASubItem.oPdaLineItem.EstimatedUpKeep}" />
+                    <apex:column width="10%" headerValue="{!HeaderVal}" value="${!PDASubItem.oPdaLineItem.DiscountPerUnit}"/>
+                    <apex:column width="10%" headerValue="Total Print Discount" value="${!PDASubItem.oPdaLineItem.Discount}"/>
+                    <apex:column width="10%" headerValue="Total Annual Estimated Discounted Upkeep" value="${!PDASubItem.oPdaLineItem.UpKeepAfterDiscount}"/>
+                  </apex:pageBlockTable>
+            </apex:pageBlockSection> 
+             <hr/>
+           <table width="100%" border="0" cellspacing="2" cellpadding="5">
+               <tr>
+                <td width="50%">
+                <!-- Table on left side -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="1">
+                <tr>
+                <td></td>
+                </tr>
+                </table>
+                <!-- END -->
+                </td>
+                <td width="100%">
+                <!-- Table on right side -->
+                <table width="100%" border="0" cellspacing="1" cellpadding="1" style="text-align:center;">
+                <tr>
+                <td width="15%" style="font-size:14px"><b>Total</b></td>
+                <td width="27%" ><b><apex:outputText value="${!oPdaItem.TotalEstimatedUpKeep}" style="font-size:16px;"/></b></td>
+                <td width="18%"></td>
+                <td width="20%"><b><apex:outputText value="${!oPdaItem.TotalDiscount}" style="font-size:16px;"/></b></td>
+                <td width="20%"><b><apex:outputText value="${!oPdaItem.TotalUpKeepAfterDiscount}" style="font-size:16px;"/></b></td>
+                </tr>
+                </table>
+                <!-- END -->
+                </td>
+            </tr>
+        </table>   
+        <table width="100%" border="0" cellspacing="2" cellpadding="5">
+            <tr>
+                <td width="50%">
+                <!-- Table on left side -->
+                <table width="100%" border="0" cellspacing="0" cellpadding="1">
+                <tr>
+                <td></td>
+                </tr>
+                </table>
+                <!-- END -->
+                </td>
+                <td width="100%">
+                <!-- Table on right side -->
+                <table width="100%" border="0" cellspacing="1" cellpadding="1" style="text-align:center;">
+                <tr>
+                <td width="10%" style="font-size:12px"></td>
+                <td width="10%" style="font-size:12px"></td>
+                <td width="20%" style="font-size:12px"></td>
+                <td width="40%"><b><apex:outputLabel value="Estimated Monthly Savings" style="font-size:14px" /></b></td>
+                <td width="20%"><b><apex:outputText value="${!oPdaItem.TotalMonthlySavings}" style="font-size:14px"/></b></td>
+                </tr>
+                </table>
+                <!-- END -->
+                </td>
+            </tr>
+        </table>    
+            <br/><br/><br/><br/><br/><br/><br/><br/>
+           <apex:outputText style="text-align:left;font-size:14px;" value="{!$Label.PrintDiscountAnalysisWord_HelpText1}"/>
+            <br></br>
+            <apex:outputText style="text-align:left;font-size:14px;" value="{!$Label.PrintDiscountAnalysisWord_HelpText2}" />
+            <br></br>     
+            <b><apex:outputText style="text-align:left;font-size:14px" value="{!$Label.PrintDiscountAnalysisWord_HelpText3}" /></b>
+        </apex:pageBlock>
+        </html>
+    </apex:form>
+</apex:page>

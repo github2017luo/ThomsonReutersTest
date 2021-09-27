@@ -1,0 +1,312 @@
+<!--
+
+Name           Description                                                                                              Date
+Samarpreet Singh      JIRA NO: Enabling Lightning as part of Sales Lightning Project..added lightning stylesheet               14-Feb-2019
+-->
+
+<apex:page standardController="Account" extensions="subscriptions" id="pageSubscription" tabStyle="Account" sidebar="false" title="Account Subscription:{!Account.Name}" language="" lightningStylesheets="true">    
+    <apex:sectionHeader id="title" title="" subtitle="{!$Label.Subscription}"/>
+    <apex:includeScript value="/support/console/22.0/integration.js"/>
+         <style type="text/css">
+          .loadingIcon {
+                background-image: url(/img/loading.gif);
+                width: 16px;
+                height: 16px;
+            }
+            .bPageBlock .pbTitle{
+                width:40%;
+            }
+         </style>  
+         <script>
+            function runSubscriptionReport() 
+            {
+                window.open("https://tr-sapbi4.thomsonreuters.com/BOE/OpenDocument/opendoc/openDocument.jsp?sPath=[West],[Siebel+Reports]&sDocName=SFDC_02515_Subscriptions&lsSEnter+a+Ship-To+Account+Number:={!Account.SAPAccountNumber__c}")
+            }
+            function testOpenSubtab(){
+                if (sforce.console.isInConsole()) { 
+                    var url = '/{!Account.Id}?isdtp=vw'; 
+                    srcSelf(url); 
+                } else { 
+                    var url = '/{!Account.Id}';
+                    window.open(url,'_top'); 
+                } 
+             }
+          </script>
+  <apex:pageMessages id="messagesGlobal" />   
+    <apex:form id="formSubscription">
+         <apex:actionFunction name="rerenderSubscription" reRender="blockSubscriptionsHeader,mainPageBlockId,sectionSubscription,statusPopUp,messagesGlobal,selectedSubscription,SelectedSortField,panelSubsType" status="statusSubscription" action="{!sortSubscription}"/>  <br/><br/>
+        <apex:outputLabel for="subscriptionType" value="{!$Label.View}: " style="font-weight:bold;"  />
+            <apex:selectList value="{!sSelectedOption}"  size="1" id="selectListSubscription" onchange="document.getElementById('popUpWindow').style.display='none';document.getElementById('mainDiv').style.display='none';rerenderSubscription();">
+                <apex:selectOptions value="{!subscriptionListOptions}" />
+            </apex:selectList> <br/><br/> 
+        <div class="ptBreadcrumb" style="padding-top: 10px; padding-bottom: 6px;">
+              &nbsp;&laquo;&nbsp;
+              <a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">{!$Label.Back_to_Account}: {!Account.Name}</a> <!--SFD-16-->
+              <!-- <a href="/{!Account.Id}" style="color:#015BA7;">{!$Label.Back_to_Account}: {!Account.Name}</a>   -->
+              <!--<apex:outputLink value="/{!Account.Id}" style="color:#015BA7;">{!$Label.Back_To_Account}: {!Account.Name}</apex:outputLink>  -->          
+        </div>
+         <apex:actionStatus id="statusSubscription">                
+                        <apex:facet name="start">
+                            <apex:outputPanel layout="block" styleClass="message infoM4">
+                                <apex:panelGrid columns="2"  styleClass="messageTable"   columnClasses="messageCell" style="padding:0px;margin:0px;">
+                                    <apex:panelGroup >
+                                        <img class="loadingIcon" src="/s.gif" />
+                                    </apex:panelGroup>
+                                    <apex:panelGroup >
+                                        <div class="messageText">Loading Subscriptions...</div>
+                                    </apex:panelGroup>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:facet>            
+                    </apex:actionStatus>
+        <apex:pageBlock id="mainPageBlockId" >  
+            <div id="mainDiv" > 
+                    <apex:facet name="header">
+                        <apex:panelGrid id="blockSubscriptionsHeader" columns="2"  columnClasses="pbTitle, pbButton, pbHelp">
+                            <apex:panelGroup layout="none" id="selectedSubscription" style="50%" >
+                                <h3>{!sTranslatedSelectOption} [{!totalNumberOfSubscription}]</h3>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" >
+                                <apex:commandButton value="{!$Label.Run_Subscription_Report}" onclick="runSubscriptionReport()" />
+                            </apex:panelGroup>
+                            <apex:panelGroup layout="none" id="panelSubsType" style="colspan:2">
+                                <apex:outputLabel for="sortBy" value="{!$Label.Sort_By}: " style="font-weight:bold;" id="sortByFieldId" />
+                                    <apex:selectList value="{!field}" size="1" id="i">
+                                        <apex:selectOptions value="{!sortSubscriptionByfield}" />
+                                    </apex:selectList>
+                                <apex:outputLabel for="sortOrder" value="{!$Label.Sort_Order}: " style="font-weight:bold;" id="sortOrderId" />                                        
+                                    <apex:selectList value="{!sortOrder}" size="1">
+                                        <apex:selectOptions value="{!sortByOrder}" />
+                                    </apex:selectList>
+                                <apex:commandButton action="{!displaySubsList}" reRender="mainPageBlockId,sortByFieldId,sortOrderId ,subTypeForm,sectionSubscription,statusPopUp,messagesGlobal,selectedSubscription,SelectedSortField,panelSubsType" value="{!$Label.Go}" status="sortStatusSubscription"/>  
+                                <apex:actionStatus id="sortStatusSubscription">                    
+                                    <apex:facet name="start">
+                                        <img class="loadingIcon" src="/s.gif" />
+                                        <div class="messageText">Loading {!sSelectedOption} Subscriptions...</div>
+                                    </apex:facet> 
+                                </apex:actionStatus> 
+                            </apex:panelGroup>   
+                        </apex:panelGrid>
+                    </apex:facet>     
+                    <c:PagingToolbar rerender="mainPageBlockId" paging="{!oPagingSubscriptions}"  />            
+                    <apex:pageblocktable value="{!oPagingSubscriptions.listofSubscription}"  var="subs" id="tableSubscription" >
+                        <apex:column >
+                            <apex:facet name="header"> {!$Label.View} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </apex:facet>
+                                <apex:outputpanel >
+                                    <apex:commandlink style="color: #015BA7;" onclick="document.getElementById('mainDiv').style.display='none';" oncomplete="document.getElementById('popUpWindow').style.display='block';"   status="statusPopUp"  action="{!displayDetail}" rerender="blockPopUp" >
+                                        {!$Label.Details}
+                                       <apex:param name="subsId" value="{!subs.subkey}"/>
+                                    </apex:commandlink>
+                                    &nbsp;|&nbsp;                                                                                                                                                                                                                    
+                                    <apex:commandlink style="color: #015BA7;" onclick="document.getElementById('mainDiv').style.display='none';" oncomplete="document.getElementById('popUpWindow').style.display='block';" action="{!displaySubUserItem}" status="statusPopUp" rerender="blockPopUp,messagesGlobal" >                                            
+                                        <apex:param name="subsId" value="{!subs.subkey}"/>
+                                            {!$Label.Sub_Users}
+                                    </apex:commandlink>                                  
+                                    &nbsp;|&nbsp;  <br/>   
+                                    <apex:commandlink style="color: #015BA7;" onclick="window.open('/apex/IXOS_Document?AccId={!account.id}&AcctSapId={!TEXT(subs.AcctSapId)}&OrderNumber={!subs.ContractNumber}&ContractNumber={!subs.ContractNumber}','IXOS_Document');" rerender="none">
+                                      {!$Label.Images}
+                                    </apex:commandlink>                                    
+                                </apex:outputpanel>
+                        </apex:column>                                                                     
+                        <apex:column headerValue="{!$Label.Material_Description}" value="{!subs.MaterialDesc}"/>
+                        <apex:column >
+                           <apex:facet name="header">{!$Label.Product_Title}</apex:facet> 
+                                <!--apex:outputlink value="http://cpc.thomsonreuters.com/default.aspx?mode=searchSS&Submit=yes&search=west&sHistoricalInd=0&nosplash=true&sSapMaterialNum={!subs.MaterialNumber}" target="_blank">{!subs.ProductTitle}</apex:outputlink>
+                                -->
+                                <apex:outputlink value="http://cpc.thomsonreuters.com/search/sub/{!subs.MaterialNumber}" target="_blank">{!subs.ProductTitle}</apex:outputlink>
+                             </apex:column>   
+                        <apex:column headervalue="{!$Label.Material_Number}"> 
+                            <apex:outputtext value="{!subs.MaterialNumber}" rendered="{!subs.productId==null}"/>
+                                <apex:outputLink value="/{!subs.productId}" rendered="{!subs.productId!=null}" >{!subs.MaterialNumber}</apex:outputLink>
+                        </apex:column>
+                        <apex:column headerValue="{!$Label.Quantity}" value="{!subs.Quantity}"/>
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.Monthly_Charge}</apex:facet>
+                                    <apex:outputtext value="{0,number,'$'00.00}">
+                                        <apex:param value="{!subs.MonthlyCharge}"/>
+                                    </apex:outputtext>
+                            </apex:column>   
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.Estimated}<br/> {!$Label.Unit_UpKeep}</apex:facet>
+                                    <apex:outputtext value="{0,number,'$'00.00}">
+                                        <apex:param value="{!subs.EstimatedUnitUpKeep}"/>
+                                    </apex:outputtext>
+                            </apex:column> 
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.Contract_Start_Date_Line1}<br/>{!$Label.Contract_Start_Date_Line2}</apex:facet>
+                                   <apex:outputText > 
+                                       <c:Locale_Formatted_DateTime date_time_value="{!subs.ContractStartDt}"></c:Locale_Formatted_DateTime>
+                                   </apex:outputText>
+                            </apex:column>       
+                            <apex:column >
+                            <apex:facet name="header">{!$Label.Contract_End_Date_Line1}<br/>{!$Label.Contract_End_Date_Line2}</apex:facet>   
+                                    <!-- apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                        <apex:param value="{!subs.ContractEndDt}" /> 
+                                    </apex:outputText -->
+                                    <apex:outputText >
+                                        <c:Locale_Formatted_DateTime date_time_value="{!subs.ContractEndDt}"></c:Locale_Formatted_DateTime>
+                                    </apex:outputText>
+                            </apex:column>    
+                            <apex:column headerValue="{!$Label.Lapsed_Date}" rendered="{!sSelectedOption != 'AllActive'}"> 
+                                <!-- apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                                   <apex:param value="{!subs.LapsedDate}" />                                
+                                </apex:outputText -->
+                                <apex:outputText >
+                                        <c:Locale_Formatted_DateTime date_time_value="{!subs.LapsedDate}"></c:Locale_Formatted_DateTime>
+                                </apex:outputText> 
+                            </apex:column>
+                            <apex:column value="{!subs.ContractType}">
+                                <apex:facet name="header">{!$Label.Contract_Description_Line1}<br/>{!$Label.Contract_Description_Line2}</apex:facet>
+                            </apex:column>
+                            <apex:column value="{!subs.ProgramDiscountDesc}" >
+                                <apex:facet name="header">{!$Label.Details} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</apex:facet>
+                            </apex:column>
+                            <apex:column value="{!subs.FindlawLocationDesc}">
+                                <apex:facet name="header">FL Sub<br/>{!$Label.FL_Sub_Location_Line2}</apex:facet>
+                            </apex:column>
+                            <apex:column value="{!subs.FindlawPracticeAreaDesc}" >
+                                <apex:facet name="header">FL Sub<br/>{!$Label.FL_Sub_Practice_Line2}</apex:facet>
+                            </apex:column>
+                            <apex:column >
+                                <apex:facet name="header">Banded<br/>Retail Rate</apex:facet>
+                                    <apex:outputtext value="{0,number,'$'00.00}">
+                                        <apex:param value="{!subs.BandedRetailRate}"/>
+                                    </apex:outputtext>
+                            </apex:column>
+                            <apex:column value="{!subs.BandedAttorneyCount}"> 
+                                <apex:facet name="header">Banded<br/>Attorney Count</apex:facet>
+                            </apex:column>
+                            <apex:column value="{!subs.SubscriptionStatus}"> 
+                                <apex:facet name="header">{!$Label.Status}</apex:facet>
+                            </apex:column>                                   
+                    </apex:pageblocktable>
+                    <c:PagingToolbar rerender="mainPageBlockId" paging="{!oPagingSubscriptions}"  />
+                <div id="sectionSubscription" >          
+                    <apex:actionStatus id="statusSubscription">                
+                        <apex:facet name="start">
+                            <apex:outputPanel layout="block" styleClass="message infoM4">
+                                <apex:panelGrid columns="2" styleClass="messageTable"  columnClasses="messageCell"  style="padding:0px;margin:0px;">
+                                    <apex:panelGroup >
+                                        <img class="loadingIcon" src="/s.gif" />
+                                    </apex:panelGroup>
+                                    <apex:panelGroup >
+                                        <div class="messageText">Loading Subscriptions...</div>
+                                    </apex:panelGroup>
+                                </apex:panelGrid>
+                            </apex:outputPanel>
+                        </apex:facet>                
+                    <!--    <apex:facet name="stop">
+                            <apex:outputPanel layout="none" >                           
+                                <apex:outputPanel layout="block"
+                                    rendered="{!SubitemList.size==0}"
+                                    style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;"></apex:outputPanel>                                 
+                                <apex:outputPanel id="panelTable" rendered="{!SubitemList.size!=0}">{!$Label.No_records_to_display} </apex:outputPanel>
+                            </apex:outputpanel>                             
+                        </apex:facet>    -->               
+                    </apex:actionStatus>                             
+               </div>              
+            </div>       
+        </apex:pageBlock> 
+        <apex:actionStatus id="statusPopUp">
+            <apex:facet name="start">
+                <apex:outputPanel layout="block" styleClass="message infoM4">
+                    <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">
+                        <apex:panelGroup >
+                            <img class="loadingIcon" src="/s.gif" />
+                        </apex:panelGroup>
+                        <apex:panelGroup >
+                            <div class="messageText">Loading ...</div>
+                        </apex:panelGroup>
+                    </apex:panelGrid>
+                </apex:outputPanel>
+            </apex:facet> 
+            <apex:facet name="stop">
+                <apex:outputPanel layout="none" >              
+                    <div id="popUpWindow" style="text-align:left; height:100%; background-color:#fbfbfb;opacity:0.98;width:100%;display:none">      
+                        <apex:pageBlock id="blockPopUp" mode="detail" tabStyle="Account">
+                                <apex:facet name="header">
+                                    <table>                    
+                                        <tr align="right">
+                                            <td align="center"> <h4> {!$Label.Subscription_Details} - {!oSubItem.ContractNumber} </h4></td>
+                                            <td textAlign="right">[&nbsp;<b><a href="#" onclick="document.getElementById('popUpWindow').style.display='none';document.getElementById('mainDiv').style.display='block';">X</a></b>&nbsp;]</td>
+                                        </tr>
+                                    </table>
+                                </apex:facet>
+                            <apex:pageBlockSection columns="2" id="sectionDetailPopUp" rendered="{!detailFlag}" title="{!$Label.Details}">
+                                <apex:outputtext value="{0,number,0000000000}" label="{!$Label.SAP_Account_Number}"> 
+                                  <apex:param value="{!oSubItem.AcctSapId}"/>
+                                </apex:outputtext>
+                                <apex:outputtext value="{!oSubItem.subscriptionStatus}" label="{!$Label.Subscription_Status}"/> 
+                                <apex:outputtext value="{!oSubItem.ProductTitle}" label="{!$Label.Product_Title}"/>
+                                <apex:outputtext value="{!oSubItem.MaterialDesc}" label="{!$Label.Material_Description}"/>
+                                <apex:outputtext value="{!oSubItem.Quantity}" label="{!$Label.Quantity}"/>   
+                                <apex:outputtext value="{!oSubItem.MaterialNumber}" rendered="{!oSubItem.productId==null}" label="{!$Label.Material_Number}"/>                
+                                <apex:pageBlockSectionItem rendered="{!oSubItem.productId!=null}">
+                                    <apex:outputLabel style="font-weight:bold;">{!$Label.Material_Number}</apex:outputLabel>
+                                    <apex:outputLink value="/{!oSubItem.productId}">{!oSubItem.MaterialNumber}</apex:outputLink>                            
+                                </apex:pageBlockSectionItem> 
+                                <apex:outputText value="{0,date,MM'/'dd'/'yyyy}" label="{!$Label.Contract_Start_Date_Line1} {!$Label.Contract_Start_Date_Line2}">
+                                    <apex:param value="{!oSubItem.ContractStartDt}" /> 
+                                </apex:outputText>
+                                <apex:inputCheckbox value="{!oSubItem.AutoRenewFlag}" label="{!$Label.Auto_Renew_Flag}" disabled="true"/> 
+                                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}" label="{!$Label.Contract_End_Date_Line1} {!$Label.Contract_End_Date_Line2}">
+                                        <apex:param value="{!oSubItem.ContractEndDt}" /> 
+                                    </apex:outputText>
+                                <apex:outputText value="{0,date,MM'/'dd'/'yyyy}" label="{!$Label.Lapsed_Date}">
+                                    <apex:param value="{!oSubItem.LapsedDate}" /> 
+                                </apex:outputText> 
+                                <apex:outputtext value="{!oSubItem.TermEndDt}" label="SO Term End"/>   
+                                <apex:outputtext value="{!oSubItem.LapsedReasonDesc}" label="{!$Label.Lapsed_Reason_Description}"/>
+                                <apex:outputtext value="{!oSubItem.DealId}" label="Deal Id"/>   
+                                <apex:outputtext value="{0,number,0.00'%'}" label="Program Discount">
+                                    <apex:param value="{!oSubItem.ProgramDiscountPercent}"/>
+                                </apex:outputtext>
+                                <apex:outputtext value="{!oSubItem.ContractType}" label="{!$Label.Contract_Description_Line1} {!$Label.Contract_Description_Line2}"/>                  
+                                <apex:outputtext value="{!oSubItem.MediaHighLevelDesc}" label="{!$Label.Media_High_Level}"/>
+                                <apex:outputtext value="{0,number,'$'00.00}"  label="{!$Label.Estimated} {!$Label.Unit_UpKeep}">
+                                    <apex:param value="{!oSubItem.EstimatedUnitUpKeep}"/>
+                                </apex:outputtext>
+                                <apex:outputtext value="{!oSubItem.BandedAttorneyCount}" label="Banded Attorney Count"/> 
+                                <!-- <apex:outputtext value="{!oSubItem.NumberOfPasswords}" label="Number Of Passwords"/>  -->               
+                                <!--  <apex:outputtext value="{!oSubItem.PasswordHolders}" label="Password Holders"/>   -->
+                                <apex:outputtext value="{!oSubItem.ProgramDiscountDesc}" label="{!$Label.Details}"/>         
+                                <apex:outputtext value="{!oSubItem.ContentGroup}" label="Content Group"/>
+                                <apex:outputtext value="{!oSubItem.ContractNumber}" label="{!$Label.Contract_Number}"/> 
+                                <apex:outputtext value="{!oSubItem.FindlawLocationDesc}" label="FL Sub {!$Label.FL_Sub_Location_Line2}"/>
+                                <apex:outputtext value="{0,number,00.00'%'}"  label="First Year Discount">
+                                    <apex:param value="{!oSubItem.FirstYearDiscount}"/>
+                                </apex:outputtext>
+                                <apex:outputtext value="{!oSubItem.FindlawPracticeAreaDesc}" label="FL Sub Practice Area"/>
+                                <apex:outputtext value="{0,number,'$'00.00}"  label="Banded Retail Rate">
+                                    <apex:param value="{!oSubItem.BandedRetailRate}"/>
+                                </apex:outputtext> 
+                                <apex:inputCheckbox value="{!oSubItem.WestpackFlag}" label="WP Eligible" disabled="true"/>
+                                <apex:outputtext value="{0,number,'$'00.00}"  label="Retail (Initial) User Rate">
+                                    <apex:param value="{!oSubItem.RetailUserRate}"/>
+                                </apex:outputtext> 
+                                <apex:outputtext value="{0,number,'$'00.00}"  label="Per User Rate">
+                                    <apex:param value="{!oSubItem.PerUserRate}"/>
+                                </apex:outputtext>
+                                <apex:outputtext />
+                                <apex:outputtext value="{0,number,'$'00.00}"  label="{!$Label.Monthly_Charge}">
+                                    <apex:param value="{!oSubItem.MonthlyCharge}"/>
+                                </apex:outputtext>                                
+                            </apex:pageBlockSection> 
+                            <apex:pageBlockSection columns="1" id="sectionSubUserItemPopup" rendered="{!subuseritemFlag}" title="Sub User Item"> 
+                                <apex:outputPanel layout="block" rendered="{!oSubUserItem.size==0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">{!$Label.No_Records_to_Display}</apex:outputPanel>     
+                                    <apex:pageBlockTable value="{!oSubUserItem}" var="Item" rendered="{!oSubUserItem.size!=0}">
+                                        <apex:column headerValue="{!$Label.First_Name}" value="{!Item.FirstName}"/>
+                                        <apex:column headerValue="{!$Label.Last_Name}" value="{!Item.LastName}"/>
+                                        <apex:column headerValue="{!$Label.Westlaw_User_Id}" value="{!Item.WestlawUserId}"/>
+                                  <!--      <apex:column headerValue="{!$Label.Westlaw_Password}" value="{!Item.WestlawPassword}"/>
+                                        <apex:column headerValue="{!$Label.SAP_Role}" value="{!Item.SapRole}"/> Removed as part of MCL-1859 --> 
+                                    </apex:pageBlockTable>                                   
+                            </apex:pageBlockSection>                   
+                        </apex:pageBlock>                
+                    </div>              
+                </apex:outputpanel>                                           
+            </apex:facet>
+        </apex:actionStatus>             
+    </apex:form>       
+</apex:page>

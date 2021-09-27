@@ -1,0 +1,99 @@
+<apex:page standardController="Training_Event_Contact__c" recordSetVar="Training Event Contacts" extensions="MassEditTrainingContacts">
+<apex:form >
+<script type="text/javascript" src="https://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
+<apex:stylesheet value="{!$Resource.CalendarControl}"/>
+    <apex:includeScript value="{!$Resource.Datepicker}"/> 
+<script>
+j$ = jQuery.noConflict();
+j$(document).ready(function()
+{
+  j$("[id$=parentCheckbox]").click(function()
+  {
+    if(j$("[id$=parentCheckbox]").attr('checked'))
+    {
+      j$("[id$=childCheckbox]").attr('checked',true);
+    }
+    else
+    {
+      j$("[id$=childCheckbox]").attr('checked',false);
+    }
+  });
+  j$("[id$=updateTrainedDate]").click(function()
+  {
+    var dt = j$("[id$=trainedDate]").attr('value');
+    var checked = false;
+    j$("[id$=childCheckbox]").each(function()
+    {
+        if(j$(this).attr('checked'))
+        {
+          checked = true;
+          var d = j$(this).attr('id').replace("childCheckbox","UserTrainedDate");
+          //alert(d);
+          j$("[id="+d+"]").val(dt);
+        }
+    });
+    if(!checked)
+      alert('Please select atleast one row');
+    //j$("[id$=UserTrainedDate]").attr('value',dt);
+    //j$("[id$=UserTrainedDate]").val(dt);
+  });
+});
+</script>
+<style>
+.linkClass {
+            color:blue;
+            font-size:11px;
+        }
+</style>
+<br/>
+<apex:sectionHeader id="pageTitle" title="Training Event Contacts" subtitle="Mass Edit" />
+<!--&nbsp;&nbsp;&nbsp;<apex:outputLink styleClass="linkClass" target="" value="/{!Training_Event_Contact__c.Training_Event__r.Id}">
+                    Back to {!Training_Event_Contact__c.Training_Event__c}</apex:outputLink><br/>&nbsp;<br/>-->
+    <apex:pageBlock mode="edit">
+        <apex:pageBlockButtons >
+            <apex:commandButton action="{!save}" value="Save"/>
+            <apex:commandButton action="{!cancel}" value="Cancel"/>
+<!--        <apex:commandButton id="updateTrainedDate" value="Update Trained Date" title="populates the trained date on the selected contacts"/>-->            
+        </apex:pageBlockButtons>
+        <table style="width:100%">
+        <tr><td style="text-align:right">
+        <apex:inputText size="10" id="trainedDate" value="{!dTrainedDate}" onfocus="DatePicker.pickDate(true, 'j_id0:j_id1:j_id6:trainedDate', false);"/>
+        <!--<apex:commandButton value="date picker" id="dt2" onclick="displayDatePicker('j_id0:j_id1:j_id6:dt2');"/>
+        <apex:inputField id="trainedDate" value="{!oDate.Begin_Date__c}"/>-->
+        <input type="button" id="updateTrainedDate" class="btn" value="Update Trained Date" title="populates the entered date on the selected contacts"/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td></tr>
+        <tr><td>
+        <!--<apex:pageBlockTable value="{!selected}" var="tec">
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Name.label}" value="{!tec.Name}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.First_Name__c.label}" value="{!tec.First_Name__c}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Last_Name__c.label}" value="{!tec.Last_Name__c}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Job_Function__c.label}" value="{!tec.Job_Function__c}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.User_trained_Date__c.label}">
+                 <apex:inputField value="{!tec.User_trained_Date__c}"/>
+            </apex:column>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Trained__c.label}">
+                 <apex:inputField value="{!tec.Trained__c}"/>
+            </apex:column>
+        </apex:pageBlockTable>-->
+        <apex:pageBlockTable value="{!listTrainingEventContacts}" var="tec">
+            <apex:column >
+                <apex:facet name="header">
+                    <apex:inputCheckbox id="parentCheckbox" value="{!bSelectAll}" title="Select/Deselect All"/>
+                </apex:facet>
+                <apex:inputCheckbox id="childCheckbox" value="{!tec.bSelected}"/>
+            </apex:column>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Name.label}" value="{!tec.oTrainingEventContact.Name}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.First_Name__c.label}" value="{!tec.oTrainingEventContact.First_Name__c}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Last_Name__c.label}" value="{!tec.oTrainingEventContact.Last_Name__c}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.Job_Function__c.label}" value="{!tec.oTrainingEventContact.Job_Function__c}"/>
+            <apex:column headerValue="{!$ObjectType.Training_Event_Contact__c.fields.User_trained_Date__c.label}">
+                 <apex:inputField id="UserTrainedDate" value="{!tec.oTrainingEventContact.User_trained_Date__c}"/>
+            </apex:column>            
+        </apex:pageBlockTable>
+        </td></tr>
+        </table>
+    </apex:pageBlock>
+</apex:form>
+</apex:page>

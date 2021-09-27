@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntitlementProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <SObjectType>Case</SObjectType>
+    <active>true</active>
+    <businessHours>America/Chicago</businessHours>
+    <entryStartDateField>Case.CreatedDate</entryStartDateField>
+    <exitCriteriaFilterItems>
+        <field>Case.IsClosed</field>
+        <operation>equals</operation>
+        <value>true</value>
+    </exitCriteriaFilterItems>
+    <isVersionDefault>true</isVersionDefault>
+    <milestones>
+        <businessHours>America/Chicago</businessHours>
+        <criteriaBooleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6</criteriaBooleanFilter>
+        <milestoneCriteriaFilterItems>
+            <field>Case.ESC_Reopen_Case__c</field>
+            <operation>equals</operation>
+            <value>false</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.USL_Case_closure_flag__c</field>
+            <operation>equals</operation>
+            <value>true</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Status</field>
+            <operation>notEqual</operation>
+            <value>Cancelled</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>true</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>Case.Origin</field>
+            <operation>equals</operation>
+            <value>Phone</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>Case Closure Time</milestoneName>
+        <minutesCustomClass>ESC_MilestoneTimeCalculator</minutesCustomClass>
+        <timeTriggers>
+            <actions>
+                <name>GGO_UpdatGGO_Updatee_IsEscalated_to_TRUE</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <milestones>
+        <businessHours>America/Chicago</businessHours>
+        <milestoneCriteriaFormula>GGO_Referral_Milestone_Entry_Flag__c =true</milestoneCriteriaFormula>
+        <milestoneName>Case Referral Time</milestoneName>
+        <minutesCustomClass>ESC_MilestoneTimeCalculator</minutesCustomClass>
+        <successActions>
+            <name>GGO_Milestone_Referral_Flag</name>
+            <type>FieldUpdate</type>
+        </successActions>
+        <successActions>
+            <name>UpdateReferralMilestoneCreateFlag</name>
+            <type>FieldUpdate</type>
+        </successActions>
+        <timeTriggers>
+            <actions>
+                <name>GGO_UpdatGGO_Updatee_IsEscalated_to_TRUE</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <timeLength>-1</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
+        <useCriteriaStartTime>true</useCriteriaStartTime>
+    </milestones>
+    <name>usl entitlement process chicago_v1</name>
+    <versionMaster>5522a00000000Bn</versionMaster>
+    <versionNumber>2</versionNumber>
+</EntitlementProcess>

@@ -1,0 +1,3177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <actionCalls>
+        <name>Create_Ref_and_Send_Data_to_Staging</name>
+        <label>Create Ref and Send Data to Staging</label>
+        <locationX>1688</locationX>
+        <locationY>309</locationY>
+        <actionName>ESC_CaseRefCreation</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>cs</name>
+            <value>
+                <elementReference>id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Assign_the_case_list</name>
+        <label>Assign the case list</label>
+        <locationX>684</locationX>
+        <locationY>205</locationY>
+        <assignmentItems>
+            <assignToReference>userProfile</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CurrentUserprofile</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Caselist.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>check_for_Account_Id_null_check</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>Choice00_CI_Polica_Federal</name>
+        <choiceText>00 C.I. Policía Federal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>00 C.I. Policía Federal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice01_CI_Buenos_Aires</name>
+        <choiceText>01 C.I. Buenos Aires</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>01 C.I. Buenos Aires</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice01_ICMS_Contributor</name>
+        <choiceText>01 ICMS Contributor</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>01 ICMS Contributor</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice01_IVA_Responsable_Inscripto</name>
+        <choiceText>01 IVA Responsable Inscripto</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>01 IVA Responsable Inscripto</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice01_VAT_Responsible_Inscripted</name>
+        <choiceText>01 VAT Responsible Inscripted</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>01 VAT Responsible Inscripted</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice02_CI_Catamarca</name>
+        <choiceText>02 C.I. Catamarca</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>02 C.I. Catamarca</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice02_ICMS_Contributor_Exemption</name>
+        <choiceText>02 ICMS Contributor - Exemption</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>02 ICMS Contributor - Exemption</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice02_IVA_Responsable_No_Inscripto</name>
+        <choiceText>02 IVA Responsable No Inscripto</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>02 IVA Responsable No Inscripto</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice02_VAT_Responsible_Not_Inscripted</name>
+        <choiceText>02 VAT Responsible Not Inscripted</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>02 VAT Responsible Not Inscripted</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice03_CI_Crdoba</name>
+        <choiceText>03 C.I. Córdoba</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>03 C.I. Córdoba</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice03_IVA_No_Responsable</name>
+        <choiceText>03 IVA No Responsable</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>03 IVA No Responsable</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice04_CI_Corrientes</name>
+        <choiceText>04 C.I. Corrientes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>04 C.I. Corrientes</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice04_IVA_Sujeto_Exento</name>
+        <choiceText>04 IVA Sujeto Exento</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>04 IVA Sujeto Exento</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice04_VAT_Exempted_Subject</name>
+        <choiceText>04 VAT Exempted Subject</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>04 VAT Exempted Subject</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice05_CI_Entre_Ros</name>
+        <choiceText>05 C.I. Entre Ríos</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>05 C.I. Entre Ríos</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice05_Consumidor_Final</name>
+        <choiceText>05 Consumidor Final</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>05 Consumidor Final</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice05_VAT_Final_Consumer</name>
+        <choiceText>05 VAT Final Consumer</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>05 VAT Final Consumer</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice06_CI_Jujuy</name>
+        <choiceText>06 C.I. Jujuy</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>06 C.I. Jujuy</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice06_Responsable_Monotributo</name>
+        <choiceText>06 Responsable Monotributo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>06 Responsable Monotributo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice06_VAT_Responsible_Monotributer</name>
+        <choiceText>06 VAT Responsible Monotributer</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>06 VAT Responsible Monotributer</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice07_CI_Mendoza</name>
+        <choiceText>07 C.I. Mendoza</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>07 C.I. Mendoza</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice07_Sujeto_no_Categorizado</name>
+        <choiceText>07 Sujeto no Categorizado</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>07 Sujeto no Categorizado</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice08_CI_La_Rioja</name>
+        <choiceText>08 C.I. La Rioja</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>08 C.I. La Rioja</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice08_Proveedor_del_Exterior</name>
+        <choiceText>08 Proveedor del Exterior</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>08 Proveedor del Exterior</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice09_CI_Salta</name>
+        <choiceText>09 C.I. Salta</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>09 C.I. Salta</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice09_Cliente_del_Exterior</name>
+        <choiceText>09 Cliente del Exterior</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>09 Cliente del Exterior</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice09_Foreign_Customer</name>
+        <choiceText>09 Foreign Customer</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>09 Foreign Customer</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice09_No_ICMS_Contributor</name>
+        <choiceText>09 No ICMS Contributor</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>09 No ICMS Contributor</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1023_rgo_Pblico_do_Poder_Executivo_Estadu</name>
+        <choiceText>1023 Órgão Público do Poder Executivo Estadu</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1023 Órgão Público do Poder Executivo Estadu</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1031_rgo_Pblico_do_Poder_Executivo_Munici</name>
+        <choiceText>1031 Órgão Público do Poder Executivo Munici</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1031 Órgão Público do Poder Executivo Munici</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1040_rgo_Pblico_do_Poder_Legislativo_Fede</name>
+        <choiceText>1040 Órgão Público do Poder Legislativo Fede</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1040 Órgão Público do Poder Legislativo Fede</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1058_rgo_Pblico_do_Poder_Legislativo_Esta</name>
+        <choiceText>1058 Órgão Público do Poder Legislativo Esta</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1058 Órgão Público do Poder Legislativo Esta</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1066_rgo_Pblico_do_Poder_Legislativo_Muni</name>
+        <choiceText>1066 Órgão Público do Poder Legislativo Muni</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1066 Órgão Público do Poder Legislativo Muni</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1074_rgo_Pblico_do_Poder_Judicirio_Feder</name>
+        <choiceText>1074 Órgão Público do Poder Judiciário Feder</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1074 Órgão Público do Poder Judiciário Feder</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1082_rgo_Pblico_do_Poder_Judicirio_Estad</name>
+        <choiceText>1082 Órgão Público do Poder Judiciário Estad</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1082 Órgão Público do Poder Judiciário Estad</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice10_CI_San_Juan</name>
+        <choiceText>10 C.I. San Juan</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>10 C.I. San Juan</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice10_IVA_Liberado_Ley_No_19640</name>
+        <choiceText>10 IVA Liberado - Ley No 19.640</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>10 IVA Liberado - Ley No 19.640</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice10_VAT_Liberated_Law_No_19640</name>
+        <choiceText>10 VAT Liberated - Law No 19.640</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>10 VAT Liberated - Law No 19.640</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1104_Autarquia_Federal</name>
+        <choiceText>1104 Autarquia Federal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1104 Autarquia Federal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1112_Autarquia_Estadual_ou_do_Distrito_Feder</name>
+        <choiceText>1112 Autarquia Estadual ou do Distrito Feder</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1112 Autarquia Estadual ou do Distrito Feder</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1120_Autarquia_Municipal</name>
+        <choiceText>1120 Autarquia Municipal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1120 Autarquia Municipal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1139_Fundao_Federal</name>
+        <choiceText>1139 Fundação Federal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1139 Fundação Federal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1147_Fundao_Estadual_ou_do_Distrito_Federa</name>
+        <choiceText>1147 Fundação Estadual ou do Distrito Federa</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1147 Fundação Estadual ou do Distrito Federa</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1155_Fundao_Municipal</name>
+        <choiceText>1155 Fundação Municipal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1155 Fundação Municipal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1163_rgo_Pblico_Autnomo_da_Unio</name>
+        <choiceText>1163 Órgão Público Autônomo da União</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1163 Órgão Público Autônomo da União</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1171_rgo_Pblico_Autnomo_Estadual_ou_do_D</name>
+        <choiceText>1171 Órgão Público Autônomo Estadual ou do D</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1171 Órgão Público Autônomo Estadual ou do D</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1180_rgo_Pblico_Autnomo_Municipal</name>
+        <choiceText>1180 Órgão Público Autônomo Municipal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1180 Órgão Público Autônomo Municipal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1198_Comisso_Polinacional</name>
+        <choiceText>1198 Comissão Polinacional</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1198 Comissão Polinacional</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice11_CI_San_Luis</name>
+        <choiceText>11 C.I. San Luis</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>11 C.I. San Luis</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice11_IVA_Responsable_Inscripto_Agente_de_Percepcin</name>
+        <choiceText>11 IVA Responsable Inscripto - Agente de Percepción</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>11 IVA Responsable Inscripto - Agente de Percepción</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1201_Fundo_Pblico</name>
+        <choiceText>1201 Fundo Público</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1201 Fundo Público</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1210_Consrcio_Pub_Direito_Pub_Ass_Pub</name>
+        <choiceText>1210 Consórcio Pub. Direito Pub. (Ass. Pub.)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1210 Consórcio Pub. Direito Pub. (Ass. Pub.)</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice1244_Municpio</name>
+        <choiceText>1244 Município</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>1244 Município</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice12_CI_Santa_F</name>
+        <choiceText>12 C.I. Santa Fé</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>12 C.I. Santa Fé</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice12_Pequeo_Contribuyente_Eventual</name>
+        <choiceText>12 Pequeño Contribuyente Eventual</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>12 Pequeño Contribuyente Eventual</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice13_CI_Santiago_del_Estero</name>
+        <choiceText>13 C.I. Santiago del Estero</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>13 C.I. Santiago del Estero</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice13_Monotribusta_Social</name>
+        <choiceText>13 Monotribusta Social</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>13 Monotribusta Social</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice14_CI_Tucumn</name>
+        <choiceText>14 C.I. Tucumán</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>14 C.I. Tucumán</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice14_Pequeo_Contribuyente_Eventual_Social</name>
+        <choiceText>14 Pequeño Contribuyente Eventual Social</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>14 Pequeño Contribuyente Eventual Social</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice16_CI_Chaco</name>
+        <choiceText>16 C.I. Chaco</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>16 C.I. Chaco</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice17_CI_Chubut</name>
+        <choiceText>17 C.I. Chubut</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>17 C.I. Chubut</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice18_CI_Formosa</name>
+        <choiceText>18 C.I. Formosa</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>18 C.I. Formosa</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice19_CI_Misiones</name>
+        <choiceText>19 C.I. Misiones</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>19 C.I. Misiones</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2011_Empresa_Pblica</name>
+        <choiceText>2011 Empresa Pública</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2011 Empresa Pública</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2020_Entidade_Pblica_Reteno_Normal</name>
+        <choiceText>2020 Entidade Pública Retenção Normal</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2020 Entidade Pública Retenção Normal</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2038_Sociedade_de_Economia_Mista</name>
+        <choiceText>2038 Sociedade de Economia Mista</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2038 Sociedade de Economia Mista</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2046_Sociedade_Annima_Aberta</name>
+        <choiceText>2046 Sociedade Anônima Aberta</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2046 Sociedade Anônima Aberta</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice20_CI_Neuqun</name>
+        <choiceText>20 C.I. Neuquén</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>20 C.I. Neuquén</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice21_CI_La_Pampa</name>
+        <choiceText>21 C.I. La Pampa</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>21 C.I. La Pampa</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2216_Empresa_Domiciliada_no_Exterior</name>
+        <choiceText>2216 Empresa Domiciliada no Exterior</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2216 Empresa Domiciliada no Exterior</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2224_ClubeFundo_de_Investimento</name>
+        <choiceText>2224 Clube/Fundo de Investimento</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2224 Clube/Fundo de Investimento</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2232_Sociedade_Simples_Pura</name>
+        <choiceText>2232 Sociedade Simples Pura</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2232 Sociedade Simples Pura</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2240_Sociedade_Simples_Limitada</name>
+        <choiceText>2240 Sociedade Simples Limitada</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2240 Sociedade Simples Limitada</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2259_Sociedade_em_Nome_Coletivo</name>
+        <choiceText>2259 Sociedade em Nome Coletivo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2259 Sociedade em Nome Coletivo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2267_Sociedade_em_Comandita_Simples</name>
+        <choiceText>2267 Sociedade em Comandita Simples</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2267 Sociedade em Comandita Simples</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2275_Sociedade_Simples_em_Conta_de_Participa</name>
+        <choiceText>2275 Sociedade Simples em Conta de Participa</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2275 Sociedade Simples em Conta de Participa</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2283_Consrcio_de_Empregadores</name>
+        <choiceText>2283 Consórcio de Empregadores</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2283 Consórcio de Empregadores</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2291_Consrcio_Simples</name>
+        <choiceText>2291 Consórcio Simples</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2291 Consórcio Simples</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice22_CI_Ro_Negro</name>
+        <choiceText>22 C.I. Río Negro</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>22 C.I. Río Negro</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2305_Empresa_Individual_de_Responsabilidade</name>
+        <choiceText>2305 Empresa Individual de Responsabilidade</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2305 Empresa Individual de Responsabilidade</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2313_Empr_IndivRespLtda_Natureza_Simples</name>
+        <choiceText>2313 Empr. Indiv.Resp.Ltda (Natureza Simples)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2313 Empr. Indiv.Resp.Ltda (Natureza Simples)</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice2321_Sociedade_Unipessoal_de_Advocacia</name>
+        <choiceText>2321 Sociedade Unipessoal de Advocacia</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>2321 Sociedade Unipessoal de Advocacia</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice23_CI_Santa_Cruz</name>
+        <choiceText>23 C.I. Santa Cruz</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>23 C.I. Santa Cruz</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice24_CI_Tierra_del_Fuego</name>
+        <choiceText>24 C.I. Tierra del Fuego</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>24 C.I. Tierra del Fuego</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3034_Servio_Notarial_e_Registral_Cartrio</name>
+        <choiceText>3034 Serviço Notarial e Registral (Cartório)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3034 Serviço Notarial e Registral (Cartório)</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3042_Organizao_Social</name>
+        <choiceText>3042 Organização Social</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3042 Organização Social</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3050_Organizao_da_Sociedade_Civil_de_Inter</name>
+        <choiceText>3050 Organização da Sociedade Civil de Inter</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3050 Organização da Sociedade Civil de Inter</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3069_Outras_Formas_de_Fundaes_Mantidas_com</name>
+        <choiceText>3069 Outras Formas de Fundações Mantidas com</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3069 Outras Formas de Fundações Mantidas com</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3077_Servio_Social_Autnomo</name>
+        <choiceText>3077 Serviço Social Autônomo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3077 Serviço Social Autônomo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3085_Condomnio_Edilcios</name>
+        <choiceText>3085 Condomínio Edilícios</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3085 Condomínio Edilícios</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3093_Unidade_Executora_Programa_Dinheiro_Di</name>
+        <choiceText>3093 Unidade Executora (Programa Dinheiro Di</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3093 Unidade Executora (Programa Dinheiro Di</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3107_Comisso_de_Conciliao_Prvia</name>
+        <choiceText>3107 Comissão de Conciliação Prévia</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3107 Comissão de Conciliação Prévia</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3115_Entidade_de_Mediao_e_Arbitragem</name>
+        <choiceText>3115 Entidade de Mediação e Arbitragem</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3115 Entidade de Mediação e Arbitragem</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3123_Partido_Poltico</name>
+        <choiceText>3123 Partido Político</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3123 Partido Político</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3131_Entidade_Sindical</name>
+        <choiceText>3131 Entidade Sindical</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3131 Entidade Sindical</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3204_Estabelecimento_no_Brasil_de_Fundao</name>
+        <choiceText>3204 Estabelecimento, no Brasil, de Fundação</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3204 Estabelecimento, no Brasil, de Fundação</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3212_Fundao_ou_Associao_Domiciliada_no_E</name>
+        <choiceText>3212 Fundação ou Associação Domiciliada no E</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3212 Fundação ou Associação Domiciliada no E</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3220_Organizao_Religiosa</name>
+        <choiceText>3220 Organização Religiosa</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3220 Organização Religiosa</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3239_Comunidade_Indgena</name>
+        <choiceText>3239 Comunidade Indígena</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3239 Comunidade Indígena</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3247_Fundo_Privado</name>
+        <choiceText>3247 Fundo Privado</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3247 Fundo Privado</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3255_rgo_Direo_Nacional_Partido_Poltico</name>
+        <choiceText>3255 Órgão Direção Nacional Partido Político</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3255 Órgão Direção Nacional Partido Político</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3263_rgo_Direo_Nacional_Partido_Poltico</name>
+        <choiceText>3263 Órgão Direção Nacional Partido Político</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3263 Órgão Direção Nacional Partido Político</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice3999_Outras_Formas_de_Associao</name>
+        <choiceText>3999 Outras Formas de Associação</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>3999 Outras Formas de Associação</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice4014_Empresa_Individual_Imobiliria</name>
+        <choiceText>4014 Empresa Individual Imobiliária</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>4014 Empresa Individual Imobiliária</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice4022_Segurado_Especial</name>
+        <choiceText>4022 Segurado Especial</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>4022 Segurado Especial</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice4081_Contribuinte_individual</name>
+        <choiceText>4081 Contribuinte individual</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>4081 Contribuinte individual</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice4090_Candidato_a_Cargo_Poltico_Eletivo</name>
+        <choiceText>4090 Candidato a Cargo Político Eletivo</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>4090 Candidato a Cargo Político Eletivo</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice4120_Produtor_Rural_Pessoa_Fsica</name>
+        <choiceText>4120 Produtor Rural (Pessoa Física)</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>4120  Produtor Rural (Pessoa Física)</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice5002_Organizao_Internacional_e_Outras_Insti</name>
+        <choiceText>5002 Organização Internacional e Outras Insti</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>5002 Organização Internacional e Outras Insti</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice5010_Organiz_Internacional_Extraterritoriais</name>
+        <choiceText>5010 Organiz. Internacional Extraterritoriais</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>5010 Organiz. Internacional Extraterritoriais</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice5029_Representao_Diplomtica_Estrangeira</name>
+        <choiceText>5029 Representação Diplomática Estrangeira</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>5029 Representação Diplomática Estrangeira</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice5037_Outras_Instituies_Extraterritoriais</name>
+        <choiceText>5037 Outras Instituições Extraterritoriais</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>5037 Outras Instituições Extraterritoriais</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice70_CI</name>
+        <choiceText>70 C.I.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>70 C.I.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice71_CNPJ</name>
+        <choiceText>71 CNPJ</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>71 CNPJ</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice72_CPF</name>
+        <choiceText>72 CPF</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>72 CPF</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice73_DNI_PER</name>
+        <choiceText>73 D.N.I. PERÚ</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>73 D.N.I. PERÚ</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice74_PASAPORTE</name>
+        <choiceText>74 PASAPORTE</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>74 PASAPORTE</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice75_RUC_PARAGUAY</name>
+        <choiceText>75 R.U.C. PARAGUAY</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>75 R.U.C. PARAGUAY</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice76_RUC_PER</name>
+        <choiceText>76 R.U.C. PERÚ</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>76 R.U.C. PERÚ</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice77_RUT_CHILE</name>
+        <choiceText>77 R.U.T. CHILE</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>77 R.U.T. CHILE</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice78_RUT_URUGUAY</name>
+        <choiceText>78 R.U.T. URUGUAY</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>78 R.U.T. URUGUAY</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice79_RG</name>
+        <choiceText>79 RG</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>79 RG</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice80_CUIT</name>
+        <choiceText>80 C.U.I.T.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>80 C.U.I.T.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice85_DNRP</name>
+        <choiceText>85 D.N.R.P.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>85 D.N.R.P.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice86_CUIL</name>
+        <choiceText>86 C.U.I.L.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>86 C.U.I.L.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice87_CDI</name>
+        <choiceText>87 C.D.I.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>87 C.D.I.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice89_LE</name>
+        <choiceText>89 L.E.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>89 L.E.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice90_LC</name>
+        <choiceText>90 L.C.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>90 L.C.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice94_Passport</name>
+        <choiceText>94 Passport</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>94 Passport</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice96_DNI</name>
+        <choiceText>96 D.N.I.</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>96 D.N.I.</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice9997_Natural_Person</name>
+        <choiceText>9997 Natural Person</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>9997 Natural Person</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choice99_Others</name>
+        <choiceText>99 Others</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>99 Others</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Choicergo_Pblico_do_Poder_Executivo_Federa</name>
+        <choiceText>Órgão Público do Poder Executivo Federa</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Órgão Público do Poder Executivo Federa</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>English</name>
+        <choiceText>English</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>English</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>None_English</name>
+        <choiceText>None</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>None_Portugease</name>
+        <choiceText>Nenhum</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>None_Spanish</name>
+        <choiceText>Ninguno</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Portuguese</name>
+        <choiceText>Portuguese</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Portuguese</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Spanish</name>
+        <choiceText>Spanish</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Spanish</stringValue>
+        </value>
+    </choices>
+    <constants>
+        <name>Header</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Consider only the fields with data to change in the master data:</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>SN_TicketErrorMsg</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Ticket is being sent to Service Now, Please wait till the ticket is being created in Service now.</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>SN_WarningMsgAlreadySubmitted4</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>and Status </stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>SN_WarningMsgAlreadySubmittedForm</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Already the request is being processed with External Reference no. </stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>SN_WarningMsgAlreadySubmittedForm1</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>If you still want to resubmit the form for any more update. please go ahead and submit the request.</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>SN_WarningMsgAlreadySubmittedForm2</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>, External Ticket No. </stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>SN_WarningMsgAlreadySubmittedForm3</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>with the below fields:</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <description>If BU segment is Professional Tax then call the ESC_Create_Change_Request flow.</description>
+        <name>BU_Region_Check</name>
+        <label>BU Region Check</label>
+        <locationX>843</locationX>
+        <locationY>248</locationY>
+        <defaultConnector>
+            <targetReference>Calling_Change_Request_To_Master_data_Flow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Latam_Salesorg</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>BuRegion</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>GGO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Profile_Check</targetReference>
+            </connector>
+            <label>Latam Salesorg ?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>check_for_Account_Id_null_check</name>
+        <label>check for Account Id null check</label>
+        <locationX>536</locationX>
+        <locationY>29</locationY>
+        <defaultConnector>
+            <targetReference>Get_account_Archived</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>accountnull</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CaseAccountid</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Whether_SN_Ticket_is_already_submitted_or_Not</targetReference>
+            </connector>
+            <label>Accountnull</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_Account_is_Archived</name>
+        <label>Check if Account is Archived</label>
+        <locationX>388</locationX>
+        <locationY>268</locationY>
+        <defaultConnector>
+            <targetReference>Check_Whether_SN_Ticket_is_already_submitted_or_Not</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Account_Archived</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AccountArchived</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01213000001NcxyAAC</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Achived_Account_of_Contact</targetReference>
+            </connector>
+            <label>Account Archived</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Whether_SN_Ticket_is_already_submitted_or_Not</name>
+        <label>Check Whether SN Ticket is already submitted or Not?</label>
+        <locationX>552</locationX>
+        <locationY>321</locationY>
+        <defaultConnector>
+            <targetReference>Resubmit_Form</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Not_Submitted</name>
+            <conditionLogic>1 AND 2 AND NOT(3)</conditionLogic>
+            <conditions>
+                <leftValueReference>ExternalTaskRefNo</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>ExternalTicketNo</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>Description</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Consider only the fields with data to change in the master data:</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>BU_Region_Check</targetReference>
+            </connector>
+            <label>Is Not Submitted</label>
+        </rules>
+        <rules>
+            <name>Is_Submitted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ExternalTaskRefNo</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>ExternalTicketNo</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <conditions>
+                <leftValueReference>Description</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Consider only the fields with data to change in the master data:</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Form_Submitted_first_time</targetReference>
+            </connector>
+            <label>Is Submitted</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>LanguageSelection</name>
+        <label>LanguageSelection</label>
+        <locationX>1080</locationX>
+        <locationY>311</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>SpanishChoosen</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Language</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Spanish</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Spanish_Multiple_Change_Requests</targetReference>
+            </connector>
+            <label>SpanishChoosen</label>
+        </rules>
+        <rules>
+            <name>EnglishChoosen</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Language</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>English</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>English_Multiple_Change_Requests</targetReference>
+            </connector>
+            <label>EnglishChoosen</label>
+        </rules>
+        <rules>
+            <name>PortugueseChoosen</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Language</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Portuguese</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Portuguese_Multiple_Change_Requests</targetReference>
+            </connector>
+            <label>PortugueseChoosen</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Profile_Check</name>
+        <label>Profile Check</label>
+        <locationX>970</locationX>
+        <locationY>112</locationY>
+        <defaultConnectorLabel>[Default Outcome]</defaultConnectorLabel>
+        <rules>
+            <name>Profile_System_Admin</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CurrentUserprofile</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Profile System Admin</label>
+        </rules>
+        <rules>
+            <name>Profile_UKI</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CurrentUserprofile</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>GLI</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Profile UKI</label>
+        </rules>
+        <rules>
+            <name>Profile_GGO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CurrentUserprofile</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>LatAM</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Language_Selection</targetReference>
+            </connector>
+            <label>Profile GGO</label>
+        </rules>
+    </decisions>
+    <dynamicChoiceSets>
+        <name>Countries</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>ESC_Country__c</picklistField>
+        <picklistObject>Case</picklistObject>
+        <sortOrder>Asc</sortOrder>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>ParterFunctionPicklist</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>ESC_Partner_Function__c</picklistField>
+        <picklistObject>Case</picklistObject>
+    </dynamicChoiceSets>
+    <formulas>
+        <name>CurrentUserprofile</name>
+        <dataType>String</dataType>
+        <expression>{!$Profile.Name}</expression>
+    </formulas>
+    <interviewLabel>Multiple Change Requests to Master Data {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Multiple Change Requests to Master Data</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_account_Archived</name>
+        <label>Get account Archived</label>
+        <locationX>769</locationX>
+        <locationY>127</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_Account_is_Archived</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>CaseAccountid</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+        <outputAssignments>
+            <assignToReference>AccountArchived</assignToReference>
+            <field>RecordTypeId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <description>This to get fetch the case records instead of Create change request VF page</description>
+        <name>Get_Case_REcords</name>
+        <label>Get Case REcords</label>
+        <locationX>181</locationX>
+        <locationY>250</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_the_case_list</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputAssignments>
+            <assignToReference>CaseAccountid</assignToReference>
+            <field>AccountId</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>Description</assignToReference>
+            <field>Description</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ExternalStatus</assignToReference>
+            <field>ESC_External_Status__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ExternalTaskRefNo</assignToReference>
+            <field>ESC_External_Task_Reference_Number__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>ExternalTicketNo</assignToReference>
+            <field>ESC_External_Ticket_Number__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>BuRegion</assignToReference>
+            <field>LCRM_Sub_BU__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>SalesOrg</assignToReference>
+            <field>Sales_Org__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>Description_Update</name>
+        <label>Description_Update</label>
+        <locationX>1520</locationX>
+        <locationY>436</locationY>
+        <connector>
+            <targetReference>Create_Ref_and_Send_Data_to_Staging</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>MasterDataChangeTemplate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Portuguese_Update_Case</name>
+        <label>Portuguese Update Case</label>
+        <locationX>1517</locationX>
+        <locationY>321</locationY>
+        <connector>
+            <targetReference>Create_Ref_and_Send_Data_to_Staging</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>PortugeuseMasterDataChange</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Spanish_Update_Case</name>
+        <label>Spanish Update Case</label>
+        <locationX>1521</locationX>
+        <locationY>201</locationY>
+        <connector>
+            <targetReference>Create_Ref_and_Send_Data_to_Staging</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>SpanishMasterDataChange</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <screens>
+        <name>Achived_Account_of_Contact</name>
+        <label>Achived Account of Contact</label>
+        <locationX>449</locationX>
+        <locationY>495</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>AccountOrContactArchivedErrorMessage</name>
+            <fieldText>We&apos;re sorry but you can not perform this action on this case becuase either the account of contact is archived. 
+
+Thank you and have a nice day!</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>English_Multiple_Change_Requests</name>
+        <label>English_Multiple Change Requests</label>
+        <locationX>1328</locationX>
+        <locationY>435</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Description_Update</targetReference>
+        </connector>
+        <fields>
+            <name>Header1</name>
+            <fieldText>{!Header}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Partner_Function2</name>
+            <choiceReferences>None_English</choiceReferences>
+            <choiceReferences>ParterFunctionPicklist</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_English</defaultSelectedChoiceReference>
+            <fieldText>Partner Function:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>filler</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Name</name>
+            <dataType>String</dataType>
+            <fieldText>Name:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>fille3</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Phone_Number2</name>
+            <dataType>String</dataType>
+            <fieldText>Phone Number:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler4</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Street</name>
+            <dataType>String</dataType>
+            <fieldText>Street:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler5</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>House_Number</name>
+            <dataType>String</dataType>
+            <fieldText>House Number:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler6</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Postal_Code</name>
+            <dataType>String</dataType>
+            <fieldText>Postal Code:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler7</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Street_3</name>
+            <dataType>String</dataType>
+            <fieldText>Street 3:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler8</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>City</name>
+            <dataType>String</dataType>
+            <fieldText>City:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler9</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Country_English</name>
+            <choiceReferences>None_English</choiceReferences>
+            <choiceReferences>Countries</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_English</defaultSelectedChoiceReference>
+            <fieldText>Country:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>filler10</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Region</name>
+            <dataType>String</dataType>
+            <fieldText>Region:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler11</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Email</name>
+            <dataType>String</dataType>
+            <fieldText>Email:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <validationRule>
+                <errorMessage>The value you entered is not a valid email.</errorMessage>
+                <formulaExpression>REGEX({!Email},&quot;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}&quot;)</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>filler12</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Number1</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Number 1:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler13</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Number_2</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Number 2:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler14</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Number_3</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Number 3:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler15</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Number_4</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Number 4:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>fille16</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Number_Type</name>
+            <choiceReferences>None_English</choiceReferences>
+            <choiceReferences>Choice00_CI_Polica_Federal</choiceReferences>
+            <choiceReferences>Choice01_CI_Buenos_Aires</choiceReferences>
+            <choiceReferences>Choice02_CI_Catamarca</choiceReferences>
+            <choiceReferences>Choice03_CI_Crdoba</choiceReferences>
+            <choiceReferences>Choice04_CI_Corrientes</choiceReferences>
+            <choiceReferences>Choice05_CI_Entre_Ros</choiceReferences>
+            <choiceReferences>Choice06_CI_Jujuy</choiceReferences>
+            <choiceReferences>Choice07_CI_Mendoza</choiceReferences>
+            <choiceReferences>Choice08_CI_La_Rioja</choiceReferences>
+            <choiceReferences>Choice09_CI_Salta</choiceReferences>
+            <choiceReferences>Choice10_CI_San_Juan</choiceReferences>
+            <choiceReferences>Choice11_CI_San_Luis</choiceReferences>
+            <choiceReferences>Choice12_CI_Santa_F</choiceReferences>
+            <choiceReferences>Choice13_CI_Santiago_del_Estero</choiceReferences>
+            <choiceReferences>Choice14_CI_Tucumn</choiceReferences>
+            <choiceReferences>Choice16_CI_Chaco</choiceReferences>
+            <choiceReferences>Choice17_CI_Chubut</choiceReferences>
+            <choiceReferences>Choice18_CI_Formosa</choiceReferences>
+            <choiceReferences>Choice19_CI_Misiones</choiceReferences>
+            <choiceReferences>Choice20_CI_Neuqun</choiceReferences>
+            <choiceReferences>Choice21_CI_La_Pampa</choiceReferences>
+            <choiceReferences>Choice22_CI_Ro_Negro</choiceReferences>
+            <choiceReferences>Choice23_CI_Santa_Cruz</choiceReferences>
+            <choiceReferences>Choice24_CI_Tierra_del_Fuego</choiceReferences>
+            <choiceReferences>Choice70_CI</choiceReferences>
+            <choiceReferences>Choice71_CNPJ</choiceReferences>
+            <choiceReferences>Choice72_CPF</choiceReferences>
+            <choiceReferences>Choice73_DNI_PER</choiceReferences>
+            <choiceReferences>Choice74_PASAPORTE</choiceReferences>
+            <choiceReferences>Choice75_RUC_PARAGUAY</choiceReferences>
+            <choiceReferences>Choice76_RUC_PER</choiceReferences>
+            <choiceReferences>Choice77_RUT_CHILE</choiceReferences>
+            <choiceReferences>Choice78_RUT_URUGUAY</choiceReferences>
+            <choiceReferences>Choice79_RG</choiceReferences>
+            <choiceReferences>Choice80_CUIT</choiceReferences>
+            <choiceReferences>Choice85_DNRP</choiceReferences>
+            <choiceReferences>Choice86_CUIL</choiceReferences>
+            <choiceReferences>Choice87_CDI</choiceReferences>
+            <choiceReferences>Choice89_LE</choiceReferences>
+            <choiceReferences>Choice90_LC</choiceReferences>
+            <choiceReferences>Choice94_Passport</choiceReferences>
+            <choiceReferences>Choice96_DNI</choiceReferences>
+            <choiceReferences>Choice99_Others</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_English</defaultSelectedChoiceReference>
+            <fieldText>Tax Number Type:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>filler17</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Category_Z1A1</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1A1:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>fille18</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Category_Z1A2</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1A2:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler19</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Category_Z1AU</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1AU:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>fille20</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Category_Z1AX</name>
+            <dataType>String</dataType>
+            <fieldText>Tax  Category Z1AX:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>fille21</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Tax_Type</name>
+            <choiceReferences>None_English</choiceReferences>
+            <choiceReferences>Choice01_VAT_Responsible_Inscripted</choiceReferences>
+            <choiceReferences>Choice02_VAT_Responsible_Not_Inscripted</choiceReferences>
+            <choiceReferences>Choice04_VAT_Exempted_Subject</choiceReferences>
+            <choiceReferences>Choice05_VAT_Final_Consumer</choiceReferences>
+            <choiceReferences>Choice06_VAT_Responsible_Monotributer</choiceReferences>
+            <choiceReferences>Choice09_Foreign_Customer</choiceReferences>
+            <choiceReferences>Choice10_VAT_Liberated_Law_No_19640</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_English</defaultSelectedChoiceReference>
+            <fieldText>Tax Type:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>filler22</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Currency</name>
+            <dataType>String</dataType>
+            <fieldText>Currency:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler23</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Z6_Customer_ID</name>
+            <dataType>String</dataType>
+            <fieldText>Z6 Customer ID:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler1</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Suframa</name>
+            <dataType>String</dataType>
+            <fieldText>Suframa:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler24</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>CNAE</name>
+            <dataType>String</dataType>
+            <fieldText>CNAE:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>filler25</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>filler26</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>filler27</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Others</name>
+            <fieldText>Others:</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Form_Submitted_first_time</name>
+        <label>Form Submitted first time</label>
+        <locationX>590</locationX>
+        <locationY>508</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>SN_TicketSubmittedErrorMsg</name>
+            <fieldText>&lt;p&gt;{!SN_TicketErrorMsg}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Language_Selection</name>
+        <label>Language Selection</label>
+        <locationX>1021</locationX>
+        <locationY>249</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>LanguageSelection</targetReference>
+        </connector>
+        <fields>
+            <name>Language</name>
+            <choiceReferences>English</choiceReferences>
+            <choiceReferences>Spanish</choiceReferences>
+            <choiceReferences>Portuguese</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>English</defaultSelectedChoiceReference>
+            <fieldText>Language</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Portuguese_Multiple_Change_Requests</name>
+        <label>Portuguese_Multiple Change Requests</label>
+        <locationX>1262</locationX>
+        <locationY>335</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Portuguese_Update_Case</targetReference>
+        </connector>
+        <fields>
+            <name>Portuguese_Header2</name>
+            <fieldText>{!Header}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Partner_Function3</name>
+            <choiceReferences>None_Portugease</choiceReferences>
+            <choiceReferences>ParterFunctionPicklist</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Portugease</defaultSelectedChoiceReference>
+            <fieldText>Partner Function:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Nome:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_fille3</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Phone_Number2</name>
+            <dataType>String</dataType>
+            <fieldText>Telefone:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler4</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Street</name>
+            <dataType>String</dataType>
+            <fieldText>Rua:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler5</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_House_Number</name>
+            <dataType>String</dataType>
+            <fieldText>Número:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler6</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Postal_Code</name>
+            <dataType>String</dataType>
+            <fieldText>Código postal:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler7</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Street_3</name>
+            <dataType>String</dataType>
+            <fieldText>Complemento:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler8</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_City</name>
+            <dataType>String</dataType>
+            <fieldText>Cidade:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler9</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Country_Dropdown</name>
+            <choiceReferences>None_Portugease</choiceReferences>
+            <choiceReferences>Countries</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Portugease</defaultSelectedChoiceReference>
+            <fieldText>País:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler10</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Region</name>
+            <dataType>String</dataType>
+            <fieldText>Região:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler11</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Email</name>
+            <dataType>String</dataType>
+            <fieldText>Email:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <validationRule>
+                <errorMessage>O valor que você digitou não é um e-mail válido.</errorMessage>
+                <formulaExpression>REGEX({!Portuguese_Email},&quot;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}&quot;)</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Portuguese_filler12</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Number1</name>
+            <dataType>String</dataType>
+            <fieldText>Nº ID fiscal 1:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler13</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Number_2</name>
+            <dataType>String</dataType>
+            <fieldText>Nº ID fiscal 2:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler14</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Number_3</name>
+            <dataType>String</dataType>
+            <fieldText>Nº ID fiscal 3:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler15</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Number_4</name>
+            <dataType>String</dataType>
+            <fieldText>Nº ID fiscal 4:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_fille16</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Number_Type</name>
+            <choiceReferences>None_Portugease</choiceReferences>
+            <choiceReferences>Choice00_CI_Polica_Federal</choiceReferences>
+            <choiceReferences>Choice01_CI_Buenos_Aires</choiceReferences>
+            <choiceReferences>Choice02_CI_Catamarca</choiceReferences>
+            <choiceReferences>Choice03_CI_Crdoba</choiceReferences>
+            <choiceReferences>Choice04_CI_Corrientes</choiceReferences>
+            <choiceReferences>Choice05_CI_Entre_Ros</choiceReferences>
+            <choiceReferences>Choice06_CI_Jujuy</choiceReferences>
+            <choiceReferences>Choice07_CI_Mendoza</choiceReferences>
+            <choiceReferences>Choice08_CI_La_Rioja</choiceReferences>
+            <choiceReferences>Choice09_CI_Salta</choiceReferences>
+            <choiceReferences>Choice10_CI_San_Juan</choiceReferences>
+            <choiceReferences>Choice11_CI_San_Luis</choiceReferences>
+            <choiceReferences>Choice12_CI_Santa_F</choiceReferences>
+            <choiceReferences>Choice13_CI_Santiago_del_Estero</choiceReferences>
+            <choiceReferences>Choice14_CI_Tucumn</choiceReferences>
+            <choiceReferences>Choice16_CI_Chaco</choiceReferences>
+            <choiceReferences>Choice17_CI_Chubut</choiceReferences>
+            <choiceReferences>Choice18_CI_Formosa</choiceReferences>
+            <choiceReferences>Choice19_CI_Misiones</choiceReferences>
+            <choiceReferences>Choice20_CI_Neuqun</choiceReferences>
+            <choiceReferences>Choice21_CI_La_Pampa</choiceReferences>
+            <choiceReferences>Choice22_CI_Ro_Negro</choiceReferences>
+            <choiceReferences>Choice23_CI_Santa_Cruz</choiceReferences>
+            <choiceReferences>Choice24_CI_Tierra_del_Fuego</choiceReferences>
+            <choiceReferences>Choice70_CI</choiceReferences>
+            <choiceReferences>Choice71_CNPJ</choiceReferences>
+            <choiceReferences>Choice72_CPF</choiceReferences>
+            <choiceReferences>Choice73_DNI_PER</choiceReferences>
+            <choiceReferences>Choice74_PASAPORTE</choiceReferences>
+            <choiceReferences>Choice75_RUC_PARAGUAY</choiceReferences>
+            <choiceReferences>Choice76_RUC_PER</choiceReferences>
+            <choiceReferences>Choice77_RUT_CHILE</choiceReferences>
+            <choiceReferences>Choice78_RUT_URUGUAY</choiceReferences>
+            <choiceReferences>Choice79_RG</choiceReferences>
+            <choiceReferences>Choice80_CUIT</choiceReferences>
+            <choiceReferences>Choice85_DNRP</choiceReferences>
+            <choiceReferences>Choice86_CUIL</choiceReferences>
+            <choiceReferences>Choice87_CDI</choiceReferences>
+            <choiceReferences>Choice89_LE</choiceReferences>
+            <choiceReferences>Choice90_LC</choiceReferences>
+            <choiceReferences>Choice94_Passport</choiceReferences>
+            <choiceReferences>Choice96_DNI</choiceReferences>
+            <choiceReferences>Choice99_Others</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Portugease</defaultSelectedChoiceReference>
+            <fieldText>Tipo nº fiscal:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler17</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Category_Z1A1</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1A1:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_fille18</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Category_Z1A2</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1A2:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler19</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Category_Z1AU</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1AU:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_fille20</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Category_Z1AX</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1AX:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_fille21</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Tax_Type</name>
+            <choiceReferences>None_Portugease</choiceReferences>
+            <choiceReferences>Choice01_VAT_Responsible_Inscripted</choiceReferences>
+            <choiceReferences>Choice02_VAT_Responsible_Not_Inscripted</choiceReferences>
+            <choiceReferences>Choice04_VAT_Exempted_Subject</choiceReferences>
+            <choiceReferences>Choice05_VAT_Final_Consumer</choiceReferences>
+            <choiceReferences>Choice06_VAT_Responsible_Monotributer</choiceReferences>
+            <choiceReferences>Choice09_Foreign_Customer</choiceReferences>
+            <choiceReferences>Choice10_VAT_Liberated_Law_No_19640</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Portugease</defaultSelectedChoiceReference>
+            <fieldText>Tipo de imposto:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler22</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Currency</name>
+            <dataType>String</dataType>
+            <fieldText>Moeda:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler23</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Z6_Customer_ID</name>
+            <dataType>String</dataType>
+            <fieldText>Contato de E-billing:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler1</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Suframa</name>
+            <dataType>String</dataType>
+            <fieldText>Suframa:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler24</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_CNAE</name>
+            <dataType>String</dataType>
+            <fieldText>CNAE:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler25</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_ICMS_Tax_Payer</name>
+            <choiceReferences>None_Portugease</choiceReferences>
+            <choiceReferences>Choice01_ICMS_Contributor</choiceReferences>
+            <choiceReferences>Choice02_ICMS_Contributor_Exemption</choiceReferences>
+            <choiceReferences>Choice09_No_ICMS_Contributor</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Portugease</defaultSelectedChoiceReference>
+            <fieldText>Cntrbnt.ICMS:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler26</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Legal_Nature</name>
+            <choiceReferences>None_Portugease</choiceReferences>
+            <choiceReferences>Choicergo_Pblico_do_Poder_Executivo_Federa</choiceReferences>
+            <choiceReferences>Choice1023_rgo_Pblico_do_Poder_Executivo_Estadu</choiceReferences>
+            <choiceReferences>Choice1031_rgo_Pblico_do_Poder_Executivo_Munici</choiceReferences>
+            <choiceReferences>Choice1040_rgo_Pblico_do_Poder_Legislativo_Fede</choiceReferences>
+            <choiceReferences>Choice1058_rgo_Pblico_do_Poder_Legislativo_Esta</choiceReferences>
+            <choiceReferences>Choice1066_rgo_Pblico_do_Poder_Legislativo_Muni</choiceReferences>
+            <choiceReferences>Choice1074_rgo_Pblico_do_Poder_Judicirio_Feder</choiceReferences>
+            <choiceReferences>Choice1082_rgo_Pblico_do_Poder_Judicirio_Estad</choiceReferences>
+            <choiceReferences>Choice1104_Autarquia_Federal</choiceReferences>
+            <choiceReferences>Choice1112_Autarquia_Estadual_ou_do_Distrito_Feder</choiceReferences>
+            <choiceReferences>Choice1120_Autarquia_Municipal</choiceReferences>
+            <choiceReferences>Choice1139_Fundao_Federal</choiceReferences>
+            <choiceReferences>Choice1147_Fundao_Estadual_ou_do_Distrito_Federa</choiceReferences>
+            <choiceReferences>Choice1155_Fundao_Municipal</choiceReferences>
+            <choiceReferences>Choice1163_rgo_Pblico_Autnomo_da_Unio</choiceReferences>
+            <choiceReferences>Choice1171_rgo_Pblico_Autnomo_Estadual_ou_do_D</choiceReferences>
+            <choiceReferences>Choice1180_rgo_Pblico_Autnomo_Municipal</choiceReferences>
+            <choiceReferences>Choice1198_Comisso_Polinacional</choiceReferences>
+            <choiceReferences>Choice1201_Fundo_Pblico</choiceReferences>
+            <choiceReferences>Choice1210_Consrcio_Pub_Direito_Pub_Ass_Pub</choiceReferences>
+            <choiceReferences>Choice1244_Municpio</choiceReferences>
+            <choiceReferences>Choice2011_Empresa_Pblica</choiceReferences>
+            <choiceReferences>Choice2020_Entidade_Pblica_Reteno_Normal</choiceReferences>
+            <choiceReferences>Choice2038_Sociedade_de_Economia_Mista</choiceReferences>
+            <choiceReferences>Choice2046_Sociedade_Annima_Aberta</choiceReferences>
+            <choiceReferences>Choice2216_Empresa_Domiciliada_no_Exterior</choiceReferences>
+            <choiceReferences>Choice2224_ClubeFundo_de_Investimento</choiceReferences>
+            <choiceReferences>Choice2232_Sociedade_Simples_Pura</choiceReferences>
+            <choiceReferences>Choice2240_Sociedade_Simples_Limitada</choiceReferences>
+            <choiceReferences>Choice2259_Sociedade_em_Nome_Coletivo</choiceReferences>
+            <choiceReferences>Choice2267_Sociedade_em_Comandita_Simples</choiceReferences>
+            <choiceReferences>Choice2275_Sociedade_Simples_em_Conta_de_Participa</choiceReferences>
+            <choiceReferences>Choice2283_Consrcio_de_Empregadores</choiceReferences>
+            <choiceReferences>Choice2291_Consrcio_Simples</choiceReferences>
+            <choiceReferences>Choice2305_Empresa_Individual_de_Responsabilidade</choiceReferences>
+            <choiceReferences>Choice2313_Empr_IndivRespLtda_Natureza_Simples</choiceReferences>
+            <choiceReferences>Choice2321_Sociedade_Unipessoal_de_Advocacia</choiceReferences>
+            <choiceReferences>Choice3034_Servio_Notarial_e_Registral_Cartrio</choiceReferences>
+            <choiceReferences>Choice3042_Organizao_Social</choiceReferences>
+            <choiceReferences>Choice3050_Organizao_da_Sociedade_Civil_de_Inter</choiceReferences>
+            <choiceReferences>Choice3069_Outras_Formas_de_Fundaes_Mantidas_com</choiceReferences>
+            <choiceReferences>Choice3077_Servio_Social_Autnomo</choiceReferences>
+            <choiceReferences>Choice3085_Condomnio_Edilcios</choiceReferences>
+            <choiceReferences>Choice3093_Unidade_Executora_Programa_Dinheiro_Di</choiceReferences>
+            <choiceReferences>Choice3107_Comisso_de_Conciliao_Prvia</choiceReferences>
+            <choiceReferences>Choice3115_Entidade_de_Mediao_e_Arbitragem</choiceReferences>
+            <choiceReferences>Choice3123_Partido_Poltico</choiceReferences>
+            <choiceReferences>Choice3131_Entidade_Sindical</choiceReferences>
+            <choiceReferences>Choice3204_Estabelecimento_no_Brasil_de_Fundao</choiceReferences>
+            <choiceReferences>Choice3212_Fundao_ou_Associao_Domiciliada_no_E</choiceReferences>
+            <choiceReferences>Choice3220_Organizao_Religiosa</choiceReferences>
+            <choiceReferences>Choice3239_Comunidade_Indgena</choiceReferences>
+            <choiceReferences>Choice3247_Fundo_Privado</choiceReferences>
+            <choiceReferences>Choice3255_rgo_Direo_Nacional_Partido_Poltico</choiceReferences>
+            <choiceReferences>Choice3263_rgo_Direo_Nacional_Partido_Poltico</choiceReferences>
+            <choiceReferences>Choice3999_Outras_Formas_de_Associao</choiceReferences>
+            <choiceReferences>Choice4014_Empresa_Individual_Imobiliria</choiceReferences>
+            <choiceReferences>Choice4022_Segurado_Especial</choiceReferences>
+            <choiceReferences>Choice4081_Contribuinte_individual</choiceReferences>
+            <choiceReferences>Choice4090_Candidato_a_Cargo_Poltico_Eletivo</choiceReferences>
+            <choiceReferences>Choice4120_Produtor_Rural_Pessoa_Fsica</choiceReferences>
+            <choiceReferences>Choice5002_Organizao_Internacional_e_Outras_Insti</choiceReferences>
+            <choiceReferences>Choice5010_Organiz_Internacional_Extraterritoriais</choiceReferences>
+            <choiceReferences>Choice5029_Representao_Diplomtica_Estrangeira</choiceReferences>
+            <choiceReferences>Choice5037_Outras_Instituies_Extraterritoriais</choiceReferences>
+            <choiceReferences>Choice9997_Natural_Person</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Portugease</defaultSelectedChoiceReference>
+            <fieldText>NaturzJuríd:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Portuguese_filler27</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Portuguese_Others</name>
+            <fieldText>Outros:</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Resubmit_Form</name>
+        <label>Resubmit Form</label>
+        <locationX>759</locationX>
+        <locationY>494</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>BU_Region_Check</targetReference>
+        </connector>
+        <fields>
+            <name>AlreadySubmittedWarningMsg</name>
+            <fieldText>&lt;p&gt;{!SN_WarningMsgAlreadySubmittedForm}  {!ExternalTaskRefNo}  {!SN_WarningMsgAlreadySubmittedForm2} {!ExternalTicketNo}  {!SN_WarningMsgAlreadySubmitted4}  {!ExternalStatus}                  {!SN_WarningMsgAlreadySubmittedForm3}&lt;/p&gt;&lt;p&gt;{!Description}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>WarningMsgAlreadySubmittedForm1</name>
+            <fieldText>&lt;p&gt;{!SN_WarningMsgAlreadySubmittedForm1}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Spanish_Multiple_Change_Requests</name>
+        <label>Spanish_Multiple Change Requests</label>
+        <locationX>1326</locationX>
+        <locationY>200</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Spanish_Update_Case</targetReference>
+        </connector>
+        <fields>
+            <name>Spanish_Header3</name>
+            <fieldText>{!Header}</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Partner_Function4</name>
+            <choiceReferences>None_Spanish</choiceReferences>
+            <choiceReferences>ParterFunctionPicklist</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Spanish</defaultSelectedChoiceReference>
+            <fieldText>Partner Function:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Nombre de la cuenta:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_fille3</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Phone_Number2</name>
+            <dataType>String</dataType>
+            <fieldText>Número de Teléfono:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler4</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Street</name>
+            <dataType>String</dataType>
+            <fieldText>Calle:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler5</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_House_Number</name>
+            <dataType>String</dataType>
+            <fieldText>Número:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler6</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Postal_Code</name>
+            <dataType>String</dataType>
+            <fieldText>Código postal:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler7</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Street_3</name>
+            <dataType>String</dataType>
+            <fieldText>Complemento:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler8</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_City</name>
+            <dataType>String</dataType>
+            <fieldText>Pobl.:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler9</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Country_Dropdown</name>
+            <choiceReferences>None_Spanish</choiceReferences>
+            <choiceReferences>Countries</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Spanish</defaultSelectedChoiceReference>
+            <fieldText>País:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler10</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Region</name>
+            <dataType>String</dataType>
+            <fieldText>Región:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler11</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Email</name>
+            <dataType>String</dataType>
+            <fieldText>Email:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <validationRule>
+                <errorMessage>El valor que ingresó no es un correo electrónico válido.</errorMessage>
+                <formulaExpression>REGEX({!Spanish_Email},&quot;[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}&quot;)</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Spanish_filler12</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Number1</name>
+            <dataType>String</dataType>
+            <fieldText>Nº ident.fis.1:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler13</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Number_2</name>
+            <dataType>String</dataType>
+            <fieldText>Nº ident.fis.2:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler14</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Number_3</name>
+            <dataType>String</dataType>
+            <fieldText>NIF 3:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler15</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Number_4</name>
+            <dataType>String</dataType>
+            <fieldText>NIF 4:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_fille16</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Number_Type</name>
+            <choiceReferences>None_Spanish</choiceReferences>
+            <choiceReferences>Choice00_CI_Polica_Federal</choiceReferences>
+            <choiceReferences>Choice01_CI_Buenos_Aires</choiceReferences>
+            <choiceReferences>Choice02_CI_Catamarca</choiceReferences>
+            <choiceReferences>Choice03_CI_Crdoba</choiceReferences>
+            <choiceReferences>Choice04_CI_Corrientes</choiceReferences>
+            <choiceReferences>Choice05_CI_Entre_Ros</choiceReferences>
+            <choiceReferences>Choice06_CI_Jujuy</choiceReferences>
+            <choiceReferences>Choice07_CI_Mendoza</choiceReferences>
+            <choiceReferences>Choice08_CI_La_Rioja</choiceReferences>
+            <choiceReferences>Choice09_CI_Salta</choiceReferences>
+            <choiceReferences>Choice10_CI_San_Juan</choiceReferences>
+            <choiceReferences>Choice11_CI_San_Luis</choiceReferences>
+            <choiceReferences>Choice12_CI_Santa_F</choiceReferences>
+            <choiceReferences>Choice13_CI_Santiago_del_Estero</choiceReferences>
+            <choiceReferences>Choice14_CI_Tucumn</choiceReferences>
+            <choiceReferences>Choice16_CI_Chaco</choiceReferences>
+            <choiceReferences>Choice17_CI_Chubut</choiceReferences>
+            <choiceReferences>Choice18_CI_Formosa</choiceReferences>
+            <choiceReferences>Choice19_CI_Misiones</choiceReferences>
+            <choiceReferences>Choice20_CI_Neuqun</choiceReferences>
+            <choiceReferences>Choice21_CI_La_Pampa</choiceReferences>
+            <choiceReferences>Choice22_CI_Ro_Negro</choiceReferences>
+            <choiceReferences>Choice23_CI_Santa_Cruz</choiceReferences>
+            <choiceReferences>Choice24_CI_Tierra_del_Fuego</choiceReferences>
+            <choiceReferences>Choice70_CI</choiceReferences>
+            <choiceReferences>Choice71_CNPJ</choiceReferences>
+            <choiceReferences>Choice72_CPF</choiceReferences>
+            <choiceReferences>Choice73_DNI_PER</choiceReferences>
+            <choiceReferences>Choice74_PASAPORTE</choiceReferences>
+            <choiceReferences>Choice75_RUC_PARAGUAY</choiceReferences>
+            <choiceReferences>Choice76_RUC_PER</choiceReferences>
+            <choiceReferences>Choice77_RUT_CHILE</choiceReferences>
+            <choiceReferences>Choice78_RUT_URUGUAY</choiceReferences>
+            <choiceReferences>Choice79_RG</choiceReferences>
+            <choiceReferences>Choice80_CUIT</choiceReferences>
+            <choiceReferences>Choice85_DNRP</choiceReferences>
+            <choiceReferences>Choice86_CUIL</choiceReferences>
+            <choiceReferences>Choice87_CDI</choiceReferences>
+            <choiceReferences>Choice89_LE</choiceReferences>
+            <choiceReferences>Choice90_LC</choiceReferences>
+            <choiceReferences>Choice94_Passport</choiceReferences>
+            <choiceReferences>Choice96_DNI</choiceReferences>
+            <choiceReferences>Choice99_Others</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Spanish</defaultSelectedChoiceReference>
+            <fieldText>Tipo NIF:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler17</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Category_Z1A1</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1A1:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_fille18</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Category_Z1A2</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1A2:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler19</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Category_Z1AU</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1AU:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_fille20</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Category_Z1AX</name>
+            <dataType>String</dataType>
+            <fieldText>Tax Category Z1AX:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_fille21</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Tax_Type</name>
+            <choiceReferences>None_Spanish</choiceReferences>
+            <choiceReferences>Choice01_IVA_Responsable_Inscripto</choiceReferences>
+            <choiceReferences>Choice02_IVA_Responsable_No_Inscripto</choiceReferences>
+            <choiceReferences>Choice03_IVA_No_Responsable</choiceReferences>
+            <choiceReferences>Choice04_IVA_Sujeto_Exento</choiceReferences>
+            <choiceReferences>Choice05_Consumidor_Final</choiceReferences>
+            <choiceReferences>Choice06_Responsable_Monotributo</choiceReferences>
+            <choiceReferences>Choice07_Sujeto_no_Categorizado</choiceReferences>
+            <choiceReferences>Choice08_Proveedor_del_Exterior</choiceReferences>
+            <choiceReferences>Choice09_Cliente_del_Exterior</choiceReferences>
+            <choiceReferences>Choice10_IVA_Liberado_Ley_No_19640</choiceReferences>
+            <choiceReferences>Choice11_IVA_Responsable_Inscripto_Agente_de_Percepcin</choiceReferences>
+            <choiceReferences>Choice12_Pequeo_Contribuyente_Eventual</choiceReferences>
+            <choiceReferences>Choice13_Monotribusta_Social</choiceReferences>
+            <choiceReferences>Choice14_Pequeo_Contribuyente_Eventual_Social</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>None_Spanish</defaultSelectedChoiceReference>
+            <fieldText>Clase impuesto:</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler22</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Currency</name>
+            <dataType>String</dataType>
+            <fieldText>Moneda:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler23</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Z6_Customer_ID</name>
+            <dataType>String</dataType>
+            <fieldText>Contacto e-billing:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler1</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Suframa</name>
+            <dataType>String</dataType>
+            <fieldText>Suframa:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler24</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_CNAE</name>
+            <dataType>String</dataType>
+            <fieldText>CNAE:</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Spanish_filler25</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_filler26</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_filler27</name>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Spanish_Others</name>
+            <fieldText>Otros:</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Get_Case_REcords</startElementReference>
+    <status>Active</status>
+    <subflows>
+        <name>Calling_Change_Request_To_Master_data_Flow</name>
+        <label>Calling Change Request To Master data Flow</label>
+        <locationX>894</locationX>
+        <locationY>474</locationY>
+        <flowName>Change_Request_to_Master_Data</flowName>
+        <inputAssignments>
+            <name>id</name>
+            <value>
+                <elementReference>id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <textTemplates>
+        <name>MasterDataChangeTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>{!Description}
+
+Consider only the fields with data to change in the master data:
+
+Fields:
+
+Partner Function:{!Partner_Function2}
+Name:{!Name}
+Phone Number:{!Phone_Number2}
+Street:{!Street}
+House number:{!House_Number}
+Postal Code:{!Postal_Code}
+Street 3:{!Street_3}
+City:{!City}
+Country:{!Country_English}
+Region:{!Region}
+Email:{!Email}
+Tax Number 1:{!Tax_Number1}
+Tax Number 2:{!Tax_Number_2}
+Tax Number 3:{!Tax_Number_3}
+Tax Number 4:{!Tax_Number_4}
+Tax Number Type:{!Tax_Number_Type}
+Tax Category Z1A1:{!Tax_Category_Z1A1}
+Tax Category Z1A2:{!Tax_Category_Z1A2}
+Tax Category Z1AU:{!Tax_Category_Z1AU}
+Tax Category Z1AX:{!Tax_Category_Z1AX}
+Tax Type:{!Tax_Type}
+Currency:{!Currency}
+Z6 customer ID:{!Z6_Customer_ID}
+Suframa:{!Suframa}
+CNAE:{!CNAE}
+ICMS tax payer:{!Portuguese_ICMS_Tax_Payer}
+Legal nature:{!Portuguese_Legal_Nature}
+Others:{!Others}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>PortugeuseMasterDataChange</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>{!Description}
+
+Considerar apenas os campos com dados para modificar para modificação de dados mestres no SAP.
+
+Dados:
+
+Partner Function:{!Portuguese_Partner_Function3}
+Nome:{!Portuguese_Name}
+Telefone:{!Portuguese_Phone_Number2}
+Rua:{!Portuguese_Street}
+Número:{!Portuguese_House_Number}
+Código postal:{!Portuguese_Postal_Code}
+Complemento:{!Portuguese_Street_3}
+Cidade:{!Portuguese_City}
+País:{!Portuguese_Country_Dropdown}
+Região:{!Portuguese_Region}
+Email:{!Portuguese_Email}
+Nº ID fiscal 1:{!Portuguese_Tax_Number1}
+Nº ID fiscal 2:{!Portuguese_Tax_Number_2}
+Nº ID fiscal 3:{!Portuguese_Tax_Number_3}
+Nº ID fiscal 4:{!Portuguese_Tax_Number_4}
+Tipo nº fiscal:{!Portuguese_Tax_Number_Type}
+Tax Category Z1A1:{!Portuguese_Tax_Category_Z1A1}
+Tax Category Z1A2:{!Portuguese_Tax_Category_Z1A2}
+Tax Category Z1AU:{!Portuguese_Tax_Category_Z1AU}
+Tax Category Z1AX:{!Portuguese_Tax_Category_Z1AX}
+Tipo de imposto:{!Portuguese_Tax_Type}
+Moeda:{!Portuguese_Currency}
+Contato de E-billing:{!Portuguese_Z6_Customer_ID}
+Suframa:{!Portuguese_Suframa}
+CNAE:{!Portuguese_CNAE}
+Cntrbnt.ICMS:{!Portuguese_ICMS_Tax_Payer}
+NaturzJuríd:{!Portuguese_Legal_Nature}
+Outros:{!Portuguese_Others}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SpanishMasterDataChange</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>{!Description}
+
+Complete únicamente los campos que deben ser actualizados por el equipo de Master Data en SAP
+
+
+Datos:
+
+Partner Function:{!Spanish_Partner_Function4}
+Nombre de la cuenta:{!Spanish_Name}
+Número de Teléfono:{!Spanish_Phone_Number2}
+Calle:{!Spanish_Street}
+Número:{!Spanish_House_Number}
+Código Postal:{!Spanish_Postal_Code}
+Complemento:{!Spanish_Street_3}
+Pobl.:{!Spanish_City}
+País:{!Spanish_Country_Dropdown}
+Región:{!Spanish_Region}
+Email:{!Spanish_Email}
+Nº ident.fis.1:{!Spanish_Tax_Number1}
+Nº ident.fis.2:{!Spanish_Tax_Number_2}
+NIF 3:{!Spanish_Tax_Number_3}
+NIF 4:{!Spanish_Tax_Number_4}
+Tipo NIF:{!Spanish_Tax_Number_Type}
+Tax Category Z1A1:{!Spanish_Tax_Category_Z1A1}
+Tax Category Z1A2:{!Spanish_Tax_Category_Z1A2}
+Tax Category Z1AU:{!Spanish_Tax_Category_Z1AU}
+Tax Category Z1AX:{!Spanish_Tax_Category_Z1AX}
+Clase impuesto:{!Spanish_Tax_Type}
+Moneda:{!Spanish_Currency}
+Contacto e-billing:{!Spanish_Z6_Customer_ID}
+Suframa:{!Spanish_Suframa}
+CNAE:{!Spanish_CNAE}
+Otros:{!Spanish_Others}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>TaxNumberCoiceTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>00 C.I. Policía Federal
+01 C.I. Buenos Aires
+02 C.I. Catamarca
+03 C.I. Córdoba
+04 C.I. Corrientes
+05 C.I. Entre Ríos
+06 C.I. Jujuy
+07 C.I. Mendoza
+08 C.I. La Rioja
+09 C.I. Salta
+10 C.I. San Juan
+11 C.I. San Luis
+12 C.I. Santa Fé
+13 C.I. Santiago del Estero
+14 C.I. Tucumán
+16 C.I. Chaco
+17 C.I. Chubut
+18 C.I. Formosa
+19 C.I. Misiones
+20 C.I. Neuquén
+21 C.I. La Pampa
+22 C.I. Río Negro
+23 C.I. Santa Cruz
+24 C.I. Tierra del Fuego
+70 C.I.
+71 CNPJ
+72 CPF
+73 D.N.I. PERÚ
+74 PASAPORTE
+75 R.U.C. PARAGUAY
+76 R.U.C. PERÚ
+77 R.U.T. CHILE
+78 R.U.T. URUGUAY
+79 RG
+80 C.U.I.T.
+85 D.N.R.P.
+86 C.U.I.L.
+87 C.D.I.
+89 L.E.
+90 L.C.
+94 Passport
+96 D.N.I.
+99 Others</text>
+    </textTemplates>
+    <variables>
+        <name>AccountArchived</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>BuRegion</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Input/output variable to get the BU segment value for the case</description>
+        <name>BUSegment</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>CaseAccountid</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>Caselist</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>ContactArchived</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>Description</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>ExternalStatus</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ExternalTaskRefNo</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ExternalTicketNo</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>SalesOrg</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedLanguage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>userProfile Variable is passed in from apex page</description>
+        <name>userProfile</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

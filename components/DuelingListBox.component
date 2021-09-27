@@ -1,0 +1,173 @@
+<!--
+CHANGE HISTORY
+==========================================================================================================
+Date             Name                      Description
+2019-03-13      Lovedeep Singh               Modified Code[DPS-3229] New image lables are added to the groupMoveOptions by updating the img src attribute. This is done because the Add and remove buttons were not available in lightning.
+
+==========================================================================================================
+-->
+<apex:component id="listDuelingListBox">
+    <apex:attribute id="attrSourceTitle" 
+        type="string" 
+        name="sourceTitle"
+        default="{!$Label.Available}"
+        description="The title of the source list" />
+        
+    <apex:attribute id="attrSourceList" 
+        type="SelectOption[]" 
+        name="sourceList" 
+        description="A list of values to select from" />
+    
+    <apex:attribute id="attrSelectedTitle" 
+        type="string" 
+        name="selectedTitle" 
+        default="{!$Label.SelectedAN}"
+        description="The title of the selected list" />
+    
+    <apex:attribute id="attrDefaultList"
+        type="SelectOption[]"
+        name="defaultList"
+        description="A list of values that should be selected by default" />
+        
+    <apex:attribute id="attrValue"
+        type="string"
+        name="value"
+        description="The selected values delimited by a semi-colon" />
+    
+    <apex:attribute id="attrSize"
+        type="integer"
+        default="10"
+        name="size"
+        description="Indicates the number of list items to display" />
+        
+    <apex:attribute id="attrRequired"
+        type="boolean"
+        default="false"
+        name="required"
+        description="Indicates if the required indicator should be displayed" />
+    
+    <apex:attribute id="attrOnChange"
+        type="ApexPages.Action"
+        name="onChange"
+        description="Method to execute when the list of selected values is changed" />
+            
+    <apex:outputPanel id="panelDuelingListBox"
+        layout="block"
+        styleclass="duelingListBox">
+        
+        <div class="errorMsg" id="{!$Component.listDuelingListBox}:editPage_duel_errorMsg" style="display:none" />
+        <apex:panelGrid id="gridDuelLayout"
+            columns="4"
+            styleClass="layout"
+            columnClasses="selectCell, zen-phs buttonCell, selectCell, zen-phs buttonCell">
+            
+            <apex:panelGroup id="groupSourceList">
+                <div class="selectTitle">
+                    <apex:outputLabel for="{!$Component.listDuelingListBox}:duel_select_0" value="{!$Label.Available}"/>
+                </div>
+                
+                <div class="{!IF(required, 'requiredInput', '')}">
+                    <div class="requiredBlock"></div>
+                    <select id="{!$Component.listDuelingListBox}:duel_select_0" 
+                        multiple="multiple"
+                        size="{!size}" 
+                        style="min-width: 150px;" 
+                        class="duelSelect0"
+                        name="{!$Component.listDuelingListBox}:duel_select_0">
+                        
+                        <apex:repeat value="{!sourceList}" var="option">
+                            <option value="{!option.value}">{!option.value}</option>
+                        </apex:repeat>
+                    </select>
+                </div>
+            </apex:panelGroup>
+            
+            <apex:panelGroup id="groupMoveOptions">
+            <div class="text"></div> 
+                <div class="text"></div> 
+                <div class="text">{!$Label.AddCB}</div>
+    
+                
+                    <!--[DPS-3229] New image lables are added to the groupMoveOptions by updating the img src attribute. 
+                        This is done because the Add and remove buttons were not available in lightning.   -->
+                <div class="zen-mbs text">
+                    <a href="javascript:if (!document.getElementById('{!$Component.listDuelingListBox}:duel_select_0').disabled&& !document.getElementById('{!$Component.listDuelingListBox}:duel_select_1').disabled) {window.editPage_DLBEInstance.instMoveOption(document.getElementById('{!$Component.listDuelingListBox}:duel_select_0'), document.getElementById('{!$Component.listDuelingListBox}:duel_select_1'),'--None--', [], null,'--None--',false,null,'{!$Component.listDuelingListBox}:editPage_duel_errorMsg'); syncSelectedOptions('{!$Component.listDuelingListBox}:duel_select_1', '{!$Component.selectedValues}');}" id="{!$Component.listDuelingListBox}:duel_select_0_right">
+                        <img src="{!$Resource.RightArrow}"  alt="Add"   title="Add" />
+                    </a>
+                </div>
+                
+                <div class="zen-mbs text">
+                    <a href="javascript:if (!document.getElementById('{!$Component.listDuelingListBox}:duel_select_0').disabled&& !document.getElementById('{!$Component.listDuelingListBox}:duel_select_1').disabled) {window.editPage_DLBEInstance.instMoveOption(document.getElementById('{!$Component.listDuelingListBox}:duel_select_1'), document.getElementById('{!$Component.listDuelingListBox}:duel_select_0'),'--None--', [], null,'--None--',false,null, '{!$Component.listDuelingListBox}:editPage_duel_errorMsg'); syncSelectedOptions('{!$Component.listDuelingListBox}:duel_select_1', '{!$Component.selectedValues}');}" id="{!$Component.listDuelingListBox}:duel_select_0_left">
+                        <img src="{!$Resource.LeftArrow}"  alt="Remove"  title="Remove" />
+                    </a>
+                </div>
+                
+                <div class="duelingText">{!$Label.RemoveCB}</div>
+            </apex:panelGroup>
+            
+            <apex:panelGroup id="groupTargetList">
+                <div class="selectTitle">
+                    <apex:outputLabel for="duel_select_1" value="{!$Label.SelectedAN}" />
+                </div>
+                
+                <select id="{!$Component.listDuelingListBox}:duel_select_1" 
+                    size="{!size}" 
+                    multiple="multiple" 
+                    style="min-width: 150px;"
+                    class="duelSelect1"
+                    name="{!$Component.listDuelingListBox}:duel_select_1" >
+                    
+                    <apex:repeat value="{!defaultList}" var="option">
+                        <option value="{!option.value}">{!option.value}</option>
+                    </apex:repeat>
+                </select>
+                
+                <apex:actionFunction id="functionOnTargetChange"
+                    name="targetListChanged"
+                    action="{!onChange}"
+                    rerender="panelEmptyTarget" />
+            </apex:panelGroup>
+        </apex:panelGrid>
+        
+        <apex:outputPanel id="panelEmptyTarget" layout="block" style="height:1px; font-size:1px;">&nbsp;</apex:outputPanel>
+        <apex:inputHidden id="selectedValues" value="{!value}" />
+        
+        <script type="text/javascript">
+            try {
+                window.editPage_DLBEInstance=new DuelingListBoxesElement(['{!$Component.listDuelingListBox}:duel_select_0','{!$Component.listDuelingListBox}:duel_select_1'],'{!$Component.listDuelingListBox}:editPage_duel_errorMsg');
+                syncSelectedOptions('{!$Component.listDuelingListBox}:duel_select_1', '{!$Component.selectedValues}', '1');
+            }
+            catch(e) { console.log(e); }
+            
+            function syncSelectedOptions(selectElementId, hiddenInputId, isFirstRun) {
+                try {
+                    var selectedOptions = document.getElementById(selectElementId);
+                    var sData = '';
+                    var bFirstRun = (isFirstRun == '1') ? true : false;
+                    
+                    if (selectedOptions) {
+                        for (var i=0; i < selectedOptions.length; i++){
+                            sValue = selectedOptions.options[i].value;
+                            
+                            if (sValue != '--None--') {
+                                sData += (sData == '') ? '' : ';';
+                                sData += sValue;
+                            }
+                        }   
+                    }
+                    
+                    var hiddenInput = document.getElementById(hiddenInputId);
+                    if (hiddenInput) {
+                        hiddenInput.value = sData;
+                    }
+                    
+                    if (bFirstRun != true) {
+                        //Notify Target List Changed
+                        targetListChanged();
+                    }
+                }
+                catch(e) { console.log(e); }
+            }
+        </script>
+    </apex:outputPanel>
+</apex:component>

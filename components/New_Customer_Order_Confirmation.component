@@ -1,0 +1,85 @@
+<apex:component controller="OrderConfirmationController" access="global">
+    <apex:attribute name="orderIdStr" type="String" description="This is order id to display details." assignTo="{!orderId}"/>
+    <apex:attribute name="customerName" type="String" description="This is customer Name to display details." />
+    
+    
+    <apex:attribute name="companyName" type="String" description="This is company Name to display details." />
+    <apex:attribute name="street" type="String" description="This is street name to display details." />
+    <apex:attribute name="city" type="String" description="This is city Name to display details." />
+    <apex:attribute name="state" type="String" description="This is state Name to display details." />
+    <apex:attribute name="postalcode" type="String" description="This is postalcode to display details." />
+    
+    <style>
+        
+        @media print {
+            .greyColorClass{color:grey;}
+        }
+
+    </style>
+    <!--
+    Rajan Item list : <br/>
+    <apex:repeat value="{!OrderLineItemList}" var="OrderLineItem">
+    {!OrderLineItem.Apttus_Config2__Description__c} &nbsp;
+    {!OrderLineItem.APTS_Product_Or_Option_Name__c} &nbsp;
+    {!OrderLineItem.Apttus_Config2__ProductId__r.Name} &nbsp;
+    {!OrderLineItem.APTS_Contract_Term__c} &nbsp;
+    {!OrderLineItem.Apttus_Config2__BillingFrequency__c} &nbsp;
+    {!OrderLineItem.Apttus_Config2__Quantity__c} <br/>
+    
+    </apex:repeat>
+    
+    
+    <br/> <br/>
+       <apex:outputPanel id="thePanel" rendered = "{!IF(AND(OrderLineItemList != null, OrderLineItemList.size > 0), true, false)}"> -->
+    <apex:dataTable value="{!OrderLineItemList}" styleclass="greyColorClass" var="OrderLineItem" rendered = "{!IF(AND(OrderLineItemList != null, OrderLineItemList.size > 0), true, false)}" id="OrderLineItemRepeat" style="color:grey !important;">
+        <apex:column value="{!SplcharStr}" styleclass="greyColorClass"  style="padding:10px; font-color:grey !important;"/>
+        <apex:column value="{!OrderLineItem.Apttus_Config2__ProductId__r.Name}" id="ProductName" styleclass="greyColorClass" style="color:grey !important;" rendered="{!IF(OrderLineItem.Apttus_Config2__LineType__c != 'Option', true, false)}"/>
+        <apex:column value="{!OrderLineItem.Apttus_Config2__OptionId__r.Name}" id="OptionName" styleclass="greyColorClass" style="color:grey !important;" rendered="{!IF(OrderLineItem.Apttus_Config2__LineType__c == 'Option', true, false)}"/>
+    </apex:dataTable>
+     
+    <br/><br/>
+    
+    <div style="border:1px solid #dcddde;width: 450px;">
+        <table id="FirmTable" border="0" cellspacing="0" cellpadding="10" width="400">
+            <tbody>
+                <tr valign="top">
+                <td style="color:grey"><h3>Organization details</h3></td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey;font-size:13px;"><h5><b>CONTRACT SUMMARY</b></h5></td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey">Duration</td>
+                <td style="color:grey">{!IF(AND(OrderLineItemList != null, OrderLineItemList.size > 0 , OrderLineItemList[0].APTS_Contract_Term__c != null) , OrderLineItemList[0].APTS_Contract_Term__c, '') }</td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey">Billing</td>
+                <td style="color:grey">{!IF(AND(OrderLineItemList != null, OrderLineItemList.size > 0,  OrderLineItemList[0].Apttus_Config2__SellingFrequency__c != null) , OrderLineItemList[0].Apttus_Config2__SellingFrequency__c, '') }</td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey">Organization size</td>
+                <td style="color:grey">{!IF(AND(OrderLineItemList != null, OrderLineItemList.size > 0 , OrderLineItemList[0].Apttus_Config2__Quantity__c != null),LEFT(TEXT(OrderLineItemList[0].Apttus_Config2__Quantity__c),IF(FIND(" ",TEXT(OrderLineItemList[0].Apttus_Config2__Quantity__c)) = 0, LEN(TEXT(OrderLineItemList[0].Apttus_Config2__Quantity__c)), FIND(" ",TEXT(OrderLineItemList[0].Apttus_Config2__Quantity__c) ))), '')} attorney</td>
+                    </tr>
+                <tr valign="top">
+                <td style="color:grey">You</td>
+                <td style="color:grey">{!customerName}</td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey"><br/><br/></td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey; font-size:13px;"><h5><b>BILLING DETAILS</b></h5></td>
+                 </tr>
+                <tr valign="top">
+                <td style="color:grey">Organization name</td>
+                <td style="color:grey">{!companyName}</td>
+                </tr>
+                <tr valign="top">
+                <td style="color:grey">Address</td>
+                <td style="color:grey">{!street}&nbsp;{!city}, <br/> {!state}&nbsp;{!postalcode}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div> 
+    <!-- </apex:outputPanel> -->
+</apex:component>

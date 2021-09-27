@@ -1,0 +1,51 @@
+<!--
+* {Purpose} - Used to email/download the CN_Audit_Log records
+*
+* @author   David Sarbello
+* @version  2014-09-10
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                    Description
+* 2014-09-10    David Sarbello		    Created  
+* 2014.12.10	Mike Eaton				Removed notice of Audit Log email (previously:
+									"A summary email regarding user interaction with ContactNet has been emailed to {!getSupportNotificationEmail}.")
+										Replaced - with >> on download link because it rendered as <?>
+* =============================================================================
+-->
+<apex:page controller="CNAuditLogController" showHeader="true" sidebar="true" setup="true" action="{!initialLoad}">
+	<apex:form forceSSL="true" >
+
+	<apex:sectionHeader title="Business Development Premier for Salesforce" subtitle="Application Settings - View Audit Log"
+		            description="The last 20 entries for your Audit Log are listed below. You can download your Audit Log as an Excel .csv file." />
+
+<apex:pageBlock >
+<apex:pageBlockSection title="Audit Log Entries" id="auditLogEntries"  columns="1" collapsible="false"> 
+	<apex:pageBlockTable value="{!oAuditLogs}" var="al" rendered="{!(oAuditLogs.size != 0)}">   
+            	<apex:column headervalue="Date">
+            		<apex:outputText value="{0,date,MM'/'dd'/'yyyy HH:mm:ss}">
+            			<apex:param value="{!al.CreatedDate}" />
+            		</apex:outputText> 
+            	</apex:column>
+            	<apex:column headervalue="Component Source"><apex:outputText value="{!al.Component_source__c}" /></apex:column>
+            	<apex:column headervalue="Account"><apex:outputText value="{!al.Account__r.Name }" /></apex:column>
+				<apex:column headervalue="Contact"><apex:outputText value="{!al.Contact__r.Name}" /></apex:column>
+            	<apex:column headervalue="Action Type"><apex:outputText value="{!al.Action_Type__c}" /></apex:column>            	
+   </apex:pageBlockTable>
+</apex:pageBlockSection>
+
+<div>
+
+<apex:outputLink value="{!reportURL}" target="_blank">Download Audit Log as Excel .csv file >></apex:outputLink>
+
+</div>
+
+</apex:pageBlock>
+
+
+		
+
+	</apex:form>
+</apex:page>

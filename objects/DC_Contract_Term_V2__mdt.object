@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Contract_Term__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Contract Term</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1 Year</fullName>
+                    <default>true</default>
+                    <label>1 Year</label>
+                </value>
+                <value>
+                    <fullName>2 Years</fullName>
+                    <default>false</default>
+                    <label>2 Years</label>
+                </value>
+                <value>
+                    <fullName>3 Years</fullName>
+                    <default>false</default>
+                    <label>3 Years</label>
+                </value>
+                <value>
+                    <fullName>4 Years</fullName>
+                    <default>false</default>
+                    <label>4 Years</label>
+                </value>
+                <value>
+                    <fullName>5 Years</fullName>
+                    <default>false</default>
+                    <label>5 Years</label>
+                </value>
+                <value>
+                    <fullName>10 Years</fullName>
+                    <default>false</default>
+                    <label>10 Years</label>
+                </value>
+                <value>
+                    <fullName>1 Month</fullName>
+                    <default>false</default>
+                    <label>1 Month</label>
+                </value>
+                <value>
+                    <fullName>2 Months</fullName>
+                    <default>false</default>
+                    <label>2 Months</label>
+                </value>
+                <value>
+                    <fullName>3 Months</fullName>
+                    <default>false</default>
+                    <label>3 Months</label>
+                </value>
+                <value>
+                    <fullName>4 Months</fullName>
+                    <default>false</default>
+                    <label>4 Months</label>
+                </value>
+                <value>
+                    <fullName>5 Months</fullName>
+                    <default>false</default>
+                    <label>5 Months</label>
+                </value>
+                <value>
+                    <fullName>6 Months</fullName>
+                    <default>false</default>
+                    <label>6 Months</label>
+                </value>
+                <value>
+                    <fullName>7 Months</fullName>
+                    <default>false</default>
+                    <label>7 Months</label>
+                </value>
+                <value>
+                    <fullName>8 Months</fullName>
+                    <default>false</default>
+                    <label>8 Months</label>
+                </value>
+                <value>
+                    <fullName>9 Months</fullName>
+                    <default>false</default>
+                    <label>9 Months</label>
+                </value>
+                <value>
+                    <fullName>10 Months</fullName>
+                    <default>false</default>
+                    <label>10 Months</label>
+                </value>
+                <value>
+                    <fullName>11 Months</fullName>
+                    <default>false</default>
+                    <label>11 Months</label>
+                </value>
+                <value>
+                    <fullName>Short Term Trial</fullName>
+                    <default>false</default>
+                    <label>Short Term Trial</label>
+                </value>
+                <value>
+                    <fullName>Existing</fullName>
+                    <default>false</default>
+                    <label>Existing</label>
+                </value>
+                <value>
+                    <fullName>n/a</fullName>
+                    <default>false</default>
+                    <label>n/a</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Customer_Category__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Customer Category</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>DC_Years_2_Plus_Adjustment__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>For FL Segment, Used this for default discounts 3 Years, All Other is used for YOY2+</inlineHelpText>
+        <label>YoY 2+ %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Default_Contract_Term__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Default Contract Term</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Default_Customer_Category__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Default Customer Category</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Markup_Percentage__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>% Markup</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>Quote_Type__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Quote Type</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Straight Renewal</fullName>
+                    <default>true</default>
+                    <label>Straight Renewal</label>
+                </value>
+                <value>
+                    <fullName>Best Value</fullName>
+                    <default>false</default>
+                    <label>Best Value</label>
+                </value>
+                <value>
+                    <fullName>Premium</fullName>
+                    <default>false</default>
+                    <label>Premium</label>
+                </value>
+                <value>
+                    <fullName>Best Value+Config</fullName>
+                    <default>false</default>
+                    <label>Best Value+Config</label>
+                </value>
+                <value>
+                    <fullName>Manual</fullName>
+                    <default>false</default>
+                    <label>Manual</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Segment__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>Segment</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Small Law</fullName>
+                    <default>true</default>
+                    <label>Small Law</label>
+                </value>
+                <value>
+                    <fullName>Corporate</fullName>
+                    <default>false</default>
+                    <label>Corporate</label>
+                </value>
+                <value>
+                    <fullName>Government</fullName>
+                    <default>false</default>
+                    <label>Government</label>
+                </value>
+                <value>
+                    <fullName>FindLaw</fullName>
+                    <default>false</default>
+                    <label>FindLaw</label>
+                </value>
+                <value>
+                    <fullName>Medium Law</fullName>
+                    <default>false</default>
+                    <label>Medium Law</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Sequence_No__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Sequence No</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>YoY_1_Renewal__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>For FL Segment, Used this for default discounts  2 Years, All Other is used for YOY 1+</inlineHelpText>
+        <label>YoY 1 Renewal %</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <type>Percent</type>
+    </fields>
+    <label>DC Contract Term V2 Setting</label>
+    <pluralLabel>DC Contract Term V2 Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

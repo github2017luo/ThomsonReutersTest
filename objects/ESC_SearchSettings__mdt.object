@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>will be using the fields of it for providing search functionality</description>
+    <fields>
+        <fullName>ESC_ApplicableToProfiles__c</fullName>
+        <description>add comma separated profile names for which the setting is applicable.. Only for the mentioned profiles they will be activated</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>ApplicableToProfiles</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Def__c</fullName>
+        <description>the default value for search</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Default Value</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_FieldAPIName__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>FieldAPIName</label>
+        <length>200</length>
+        <required>true</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_HFF__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>will hide field from fiter</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Hide from filter</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_Hide_From_Results__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Hide From Results</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_IsKey__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This field will decide whether record is a filter field or result field, checked --&gt;  filter field</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>IsKey</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>ESC_LabelName__c</fullName>
+        <description>Mention the custom Label to override the field label appearing on the search page</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Override Name With Label:</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_ObjectAPIName1__c</fullName>
+        <description>Select object type for which criteria has to be inserted</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <inlineHelpText>Select object type for which criteria has to be inserted</inlineHelpText>
+        <label>ObjectAPIName</label>
+        <required>true</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Account</fullName>
+                    <default>false</default>
+                    <label>Account</label>
+                </value>
+                <value>
+                    <fullName>Contact</fullName>
+                    <default>false</default>
+                    <label>Contact</label>
+                </value>
+                <value>
+                    <fullName>LCRM_Contact_SSD__c</fullName>
+                    <default>false</default>
+                    <label>LCRM_Contact_SSD__c</label>
+                </value>
+                <value>
+                    <fullName>Source_System_Detail__c</fullName>
+                    <default>false</default>
+                    <label>Source_System_Detail__c</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>ESC_ParamValue__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <inlineHelpText>In case of parent child relation ship, stores the lookup field API Name.</inlineHelpText>
+        <label>Param Value</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Sequence__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Sequence</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_ShowAsLink__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Field will be shown as hyper link</description>
+        <externalId>false</externalId>
+        <fieldManageability>SubscriberControlled</fieldManageability>
+        <label>ShowAsLink</label>
+        <type>Checkbox</type>
+    </fields>
+    <label>SearchSettings</label>
+    <listViews>
+        <fullName>Usl</fullName>
+        <columns>MasterLabel</columns>
+        <columns>ESC_Sequence__c</columns>
+        <columns>ESC_ObjectAPIName1__c</columns>
+        <columns>ESC_FieldAPIName__c</columns>
+        <columns>DeveloperName</columns>
+        <columns>NamespacePrefix</columns>
+        <columns>ESC_ApplicableToProfiles__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>ESC_ApplicableToProfiles__c</field>
+            <operation>contains</operation>
+            <value>USL Helpdesk agent</value>
+        </filters>
+        <label>Usl</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>SearchSettings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

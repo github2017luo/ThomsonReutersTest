@@ -1,0 +1,44 @@
+<!--
+* {Purpose} – Displays the table header as sortable link
+*
+* @author   Shah Kadirmohideen
+* @version  2012-01-20
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                    Description
+* 2012-01-20    Shah Kadirmohideen      Created
+* =============================================================================
+-->  
+<apex:component >    
+
+    <apex:attribute name="clickAction" description="Action method which will be executed upon clicking a letter"  type="CNEnhancedListHandler" required="true"/>
+    <apex:attribute name="columnHeaderLabel" description="Column header text"  type="String" required="true"/>
+    <apex:attribute name="columnAPIName" description="Column API name"  type="String" required="true"/>
+    <apex:attribute name="isSortable" description="Can the column be sortable?"  type="Boolean" required="true"/>
+    <apex:attribute name="rerenderPanel" description="Component Id which will be rerendered upon action"  type="String" required="true"/>
+
+    <apex:commandLink action="{!clickAction.sortPage}" rendered="{!isSortable==true}" rerender="{!rerenderPanel}" onmouseup="makeCursorWait()" oncomplete="makeCursorAuto()">
+        <apex:outputPanel rendered="{!IF(AND(clickAction.sSortDirection=='ASC', clickAction.sSortBy==columnAPIName), true, false)}">
+            <apex:outputText value="{!columnHeaderLabel}" title="{!columnHeaderLabel & ' - Sorted Ascending'}"/>
+            <apex:image value="/s.gif" alt="Sorted Ascending"  styleClass="sortAsc" title="Sorted Ascending" /> 
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!IF(AND(clickAction.sSortDirection=='DESC', clickAction.sSortBy==columnAPIName), true, false)}">
+            <apex:outputText value="{!columnHeaderLabel}" title="{!columnHeaderLabel & ' - Sorted Descending'}"/>
+            <apex:image value="/s.gif" alt="Sorted Descending"  styleClass="sortDesc" title="Sorted Descending"  /> 
+        </apex:outputPanel>
+        
+        <apex:outputPanel rendered="{!IF(clickAction.sSortBy <> columnAPIName, true, false)}">
+            <apex:outputText value="{!columnHeaderLabel}" title="{!columnHeaderLabel & ' - ' & IF (columnAPIName=='Last_Modification_Time__c', 'Click to Sort Descending', 'Click to Sort Ascending')}"/>
+        </apex:outputPanel>
+
+        <apex:param name="sortField" value="{!columnAPIName}"/>
+        <apex:param name="SortDirection" value="{!IF(clickAction.sSortDirection=='ASC', 'DESC', 'ASC')}"/>
+    </apex:commandLink>
+
+    <apex:outputText value="{!columnHeaderLabel}" title="{!columnHeaderLabel}" rendered="{!isSortable==false}"/>
+
+</apex:component>

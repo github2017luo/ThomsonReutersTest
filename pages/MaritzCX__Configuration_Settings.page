@@ -1,0 +1,473 @@
+<!-- This page is used to display the MaritzCX Configuration Settings
+Last Modified By: Rounak 13-December-2017 KeyMetric6 Added
+-->
+<apex:page controller="MaritzCX.ConfigurationController" lightningStylesheets="true" doctype="html-5.0">
+
+    <!-- Jquery Datepicker Files-->
+    <apex:includeScript value="{!URLFOR($Resource.MaritzCX__MCX_Highcharts_Library, '/Highcharts_Library/api/js/jquery-3.4.0.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.MaritzCX__MCX_Highcharts_Library, '/jqueryDatePicker/jquery-ui-1.12.1/jquery-ui.js')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.MaritzCX__MCX_Highcharts_Library, '/jqueryDatePicker/jquery-ui-themes-1.12.1/themes/ui-lightness/jquery-ui.css')}" />
+    <!-- End of Jquery Datepicker-->
+
+    <apex:variable var="isLightning" value="{!$User.UIThemeDisplayed=='Theme4d' || $User.UIThemeDisplayed=='Theme4u'}" />
+
+    <!-- Classic CSS classes -->
+    <apex:outputPanel rendered="{!NOT(isLightning)}">
+        <style>
+            .activeTab {
+            background-color:light-grey;
+            color:black;
+            text-align:center;
+            width: 180px;
+            height:08px;
+            padding-top: 06px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 0px;
+            background-image: none;
+            cursor:pointer;
+            }
+
+            .inactiveTab {
+            background-color:#C0BE73;
+            color:white !important;
+            text-align:center;
+            width:180px;
+            height: 08px;
+            padding-top: 06px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 0px;
+            background-image: none;
+            cursor:pointer;
+            }
+
+            .rich-tabpanel-content {
+            font-size:12px;
+            }
+
+            table.visualTable {
+            empty-cells: hide;
+            }
+
+            .visualTable th{
+            padding: 5px;
+            text-align: center;
+            }
+
+            .visualTable td {
+            padding: 5px;
+            width:120px;
+            }
+
+        </style>
+    </apex:outputPanel>
+
+    <!-- Lightning CSS classes-->
+    <apex:outputPanel rendered="{!isLightning}">
+        <style>
+            body {
+            font-size: .8125rem !important;
+            }
+
+            body .rich-tabhdr-cell-active, .slds-scope .rich-tabhdr-cell-active {
+            border-bottom-color: #0070d2 !important;
+            font-weight: 700 !important;
+            color: #3e3e3c !important;
+            }
+
+            .rich-tab-active  , .rich-tab-inactive , .rich-tabpanel-content {
+            background-image: none;
+            background-color: transparent;
+            border-style: none;
+            font-size: inherit;
+            font-family: inherit;
+            color: inherit;
+            }
+
+            .rich-tab-header {
+            padding: 2px 10px 2px 10px;
+            text-align: center;
+            }
+
+            .rich-tabhdr-side-cell {
+            border-top-width:0;
+            font-family: sans-serif,Arial,Verdana;
+            }
+
+            table.visualTable {
+            min-width: 0;
+            }
+
+            .picklistArrowLeft, .picklistArrowRight, .rightArrowIcon, .leftArrowIcon, .doubleArrowUp, .upArrowIcon, .downArrowIcon, .doubleArrowDwn{
+            background: transparent url(/img/alohaSkin/combobox_arrows_sprite.gif) no-repeat;
+            width: 24px;
+            height: 20px;
+            margin: 0 2px;
+            }
+
+            .downArrowIcon {
+            background-position: left -180px;
+            }
+
+            .upArrowIcon {
+            background-position: left -120px;
+            }
+
+            .picklistArrowLeft, .leftArrowIcon {
+            background-position: left -60px;
+            }
+
+            .message {
+            justify-content:left !important;
+            }
+
+        </style>
+    </apex:outputPanel>
+
+    <style>
+        .center {
+            position : absolute;
+            top : 40%;
+            left : 50%;
+            transform: translate(-50%, -50%);
+        }
+        .opaque {
+            display:none;
+            top: -4px;
+            left: -4px;
+            padding: 8px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-color: gray;
+            filter: alpha(opacity=30);
+            opacity: 0.3;
+            -moz-opacity:0.3;
+            -khtml-opacity:0.3;
+        }
+
+        .spinner {
+            display:none;
+            padding: 18px 60px;
+            text-align: center;
+            font: normal 16px Tahoma, Geneva, sans-serif;
+            border: 1px solid #CCC;
+            background-color: white;
+            border-radius: 5px;
+            white-space: nowrap;
+            z-index : 2;
+        }
+        .errorText {
+            color: #c00;
+        }
+
+        select[styleclass*="multilist"] option {
+            max-width: 350px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+        var locateDateFormat = UserContext.dateFormat;
+        locateDateFormat = locateDateFormat.replace(/M/g, 'm').replace('yyyy', 'yy');
+        locateDateFormat = (locateDateFormat.match(/m/g).length == 1) ? locateDateFormat.replace('m', 'mm') : locateDateFormat;
+        locateDateFormat = (locateDateFormat.match(/d/g).length == 1) ? locateDateFormat.replace('d', 'dd') : locateDateFormat;
+
+        window.onload = function () {
+            initDatepicker();
+        };
+
+        function initDatepicker() {
+            j$('[id$=datepicker]').datepicker({
+                dateFormat: locateDateFormat,
+                maxDate: 0,
+                changeMonth: true,
+                changeYear: true
+            });
+        }
+
+        function clearMessage() {
+            j$(document.getElementById("{!$Component.myForm.myPageBlock.msg}")).empty();
+        }
+
+        //Method that block the page when loading
+        function updateSpinner(opaqueId, spinnerId, displayType) {
+            document.getElementById(opaqueId).style.display = displayType;
+
+            var popUp = document.getElementById(spinnerId);
+            popUp.style.display = displayType;
+        }
+
+    </script>
+
+    <apex:form id="myForm">
+        <apex:actionStatus id="status" onstart="updateSpinner('opaque', 'spinner', 'block')" onstop="updateSpinner('opaque', 'spinner', 'none')" />
+
+        <apex:pageBlock id="myPageBlock" tabStyle="Case" title="{!$Label.maritzcx__configuration}">
+            <div id="ContainerDiv" class="text" style="min-height:740px;position:relative">
+                <div id="opaque" class="opaque"/>
+                <div id="spinner" class="spinner center">
+                    <span><apex:image value="/img/loading.gif" html-align="center"/> {!$Label.Please_wait}</span>
+                </div>
+                <span style="max-width:'40px';overflow:scroll">
+                    <apex:pageMessages id="msg" />
+                </span>
+                <apex:tabPanel switchType="client" selectedTab="{!$Label.maritzcx__visualization_configuration}" id="configTabs" activeTabClass="activeTab" inactiveTabClass="inactiveTab">
+                    <apex:tab id="tabVisualization" label="{!$Label.maritzcx__visualization_configuration}" name="{!$Label.maritzcx__visualization_configuration}" >
+                        <apex:actionSupport event="ontableave" rerender="msg" />
+                        <apex:pageBlockSection id="pageSection1" collapsible="true" columns="1" >
+                            
+                            <!-- Page Level Error -->
+                            <apex:outputPanel id="subMessage">
+                                <apex:pageMessage rendered="{!hasError || hasMessage}" severity="{!messageSeverity}" summary="{!message}" strength="2" title="{!messageTitle}"/>
+                            </apex:outputPanel>
+                            
+                            <apex:pageBlockSectionItem rendered="{!NOT(hasError)}">
+                            <apex:outputPanel id="allsurevyMsg">
+                                    <apex:outputText escape="true" value="The settings below are needed to display charts on the Account, Contact and Lead detail page. Minimum and Maximum are the rating values for the associated questions. {!$Label.maritzcx__save_after_each_setting}" />
+                                    <br /><br />
+                                    <apex:outputPanel id="newtab">
+                                        <table class="visualTable" style="min-width:0;">
+                                            <!-- Survey Picklist -->
+                                            <tr>
+                                                <!-- Label -->
+                                                <td style="vertical-align: middle;">
+                                                    <apex:outputLabel value="{!$Label.maritzcx__survey}" for="Survey" style="font-weight: bold;" />
+                                                </td>
+
+                                                <!-- Picklist -->
+                                                <td>
+                                                    <apex:selectList label="Survey" size="1" value="{!surveyFilterId}" style="width:150px;">
+                                                        <apex:selectOptions value="{!SurveyOptions}" />
+                                                        <apex:actionSupport event="onchange" action="{!retrieveDetails}" status="status" oncomplete="initDatepicker();" reRender="allsurevyMsg, msg, subMessage" />
+                                                    </apex:selectList>
+                                                </td>
+
+                                                <!-- Default Survey Checkbox -->
+                                                <td>
+                                                    <apex:outputPanel id="defaultSurId">
+                                                        <apex:inputCheckBox id="checkDone" label="Set as Default Survey"
+                                                            value="{!selectedSurvey.MaritzCX__Is_Default_Survey__c}" style="vertical-align: middle;"
+                                                            onchange="clearMessage()" />
+                                                        <apex:outputLabel value="{!$Label.maritzcx__default_survey}" for="Default Survey"
+                                                            style="font-weight: bold;font-size: 91%;font-family: Arial,Helvetica,sans-serif;color: #4a4a56;" />
+                                                    </apex:outputPanel>
+                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <!-- Default Time Trend Picklist-->
+                                            <tr>
+                                                <!-- Label -->
+                                                <td style="vertical-align: middle;">
+                                                    <apex:outputLabel value="{!$Label.maritzcx__time_trend_filter}" for="timeTrend"
+                                                        style="font-weight: bold;" rendered="{!configurableQuestions.size != 0}"/>
+                                                </td>
+
+                                                <!-- picklist -->
+                                                <td>
+                                                    <apex:selectList label="timeTrend" size="1" value="{!selectedSurvey.MaritzCX__Time_Trend__c}"
+                                                        style="width:150px;" onchange="clearMessage()" rendered="{!configurableQuestions.size != 0}">
+                                                        <apex:selectOptions value="{!timeTrendOptions}" />
+                                                    </apex:selectList>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Default Start Date -->
+                                            <tr>
+                                                <!-- Label -->
+                                                <td style="vertical-align: middle;">
+                                                    <apex:outputLabel value="{!$Label.maritzcx__start_date}" for="datepicker"
+                                                        style="font-weight: bold;" rendered="{!configurableQuestions.size != 0}"/>
+                                                </td>
+
+                                                <!-- DatePicker -->
+                                                <td>
+                                                    <apex:inputText id="datepicker" value="{!startDate}" size="12"
+                                                        onchange="clearMessage()" rendered="{!configurableQuestions.size != 0}"/>
+                                                </td>
+                                            </tr>
+
+                                            <!-- Min-Max-Goal-CharType Labels -->
+                                            <tr>
+                                                <th></th>
+                                                <th style="white-space: nowrap; text-align: center">
+                                                    <apex:outputLabel value="{!$Label.maritzcx__minimum}" escape="true" rendered="{!configurableQuestions.size != 0}"/>
+                                                </th>
+                                                <th style="white-space: nowrap; text-align: center">
+                                                    <apex:outputLabel value="{!$Label.maritzcx__maximum}" escape="true" rendered="{!configurableQuestions.size != 0}"/>
+                                                </th>
+                                                <th style="white-space: nowrap; text-align: center">
+                                                    <apex:outputLabel value="{!$Label.maritzcx__chart_type}" escape="true" rendered="{!configurableQuestions.size != 0}"/>
+                                                </th>
+                                            </tr>
+
+                                            <!-- Min-Max-Goal-CharType for Key Metric -->
+                                            <apex:repeat var="question" value="{!configurableQuestions}" >
+                                                <tr>
+                                                    <!-- Label -->
+                                                    <td style="vertical-align: middle;">
+                                                        <apex:outputLabel title="{!question.MaritzCX__Question_Label__c}"
+                                                            value="{!if(len(question.MaritzCX__Question_Label__c) > 21, LEFT(question.MaritzCX__Question_Label__c, 21)+'...', question.MaritzCX__Question_Label__c)}"
+                                                            escape="true" style="font-weight:bold;" />
+                                                    </td>
+
+                                                    <!-- Min -->
+                                                    <td>
+                                                        <apex:outputPanel rendered="{!$ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Min_Field_On_Survey__c].Updateable}">
+                                                            <apex:inputField value="{!selectedSurvey[question.MaritzCX__Min_Field_On_Survey__c]}"
+                                                                style="width:150px; text-align: center;" type="number"
+                                                                onchange="clearMessage()" styleClass="{!IF(errorMessages[question.MaritzCX__Min_Field_On_Survey__c] != NO_ERROR, 'error', '')}"/>
+                                                            <apex:outputPanel rendered="{!errorMessages[question.MaritzCX__Min_Field_On_Survey__c] != NO_ERROR}">
+                                                                <apex:outputText value="Error: " style="font-weight:bold" styleClass="errorText"/>
+                                                                <apex:outputText value="{!errorMessages[question.MaritzCX__Min_Field_On_Survey__c]}" styleClass="errorText"/>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!NOT($ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Min_Field_On_Survey__c].Updateable) && $ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Min_Field_On_Survey__c].Accessible}">
+                                                            <apex:outputField value="{!selectedSurvey[question.MaritzCX__Min_Field_On_Survey__c]}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+
+                                                    <!-- Max -->
+                                                    <td>
+                                                        <apex:outputPanel rendered="{!$ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Max_Field_On_Survey__c].Updateable}">
+                                                            <apex:inputField value="{!selectedSurvey[question.MaritzCX__Max_Field_On_Survey__c]}"
+                                                                style="width:150px; text-align: center;" type="number"
+                                                                onchange="clearMessage()" styleClass="{!IF(errorMessages[question.MaritzCX__Max_Field_On_Survey__c] != NO_ERROR, 'error', '')}"/>
+                                                                <apex:outputPanel rendered="{!errorMessages[question.MaritzCX__Max_Field_On_Survey__c] != NO_ERROR}">
+                                                                    <apex:outputText value="Error: " style="font-weight:bold;" styleClass="errorText"/>
+                                                                    <apex:outputText value="{!errorMessages[question.MaritzCX__Max_Field_On_Survey__c]}" styleClass="errorText"/>
+                                                                </apex:outputPanel>
+                                                        </apex:outputPanel>
+
+                                                        <apex:outputPanel rendered="{!NOT($ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Max_Field_On_Survey__c].Updateable) && $ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Max_Field_On_Survey__c].Accessible}">
+                                                            <apex:outputField value="{!selectedSurvey[question.MaritzCX__Max_Field_On_Survey__c]}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+
+                                                    <!-- Chart Type -->
+                                                    <td>
+                                                        <apex:outputPanel rendered="{!$ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Chart_Field_On_Survey__c].Updateable}">
+                                                            <apex:selectList value="{!selectedSurvey[question.MaritzCX__Chart_Field_On_Survey__c]}" size="1" style="width:150px;" onchange="clearMessage()" styleClass="{!IF(errorMessages[question.MaritzCX__Chart_Field_On_Survey__c] != NO_ERROR, 'error', '')}">
+                                                                <apex:selectOptions value="{!chartOptions}" />
+                                                            </apex:selectList>
+                                                            <apex:outputPanel rendered="{errorMessages[question.Chart_Field_On_Survey__c] != NO_ERROR}">
+                                                                <apex:outputText value="Error: " style="font-weight:bold" styleClass="errorText"/>
+                                                                <apex:outputText value="{!errorMessages[question.MaritzCX__Chart_Field_On_Survey__c]}" styleClass="errorText"/>
+                                                            </apex:outputPanel>
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel rendered="{!NOT($ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Chart_Field_On_Survey__c].Updateable) && $ObjectType.MaritzCX__Survey__c.fields[question.MaritzCX__Chart_Field_On_Survey__c].Accessible}">
+                                                            <apex:outputField value="{!selectedSurvey[question.MaritzCX__Chart_Field_On_Survey__c]}" />
+                                                        </apex:outputPanel>
+                                                    </td>
+                                                </tr>
+                                            </apex:repeat>
+                                        </table>
+                                        <br />
+                                        <!-- Save Button-->
+                                        <apex:commandButton value="{!$Label.maritzcx__save}" action="{!saveVizConfiguration}" reRender="msg, allsurevyMsg" status="status" oncomplete="initDatepicker()"/>
+                                        <br />
+                                    </apex:outputPanel>
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:tab>
+
+                    <!-- Chart Configuration Tab -->
+                    <apex:tab label="{!$Label.maritzcx__chart_config}" name="{!$Label.maritzcx__chart_config}" id="tabChart">
+                        <apex:actionSupport event="ontableave" rerender="msg" />
+                        <!-- Range Configuration Start -->
+                        <apex:pageBlockSection collapsible="false" columns="1" title="{!$Label.maritzcx__rangeconfiguration}">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputPanel id="RangeConfig">
+                                    <apex:outputText escape="true" value="{!$Label.maritzcx__rangeconfigurationinfo}" /><br /><br />
+                                    <c:ConfigureRangeComp id="rangePanel" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <!-- Range Configuration End -->
+
+                        <!-- Configure Charts -START-->
+                        <apex:pageBlockSection collapsible="false" columns="1" title="{!$Label.maritzcx__configure_charts}">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputPanel id="ConfigureCharts">
+                                    <apex:outputText escape="true" value="{!$Label.maritzcx__configure_charts_info}" />
+                                    <br />
+                                    <br />
+                                    <c:ConfigureChartComp id="chartComp" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <!-- Configure Charts -END-->
+                    </apex:tab>
+
+                    <!-- Case Configuration Tab -->
+                    <apex:tab label="{!$Label.maritzcx__case_config}" name="{!$Label.maritzcx__case_config}" id="tabCase">
+                        <apex:actionSupport event="ontableave" rerender="msg" />
+                        <apex:pageBlockSection collapsible="false" columns="1">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputPanel id="caseSettings">
+                                    <apex:outputText escape="true" value="The settings below can be used for managing MaritzCX Cases." />
+                                    <br /><br />
+                                    <table class="visualTable">
+                                        <apex:actionSupport event="onclick" rerender="msg" />
+                                        <tr>
+                                            <td style="vertical-align: middle;">
+                                                <apex:outputLabel escape="true" style="font-weight:bold;" value="Record Type" />
+                                            </td>
+                                            <td>
+                                                <apex:selectList label="Record Type" value="{!caseRecordTypeId}"
+                                                    multiselect="false" size="1" style="width:150px;" disabled="{!caseRecordTypeList.size==0}">
+                                                    <apex:selectOptions value="{!caseRecordTypes}" />
+                                                    <apex:actionSupport event="onchange" rerender="msg" />
+                                                </apex:selectList>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <apex:commandButton value="{!$Label.maritzcx__save}" action="{!saveCaseSettings}" reRender="msg,caseSettings"
+                                        disabled="{!caseRecordTypeList.size==0}" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:tab>
+                    <!-- Case Settings Section -END-->
+
+                    <!-- Response List Configuration -->
+                    <apex:tab label="{!$Label.maritzcx__response_list_config}" name="{!$Label.maritzcx__response_list_config}" id="tabResponse">
+                        <apex:actionSupport event="ontableave" rerender="msg" />
+                        <!-- Configure Columns -START-->
+                        <apex:pageBlockSection collapsible="false" columns="1" title="{!$Label.maritzcx__configure_columns}">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputPanel id="ConfigureColumns">
+                                    <apex:outputText escape="true" value="{!$Label.maritzcx__configure_columns_info}" />
+                                    <br />
+                                    <br />
+                                    <c:SelectMultipleOptionsComp />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <!--  Configure Columns -END-->
+
+                        <!-- Configure Questions -START-->
+                        <apex:pageBlockSection collapsible="false" columns="1" title="{!$Label.maritzcx__configure_questions}">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputPanel id="ConfigureQuestions">
+                                    <apex:outputText escape="true" value="{!$Label.maritzcx__configure_questions_info}" />
+                                    <br />
+                                    <br />
+                                    <c:ConfigureQuestionComp id="quescomp" />
+                                </apex:outputPanel>
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                        <!--  Configure Questions -END-->
+                    </apex:tab>
+                </apex:tabPanel>
+            </div>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

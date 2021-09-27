@@ -1,0 +1,1020 @@
+<apex:page docType="html-5.0" controller="Consensus.ConfigurationController" lightningStylesheets="true">
+    <script type="text/javascript">
+        var isLightning = '{!$User.UIThemeDisplayed}' === 'Theme4d';
+        var RECIPIENTS_LOADING_MESSAGE = 'Loading Recipients';
+        var CHECK_RECIPIENTS_AVAILABILITY = 'Checking Recipients Availability';
+        var MARKETING_LEADS_LOADING_MESSAGE = 'Loading Marketing Leads Historical Activity';
+        var LOADING_RECIPIENTS_ENGAGEMENT = 'Loading Recipients Historical Activity';
+        var VERIFYING_DATA = 'Verifying Data';
+    var NUMBER_OF_DEMOS_PER_PAGE = 500;
+    var NUMBER_OF_MARKETING_PER_PAGE = 150;
+    var NUMBER_OF_SALES_PER_PAGE = 100;
+    
+        var currentTimeOut;
+    
+        var demoPage = 0;
+        var marketPage = 0;
+        var salesPage = 0;
+        var counter = 0;
+    /*
+        var iteration = 0;
+        var emailPage = 0;
+        var barSizeforFailedReloading = 5;
+        var totalRecipientEmailBatches;
+        var proceedRecipientEmailBatches;
+        var isJobsBy1000Completed;
+        var isJobsBy100Completed;
+        var isJobsBy10Completed;
+        var isJobsBy1Completed;
+        var isBatchErrorsExist;
+        var isSalesforceContainsMoreLeads;
+*/
+        var isLoadHistoricalActivity;
+        var isCreateLeads;
+        var isCreateRecipients;
+
+        var progressStateElem;
+        var progressBarElem;
+        var progressTextElem;
+        var additionalProgressStateElem;
+        var additionalProgressDescriptionElem;
+
+        var numberOfMarketing;
+        var numberOfRequestsForMarketing;
+        var numberOfSales;
+        var numberOfRequestsForSales;
+        var percentage = 0;
+        var barSizeforContactInfoLoading = 100;
+    	var errorStatusElem;
+    
+        // Step 0 - Action of Load Consensus Data button
+        function showConfirmation() {
+            //console.log('showConfirmation');
+            var additionalOptions = document.querySelectorAll('.additional-options__item input[type="checkbox"]');
+            isLoadHistoricalActivity = additionalOptions[0].checked;
+            isCreateLeads = additionalOptions[1].checked;
+            isCreateRecipients = additionalOptions[2].checked;
+
+            if (isLoadHistoricalActivity) {
+                modalConfirmElem = document.getElementById('modalConfirm');
+                modalConfirmElem.style.display = 'block';
+            } else {
+                loadAllData();
+            }
+        }
+
+        // Modal Comfirm result of Cancel
+        function cancelLoad() {
+            //console.log('cancelLoad');
+            modalConfirmElem = document.getElementById('modalConfirm');
+            modalConfirmElem.style.display = 'none';
+        }
+    
+        // Modal Comfirm result of Continue
+        function startLoad() {
+            //console.log('startLoad');
+            modalConfirmElem = document.getElementById('modalConfirm');
+            modalConfirmElem.style.display = 'none';
+            loadAllData();
+        }
+    
+        // Step 1 - Start to load all data
+        function loadAllData() {
+            //console.log('loadAllData');
+            percentage = 0;
+            counter = 0;
+            emailPage = 0;
+            iteration = 0;
+            progressStateElem = document.getElementById('progressState');
+            progressBarElem = document.getElementById('progressBar');
+            progressTextElem = document.getElementById('progressText');
+            progressBarElem.style.display = 'block';
+
+            additionalProgressStateElem = document.getElementById('additionalProgressState');
+            additionalProgressDescriptionElem = document.getElementById('additionalProgressDescriptionText');
+
+            initializeProgressBar(NUMBER_OF_MARKETING_PER_PAGE);    // Call the apex af:initializeProgressBar == getProgressBarValues, then setProgressBarValues (Step 2)
+        }
+        
+        // Step 2 - Set initial values and get Demos
+        function setProgressBarValues() {
+            //console.log('Step 2 started "setProgressBarValues"');
+            if (isHandleStatusEror()) {
+                return;
+            }
+            
+            demoPage = 0;
+            numberOfDemos = parseInt(document.getElementById('demosTotal').value, 10);
+            numberOfRequestsForDemo = Math.ceil(numberOfDemos / NUMBER_OF_DEMOS_PER_PAGE);
+            console.log('numberOfRequestsForDemo : ', numberOfRequestsForDemo, '; demosPerPage : ', NUMBER_OF_DEMOS_PER_PAGE, '; numberOfDemos : '+numberOfDemos);
+
+            var historicalActivityPercentage = 0;   // Max size of Bar
+
+            if (isLoadHistoricalActivity) {
+                //document.getElementById('proceedRecipientEmailBatches').value = 0;
+                //document.getElementById('totalRecipientEmailBatches').value = 0;
+                //isSalesforceContainsMoreLeads = document.getElementById('isSalesforceContainsMoreLeads').value === 'true' ? true : false;
+                //console.log('isSalesforceContainsMoreLeads:', isSalesforceContainsMoreLeads);
+
+                numberOfMarketing = parseInt(document.getElementById('marketingLeadsTotal').value, 10);
+                numberOfRequestsForMarketing = Math.ceil(numberOfMarketing / NUMBER_OF_MARKETING_PER_PAGE);
+                console.log('numberOfRequestsForMarketing : ', numberOfRequestsForMarketing, '; marketingPerPage : ', NUMBER_OF_MARKETING_PER_PAGE, '; numberOfMarketing : '+numberOfMarketing);
+
+                numberOfSales = parseInt(document.getElementById('leadsWithViewsTotal').value, 10);
+                numberOfRequestsForSales = Math.ceil(numberOfSales / NUMBER_OF_SALES_PER_PAGE);
+                console.log('numberOfRequestsForSales : ', numberOfRequestsForSales, '; salesPerPage : ', NUMBER_OF_SALES_PER_PAGE, '; numberOfSales : '+numberOfSales);
+                historicalActivityPercentage =  numberOfRequestsForMarketing + numberOfRequestsForSales;    // Max size of Bar
+                //barSizeforContactInfoLoading = 30;    // Width of 1 point of Bar size
+            }
+
+            percentage = barSizeforContactInfoLoading / (1 + historicalActivityPercentage + numberOfRequestsForDemo);   // Percent value of the one Contact info (one point)
+            //console.log('percentage : ', percentage);
+
+            counter++;  //  Number of done points
+            updateStateProgressBar(false, 0);
+            //getDemos();   // Call the af:getDemos == loadDemosFromConsensus, then js:getEmailByPage (Step 3)
+            getDemoRecords();
+            //console.log('setProgressBarValues end');
+        }
+
+        // Drawing parameters of the status bar
+        function updateStateProgressBar(isBatchStarted, batchPercentage) {
+            //console.log('updateStateProgressBar counter = '+counter+' :: isBatchStarted = '+isBatchStarted);
+            var fullPercentage = percentage * counter;
+            if (!isBatchStarted) {
+                progressStateElem.style.width = fullPercentage + '%';
+                progressTextElem.textContent = fullPercentage.toFixed(1) + '%';
+            } else {
+                if(isJobsBy1000Completed && (totalRecipientEmailBatches !== proceedRecipientEmailBatches || isBatchErrorsExist)) {
+                    progressStateElem.style.width = (100 - barSizeforFailedReloading) + '%';
+                    progressTextElem.textContent = (100 - barSizeforFailedReloading) + '%'
+                } else {
+                    progressStateElem.style.width = (fullPercentage + batchPercentage) + '%';
+                    progressTextElem.textContent = (fullPercentage + batchPercentage).toFixed(1) + '%';
+                }
+            }
+
+        }
+
+        // Step 2a
+        function getDemoRecords() {
+            //console.log('Step 2a started "getDemoRecords"');
+            if (isHandleStatusEror()) {
+                return;
+            }
+
+            demoPage++;
+            console.log('demoPage = '+demoPage+' from '+numberOfRequestsForDemo);
+            if (demoPage > numberOfRequestsForDemo){
+                //console.log('Step 2a returned "getDemoRecords"');
+                marketPage = 0;
+                getMarketingData();
+                return;
+            }
+            
+            getDemoByPage(demoPage, NUMBER_OF_DEMOS_PER_PAGE);  // af:getDemoByPage == loadDemosFromConsensusByPage, then again js:getDemoRecords
+            //console.log('getDemoByPage i=' + demoPage);
+            updateProgressState();
+            handleAdditionalProgressBarTexts((demoPage / numberOfRequestsForDemo) * 100, 'Loading Demo records');
+        }
+
+        // Step 3a
+        function getMarketingData() {
+            //console.log('Step 3a started "getMarketingData"');
+            if (isHandleStatusEror()) {
+                return;
+            }
+            if (!isLoadHistoricalActivity) {
+                setDefaultStateStatusBar();
+                setDefaultStateAdditionalStatusBar();
+                printSuccess();
+                //console.log('Step 3a returned "getMarketingData"');
+                return;
+            }
+
+            marketPage++;
+            console.log('marketPage = '+marketPage+' from '+numberOfRequestsForMarketing);
+            if (marketPage > numberOfRequestsForMarketing){
+                //console.log('Step 3a returned "getMarketingData"');
+                salesPage = 0;
+                getSalesData();
+                return;
+            }
+
+            if (isCreateLeads) {
+                handleAdditionalProgressBarTexts((marketPage / numberOfRequestsForMarketing) * 100, MARKETING_LEADS_LOADING_MESSAGE);
+            } else {
+                handleAdditionalProgressBarTexts((marketPage / numberOfRequestsForMarketing) * 100, CHECK_RECIPIENTS_AVAILABILITY);
+            }
+            
+            getMarketByPage(marketPage, NUMBER_OF_MARKETING_PER_PAGE);
+            //console.log('getMarketByPage i=' + marketPage);
+            updateProgressState();
+        }
+
+        // Step 3b
+        function getSalesData() {
+            //console.log('Step 3b started "getSalesData"');
+            if (isHandleStatusEror()) {
+                return;
+            }
+            if (!isLoadHistoricalActivity) {
+                setDefaultStateStatusBar();
+                setDefaultStateAdditionalStatusBar();
+                printSuccess();
+                //console.log('Step 3b returned "getSalesData"');
+                return;
+            }
+
+            salesPage++;
+            console.log('salesPage = '+salesPage+' from '+numberOfRequestsForSales);
+            if (salesPage > numberOfRequestsForSales){
+                setDefaultStateStatusBar();
+                setDefaultStateAdditionalStatusBar();
+                printSuccess();
+                //console.log('Step 3b returned "getSalesData"');
+                return;
+            }
+
+            if (isCreateRecipients) {
+                handleAdditionalProgressBarTexts((salesPage / numberOfRequestsForSales) * 100, RECIPIENTS_LOADING_MESSAGE);
+            } else {
+                handleAdditionalProgressBarTexts((salesPage / numberOfRequestsForSales) * 100, CHECK_RECIPIENTS_AVAILABILITY);
+            }
+            
+            getSalesByPage(salesPage, NUMBER_OF_SALES_PER_PAGE);
+            //console.log('getSalesByPage i=' + salesPage);
+            updateProgressState();
+        }
+    
+        // Step 3
+        function getEmailByPage() {
+            //console.log('Step 3 started "getEmailByPage"');
+            if (isHandleStatusEror()) {
+                return;
+            }
+            if (!isLoadHistoricalActivity || (!isCreateRecipients && !isSalesforceContainsMoreLeads)) {
+                getLeadsInfoByParts();  // js:getLeadsInfoByParts (Step 4)
+                return;
+            }
+
+            if (isCreateRecipients) {
+                handleAdditionalProgressBarTexts((emailPage / numberOfRequestsForMarketing) * 100, RECIPIENTS_LOADING_MESSAGE);
+            } else {
+                handleAdditionalProgressBarTexts((emailPage / numberOfRequestsForMarketing) * 100, CHECK_RECIPIENTS_AVAILABILITY);
+            }
+
+            emailPage++;
+
+            if (emailPage > numberOfRequestsForMarketing){
+                //setTimeout(function() {
+                    getLeadsInfoByParts();
+                //}, 1000);
+                return;
+            }
+            
+            updateProgressState();
+            getEmailInfoByPage(emailPage);
+            //console.log('getEmailInfoByPage i=' + emailPage);
+        }
+
+        // Step 4 - 
+        function getLeadsInfoByParts() {
+            //console.log('Step 4 started "getLeadsInfoByParts"');
+            if (isHandleStatusEror()) {
+                return;
+            }
+
+            if(!isLoadHistoricalActivity) {
+                updateProgressState();
+                return;
+            }
+
+            handleAdditionalProgressBarTexts((iteration / numberOfRequestsforLeads) * 100, MARKETING_LEADS_LOADING_MESSAGE);
+            iteration++;
+
+            if(iteration > numberOfRequestsforLeads){
+                //setTimeout(function() {
+                    handleAdditionalProgressBarTexts(0, LOADING_RECIPIENTS_ENGAGEMENT);
+                    loadRecipientEmailDataByBatch();
+                //}, 1000)
+                return;
+            }
+            
+            updateProgressState();
+            
+            if (numberOfRequestsforLeads > 0) {
+                
+                getLeadsInfo(iteration, NUMBER_OF_SALES_PER_PAGE);
+                //console.log('getLeadsInfo i=' + iteration);
+            }
+        }
+
+        // Check current percentage and update progress bar
+        function updateProgressState() {
+            //console.log('updateProgressState');
+            if (isHandleStatusEror()) {
+                return;
+            }
+
+            if (percentage * counter >= 100) {
+                handleEndOfLoading();
+                return;
+            }
+
+            counter++;
+            updateStateProgressBar(false, 0);
+        }
+
+        function handleRecipientEmailBatchStatus() {
+            //console.log('handleRecipientEmailBatchStatus');
+            var errorStatusElem = document.getElementById('errorStatus');
+            if(errorStatusElem.value == 'B0') {
+                barSizeforFailedReloading = 0;
+                handleAdditionalProgressBarTexts(100, LOADING_RECIPIENTS_ENGAGEMENT);
+                updateStateProgressBar(true, 100 * (1 - (barSizeforContactInfoLoading + barSizeforFailedReloading) / 100));
+                handleEndOfLoading();
+                return;
+            }
+            
+            setTimeout(function () {
+                proceedRecipientEmailBatches = parseInt(document.getElementById('proceedRecipientEmailBatches').value, 10);
+                totalRecipientEmailBatches = parseInt(document.getElementById('totalRecipientEmailBatches').value, 10);
+                isBatchErrorsExist = JSON.parse(document.getElementById('isBatchErrorsExist').value);
+                isJobsBy1000Completed = JSON.parse(document.getElementById('isJobsBy1000Completed').value);
+                isJobsBy100Completed = JSON.parse(document.getElementById('isJobsBy100Completed').value);
+                isJobsBy10Completed = JSON.parse(document.getElementById('isJobsBy10Completed').value);
+                isJobsBy1Completed = JSON.parse(document.getElementById('isJobsBy1Completed').value);
+                
+                if (isJobsBy1Completed || (totalRecipientEmailBatches == proceedRecipientEmailBatches && !isBatchErrorsExist && totalRecipientEmailBatches != 0)) {
+                    barSizeforFailedReloading = 0;
+                } else if(isJobsBy10Completed) {
+                    barSizeforFailedReloading = 1;
+                } else if(isJobsBy100Completed) {
+                    barSizeforFailedReloading = 3;
+                } else {
+                    barSizeforFailedReloading = 5;
+                }
+                
+                console.log('proceedRecipientEmailBatches: ', proceedRecipientEmailBatches);
+                console.log('totalRecipientEmailBatches: ', totalRecipientEmailBatches);
+                
+                if(isBatchErrorsExist && totalRecipientEmailBatches == proceedRecipientEmailBatches) {
+                    if(isJobsBy100Completed || isJobsBy10Completed) {
+                        handleAdditionalProgressBarTexts(100, VERIFYING_DATA);
+                    } else {
+                        handleAdditionalProgressBarTexts(100, LOADING_RECIPIENTS_ENGAGEMENT);
+                    }
+                    
+                    updateStateProgressBar(true, (1 - (barSizeforContactInfoLoading + barSizeforFailedReloading)));
+                    setTimeout(function() {
+                        updateRecipientEmailDataStatus();
+                    }, 1000);
+                } else {
+                    updateRecipientEmailDataStatus();
+                }
+                
+            }, 10000);
+        }
+    
+        // To study - processing batches for sales leads
+        function updateRecipientEmailDataStatus() {
+            //console.log('updateRecipientEmailDataStatus');
+            var errorStatusElem = document.getElementById('errorStatus');
+            if (totalRecipientEmailBatches === 0) {
+                totalRecipientEmailBatches = 1;
+            }
+            var perc = proceedRecipientEmailBatches / totalRecipientEmailBatches * 100;
+            if (isJobsBy1000Completed && isBatchErrorsExist || isJobsBy100Completed) {
+                handleAdditionalProgressBarTexts(perc, VERIFYING_DATA);
+            } else {
+                handleAdditionalProgressBarTexts(perc, LOADING_RECIPIENTS_ENGAGEMENT);
+            }
+            
+            updateStateProgressBar(true, perc * (1 - (barSizeforContactInfoLoading + barSizeforFailedReloading) / 100));
+            
+            if (totalRecipientEmailBatches !== proceedRecipientEmailBatches || isBatchErrorsExist) {
+                getBatchProcessStatus();
+            } else {
+                handleEndOfLoading();
+            }
+        }
+
+        // Percentage and text of Additional progress bar
+        function handleAdditionalProgressBarTexts(percentage, description) {
+            //console.log('handleAdditionalProgressBarTexts');
+            if(additionalProgressStateElem != undefined) additionalProgressStateElem.style.width = percentage + '%';
+            if(additionalProgressDescriptionElem != undefined) additionalProgressDescriptionElem.textContent = description;
+        }
+
+        // Checking for the error message
+        function isHandleStatusEror() {
+            if(errorStatusElem == undefined) errorStatusElem = document.getElementById('errorStatus');
+           
+            if (errorStatusElem != undefined && errorStatusElem.value.length > 4) {
+                console.log('isHandleStatusError ERROR :: '+errorStatusElem.value);
+                setDefaultStateStatusBar();
+                setDefaultStateAdditionalStatusBar();
+                clearTimeOut(currentTimeOut);
+                return true;
+            }
+            return false;
+        }
+        
+        // Initial state of the main status bar
+        function setDefaultStateStatusBar() {
+            //console.log('setDefaultStateStatusBar');
+            progressBarElem.style.display = 'none';
+            progressStateElem.style.width = '0';
+            progressTextElem.textContent = '0%';
+        }
+    
+        // Initial state of the additional status bar
+        function setDefaultStateAdditionalStatusBar() {
+            //console.log('setDefaultStateAdditionalStatusBar');
+            additionalProgressStateElem.style.width = '0';
+            additionalProgressDescriptionElem.textContent = 'Loading';
+        }
+
+        // Reset the counter and statuses of status bars + reset Batch Values
+        function handleEndOfLoading() {
+            //console.log('handleEndOfLoading');
+            //currentTimeOut = setTimeout(function() {
+                counter = 0;
+                setDefaultStateStatusBar();
+                setDefaultStateAdditionalStatusBar();
+                resetBatchValues();
+            //}, 1000);
+        }
+    
+        function getSuccess(){
+            //console.log('getSuccess');
+            printSuccess();
+        }
+
+        function checkTimeIntervalValidity(event) {
+            if(document.querySelector('input[id$="timeForSchedulers"]').value > 99) {
+                document.querySelector('input[id$="timeForSchedulers"]').value = 99;
+                event.preventDefault();
+            }
+        }
+
+        function checkCode(event) {
+            let key;
+            if(window.event){                    
+                key = window.event.keyCode;     //IE               
+            } 
+            else{                    
+                key = e.which;     //firefox               
+            }
+
+            if(key == 43 || key == 45 || key == 46 || key == 69 || key == 101) {
+                return false;
+            }
+
+            return true;
+        }
+
+        // Disable or enable the suboptions checkboxes (create lead records ...)
+        function toggleDisablingOfSubOptions(event) {
+            //console.log('toggleDisablingOfSubOptions');
+            var subOptions = document.querySelectorAll('.additional-options__subitem_checkbox input[type="checkbox"]');
+            var isDisable = event.currentTarget.checked ? false : true;
+
+            subOptions.forEach(function (subOption, index) {
+                subOption.disabled = isDisable;
+                if (isDisable) {
+                    subOption.checked = false;
+                }
+            });
+        }
+
+        // Show the additional text blocks if apropriate checkboxes are checked
+        function toggleOptionalElementVisibility() {
+            //console.log('toggleOptionalElementVisibility');
+            var additionalOptions = document.querySelectorAll('.additional-options__item input[type="checkbox"]');
+            isLoadHistoricalActivity = additionalOptions[0].checked;
+            isCreateLeads = additionalOptions[1].checked;
+            isCreateRecipients = additionalOptions[2].checked;
+            
+            document.getElementById('additionalProgressContainer').style = isLoadHistoricalActivity ? 'display: block' : 'display: none';
+            document.getElementById('loadMarketingLeadsMessage').style = isCreateLeads ? 'display: list-item' : 'display: none';
+            document.getElementById('loadRecipientsMessage').style = isCreateRecipients ? 'display: list-item' : 'display: none';
+        }
+
+    </script>
+    <style>
+        .progress-bar__container {
+            background-color: whitesmoke;
+            border: 4px solid white;
+            border-radius: 8px;
+            margin-top: 10px;
+            position: relative;
+            text-align: center;
+            width: 350px;
+        }
+        .progress-bar__state {
+            width: 0%;
+            height: 25px;
+            background-color: #038049;
+            border-radius: 6px;
+        }
+        .progress-bar__text {
+            color: black;
+            font-weight: bold;
+            font-size: 18px;
+            position: absolute;
+                top: 10%;
+                left: 42%;
+        }
+        .progress-bar__description {
+            color: black;
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+            position: absolute;
+            width: 100%;
+            margin: auto;
+        }
+        .modalConfirm {
+            background-color: whitesmoke;
+            border-style: solid;
+            border-radius: 6px;
+            border-width: 2px;
+            max-width: 500px;
+            padding: 15px;
+            position: fixed;
+                left: 50%;
+                top: 40%;
+            transform:translate(-50%, -50%); 
+        }
+        .modalConfirm__footer {
+            padding: 10px 10px 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modalConfirm__footer .btn {
+            margin-left: 6px;
+        }
+        
+        .bPageBlock .detailList .labelCol {
+            width: 30%;
+        }
+
+        .additional-options .additional-options__item .additional-options__subitem_checkbox {
+            margin-bottom: 5px;
+            margin-left: 20px;
+        }
+
+        .additional-options .additional-options__item .additional-options__subitem {
+            margin-bottom: 5px;
+            margin-left: 20px;
+        }
+
+        .additional-options .additional-options__item .additional-options__subitem-description {
+            margin-bottom: 5px;
+            margin-left: 23px;
+            margin-top: 13px;
+        }
+
+        /* Lightning Styes */
+        .slds-vf-scope .modalConfirm {
+            max-width: 650px;
+            padding: 20px;
+        }
+
+        .slds-vf-scope .bPageBlock .detailList .labelCol {
+            width: 26%;
+        }
+        
+        .main-container {
+            display: flex;
+            padding-right: 20px;
+        }
+
+        input::-webkit-outer-spin-button {
+            display:none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input::-webkit-inner-spin-button {
+            display:none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance:textfield;
+        }
+
+
+        /* table, th, td {
+            border: 1px solid black;
+            } */
+
+    </style>
+    <apex:form >
+
+        <apex:actionFunction action="{!saveConfiguration}" name="saveConfigJS" oncomplete="testConnectionJS();"/>
+        <apex:actionFunction action="{!testConnection}" name="testConnectionJS" />
+            
+        <!-- Start of form additional modal Confirm form -->
+    <div id="modalConfirm" style="display:none">
+        <div class="modalConfirm_background" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background-color: rgba(0, 0, 0, 0.25);">
+            <div class="modalConfirm">
+                <p>
+                    If your organization heavily uses Consensus or has been a Consensus customer a long time, 
+                    loading Historical Consensus Activity data could take a few hours. Once you start the loading, 
+                    please do not cancel it.
+                </p>
+                <ul>
+                    <li>We will be updating Lead records with demo engagement activity information</li>
+                    <li>We will be updating Contact records with demo engagement activity information</li>
+                    <li id="loadMarketingLeadsMessage">We will be creating new Lead records in Salesforce for leads that don't exist in Salesforce but are in Consensus</li>
+                    <li id="loadRecipientsMessage" style="display: none;">We will be creating new Lead records in Salesforce for recipients of custom links that don't exist in Salesforce but are in Consensus</li>
+                </ul>
+                <p>
+                    Do you want to continue?
+                </p>
+                    <footer class="modalConfirm__footer">
+                        <input type="button" class="btn" value="Cancel" onclick="cancelLoad()"/>
+                        <input type="button" class="btn" value="Continue" onclick="startLoad()"/>
+                    </footer>
+            </div>
+        </div>
+    </div>
+    <div id="progressBar" class="progress-bar" style="display:none">
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1000; background-color: rgba(0, 0, 0, 0.25);">
+            <div style="position: fixed; transform:translate(-50%, -50%); left: 50%; top: 40%; z-index: 1001;">
+                <div>
+                    <div id="progressContainer" class="progress-bar__container">
+                        <span id="progressText" class="progress-bar__text">0%</span>
+                        <div id="progressState" class="progress-bar__state"></div>
+                    </div>
+                    <div id="additionalProgressContainer" class="progress-bar__container">
+                        <div id="additionalProgressState" class="progress-bar__state">
+                            <div id="additionalProgressDescriptionText" class="progress-bar__description">Loading</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- Start of form Credentials -->
+        <apex:outputPanel id="credentials">
+        <input type="hidden" value="{!demosTotal}" id="demosTotal"/>
+        <input type="hidden" value="{!marketingLeadsTotal}" id="marketingLeadsTotal"/>
+        <input type="hidden" value="{!leadsWithViewsTotal}" id="leadsWithViewsTotal"/>
+        <input type="hidden" value="{!errorStatus}" id="errorStatus"/>
+        <input type="hidden" value="{!isBatchErrorsExist}" id="isBatchErrorsExist"/>
+        <input type="hidden" value="{!proceedRecipientEmailBatches}" id="proceedRecipientEmailBatches"/>
+        <input type="hidden" value="{!totalRecipientEmailBatches}" id="totalRecipientEmailBatches"/>
+
+        <input type="hidden" value="{!isSalesforceContainsMoreLeads}" id="isSalesforceContainsMoreLeads"/>
+        <input type="hidden" value="{!isJobsBy1000Completed}" id="isJobsBy1000Completed" />
+        <input type="hidden" value="{!isJobsBy100Completed}" id="isJobsBy100Completed" />
+        <input type="hidden" value="{!isJobsBy10Completed}" id="isJobsBy10Completed" />
+        <input type="hidden" value="{!isJobsBy1Completed}" id="isJobsBy1Completed" />
+
+        <apex:actionFunction name="initializeProgressBar" action="{!getProgressBarValues}"
+                             rerender="credentials" oncomplete="setProgressBarValues()">
+            <apex:param name="emailsNumber" assignTo="{!numberOfEmailsPerPage}" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="getDemos" action="{!loadDemosFromConsensus}" 
+                             rerender="credentials" oncomplete="getEmailByPage()">  
+        </apex:actionFunction>
+
+        <apex:actionFunction name="getDemoByPage" action="{!loadDemosFromConsensusByPage}" 
+                             rerender="credentials" oncomplete="getDemoRecords()">  
+            <apex:param name="demoPage" assignTo="{!demoRequestPageNumber}" value="" />
+            <apex:param name="demosPerPage" assignTo="{!numberOfDemosPerPage}" value=""  />
+        </apex:actionFunction>
+
+        <apex:actionFunction name="getMarketByPage" action="{!loadMarketFromConsensusByPage}" 
+                             rerender="credentials" oncomplete="getMarketingData()">  
+            <apex:param name="marketPage" assignTo="{!marketingRequestPageNumber}" value="" />
+            <apex:param name="marketsPerPage" assignTo="{!numberOfMarketingPerPage}" value="" />
+        </apex:actionFunction>
+
+        <apex:actionFunction name="getSalesByPage" action="{!loadSalesFromConsensusByPage}" 
+                             rerender="credentials" oncomplete="getSalesData()">  
+            <apex:param name="salesPage" assignTo="{!salesRequestPageNumber}" value="" />
+            <apex:param name="salesPerPage" assignTo="{!numberOfSalesPerPage}" value="" />
+        </apex:actionFunction>
+
+        <apex:actionFunction name="getEmailInfoByPage" oncomplete="getEmailByPage()"
+                             rerender="credentials" action="{!loadEmailInfoByPage}" >
+            <apex:param name="pageNumber" assignTo="{!emailRequestPageNumber}" value="" />
+        </apex:actionFunction>
+
+        <apex:actionFunction name="getLeadsInfo" action="{!loadLeadsInfoFromConsensus}"
+                             rerender="credentials" oncomplete="getLeadsInfoByParts()">  
+            <apex:param name="itterCounter" assignTo="{!itterationCounter}" value="" />
+            <apex:param name="perPage" assignTo="{!perPage}" value=""  />
+        </apex:actionFunction>
+
+
+        <apex:actionFunction name="getBatchProcessStatus" action="{!getBatchProcessStatus}"
+                             rerender="credentials" oncomplete="handleRecipientEmailBatchStatus()">
+        </apex:actionFunction>
+
+        <apex:actionFunction name="loadRecipientEmailDataByBatch" action="{!loadRecipientEmailDataByBatch}"
+                             oncomplete="handleRecipientEmailBatchStatus()">
+        </apex:actionFunction>
+
+        <apex:actionFunction name="printSuccess"
+                             rerender="credentials" action="{!loadSuccessFromConsensus}" >
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="resetBatchValues"
+                             rerender="credentials" action="{!resetBatchValues}" oncomplete="getSuccess()" >
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="rerenderConfiguration"
+                             rerender="credentials" action="{!getCridentialValues}" >
+            <apex:param name="firstParam" assignTo="{!selectedModeName}" value="" />
+        </apex:actionFunction>
+        
+        <apex:actionFunction name="autoSaveConfiguration"
+                             rerender="saveProgress" action="{!autoSaveConfiguration}">
+        </apex:actionFunction>
+        
+        <apex:sectionHeader title="Consensus" subtitle="Configuration" />
+        <apex:pageBlock title="API Credentials Edit">
+            <div class="messages">
+                        <apex:pageMessage severity="confirm" title="Data Import Complete" summary="{!dataImportSummary}" detail="You are now ready to use Consensus in Salesforce!" rendered="{!numberOfErrors > 0}" strength="2"/>
+                        <apex:pageMessages id="msg"/>
+                    </div>
+            <div class="main-container">
+                <div style="width:60%">
+                    <apex:pageBlockSection columns="1">
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Configuration Mode" for="mode" />
+                            <apex:selectList id="mode" size="1" value="{!selectedModeName}"
+                                             onchange="rerenderConfiguration(this.value)" style="width: 250px;">
+                                <apex:selectOptions value="{!modes}" />
+                            </apex:selectList>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="API Key" for="apiKey" />
+                            <apex:inputText id="apiKey" value="{!apiKey}" style="width: 250px;" >
+                                <apex:actionsupport event="onkeyup" rerender="testConnection,loadAllData,checkBoxBlock,additionalCheckBoxBlock" />
+                            </apex:inputText>
+                        </apex:pageBlockSectionItem>
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="API Secret" for="apiSecret" />
+                            <apex:inputText id="apiSecret" value="{!apiSecret}" style="width: 250px;" >
+                            	<apex:actionsupport event="onkeyup" rerender="testConnection,loadAllData,checkBoxBlock,additionalCheckBoxBlock" />
+                            </apex:inputText>
+                        </apex:pageBlockSectionItem>            
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="" for="testConnection" />
+                            <apex:commandButton id="testConnection" reRender="credentials" style="margin-top:5px"
+                                        value="Test Connection" onclick="saveConfigJS();return false;"
+                                        disabled="{!or(or(len(apiKey) == 0, trim(apiKey) == ''), or(len(apiSecret) == 0, trim(apiSecret) == ''))}"/>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <div class="pbSubsection" >
+                        <table class="detailList" border="0" cellpadding="0" cellspacing="0"  style="display: {!if(
+                                                                                                                    and(
+                                                                                                                        isSelectedConnectionTested,
+                                                                                                                        and(
+                                                                                                                            and(len(apiKey) != 0, trim(apiKey) != ''),
+                                                                                                                            and(len(apiSecret) != 0, trim(apiSecret) != '')
+                                                                                                                        )
+                                                                                                                    ), 'inline-block', 'none')}">
+                            <tbody>
+                                <!-- <tr>
+                                    <th class="labelCol vfLabelColTextWrap last " scope="row"></th>
+                                    <td class="data2Col last">
+                                        <apex:outputPanel id="checkBoxBlock" layout="block">
+                                            <div class="additional-options">
+                                                <div>
+                                                    <hr style="width:97%;margin-left:0"/>
+                                                    <br/>
+                                                </div>
+                                                <span style="font-size:18pt;">Load Historical Data from Consensus</span>
+                                                <p/>
+                                                <div class="additional-options__item">
+                                                    <apex:inputCheckbox id="loadHistoricalActivity" value="{!isLoadHistoricalActivity}" onchange="autoSaveConfiguration()" />
+                                                    <apex:outputLabel value="Load Historical Consensus Activity for Existing Contacts / Leads? (Recommended)" for="loadHistoricalActivity"
+                                                    />
+                                                    <div class="additional-options__subitem-description">
+                                                        Create Lead Records for Historical Consensus Activity if No Contact or Lead Record Found?
+                                                    </div>
+                                                    <div class="additional-options__subitem_checkbox">
+                                                        <apex:inputCheckbox id="createMarketingLeadsLeads" value="{!isCreateLeads}" onchange="autoSaveConfiguration()" />
+                                                        <apex:outputLabel value="Create Lead Records in Salesforce for Consensus Leads" for="createMarketingLeadsLeads" />
+                                                    </div>
+                                                    <div class="additional-options__subitem_checkbox">
+                                                        <apex:inputCheckbox id="createRecipientsLeads" value="{!isCreateRecipients}" onchange="autoSaveConfiguration()" />
+                                                        <apex:outputLabel value="Create Lead Records in Salesforce for Consensus Recipients" for="createRecipientsLeads" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <apex:commandButton id="loadAllData" onclick="showConfirmation()" value="Load Consensus Data" 
+                                                                    style="display: {!if(
+                                                                                        and(
+                                                                                            isSelectedConnectionTested,
+                                                                                            and(
+                                                                                                and(len(apiKey) != 0, trim(apiKey) != ''),
+                                                                                                and(len(apiSecret) != 0, trim(apiSecret) != '')
+                                                                                            )
+                                                                                        ), 'inline-block; margin-top:10px', 'none')}"
+                                                    status="status" rerender="credentials" />
+                                            </div>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr> -->
+                                <tr>
+                                    <th class="labelCol vfLabelColTextWrap last " scope="row"></th>
+                                    <td class="data2Col last">
+                                        <apex:outputPanel id="additionalCheckBoxBlockScheduler" layout="block">
+                                            <div>
+                                                <hr style="width:97%;margin-left:0"/>
+                                                <br/>
+                                            </div>
+                                            <div class="additional-options">
+                                                <div class="additional-options__item">
+                                                    <span style="font-size:18pt;">Schedulers</span>
+                                                    <p/>
+                                                    <div class="additional-options__subitem">
+                                                        <apex:inputCheckbox id="createMarketingLeadsSchedulers"  value="{!isCreateLeadsSchedul}" onchange="autoSaveConfiguration()" >
+                                                            <apex:actionsupport event="onclick" rerender="scheduleDataUpdate" />
+                                                        </apex:inputCheckbox>
+                                                        <apex:outputLabel value="Create new Lead in Salesforce for Consensus Leads" for="createMarketingLeadsSchedulers" />
+                                                    </div>
+                                                    <div class="additional-options__subitem">
+                                                        <apex:inputCheckbox id="createRecipientsLeadsSchedulers"  value="{!isCreateRecipientsShedul}" onchange="autoSaveConfiguration()" >
+                                                            <apex:actionsupport event="onclick" rerender="scheduleDataUpdate" />
+                                                        </apex:inputCheckbox>
+                                                        <apex:outputLabel value="Create new Lead in Salesforce for Consensus Recipients" for="createRecipientsLeadsSchedulers" />
+                                                    </div>
+                                                    <div class="additional-options__subitem">
+                                                        <apex:inputCheckbox id="UpdateExistingContactsLeadsSchedul" value="{!isUpdateExistingContactsLeadsSchedul}" onchange="autoSaveConfiguration()" >
+                                                            <apex:actionsupport event="onclick" rerender="scheduleDataUpdate" />
+                                                        </apex:inputCheckbox>
+                                                        <apex:outputLabel value="Update existing Contacts / Leads" for="UpdateExistingContactsLeadsSchedul" />
+                                                    </div>
+                                                    <div class="additional-options__subitem">
+                                                        <apex:inputCheckbox id="loadHistoricalActivitySchedulers" value="{!isLoadHistoricalActivitySch}" onchange="autoSaveConfiguration()" >
+                                                            <apex:actionsupport event="onclick" rerender="scheduleDataUpdate" />
+                                                        </apex:inputCheckbox>
+                                                        <apex:outputLabel value="Upload Historical Consensus Data (create Leads and Recipients)" for="loadHistoricalActivitySchedulers" />
+                                                    </div>
+                                                    <div class="additional-options__subitem">
+                                                        <span onkeypress="return checkCode(event)" onkeyup="return checkTimeIntervalValidity(event)">
+                                                            <apex:input type="number" id="timeForSchedulers" html-min="1" html-max="99" value="{!timeForSchedulers}" onchange="autoSaveConfiguration()"
+                                                                style="width: 25px; border: 1px solid rgb(221, 219, 218); border-radius: .25rem;" />
+                                                        </span>
+                                                        <apex:outputLabel value="Time interval for Data Sync (1 - 99 minutes)" for="timeForSchedulers" />
+                                                    </div>
+                                                    <div style="margin-top:15px">
+                                                                    <apex:commandButton id="scheduleDataUpdate" reRender="credentials" value="Run Data Update" action="{!updateDataFuture}" 
+                                                                                        disabled="{!and(and(not(isLoadHistoricalActivitySch), not(isCreateRecipientsShedul)), and(not(isCreateLeadsSchedul), not(isUpdateExistingContactsLeadsSchedul)))}" />
+                                                                    <apex:commandButton id="schedulePermissionUpdate" action="{!updateUserInfoFuture}" status="status" rerender="credentials" value="Run Permission Update" />
+                                                    </div>            
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="labelCol vfLabelColTextWrap last " scope="row"></th>
+                                    <td>
+                                        <apex:outputPanel id="additionalCheckBoxBlockOtherConfiguration" layout="block">
+                                            <div>
+                                                <br/>
+                                                <hr style="width:97%;margin-left:0"/>
+                                                <br/>
+                                            </div>
+                                            <div class="additional-options">
+                                                <div class="additional-options__item">
+                                                    <span style="font-size:18pt;">Other Configuration Options</span>
+                                                    <p/>
+                                                    <div class="additional-options__subitem">
+                                                        <apex:inputCheckbox id="createNewDemoWatchedLeads" value="{!isCreateNewDemoWatchedLeads}" onchange="autoSaveConfiguration()"
+                                                        />
+                                                        <apex:outputLabel value="Enable to create new leads by Webhooks" for="createNewDemoWatchedLeads" />
+                                                    </div>
+                                                    <div class="additional-options__subitem">
+                                                        <apex:inputCheckbox id="useSecondaryEmail" value="{!useSecondaryEmail}" onchange="autoSaveConfiguration()">
+                                                            <apex:actionsupport event="onclick" action="{!change}" reRender="credentials" />
+                                                        </apex:inputCheckbox>
+                                                        <apex:outputLabel value="Use Secondary Email" for="useSecondaryEmail" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </apex:outputPanel>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="width:40%; text-align: justify">
+                    <p>
+                        INSTRUCTIONS:
+                    </p>
+                    <p>
+                        1. Choose the configuration mode. Leave this selection as "Consensus Customer" unless you are a member of Consensus staff and want to test a new release build
+                    </p>
+                    <p>
+                        2. Find your API Key and Secret from your Consensus account in the Settings menu item on the API tab. Enter them into the API Key and Secret fields. 
+                    </p>
+                    <p>
+                        3. Choose if you want to load historical Consensus activity into Salesforce. Selecting this option will add demo view activity (as a Salesforce Activity record) for Consensus viewers that have corresponding Lead or Contact records in Salesforce.
+                    </p>
+                    <div>
+                        <hr/>
+                    </div>
+                    <p>
+                        SCHEDULERS:
+                    </p>
+                    <p>
+                        Schedulers provide synchronization data from Consensus to Salesforce. You can select needed options, choose the time interval for the next scheduled update and run them. Schedulers work automatically after the first launch,  you don’t need to press a button every time for data synchronization, except for situations  when you need to change schedulers' options.
+                    </p>
+                    <p>
+                        Explanation for each option:
+                    </p>
+                    <p>
+                        1. All new Leads from “Qualified Leads” tab in Consensus will be created in Salesforce. (NOTE: All Leads for the previous 24 hours will be created, and also new Leads, which will be created after the launch of the schedulers)
+                    </p>
+                    <p>
+                        2. All new Recipients from “Track Demoboards” tab in Consensus will be created in Salesforce. (NOTE: All Recipients for the previous 24 hours will be created, and also new Recipients, which will be created after the launch of the schedulers) 
+                    </p>
+                    <p>
+                        3. All existing Salesforce Leads and Contacts will be updated via schedulers. (NOTE: All Leads and Contacts will be updated doesn’t matter how long time ago they were created)
+                    </p>
+                    <p>
+                        4. Upload all existing Leads and Recipients from Consensus to Salesforce, doesn’t matter how long time ago they were created. (NOTE: This option simulates ”Load Consensus Data” button in previous versions and can demand much time for synchronization) 
+                    </p>
+                    <p>
+                        5. Time for running next scheduler. (NOTE: Next scheduler will run after previous scheduler finishes his job +  time in “Time interval for Data Sync” field)
+                    </p>
+                    <p>
+                        6. “Run Data Update” button will run schedulers with selected options.
+                    </p>
+                    <p>
+                        7.  “Run Permission Update” button will run scheduler for updating permissions on Consensus User Info tab. It runs once per 24 hours. It is needed for situations when someone shares a demo with another user or group and needs to use it in Salesforce. (NOTE: This scheduler won’t affect the scheduler for data synchronization)
+                    </p>
+                    <div>
+                        <hr/>
+                    </div>
+					<p>
+                        OTHER CONFIGURATION OPTIONS:
+                    </p>
+                    <p>
+                        1. New leads will be created via Webhooks. (Webhooks types: Demo_Watched and New_Lead).
+                    </p>
+                    <p>
+                        2. If you select Use Secondary Email, then additional user's email will be used for requesting data (Consensus email on the Consensus Users Info tab).
+                    </p>
+                    <p>
+                        3. Time interval for synchronizing Demo and Leads, these requests will be sent sequentially. (the time interval will start after the last request parsed).
+                    </p>
+                </div>
+                
+            </div>
+        </apex:pageBlock>
+        <script>
+            document.querySelector('.additional-options__item input[id$="loadHistoricalActivity"]').addEventListener('click', toggleDisablingOfSubOptions);
+            document.querySelectorAll('.additional-options__item input[type="checkbox"]').forEach(function (optionElement) {
+                optionElement.addEventListener('click', toggleOptionalElementVisibility);
+            })
+        </script>
+        </apex:outputPanel>
+    </apex:form>
+    <script>
+
+        if(document.querySelector('input[id$="timeForSchedulers"]').value < 1) document.querySelector('input[id$="timeForSchedulers"]').value = 1;
+
+        let subOptions = document.querySelectorAll('.additional-options__subitem_checkbox input[type="checkbox"]');
+        let isDisable = document.querySelector('.additional-options__item input[id$="loadHistoricalActivity"]').checked ? false : true;
+        
+        subOptions.forEach(function (subOption, index) {
+            subOption.disabled = isDisable;
+            if (isDisable) {
+                subOption.checked = false;
+            }
+        });
+    
+        document.querySelector('.modalConfirm_background').addEventListener('click', function (event) {
+            if(this == event.target) {
+                cancelLoad();
+            }
+        });
+    </script>
+</apex:page>

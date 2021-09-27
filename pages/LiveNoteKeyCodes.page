@@ -1,0 +1,16 @@
+<apex:page standardController="Account" extensions="LiveNoteLicenseCode" showHeader="false" sidebar="false">
+<apex:pageMessages id="pm"/>
+  <apex:pageBlock >
+   <apex:pageBlockTable value="{!licenseList}" var="ln"> 
+    <apex:column value="{!ln.licenseDesc}" headerValue="Code Type"/> 
+    <apex:column value="{!ln.licenseContact}" headerValue="Email Address"/> 
+    <apex:column value="{!ln.issueDate}" headerValue="Issue Date"/>
+    <apex:column value="{!ln.keyCode}" headerValue="License Code"/>
+    <apex:column value="{!ln.tokensRequired}" headerValue="Tokens Required"/> 
+    <apex:column value="{!ln.seats}" headerValue="LiveNote Seats"/>
+    <apex:column value="{!ln.webSeats}" headerValue="LiveNote WebSeats"/>
+    <apex:column value="{!ln.expirationDate}" headerValue="Expiration Date"/>
+    <apex:column value="{!ln.productActivated}" headerValue="Product Activated"/>    
+   </apex:pageBlockTable> 
+  </apex:pageBlock> 
+</apex:page>

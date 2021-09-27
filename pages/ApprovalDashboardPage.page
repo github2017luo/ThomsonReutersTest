@@ -1,0 +1,879 @@
+<!-- 
+SOC-7796 : Adding new section 'Comments' to the Dashboard Page
+DOC-9111 : Added new 'File' sections along with 'Attach a File' button to the Dashboard Page
+-->
+
+<apex:page controller="ApprovalDashboardAJSController" docType="html-5.0" showHeader="false" sidebar="false" standardStylesheets="false" lightningStylesheets="true">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" />
+    <apex:stylesheet value="{!URLFOR($Resource.ApprovalDashboard,'ApprovalAssets/Apts_ApprovalDashboard.css')}" />
+    <apex:stylesheet value="{!$Resource.FullPageLoaderApprovalDashboard}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ApprovalDashboard,'ApprovalAssets/js/angular-min-v1.6.4.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ApprovalDashboard,'ApprovalAssets/js/angular-pagination.js')}" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsforce/1.9.3/jsforce.min.js"></script>
+    <script>$j = jQuery.noConflict();</script>  
+    <script type="text/javascript">
+        var app = angular.module('MyApp', ['angularUtils.directives.dirPagination']); 
+        app.controller('productDetails', function($scope, $location, $window) {
+            $scope.myUrl = $location.absUrl();
+            $scope.location = $location;
+            $scope.isShowLoad = false;
+            $scope.docList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getDocumentList}', '{!JSENCODE(quoteID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.documentList = result;
+                    });
+                });
+            
+            $scope.fileList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getFileList}', '{!JSENCODE(quoteID)}', '{!JSENCODE(quoteName)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.fileList = result;
+                        $scope.isShowLoad = true;
+                    });
+                });
+            
+            $scope.ppVList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getPrintProviewLineItems}', '{!JSENCODE(quoteID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log('getPrintProviewLineItems==>'+result);
+                        $scope.printProviewList = result;
+                    });
+                });    
+            
+            $scope.addNewAttachment = function() {
+                var slash = '//';
+                var colon = ':';
+                var path = '/p/attach/NoteAttach?';
+                var pid = 'pid=';
+                var pName = '&parentname=';
+                var retUrl = '&retURL=';
+                var attachmentUrl = '' + $scope.location.protocol() + colon + slash;
+                attachmentUrl = attachmentUrl + $scope.location.host() + path + pid;
+                if($scope.documentList[0] != null && $scope.documentList[0] != null) {
+                    attachmentUrl = attachmentUrl + $scope.documentList[0].ParentId + pName + $scope.documentList[0].ParentName + retUrl;
+                    attachmentUrl = attachmentUrl + $scope.documentList[0].ParentId;
+                } else {
+                    attachmentUrl = attachmentUrl + '{!JSENCODE(quoteID)}' + pName + '{!quoteName}' + retUrl;
+                    attachmentUrl = attachmentUrl + '{!JSENCODE(quoteID)}';
+                }
+                $window.open(attachmentUrl, '_blank');
+            };
+
+            $scope.viewFile = function(document) {
+                var doubleSlash = '//';
+                var singleSlash = '/';
+                var colon = ':';
+                var attachmentpath = '/servlet/servlet.FileDownload?file=';
+
+                var url = '' + $scope.location.protocol() + colon + doubleSlash;
+                if (document.Type == 'Attachment') {
+                    url = url + $scope.location.host() + attachmentpath + document.fileId;
+                } else if (document.Type == 'Note') {
+                    url = url + $scope.location.host() + singleSlash + document.fileId;
+                }
+                else if (document.Type == 'File') {
+                    url = url + $scope.location.host() + singleSlash + document.fileId;
+                }
+                $window.open(url, '_blank');
+            };
+
+            $scope.approvalAction = function(approval) {
+                var doubleSlash = '//';
+                var singleSlash = '/';
+                var colon = ':';
+                var path = 'apex/Apttus_CQApprov__CartApprovalSummary?actionName=cart_approval_summary&id=';
+                var query = '&pageMode=approveReject';
+                var url = '' + $scope.location.protocol() + colon + doubleSlash;
+                url = url + $scope.location.host() + singleSlash + path + approval.Id;
+                url = url + query;
+                $window.open(url, '_blank');                
+            };
+            
+            $scope.addApprovalComment = function(approval) {
+                var doubleSlash = '//';
+                var singleSlash = '/';
+                var colon = ':';
+                var path = 'apex/Apttus_CQApprov__CartApprovalSummary?actionName=cart_approval_summary&id=';
+                var query = '&pageMode=addComment';
+                var url = '' + $scope.location.protocol() + colon + doubleSlash;
+                url = url + $scope.location.host() + singleSlash + path + approval.Id;
+                url = url + query;
+                $window.open(url, '_blank'); 
+            };
+        });
+
+        app.controller('quoteDetails', ['$scope','$location' ,'$window', function($scope, $location, $window) {
+            $scope.summary = {
+                aCurrentBand: '{!JSENCODE(CurrentBand)}',
+                aAttorneyBand: '{!JSENCODE(AttorneyBand)}',
+                cTCVChange: '{!JSENCODE(TCVChange)}',
+                cTCVChangeTax: '{!JSENCODE(TCVChangeTax)}',
+                cNetPrice: '{!JSENCODE(CurrentOnlineSpendPrice)}', 
+                cNetPriceTax: '{!JSENCODE(CurrentNetPriceTax)}',
+                pNetPrice: '{!JSENCODE(ProposedNetPrice)}',
+                pNetPriceTax: '{!JSENCODE(ProposedNetPriceTax)}',
+                cAttorney: {!JSENCODE(CurrentAttorneysTotal)},
+                pAttorney: {!JSENCODE(ProposedAttorneysTotal)},
+                cDiscount: '{!JSENCODE(CurrentDiscount)}',
+                pDiscount: '{!JSENCODE(ProposedDiscount)}',
+                discountChange: '{!JSENCODE(DiscountChange)}',
+                currentRPA: '{!JSENCODE(CurrentRPA)}',
+                proposedRPA: '{!JSENCODE(ProposedRPA)}',
+                cACV: '{!JSENCODE(CurrentACV)}',
+                pACV: '{!JSENCODE(ProposedACV)}',
+                pACVTax: '{!JSENCODE(ProposedACVTax)}',
+                incrGrowthDollor: '{!JSENCODE(IncrementalGrowthDollor)}',
+                incrGrowthPercent: '{!JSENCODE(IncrementalGrowthPercent)}',
+                incrGrowthPer:'{!JSENCODE(IncrementalGrowthPer)}',
+                cTVC:'{!JSENCODE(CurrentTCV)}',
+                cTVCTax:'{!JSENCODE(CurrentTCVTax)}',
+                pTVC:'{!JSENCODE(ProposedTCV)}',
+                pTVCTax:'{!JSENCODE(ProposedTCVTax)}',
+                cOverallDiscount:'{!JSENCODE(CurrentOverallDiscount)}',
+                pOverallDiscount:'{!JSENCODE(ProposedOverallDiscount)}',
+                overallDiscountChange:'{!JSENCODE(OverallDiscountChange)}',
+                owner:'{!JSENCODE(OwnerName)}'
+            };
+            
+            $scope.assetFilter = ["DEFAULT", "PRINT / PROVIEW", "FINDLAW", "ONLINE / SOFTWARE"];
+            $scope.selectedFilter = $scope.assetFilter[0];
+            $scope.assetLineItems = $scope.defaultAssetList;            
+            $scope.selectedFilterChanged = function() {
+                if($scope.selectedFilter == $scope.assetFilter[3]) {
+                    $scope.assetLineItems = $scope.onlineAssetList;
+                }
+                if($scope.selectedFilter == $scope.assetFilter[2]) {
+                    $scope.assetLineItems = $scope.findlawAssetList;
+                } 
+                if($scope.selectedFilter == $scope.assetFilter[1]) {
+                    $scope.assetLineItems = $scope.printProviewAssetList;
+                }
+                if($scope.selectedFilter == $scope.assetFilter[0]) {
+                    $scope.assetLineItems = $scope.defaultAssetList;
+                }
+                
+            };                    
+            $scope.pageRefresh = function() {
+                $window.location.href = $location.absUrl();
+            };
+            
+            $scope.onlineList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getCurrentOnlineSoftwareList}', '{!JSENCODE(ssdID)}','{!JSENCODE(productConfigurationID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.onlineAssetList = result;
+                    });
+                });
+                
+            $scope.findLawList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getFindLawList}', '{!JSENCODE(ssdID)}','{!JSENCODE(productConfigurationID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.findlawAssetList = result;
+                    });
+                });
+                
+            $scope.isTax = {!isTax};
+                
+            $scope.ppList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getPrintProviewList}', '{!JSENCODE(ssdID)}','{!JSENCODE(productConfigurationID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.printProviewAssetList = result;
+                    });
+                });    
+
+            $scope.assetList = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getAssetLineItem}', '{!JSENCODE(ssdID)}','{!JSENCODE(productConfigurationID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.defaultAssetList = result;
+                        $scope.assetLineItems = $scope.defaultAssetList;
+                    });
+                });
+
+            $scope.ssd= Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getAccountDetail}', '{!JSENCODE(ssdID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.ssd = result;
+                    });
+                });
+
+            $scope.lItem = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getLineItem}', '{!JSENCODE(productConfigurationID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.lineItem = result;
+                    });
+                });
+
+            $scope.approvalLst = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getApprovalRequestList}', '{!JSENCODE(quoteID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.approvalList = result;
+                    });
+                });
+                <!-- SOC-7796 -->
+                 $scope.approvalLst = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getApprovalRequestList1}', '{!JSENCODE(quoteID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.approvalList1 = result;
+                    });
+                });
+                
+            $scope.approvalHistLst = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getApprovalRequestHistoryList}', '{!JSENCODE(quoteID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.approvalHistList = result;
+                    });
+                });                
+            
+            <!--SOC-7796 -->
+             $scope.approvalHistLst = Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.ApprovalDashboardAJSController.getApprovalRequestHistoryList1}', '{!JSENCODE(quoteID)}',
+                function(result, event) {
+                    $scope.$apply(function() {
+                        console.log(result);
+                        $scope.approvalHistList1 = result;
+                    });
+                }); 
+    
+        }]);
+        <!--SOC-5938 -->
+        app.filter('unsafe', function($sce) {
+            return function(val) {
+                return $sce.trustAsHtml(val);
+            };
+        });
+    </script>
+    <script>
+        var conn = new jsforce.Connection({ accessToken: '{!$Api.Session_Id}' });
+        function uploadFile() {
+            var fileInput = $j('#fileInput');
+            if ( $j.trim( fileInput.val() ).length == 0 ) {
+                return;
+            }
+            var file = fileInput[0].files[0];
+            var fileName = getFileNameWithExtension( file );
+            var reader = new FileReader();
+            document.getElementById("fileInputName").innerHTML = fileName;
+            
+            reader.addEventListener('load', function() {
+                var data = reader.result.split(',')[1];
+                var vQuoteID = '{!quoteID}';
+                saveFile( fileName, data, vQuoteID );
+            });
+            reader.readAsDataURL( file );
+        }
+    
+        function uploadFilesSource() {
+             document.getElementById("fileInput").click();
+        }
+    
+        function saveFile( fileName, base64, recordId ) {
+            console.log('Kh****JS recordId==>'+recordId);
+            var path = '/services/data/v40.0';
+            return conn.requestPost( path + '/composite/', {
+                'allOrNone' : true,
+                'compositeRequest' : [
+                    {
+                        'method' : 'POST',
+                        'url' : path + '/sobjects/ContentVersion',
+                        'referenceId' : 'newFile',
+                        'body' : {
+                            'Title' : fileName,
+                            'PathOnClient' : fileName,
+                            'VersionData' : base64
+                        }
+                    }
+                ]
+            })
+            .then( validateCompositeResponse )
+            .then( function( response ) 
+             {
+                console.log('Kh****JS response==>'+response);
+                var contentVersionId = null;
+                for ( var i = 0; i < response.compositeResponse.length; i++ ) {
+                    if ( response.compositeResponse[i].referenceId === 'newFile' ) {
+                        contentVersionId = response.compositeResponse[i].body.id;
+                        associateFilesWithParent(contentVersionId);
+                        break;
+                    }
+                }
+                 
+            } ).catch( function( err ) {
+                console.error( err );
+            }).then( function() {
+            });
+        }
+        
+        function associateFilesWithParent(cvId) {
+            Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.ApprovalDashboardAJSController.associateFilesWithQuote}',
+            cvId,'{!JSENCODE(quoteID)}',
+            function(result, event){
+                if (event.status) 
+                {
+                    location.reload(); 
+                } 
+                else if (event.type === 'exception') {
+                    
+                } else {
+                    
+                }
+            }, 
+            {escape: true}
+          );
+       }
+        
+        function getFileNameWithExtension( file ) {
+            var extIndex = file.name.lastIndexOf( '.' );
+            var extension = file.name.substring( extIndex );
+            var fileName = file.name.substring( 0, extIndex );
+                fileName = fileName.replace( /\./g, '_' );
+                fileName += extension;
+            return fileName;
+        }
+      
+        function validateCompositeResponse( response ) {
+            return new Promise( function( resolve, reject ) {
+                console.log('validating composite response');
+                for ( var i = 0; i < response.compositeResponse.length; i++ ) {
+                    var body = response.compositeResponse[i].body[0];
+                    if ( body && body.errorCode && body.errorCode != 'PROCESSING_HALTED' ) {
+                        reject( body.message );
+                    }
+                }
+                resolve( response );
+            });
+        }
+    </script>
+    <div ng-app="MyApp">
+        <div ng-controller="quoteDetails">
+            <div class="approval-page-header">Approval Dashboard </div>
+            <div align="right" style="padding-right:0.6rem; background-color: #428BCA;">
+                <button class="action-button" ng-click="pageRefresh()">Refresh</button>
+            </div>
+            <div>
+                <hr class="hr-line"></hr>
+                <!-- <div> -->
+                <div class="section-title">Customer Information </div>
+                <br/>
+                <div class="row table-padding section-lable">
+                    <div class="col-md-6 "> Account Name:
+                         <!--SOC-5938 -->       
+                        <label class="table-row" for="name" ng-bind-html="ssd.Name |unsafe"> </label>
+                    </div>
+                    <div class="col-md-6">Account Number:
+                                
+                        <label class="table-row" for="no"> {{ssd.Source_System_Account_Number__c}} </label>
+                    </div>
+                </div>
+                <div class="row table-padding section-lable">
+                    <div class="col-md-6">Segment:
+                                
+                        <label class="table-row" for="seg"> {{ssd.LCRM_Market_Segment__c}} </label>
+                    </div>
+                    <div class="{!IF(isTax,'hide','col-md-6')}">
+                    Current Band:
+                    <label class="table-row" for="band"> {{ssd.LCRM_APTS_Band_Number__c}} </label>
+                    </div>
+                    <!--<div class="col-md-6">Current Band:
+                                
+                        <label class="table-row" for="band"> {{ssd.LCRM_APTS_Band_Number__c}} </label>
+                    </div>-->
+                </div>
+                <div class="row table-padding section-lable">
+                    <div class="{!IF(isTax,'hide','col-md-6')}">Current Monthly Online/Software Spend: 
+                        <label class="table-row" for="cat"> {{'{!CurrentOnlineSpendPrice}'}} </label>
+                    </div>
+                    <!--DOC-10825-->
+                    <div class="{!IF(isTax,'col-md-6','hide')}">Current Monthly Online/Software Spend: 
+                        <label class="table-row" for="cat"> {{'{!CurrentNetPriceTax}'}} </label>
+                    </div>
+                    <div class="col-md-6">Customer Category:
+                                
+                        <label class="table-row" for="cat"> {{ssd.APTS_Customer_Category__c}} </label>
+                    </div>
+                </div>
+                <div class="row table-padding section-lable">
+                    <div class="col-md-6"> Quote Owner:
+                        <label class="table-row" for="cat"> {{'{!OwnerName}'}} </label>
+                    </div>
+                    <div class="col-md-6"> </div>
+                </div>
+                
+                <hr class="hr-line"></hr>
+                <div class="section-title"> Current Subscription Information for Each Material </div>
+                <br/>
+                <div class="table-padding table-row" style="float:left; margin-top: 0.8rem; margin-bottom: 0.8rem;">
+                    <select ng-model="selectedFilter" 
+                                ng-options="filter for filter in assetFilter" ng-change="selectedFilterChanged()"></select>
+                </div>
+                <br/>
+                <div class="table-padding">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="table-row-background">
+                                <th class="table-header">Service Number</th>
+                                <th class="table-header">Product</th>
+                                <th class="table-header">Renewal Date</th><!-- Added by ssuri@apttus.com on 26-july-2017 -->
+                                <th class="table-header">Deal Type</th>
+                                <th class="table-header">MLA Agreement</th>
+                                <th class="{!IF(isTax ,'hide','table-header')}">Current Band</th> 
+                                <!-- SOC-7778 Order Change -->
+                                <th class="table-header">Retail Price</th><!-- Added by ssuri@apttus.com on 26-july-2017 -->              
+                                <th class="table-header">Discount % from Retail</th>
+                                <th class="table-header">Net Price (MCV)</th>
+                                <!-- SOC-7778 Order Change ends-->
+                                <th class="table-header">Contract Exit Amount</th>
+                                <th class="table-header">Current Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="asset in assetLineItems|itemsPerPage:10" pagination-id="assetItem">
+                                <td class="table-row col-md-1">{{asset.APTS_Material_Number__c}}</td>
+                               <!-- <td class="table-row col-md-6">{{asset.Name}}</td> -->                               
+                               <td class="table-row col-md-6" ng-bind-html = "asset.Name| unsafe"> </td> <!--SOC-5938-->
+                                <td class="table-row col-md-1"> <mydate>{{asset.APTS_Info_RenewalDate__c| date:'MM-dd-yyyy'}} </mydate></td>
+                                <!-- Added by ssuri@apttus.com on 26-july-2017 -->
+                                <td class="table-row col-md-1">{{asset.APTS_Deal_Type__c}}</td>
+                                <td class="table-row col-md-1">{{asset.APTS_SAP_MLA_Agreement_Number__c}}</td>
+                                <td class="{!IF(isTax ,'hide','table-row col-md-1')}">{{isTax == true ? null : asset.APTS_SSD_Sold_To__r.LCRM_APTS_Band_Number__c}}</td>
+                                <!--SOC-5938 --> <!-- SOC-7778 Order Change -->    
+                                <td class="table-row col-md-1">{!currencyStr} {{asset.Apttus_Config2__BasePriceMethod__c=="Flat Price" ? (asset.Apttus_Config2__ListPrice__c==null ? "0" :asset.Apttus_Config2__ListPrice__c| number:2):(asset.Apttus_Config2__ListPrice__c==null ? "0" :asset.Apttus_Config2__ListPrice__c| number:2)}}</td>
+                                <!--<td class="{!IF(isTax ,'table-row col-md-1','hide')}">{!currencyStr} {{asset.Apttus_Config2__BasePriceMethod__c=="Flat Price" ?asset.Apttus_Config2__ListPrice__c : asset.Apttus_Config2__ListPrice__c*asset.Apttus_Config2__Quantity__c}}</td> <!--DOC-10261-->
+                                <td class="table-row col-md-1">{{asset.APTS_Info_PlanType__c=="NBP" ? "0" : asset.APTS_Discount_Percent_Retail__c| number:1}}%</td>
+                                <td class="{!IF(isTax ,'hide','table-row col-md-1')}">{!currencyStr} {{asset.Apttus_Config2__NetPrice__c| number:2}}</td>
+                                <td class="{!IF(isTax ,'table-row col-md-1','hide')}">{!currencyStr} {{asset.Apttus_Config2__BasePriceMethod__c=="Flat Price" ? (asset.Apttus_Config2__NetUnitPrice__c==null ? "0" :asset.Apttus_Config2__NetUnitPrice__c| number:2):(asset.Apttus_Config2__NetUnitPrice__c==null ? "0" :asset.Apttus_Config2__NetUnitPrice__c*asset.Apttus_Config2__Quantity__c| number:2)}}</td><!--DOC-10261-->
+                                <!-- SOC-7778 Order Change ends-->
+                                <td class="table-row col-md-1">{!currencyStr} {{asset.APTS_Contract_Exit_Amount__c| number:2}}</td>
+                                <td class="table-row col-md-1">{{asset.Apttus_Config2__AssetStatus__c}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-padding" >
+                    <dir-pagination-controls pagination-id="assetItem" max-size="8" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                </div>
+                
+                <hr class="hr-line"></hr>
+                <div class="section-title"> New Proposed Subscriptions for Each Material - Cart </div>
+                <br/>
+                <div class="table-padding">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="table-row-background">
+                                <th class="table-header">Service Number</th>
+                                <th class="table-header">Product</th>
+                                <th class="table-header">Print Configuration</th><!--SOC-6008 JKK-->
+                                <th class="table-header">Bundle</th><!-- Added by ssuri@apttus.com on 26-july-2017 -->
+                                <th class="table-header">Term</th>
+                                <th class="table-header">YoY 1 Renewal %</th>
+                                <th class="table-header">YoY 2+ %</th>
+                                <th class="table-header">Quantity</th> <!-- SOC-7743 -->
+                                <th class="{!IF(isTax ,'hide','table-header')}">Attorney Band</th>
+                                <th class="table-header">Seats</th>
+                                <th class="table-header">Retail Price</th>
+                                <th class="table-header">Discount % From Retail</th>
+                                <th class="table-header">Net Price (MCV)</th>
+                                <th class="table-header">Bridges</th>
+                                <th class="table-header">Active Promotions</th>
+                                <th class="table-header">Status</th>
+                                <th class="table-header">% Increase Yr1- Yr2</th>
+                                <th class="table-header">% Increase Yr2- Yr3</th>
+                                <th class="table-header">% Increase Yr3- Yr4</th>
+                                <th class="table-header">% Increase Yr4- Yr5</th>
+                                <th class="table-header">Calculated Year1</th>
+                                <th class="table-header">Calculated Year2</th>
+                                <th class="table-header">Calculated Year3</th>
+                                <th class="table-header">Calculated Year4</th>
+                                <th class="table-header">Calculated Year5</th>                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr dir-paginate="li in lineItem|itemsPerPage:10" pagination-id="lineItem">
+                                <td class="table-row col-md-1">{{li.APTS_Service_Number__c}}</td>
+                               <!-- <td class="table-row col-md-2">{{li.APTS_Product_Name__c}}</td>
+                                <td class="table-row col-md-2">{{li.APTS_Print_Purchase_Options__c}}</td> --><!-- SOC-6008 JKK-->
+                                <td class="table-row col-md-2" ng-bind-html="li.APTS_Product_Name__c | unsafe"></td> <!--SOC-5938 -->
+                                <td class="table-row col-md-2" ng-bind-html="li.APTS_Print_Purchase_Options__c|unsafe"></td> <!--SOC-5938 -->
+                                <td class="table-row col-md-2">{{li.APTS_Bundle__c}}</td><!-- Added by ssuri@apttus.com on 26-july-2017 -->
+                                <td class="table-row col-md-1">{{li.APTS_Contract_Term__c}}</td>
+                                <td class="table-row col-md-1">{{li.APTS_Yr_1_Renewal_Adjustment__c}}</td>
+                                <td class="table-row col-md-1">{{li.APTS_Years_2_Plus_Adjustment__c}}</td>
+                                <td class="table-row col-md-1">{{li.Apttus_Config2__Uom__c != "Attorneys" ? (li.Apttus_Config2__Uom__c != "Seats" ? li.Apttus_Config2__Quantity__c : "") : "" }}</td> <!-- SOC-7743 -->
+                                <td class="{!IF(isTax ,'hide','table-row col-md-1')}">{{li.Apttus_Config2__PriceUom__c == "Attorneys" ? li.Apttus_Config2__Quantity__c : ""}}</td>
+                                <td class="table-row col-md-1">{{li.Apttus_Config2__PriceUom__c == "Seats" ? li.Apttus_Config2__Quantity__c : ""}}</td>
+                                <td class="table-row col-md-1">{!currencyStr} {{li.Apttus_Config2__BasePriceMethod__c=="Flat Price" ? (li.Apttus_Config2__ListPrice__c==null ? "0" :li.Apttus_Config2__ListPrice__c| number:2):(li.Apttus_Config2__ListPrice__c==null ? "0" :li.Apttus_Config2__ListPrice__c*li.Apttus_Config2__Quantity__c| number:2)}}</td>
+                                <td class="table-row col-md-1">{{li.Apttus_Config2__AdjustmentAmount__c == null ? "0" : li.Apttus_Config2__AdjustmentAmount__c| number:1}}%</td>
+                                <td class="{!IF(isTax ,'hide','table-row col-md-1')}">{!currencyStr} {{li.Apttus_Config2__NetPrice__c| number:2}}</td>
+                                <td class="{!IF(isTax ,'table-row col-md-1','hide')}">{!currencyStr} {{li.Apttus_Config2__BasePriceMethod__c=="Flat Price" ? (li.Apttus_Config2__NetUnitPrice__c==null ? "0" :li.Apttus_Config2__NetUnitPrice__c| number:2):(li.Apttus_Config2__NetUnitPrice__c==null ? "0" :li.Apttus_Config2__NetUnitPrice__c*li.Apttus_Config2__Quantity__c| number:2)}}</td><!--DOC-10261-->
+                                <td class="table-row col-md-1">{{li.APTS_Bridge__c}}</td>
+                                <td class="table-row col-md-1">{{li.Apttus_Config2__IncentiveCode__c}}</td>
+                                <td class="table-row col-md-1">{{li.Apttus_Config2__LineStatus__c}}</td>
+                                <td class="table-row col-md-1">{{li.APTS_Increase_Yr1_Yr2__c}}</td>
+                                <td class="table-row col-md-1">{{li.APTS_Increase_Yr2_Yr3__c}}</td>
+                                <td class="table-row col-md-1">{{li.APTS_Increase_Yr3_Yr4__c}}</td>
+                                <td class="table-row col-md-1">{{li.APTS_Increase_Yr4_Yr5__c}}</td>
+                                <td class="table-row col-md-1">{!currencyStr} {{li.APTS_Calculated_Year_1__c}}</td>
+                                <td class="table-row col-md-1">{!currencyStr} {{li.APTS_Calculated_Year_2__c}}</td>
+                                <td class="table-row col-md-1">{!currencyStr} {{li.APTS_Calculated_Year_3__c}}</td>
+                                <td class="table-row col-md-1">{!currencyStr} {{li.APTS_Calculated_Year_4__c}}</td>
+                                <td class="table-row col-md-1">{!currencyStr} {{li.APTS_Calculated_Year_5__c}}</td>                              
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="table-padding" >
+                        <dir-pagination-controls pagination-id="lineItem" max-size="8" direction-links="true" boundary-links="true"></dir-pagination-controls>
+                    </div>
+                </div>
+                <hr class="hr-line"></hr>
+                <div>
+                    <div class="section-title">Summary for New Proposed Subscriptions (Deal Dashboard Variables)</div>
+                    <br/>
+                    <div class="row table-padding section-lable">
+                        <div class="{!IF(isTax ,'hide','col-md-6')}"> Current Band:
+                            
+                            <label class="table-row"> {{summary.aCurrentBand}} </label>
+                        </div>
+                       <!-- <div class="col-md-6"> Attorney Band:
+                            
+                            <label class="table-row" for="no"> {{summary.aAttorneyBand}} </label>
+                        </div> -->
+                    </div>
+                    <!-- div class="row table-padding section-lable"> -->
+                    <div class="{!IF(isTax ,'hide','row table-padding section-lable')}">
+                        <div class="col-md-6"> Current Net Price:
+                            
+                            <label class="table-row"> {{summary.cNetPrice}} </label>
+                        </div>
+                        <div class="col-md-6"> Proposed Net Price:
+                            
+                            <label class="table-row" for="no"> {{summary.pNetPrice}} </label>
+                        </div>
+                    </div>
+                    <div class="{!IF(isTax ,'row table-padding section-lable','hide')}">
+                        <div class="col-md-6"> Current Net Price:
+                            
+                            <label class="table-row"> {{summary.cNetPriceTax}} </label>
+                        </div>
+                        <div class="col-md-6"> Proposed Net Price:
+                            
+                            <label class="table-row" for="no"> {{summary.pNetPriceTax}} </label>
+                        </div>
+                    </div>
+                    <div class="{!IF(isTax ,'hide','row table-padding section-lable')}">
+                        <div class="col-md-6"> Current Attorneys:
+                            
+                            <label class="table-row" for="seg"> {{summary.cAttorney}} </label>
+                        </div>
+                        <div class="col-md-6"> Proposed Attorneys:
+                            
+                            <label class="table-row" for="band"> {{summary.pAttorney}} </label>
+                        </div>
+                    </div>
+                    <div class="row table-padding section-lable">
+                        <div class="col-md-6"> Current Discount:
+                            
+                            <label class="table-row" for="cat"> {{summary.cDiscount}} </label>
+                        </div>
+                        <div class="col-md-6"> Proposed Discount:
+                            
+                            <label class="table-row" for="cat"> {{summary.pDiscount}} </label>
+                        </div>
+                    </div>
+                     <div class="row table-padding section-lable">
+                        <div class="col-md-6"> Change in Discount:
+                            
+                            <label class="table-row" for="cdic"> {{summary.discountChange}} </label>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                    <!--<div class="row table-padding section-lable">
+                        <div class="col-md-6"> Current Overall Discount:
+                            
+                            <label class="table-row" for="cat"> {{summary.cOverallDiscount}} </label>
+                        </div>
+                        <div class="col-md-6"> Proposed Overall Discount:
+                            
+                            <label class="table-row" for="cat"> {{summary.pOverallDiscount}} </label>
+                        </div>
+                    </div>
+                    <div class="row table-padding section-lable">
+                        <div class="col-md-6"> Change in Overall Discount:
+                            
+                            <label class="table-row" for="cat"> {{summary.overallDiscountChange}} </label>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div> Commented on Oct 4 2017 By Neeharika Upadrasta after discussion with Mark and Rob-->
+                    <div class="{!IF(isTax ,'hide','row table-padding section-lable')}"> 
+                        <div class="col-md-6"> Current RPA:
+                            
+                            <label class="table-row" for="cat"> {{summary.currentRPA}} </label>
+                        </div>
+                        <div class="col-md-6"> Proposed RPA:
+                            
+                            <label class="table-row" for="cat"> {{summary.proposedRPA}} </label>
+                        </div>
+                    </div>
+                    <div class="row table-padding section-lable">
+                        <div class="col-md-6"> Current Annual Contract Value (ACV):
+                            
+                            <label class="table-row" for="cat"> {{summary.cACV}} </label>
+                        </div>
+                        <div class="{!IF(isTax ,'hide','col-md-6')}"> Proposed Annual Contract Value (ACV)
+                            
+                            <label class="table-row" for="cat"> {{summary.pACV}} </label>
+                        </div>
+                        <div class="{!IF(isTax ,'col-md-6','hide')}"> Proposed Annual Contract Value (ACV)
+                            
+                            <label class="table-row" for="cat"> {{summary.pACVTax}} </label>
+                        </div>
+                    </div>
+                    <div class="row table-padding section-lable">
+                        <div class="col-md-6"> Incremental Growth $ (ACV):
+                            
+                            <label class="table-row" for="cat"> {{summary.incrGrowthDollor}} </label>
+                        </div>
+                        <div class="col-md-6"> Incremental Growth % (ACV)
+                            
+                            <label class="table-row" for="cat"> {{summary.incrGrowthPer}} </label>
+                        </div>
+                        <!--<div class="col-md-6"></div>
+                         <div class="col-md-6"> Incremental Growth %:
+                            
+                            <label class="table-row" for="cdic"> {{summary.incrGrowthPer}} </label>
+                        </div>-->
+                        
+                        
+                    </div>                   
+                <div class="row table-padding section-lable">
+                        <div class="{!IF(isTax ,'hide','col-md-6')}"> Estimated Total Remaining Contract Value (TCV):
+                            
+                            <label class="table-row" for="cat"> {{summary.cTVC}} </label>
+                        </div>
+                        <div class="{!IF(isTax ,'col-md-6','hide')}"> Estimated Total Remaining Contract Value (TCV):
+                            
+                            <label class="table-row" for="cat"> {{summary.cTVCTax}} </label>
+                        </div>
+                        <div class="{!IF(isTax ,'hide','col-md-6')}"> Proposed Total Contract Value (TCV):
+                            <label class="table-row" for="cat"> {{summary.pTVC}} </label>
+                        </div>
+                        <div class="{!IF(isTax ,'col-md-6','hide')}"> Proposed Total Contract Value (TCV):
+                            <label class="table-row" for="cat"> {{summary.pTVCTax}} </label>
+                        </div>
+                    </div>
+                <div class="row table-padding section-lable">
+                        <div class="{!IF(isTax ,'hide','col-md-6')}"> TCV Change:
+                            
+                            <label class="table-row" for="cat"> {{summary.cTCVChange}} </label>
+                        </div>
+                        <div class="{!IF(isTax ,'col-md-6','hide')}"> TCV Change:
+                            
+                            <label class="table-row" for="cat"> {{summary.cTCVChangeTax}} </label>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>                    
+                </div>
+                <hr class="hr-line"></hr>
+                <div ng-controller="productDetails">
+                    <div class="section-title"> Exception Details </div> <!-- SOC-7797 Nov 2018 -->
+                    <br/>
+                    <div > <!--class="table-padding"-->
+                        <table class="table table-bordered" > <!--class="table table-bordered"-->
+                            <thead>
+                                <tr class="table-row-background">
+                                    <th style="width:10%;white-space:nowrap;">Action</th> <!-- Added by Deepthi Shirangala-->
+                                    <th>Approval Number</th>
+                                    <th>Date &amp; Time</th>
+                                    <th>Status</th>
+                                    <th style="width:10%;white-space:nowrap;">Assigned To</th>  <!-- Added by Deepthi Shirangala-->
+                                    <th>Approval Details</th>
+                                    <!-- <th>Approver Comments</th>
+                                    <th style="width: 200px">Submission Comments</th>  --> <!-- Added by Deepthi Shirangala-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="al in approvalList" >
+                                    <td style="width:10%" ><!--class="table-row col-md-2"-->
+                                        <div id="container">
+                                            <div id="left">
+                                                <a ng-click="approvalAction(al)" href="javascript:;">
+                                                    Approve/Reject                                                    
+                                                </a>
+                                            </div><br/>
+                                            <div id="left">
+                                                <a ng-click="addApprovalComment(al)" href="javascript:;">
+                                                    Add Comments
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{al.Name}}</td>
+                                    <td><mydate>{{al.Apttus_Approval__Date__c | date:'MM/dd/yyyy h:mma'}}</mydate></td> <!-- SOC-7797 Nov 2018 -->
+                                    <td>{{al.Apttus_Approval__Approval_Status__c}}</td>      <!-- Added by Deepthi Shirangala-->
+                                    <td >{{al.Apttus_Approval__Assigned_To_Name__c}}</td>    <!-- Added by Deepthi Shirangala-->
+                                    <td>{{al.Apttus_Approval__Request_Comments__c}}</td>     <!-- Added by Deepthi Shirangala-->
+                                    <!--<td >{{al.Apttus_Approval__Approver_Comments__c}}</td> -->  <!-- Added by Deepthi Shirangala-->
+                                    <!--SOC-5938 -->
+                                    <!-- <td ng-bind-html="al.Apttus_Approval__Approver_Comments__c ></td> -->
+                                   <!-- <td ng-bind-html="al.Apttus_Approval__SubmissionComment1__c | unsafe"></td>  -->  <!-- Added by Deepthi Shirangala-->
+                                
+                                </tr>
+                                <tr ng-repeat="alh in approvalHistList">
+                                    <td style="width:15px;">Approval Request History</td><!--class="table-row col-md-2"--> <!-- Added by Deepthi Shirangala-->                                    
+                                    <td style="width:15px;">{{alh.Name}}</td><!--class="table-row col-md-1"-->             <!-- Added by Deepthi Shirangala-->
+                                    <td style="width:15px;"><mydate>{{alh.Apttus_Approval__Date__c | date:'MM/dd/yyyy h:mma'}}</mydate></td> <!--SOC-7797 -->
+                                    <td style="width:15px;">{{alh.Apttus_Approval__Approval_Status__c}}</td><!--class="table-row col-md-1"-->        <!-- Added by Deepthi Shirangala-->
+                                    <td style="width:15px;">{{alh.Apttus_Approval__Assigned_To_Name__c}}</td><!--class="table-row col-md-2"-->       <!-- Added by Deepthi Shirangala-->
+                                    <td style="width:15px;">{{alh.Apttus_Approval__Request_Comments__c}}</td><!--class="table-row col-md-4"-->       <!-- Added by Deepthi Shirangala-->
+                                   <!-- <td style="width:15px;">{{alh.Apttus_Approval__Approver_Comments__c}}</td> --><!--class="table-row col-md-2"-->      <!-- Added by Deepthi Shirangala--> 
+                                 <!--   <td  style="width:300px;">{{alh.Apttus_Approval__SubmissionComment1__c}}</td> --> <!--class="table-row col-md-2"-->   <!-- Added by Deepthi Shirangala--> 
+                                    <!--<td >{{alh.Apttus_Approval__SubmissionComment1__c}}</td><!--class="table-row col-md-2"-->                <!-- Added by Deepthi Shirangala-->
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--SOC-7796 Start -->
+                    <hr class="hr-line"></hr>
+                    <div class="section-title"> Comments </div>
+                    <br/>
+                    <div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="table-row-background">                    
+                                  <!--  <th>Approval Number</th> -->
+                                    <th>Sales Rep</th>                                    
+                                    <th>Approval Queue</th>
+                                    <th>Status</th>
+                                    <th>Sales Rep Comments</th>
+                                    <th>Approver Comments</th>
+                            </tr>
+                        </thead>
+                    <tbody>
+                        <tr ng-repeat="alc in approvalList1">
+                       <!-- <td style="width:15px;">{{alc.Name}}</td> -->
+                        <td style="width:15px;">{{alc.Apttus_Approval__Initial_Submitter__r.Name}}</td>
+                        <td style="width:15px;">{{alc.Apttus_Approval__Assigned_To_Name__c}}</td>
+                        <td style="width:15px;">{{alc.Apttus_Approval__Approval_Status__c}}</td>
+                        <td style="width:150px;" ng-bind-html="alc.Apttus_Approval__SubmissionComment1__c | unsafe"></td>
+                        <td style="width:150px;" ng-bind-html="alc.Apttus_Approval__Approver_Comments__c | unsafe"></td>
+                        </tr>
+                        <tr ng-repeat="alhc in approvalHistList1">
+                      <!--  <td style="width:15px;">{{alhc.Name}}</td> -->
+                        <td style="width:15px;">{{alhc.Apttus_Approval__Initial_Submitter__r.Name}}</td>
+                        <td style="width:15px;">{{alhc.Apttus_Approval__Assigned_To_Name__c}}</td>
+                        <td style="width:15px;">{{alhc.Apttus_Approval__Approval_Status__c}}</td>
+                        <td style="width:150px;" ng-bind-html="alhc.Apttus_Approval__SubmissionComment1__c | unsafe"></td>
+                        <td  style="width:150px;" ng-bind-html="alhc.Apttus_Approval__Approver_Comments__c | unsafe"></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    </div>
+                    <!-- SOC-7796 End -->
+                    
+                    <hr class="hr-line"></hr>
+                    <div class="section-title"> Files </div>
+                    <div class="upload-btn-wrapper" align="right">
+                        <span id="fileInputName"></span>
+                        <button class="action-button" onclick="uploadFilesSource()">Attach File</button>  
+                        <input class="hidden" type="file" id="fileInput" onchange="uploadFile()" /> 
+                    </div>
+
+                    <div class="table-padding">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="table-row-background">
+                                    <th class="table-header">Type</th>
+                                    <th class="table-header">Title</th>
+                                    <th class="table-header">Last Modified</th>
+                                    <th class="table-header">Created By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="document in fileList">
+                                    <td class="table-row col-md-2">
+                                        {{document.Type}}
+                                    </td>
+                                    <td class="table-row col-md-6">
+                                       <a ng-click="viewFile(document)" href="javascript:;" ng-bind-html="document.fileName| unsafe">
+                                    </a>
+                                    </td>
+                                    <td class="table-row col-md-2">
+                                        {{document.modifiedDate}}
+                                    </td>
+                                    <td class="table-row col-md-2">
+                                        {{document.createdBy}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr class="hr-line"></hr>
+                    <div class="section-title"> Additional Exception Types </div>
+                    <br/>
+                    <div class="checkbox table-row" style="padding-left:0.6rem">
+                        <label style="color:#ccc">
+                            <input type="checkbox" ng-disabled="true" ng-checked="{!additionalApprovalLegal}" />Legal Language Change
+                        </label>
+                    </div>
+                    <div class="checkbox table-row" style="padding-left:0.6rem">
+                        <label style="color:#ccc">
+                            <input type="checkbox" ng-disabled="true" ng-checked="{!additionalApprovalother}" />Other
+                        </label>
+                    </div>
+                    <hr class="hr-line"></hr>
+                    <div class="section-title"> Print/Proview Specific </div>
+                    <br/>
+                    <div class="table-padding">
+                        <ul class="list-group">
+                        <!--SOC-5938 -->
+                            <!-- <li class="list-group-item" ng-repeat="pp in printProviewList">{{pp.productName}} -->
+                                <li class="list-group-item" ng-repeat="pp in printProviewList"> 
+                                <p ng-bind-html="pp.productName |unsafe" />
+                                <ul>
+                                 <!--  <li ng-repeat="option in pp.purchaseOptions">{{option.purchaseOption }}</li> -->
+                                  <li ng-repeat="option in pp.purchaseOptions" >
+                                      <p ng-bind-html="option.purchaseOption |unsafe" />                                  
+                                </li>
+                               </ul>
+                            </li>                            
+                        </ul>
+                    </div>
+                    <hr class="hr-line"></hr>
+                    <div class="loading" ng-class="{'hidden':isShowLoad}">
+                      <div class='uil-ring-css' style='transform:scale(0.79);'>
+                        <div></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div align="right" style="padding-right:0.6rem; background-color: #428BCA;">
+                <button class="action-button" ng-click="pageRefresh()">Refresh</button>
+            </div>
+        </div>
+    </div>
+</apex:page>

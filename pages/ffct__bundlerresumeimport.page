@@ -1,0 +1,47 @@
+<apex:page standardcontroller="ffct__Bundle__c" extensions="ffct.BundlerResumeImportController" > 
+    <apex:form id="form">
+    <apex:actionStatus id="eventStatus"  >
+         <apex:facet name="start">
+          <apex:outputPanel >
+                        <div style="width:100%;height:100%;position:absolute;top:0;left:0;">
+                            <div style="position:absolute;top:50%;left:50%">
+                                <apex:image value="/img/loading32.gif"></apex:image>
+                            </div>
+                        </div>
+           </apex:outputPanel>
+        </apex:facet>   
+         </apex:actionStatus>
+        <apex:sectionheader title="{!$Label.ffct__importbundle}"/>
+        <apex:pageMessages id="messagesDiv"/>
+        <apex:outputPanel id="progressDiv" layout="block" >
+            <apex:outputPanel layout="block" rendered="{!StartImport}">
+                <img src="{!URLFOR($Resource.progressGIF)}" />
+            </apex:outputPanel>
+            <apex:outputLink style="padding-top:50px;padding-left:50px;color: #015BA7;" value="{!URLFOR($Action.ffct__Bundle__c.View,BundleId)}" rendered="{!DeploymentCompleted || !HasImportPermission}">
+                 {!$Label.ffct__gotobundle}
+            </apex:outputLink>
+        </apex:outputPanel>
+        <apex:outputPanel id="importPanel" rendered="{!StartImport}">
+            <apex:actionPoller action="{!isAllBundleComponentsProcessed}" interval="5" rerender="importPanel,progressDiv,messagesDiv"/>              
+        </apex:outputPanel>
+        <apex:pageBlock rendered="{!!ConfirmRetry}">
+			<apex:pageMessage summary="{!ConfirmMessage}" severity="info" strength="1"/>
+			<apex:pageBlockButtons location="bottom">
+				<apex:actionStatus id="onConfirmStatus">
+					<apex:facet name="start">
+						<apex:outputPanel >
+							<apex:commandButton value="{!$Label.ffct__inprocesstext}" disabled="true" />
+							<apex:commandButton value="{!$Label.ffct__inprocesstext}" disabled="true" />
+						</apex:outputPanel>
+					</apex:facet>
+					<apex:facet name="stop">
+						<apex:outputPanel >
+							<apex:commandButton action="{!cancel}" value="{!$Label.ffct__cancel}" immediate="true" rerender="form" status="onConfirmStatus" />
+	                      	<apex:commandButton action="{!resumeImport}" value="{!$Label.ffct__continue}" rerender="form" status="onConfirmStatus" />
+						</apex:outputPanel>
+					</apex:facet>
+				</apex:actionStatus>
+			</apex:pageBlockButtons>
+		</apex:pageBlock>
+    </apex:form>
+</apex:page>

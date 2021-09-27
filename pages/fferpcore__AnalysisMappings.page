@@ -1,0 +1,65 @@
+<apex:page controller="fferpcore.AnalysisMappingsController" tabStyle="AnalysisMappings__tab" lightningStylesheets="true">
+    <c:ffui_slds />
+    <apex:includeLightning />
+    <style>
+        /* Required CSS fix when using RemoteSiteVerifier directly below ffui_header.
+         * Margins from ffui_header and RemoteSiteVerifier cause too much empty space. */
+        div.remoteSiteVerifier div.message {
+            margin-top: 0rem !important;
+        }
+        /*
+        * Required CSS fix for changing the colour of the rubbish bin icon that it is displayed when
+        * hoovering over the icon. The datatable is located in the newAnalysisItem child component.
+        */
+        lightning-button-icon.row_action button.slds-button.slds-button_icon.slds-button_icon-border:hover {
+            color: #005FB3;
+        }
+        /*
+         * CSS fix that hides the scroll bar from the external component.
+         */
+        body {
+            overflow-y: hidden;
+        }
+        /*
+         * CSS fix that allows the main component to take the max height of the page.
+         */
+        html.slds-scope, span.content, div.apexp, div.slds-scope, div.pbBody, div.bPageBlock.brandSecondaryBrd.apexDefaultPageBlock.secondaryPalette, fferpcore-analysis-mappings {
+            height: 100%;
+        }
+        /*
+         * CSS fix that removes the padding on the header of the main component.
+         */
+        div.bPageBlock.brandSecondaryBrd.apexDefaultPageBlock.secondaryPalette {
+            padding: 0;
+        }
+        /*
+         * CSS fix that rounds the corners of the main component. This mimics the shape of the vf wrapper.
+         */
+        div.pbBody {
+            border-radius: 0.25rem;
+        }
+    </style>
+    <apex:outputPanel rendered="{! $User.UIThemeDisplayed != 'Theme4d' }">
+        <style>
+            article[class="slds-card componentLayout"] div[data-id="listViewBody"] {
+                margin-top: 0;
+                margin-bottom: 0;
+                height: calc(100vh - 18rem);
+            }
+        </style>
+    </apex:outputPanel>
+    <c:MetadataRemoteSiteVerifier templateMessage="{!$Label.fferpcore__remotesiteverifiererpcurrenciesneedsaccess}"/>
+    <span class="content hidden">
+        <c:ffui_lightningOut outAppName="fferpcore:AnalysisMappingsApp"/>
+        <apex:pageBlock >
+            <div id="lightning"/>
+        </apex:pageBlock>
+    </span>
+    <script>
+        $Lightning.use("fferpcore:AnalysisMappingsApp", function() {
+          	$Lightning.createComponent("fferpcore:analysisMappings", {}, "lightning", function(cmp) {
+                  document.querySelector('.content').classList.remove('hidden');
+            });
+        });
+    </script>
+</apex:page>

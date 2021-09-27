@@ -1,0 +1,194 @@
+<!--============================================================================================
+    Name                : Digital_RecommendationsDetails
+    Description         : This Page is developed as part of CXD-Renewal project. This Page is visible on click of button 'Recommendations' on Source System Detail Page.
+    Created Date        : 02/26/2019
+    Created by          : Navleen Kaur
+    History:
+    Date           Name                    Description  
+    02/26/2019     Navleen Kaur            DLT-14147 : [SLF][SFDC] Expose Small Law Recommendations to Sales Channel
+    03/26/2019     Navleen Kaur            DLT-15710 : Expose Small Law Recommendations to Sales Channel - Integrate ESI Service
+    09/27/2019     Harikasai P             DLT-17687 : INC2521439_No results on the recommendation link for the account                    
+===============================================================================================-->
+<apex:page standardController="Account" lightningStylesheets="true" extensions="Digital_RecommendationsController" id="thePage">
+    <apex:slds />
+    <apex:form id="theForm">
+        <apex:pageBlock title="Select Customer Number" rendered="{!displayComponent}" id="pageblock">
+            <apex:selectList value="{!selectedSSDId1}" size="1" id="selectedvalue">
+                <apex:selectOptions value="{!ssdNames}" />
+            </apex:selectList>
+            &nbsp; &nbsp;
+            <apex:commandButton value="show" onclick="return sendItToApex();" />
+        </apex:pageBlock>
+        <apex:actionFunction action="{!updatePage}" name="callToApexFromJs" rerender="refreshBlock">
+            <apex:param name="selectedVal" value="" />
+        </apex:actionFunction>
+
+        <!-- DLT-17687  Removed Rendered from output panel and added to individual blocks and moved the output panel to outer parent and page message moved inside output panel
+ to resolve the Rerendering issues.!-->
+
+        <apex:outputPanel id="refreshBlock">
+            <apex:pageBlock rendered="{!errormsg}" id="block0">
+                <apex:pageMessages id="errMsg" />
+            </apex:pageBlock>
+            <apex:pageBlock title="Recommendations for Sales Channel" id="block1" rendered="{!NOT(errormsg)}">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead></thead>
+                    <tbody>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="ZP Customer Number">ZP Customer Number</div>
+                            </td>
+                            <td data-label="ZP Customer Number">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!customerNumber}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Minimal Renewal Date">Minimal Renewal Date</div>
+                            </td>
+                            <td data-label="Minimal Renewal Date">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!renewalDate}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Customer Name">Customer Name</div>
+                            </td>
+                            <td data-label="Customer Name">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!customerName}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Market Segment">Market Segment</div>
+                            </td>
+                            <td data-label="Market Segment">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!marketSegment}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Contract Term">Contract Term</div>
+                            </td>
+                            <td data-label="Contract Term">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!currContractTerm}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Simplified?">Simplified?</div>
+                            </td>
+                            <td data-label="Simplified?">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!alreadySimplified}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Total Current Net MCV">Total Current Net MCV</div>
+                            </td>
+                            <td data-label="Total Current Net MCV">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!currentMCV}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Estimated Discount">Estimated Discount</div>
+                            </td>
+                            <td data-label="Estimated Discount">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!estimatedDiscount}" />%</div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Customer Category">Customer Category</div>
+                            </td>
+                            <td data-label="Customer Category">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!customerCategory}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Credit Limit Used">Credit Limit Used</div>
+                            </td>
+                            <td data-label="Credit Limit Used">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!creditLimitUsed}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Credit Exposure">Credit Exposure</div>
+                            </td>
+                            <td data-label="Credit Exposure">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!creditExposure}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Customer Upsell Level">Customer Upsell Level</div>
+                            </td>
+                            <td data-label="Customer Upsell Level">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!upsellLevel}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Attorney Count">Attorney Count</div>
+                            </td>
+                            <td data-label="Attorney Count">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!attorneyCount}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Recommendation Created Date">Recommendation Created Date</div>
+                            </td>
+                            <td data-label="Recommendation Created Date">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!recommendationCreatedDate}" /></div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td class="">
+                                <div class="slds-truncate" title="Usage Profile">Usage Profile</div>
+                            </td>
+                            <td data-label="Usage Profile">
+                                <div class="slds-truncate" title=""><apex:outputText value="{!usageProfile}" /></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </apex:pageBlock>
+            <apex:pageBlock title="Current Materials" id="block2" rendered="{!NOT(errormsg)}">
+                <apex:pageBlockTable value="{!existingMaterials}" var="c">
+                    <apex:column value="{!c.productTitle}" headerValue="Current Material Description" />
+                    <apex:column value="{!c.targetQty}" headerValue="Per Seat Quantity" />
+                    <apex:column value="{!c.currentMaterialNum}" headerValue="Material Number" />
+                    <apex:column value="{!c.currentServiceNum}" headerValue="Service Number" />
+                    <apex:column value="{!c.aggRectxt}" headerValue="Recommendation Reasons" />
+                    <apex:column value="{!c.netTransactionCount}" headerValue="In Plan Usage" />
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            <apex:pageBlock title="Recommended Materials" id="block3" rendered="{!NOT(errormsg)}">
+                <apex:pageBlockTable value="{!recommandedMaterials}" var="r">
+                    <apex:column value="{!r.productTitle}" headerValue="Recommended Materials" />
+                    <apex:column value="{!r.targetQty}" headerValue="Per Seat Quantity" />
+                    <apex:column value="{!r.rcmdSubsMaterialNumber}" headerValue="Material Number" />
+                    <apex:column value="{!r.rcmdServiceNumber}" headerValue="Service Number" />
+                    <apex:column value="{!r.bandPrice}" headerValue="Retail Price" />
+                    <apex:column value="{!r.aggRectxt}" headerValue="Recommendation Reasons" />
+                    <apex:column value="{!r.ancillaryAmount}" headerValue="Ancillary Charge Amt" />
+                    <apex:column value="{!r.declinesCNT}" headerValue="Decline Count" />
+                    <apex:column value="{!r.cmtFlag}" headerValue="CMT Mapped" />
+                    <apex:column value="{!r.rank}" headerValue="Rank" />
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+
+    <script>
+        function sendItToApex() {
+            var selectedVal = document.getElementById("{!$Component.thePage.theForm.pageblock.selectedvalue}").value;
+            callToApexFromJs(selectedVal);
+            return false;
+        }
+    </script>
+</apex:page>

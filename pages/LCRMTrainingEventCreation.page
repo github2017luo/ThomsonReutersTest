@@ -1,0 +1,39 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+2019-02-12       Tejasree                  DPS-1836 : Added custom labels instead of Hard Coded values
+2019-03-02   Kumar Shubham                 Enabled LightningStylesheets as part of Sales Lightning
+===============================================================================
+-->
+
+<apex:page standardController="Training_Event__c" extensions="LCRMTrainingEventCreationController" lightningStylesheets="true" >
+  <apex:pageMessages id="messagesGlobal" escape="false" />
+  
+  <apex:form >
+  
+    <apex:commandButton value="{!$Label.Save}" action="{! save}" style="margin-left:10cm;"/>
+    <apex:commandButton value="{!$Label.Cancel}" action="{! cancel}"/>
+    
+    <apex:pageBlock >
+        <apex:pageBlockSection >
+            <apex:inputField value="{! Training_Event__c.Training_Name__c}"/>
+            <!-- Harika :modified  as part of CRM-12093 Bug to populate Account Name only when created from Related List-->
+            <apex:outputField value="{!Training_Event__c.Account__c}" rendered="{! Not(fromTab)}"/>
+            <apex:outputField value="{! Training_Event__c.LCRM_Primary_Contact__c}" rendered="{! fromContact}"/>
+            <apex:outputField value="{! Training_Event__c.LCRM_Opportunity__c}" rendered="{! fromOpportunity}"/>
+            <apex:inputField value="{! Training_Event__c.Training_Type__c}"/>
+             <apex:inputField value="{! Training_Event__c.Status__c}"/>
+             <apex:inputField value="{! Training_Event__c.Campaign_Name__c}"/>
+             <apex:inputField value="{! Training_Event__c.Notes__c}"/> 
+             <apex:outputText label="{!$Label.Owner}" value="{!$User.FirstName} {!$User.LastName}"/>
+            <apex:inputField value="{! Training_Event__c.LCRM_Start_Time__c}"/>
+            <apex:inputField value="{! Training_Event__c.LCRM_New_Training_Duration__c}"/>
+            <apex:inputField value="{! Training_Event__c.LCRM_Delivery_Method__c}"/>
+            <apex:outputField value="{! Training_Event__c.Strategy__c}" rendered="{!fromStrategy }"/>
+             <apex:inputField value="{!Training_Event__c.Strategy__c}" rendered="{! Not(fromStrategy)}"/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>
+    
+  </apex:form>
+</apex:page>

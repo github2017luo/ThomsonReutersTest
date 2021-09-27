@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EscalationRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <escalationRule>
+        <fullName>Inquiry Escalation Rules</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <businessHoursSource>None</businessHoursSource>
+            <escalationAction>
+                <minutesToEscalation>7200</minutesToEscalation>
+                <notifyCaseOwner>true</notifyCaseOwner>
+                <notifyToTemplate>Ticket_Inquiry/Case_Escalated_Notification_1</notifyToTemplate>
+            </escalationAction>
+            <escalationAction>
+                <minutesToEscalation>14400</minutesToEscalation>
+                <notifyCaseOwner>true</notifyCaseOwner>
+                <notifyToTemplate>Ticket_Inquiry/Case_Escalated_Notification_2</notifyToTemplate>
+            </escalationAction>
+            <escalationStartTime>CaseLastModified</escalationStartTime>
+            <formula>AND( NOT(ISPICKVAL(Status,&quot;Closed&quot;)), OR( RecordType.DeveloperName = &quot;Findlaw_Inquiry&quot;, RecordType.DeveloperName = &quot;SCS_Inquiry&quot;), NOT(ISPICKVAL( CaseType__c , &quot;KS Inquiry&quot;)) )</formula>
+        </ruleEntry>
+    </escalationRule>
+    <escalationRule>
+        <fullName>US Legal Litigation Rule</fullName>
+        <active>false</active>
+        <ruleEntry>
+            <businessHoursSource>None</businessHoursSource>
+            <criteriaItems>
+                <field>Case.OwnerId</field>
+                <operation>equals</operation>
+                <value>Professional Services</value>
+            </criteriaItems>
+            <escalationAction>
+                <minutesToEscalation>1440</minutesToEscalation>
+                <notifyCaseOwner>false</notifyCaseOwner>
+                <notifyEmail>james.moran@thomsonreuters.com</notifyEmail>
+                <notifyEmail>kyle.sparks@thomsonreuters.com</notifyEmail>
+                <notifyEmail>luke.luciano@thomsonreuters.com</notifyEmail>
+                <notifyEmail>mike.proctor@thomsonreuters.com</notifyEmail>
+                <notifyEmail>mike.spencer@thomsonreuters.com</notifyEmail>
+                <notifyTo>marty.mills@trpcorelegal.com</notifyTo>
+                <notifyToTemplate>unfiled$public/SUPPORTCaseescalationnotificationSAMPLE</notifyToTemplate>
+            </escalationAction>
+            <escalationStartTime>CaseCreation</escalationStartTime>
+        </ruleEntry>
+    </escalationRule>
+</EscalationRules>

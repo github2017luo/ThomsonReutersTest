@@ -1,0 +1,209 @@
+<!-- Last Modified By: Rounak (2-July-2018) Lightning UI Refresh -->
+<apex:page lightningStylesheets="true" controller="MaritzCX.ProfilePermissionsCls" tabStyle="MCX_Permissions__tab">
+    <style type="text/css">
+        .pbTitle {
+            white-space: nowrap;
+         }
+        
+        .message{
+         justify-content: left !important;
+        }
+        .alignOutputLabel{
+            padding:5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .sticky {
+            position: sticky !important;
+            top:0px !important;
+            background-color: white;
+            z-index:2;
+            border-bottom:1px solid rgb(221, 219, 218) !important;
+        }
+
+        <apex:variable var="isLightning" value="{!$User.UIThemeDisplayed == 'Theme4d' || $User.UIThemeDisplayed == 'Theme4u'}"/>
+     </style>
+    <body>
+        <apex:sectionHeader title="{!$Label.maritzcx__verify_permissions}" id="head"/>
+        <apex:form style="width:100%;" id="SelectProfileForm">
+            <apex:pageBlock >
+               <apex:outputPanel id="errmsg">
+                <apex:pageMessages rendered="{!error}"/>
+                    <apex:pageMessage rendered="{!namespaceError}" summary="Error:" severity="error" strength="2">
+                        <apex:outputLabel escape="true" value="{!$Label.maritzcx__namespace_error}" style="padding-left:8px;"/><apex:outputLabel escape="true" value="{!$Label.maritzcx__organization_settings}" style="text-decoration: underline;"/><apex:outputLabel escape="true" value="{!DOT} "/><apex:outputLabel escape="true" value="{!$Label.maritzcx__more_details}"/><apex:outputLink value="{!helpLink}" target="_blank"><apex:outputText value="{!$Label.maritzcx__online_help_system}" escape="true"/></apex:outputLink><apex:outputLabel escape="true" value="{!DOT}"/>
+                     </apex:pageMessage>
+                 </apex:outputPanel>
+                <apex:pageBlockSection title="{!$Label.maritzcx__select_profile_and_user}" columns="2">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel styleClass="alignOutputLabel" value="{!$Label.maritzcx__select_profile+':'} "/>
+                        <apex:selectList value="{!selectedProfileId}" multiselect="false" size="1" style="width:150px;">
+                            <apex:selectOptions value="{!profileList}" />
+                            <apex:actionSupport event="onchange" action="{!getUserNameList}" rerender="SelectUser,errmsg,DisplayProfilePermissions" status="status"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel styleClass="alignOutputLabel" value="{!$Label.maritzcx__select_user+':'} "/>
+                        <apex:selectList value="{!selectedUserId}" multiselect="false" size="1" id="SelectUser" style="width:150px;">
+                            <apex:selectOptions value="{!userList}" />
+                            <apex:actionSupport event="onchange" rerender="DisplayProfilePermissions,errmsg"/>
+                        </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+                <apex:pageBlockButtons style="padding-left:10%;" location="bottom">
+                    <apex:commandButton value="   Get Details   "  action="{!getProfileDetails}" rerender="DisplayProfilePermissions,errmsg" status="status"/>
+                </apex:pageBlockButtons> 
+            </apex:pageBlock>
+        </apex:form>
+        <div style="height:30px; width:89%; text-align:center;">
+               <apex:actionStatus id="status" style="text-align:center;">
+                   <apex:facet name="start">
+                       <img src="/img/loading.gif" alt="Ajax" />
+                   </apex:facet>
+               </apex:actionStatus>
+          </div>
+          <apex:outputPanel id="DisplayProfilePermissions">
+              <apex:pageBlock title="{!$Label.maritzcx__permissions_for} {!selectedUserName}" rendered="{!isProfileDetails && isUserPresent && selectedProfileId!=NULL && selectedUserId!=NULL}"> 
+                  <apex:pageBlockSection title="{!$Label.maritzcx__profile_and_permission_sets}" collapsible="false">
+                    <apex:pageBlockTable value="{!profileDetailsObj.permissionSets}" var="permissionSet">
+                        <apex:column headerValue="{!$Label.maritzcx__type}">
+                            <apex:outputText escape="true" value="{!IF(permissionSet.IsOwnedByProfile, $Label.maritzcx__profile, $Label.maritzcx__permission_set)}"/>
+                        </apex:column>
+                        <apex:column headerValue="{!$Label.maritzcx__link}">
+                            <apex:outputLink rendered="{!NOT(isLightning)}" target="_blank" value="{!IF(permissionSet.IsOwnedByProfile, '/'+JSENCODE(permissionSet.Profile.Id), '/'+JSENCODE(permissionSet.Id))}"><apex:outputText escape="true" value="{!IF(permissionSet.IsOwnedByProfile, profileDetailsObj.profileName, permissionSet.Label)}"/></apex:outputLink>
+                            <apex:outputLink rendered="{!isLightning}" target="_blank" value="{!IF(permissionSet.IsOwnedByProfile,URLFOR('/lightning/setup/Profiles/page?address=/'+JSENCODE(permissionSet.Profile.Id)),URLFOR('/lightning/setup/PermSets/page?address=/'+JSENCODE(permissionSet.Id)))}" ><apex:outputText escape="true" value="{!IF(permissionSet.IsOwnedByProfile, profileDetailsObj.profileName, permissionSet.Label)}"/></apex:outputLink>
+                        </apex:column>
+                      </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                  <apex:pageBlockSection title="{!$Label.maritzcx__administrative_permissions}">
+                    <apex:pageBlockTable value="{!profileDetailsObj.administrativePermissions}" var="permission">
+                          <apex:column headerValue="{!$Label.maritzcx__permission}"  style="{!IF(profileDetailsObj.administrativePermissions[permission]==false, 'background-color: #ea7613;', '')}">
+                              <apex:outputText escape="true" value="{!$ObjectType.Profile.fields[permission].Label}"/>
+                              <sup style="color: #0000FF;display : {!if(OR(IF(permission=='PermissionsApiEnabled',true,false),OR(IF(permission=='PermissionsCustomizeApplication',true,false),IF(permission=='PermissionsManageDataIntegrations',true,false))),'none','inline')};">
+                                 <apex:outputText escape="true" value="({!$Label.maritzcx__optional})"/>
+                              </sup>
+                          </apex:column>
+                          <apex:column headerValue="{!$Label.maritzcx__current_value}" style="{!IF(profileDetailsObj.administrativePermissions[permission]==false, 'background-color: #ea7613;', '')}">
+                            <apex:outputPanel rendered="{!profileDetailsObj.administrativePermissions[permission]}">
+                                <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10003;</span>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!NOT(profileDetailsObj.administrativePermissions[permission])}">
+                                <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10007;</span>
+                            </apex:outputPanel>
+                          </apex:column>
+                      </apex:pageBlockTable>
+                  </apex:pageBlockSection>
+                  <apex:pageBlockSection title="{!$Label.maritzcx__general_user_permissions}">
+                    <apex:pageBlockTable value="{!profileDetailsObj.generalUserPermissions}" var="permission">
+                          <apex:column headerValue="{!$Label.maritzcx__permission}" style="{!IF(profileDetailsObj.generalUserPermissions[permission]==false, 'background-color: #ea7613;', '')}">
+                          <apex:outputText escape="true" value="{!$ObjectType.Profile.fields[permission].Label}"/>
+                          <sup style="color: #0000FF;">
+                             <apex:outputText escape="true" value="({!$Label.maritzcx__optional})"/>
+                          </sup>
+                          </apex:column>
+                          <apex:column headerValue="{!$Label.maritzcx__current_value}" style="{!IF(profileDetailsObj.generalUserPermissions[permission]==false, 'background-color: #ea7613;', '')}">
+                            <apex:outputPanel rendered="{!profileDetailsObj.generalUserPermissions[permission]}">
+                                <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10003;</span>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!NOT(profileDetailsObj.generalUserPermissions[permission])}">
+                                <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10007;</span>
+                            </apex:outputPanel>
+                          </apex:column>
+                      </apex:pageBlockTable>
+                  </apex:pageBlockSection>
+                  <apex:pageBlockSection title="{!$Label.maritzcx__object_permissions}" columns="2">
+                   <apex:repeat value="{!profileDetailsObj.objectPermissions}" var="sObjectType">
+                    <apex:pageBlockSection title="{!$ObjectType[sObjectType].LabelPlural}" columns="1">
+                        <apex:pageBlockTable value="{!profileDetailsObj.objectPermissions[sObjectType]}" var="permission">
+                            <apex:column headerValue="{!$Label.maritzcx__permission}"  style="{!IF(profileDetailsObj.objectPermissions[sObjectType][permission]==false, 'background-color: #ea7613;', '')}">
+                            <apex:outputText escape="true" value="{!$ObjectType.ObjectPermissions.fields[permission].Label}"/>
+                            <sup style="color: #0000FF;display :{!IF(sObjectType=='Account',IF(OR(IF(permission=='PermissionsRead',true,false),IF(permission=='PermissionsViewAllRecords',true,false)),'none','inline'),IF(sObjectType=='Contact',IF(OR(OR(IF(permission=='PermissionsCreate',true,false),IF(permission=='PermissionsRead',true,false)),IF(permission=='PermissionsViewAllRecords',true,false)),'none','inline'),IF(sObjectType=='Lead',IF(OR(IF(permission=='PermissionsRead',true,false),IF(permission=='PermissionsViewAllRecords',true,false)),'none','inline'),'none')))};">
+                                <apex:outputText escape="true" value="({!$Label.maritzcx__optional})"/>
+                            </sup>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.maritzcx__current_value}" style="{!IF(profileDetailsObj.objectPermissions[sObjectType][permission]==false, 'background-color: #ea7613;', '')}">
+                                <apex:outputPanel rendered="{!profileDetailsObj.objectPermissions[sObjectType][permission]}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10003;</span>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!NOT(profileDetailsObj.objectPermissions[sObjectType][permission])}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10007;</span>
+                                </apex:outputPanel> 
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                   </apex:repeat>
+                   </apex:pageBlockSection>
+                  <apex:pageBlockSection title="{!$Label.maritzcx__field_permissions}" columns="2">
+                   <apex:repeat value="{!profileDetailsObj.fieldPermissions}" var="sObjectType">
+                    <apex:pageBlockSection title="{!$ObjectType[sObjectType].LabelPlural}" columns="1">
+                        <apex:outputPanel style="max-height: 600px; display: block; overflow-y: auto;">
+                        <apex:pageBlockTable value="{!CASE(sObjectType, 
+                            profileDetailsObj.NAMESPACE_PREFIX + 'Survey_Response__c', profileDetailsObj.surveyResponseFields,
+                            profileDetailsObj.NAMESPACE_PREFIX + 'Survey__c', profileDetailsObj.surveyFields,profileDetailsObj.fieldPermissions[sObjectType])}" var="field" >
+                            <apex:column headerValue="Field" style="{!IF(profileDetailsObj.fieldPermissions[sObjectType][field]['PermissionsEdit']==false, 'background-color: #ea7613;', '')}" headerClass="sticky">
+                                <apex:outputText value="{!IF((sObjectType=='Case'||sObjectType=='Contact')&&(field=='AccountId'||field=='ContactId'), SUBSTITUTE(field,'Id',' Name'), $ObjectType[sObjectType].fields[field].Label)}" escape="true"/>
+                            </apex:column>
+                            
+                            <apex:column headerValue="{!$Label.maritzcx__edit}" style="{!IF(profileDetailsObj.fieldPermissions[sObjectType][field]['PermissionsEdit']==false, 'background-color: #ea7613;', '')}" headerClass="sticky">
+                                <apex:outputPanel rendered="{!profileDetailsObj.fieldPermissions[sObjectType][field]['PermissionsEdit']}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10003;</span>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!NOT(profileDetailsObj.fieldPermissions[sObjectType][field]['PermissionsEdit'])}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10007;</span>
+                                </apex:outputPanel>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                        </apex:outputPanel>
+                    </apex:pageBlockSection>
+                   </apex:repeat>
+                  </apex:pageBlockSection>
+                  <apex:pageBlockSection title="{!$Label.maritzcx__classes_pages}">
+                    <apex:pageBlockSection title="{!$Label.maritzcx__apex_classes}" columns="1">
+                        <apex:pageBlockTable value="{!profileDetailsObj.apexClassPermissions}" var="ApexClassName">
+                            <apex:column headerValue="{!$Label.maritzcx__class_name}" style="{!IF(profileDetailsObj.apexClassPermissions[ApexClassName],'','background-color: #ea7613;')}">
+                                <apex:outputText escape="true" value="{!ApexClassName}"/>
+                                <sup style="color: #0000FF;display : {!IF(ApexClassName=='AlgAuthenticationSettings', 'none', 'inline')}">
+                                    <apex:outputText escape="true" value="({!$Label.maritzcx__optional})"/>
+                                </sup>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.maritzcx__current_value}" style="{!IF(profileDetailsObj.apexClassPermissions[ApexClassName],'','background-color: #ea7613;')}">
+                                <apex:outputPanel rendered="{!profileDetailsObj.apexClassPermissions[ApexClassName]}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10003;</span>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!NOT(profileDetailsObj.apexClassPermissions[ApexClassName])}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10007;</span>
+                                </apex:outputPanel>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection title="{!$Label.maritzcx__visualforce_pages}" columns="1">
+                        <apex:pageBlockTable value="{!profileDetailsObj.apexPagePermissions}" var="ApexPageName">
+                            <apex:column headerValue="{!$Label.maritzcx__page_name}" style="{!IF(profileDetailsObj.apexPagePermissions[ApexPageName], '', 'background-color: #ea7613;')}">
+                                <apex:outputText escape="true" value="{!ApexPageName}"/>
+                                <sup style="color: #0000FF;"> 
+                                    <apex:outputText escape="true" value="({!$Label.maritzcx__optional})"/>
+                                </sup>
+                            </apex:column>
+                            <apex:column headerValue="{!$Label.maritzcx__current_value}" style="{!IF(profileDetailsObj.apexPagePermissions[ApexPageName],'','background-color: #ea7613;')}">
+                                <apex:outputPanel rendered="{!profileDetailsObj.apexPagePermissions[ApexPageName]}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10003;</span>
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!NOT(profileDetailsObj.apexPagePermissions[ApexPageName])}">
+                                    <span style="font-family: wingdings; font-size: 100%; font-weight: bold;">&#10007;</span>
+                                </apex:outputPanel>
+                            </apex:column>
+                        </apex:pageBlockTable>
+                    </apex:pageBlockSection>
+                  </apex:pageBlockSection> 
+                  <apex:pageBlockSection title="{!$Label.maritzcx__app_and_tabs_permissions}" columns="1">
+                      
+                      <apex:image id="theImage1" value="{!$Resource.MaritzCX__App_Permission}" />
+                      <br/>
+                      <apex:image id="theImage2" value="{!$Resource.MaritzCX__Tab_Permissions}" width="900" height="700"/>
+                      <br/>
+                      <apex:outputText escape="true" value="{!$Label.maritzcx__note+':'}" style="font-weight:bold;"/>
+                      <apex:outputText escape="true" value="{!$Label.maritzcx__note_app_and_tab_permissions}"/>
+                  </apex:pageBlockSection>
+              </apex:pageBlock>
+          </apex:outputPanel>
+    </body>
+</apex:page>

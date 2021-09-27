@@ -1,0 +1,278 @@
+import { LightningElement,wire,track,api} from 'lwc';
+import getContactList from '@salesforce/apex/CustomerCommunityContactsLWCController.getAllCaselist';
+import {NavigationMixin} from 'lightning/navigation';   
+import { ShowToastEvent } from 'lightning/platformShowToastEvent'; 
+
+export default class GetCasesForCustomerCommunity extends NavigationMixin(LightningElement) {
+    @track error =false;
+    @track data1;
+    @track dataser;
+	@track errorMsg = '';
+    @track flag = false;
+    @track flag1 = false;
+    @track flag3 = false;
+    @track flag4 = false;
+    @track sortBy;
+    @track sortDirection;
+    @api record; 
+    @api totalNumberOfRows;
+    rowLimit =25;
+    rowOffSet=0; 
+    rowLimit1 =25;
+    rowOffSet1=0;
+    @track searchKey;    
+	 @track columns2 = [       
+        {
+            label: 'Case Number',
+            fieldName: 'caseUrlLink',
+            type: 'url',
+            typeAttributes: {label: { fieldName: 'caseNumber' },tooltip:{fieldName: 'caseNumber'} ,
+            target: '_self'},
+            sortable: true
+        },
+        {
+            label: 'Contact Name',
+            fieldName: 'contactName',
+            type: 'text',
+            sortable: true
+        },
+        {
+            label: 'Product Title',
+            fieldName: 'productTitle',
+            type: 'text',
+            sortable: true
+        },
+        {
+            label: 'Product Feature Module',
+            fieldName: 'productFeature',
+            type: 'text',
+            sortable: true
+        },
+        {
+            label: 'Subject',
+            fieldName: 'subject',
+            type: 'text',
+            initialWidth: 250,
+            sortable: true
+        },
+        {
+            label: 'Status',
+            fieldName: 'status',
+            type: 'text',
+            sortable: true
+        },
+        {
+            label: 'Severity',
+            fieldName: 'severity',
+            type: 'text',
+            sortable: true
+        },
+		{
+            label: 'Date/Time Opened',
+            fieldName: 'dateOpened',
+            type: 'date',
+            sortable: true
+        },
+        
+		{
+            label: 'Case Owner',
+            fieldName: 'caseOwner',
+            type: 'text',
+            sortable: true
+        }
+    ];
+    connectedCallback() {
+        /*if(this.isSearchChangeExecuted){
+            return;
+        }*/
+		getContactList({
+            limitSize: this.rowLimit , offset : this.rowOffSet , searchKey :  this.searchKey
+        })
+		.then(result => {
+            this.errorMsg = '';
+			console.log('33'+result);
+			if(result!=null){
+				console.log('@@ data :' + JSON.stringify(result));
+                    this.data1 = result;
+                    if(result.length <25){
+                        this.flag = true;
+                        console.log('showing first data table');
+                     }
+                     else{
+                     this.flag1=true;
+                     console.log('showing second data table');
+                     }
+					console.log('entered');	
+			}else{
+                this.errorMsg = 'No Records Found';
+                this.error = true;
+			}
+		})
+		.catch(error => {
+            this.data = undefined;
+            this.error = true;
+			console.log('error =====> '+JSON.stringify(error));
+			if(error) {
+                this.errorMsg = error.body.message;
+			}
+		}) 
+    }
+    loadMoreData(event) {
+        event.target.isLoading = true;
+        this.rowOffSet = this.rowOffSet + this.rowLimit;
+        if(this.rowOffSet > 2000){
+            event.target.isLoading = false;
+            return;
+        }
+        console.log('rowOffSet--->'+this.rowOffSet);
+		getContactList({
+            limitSize: this.rowLimit , offset : this.rowOffSet , searchKey : this.searchKey    
+        }).then((result) => {
+            if (this.data1.length >= this.totalNumberOfRows) {
+                event.target.enableInfiniteLoading = false;
+                this.loadMoreStatus = 'No more data to load';
+            } else {
+			console.log('Load more Call made');  
+                    const currentData = this.data1;
+                    //Appends new data to the end of the table
+                    const newData = result; // ** concat data
+                    this.data1 = currentData.concat(newData); // ** replace data. 
+            }
+            });
+            event.target.isLoading = false;
+    }
+    loadMoreData1(event) { 
+		event.target.isLoading = true;
+        this.rowOffSet1 = this.rowOffSet1 + this.rowLimit1;
+        console.log('rowOffSet1--->'+this.rowOffSet1 + this.totalNumberOfRows + this.dataser.length );
+        if(this.rowOffSet1 > 2000){
+            event.target.isLoading = false;
+            return;
+        }
+        //console.log('rowOffSet1--->'+this.rowOffSet1 + this.totalNumberOfRows + this.dataser.length );
+        getContactList({limitSize: this.rowLimit1 , offset : this.rowOffSet1 ,searchKey : this.searchKey
+        }).then((result) => {
+            if (this.dataser.length >= this.totalNumberOfRows) {
+                event.target.enableInfiniteLoading = false;
+                this.loadMoreStatus = 'No more data to load';
+            } else {
+			console.log('Load more Call made');  
+            const currentRecord = this.dataser;
+            //Appends new data to the end of the table
+            const newData = result; // ** concat data
+            this.dataser = currentRecord.concat(newData); // ** replace data.
+            }
+            });
+            event.target.isLoading = false;  
+    }
+
+    
+   
+    handleSearchKeyword(event) {
+   
+    if (event.which == 13){
+        this.searchKey = event.target.value; 
+    console.log('searchkey : ' + this.searchKey + this.rowOffSet1 + this.rowLimit1);
+		getContactList({
+            limitSize: this.rowLimit1 , offset : this.rowOffSet1 , searchKey : this.searchKey
+        })
+		.then(result1 => {
+			this.errorMsg = '';
+			console.log('33'+result1);
+			if(result1!=null){
+				console.log('@@ data :' + JSON.stringify(result1));
+                    this.dataser = result1;
+                    if(result1.length <25){
+                       this.flag3 = true;
+                       this.flag=false;
+                       this.flag1=false;
+                       this.flag4=false;
+                        console.log('search first data table');
+                    }
+                    else{
+                    this.flag4=true;
+                    this.flag1=false;
+                    this.flag3=false;
+                    this.flag=false;
+                     console.log('search second data table');
+                    }
+					console.log('entered');	
+			}else{
+				this.errorMsg = 'No Records Found';
+            }
+            //this.displaySpinner = false;
+		})
+		.catch(error => {
+			this.dataser = undefined;
+			console.log('error =====> '+JSON.stringify(error));
+			if(error) {
+				this.errorMsg = error.body.message;
+			}
+		})
+    } 
+    
+  }  
+    updateColumnSorting(event) {
+        console.log('entered for column sorting');
+        var fieldName = event.detail.fieldName;
+        //console.log('fieldname  ' + fieldName + this.sortDirection);
+        if (fieldName == 'caseUrlLink') {
+            this.sortBy = 'caseNumber';
+        }else{this.sortBy = event.detail.fieldName;
+        }
+       this.sortDirection = event.detail.sortDirection;   
+       this.sortData(this.sortBy,this.sortDirection);
+       this.sortBy = fieldName;      
+   }
+
+   updateColumnSorting1(event) {
+    console.log('entered for column sorting');
+    var fieldName = event.detail.fieldName;
+    //console.log('fieldname  ' + fieldName + this.sortDirection);
+    if (fieldName == 'caseUrlLink') {
+        this.sortBy = 'caseNumber';
+    }else{this.sortBy = event.detail.fieldName;
+    }
+   this.sortDirection = event.detail.sortDirection;   
+   this.sortData1(this.sortBy,this.sortDirection);
+   this.sortBy = fieldName;      
+}
+   sortData(fieldName, sortDirection){
+    var data2 = JSON.parse(JSON.stringify(this.data1));
+    //function to return the value stored in the field
+    var key =(a) => a[fieldName]; 
+    var reverse = sortDirection === 'asc' ? 1: -1;
+    data2.sort((a,b) => {
+        let valueA = key(a) ? key(a).toLowerCase() : '';
+        let valueB = key(b) ? key(b).toLowerCase() : '';
+        return reverse * ((valueA > valueB) - (valueB > valueA));
+    });
+    this.data1 = data2;
+}
+sortData1(fieldName, sortDirection){
+    var data2 = JSON.parse(JSON.stringify(this.dataser));
+    //function to return the value stored in the field
+    var key =(a) => a[fieldName]; 
+    var reverse = sortDirection === 'asc' ? 1: -1;
+    data2.sort((a,b) => {
+        let valueA = key(a) ? key(a).toLowerCase() : '';
+        let valueB = key(b) ? key(b).toLowerCase() : '';
+        return reverse * ((valueA > valueB) - (valueB > valueA));
+    });
+    this.dataser = data2;
+}
+navigateToRecordViewPage(event) {
+    this.record = event.detail.row;
+    console.log('record : ' + JSON.stringify(this.record));
+    console.log('record : ' +this.record.caseUrlLink);
+    // View a custom object record.
+    this[NavigationMixin.Navigate]({
+        type: 'standard__recordPage',
+        attributes: {
+            recordId: this.record.caseUrlLink,
+            objectApiName: 'Case', // objectApiName is optional
+            actionName: 'view'
+        }
+    });
+ }   
+}

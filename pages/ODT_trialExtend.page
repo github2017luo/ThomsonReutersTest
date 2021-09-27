@@ -1,0 +1,161 @@
+<!--
+ - Used To Extend Trial
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page standardController="Trial__c" extensions="ODT_trialExtendController" lightningStylesheets="true">
+    <apex:detail subject="{!trialID}" relatedList="true" title="true" />
+    <apex:form id="theForm">
+        <apex:outputPanel id="trialPage">
+            <apex:outputPanel styleClass="popupBackgroundcomp" />
+            <apex:outputPanel styleClass="custPopupcomp" layout="block">
+                <apex:pageBlock >
+                    <apex:pageBlockSection title="Extend Trial" collapsible="false" columns="1">
+                        <apex:outputField label="Trial End Date:" value="{!trial.Trial_End_Date__c}" />
+                        <apex:inputField label="Trial Extend Date" value="{!trial.ODT_Trial_Extend_Date__c}" />
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+                <table>
+                    <tr>
+                        <td>
+                            <apex:outputPanel layout="block" style="padding-right:30px;">
+                                <apex:commandButton value="Confirm" action="{!extendTrialDate}" reRender="SuccessMsg" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                        <td>
+                            <apex:outputPanel style="padding-right:30px;">
+                                <apex:commandButton value="Back to Trial" action="{!backToTrial}" Status="myStatus" />
+                            </apex:outputPanel>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+    <apex:form >
+        <apex:outputPanel id="SuccessMsg">
+            <apex:outputPanel styleClass="popupBackground" layout="block" />
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!isExtended}">
+                <br/><br/> {!$Label.ODT_Trial_Extended}
+                <br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!backToTrial}" styleClass="successbutton" Status="myStatus" />
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!(isLimitExceeded)}">
+                {!$Label.ODT_Trial_Limit_Exceeded}
+                <br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!backToTrial}" styleClass="successbutton" Status="myStatus" />
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!(isNull)}">
+                Enter a valid date to extend the Trial
+                <br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!backToTrial}" styleClass="successbutton" Status="myStatus" />
+            </apex:outputPanel>
+            <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!(error)}">
+                <apex:pageMessages id="errMsg3" />
+                <br/><br/><br/>
+                <apex:commandButton value="Back To Trial" action="{!backToTrial}" styleClass="successbutton" Status="myStatus" />
+            </apex:outputPanel>
+        </apex:outputPanel>
+    </apex:form>
+
+    <apex:form >
+        <apex:outputText >
+            <apex:actionStatus id="myStatus">
+                <apex:facet name="start">
+                    <div id="loadingDivStatus" />
+                </apex:facet>
+            </apex:actionStatus>
+        </apex:outputText>
+    </apex:form>
+
+    <style type="text/css">
+        .custPopupcomp {
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9999;
+            left: 40%;
+            padding: 10px;
+            position: absolute;
+            width: 600px;
+            margin-left: -250px;
+            top: 2px;
+            overflow: auto;
+            width: 700px;
+            height: 400px;
+        }
+
+        .popupBackgroundcomp {
+            background-color: black;
+            opacity: 0.20;
+            filter: alpha(opacity=70);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        .custPopup {
+            background-color: white;
+            border-width: 2px;
+            border-style: solid;
+            z-index: 9999;
+            left: 30%;
+            padding: 10px;
+            position: absolute;
+            top: 50px;
+            border-radius: 10px;
+            display: block;
+            font-size: 1.5em;
+            font-family: sans-serif;
+            padding: 1em 2em;
+            margin: 2em auto;
+            width: 30%;
+            text-align: center;
+        }
+
+        .popupBackground {
+            background-color: black;
+            opacity: 0.20;
+            filter: alpha(opacity=20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        .successbutton {
+            width: 250px;
+        }
+
+        #loadingDivStatus {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%; //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)
+        }
+
+        ) 50% 50% no-repeat #666;
+
+        z-index:9999;
+        opacity: 0.4;
+        /* You can adjust the opacity */
+
+        filter: alpha(opacity=40);
+        /* For IE8 and earlier */
+
+        }
+    </style>
+</apex:page>

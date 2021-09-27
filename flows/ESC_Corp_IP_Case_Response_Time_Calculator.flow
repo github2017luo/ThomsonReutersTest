@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Corp IP Response Time Calculator</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>UpdateResponseTime</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>Corp_IP_ResponseTimeCalculator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>myDecision2</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>cases</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>cases</name>
+            <value>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Corp IP Acceptance Time Calculator</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>Corp IP Acceptance update</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <actionName>Corp_IP_AcceptanceTimeCalculator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>myDecision4</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>cases</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>cases</name>
+            <value>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>Elite EBH Acceptance Time Calculator</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_5_A1</name>
+        <label>Elite Acceptance Update</label>
+        <locationX>500</locationX>
+        <locationY>200</locationY>
+        <actionName>Elite_EBH_AcceptanceTimeCalculator</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>myDecision6</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>cases</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>cases</name>
+            <value>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>apexSelection</name>
+            <value>
+                <stringValue>CaseLines Closure Time Calculator</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_7_A1</name>
+        <label>Caselines Closure Time Calculator</label>
+        <locationX>700</locationX>
+        <locationY>200</locationY>
+        <actionName>CaseLines_Closure_Time_Calculator</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>cases</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>maxOccurs</name>
+                <value>
+                    <numberValue>1.0</numberValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>SObject</stringValue>
+                </value>
+            </processMetadataValues>
+            <name>cases</name>
+            <value>
+                <elementReference>myVariable_current</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Populate closure time</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>Populate acceptance time</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>2.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision4</name>
+        <label>myDecision4</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision6</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_5</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_5_A1</targetReference>
+            </connector>
+            <label>Populate Acceptance Time Elite</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>3.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision6</name>
+        <label>myDecision6</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_7</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_7</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_7_A1</targetReference>
+            </connector>
+            <label>Populate Closure time CaseLines</label>
+        </rules>
+    </decisions>
+    <description>it is used to calculate the SAL for case closure milestone</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF(TEXT([Case].ESC_Case_Type__c) = &quot;Request For Action&quot; ,AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,TEXT([Case].Origin) = &quot;Email&quot;,OR([Case].ESC_Unique_Identifier__c = &quot;CORP - GTM&quot;,[Case].ESC_Unique_Identifier__c = &quot;Regulatory Intelligence&quot;, CONTAINS([Case].ESC_Unique_Identifier__c, &quot;Legal Tracker&quot;),[Case].ESC_Unique_Identifier__c = &quot;Compliance Learning&quot;,[Case].ESC_Unique_Identifier__c = &quot;Oden&quot;),OR(ISCHANGED([Case].ESC_Product_Segment_Brand__c),ISCHANGED([Case].ESC_Case_Type__c) ),[Case].Is_ESC_Case__c = True,ISBLANK(TEXT([Case].ESC_Issue__c )),ISBLANK(TEXT([Case].ESC_Reason__c ))), AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,TEXT([Case].Origin) = &quot;Email&quot;,OR([Case].ESC_Unique_Identifier__c = &quot;CORP - GTM&quot;,[Case].ESC_Unique_Identifier__c = &quot;Regulatory Intelligence&quot;,[Case].ESC_Unique_Identifier__c = &quot;Compliance Learning&quot;,CONTAINS([Case].ESC_Unique_Identifier__c, &quot;Legal Tracker&quot;),
+[Case].ESC_Unique_Identifier__c = &quot;Oden&quot;),ISBLANK(TEXT([Case].ESC_Severity__c )) = FALSE, OR(ISCHANGED([Case].ESC_Severity__c) = True,ISCHANGED([Case].ESC_Support_Level__c )  = True),[Case].Is_ESC_Case__c = True,ISBLANK(TEXT([Case].ESC_Issue__c )),ISBLANK(TEXT([Case].ESC_Reason__c ))))</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(TEXT({!myVariable_current.ESC_Case_Type__c}) = &quot;Request For Action&quot; ,AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,TEXT({!myVariable_current.Origin}) = &quot;Email&quot;,OR({!myVariable_current.ESC_Unique_Identifier__c} = &quot;CORP - GTM&quot;,{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Regulatory Intelligence&quot;, CONTAINS({!myVariable_current.ESC_Unique_Identifier__c}, &quot;Legal Tracker&quot;),{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Compliance Learning&quot;,{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Oden&quot;),OR(ISCHANGED({!myVariable_current.ESC_Product_Segment_Brand__c}),ISCHANGED({!myVariable_current.ESC_Case_Type__c}) ),{!myVariable_current.Is_ESC_Case__c} = True,ISBLANK(TEXT({!myVariable_current.ESC_Issue__c} )),ISBLANK(TEXT({!myVariable_current.ESC_Reason__c} ))), AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,TEXT({!myVariable_current.Origin}) = &quot;Email&quot;,OR({!myVariable_current.ESC_Unique_Identifier__c} = &quot;CORP - GTM&quot;,{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Regulatory Intelligence&quot;,{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Compliance Learning&quot;,CONTAINS({!myVariable_current.ESC_Unique_Identifier__c}, &quot;Legal Tracker&quot;),
+{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Oden&quot;),ISBLANK(TEXT({!myVariable_current.ESC_Severity__c} )) = FALSE, OR(ISCHANGED({!myVariable_current.ESC_Severity__c}) = True,ISCHANGED({!myVariable_current.ESC_Support_Level__c} )  = True),{!myVariable_current.Is_ESC_Case__c} = True,ISBLANK(TEXT({!myVariable_current.ESC_Issue__c} )),ISBLANK(TEXT({!myVariable_current.ESC_Reason__c} ))))</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,TEXT([Case].Origin) = &quot;Email&quot;,OR([Case].ESC_Unique_Identifier__c = &quot;CORP - GTM&quot;,[Case].ESC_Unique_Identifier__c = &quot;Regulatory Intelligence&quot;,[Case].ESC_Unique_Identifier__c = &quot;Compliance Learning&quot;,
+CONTAINS([Case].ESC_Unique_Identifier__c ,&apos;Legal Tracker&apos;),
+[Case].ESC_Unique_Identifier__c = &quot;Oden&quot;),[Case].Is_ESC_Case__c = True,TEXT([Case].Status) = &quot;New&quot;,OR(ISCHANGED([Case].ESC_Severity__c) = True,ISCHANGED([Case].ESC_Support_Level__c )  = True,[Case].ESC_Case_Acceptance_Entry_Flag__c = False ),ISBLANK(TEXT([Case].ESC_Issue__c )),ISBLANK(TEXT([Case].ESC_Reason__c )))</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,TEXT({!myVariable_current.Origin}) = &quot;Email&quot;,OR({!myVariable_current.ESC_Unique_Identifier__c} = &quot;CORP - GTM&quot;,{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Regulatory Intelligence&quot;,{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Compliance Learning&quot;,
+CONTAINS({!myVariable_current.ESC_Unique_Identifier__c} ,&apos;Legal Tracker&apos;),
+{!myVariable_current.ESC_Unique_Identifier__c} = &quot;Oden&quot;),{!myVariable_current.Is_ESC_Case__c} = True,TEXT({!myVariable_current.Status}) = &quot;New&quot;,OR(ISCHANGED({!myVariable_current.ESC_Severity__c}) = True,ISCHANGED({!myVariable_current.ESC_Support_Level__c} )  = True,{!myVariable_current.ESC_Case_Acceptance_Entry_Flag__c} = False ),ISBLANK(TEXT({!myVariable_current.ESC_Issue__c} )),ISBLANK(TEXT({!myVariable_current.ESC_Reason__c} )))</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,OR(TEXT([Case].Origin) = &quot;Case&quot;,TEXT([Case].Origin) = &quot;Web&quot;,TEXT([Case].Origin) = &quot;Email&quot;),[Case].Is_ESC_Case__c = True,TEXT([Case].Status) = &quot;New&quot;,OR(ISCHANGED([Case].ESC_Severity__c)= True,[Case].ESC_Case_Acceptance_Entry_Flag__c = False),TEXT([Case].ESC_Product_Segment_Brand__c)=&quot;Elite&quot;,[Case].ESC_Unique_Identifier__c &lt;&gt; &apos;c2celite&apos;,[Case].RecordType.DeveloperName &lt;&gt; &apos;ESC_Sales_Case&apos;)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_5</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,OR(TEXT({!myVariable_current.Origin}) = &quot;Case&quot;,TEXT({!myVariable_current.Origin}) = &quot;Web&quot;,TEXT({!myVariable_current.Origin}) = &quot;Email&quot;),{!myVariable_current.Is_ESC_Case__c} = True,TEXT({!myVariable_current.Status}) = &quot;New&quot;,OR(ISCHANGED({!myVariable_current.ESC_Severity__c})= True,{!myVariable_current.ESC_Case_Acceptance_Entry_Flag__c} = False),TEXT({!myVariable_current.ESC_Product_Segment_Brand__c})=&quot;Elite&quot;,{!myVariable_current.ESC_Unique_Identifier__c} &lt;&gt; &apos;c2celite&apos;,{!myVariable_current.RecordType.DeveloperName} &lt;&gt; &apos;ESC_Sales_Case&apos;)</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>IF(TEXT([Case].ESC_Case_Type__c) = &quot;Request For Action&quot; ,
+AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+OR(TEXT([Case].Origin) = &quot;Email&quot;,TEXT([Case].Origin) = &quot;Web&quot;,TEXT([Case].Origin) = &quot;Case&quot;),
+CONTAINS([Case].ESC_Unique_Identifier__c , &quot;Caseline&quot;),
+OR(ISCHANGED([Case].ESC_Product_Domain__c) ,AND(TEXT([Case].Origin) = &quot;Web&quot;,ISNEW())) ,ISBLANK(TEXT([Case].ESC_Product_Domain__c ))==false,
+[Case].Is_ESC_Case__c = True), AND($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c = false,
+OR(TEXT([Case].Origin) = &quot;Email&quot;,TEXT([Case].Origin) = &quot;Web&quot;,TEXT([Case].Origin) = &quot;Case&quot;),
+CONTAINS([Case].ESC_Unique_Identifier__c ,&quot;Caseline&quot;),
+OR(AND(ISCHANGED([Case].ESC_Product_Domain__c ) ,ISBLANK(TEXT([Case].ESC_Product_Domain__c ))==false),
+AND(TEXT([Case].Origin) = &quot;Web&quot;,OR(ISNEW(),ISPICKVAL([Case].Status, &quot;New&quot;) ),ISBLANK(TEXT([Case].ESC_Product_Domain__c ))==false),
+ISCHANGED([Case].ESC_Severity__c) = True,ISCHANGED([Case].ESC_Support_Level__c )  = True),
+[Case].Is_ESC_Case__c = True))</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_7</name>
+        <dataType>Boolean</dataType>
+        <expression>IF(TEXT({!myVariable_current.ESC_Case_Type__c}) = &quot;Request For Action&quot; ,
+AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+OR(TEXT({!myVariable_current.Origin}) = &quot;Email&quot;,TEXT({!myVariable_current.Origin}) = &quot;Web&quot;,TEXT({!myVariable_current.Origin}) = &quot;Case&quot;),
+CONTAINS({!myVariable_current.ESC_Unique_Identifier__c} , &quot;Caseline&quot;),
+OR(ISCHANGED({!myVariable_current.ESC_Product_Domain__c}) ,AND(TEXT({!myVariable_current.Origin}) = &quot;Web&quot;,ISNEW())) ,ISBLANK(TEXT({!myVariable_current.ESC_Product_Domain__c} ))==false,
+{!myVariable_current.Is_ESC_Case__c} = True), AND({!$Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Process_Builders__c} = false,
+OR(TEXT({!myVariable_current.Origin}) = &quot;Email&quot;,TEXT({!myVariable_current.Origin}) = &quot;Web&quot;,TEXT({!myVariable_current.Origin}) = &quot;Case&quot;),
+CONTAINS({!myVariable_current.ESC_Unique_Identifier__c} ,&quot;Caseline&quot;),
+OR(AND(ISCHANGED({!myVariable_current.ESC_Product_Domain__c} ) ,ISBLANK(TEXT({!myVariable_current.ESC_Product_Domain__c} ))==false),
+AND(TEXT({!myVariable_current.Origin}) = &quot;Web&quot;,OR(ISNEW(),ISPICKVAL({!myVariable_current.Status}, &quot;New&quot;) ),ISBLANK(TEXT({!myVariable_current.ESC_Product_Domain__c} ))==false),
+ISCHANGED({!myVariable_current.ESC_Severity__c}) = True,ISCHANGED({!myVariable_current.ESC_Support_Level__c} )  = True),
+{!myVariable_current.Is_ESC_Case__c} = True))</expression>
+    </formulas>
+    <interviewLabel>ESC_Corp_IP_Case_Response_Time_Calculator-7_InterviewLabel</interviewLabel>
+    <label>Corp IP/Risk Case Response Time Calculator</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Case</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>

@@ -1,0 +1,71 @@
+<!--
+* {Purpose} –   This component creates a hyperlink that redirects a use to the NewContact 
+*               determined by Salesforce configuration (ie. native or override).  The new
+*               contact is defaulted with the attributes values passed to the component.
+*
+* {Comments} -  This component does not actually save a new contact or provide duplication 
+*               checking functionality but rather redirects to the appropriate page where  
+*               those native or custom features can be integrated separately.  
+*
+* @author   Mike Eaton
+* @version  2012-01-20
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date          Name                Description
+* 2012-01-20    Mike Eaton          Created      
+* 2012-01-30    Mike Eaton          Added a hard &nbsp; before the hyperlinkText
+* 2012-01-31    Mike Eaton          Added retURL=$Request.retURL
+* 2012-07-12    Shah Kadirmohideen  Introduced controller class to fix "No URL found" error for add link
+*                                   which shows up when the contact create page is overridden with VF page.      
+* 2014-08-29    David Sarbello      Added call for Audit Logging. Doing so more tightly coupls this Component
+*                                   to its parent - which must use CNGlobalViewController and thus have access to logEntry
+* =============================================================================
+-->
+<apex:component selfClosing="true" controller="CNAddContactController">
+    <apex:attribute name="_Overview" type="string" 
+                    description="This is a custom component designed to create a hyperlink that will redirect users to
+                    the New Contact page in Edit mode defined by Salesforce Contact object configuration (ie. native 
+                    or override).  It supports defaulting the new Contact values based on the attribute values provided.  
+                    It is most useful to leverage this component when needing an Action column link." />
+    <!-- UI related attributes -->
+    <apex:attribute name="hyperlinkTitle" type="string" required="false" 
+                    description="The value of the hyperlink Title"
+                    default="Add" />
+    <apex:attribute name="hyperlinkHelpText" type="string" required="false"  
+                    description="The value of the hyperlink hover Help Text"
+                    default="Add contact to Salesforce" />
+    <apex:attribute name="styleClass" type="string" required="false" 
+                    description="Custom styleClass to use for the hyperlink" 
+                    default="actionLink" />                 
+    <!-- UI related attributes -->                  
+    <apex:attribute name="firstName" type="string" required="false" assignTo="{!firstName}"
+                    description="The default value for First Name" />
+    <apex:attribute name="lastName" type="string" required="false" assignTo="{!lastName}"
+                    description="The default value for Last Name" />
+    <apex:attribute name="title" type="string" required="false" assignTo="{!title}"
+                    description="The default value for Title" />                    
+    <apex:attribute name="phone" type="string" required="false" assignTo="{!phone}"
+                    description="The default value for Phone" />
+    <apex:attribute name="mobile" type="string" required="false" assignTo="{!mobile}"
+                    description="The default value for Mobile phone" />                     
+    <apex:attribute name="email" type="string" required="false" assignTo="{!email}"
+                    description="The default value for Email" />         
+    <apex:attribute name="accountId" type="string" required="false" assignTo="{!accountId}"
+                    description="The default value for the Account"  />                              
+    <apex:attribute name="mailingAddress" type="string" required="false" assignTo="{!mailingAddress}"
+                    description="The default value for the mailingAddress"  />
+    <apex:attribute name="MailingCity" type="string" required="false" assignTo="{!MailingCity}"
+                    description="The default value for the MailingCity"  />                
+    <apex:attribute name="MailingPostalCode" type="string" required="false" assignTo="{!MailingPostalCode}"
+                    description="The default value for the MailingPostalCode"  /> 
+    <apex:attribute name="MailingState" type="string" required="false" assignTo="{!MailingState}"
+                    description="The default value for the MailingState"  />                                
+   
+    <!-- Render Logic --> 
+    <apex:outputLink value="{!addURL}" title="{!hyperlinkHelpText}" styleClass="{!styleClass}" target="_blank" onclick=""> 
+    {!hyperlinkTitle}</apex:outputLink>
+    
+</apex:component>

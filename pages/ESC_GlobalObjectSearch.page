@@ -1,0 +1,391 @@
+<apex:page Controller="ESC_GlobalObjectSearchController" sidebar="false" showHeader="true"
+    readOnly="true" doctype="html-5.0" lightningStylesheets="true" >
+     
+  <apex:slds >  
+    <style type="text/css">
+        
+       
+        .tabCustom {
+        background-image: none;
+        background-color: transparent;
+        border-style: none;
+       }
+       
+        
+        .vertical {  
+            width:95px;
+            text-align: center; 
+            line-height: 10px;
+            white-space: normal !important;
+            word-wrap: break-word;
+            overflow-wrap: normal;
+            
+        } 
+        
+         .list {          
+          white-space: nowrap !important;
+            
+        }  
+       
+         .myRows {  
+            width:95px;
+            text-align: left; 
+            line-height: 18px;
+            white-space: normal !important;
+            word-wrap: break-word;
+            overflow-wrap: normal;
+            
+        }       
+  
+ #innerbox
+{
+  
+}
+    </style>
+
+    <apex:form id="formID">
+        
+        <table border="0">
+          
+            <tr>
+                    <td width="25%" valign="top" >                    
+                    <apex:pageBlock id="SearchObjectsBlock" mode="maindetail" >                     
+                    <apex:dynamicComponent componentValue="{!myTabs}" />                        
+                   <!--  <apex:pageBlockButtons location="Bottom" style="text-align:left" > 
+                        <apex:commandLink onclick="refreshPageContents2(); return false;" value="{!$Label.ESC_ResetBTN}" style="text-align:center"> </apex:commandLink>                                                              
+                        </apex:pageBlockButtons> -->
+                    </apex:pageBlock>
+               </td>
+  
+                <td width="45%" valign="top">
+                <div id="innerbox">
+                    <apex:pageBlock id="searchResultsBlock"  >
+                
+                        <h1><u>{!$Label.ESC_SearchRes} </u></h1> <br> </br>
+                    
+                        <apex:pageMessages id="errors" />
+                        <div id='myMSG'></div>
+                        <apex:outputPanel layout="block" styleClass="myPanel" rendered="{! ( searchResults !=null && searchResults.size !=0)}">
+                            <table id="myTable" >
+                                    <thead>
+                                       <tr>
+                                               <apex:repeat value="{!resultMap[val1]}" var="displayfieldname">
+                                               <th style="border: .10px solid #f2f4f7; border-collapse: collapse; padding-left : 0px;white-space :nowrap" align ='Left' class="colHeader">{! resultTableLabel[val1][displayfieldname]}</th>
+                                            </apex:repeat>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <apex:repeat value="{!searchResults}" var="result" id="resultId">
+                                         <tr>
+                                                <apex:repeat value="{!resultMap[val1]}" var="displayfieldname" id="resultMapId">
+                                                <!--    <td style="border: .5px solid #f2f4f7; border-collapse: collapse; padding-left:0px" align ='left'>
+                                                        <apex:outputText value="{!result[displayfieldname]}" rendered="{! !(showAsLink[val1][displayfieldname] )}" escape="false"></apex:outputText>
+                                                        <apex:outputLink value="/{!result.id}" target="_blank" rendered="{! (showAsLink[val1][displayfieldname] ) }">{!result[displayfieldname]}</apex:outputLink>
+                                                    </td> -->
+                                                     <td style="border: .5px solid #f2f4f7; border-collapse: collapse; padding-left:0px" align ='left'>
+                                                       <apex:outputText html-data-search="" value="{!result[displayfieldname]}" rendered="{! !(showAsLink[val1][displayfieldname] )}" escape="false"></apex:outputText>
+                                                        
+                                                        <!--<apex:outputLink html-data-search=""  value="/{!result.id}"  rendered="{! if( ($User.UITheme == 'Theme4u') && (showAsLink[val1][displayfieldname] && (CONTAINS(displayfieldname ,'.') || !CONTAINS($ObjectType[val1].fields[displayfieldname].Type ,'reference'))) ,true,false ) }">-->
+                                                       <apex:outputLink html-data-search="" onclick="sforce.one.navigateToSObject('{!result.id}'); return false;" rendered="{! if( ($User.UITheme == 'Theme4u')  && (showAsLink[val1][displayfieldname] && (!CONTAINS(displayfieldname ,'__r.'))) ,true,false )}">{!result[displayfieldname]}
+                                                        </apex:outputLink>
+                                                        <apex:outputLink html-data-search=""  value="/{!result.Id}"   rendered="{! if( ($User.UITheme != 'Theme4u') && (showAsLink[val1][displayfieldname] && (!CONTAINS(displayfieldname ,'__r.'))) ,true,false )}">{!result[displayfieldname]}
+                                                        </apex:outputLink>
+                                                        <apex:outputPanel rendered="{! if(showAsLink[val1][displayfieldname] && CONTAINS(displayfieldname ,'.') && !CONTAINS(showAsParentLink[val1][displayfieldname],'[displayfieldname]'),true,false ) }">
+                                                        <a style="{!IF(($User.UITheme == 'Theme4u'),'','color:black;text-decoration:underline;cursor:pointer')}" id="{!result[showAsParentLink[val1][displayfieldname]]}" onclick="GoToSelected('{!JSENCODE(result[showAsParentLink[val1][displayfieldname]])}');return false;" 
+                                                        onmouseout="LookupHoverDetail.getHover('{!JSENCODE(result[showAsParentLink[val1][displayfieldname]])}').hide();"
+                                                        onmouseover="LookupHoverDetail.getHover('{!JSENCODE(result[showAsParentLink[val1][displayfieldname]])}', '/{!JSENCODE(result[showAsParentLink[val1][displayfieldname]])}/m?retURL=/{!JSENCODE(result[showAsParentLink[val1][displayfieldname]])}&isAjaxRequest=1').show();">{!result[displayfieldname]}
+                                                         </a>
+                                                        </apex:outputPanel>
+                                                       
+                                                    </td>
+                                                </apex:repeat>
+ 
+                                            </tr> 
+                                            
+                                        </apex:repeat>
+                                    </tbody>
+                                </table>
+                        </apex:outputPanel>
+                        <apex:actionStatus id="fetchStatus">
+                            <apex:facet name="start">
+                                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: red;">
+                                    &nbsp;
+                                </div>
+                                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                                    <img src="/img/loading.gif" />
+                                </div>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:pageBlock>
+                </div>
+                </td>
+            </tr>
+        </table>
+      
+        <apex:actionFunction name="runSearchAction" action="{!runSearch}" status="fetchStatus"
+            reRender="searchResultsBlock" timeout="{!TimeoutInMillisec}" oncomplete="myFunction('{!JSENCODE(paginationSizeOpns)}',{! IsSearchSuccessful});hideRows(); window.scrollTo(0,0);">
+            <apex:param name="objectID" value="" assignTo="{!val1}" />              
+        </apex:actionFunction>
+        
+        
+          
+        <apex:actionFunction name="refreshPageContents" action="{!runFreshSearch}" status="fetchStatus"
+            reRender="SearchObjectsBlock,searchResultsBlock" oncomplete="hideRows(); window.scrollTo(0,0);">
+             <apex:param name="selectedTab" assignTo="{!selectedTab}" value="{!selectedTab}"/>
+        </apex:actionFunction>
+            
+        <apex:actionFunction name="addPageLevelErrorForTextBoxes" action="{!adderrorMessage}" reRender="searchResultsBlock">
+        </apex:actionFunction>
+        
+         <apex:actionFunction name="addPageLevelErrorForTimeout" action="{!adderrorMessageTimeout}" reRender="searchResultsBlock">
+        </apex:actionFunction>
+        
+    </apex:form>
+    <apex:stylesheet value="{! URLFOR($Resource.ESC_UniversalResource, '/DataTables-1.10.15/css/jquery.dataTables.min.css')}"
+    />
+    <apex:includeScript value="/support/console/30.0/integration.js" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}"
+    />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/DataTables-1.10.15/js/jquery.dataTables.min.js')}"
+    />
+    <script>
+    
+        j$ = jQuery.noConflict();
+        var errMsg = "{!$Label.ESC_SearchPageError}";
+         j$(document).ready(function() {
+            hideRows();
+         });
+        function GoToSelected(s){
+        var urltoopen = '/'+s;
+        console.log('urltoopen' + urltoopen);
+        
+        if(sforce.console.isInConsole()){
+        console.log('inside console app');
+        sforce.console.openPrimaryTab(null,urltoopen, true, undefined, function(response) {
+            if (!response.success) {
+                sforce.console.getPrimaryTabIds(function(response) {
+                    var primaryTabIds = response.ids;
+                    console.log('Primary tab Ids:' + primaryTabIds);
+                    for (let id of primaryTabIds) {
+                        sforce.console.getPageInfo(id, function(response) {
+                            var myVar = JSON.parse(response.pageInfo);
+                            console.log('myVar' + myVar);
+                            var objectId = myVar.objectId;
+                            var sId = s.substring(0,15)
+                            console.log('objectId' + objectId);
+                            console.log('s' + s);
+                            if (objectId === sId) {
+                            console.log('Focus on primary');
+                                sforce.console.focusPrimaryTabById(id);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        }
+        else
+        /*location.href = urltoopen;}*/
+        
+        if('Theme4u' == '{!JSENCODE($User.UIThemeDisplayed)}'){
+                             sforce.one.navigateToSObject(s);
+                         }else{
+                             
+                            location.href=urltoopen;
+                            console.log('inside else' + location.href);
+                        }
+        }
+        function refreshPageTable(objName){
+            try{
+            var classStyle = "."+objName+'_mtText';
+            var elemnts = j$(classStyle+"[type='text']");
+            
+             var isValid = true;
+             var withLessCharacters = 0;
+           elemnts.each(function () {
+               var lengthOF = (j$.trim(j$(this).val())).length;
+                if (lengthOF ==1) {
+                    isValid = false;
+                  /*  j$(this).css({
+                        "border": "1px solid red",
+                        "background": "#FFCECE"
+                    });*/
+                     j$(this).parent().append(
+                                "<strong style='color:red;' width='50px'>**</strong>");
+                  console.log(j$(this).siblings().fadeOut(6000));
+                  withLessCharacters +=1 ;
+                }
+                else {
+                    j$(this).css({
+                        "border": "",
+                        "background": ""
+                    });
+                    
+                   
+                }
+            });
+            if (isValid && withLessCharacters == 0)
+                runSearchAction(objName);
+                else {
+                   // alert('error');
+                addPageLevelErrorForTextBoxes();
+                }
+            }
+            catch(ec){
+                console.log(ec)
+            }
+            
+            
+        }
+        
+          var languageATT = eval(JSON.parse('{!DataTableEntity}'));
+               
+               console.log('dte');
+               
+               var language = [];
+                language.push(({
+                   "processing":    languageATT[0].ESC_processing,
+        "search":         languageATT[0].ESC_search,
+        "lengthMenu":    languageATT[0].ESC_lengthMenu,
+        "info":          languageATT[0].ESC_info,
+        "infoEmpty":      languageATT[0].ESC_infoEmpty,
+        "infoFiltered":   languageATT[0].ESC_infoFiltered,
+        'infoPostFix':    "",
+        'loadingRecords': languageATT[0].ESC_loadingRecords,
+        'zeroRecords':    languageATT[0].ESC_zeroRecords,
+        'emptyTable':     languageATT[0].ESC_emptyTable,
+        'paginate': {
+            'first':     languageATT[0].ESC_paginateFirst,
+            'previous':   languageATT[0].ESC_paginatePrevious,
+            'next':      languageATT[0].ESC_paginateNext,
+            'last':       languageATT[0].ESC_paginateLast
+        },
+        'aria': {
+            'sortAscending':  languageATT[0].ESC_sortAscending,
+            'sortDescending': languageATT[0].ESC_sortDescending
+        } 
+                }));
+        function getSelectedTabName() {
+  console.log(j$(".rich-tab-header.rich-tab-active"));
+    return j$(".rich-tab-header.rich-tab-active").text();
+}
+        function resetSearchJSMethod(objectName){
+            
+         
+            refreshPageContents(objectName);
+        }
+        function runRadio(obj , element){
+            console.log(j$(element));
+            var elemID = j$(element).prop('id');
+            //To uncheck current on click
+            if(j$(element).prop('checked')){
+              // j$(element).prop('checked', false);
+              var records=   j$(element).closest('.myRows').parent().find('input[type=radio]');
+             records.each(function(index){
+                 console.log('records[index].id' + records[index].id);
+                 console.log('jelemID' + elemID);
+                  if(records[index].id != elemID){
+                     j$(records[index]).prop('checked', false);
+                  }
+                  
+              });
+            }
+            
+            console.log(j$(element).attr('id') );
+           // refreshPageTable(obj, j$(element).attr('Value'));
+           console.log(j$(element).closest('.myRows').parent().find('input[type=radio]'));
+        }
+        
+        function hideRows(){
+            var content = JSON.parse('{!hiddenRows}');
+            
+            for(name in content){
+               
+               
+                
+                 for(j=0 ; j< content[name].length ;j++){
+                     
+                      var values =j$("."+name).closest("tr");
+                      var ccolumn = (content[name])[j];
+                  console.log(values);
+                    values.each(function(index){
+                        if(index == ccolumn){
+                            console.log(j$(values[j]));
+                            this.hide();
+                        }
+                    });
+                  
+                 }
+            }
+            
+        }
+        
+        function myFunction(val ,IsSearchSuccessful) {
+            console.log('IsSearchSuccessful'+IsSearchSuccessful);
+            hideRows();
+            if(!IsSearchSuccessful){
+                addPageLevelErrorForTimeout();
+            }
+            else{
+            var windowWidth = j$(window).width();
+            var windowHeight = j$(window).height();
+            var pixlWidth = windowWidth / 1.55 + 'px';
+            var pixlHeight = windowHeight / 1.05 + 'px';
+            console.log("myFunction called" + val);
+            
+           
+
+            var values = JSON.parse(val);
+            
+
+            var valueLabels = values.concat("All");
+            values.push(-1);
+            var table = j$("#myTable").dataTable({
+                "lengthMenu": [values, valueLabels],
+
+                "bstatesave": true,
+                'bSortClasses': false,
+                "retrieve": true,
+                "iDisplayLength": 10,
+                "sPaginationType": "full_numbers",
+                "bAutoWidth": false,
+                "processing": true,
+                "scrollX": "true",
+                "sScrollX": pixlWidth,
+                 "language" : language[0]
+            });
+ // console.log(table);
+        
+            j$(".myPanel").css({
+                "overflow": "auto",
+                "width": pixlWidth
+            });
+           j$(".colHeader:first").click();
+            }
+        }
+
+        function noenter(e, obj) {
+            if (window.event) {
+                key = window.event.keyCode; //IE               
+            } else {
+                key = e.which; //firefox               
+            }
+            if (key == 13) {
+                console.log('enter pressed');
+                refreshPageTable(obj);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        
+        function tabClicked(event){
+            alert('tabe clicked');
+            console.log(j$(event));
+        }
+        
+
+    </script>
+    
+</apex:slds>  
+</apex:page>

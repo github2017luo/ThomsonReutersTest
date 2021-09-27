@@ -1,0 +1,325 @@
+<apex:page controller="GlobalReferralController">
+    <!--<apex:outputPanel >
+        <apex:pageMessages id="pageMessages"/>
+    </apex:outputPanel>-->
+    
+<script type="text/javascript">
+    
+    function dosubmitSort(sortType){
+    //alert('hi!!!'+sortType);
+    var sortType=sortType;
+    submitSortFunc(sortType);
+    }
+    function dosubmitSortLead(sortType){
+    //alert('hi!!!'+sortType);
+    var sortType=sortType;
+    submitSortFuncLead(sortType);
+    }
+    function dosubmitSortOpp(sortType){
+    //alert('hi!!!'+sortType);
+    var sortType=sortType;
+    submitSortFuncOpp(sortType);
+    }
+    </script>
+    <apex:form id="globalform">
+        <apex:commandButton action="{!callGeneva}" value="Leads referred by you"> </apex:commandButton>
+        <apex:commandButton action="{!sendLeadsReferred}" value="Leads referred to you"> </apex:commandButton>
+        <apex:commandButton value="Export" action="{!test}"  rendered="{!recordsList.size != 0}" reRender="thePageBlock"  onClick="window.open('/apex/ExportToExelGlobalReferral');"/>
+        <br/><br/> 
+        
+        <apex:pageBlock id="thePageBlock" >
+        </apex:pageBlock> 
+        
+        <apex:actionFunction name="submitSortFunc" id="funcAct"  action="{!doSort}" rerender="pb" >    
+                 <apex:param name="node1" assignTo="{!sortableField}" value="" />
+                   </apex:actionFunction>
+         <apex:actionFunction name="submitSortFuncLead" id="funcLead"  action="{!doSortLeads}" rerender="leadblock" >    
+                 <apex:param name="node2" assignTo="{!sortableFieldLead}" value="" />
+                   </apex:actionFunction>
+           <apex:actionFunction name="submitSortFuncOpp" id="funcOpp"  action="{!doSortOpps}" rerender="oppblock" >    
+                 <apex:param name="node3" assignTo="{!sortableFieldOpp}" value="" />
+                   </apex:actionFunction>
+
+
+            <!--<apex:pageBlock title="Leads referred by you" id="pb" rendered="{!recordsList != null}">-->
+            <apex:pageBlock title="Leads referred by you" rendered="{!recordsList.size != 0}">
+            
+                <apex:pageBlockTable title="Leads referred by you" value="{!recordsList }" var="gf" id="pb">
+                    <!--<apex:column headervalue="Company Name" value="{!gf.Companyname}" />-->
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="Company Name {!IF(sortableField=='Companyname',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('Companyname'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+     
+                    <apex:outputText value="{!gf.Companyname}"/>
+                    </apex:column>
+                    
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="Lead Owner {!IF(sortableField=='LeadOwner',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('LeadOwner'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+     
+                    <apex:outputText value="{!gf.LeadOwner}"/>
+                    </apex:column>
+                    
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="Referrer Email {!IF(sortableField=='ReferrerEmail',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('ReferrerEmail'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+     
+                    <!--<apex:outputText value="{!gf.ReferrerEmail}"/>-->
+                    <apex:outputlink value="mailto:{!gf.ReferrerEmail}">{!gf.ReferrerEmail} </apex:outputLink>
+                    </apex:column>
+                    <!--<apex:column headervalue="Referrer Email" value="{!gf.ReferrerEmail}" />-->
+                    <!--<apex:column headervalue="Referral Detail" value="{!gf.ReferralDetail}" />-->
+                    
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="Corporate Payout {!IF(sortableField=='CorporatePayout',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('CorporatePayout'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+     
+                    <apex:outputText value="{!gf.CorporatePayout}"/>
+                    </apex:column>
+                    
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="Payment Submission{!IF(sortableField=='PaymentSubmission',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('PaymentSubmission'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!gf.PaymentSubmission}" />
+                     </apex:outputText>
+                    </apex:column>
+                     
+                     <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="BU Created Date {!IF(sortableField=='BUCreatedDate',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('BUCreatedDate'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!gf.BUCreatedDate}" />
+                     </apex:outputText>
+     
+                    <!--<apex:outputText value="{!gf.BUCreatedDate}"/>-->
+                    </apex:column>
+                    
+                     <!--<apex:column headervalue="BU LastModifiedDate" value="{!gf.BULastModifiedDate}" /> -->                
+                    
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="Opportunity Close Date {!IF(sortableField=='OpportunityCloseDate',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('OpportunityCloseDate'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!gf.OpportunityCloseDate}" />
+                     </apex:outputText>
+     
+                    <!--<apex:outputText value="{!gf.BUCreatedDate}"/>-->
+                    </apex:column>
+                    
+                    <!--<apex:column headervalue="Opportunity CloseDate" value="{!gf.OpportunityCloseDate}" />-->
+                    
+                    <apex:column >                    
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Lead Status {!IF(sortableField=='LeadStatus',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('LeadStatus'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                   
+                    <apex:outputText value="{!gf.LeadStatus}"/>
+                    </apex:column>
+                    <!--<apex:column headervalue="Lead Status" value="{!gf.LeadStatus}" />-->
+                    
+                    <apex:column >                    
+                    <apex:facet name="header">
+                      <apex:commandLink immediate="true"  value="Opportunity Owner {!IF(sortableField=='OpportunityOwner',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('OpportunityOwner'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                 
+                    <apex:outputText value="{!gf.OpportunityOwner}"/>
+                    </apex:column>
+                    <!--<apex:column headervalue="Opportunity Owner" value="{!gf.OpportunityOwner}" />-->
+                    <apex:column >                    
+                    <apex:facet name="header">
+                      <apex:commandLink immediate="true"  value="Opportunity Value {!IF(sortableField=='OpportunityValue',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('OpportunityValue'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                 
+                    <apex:outputText value="{!gf.OpportunityValue}"/>
+                    </apex:column>
+                    <!--<apex:column headervalue="Opportunity Value" value="{!gf.OpportunityValue}" />-->
+                    <apex:column >                    
+                    <apex:facet name="header">
+                      <apex:commandLink immediate="true"  value="Lead Received By {!IF(sortableField=='LeadReceivedBy',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('LeadReceivedBy'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                 
+                    <apex:outputText value="{!gf.LeadReceivedBy}"/>
+                    </apex:column>
+                    <!--<apex:column headervalue="LeadReceived By" value="{!gf.LeadReceivedBy}" />-->
+                    
+                    <apex:column >                    
+                    <apex:facet name="header">
+                      <apex:commandLink immediate="true"  value="Opportunity Stage {!IF(sortableField=='OpportunityStage',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('OpportunityStage'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                 
+                    <apex:outputText value="{!gf.OpportunityStage}"/>
+                    </apex:column>
+                    <!--<apex:column headervalue="Opportunity Stage" value="{!gf.OpportunityStage}" />-->
+                    
+                    <apex:column headervalue="Referrer Employee ID" value="{!gf.ReferrerEmployeeId}" />
+                    <apex:column >
+                    
+                    <apex:facet name="header">
+                    
+                      <apex:commandLink immediate="true"  value="BU LastModified Date {!IF(sortableField=='BULastModifiedDate',IF(sortOrder='asc','▼','▲'),'')}" onclick="dosubmitSort('BULastModifiedDate'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     
+                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!gf.BULastModifiedDate}" />
+                     </apex:outputText>
+                    </apex:column>
+
+                </apex:pageBlockTable>  
+             </apex:pageBlock> 
+             
+             <apex:pageBlock title="Leads and Opportunities referred to you" rendered="{!leadWrapList.size != 0|| oppWrapList.size!=0}">
+              <apex:outputpanel ><br></br><b>Leads</b><br></br></apex:outputpanel>
+                <apex:pageBlockTable title="Leads referred to you" value="{!leadWrapList}" var="leadvar" id="leadblock">
+                    <!--<apex:column value="{!leadvar.Id}" />-->
+                                        
+                     <apex:column >
+                    <apex:facet name="header">
+                        <apex:commandLink immediate="true"  value="Lead {!IF(sortableFieldLead=='Leadname',IF(sortOrderLead='asc','▼','▲'),'')}" onclick="dosubmitSortLead('Leadname'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                    <apex:outputLink value="/{!leadvar.LeadId}" target="_blank">{!leadvar.Leadname}</apex:outputLink>
+                    </apex:column>
+                    <apex:column >                    
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Status {!IF(sortableFieldLead=='status',IF(sortOrderLead='asc','▼','▲'),'')}" onclick="dosubmitSortLead('status'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                   
+                    <apex:outputText value="{!leadvar.Status}"/>
+                    </apex:column>
+                     <!--<apex:column headervalue="Status" value="{!leadvar.Status}" />-->
+                     <apex:column >                    
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Company {!IF(sortableFieldLead=='Companyname',IF(sortOrderLead='asc','▼','▲'),'')}" onclick="dosubmitSortLead('Companyname'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                   
+                    <apex:outputText value="{!leadvar.Companyname}"/>
+                    </apex:column>
+                     <!--<apex:column headervalue="Company" value="{!leadvar.Companyname}" />-->
+                     
+                     <apex:column >                    
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Created Date {!IF(sortableFieldLead=='createddate',IF(sortOrderLead='asc','▼','▲'),'')}" onclick="dosubmitSortLead('createddate'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>                   
+                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!leadvar.createddate}" />
+                     </apex:outputText>
+                    </apex:column> 
+                     <apex:column headervalue="Owner Id">
+                     <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Lead Owner {!IF(sortableFieldLead=='LeadOwner',IF(sortOrderLead='asc','▼','▲'),'')}" onclick="dosubmitSortLead('LeadOwner'); return false;">
+                        </apex:commandLink>
+                     </apex:facet> 
+                          <apex:outputLink value="/{!leadvar.LeadOwnerId}" target="_blank">{!leadvar.LeadOwner}</apex:outputLink>
+                     </apex:column>            
+                </apex:pageBlockTable> 
+                <apex:outputpanel ><br></br><br></br><b>Opportunities</b><br></br></apex:outputpanel>
+                <apex:pageBlockTable title="Leads referred to you" value="{!oppWrapList}" var="opportunityvar" id="oppblock">
+                    <!--<apex:column headervalue="Opportunity" value="{!opportunityvar.Id}" />-->
+                    <apex:column headervalue="Opportunity">
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Opportunity {!IF(sortableFieldOpp=='OppName',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('OppName'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                          <apex:outputLink value="/{!opportunityvar.oppId}" target="_blank">{!opportunityvar.OppName}</apex:outputLink>
+                     </apex:column>
+                     
+                      <apex:column headervalue="Companyname">
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Company{!IF(sortableFieldOpp=='Companyname',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('Companyname'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                         <apex:outputText value="{!opportunityvar.Companyname}"/>
+                    </apex:column>
+                    
+                     <apex:column headervalue="Stagename">
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Stage {!IF(sortableFieldOpp=='stage',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('stage'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                         <apex:outputText value="{!opportunityvar.Stage}"/>
+                    </apex:column>                    
+                     
+                     <apex:column headervalue="Close Date">
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Close Date {!IF(sortableFieldOpp=='ClosedDate',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('ClosedDate'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!opportunityvar.ClosedDate}" />
+                     </apex:outputText>
+                     </apex:column>   
+                    
+                     <apex:column headervalue="Amount">
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Amount {!IF(sortableFieldOpp=='Amount',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('Amount'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     <apex:outputText value="{!opportunityvar.Amount}"/>
+                     </apex:column>
+                     
+                      <apex:column headervalue="createddate">
+                    <apex:facet name="header">                    
+                      <apex:commandLink immediate="true"  value="Created Date{!IF(sortableFieldOpp=='createdDate',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('createdDate'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                     <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!opportunityvar.createddate}" />
+                     </apex:outputText>
+                     </apex:column>
+                    
+                    <!--<apex:column headervalue="Amount" value="{!opportunityvar.Amount }" />
+                    <apex:column headervalue="Createddate" value="{!opportunityvar.createddate}" />-->
+
+                    <apex:column headervalue="Owner">
+                    <apex:facet name="header">  
+                     <apex:commandLink immediate="true"  value="Owner{!IF(sortableFieldOpp=='OppOwner',IF(sortOrderOpp='asc','▼','▲'),'')}" onclick="dosubmitSortOpp('OppOwner'); return false;">
+                        </apex:commandLink>
+                     </apex:facet>
+                          <apex:outputLink value="/{!opportunityvar.OppOwnerId}" target="_blank">{!opportunityvar.Oppowner}</apex:outputLink>
+                     </apex:column>
+
+
+
+                </apex:pageBlockTable> 
+             </apex:pageBlock>  
+    </apex:form>
+    
+</apex:page>

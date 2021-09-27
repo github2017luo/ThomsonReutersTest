@@ -1,0 +1,12 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-02-19   Sweta Sharma      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+<apex:page standardController="Account" lightningStylesheets="true">
+
+  <apex:pageMessage strength="1" rendered="{!account.Do_Not_Call__c && ($Profile.Name=='TR Legal US Sales User' || $Profile.Name=='System Administrator' || $Profile.Name=='TR Business Administrator' || $Profile.Name=='TR Legal US Sales User Adv Lead Mgmt' || $Profile.Name=='LMS - User' || $Profile.Name=='TR Legal US Sales User with LM & CDM' )}" severity="Warning" summary="Do Not Call" ></apex:pageMessage>
+</apex:page>

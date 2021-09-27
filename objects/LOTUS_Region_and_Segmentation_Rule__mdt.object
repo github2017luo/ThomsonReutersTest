@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Profile_Name__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Profile Name</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Region__c</fullName>
+        <description>LOTUS users for these regions should be exempted for any LOTUS related codes or configutaions</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>User Region</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>User_Segment__c</fullName>
+        <description>Users with these segments should be provisioned for new LOTUS related codes and configuration</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>User Segment</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <label>LOTUS Region and Segmentation Rule</label>
+    <listViews>
+        <fullName>All_Data</fullName>
+        <columns>MasterLabel</columns>
+        <columns>DeveloperName</columns>
+        <columns>NamespacePrefix</columns>
+        <columns>Profile_Name__c</columns>
+        <columns>User_Region__c</columns>
+        <columns>User_Segment__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Data</label>
+        <language>en_US</language>
+    </listViews>
+    <pluralLabel>LOTUS Region and Segmentation Rule</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

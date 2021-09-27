@@ -1,0 +1,183 @@
+<apex:page tabStyle="Training_Topic__c" standardController="Training_Event__c" extensions="ManageTopics">
+<apex:form >
+<style>
+.activeTabLight {
+            padding: 5px 10px;
+            color: #015BA7 !important;
+            font-weight: bold;
+            text-decoration: underline;
+            background-image: none;
+            background-color: #F1F1F1;
+            cursor: default;
+        }
+        .inactiveTabLight {
+            padding: 4px 10px;
+            color: #333 !important;
+            font-weight: bold;
+            background-image: none;
+            background-color: #fff;
+            cursor: pointer;    
+        }
+.loadingIcon {
+            background-image: url(/img/loading.gif);
+            width: 16px;
+            height: 16px;
+        }
+.linkClass {
+            color:blue; 
+            font-size:11px;
+        }
+.sectionHeader {
+            background-color: lightgrey;
+            color:black;
+            background-image:none;
+            font-weight:bold;
+            font-size:13px;
+        }
+.columnHeader { 
+            color:black;
+            font-weight:bold;
+            font-size:12px;
+        }
+.tableClass {
+            width:100%;
+        }
+</style>
+<apex:sectionHeader id="pageTitle" title="Training Event {!Training_Event__c.Name}" subtitle="Manage Topics" />
+&nbsp;&nbsp;&nbsp;<!-- <apex:outputLink styleClass="linkClass" target="" value="/{!Training_Event__c}">
+                    Back to {!Training_Event__c.Name}</apex:outputLink> --><br/>&nbsp;<br/>
+<apex:outputPanel id="pnlDone">
+<table class="tableClass" style="text-align:center;"><tr><td>
+<apex:commandButton value="Done" title="Done" action="/{!Training_Event__c}"  rendered="{!bDoneAddingTopics}" reRender="matchingTopics"/>
+</td></tr></table>
+</apex:outputPanel>                    
+<apex:tabPanel switchType="client" selectedTab="Add_Topics" id="ManageTopicsTabPanel" 
+        activeTabClass="activeTabLight" inactiveTabClass="inactiveTabLight">
+    <apex:tab ontabenter="enterAddTopicsTab();" label="Add Topics" name="Add_Topics" id="Add_Topics">
+    <apex:actionFunction name="enterAddTopicsTab" rerender="matchingTopics" action="{!enterAddTopicsTab}" status="statusManageTopics"/>
+    <table class="tableClass" >
+                    <tr class="sectionHeader"><td>Specify Filter Criteria</td></tr>
+                    <tr><td>
+                        <table>
+                        <tr class="columnHeader"><td>Field</td><td>Operator</td><td>Value</td></tr>
+                        <tr>
+                            <td>
+                                <apex:selectList style="color:black;" size="1" value="{!sSelectedField5}" disabled="true">
+                                    <apex:selectOption itemValue="Category" itemLabel="Category"/>
+                                </apex:selectList>
+                                
+                            </td>
+                            <td>
+                                <apex:selectList style="color:black;" size="1" id="operatorList5" value="{!sSelectedOperator5}" disabled="true">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="searchValue5" value="{!sSearchValue5}">
+                                    <apex:selectOptions value="{!listCategories}"></apex:selectOptions>
+                                </apex:selectList>
+                                <apex:outputLabel >AND</apex:outputLabel>
+                                <!--<apex:inputText value="{!sSearchValue5}"/>-->
+                            </td>                            
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField6}">                                    
+                                    <apex:selectOptions value="{!listTrainingTopicFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList6" value="{!sSelectedOperator6}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue6}"/>
+                            </td>
+                        </tr>                    
+                        </table>
+                    </td></tr>
+                    <tr><td><apex:commandButton value="Go!" title="Go!" action="{!findResults}" reRender="matchingTopics" status="statusManageTopics"/></td></tr>
+                    <tr><td><u>Note</u>:&nbsp;Already selected Topics will not be displayed again.</td></tr>
+                </table>
+            </apex:tab>
+            <apex:tab ontabenter="enterSelectedTopicsTab();" label="Selected Topics" name="Selected_Topics" id="Selected_Topics">
+            <apex:actionFunction name="enterSelectedTopicsTab" rerender="matchingTopics" action="{!enterSelectedTopicsTab}" status="statusManageTopics"/>            
+                <table class="tableClass" >
+                    <tr class="sectionHeader"><td>View Selected Topics</td></tr>
+                    <!--<tr><td>
+                        <table>
+                        <tr class="columnHeader"><td>Field</td><td>Operator</td><td>Value</td></tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField7}">
+                                    <apex:selectOptions value="{!listTrainingTopicFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList7" value="{!sSelectedOperator7}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue7}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <apex:selectList size="1" value="{!sSelectedField8}">                                    
+                                    <apex:selectOptions value="{!listTrainingTopicFields}"></apex:selectOptions>
+                                </apex:selectList>
+                            </td>
+                            <td>
+                                <apex:selectList size="1" id="operatorList8" value="{!sSelectedOperator8}">
+                                    <apex:selectOptions value="{!listOperatorFields}"></apex:selectOptions>
+                                </apex:selectList>                        
+                            </td>
+                            <td>
+                                <apex:inputText value="{!sSearchValue8}"/>
+                            </td>
+                        </tr>                    
+                        </table>
+                    </td></tr>
+                    <tr><td><apex:commandButton value="Go!" title="Search Selected Topics" action="{!searchSelectedTopics}" reRender="matchingTopics"/></td></tr>
+                    -->
+                </table>
+            </apex:tab>
+    </apex:tabPanel>
+    <br/>
+<apex:actionStatus id="statusManageTopics">
+    <apex:facet name="start">
+        
+            <div>
+            <img class="waitingImage" src="/img/loading.gif" title="Please Wait..." /> Please Wait...
+            </div>
+        
+    </apex:facet>    
+    <apex:facet name="stop">    
+    <apex:outputPanel id="matchingTopics">
+         <apex:pageBlock rendered="{!bMatchesFound}">
+            <apex:commandButton value="Add Topics" title="Add Topics" action="{!AddTopicstoTraining}" reRender="matchingTopics,pnlDone" status="statusManageTopics"/>            
+            <apex:pageBlockTable headerClass="columnHeader" value="{!listMatchingTopics}" var="tt">
+             <apex:column >
+                 <apex:inputCheckbox disabled="{!tt.bSelected}" value="{!tt.bSelected}"/>
+             </apex:column>
+             <apex:column value="{!tt.tTrainingTopic.Name}"/>
+             <apex:column value="{!tt.tTrainingTopic.Topic__c}"/>
+             <apex:column value="{!tt.tTrainingTopic.Category__c}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+            
+        <apex:pageBlock rendered="{!bSelectedTopics}">            
+               <!--<apex:commandButton value="Remove from Training" title="Remove from Training" action="{!RemovefromTraining}" reRender="matchingTopics"/>-->
+               <apex:pageBlockTable headerClass="columnHeader" value="{!listSelectedTopicsAll}" var="tt">
+                   <apex:column value="{!tt.Name}"/>
+                   <apex:column value="{!tt.Topic__c}"/>
+                   <apex:column value="{!tt.Category__c}"/>
+               </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:outputPanel>
+    </apex:facet>
+</apex:actionStatus>    
+</apex:form>
+</apex:page>

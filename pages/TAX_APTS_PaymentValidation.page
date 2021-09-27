@@ -1,0 +1,26 @@
+<apex:page standardController="Apttus_Proposal__Proposal__c" extensions="Tax_APTS_PaymentValidationController" 
+           rendered="{!oQuote.APTS_Proposal_Business_Unit__c != 'null'}" lightningStylesheets="true">
+
+    <apex:form >
+    <apex:pageMessages >
+       </apex:pageMessages>
+        <apex:pageBlock mode="mainDetail">
+            <apex:pageBlockSection >
+    
+                <apex:outputLabel for="droplist" value="Payment Option"/>
+                <apex:selectList id="pay" value="{!pay}" multiselect="false" size="1" >
+                            <apex:selectOptions value="{!payname}">
+                            </apex:selectOptions>
+                       <!-- <apex:actionSupport event="onchange" action="{!setSelectedUser}" reRender="PanelArea"/>-->
+                 </apex:selectList>                           
+                
+                 <br/><br/>
+                  
+                  <apex:commandButton value="Save" action="{!save}" id="save"/>
+                
+               
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>     
+    
+</apex:page>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>CaseNumber</field>
+        <field>Owner</field>
+        <field>TXP_Asset_Amount__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>TXP_Subscription_Credit_Representatives</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Credit Representatives will approve assets &lt;= $25,000</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Case.TXP_Asset_Amount__c</field>
+                <operation>lessOrEqual</operation>
+                <value>25000</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Credit Representatives</label>
+        <name>Credit_Representatives</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>TXP_Subscription_Credit_Manager</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Credit Manager will approve assets&gt; $25,000 &lt;=$150,000</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Case.TXP_Asset_Amount__c</field>
+                <operation>greaterThan</operation>
+                <value>25000</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.TXP_Asset_Amount__c</field>
+                <operation>lessOrEqual</operation>
+                <value>150000</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Credit Manager</label>
+        <name>Credit_Manager</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>TXP_Subscription_Director_or_Sr_Director</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Director or Sr Director will approve asset &gt; $150,000</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Case.TXP_Asset_Amount__c</field>
+                <operation>greaterThan</operation>
+                <value>150000</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Director or Sr Director</label>
+        <name>Director_or_Sr_Director</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <booleanFilter>1 AND 2 AND 3 AND 4 AND 5 AND 6 AND 7</booleanFilter>
+        <criteriaItems>
+            <field>Case.Is_ESC_Case__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Tax</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.RecordType</field>
+            <operation>equals</operation>
+            <value>Request for Action</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.TXP_Asset_Amount__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.ESC_Case_Sub_Type__c</field>
+            <operation>equals</operation>
+            <value>Billing</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.ESC_EnquiryType__c</field>
+            <operation>equals</operation>
+            <value>Credit Status Query</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.ESC_Unique_Identifier__c</field>
+            <operation>equals</operation>
+            <value>Insufficient Credit</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Approved_field_Update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Rejected_field_update</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <label>ESC Case insufficient credit approval</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>9</processOrder>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

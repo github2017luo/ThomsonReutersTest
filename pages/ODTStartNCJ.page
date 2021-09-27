@@ -1,0 +1,135 @@
+<!-- ============================================================================================
+Name            :   ODT_OppNewCustomerTrial
+Description     :   This page is developed as part of 'CXD-ODT': DLT-17089
+                    It serves as a redirected VF page from GLI Opportunity 'New Customer Trial' button to 
+                    allow reps to initiate new trials for NET_NEW customers.
+
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 07/12/2019   David Hoel              DLT-17089: created.
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - 12-01-2020   Brenda Shields          DLT-21339 : [SFDC] [ODT][PMD SCAN] Critical Components Code scan issue
+ - ==================================================================================================================================   
+=========================================================================== -->
+
+
+<apex:page standardController="opportunity" extensions="ODTStartNCJCon" id="thePage" sidebar="false" lightningStylesheets="true">
+
+    <apex:form id="aform">
+        <apex:pageBlock id="pblock" title="New Customer Trial" rendered="{!NOT(isTrialsExists)}">
+
+            <apex:pageMessages ></apex:pageMessages>
+
+            <apex:pageBlockSection id="title" title="On Demand Trials" collapsible="false">
+
+                <apex:outputLink value="/{!Opp.Id}" styleClass="linkClass">{!$Label.Back_To_Opportunity}: {!Opp.Name}</apex:outputLink> <br/><br/>
+
+
+                <apex:outputLabel ><b>Opportunity Stage: </b>{!opp.StageName}</apex:outputLabel>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="section_ssd" title="Source System Detail" collapsible="false" rendered="{!AND(NOT(hasSSD), isValidSSD)}">
+                <apex:inputField value="{!ssd.Name}" id="ssdName" required="true" />
+                <!--  <apex:inputField value="{!ssd.Source_System_Name__c}"/> -->
+
+                <apex:selectList value="{!ssd.LCRM_Sales_Org__c}" multiselect="false" size="1" label="Sales Org">
+                    <apex:selectOptions value="{!salesOrgs}" />
+                </apex:selectList>
+                <apex:selectList label="Market Segment" value="{!wrapper.selMarketSegment}" multiselect="false" size="1" id="marketSegment" onchange="refreshINC();">
+                    <apex:selectOptions value="{!wrapper.marketSegments}" />
+                </apex:selectList>
+                <apex:selectList value="{!ssd.Country__c}" multiselect="false" size="1">
+                    <apex:selectOptions value="{!listVal}" />
+                </apex:selectList>
+                <apex:inputField value="{!ssd.LCRM_Phone__c}" />
+                <apex:inputField value="{!ssd.Postal_Code__c}" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="section_customer" title="Customer Details" collapsible="false" rendered="{!isValidSSD}">
+                <apex:inputField value="{!wrapper.invColleague.First_Name__c}" id="FirstName" required="true" />
+                <apex:inputField value="{!wrapper.invColleague.Last_Name__c}" id="LastName" required="true" />
+                <apex:inputField value="{!wrapper.invColleague.Email__c}" id="Email" required="true" />
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="section_prodbundle" title="Product Details" collapsible="false" rendered="{!isValidSSD}">
+                <apex:selectList label="Product Bundle Name" value="{!wrapper.selProductBundle}" multiselect="false" size="1" required="true" id="pbunleComp">
+                    <apex:selectOptions value="{!wrapper.productBundleList}" />
+                </apex:selectList>
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="noValidSSD" rendered="{!NOT(isValidSSD)}">
+                {!$Label.Invalid_SSD_Details}
+            </apex:pageblockSection>
+
+
+
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!finish}" value="Start Trial" rendered="{!isValidSSD}" Status="myStatus" />
+            </apex:pageblockButtons>
+
+
+        </apex:pageBlock>
+
+
+        <apex:pageBlock rendered="{!isTrialsExists}">
+            <apex:pageBlockSection id="haveValidTrials" columns="1" title="On Demand Trials" collapsible="false">
+                {!$Label.Active_Trials}
+            </apex:pageblockSection>
+
+
+            <apex:pageBlockSection id="title">
+                <apex:outputLink value="/{!Opp.Id}" styleClass="linkClass">{!$Label.Back_To_Opportunity}: {!Opp.Name}</apex:outputLink> <br/><br/>
+            </apex:pageBlockSection>
+
+
+        </apex:pageBlock>
+
+
+    </apex:form>
+
+    <script>
+        function refreshINC() {
+            var valType = document.getElementById("{!$Component.thePage:aform:pblock:section_ssd:marketSegment}").value;
+            refreshinc(valType);
+        }
+    </script>
+
+    <style>
+        #loadingDivStatus {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%; //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)
+        }
+
+        ) 50% 50% no-repeat #666;
+
+        z-index:99999;
+        opacity: 0.4;
+        /* You can adjust the opacity */
+
+        filter: alpha(opacity=40);
+        /* For IE8 and earlier */
+
+        }
+    </style>
+
+    <apex:outputText >
+        <apex:actionStatus id="myStatus">
+            <apex:facet name="start">
+                <div id="loadingDivStatus" />
+            </apex:facet>
+        </apex:actionStatus>
+    </apex:outputText>
+
+    <apex:form >
+        <apex:actionFunction name="refreshinc" action="{!refreshINCProducts}" reRender="pbunleComp">
+            <apex:param value="" name="selval" />
+        </apex:actionFunction>
+    </apex:form>
+
+
+</apex:page>

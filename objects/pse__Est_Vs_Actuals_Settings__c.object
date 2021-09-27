@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>Hierarchy</customSettingsType>
+    <description>Configuration for Estimate Vs Actuals</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>pse__Adjust_Past_Est_on_Records_with_Actuals__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Whether the Est Vs Actuals fields derived from the schedule (e.g., Estimated Hours) should be updated for Est Vs Actuals records that have an end date prior to the start of this week.</inlineHelpText>
+        <label>Adjust Past Est on Records with Actuals</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Delete_Est_Vs_Actuals_Batch_Size__c</fullName>
+        <defaultValue>2000</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Delete Est Vs Actuals Batch Size</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Delete_Out_of_Range_Records_With_Actuals__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Delete Est vs Actuals records even if they have actuals set for records that are no longer within a modified schedule&apos;s date range. NOTE: Records without actuals will always be deleted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Delete Est vs Actuals records even if they have actuals set for records that are no longer within a modified schedule&apos;s date range. NOTE: Records without actuals will always be deleted.</inlineHelpText>
+        <label>Delete Out of Range Records With Actuals</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Generate_Custom_Time_Period_Records__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Comma separated list of time period types for which to generate EVA records</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma separated list of time period types for which to generate EVA records</inlineHelpText>
+        <label>Generate Custom Time Period Records</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Generate_Monthly_Records__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Whether to generate Est Vs Actuals records by month</inlineHelpText>
+        <label>Generate Monthly Records</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Generate_Quarterly_Records__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Whether to generate Est Vs Actuals records by quarter</inlineHelpText>
+        <label>Generate Quarterly Records</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Generate_Weekly_Records__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>Whether to generate est vs actuals by week</inlineHelpText>
+        <label>Generate Weekly Records</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Process_Out_Of_Range_Timecards__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Create Est Vs Actuals records for timecards that have hours outside of the assignment&apos;s start and end date. The Est Vs Actuals records will have zero values for estimates on these records.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Create Est Vs Actuals records for timecards that have hours outside of the assignment&apos;s start and end date. The Est Vs Actuals records will have zero values for estimates on these records.</inlineHelpText>
+        <label>Process Out Of Range Timecards</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Timecard_Statuses__c</fullName>
+        <defaultValue>&apos;Submitted,Approved&apos;</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <inlineHelpText>The comma-delimited list of the Timecard Status field values to use when determining if the timecard should be used in the calculation of Estimates vs Actuals</inlineHelpText>
+        <label>Timecard Statuses</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Actuals_Batch_Size__c</fullName>
+        <defaultValue>2000</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Update Actuals Batch Size</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Estimates_Batch_Size__c</fullName>
+        <defaultValue>2000</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Update Estimates Batch Size</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Project_Manager_Batch_Size__c</fullName>
+        <defaultValue>2000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the batch size used when updating the Project Manager field from Project. The default is 2000. Consult with FinancialForce Support before changing this setting.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the batch size used when updating the Project Manager field from Project. The default is 2000. Consult with FinancialForce Support before changing this setting.</inlineHelpText>
+        <label>Update Project Manager Field Batch Size</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Project_Manager_From_Project__c</fullName>
+        <defaultValue>true</defaultValue>
+        <deprecated>false</deprecated>
+        <description>If checked, this setting causes updates to the Project Manager field to be reflected in all Est Vs Actuals records for that Project.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If checked, this setting causes updates to the Project Manager field to be reflected in all Est Vs Actuals records for that Project.</inlineHelpText>
+        <label>Update Project Manager From Project</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>pse__Update_Project_Manager_Sync_Limit__c</fullName>
+        <defaultValue>9000</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Defines the number of Est Vs Actuals records to process synchronously when updating the Project Manager field from Project. Records in excess of this value are processed in a batch. The default is 9000. Consult with Support before changing this setting.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Defines the number of Est Vs Actuals records to process synchronously when updating the Project Manager field from Project. Records in excess of this value are processed in a batch. The default is 9000. Consult with Support before changing this setting.</inlineHelpText>
+        <label>Update Project Manager Field Sync Limit</label>
+        <precision>8</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Use_Week_Time_Periods_If_In_Range__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>When true, weekly estimates versus actuals are not automatically generated if you have custom time periods of a week type defined that overlap with an assignment or a held resource request. The default value is false.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When true, weekly Estimates vs Actuals are not automatically-generated if you have custom Time Periods of a Week type defined that overlap with a given assignment. The default is false.</inlineHelpText>
+        <label>Disable Automatic Weekly Time Periods</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Est Vs Actuals Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

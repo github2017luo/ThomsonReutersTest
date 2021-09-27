@@ -1,0 +1,310 @@
+<!-- VFPageStatus:To Do ,Create project from opportunity,,Farah-Naz,Nothing of note-->
+<!-- use the list controller interface in order to create a related list button -->
+<apex:page title="{!$Label.pse__create_project_page_title}" standardController="pse__Proj__c" tabStyle="Create_Project_From_Template__tab"
+			extensions="pse.CreateProjectFromOpportunityController" action="{!init}" recordSetVar="projects" lightningStylesheets="true">
+
+	<style>
+		.pageBlockTableScroll {display: block; overflow-x: auto; width: 93vw;}
+		.pageBlockTableScroll table th.headerRow + th.headerRow {border-left: 1px solid #dedede;}
+	</style>
+
+	<script>
+	function updateSelectAll(tableIdPattern)
+	{
+		var lastColonIndex = tableIdPattern.lastIndexOf(':');
+		var tableId = tableIdPattern.slice(0, lastColonIndex);
+		var table = document.getElementById(tableId);
+		var rows = table.getElementsByTagName('tr');
+		var massCheckbox = rows[0].firstElementChild.querySelector('input');
+		var checked = 0;
+		for (var r = 1; r < rows.length; r++)
+		{
+			var checkboxElement = rows[r].firstElementChild.querySelector('input');
+			if(checkboxElement.checked)
+			{
+				checked = checked + 1;
+			}
+		}
+
+		if(checked == rows.length - 1)
+		{
+			massCheckbox.checked = true;
+		}
+		else
+		{
+			massCheckbox.checked = false;
+		}
+	}
+	</script>
+
+	<!-- Added as Fix for agile task : AT2197  Dated: 17 Sep,2012    -->
+	<c:selectAllCheckboxes functionName="selectAllResourceRequests"/>
+	<apex:stylesheet value="{!URLFOR($Resource.pse__lexstyle, 'stylesheets/customIconStyles.css')}"/>
+	<apex:outputpanel id="masterContainer">
+		<apex:outputpanel rendered="{!formbean.renderSPLISelector}">
+			<c:selectAllCheckboxes functionName="selectAllSPLI"/>
+			<apex:sectionHeader title="{!$Label.pse__create_project_page_title}" subtitle="{!$Label.pse__create_project_select_line_item}" help="{!$Page.pse__CreateNewProjectHelp}"/>
+			{!$Label.create_project_select_spli}
+			<p />
+			<apex:form >
+				<apex:pageblock >
+					<apex:pageBlockTable value="{!formBean.OLIWrapperList}" var="SPLIWrapper" id="SPLITable">
+						<apex:column >
+							<apex:facet name="header">
+								<input type="checkbox" onclick="selectAllSPLI(this, 'SPLISelector')" checked="checked"/>
+							</apex:facet>
+							<apex:inputCheckbox value="{!SPLIWrapper.isSelected}" id="SPLISelector" onclick="updateSelectAll('{!$Component.SPLITable}')"/>
+						</apex:column>
+						<apex:column headerValue="{!$Label.pse__create_project_label_product}">
+							<a href="/{!SPLIWrapper.lineItem.PricebookEntry.Product2Id}">{!SPLIWrapper.lineItem.PricebookEntry.Name}</a>
+						</apex:column>
+						<apex:column value="{!SPLIWrapper.lineItem.Quantity}"/>
+						<apex:column value="{!SPLIWrapper.lineItem.ListPrice}"/>
+						<apex:column value="{!SPLIWrapper.lineItem.UnitPrice}"/>
+						<apex:column value="{!SPLIWrapper.lineItem.TotalPrice}"/>
+					</apex:pageBlockTable>
+
+					<apex:pageBlockButtons >
+						<apex:commandButton value="{!$Label.pse__common_label_cancel}" action="{!onCancelClick}" immediate="true"/>
+						<apex:commandButton value="{!$Label.pse__common_label_continue}" action="{!doneSelectionOfSPLI}"/>
+					</apex:pageBlockButtons>
+				</apex:pageblock>
+			</apex:form>
+		</apex:outputpanel>
+
+		<apex:outputpanel rendered="{!NOT(formbean.renderSPLISelector)}">
+			<apex:sectionHeader title="{!$Label.pse__create_project_page_title}" help="{!$Page.pse__CreateNewProjectHelp}"/>
+			{!$Label.create_project_copy_fields}
+			<p />
+			<h1><apex:outputLabel value="{!$Label.pse__create_project_no_opp_found}" rendered="{!ISNULL(formBean.opportunity)}"/></h1>
+			<!--For PSA-26638: Blocking Enter Key -->
+			<apex:form onkeypress="blockEnterKey(event);">
+				<apex:pageMessages id="pageMessages" />
+				<c:enterKeyBlocker />
+				<apex:pageBlock id="CreateProjectDetailsPageBlock" title="{!$Label.pse__create_project_details}" mode="edit" rendered="{!NOT(ISNULL(formBean.opportunity))}">
+					<c:WaitComponent />
+					<apex:actionStatus id="ajaxStatus" onstart="wait(true);" onstop="wait(false);"/>
+					<apex:pageBlockButtons >
+						<apex:commandButton value="{!$Label.pse__common_label_cancel}" action="{!onCancelClick}" immediate="true"/>
+						<apex:commandButton value="{!$Label.pse__common_label_create}" action="{!onSaveClick}" reRender="pageMessages,CreateProjectDetailsPageBlock" status="ajaxStatus"/>
+					</apex:pageBlockButtons>
+					<!-- Basic Header fields -->
+					<apex:pageBlockSection title="{!$Label.pse__create_project_page_title}">
+
+						<apex:repeat value="{!formBean.createProjectFromOppAndTempProjColumns}" var="fName">
+
+							<apex:inputField value="{!formBean.project[fName.fieldPath]}"  required="{!OR(fName.required,fName.DBRequired)}"  style="width:225px"
+											rendered="{!(fName.Label == $ObjectType.pse__Proj__c.Fields.Name.Label)}"/>
+
+							<apex:outputField value="{!formBean.project[fName.fieldPath]}"
+											rendered="{!AND((NOT(ISNULL(formBean.project.pse__Account__c))),(fName.Label == $ObjectType.pse__Proj__c.Fields.pse__Account__c.Label))}"/>
+
+							<apex:inputField value="{!formBean.project[fName.fieldPath]}"
+											rendered="{!AND(ISNULL(formBean.project.pse__Account__c),(fName.Label == $ObjectType.pse__Proj__c.Fields.pse__Account__c.Label))}" required="true"/>
+											
+							<apex:inputField value="{!formBean.project[fName.fieldPath]}"
+											rendered="{!AND((fName.Label == $ObjectType.pse__Proj__c.Fields.CurrencyIsoCode.Label), formBean.showMultiCurrencySelector)}"/>
+
+							<apex:inputField value="{!formBean.project[fName.fieldPath]}"
+											rendered="{!AND(NOT(fName.Label == $ObjectType.Proj__c.Fields.Name.Label),
+															NOT(fName.Label == $ObjectType.Proj__c.Fields.Account__c.Label),
+															NOT(fName.Label == $ObjectType.Proj__c.Fields.CurrencyIsoCode.Label) )}"  required="{!OR(fName.required,fName.DBRequired)}"/>
+						</apex:repeat>
+					</apex:pageBlockSection>
+
+					<!-- Resource request mappings to be copied from Opportunity to Project-->
+					<apex:pageBlockSection title="{!$Label.pse__create_project_from_template_opp_rr_header}" columns="1" rendered="{!formBean.displayResourceRequests}">
+						<apex:outputPanel styleClass="pageBlockTableScroll">
+							<apex:pageBlockTable value="{!formBean.resourceRequests}" var="resReqWrapper" id="resourceRequestFromOpportunityList">
+								<!-- Updated as fix for agile task : AT2197  Dated: 17 Sep,2012  -->
+								<apex:column >
+									<apex:facet name="header">
+										<apex:inputcheckbox value="{!resourceRequestFromOppSelectAll}" onclick="selectAllResourceRequests(this, 'matchingResourceRequestSelector')"/>
+									</apex:facet>
+									<apex:inputcheckbox value="{!resReqWrapper.copyFromOppToProj}" id="matchingResourceRequestSelector" onchange="updateSelectAll('{!$Component.resourceRequestFromOpportunityList}')"/>
+								</apex:column>
+
+								<apex:repeat value="{!formBean.CreateProjectOpportunityRRColumns}" var="fName">
+									<apex:column rendered="{!NOT(fName.Label == $ObjectType.pse__Resource_Request__c.Fields.pse__Notes__c.Label)}" value="{!resReqWrapper.resourceRequest[fName.fieldPath]}">
+										<apex:facet name="header">{!fName.Label}</apex:facet>
+									</apex:column>
+
+									<apex:column rendered="{!(fName.Label == $ObjectType.pse__Resource_Request__c.Fields.pse__Notes__c.Label)}">
+										<apex:facet name="header">{!$Label.pse__timecard_entry_label_notes}</apex:facet>
+										<apex:outputText value="{!resReqWrapper.resReqNotes}"/>
+									</apex:column>
+								</apex:repeat>
+
+								<!-- check-box to create assignment from RR -->
+								<apex:column rendered="{!formBean.AddAssignmentCheckboxToCreateProjectRRList}">
+								<apex:facet name="header">{!$Label.pse__create_project_from_template_label_create_assignment}</apex:facet>
+									<apex:inputcheckbox value="{!resReqWrapper.isSelectedForSchedule}" disabled="{!resReqWrapper.enabledForSchedule}" />
+								</apex:column>
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:pageBlockSection>
+
+					<!-- Section for Milestones From Opportunity Products -->
+					<apex:pageBlockSection title="{!$Label.pse__milestones_from_opportunity_products}" columns="1" rendered="{!formBean.renderOlIMilestones}">
+						<apex:outputPanel layout="block" styleClass="pageBlockTableScroll">
+							<apex:pageBlockTable value="{!formBean.OLIWrapperList}" var="oliMsWrapper" id="milestonesFromOpportunityProductsList">
+								<apex:column >
+									<apex:facet name="header">
+										<apex:inputcheckbox value="{!milestoneFromOppSelectAll}" onclick="selectAllResourceRequests(this, 'matchingMilestoneFromOppProductSelector')"/>
+									</apex:facet>
+									<apex:inputcheckbox value="{!oliMsWrapper.isMilestoneSelected}" id="matchingMilestoneFromOppProductSelector" onchange="updateSelectAll('{!$Component.milestonesFromOpportunityProductsList}')"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.Name.Label}">
+									<apex:outputPanel >
+										<div class = "requiredInput">
+											<div class = "requiredBlock"></div>
+											<apex:inputField value="{!oliMsWrapper.milestone.Name}" required="false"/>
+										</div>
+									</apex:outputPanel>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Milestone_Amount__c.Label}">
+									<apex:outputPanel >
+										<div class = "requiredInput">
+											<div class = "requiredBlock"></div>
+											<apex:inputField value="{!oliMsWrapper.milestone.pse__Milestone_Amount__c}" required="false"/>
+										</div>
+									</apex:outputPanel>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Planned_Hours__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Planned_Hours__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Target_Date__c.Label}">
+									<apex:outputPanel >
+										<div class = "requiredInput">
+											<div class = "requiredBlock"></div>
+											<apex:inputField value="{!oliMsWrapper.milestone.pse__Target_Date__c}" required="false"/>
+										</div>
+									</apex:outputPanel>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Requires_Customer_Sign_off__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Requires_Customer_Sign_off__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Actual_Date__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Actual_Date__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Approver__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Approver__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Milestone_Cost__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Milestone_Cost__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Estimated_Time_To_Completion__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Estimated_Time_To_Completion__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Log_Milestone_Cost_As_External__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputField value="{!oliMsWrapper.milestone.pse__Log_Milestone_Cost_As_External__c}"/>
+								</apex:column>
+								<apex:column headerValue="{!$ObjectType.pse__Milestone__c.fields.pse__Description__c.Label}" rendered="{!formbean.useDefaultMilestoneOppColumns}">
+									<apex:inputTextarea value="{!oliMsWrapper.milestone.pse__Description__c}" rows="1"/>
+								</apex:column>
+
+								<apex:repeat value="{!formbean.createProjectFromOppoMilestoneColumns}" var="fName" rendered="{! !formbean.useDefaultMilestoneOppColumns}">
+									<apex:column rendered="{!NOT(fName.Label == $ObjectType.pse__Milestone__c.fields.pse__Description__c.label)}" headerValue="{!fName.Label}">
+										<apex:outputPanel rendered="{!NOT(OR(fName.required, fName.dbrequired))}">
+											<apex:inputField value="{!oliMsWrapper.milestone[fName.FieldPath]}"/>
+										</apex:outputPanel>
+
+										<apex:outputPanel rendered="{!OR(fName.required, fName.dbrequired)}">
+											<div class="requiredInput">
+												<div class="requiredBlock"></div>
+												<apex:inputField value="{!oliMsWrapper.milestone[fName.FieldPath]}" required="false"/>
+											</div>
+										</apex:outputPanel>
+									</apex:column>
+
+									<apex:column rendered="{!fName.Label == $ObjectType.pse__Milestone__c.fields.pse__Description__c.label}" headerValue="{!fName.Label}">
+										<apex:outputPanel rendered="{!NOT(OR(fName.required, fName.dbrequired))}">
+											<apex:inputTextArea rows="2" value="{!oliMsWrapper.milestone[fName.fieldPath]}" />
+										</apex:outputPanel>
+
+										<apex:outputPanel rendered="{!OR(fName.required, fName.dbrequired)}">
+											<div class="requiredInput">
+												<div class="requiredBlock"></div>
+												<apex:inputTextArea rows="2" value="{!oliMsWrapper.milestone[fName.fieldPath]}" required="false"/>
+											</div>
+										</apex:outputPanel>
+									</apex:column>
+								</apex:repeat>
+							</apex:pageBlockTable>
+						</apex:outputPanel>
+					</apex:pageBlockSection>
+
+					<!-- Budget details-->
+					<apex:pageBlockSection title="{!$Label.pse__create_project_budget_details_header}" >
+						<apex:outputPanel >
+							<apex:actionRegion >
+								<span>
+									<apex:inputCheckbox value="{!formbean.createBudget}"  id="toggleControllerID" >
+										<apex:actionSupport event="onchange" action="{!showHideBudgetSection}" rerender="budgetDetailOP"  status="status" />
+									</apex:inputCheckbox>
+									<apex:outputLabel value="{!$Label.pse__create_project_from_template_label_create_budget}" for="toggleControllerID"/>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<apex:actionStatus id="status" >
+										<apex:facet name="start">
+											<span style="color:red;">{!$Label.common_message_processing_wait}</span> <img src="/img/loading.gif" />
+										</apex:facet>
+									</apex:actionStatus>
+								</span>
+							</apex:actionRegion>
+						</apex:outputPanel>
+						<apex:outputLabel value="" />
+					</apex:pageBlockSection>
+
+					<apex:outputPanel id="budgetDetailOP" >
+						<apex:pageBlockSection id="budgetDetailPBS" rendered="{!formbean.createBudget}" >
+
+							<apex:repeat value="{!formBean.createProjectFromOppAndTempBudgetColumns}" var="fName" id="bdgRepId"  >
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" id="budgetName"
+												rendered="{!(fName.Label == $ObjectType.pse__Budget__c.Fields.Name.Label)}" required="{!OR(fName.required,fName.DBRequired,formBean.isBudgetNameRequired)}" />
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" id="budgetAmount"
+												rendered="{!(fName.Label == $ObjectType.pse__Budget__c.Fields.pse__Amount__c.Label)}" required="{!OR(fName.required,fName.DBRequired,formBean.isBudgetAmountRequired)}" />
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" id="budgetStatus"
+												rendered="{!(fName.Label == $ObjectType.pse__Budget__c.Fields.pse__Status__c.Label)}" required="{!OR(fName.required,fName.DBRequired,formBean.isBudgetStatusRequired)}"/>
+
+								<apex:pageBlockSectionItem labelStyle="left" rendered="{!(fName.Label == $ObjectType.pse__Budget__c.Fields.pse__Type__c.Label)}" id="btpbsi">
+									<apex:outputLabel value="{!$Label.pse__create_project_from_template_label_budget_type}" for="budgetType"/>
+									<apex:outputPanel styleClass="requiredInput" layout="block">
+										<apex:outputPanel styleClass="requiredBlock" layout="block" rendered="{!OR(fName.required,fName.DBRequired)}"/>
+										<apex:selectList value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" size="1" id="budgetType" required="{!OR(fName.required,fName.DBRequired)}">
+											<apex:selectOptions value="{!formBean.budgetWrapper.types}"/>
+										</apex:selectList>
+									</apex:outputPanel>
+								</apex:pageBlockSectionItem>
+
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" id="budgetPrebilledAmountNew" required="{!OR(fName.required,fName.DBRequired,formBean.isBudgetPreBilledAmountRequired)}"
+												rendered="{!AND(USE_NEW_PREBILL_FIELD,CONTAINS(fName.fieldPath, 'Pre_Billed_Amount__c'))}" />
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" id="budgetPrebilledAmountOld" required="{!OR(fName.required,fName.DBRequired,formBean.isBudgetPreBilledAmountRequired)}"
+												rendered="{!AND(NOT(USE_NEW_PREBILL_FIELD),CONTAINS(fName.fieldPath, 'PreBilledAmount__c'))}"/>
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}" id="budgetEffectiveDate"
+												rendered="{!(fName.Label == $ObjectType.pse__Budget__c.Fields.pse__Effective_Date__c.Label)}" required="{!OR(fName.required,fName.DBRequired)}"/>
+
+								<apex:pageBlockSectionItem labelStyle="left" id="bdpbsi" rendered="{!(fName.Label == $ObjectType.pse__Budget__c.Fields.pse__Description__c.Label)}">
+									<apex:outputLabel value="{!$Label.pse__common_label_description}"/>
+									<apex:outputPanel styleClass="requiredInput" layout="block">
+										<apex:outputPanel styleClass="requiredBlock" layout="block" rendered="{!OR(fName.required,fName.DBRequired)}"/>
+										<apex:inputTextarea value="{!formBean.budgetWrapper.budget[fName.fieldPath]}"  cols="40" id="budgetDescription" required="{!OR(fName.required,fName.DBRequired)}"/>
+									</apex:outputPanel>
+								</apex:pageBlockSectionItem>
+
+								<apex:inputField value="{!formBean.budgetWrapper.budget[fName.fieldPath]}"
+												rendered="{!AND(NOT(fName.Label == $ObjectType.Budget__c.Fields.Name.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.Amount__c.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.Status__c.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.Type__c.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.Pre_Billed_Amount__c.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.PreBilledAmount__c.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.Effective_Date__c.Label),
+																NOT(fName.Label == $ObjectType.Budget__c.Fields.Description__c.Label) )}" required="{!OR(fName.required,fName.DBRequired)}"/>
+							</apex:repeat>
+						</apex:pageBlockSection>
+					</apex:outputPanel>
+				</apex:pageBlock>
+			</apex:form>
+		</apex:outputpanel> <!-- Div to contain step2 -->
+	</apex:outputpanel><!-- Main div for step1 and step2 -->
+</apex:page>

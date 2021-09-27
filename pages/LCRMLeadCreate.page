@@ -1,0 +1,270 @@
+<!--
+ * Lead Create VF page.
+ *
+ * @author  Srikanth Kuruva
+ * @version 2014-03-20
+ */
+
+/**
+ * CHANGE HISTORY
+ * =============================================================================
+ * Date         Name                    Description
+ * 2016-06-16   Ravi Havashetty         Created
+ * 2017-11-16   TCS Developer           Re-arranged the order of field for display
+ * 2019-02-06   Amit kumar chourasiya   Enabled lightningStylesheets="true"
+ * =============================================================================
+ -->
+<apex:page standardController="Lead" extensions="LeadCreateController" id="thePage" action="{!userProfileName}" lightningStylesheets="true">
+    <apex:form id="formEdit">
+    <!--<body onload="init();"/>-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"/>
+    <script type="text/javascript">
+    function redirectOnSave(){
+        if((typeof sforce != 'undefined') ){
+            //sforce.one.navigateToURL('/00Q/e?retURL=%2Fhome%2Fhome.jsp&nooverride=true');
+            //alert('hi');
+            sforce.one.createRecord(Lead);
+        }
+    }
+    </script>
+        <apex:sectionHeader id="pageTitle" title="Create Lead" subtitle="New Lead" />
+        <apex:pageMessages id="globalMessages" escape="false" />
+        
+        <apex:actionStatus id="statusValidateLead">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="{!$Label.Validating_lead_please_wait}" />
+            </apex:facet>
+        </apex:actionStatus>
+         
+        <apex:pageBlock id="blockLead" title="{!$Label.Lead_Edit}" mode="edit">
+            <apex:pageBlockButtons >
+                <apex:commandButton id="buttonSave" value="{!$Label.Save}" action="{!save}" rendered="{!NOT(HasServiceErrors)}" rerender="formEdit" status="statusValidateLead" oncomplete="setResult();"/>
+                <apex:commandButton id="buttonRetry" value="{!$Label.Retry}" action="{!save}" rendered="{!HasServiceErrors}" rerender="formEdit" status="statusValidateLead" />
+                <apex:commandButton id="buttonContinue" value="{!$Label.Continue}" action="{!continueSave}" rendered="{!HasServiceErrors}"/>
+                <apex:commandButton id="buttonCancel" value="{!$Label.Cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection id="theSection" >
+                <apex:inputField value="{!Lead.Company}"/>
+                <apex:outputField value="{!Lead.OwnerId}"/>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Lead.fields.FirstName.Label}</apex:outputLabel>
+                    <apex:panelGroup >
+                        <apex:inputField value="{!Lead.salutation}"/>
+                        <apex:inputField value="{!Lead.FirstName}"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.Contact__c}"/>
+                <apex:inputField value="{!Lead.LastName}"/>
+                <apex:inputField value="{!Lead.Phone}" />
+                <apex:inputField value="{!Lead.Status}"/>
+                <apex:inputField value="{!Lead.Email}"/>
+        <!--    <apex:inputField value="{!Lead.LCRM_Product_Interest__c}"/> -->
+                <apex:inputField value="{!Lead.Qualified_Product_s__c}"/>
+                <apex:pageBlockSectionItem id="Dummy_Blank"/> <!--Added as per DPS-5034-->
+                <apex:inputField value="{!Lead.Language_Preference__c}"/> <!--Added as per DPS-5034-->
+       <!--     <apex:inputField value="{!Lead.TRWayLeadMgmt__Panorama_DQ_Reason__c}" required="true"/>  -->
+       <!--     <apex:inputField value="{!Lead.Lead_Score__c}"/> -->
+                <apex:inputField value="{!Lead.Lead_Scoring_Combined__c}" />
+       <!--     <apex:inputField value="{!Lead.TRWayLeadMgmt__Panorama_Competitor__c}" required="true"/>  -->
+                <apex:inputField value="{!Lead.Description}" style="width:250px;"/>
+                
+                
+                <apex:inputField value="{!Lead.Type__c}"  rendered="{!AND($Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}" />
+                <apex:inputField value="{!Lead.Justification__c}" rendered="{!OR($Profile.Name == 'GLI Sales User', $Profile.Name == 'GLI Sales Ops User')}" style="width:250px;"/>
+                <!--<apex:outputText ></apex:outputText>  -->
+                <apex:inputField value="{!Lead.Tax_Number_Type__c}" rendered="{!AND($Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>               
+               <apex:inputField value="{!Lead.Tax_Number__c}" rendered="{!AND($Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                
+                <apex:inputField value="{!Lead.Tax_3__c}" rendered="{!AND($Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+        <!--       <apex:inputField value="{!Lead.Contact__c}" rendered="{!NOT($Profile.Name == 'Elite User')}"/>  -->
+                <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="{!$ObjectType.Lead.Fields.Tax_4__c.Label}" rendered="{!AND($ObjectType.Lead.Fields.Tax_4__c.Accessible, $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                    <apex:inputField value="{!Lead.Tax_4__c}" rendered="{!AND($Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!Lead.Sales_Org__c}"  onchange="setTimeout(defaultCustomerType(this,'{!$Component.CustomerType}'),10000000);" id="SalesOrg" rendered="{!AND($Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/> 
+                <!--<apex:inputField value="{!Lead.Sales_Org__c}"  onchange="setTimeout(defaultCustomerType(this,'{!$Component.CustomerType}'),10000000);" id="SalesOrg" rendered="{!salesOrgSection}"/>-->
+              
+                <apex:inputField value="{!Lead.Industry}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                <apex:inputField value="{!Lead.Customer_Type__c}"  id="CustomerType1" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                <apex:inputField value="{!Lead.LeadSource}" id="LeadSource1" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                <apex:inputField value="{!Lead.Customer_Group__c}" id="CustomerGroup1" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                 <apex:inputField value="{!Lead.Source_Desc__c}" style="width:200px;" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                 <apex:inputField value="{!Lead.Customer_Class__c}"  id="CustomerType2" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                 <apex:pageBlockSectionItem rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                 <apex:inputfield value="{!Lead.Industry_LatAm__c}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                 <apex:pageBlockSectionItem rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+                 <apex:inputfield value="{!Lead.Practice_Areas__c}" rendered="{!($Profile.Name == 'Partner Portal User')}"/>
+               
+                <apex:inputField value="{!Lead.LeadSource}" id="LeadSource2" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Type__c}"  id="CustomerType3" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Source__c}" id="LeadSource3" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                <apex:inputField value="{!Lead.Customer_Group__c}" id="CustomerGroup2" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputField value="{!Lead.Source_Desc__c}" style="width:200px;" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputField value="{!Lead.Customer_Class__c}"  id="CustomerType4" rendered="{!($Profile.Name == 'LatAm User')}"/> 
+                 
+                 <apex:pageBlockSectionItem rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:inputfield value="{!Lead.Industry_LatAm__c}" rendered="{!($Profile.Name == 'LatAm User')}"/>
+                 <apex:pageBlockSection />
+                 <apex:inputfield value="{!Lead.Industry}" rendered="{!($Profile.Name == 'LatAm User') }" html-disabled="true"/>
+          
+               
+                <apex:inputField value="{!Lead.Customer_Group__c}" id="CustomerGroup" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                <apex:inputField value="{!Lead.Customer_Type__c}"  id="CustomerType" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                <apex:inputField value="{!Lead.Customer_Class__c}" id="CustomerClass" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/> 
+                
+                <apex:inputField value="{!Lead.LeadSource}" id="LeadSource" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                <!--<apex:inputfield value="{!Lead.Industry_LatAm__c}" rendered="{!OR($Profile.Name == 'TR Business Administrator' , $Profile.Name == 'System Administrator')}"/>-->
+                <apex:inputField value="{!Lead.Industry}" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>
+                <apex:inputField value="{!Lead.Source__c}" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/>  
+                
+                <apex:pageBlockSectionItem rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User', $Profile.Name != 'UKI Users')}" />
+                <apex:inputField value="{!Lead.Source_Desc__c}" style="width:200px;" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'LatAm User' , $Profile.Name != 'Elite User' , $Profile.Name != 'UKI Users')}"/> 
+               
+            </apex:pageBlockSection>
+
+            <apex:pageBlockSection id="SegmentSection" title="{!$Label.LCRM_Ac_Create_Page_Segment_Section}">
+                <apex:inputField value="{!Lead.BU_Segment__c}" required="true"/>
+                <apex:inputField value="{!Lead.ECC_Top_Named_Law_Firms__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Lead.ECC_Number_of_Attorneys__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Lead.ECC_Number_Of_Employees__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Lead.ECC_Top_Named_Corporations__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Lead.ECC_Annual_Revenue__c}" required="true"/>
+                <apex:pageBlockSectionItem />
+                <apex:inputField value="{!Lead.ECC_Government_Type__c}" required="true"/>
+            </apex:pageBlockSection>
+            
+           <apex:pageBlockSection title="{!$Label.Address_Information}" columns="2">
+         <!--      <apex:inputField value="{!Lead.SAPAccountNumber__c}" rendered="{!AND($Profile.Name != 'Partner Portal User' , $Profile.Name != 'Elite User')}"/>  -->
+            <apex:pageBlockSectionItem > 
+                <apex:outputLabel Value="{!$Label.Street_Address}"/>
+                <apex:inputField value="{!Lead.Billing_Street__c}" />
+            </apex:pageBlockSectionItem> 
+            <apex:pageBlockSectionItem > 
+                <apex:outputLabel Value="{!$Label.City_Town}"/>  
+                <apex:inputField value="{!Lead.Billing_City__c}" />
+            </apex:pageBlockSectionItem> 
+            <apex:pageBlockSectionItem > 
+                <apex:outputLabel Value="{!$Label.PO_Box}"/>
+                 <apex:inputField value="{!Lead.PO_Box__c}"/> 
+             </apex:pageBlockSectionItem>  
+      <!--       <apex:pageBlockSectionItem > 
+                  <apex:outputLabel Value="State/Province"/>
+                  <apex:inputField value="{!Lead.Billing_State__c}"/> 
+              </apex:pageBlockSectionItem>  -->
+               <apex:pageBlockSectionItem id="sectionItemState" >
+                    <apex:outputLabel for="selectBillingState" value="{!$Label.State_Province}" />
+                    
+                    <apex:outputPanel layout="block" >
+                        <apex:selectList id="selectBillingState" 
+                            value="{!Lead.Billing_State__c}" 
+                            size="1"
+                            multiselect="false">
+                            
+                            <apex:selectOptions value="{!CountryRegionOptions}" />
+                        </apex:selectList>
+                        
+                        <apex:actionStatus id="statusLoadingCountryRegions">
+                            <apex:facet name="start">
+                                <span>&nbsp;&nbsp;</span>
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:facet>
+                        </apex:actionStatus>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+              
+              <apex:pageBlockSectionItem >
+              <apex:outputLabel Value="{!$Label.Zip_Postal_Code}"/>
+              <apex:inputField value="{!Lead.Billing_Zip__c}"/>
+              </apex:pageBlockSectionItem>
+             <apex:pageBlockSectionItem id="sectionItemCountry" >
+                 
+                    <apex:outputLabel for="selectBillingState" 
+                        value="{!$Label.Country}" />
+                    
+                    <apex:outputPanel layout="block" styleClass="requiredInput">
+                      <div class="requiredBlock"></div>
+                        <apex:actionRegion >  
+                             
+                            <apex:selectList id="selectBillingCountry" 
+                                value="{!Lead.Billing_Country__c}" 
+                                size="1" 
+                                multiselect="false" required="true">
+                                
+                                <apex:selectOptions value="{!CountryOptions}" />
+                                
+                                <apex:actionSupport id="supportBillingCountryOnChange"
+                                    event="onchange"
+                                    action="{!addressCountryChanged}"
+                                    rerender="selectBillingState"
+                                    status="statusLoadingCountryRegions" />
+                            </apex:selectList>
+                        </apex:actionRegion>
+                        <!--</div>-->
+                        <br/>
+                        <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>                               
+               
+                
+            </apex:pageBlockSection>
+            
+     <!--       <apex:pageBlockSection title="Panorama Fields" columns="2">
+                    <apex:inputField value="{!Lead.TRWayLeadMgmt__Panorama_Lead_Source__c}" />
+                    <apex:inputField value="{!Lead.TRWayLeadMgmt__Panorama_Demand_Type__c}" />
+                    <apex:inputField value="{!Lead.TRWayLeadMgmt__Marketing_Nurture_Program__c}" />
+              </apex:pageBlockSection>
+         -->   
+        </apex:pageBlock>
+        
+         <script type="text/javascript">
+           function defaultCustomerType(input,output){
+            
+           if(input.value == "WEST"){
+              CustomerType = document.getElementById(output);
+              CustomerType.options[CustomerType.options.length] = new Option('Organization', 'Organization');
+              document.getElementById(output).value = 'Organization';
+           
+           }
+           
+           
+           
+    }
+    
+      function setResultforLLM(){
+        document.getElementById('thePage:formEdit:blockLead:theSection:SalesOrg').disabled= true;
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerType').disabled= true;
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerClass').disabled= true;
+        
+      }
+      
+      function setResultforNonLLM(){
+        document.getElementById('thePage:formEdit:blockLead:theSection:SalesOrg').disabled= false;
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerType').disabled= false;
+        document.getElementById('thePage:formEdit:blockLead:theSection:CustomerClass').disabled= false;
+        
+      }
+      
+      //Sales org section will be disable for LLM profile, enable for non LLM Profile : Production Issue : MCL-1279
+      var LLMProfile = '{JSENCODE(!salesOrgSection)}';     
+        
+        if(LLMProfile == 'true'){
+           window.onload = setResultforLLM;
+     
+        } else if(LLMProfile == 'false') {
+            window.onload = setResultforNonLLM;
+        }
+     
+      
+      
+            
+    </script>
+
+    </apex:form>
+</apex:page>

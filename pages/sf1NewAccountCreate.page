@@ -1,0 +1,248 @@
+<apex:page id="sf1pageNewAccount" showHeader="false" sidebar="false"
+    action="{!onPageLoad}"
+    controller="AccountCreateController_SF1" docType="html-5.0" >    
+        
+<vs:importvisualstrap />  
+ 
+<vs:visualstrapblock >
+
+    <apex:form id="formEdit" >
+    <script>  
+     function Cancel(){  
+       if(typeof sforce != 'undefined' && typeof sforce.one != 'undefined'){        
+        // sforce.one.back(true); 
+        sforce.one.navigateToURL('/_ui/core/chatter/ui/ChatterPage');
+       }  
+       
+     }  
+     
+     function goToSavedRecord(){  
+     var boolRedirect =  '{!Redirect}';
+      if(boolRedirect =='true'){      
+           if(typeof sforce != 'undefined' && typeof sforce.one != 'undefined'){                
+             sforce.one.navigateToSObject('{!oSavedAccountId}');  
+           }  
+           else{  
+              window.location.href = '/apex/AccountDetail?id='+'{!oSavedAccountId}'; 
+               }  
+           } 
+     } 
+   </script>  
+        <apex:pageMessages id="globalMessages" escape="false" />
+     
+        
+        <apex:pageMessage summary="The Tax Number provided on the account is duplicate." 
+            severity="warning" strength="1" id="taxnumwarning" rendered="{!isDupTaxNum}"/>
+        
+                   
+        <vs:panel id="panelButtons"  type="Default" rendered="{!NOT(HasMatchingAccounts)}" >   
+         <apex:actionStatus id="statusValidateAccount" >
+                <apex:facet name="start">
+                    <apex:outputPanel layout="block" styleClass="message infoM4">
+                        <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">
+                            <apex:panelGroup >
+                                <!--img class="loadingIcon" src="/s.gif" /-->
+                                <img src="/img/loading.gif" height="12px" width="12px"/>
+                            </apex:panelGroup>
+                         <apex:panelGroup >
+                               <div class="messageText">Validating account please wait...</div>
+                           </apex:panelGroup>  
+                        </apex:panelGrid>
+                    </apex:outputPanel>
+              </apex:facet> 
+            </apex:actionStatus> 
+              <vs:buttongroup style="float:right" styleClass="btn-primary btn-lg">
+                <apex:commandButton id="buttonSave" value="Save" action="{!save}"  rendered="{!NOT(HasServiceErrors)}" rerender="formEdit" oncomplete="goToSavedRecord()"   status="statusValidateAccount"  />
+
+                <apex:commandButton id="buttonRetry" value="Retry" action="{!save}" rendered="{!HasServiceErrors}" rerender="formEdit"  oncomplete="goToSavedRecord()" status="statusValidateAccount" />
+                
+                <apex:commandButton id="buttonContinue" value="Continue" reRender="formEdit" action="{!continueSave}"  onComplete="goToSavedRecord()" rendered="{!HasServiceErrors}" />
+                <apex:commandButton id="buttonCancel" value="Cancel" onclick="Cancel()"/>
+
+              </vs:buttongroup>  
+
+            
+           
+            
+        </vs:panel>    
+         <vs:panel id="blockAccountSF1" title="Account Info" type="primary" rendered="{!NOT(HasMatchingAccounts)}"  >   
+               
+        <vs:row >  
+         <vs:column type="col-md-6"> 
+        
+             <vs:formgroup >         
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Name.Label}*" /> 
+              <apex:inputField value="{!oAccount.Name}" required="true" styleClass="form-control" />
+             </vs:formgroup>
+             
+                  <vs:formgroup >        
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Customer_Group__c.Label}*" />  
+              
+              <apex:inputField value="{!oAccount.Customer_Group__c}" styleClass="form-control" required="true" />
+             
+            </vs:formgroup>
+                <vs:formgroup >
+                <apex:outputLabel value="{!$ObjectType.Account.Fields.BillingStreet.Label}" rendered="true"/><i><font color="red"> (or PO Box Field is Required*)</font></i>
+                <apex:inputField value="{!oAccount.BillingStreet}" styleClass="form-control"/>
+              </vs:formgroup>
+
+              <vs:formgroup >
+                <apex:outputLabel value="{!$ObjectType.Account.Fields.Street_Address_2__c.Label}" />
+                <apex:inputField value="{!oAccount.Street_Address_2__c}" styleClass="form-control" />
+              </vs:formgroup>        
+              
+              <vs:formgroup >
+                <apex:outputLabel value="{!$ObjectType.Account.Fields.PO_Box__c.Label}" /><i><font color="red"> (or Billing Street Field is Required*)</font></i>
+                <apex:inputField value="{!oAccount.PO_Box__c}" styleClass="form-control" />
+              </vs:formgroup>
+             
+              <vs:formgroup >
+                <apex:outputLabel value="{!$ObjectType.Account.Fields.BillingCity.Label}*" />
+                <apex:inputField value="{!oAccount.BillingCity}" required="true" styleClass="form-control"/>
+              </vs:formgroup> 
+           </vs:column>                            
+
+         
+         <vs:column type="col-md-6">   
+
+          <vs:formgroup >   
+            <apex:outputLabel for="selectBillingCountry" value="{!$ObjectType.Account.Fields.BillingCountry.Label}*" />
+                
+            <apex:outputPanel layout="block" styleClass="requiredInput">
+              <div class="requiredBlock"></div>
+                <apex:actionRegion >    
+                  <apex:selectList id="selectBillingCountry" 
+                            value="{!oAccount.BillingCountry}" 
+                            size="1"
+                            required="true"
+                            multiselect="false" styleClass="form-control">                                
+                    <apex:selectOptions value="{!CountryOptions}" />                               
+                    <apex:actionSupport id="supportBillingCountryOnChange"
+                            event="onchange"
+                            action="{!addressCountryChanged}"
+                            rerender="selectBillingState"
+                            status="statusLoadingCountryRegions" />
+                  </apex:selectList>
+                </apex:actionRegion>
+                <br/>
+                <apex:message for="selectBillingCountry" styleClass="errorMsg" />
+            </apex:outputPanel>
+          </vs:formgroup> 
+                
+          <vs:formgroup >
+            <apex:outputLabel for="selectBillingState" value="{!$ObjectType.Account.Fields.BillingState.Label}" />
+
+            <apex:outputPanel layout="block" >
+            <apex:selectList id="selectBillingState" 
+            value="{!oAccount.BillingState}" 
+            size="1"
+            multiselect="false" styleClass="form-control">
+
+              <apex:selectOptions value="{!CountryRegionOptions}" />
+            </apex:selectList>
+
+            <apex:actionStatus id="statusLoadingCountryRegions">
+              <apex:facet name="start">
+                <span>&nbsp;&nbsp;</span>
+                <img src="/img/loading.gif" height="12px" width="12px"/>
+              </apex:facet>
+            </apex:actionStatus>
+            </apex:outputPanel>
+          </vs:formgroup>
+         
+          <vs:formgroup >   
+            <apex:outputLabel value="{!$ObjectType.Account.Fields.BillingPostalCode.Label}" />           
+            <apex:inputField value="{!oAccount.BillingPostalCode}" styleClass="form-control"/>
+          </vs:formgroup>
+                   </vs:column>
+         
+         <vs:column type="col-md-6">  
+              <vs:formgroup >
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Sales_Org__c.Label}*" /> 
+              <apex:inputField value="{!oAccount.Sales_Org__c}" required="true" styleClass="form-control"/>
+             </vs:formgroup>
+        
+              <vs:formgroup >        
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Customer_Type__c.Label}*" />  
+             <apex:inputField value="{!oAccount.Customer_Type__c}" required="true" styleClass="form-control" />
+             </vs:formgroup>
+        
+            <vs:formgroup rendered="{!(profileName == 'LatAm User')}">        
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Industry_Code_1__c.Label}*" />  
+              <apex:inputField value="{!oAccount.Industry_Code_1__c}" required="true" styleClass="form-control"/>
+            </vs:formgroup>
+  </vs:column>
+         
+         <vs:column type="col-md-6"> 
+            <vs:formgroup >   
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Industry.Label}*" />        
+              <apex:inputField value="{!oAccount.Industry}" required="true" styleClass="form-control"/>
+            </vs:formgroup>
+             
+             
+             <vs:formgroup rendered="{!(profileName == 'LatAm User')}">
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Tax_Number_Type__c.Label}" />        
+              <apex:inputField value="{!oAccount.Tax_Number_Type__c}" required="true" styleClass="form-control" />
+             </vs:formgroup>
+             
+             <vs:formgroup rendered="{!(profileName == 'LatAm User')}">
+              <apex:outputLabel value="{!$ObjectType.Account.Fields.Tax_Number__c.Label}"  />        
+              <apex:inputField value="{!oAccount.Tax_Number__c}" required="true" styleClass="form-control" />
+             </vs:formgroup>
+             
+         </vs:column>
+        </vs:row>           
+    
+        </vs:panel>  
+            <vs:row > 
+             <vs:column type="col-md-12">  
+                <vs:panel id="sectionDuplicates" title="Potential Duplicate Accounts" type="primary" rendered="{!HasMatchingAccounts}">  
+                <div style="overflow:auto; width:100%; height:130% word-wrap:break-word">
+                    <apex:dataTable id="tableMatchedAccounts" value="{!MatchedAccounts}" var="match"  rows="10" styleClass="table table-condensed table-hover table-bordered breakWord " headerClass="breakWord">  
+
+                    <apex:column headervalue="AcctName/Name2">
+                        <apex:outputText id="textAccountName" 
+                            value="{!match.AccountInfo.Name}" rendered="{!ISNULL(match.Account.Id)}"/>
+                            
+                        
+                        <apex:outputLink id="linkAccountName1" onclick="goToDetailPage('{!match.Account.Id}')"                            
+                            rendered="{!NOT(ISNULL(match.Account.Id))}">{!match.AccountInfo.Name}</apex:outputLink>
+                        
+                        &nbsp;
+                        <apex:outputText id="separator1" value=";" 
+                            rendered="{!If(match.AccountInfo.Name == null || match.Account.NameTwo__c == null, false, true)}" />
+                        <apex:outputtext id="outputAccountName2" value="{!match.Account.NameTwo__c}" rendered="{!ISNULL(match.Account.Id)}"/>
+                       
+                        <apex:outputLink id="linkAccountName2" onclick="goToDetailPage('{!match.Account.Id}')"                            
+                            rendered="{!NOT(ISNULL(match.Account.Id))}">{!match.Account.NameTwo__c}</apex:outputLink>
+                                                
+                    </apex:column>
+                       
+                    <apex:column headerValue="City/State" value="{!match.AccountInfo.City} {!match.Account.BillingState}" 
+                                 rendered="{!If(match.AccountInfo.City == null || match.Account.BillingState == null, true, false)}" />
+                    <apex:column headerValue="City/State" value="{!match.AccountInfo.City}, {!match.Account.BillingState}" 
+                                 rendered="{!If(match.AccountInfo.City != null && match.Account.BillingState != null, true, false)}" />
+                                 
+                    <apex:column headerValue="Indicator/Segment" value="{!match.Account.Account_Indicator__c}; {!match.Account.Market_Segment__c}" 
+                                  rendered="{!If(match.Account.Account_Indicator__c != null && match.Account.Market_Segment__c != null, true, false)}" />   
+                    <apex:column headerValue="Indicator/Segment" value="{!match.Account.Account_Indicator__c} {!match.Account.Market_Segment__c}" 
+                                  rendered="{!If(match.Account.Account_Indicator__c == null || match.Account.Market_Segment__c == null, true, false)}" />                   
+                  
+                     </apex:dataTable>
+                </div>
+        </vs:panel>  
+       </vs:column>    
+     </vs:row>  
+
+  
+     
+    <vs:panel id="panelCreateButtons"  type="Default" rendered="{!HasMatchingAccounts}">  
+     <vs:buttongroup style="float:right"> 
+        <apex:commandButton id="buttonCreate" value="Create Account" action="{!continueSave}" rerender="formEdit"  onComplete="goToSavedRecord()" rendered="{!HasMatchingAccounts}" styleClass="btn-primary"/>    
+      </vs:buttongroup>  
+    </vs:panel>  
+      
+    </apex:form>
+  </vs:visualstrapblock> 
+        
+</apex:page>

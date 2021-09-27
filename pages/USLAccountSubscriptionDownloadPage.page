@@ -1,0 +1,56 @@
+<apex:page id="pageInvoice" pageStyle="PDFCSS" standardController="Account" extensions="LCRMsubscriptionController"
+   renderAs="{!renderAsdoc}"  contentType="{!renderAsExcel}" readOnly="true" tabstyle="Account">
+  
+<apex:stylesheet value="{!URLFOR($Resource.ESC_USLResource,'/USLARDownloadPage/PDFCSS.css')}"/>
+<apex:messages ></apex:messages>
+<apex:outputPanel layout="block" style="overflow:hidden scroll;width: 600px;"> 
+         <apex:outputText value="Subscriptions" style="font-weight:bold;font-size:30px;text-align: center;"></apex:outputText>
+         <br/>
+         <br/>
+         <apex:outputPanel layout="block" rendered="{!sizeOfOpenMap>0}" > 
+        <table id="pdfTable">
+        <tr>
+            <th>Sap Account Number</th>
+            <th>{!$Label.Material_Description}</th>
+            <th>{!$Label.Product_Title}</th>            
+            <th>{!$Label.Material_Number}</th>
+            <th>{!$Label.Quantity}</th>
+            <th>{!$Label.Monthly_Charge}</th>
+            <th>{!$Label.Estimated}<br/>{!$Label.Unit_UpKeep}</th>
+            <th>{!$Label.Contract_Start_Date_Line1}<br/>{!$Label.Contract_Start_Date_Line2}</th>
+            <th>{!$Label.Contract_End_Date_Line1}<br/>{!$Label.Contract_End_Date_Line2}</th>
+            <th>{!$Label.Lapsed_Date}</th>
+            <th>{!$Label.Contract_Description_Line1}<br/>{!$Label.Contract_Description_Line2}</th>
+            <th>{!$Label.Details}</th>
+            <th>FL Sub<br/>{!$Label.FL_Sub_Location_Line2}</th>
+            <th>FL Sub<br/>{!$Label.FL_Sub_Practice_Line2}</th>
+            <th>Banded<br/>Retail Rate</th>
+            <th>Banded<br/>Attorney Count</th>
+            <th>{!$Label.Status}</th>
+        </tr>
+        <apex:repeat var="Olist" value="{!oSelectedmap}">
+        <tr>
+            <td>{!oSelectedmap[Olist].SapAccountNumber}</td>
+            <td>{!oSelectedmap[Olist].materialDescription}</td>
+            <td>{!oSelectedmap[Olist].titleId}</td>
+            <td>{!oSelectedmap[Olist].MaterialNumber}</td>
+            <td>{!oSelectedmap[Olist].Quantity}</td>
+            <td>{!oSelectedmap[Olist].netAmount}</td>
+            <td>{!oSelectedmap[Olist].classificationType}</td>
+            <td>{!oSelectedmap[Olist].startDate}</td>
+            <td>{!oSelectedmap[Olist].endDate}</td>
+            <td>{!oSelectedmap[Olist].lapseDate}</td>
+            <td>{!oSelectedmap[Olist].subscriptionType}</td>
+            <td>{!oSelectedmap[Olist].discountReason}</td>
+            <td>{!oSelectedmap[Olist].locationDescription}</td>
+            <td>{!oSelectedmap[Olist].practiceAreaDescription}</td>
+            <td>{!oSelectedmap[Olist].priceRate}</td>
+            <td>{!oSelectedmap[Olist].userCount}</td>
+            <td>{!oSelectedmap[Olist].subscriptionStatus}</td>
+        </tr>
+        </apex:repeat> 
+        
+    </table>
+   </apex:OutputPanel>   
+   </apex:OutputPanel> 
+</apex:page>

@@ -1,0 +1,373 @@
+<!--
+ - Used To Create Trial from Oppprtunity
+ -
+ - CHANGE HISTORY
+ - ==================================================================================================================================
+ - Date         Name                    Description
+ - 2020-06-27   Rahul Natarajan         DLT-20237 - [ALL] Rep experience UX in lightning
+ - ==================================================================================================================================   
+-->
+
+<apex:page extensions="contactsListCon" standardController="Account" id="thePage" sidebar="false" lightningStylesheets="true">
+  
+  <style>
+        .linkClass {
+            color: blue; //font-size:14px;
+        }
+  </style>
+    
+  <script>
+        window.onload = function() {
+           var opp = '{!oppIDSelected}';
+           var ssd = '{!getSDDRecordId}';
+            if(opp != null && opp != ''){
+                if(ssd != null && ssd != ''){
+                    getSelectedID(ssd,opp);
+                }
+            }
+        };
+   </script>
+   
+   <apex:form >
+        <apex:actionFunction name="cancelfromJS" reRender="SelectedSSDBox" Status="myStatus"/>
+        <apex:actionFunction name="redirectToNCJ" reRender="SelectedSSDBox" Status="myStatus" action="{!newCustomerRedirect}"/> 
+   </apex:form>
+  
+  <apex:sectionHeader id="title" title="" subtitle="On Demand Trials"/>  
+  
+  <apex:outputLink value="/{!accountID}" styleClass="linkClass">{!$Label.Back_To_Account}: {!Account.Name}</apex:outputLink> <br/><br/>
+  
+  <c:ShowSDDRecords passRecordID="{!accountID}" rendered="{!displayComponent}" vfpageName="contactsList"/>
+     
+  <apex:form >
+    <apex:actionFunction name="passTocontroller" action="{!executeAcctSSD}" reRender="pagePanel" Status="myStatus">
+        <apex:param name="a" value="" assignTo="{!getSDDRecordId}"/>
+        <apex:param name="b" value="" assignTo="{!oppIDSelected}"/>
+    </apex:actionFunction>
+  </apex:form>
+  
+  <apex:outputPanel id="pagePanel">
+      <apex:outputPanel id="SelectedSSDBox">
+            <apex:form rendered="{!NOT(displayComponent)}">
+               <apex:pageBlock mode="maindetail">
+                   <apex:pageBlockSection columns="3" >
+                        <apex:outputLabel > <b>Account Name: </b>
+                            <apex:outputLink value="/{!selectedSDDRecord.Id}" target="_blank">{!selectedSDDRecord.Name}</apex:outputLink>
+                        </apex:outputLabel>
+                       <apex:outputLabel ><b>SAP Account Number: </b>{!selectedSDDRecord.Source_System_Account_Number__c}</apex:outputLabel>
+                   </apex:pageBlockSection>
+               </apex:pageBlock>
+               
+               <apex:pageBlock rendered="{!If(selectedOppRecord.ID != null, true, false)}" mode="maindetail">    
+                   <apex:pageBlockSection columns="3" >
+                        <apex:outputLabel > <b>Opportunity Name: </b>
+                            <apex:outputLink value="/{!selectedOppRecord.Id}" target="_blank">{!selectedOppRecord.Name}</apex:outputLink>
+                        </apex:outputLabel>
+                       <apex:outputLabel ><b>Stage: </b>{!selectedOppRecord.StageName}</apex:outputLabel>
+                       <apex:outputLabel ><b>Type: </b>{!selectedOppRecord.Type}</apex:outputLabel>
+                   </apex:pageBlockSection>
+               </apex:pageBlock>
+            </apex:form>
+        </apex:outputPanel>
+        <!--<apex:sectionHeader id="title" title="" subtitle="On Demand Trials"/>-->
+      
+      <apex:form id="theForm" rendered="{!NOT(hasTrialRec)}">
+      <apex:pageMessages id="errMsg"/>
+         <apex:inputHidden id="selectedValue" />
+         <apex:pageBlock id="theBlock">
+            <apex:pageBlockSection showHeader="true" rendered="true" columns="1">
+               <apex:pageBlockTable value="{!contasTodisplay}" var="c" rendered="{!contasTodisplay.size != 0}">
+                  <apex:column headerValue="Select" width="25px;">
+                        <input type="radio" name="sfdccontactId" value="{!c.SAPContactId}" onclick="parseelement(this); refreshDomain('{!c.OLCStatus}','{!c.userDomain}'); " />                         
+                  </apex:column>
+                  <apex:column value="{!c.firstName}" headerValue="First Name" />
+                  <apex:column value="{!c.lastName}" headerValue="Last Name" />
+                  <apex:column value="{!c.EmailID}" headerValue="Email" />
+                  <apex:column value="{!c.OLCStatus}" headerValue="Status" />
+                  <apex:column value="{!c.userDomain}" headerValue="Domain" />
+                  <apex:column value="{!c.SAPContactId}" headerValue="SAP Contact Id" />
+              </apex:pageBlockTable>
+              
+              <apex:outputText rendered="{!NOT(isValid)}" style="width:100%;"> 
+                  <div class="container" >
+                    {!invalidReasonMsg}
+                  </div>    
+              </apex:outputText>
+              
+              <apex:outputText rendered="{!AND(contasTodisplay.size == 0, NOT(hasAlreadyTrialInitiated),isValid,getSDDRecordId != null)}"  >
+                  <div class="container" >
+                       {!$Label.ODT_No_OLC_Contacts_Found}  
+                  </div>
+               <apex:outputText rendered="{!NCJFromECJ}">   
+                  <input type="button" onclick="callNewCustomerJourney();" value="New Customer Trial" id="NCJDetail"/>  
+               </apex:outputText>             
+              </apex:outputText>  
+              <apex:outputText rendered="{!AND(hasAlreadyTrialInitiated,isValid)}" style="width:100%;"> 
+                  <div class="container" >
+                      {!$Label.ODT_already_Trial_initiated}
+                  </div>    
+              </apex:outputText>
+           </apex:pageBlockSection> 
+           
+           <apex:pageBlockSection id="refreshBundle">
+               <apex:outputText rendered="{!contasTodisplay.size != 0}" >
+                    {!$Label.CxD_ODT_select_Domain} &nbsp;&nbsp;
+                    <apex:selectList value="{!selectedCamp}" size="1" multiselect="false" id="domainselect">
+                       <apex:selectOptions value="{!allCampaignslist}"/>
+                    </apex:selectList>
+                     &nbsp; &nbsp;
+                   <apex:commandButton value="Initiate Trials" onclick="return sendItToApex();" reRender="SuccessMsg" rendered="{!NOT(isOLCActive)}" Status="myStatus"/>
+               </apex:outputText>
+                              
+           </apex:pageBlockSection>
+             
+           <!-- DLT-14125 Start:Section to display Trial initiation options when OLC status is active -->
+           <apex:outputPanel id="OnBehalfOf">
+           <apex:pageBlockSection rendered="{!isOLCActive}" id="theonBehalfSection" columns="1" > 
+               <apex:outputText >
+                   <apex:selectRadio id="radio" onclick="checkSelectedTrialOption();" >
+                      <apex:selectOption itemLabel="{!$Label.ODT_OBO_Start_by_Email}" itemValue="{!$Label.ODT_Trial_Initiation_Option1}"  id="startByEmail" ></apex:selectOption>
+                      <apex:selectOption itemLabel="{!$Label.ODT_OBO_start_Immediately}" itemValue="{!$Label.ODT_Trial_Initiation_Option2}" id="startByPhone"></apex:selectOption>
+                   </apex:selectRadio>
+               </apex:outputText>
+               <apex:outputText rendered="{!NOT(displayCheckBox)}" >
+                   <apex:commandButton value="Initiate Trial" onclick="return validateSelectedTrialOption();" reRender="SuccessMsg" Status="myStatus"/>
+               </apex:outputText>
+               <apex:outputText rendered="{!displayCheckBox}">
+                   <p>
+                       {!$Label.ODT_OBO_Text1}<br/>
+                       <apex:inputCheckbox value="{!checkboxText}" id="checkbox" /> {!$Label.ODT_OBO_Text2}
+                       <br/>
+                   </p>
+                   <br/>
+                   <apex:commandButton value="Begin Trial" onclick="return createEntitlement();" reRender="SuccessMsg" Status="myStatus"/>
+               </apex:outputText>
+           </apex:pageBlockSection>
+           </apex:outputPanel>
+           <!--DLT-14125 end -->
+           
+          <apex:pageBlockSection rendered="false" />
+      </apex:pageBlock>
+      
+      <apex:actionFunction action="{!startTrial}" name="callToApexFromJs" reRender="SuccessMsg,errMsg" Status="myStatus">
+          <apex:param name="selectedContact" value=""/>
+          <apex:param name="selectedDomain" value=""/>
+          <apex:param name="emailOrPhone" value=""/>
+      </apex:actionFunction>
+          
+      <apex:actionFunction action="{!refreshDomain}" name="refreshDomainFromJS" rerender="refreshBundle,OnBehalfOf" status="myStatus">
+         <apex:param name="OLCStatus" value="" />
+         <apex:param name="UserDomain" value="" />
+      </apex:actionFunction>
+          
+      <apex:actionFunction action="{!refreshTrialSelectionOptions}" name="refreshTrialInitiationOptions" rerender="OnBehalfOf" status="myStatus">
+         <apex:param name="selectedTrialoption" value=""/>
+      </apex:actionFunction>    
+          
+      <apex:actionFunction action="{!startTrial}" name="createEntitlementFromJS" rerender="SuccessMsg,errMsg" status="myStatus">
+         <apex:param name="selectedContact" value=""/>
+         <apex:param name="selectedDomain" value=""/>
+         <apex:param name="emailOrPhone" value=""/>
+     </apex:actionFunction> 
+  </apex:form>
+  
+  <apex:form id="HasalreadyTrial" rendered="{!hasTrialRec}">
+      <apex:pageblock >
+          <apex:pageBlockSection columns="1">
+              <div class="container" >
+                  {!$Label.ODT_Salesrep_Has_Trial}
+              </div>    
+          </apex:pageBlockSection>
+      </apex:pageblock>
+      <br/><br/>
+     <!-- <apex:outputLink value="/{!accountID}">Back To Account</apex:outputLink>/>--->
+  </apex:form>
+   
+  <apex:form >
+     <apex:outputPanel id="SuccessMsg">
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!eloquaEmailTriggered}"/>  
+           <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!eloquaEmailTriggered}"> 
+                    <br/><br/> {!$Label.ODT_Salesrep_success}
+               <br/><br/><br/><br/>
+               <apex:commandButton value="Back To Account" action="{!closeEloquaPopup}" rerender="tstpopup" styleClass="successbtn" Status="myStatus"/>
+           </apex:outputPanel> 
+      </apex:outputPanel> 
+  </apex:form>
+   
+ </apex:outputPanel>
+ 
+   <apex:outputText >
+       <apex:actionStatus id="myStatus" >
+            <apex:facet name="start" >
+              <div id="loadingDivStatus"/>                   
+            </apex:facet>
+        </apex:actionStatus>
+   </apex:outputText> 
+   
+   <style type="text/css">
+     .custPopup{
+            background-color: white;
+            border: 3px solid rgba(47,86,135,1);
+            border-style: solid;
+            z-index: 9999;
+            position: absolute;
+            top:100px;
+            border-radius: 10px;
+            display: block;
+          font-size: 1.5em;
+          font-family: sans-serif;
+          padding: 1em 2em;
+          margin: 2em auto;
+          width: 80%;      
+          text-align: center;
+        }
+       
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+
+        .successbtn{
+             width:250px;
+            }
+   </style>
+    
+   <script>
+      function parseelement(ele){
+           
+            var selVal = ele.getAttribute('value');
+             document.getElementById('{!$Component.thePage.theForm.selectedValue}').value =selVal;
+      }
+      
+      function refreshDomain(OLCStatus,UserDomain){
+        
+        if(OLCStatus!=null  && OLCStatus!=''){
+            if(UserDomain!=null  && UserDomain!=''){
+                refreshDomainFromJS(OLCStatus,UserDomain);
+                
+            }
+         }
+      }
+    
+      function checkSelectedTrialOption(){
+         var theRadioButtonSet = document.getElementsByName('{!$Component.thePage.theForm.theBlock.theonBehalfSection.radio}');
+         var selectedTrialoption;
+         for (var x = 0; x < theRadioButtonSet.length; x++) {
+              if(theRadioButtonSet[x].checked){
+                selectedTrialoption=theRadioButtonSet[x].value;
+              }
+          }
+         refreshTrialInitiationOptions(selectedTrialoption);
+      }
+    
+      function validateSelectedTrialOption(){
+         var theRadioButtonSelected = document.getElementsByName('{!$Component.thePage.theForm.theBlock.theonBehalfSection.radio}');
+         var selectedoption;
+         for (var x = 0; x < theRadioButtonSelected.length; x++) {
+              if(theRadioButtonSelected[x].checked){
+                selectedoption=theRadioButtonSelected[x].value;
+              }
+          }
+          if(selectedoption==null){
+            alert('{!$Label.ODT_Validation_Check_On_Trial_Option}');
+          }else{
+            sendItToApex();
+          }
+      }
+      
+      function sendItToApex(){
+             
+             var selectedVal =document.getElementById('{!$Component.thePage.theForm.selectedValue}').value;
+             var selectedDomain =document.getElementById('{!$Component.thePage.theForm.theBlock.refreshBundle.domainselect}').value;
+             var emailOrPhone =false;
+             if(!selectedVal){
+                 alert('{!$Label.ODT_Select_Contact}');
+                 return false;
+             }
+             
+             if(!selectedDomain){
+                 alert('{!$Label.ODT_Trials_Select_Domain}');
+                 return false;
+             }
+             callToApexFromJs(selectedVal, selectedDomain, emailOrPhone);
+             return true;
+        }
+    
+        function createEntitlement(){
+             var selectedVal =document.getElementById('{!$Component.thePage.theForm.selectedValue}').value;
+             var selectedDomain =document.getElementById('{!$Component.thePage.theForm.theBlock.refreshBundle.domainselect}').value;
+			 
+             var checkbox =document.getElementById('{!$Component.thePage.theForm.theBlock.theonBehalfSection.checkbox}').checked; 
+             var emailOrPhone=true;
+             if(!selectedVal){
+                 alert('{!$Label.ODT_Select_Contact}');
+                 return false;
+             }
+             
+             if(!selectedDomain){
+                 alert('{!$Label.ODT_Trials_Select_Domain}');
+                 return false;
+             }
+            
+            if(!checkbox){
+                 alert('{!$Label.ODT_Checkbox_Validation_Msg}');
+                 return false;
+             }
+             createEntitlementFromJS(selectedVal, selectedDomain, emailOrPhone);
+             return true;
+        }
+        
+        function getSelectedID(selectedID, selectedOppID){
+            passTocontroller(selectedID, selectedOppID);
+        }
+        
+      function callNewCustomerJourney(){
+            redirectToNCJ();
+        } 
+  </script>
+    
+  <style>
+       .container{
+          border: 3px solid rgba(47,86,135,1);
+          border-radius: 10px;
+          display: block;
+          font-size: 1.5em;
+          font-family: sans-serif;
+          padding: 1em 2em;
+          margin: 2em auto;
+          width: 80%;
+          
+          text-align: center;
+         } 
+   </style>
+        
+   <style>
+          #loadingDivStatus{
+                position:fixed;
+                top:0px;
+                left:0px;
+                width:100%;
+            height: 100%; //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)
+        }
+
+        ) 50% 50% no-repeat #666;
+                
+                z-index:99999;
+        opacity: 0.4;
+        /* You can adjust the opacity */
+
+        filter: alpha(opacity=40);
+        /* For IE8 and earlier */
+
+            }
+   </style>
+    
+</apex:page>

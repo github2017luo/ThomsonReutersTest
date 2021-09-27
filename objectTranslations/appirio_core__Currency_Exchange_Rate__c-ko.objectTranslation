@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>환율 환율</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>이 조회는 날짜 화폐 환율이 적용되는 통화 레코드를 나타냅니다. 비율은 항상 명시된 통화의 금액이 지정된 유효일에 법인 통화의 1 (1) 단위와 동일한 지 여부로 정의됩니다.</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>날짜가 더 큰 날짜 범위에서 사용 중이더라도 날짜 환율이 실제로 적용되는 날짜입니다. 환율 변환은 항상 (즉 오늘 또는 그 이전) 가장 최근의 환율을 찾습니다.</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>이 환율이 만료되는 날짜를 지정합니다 (있을 경우). 환율은 만료일 전날까지 유효하며, 공란 일 경우 만료되지 않습니다.</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>이 옵션을 선택하면이 통화 환율 기록이 테스트 모드에서만 사용되고 &apos;실제&apos;(생산) 환율 변환에 사용되지 않음을 나타냅니다.</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>선택하면이 통화 환율 기록이 유효하지 않으며 사용되지 않음을 나타냅니다</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>통화에 대한 후속 환율의 유효 날짜를 정의합니다. 가장 최근의 요금은 비어 있습니다. 이 필드는 시스템에 의해 자동으로 설정되어야합니다.</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>참조 된 통화와 조직 통화에 대한 일자 환율의 수치를 정의합니다.</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <nameFieldLabel>환율 환율 번호</nameFieldLabel>
+</CustomObjectTranslation>

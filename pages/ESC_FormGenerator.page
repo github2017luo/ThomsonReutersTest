@@ -1,0 +1,318 @@
+<apex:page controller="ESC_FormGenratorController" showHeader="false" sidebar="false" docType="html-5.0" standardStylesheets="true">
+    <style>
+        .myCLS {
+            color: orange;
+            font-family: verdana;
+            font-size: 150%;
+            text-align: left;
+            padding-left: 29% !important;
+        }
+        
+        .pbBottomButtons{
+            display:none;
+        }
+
+        .invisible {
+            display: none !important;
+        }
+
+        table,
+        tr,
+        th,
+        td {
+            border: 0 !important;
+            text-align: left !important;
+            vertical-align: bottom !important;
+        }
+
+        .labelCol .detailList {
+            text-align: left !important;
+            float: left !important;
+        }
+
+        .blockOP {
+            
+        }
+        
+        .masterDiv{
+             background-color: lightgrey;
+             overflow: scroll;
+             width: 90%;
+    border: 3px black;
+    padding: 5px;
+    margin: 5px;
+        }
+        
+    </style>
+    <apex:slds />
+    <apex:form >
+        <div class="masterDiv">
+        <apex:pageBlock mode="edit">
+        
+           
+<apex:pageMessages id="msgs" /> 
+            <apex:facet name="header">
+                <apex:outputText styleClass="myCLS" id="header" escape="false" value="{!gForm.Form_Header__c}" />
+            </apex:facet>
+            <apex:repeat value="{!sectionIDS}" var="sectionID" rendered="{!!hasError}">
+                <div class="blockOP">
+                    <c:ESC_FormGeneratorComp id="compID" sectionID="{!sectionID}" singleExtensionN="{!singleExtension}" singleExtensionLineItemsListN="{!singleExtensionLineItemsList}" sectionDetail="{!esd}" sectionDescriber="{!sectionDescriberMap[sectionIdentifierMap[sectionID]]}" ikey="{!sectionIdentifierMap[sectionID]}" ipageController="{!this}" />
+                </div>
+            </apex:repeat>
+            <apex:pageBlockButtons location="bottom" styleClass="pButtonVIsibile" rendered="{!!hasError}">
+                <apex:commandButton styleClass="submitBTN" value="Save" onclick="savealert(); return false;" rerender="msgs" status="fetchStatus"></apex:commandButton>
+                <apex:commandButton value="Exit" onclick="closeItNow();return false;"></apex:commandButton>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+    
+        <apex:actionFunction name="resetMSGS" rerender="msgs2"></apex:actionFunction>
+        <apex:actionFunction action="{!saveTheResults}" name="saveNow" rerender="msgs" oncomplete="Refreshtab(); return false;" status="fetchStatus"></apex:actionFunction>
+        <apex:actionFunction action="{!adderrorMessage}" name="addPageLevelErrorForTextBoxes" rerender="msgs" oncomplete="window.scrollTo(0,0);return false;" />
+        <apex:actionFunction action="{!onloadrerender}" name="rerenderonload" rerender="op1,msgs" />
+         <apex:actionStatus id="fetchStatus">
+        <apex:facet name="start">
+            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                &nbsp;
+            </div>
+            <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                <img src="/img/loading.gif" />
+            </div>
+        </apex:facet>
+    </apex:actionStatus>
+        </div>
+    </apex:form>
+    <apex:outputPanel id="op1">
+        <script>
+            var x = JSON.parse('{!initView}');
+            tryme(x);
+
+            function tryme(x) {
+                j$ = jQuery.noConflict();
+                if (x != '') {
+                    x = x.substring(1, x.length - 1).split(",");
+                }
+                for (c in x) {
+                    element = j$("[divid = '" + x[c].trim() + "']");
+                    if (element.hasClass("invisible")) {
+                        element.removeClass("invisible");
+                        element.addClass("visible");
+                        element.closest('.blockOP').removeClass("invisible");
+                        element.closest('.blockOP').addClass("visible");
+                    }
+                }
+            }
+        </script>
+    </apex:outputPanel>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-ui.min.js')}" />
+    <script src="/support/console/42.0/integration.js" type="text/javascript"></script>
+    <script>
+        j$ = jQuery.noConflict();
+        j$(document).ready(function() {
+            //        console.log('ready called');
+            //        console.log( j$(".mandate"));
+            onPageFLoad(true);
+        });
+        
+        function hideRow(elem, rownum){
+            console.log('hideRow caled');
+            var cName = j$(elem).attr('class');
+       
+           j$("a[class='"+cName+"']").closest('tr').hide();
+        }
+
+        function onPageFLoad(isFirstRun) {
+            j$(".mandate").wrap("<div class='requiredInput'></div>");
+            j$(".mandate").after("<div class='requiredBlock'></div>");
+            //rerenderonload();
+            j$(".lookupInput").closest("div").find("select").removeAttr("onchange");
+            j$(".lookupInput").closest("div").removeAttr("onchange");
+            j$(".lookupInput").closest("span").find("a").removeAttr("onchange");
+            
+            
+            //hide unneceessary pbbuttonbottom
+            j$(".pButtonVIsibile").closest("div").css("display", "block");
+            
+            if(isFirstRun){
+            j$(".typpicklist").each(function(){
+                value = j$(this).val();
+                if(value.length >0)
+                 perormChangeEvents(this, "", "", "data", 0, true);
+            });
+            }
+        }
+
+        function deleteRowJS(sectionID, rowNumber, elem) {
+            console.log('del row caled' + rowNumber);
+            console.log(sectionID);
+            console.log(j$("[tableID = '" + sectionID + "']"));
+            window['delRow' + sectionID](rowNumber);
+        }
+
+        function savealert() {
+          var co = confirm('Are you Sure?');
+                    if (co) {
+                        saveNow();
+                    } else {
+                        return false;
+                    }
+            
+          
+        }
+       // console.log = function() {};
+        function perormChangeEvents(currElement, sectionName, sectionID, fieldDescription, rownum, isfirst) {
+              try { 
+           // console.log('performCHangeEent called'+fieldDescription);
+        
+            var events = [];
+            selectedElement = j$(currElement);
+            if(fieldDescription.indexOf('data') !=-1 && selectedElement.hasClass('typpicklist')){
+             
+             var text = (selectedElement.attr('onchange').split('data+'))[1];
+              text = (text.substr(0, text.indexOf(']')+1));
+              // console.log(text );
+              text =text.replace(/(&quot\;)/g,"\"");
+               text =text.replace(/(&amp;)/g,"&");
+             //console.log(text );
+             events = JSON.parse(text);
+            
+            //console.log(events);
+            selectedValue = selectedElement.val();
+            //imitateFormSubmit(j$(currElement),sectionID,selectedValue, rownum  );
+            var hasBeenRenderedInThisCycle = '';
+            console.log('selectedValue ' + selectedValue);
+         j$(events).each(function() {
+
+    try {
+       // if (selectedValue != this.fieldRerenederValue) {
+            if (this.sectionToReRender != null && this.sectionToReRender !=
+                'xxx' && !isfirst) {
+
+                element = j$("[divid = '" + this.sectionToReRender +
+                    "']");
+                element.addClass("invisible");
+                element.removeClass("visible");
+                try {
+
+                   window['formRerenderCall' + this.sectionToReRender](false);
+                } catch (e) {
+                    console.log(
+                        'after hide error formRerenderCall' +
+                        this.sectionToReRender);
+                }
+            }
+
+       // }
+    } catch (e) {
+        console.log('error1');
+        // console.log(e);
+    }
+});
+j$(events).each(function() {
+
+    try {
+        if (selectedValue == this.fieldRerenederValue) {
+
+            if (this.url != null && this.url != 'xxx') {
+                if (!sforce.console.isInConsole())
+                    window.location.href = this.url;
+                else {
+                    urlToOpen = this.url;
+                    console.log('urlToOpen' + urlToOpen);
+                    openURL(urlToOpen);
+                }
+
+            } else if (this.sectionToReRender != null &&
+                this.sectionToReRender !=
+                'xxx') {
+
+                element = j$("[divid = '" + this.sectionToReRender +
+                    "']");
+
+                element.removeClass("invisible");
+                element.addClass("visible");
+                hasBeenRenderedInThisCycle = true;
+
+                try {
+                     window['formRerenderCall' + this.sectionToReRender](true);
+                } catch (e) {
+                    console.log(
+                        'pos visible formRerenderCall' +
+                        this.sectionToReRender);
+                }
+            }
+
+        }
+    } catch (e) {
+        console.log('error1');
+        console.log(e);
+    }
+});
+            
+            hideBlocksWithInvisible();
+            }
+              }
+            catch(e){
+                console.log(e);
+            }
+        }
+
+        function openURL(urlToOpen) {
+            /* sforce.console.getFocusedPrimaryTabId(function showTabId(result) {
+                    //Display the tab ID
+                    sforce.console.openSubtab(result.id, urlToOpen, false,
+
+                        undefined, null,
+                        function ad() {});
+
+                });*/
+            myWindow = window.open(urlToOpen);
+            closeItNow();
+        }
+
+        function hideBlocksWithInvisible() {
+            j$('.invisible').closest('.blockOP').addClass("invisible");
+            j$('.invisible').closest('.blockOP').removeClass("visible");
+            j$('.visible').closest('.blockOP').removeClass("invisible");
+        }
+        //  function executePostAction(){
+        //          Refreshtab();
+        //      }
+        
+        function Refreshtab() {
+            if('Theme4u' == '{!JSENCODE($User.UIThemeDisplayed)}'){
+                //alert('In lightning');
+                if (j$('.infoM3').length > 0){
+                    alert('Your data saved succesfully!! This form will now close');
+                    sforce.console.getFocusedSubtabId(function(result){
+                        sforce.console.closeTab(result.id);
+                    });    
+                    sforce.console.getEnclosingPrimaryTabId(function(result) {
+                        sforce.console.refreshPrimaryTabById(result.id, true);
+                    });
+                }
+            }
+            else{
+                sforce.console.getFocusedSubtabId(function(result1){
+                    var showTabId = result1.id;
+                    // Display the tab ID
+                    //alert ('Sub Tab ID: ' + result1.id);
+            
+                    });    
+            sforce.console.getEnclosingPrimaryTabId(function(result) {
+                var PrimaryTabId = result.id;
+                
+                    //alert ('PrimaryTab ID: ' + PrimaryTabId );
+                sforce.console.refreshPrimaryTabById(PrimaryTabId, true);
+            });
+        }
+        }
+
+        function closeItNow() {
+            sforce.console.getEnclosingTabId(function(result) {
+                var tabId = result.id;
+                sforce.console.closeTab(tabId);
+            });
+        }
+    </script>
+</apex:page>

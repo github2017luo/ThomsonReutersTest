@@ -1,0 +1,809 @@
+<!--
+============================================================================================== 
+PAGE FOR VIEWING THE PROPERTIES OF A NOTICE
+REQUIRES THE ID OF A NOTICE, I.E:
+
+    [SF base URL]/Apex/[VF Page Name]?Id=[Notice id]
+
+ProvenWorks for Improved Apps
+Copyright (c.) Improved Apps Limited 2012. All Rights Reserved.
+============================================================================================== 
+ -->
+
+<apex:page standardController="ianb__Notice__c" extensions="ianb.ControllerExtensionNoticeEdit" 
+        showHeader="true" sidebar="true" tabStyle="ianb__Notice__c" 
+        title="{!BrandingLocalisations['ProductName']}: {!DialogueLocalisations['TitleDialogueTitle']}">
+        
+    <apex:stylesheet value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/css/tabpanel.css')}"/>
+    <style>
+        body .individualPalette .secondaryPalette.bPageBlock.bDetailBlock {border-top: 3px #FC4F59 solid;}
+        body .rich-tabpanel-content     {padding: 0 0 0 0; background-color: transparent; color: inherit; font-family: inherit; font-size: inherit; border: none;}
+        .bPageTitle .ptBody .content    {width: 95%;}
+        .UpdatesPending *               {color: #FC4F59;}
+        .UpdatesPendingWarning          {color: #FC4F59; font-size: 1.2em; font-weight: bold; text-align: center; padding: 5px 15px 5px 15px;}
+        .Diags                          {color: red;}
+    </style>
+
+    <apex:includeScript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/lib/jquery-3.5.1.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/lib/jquery.blockUI.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/js/jsEditOps.js')}" />
+
+
+    <table width="100%">
+        <tr>
+            <td>
+                <apex:sectionHeader subtitle="{!ianb__Notice__c.ianb__Title__c}" title="{!BrandingLocalisations['NoticeObjectName']}" />
+                
+                <!-- Diagnostics - typically rare cases, such as lack of rights to amend a viewed notification -->                        
+                <span class="Diags">
+                    {!Diags}
+                </span>                      
+            </td>
+            
+            <td style="vertical-align: middle;text-align: right; width:50px;">
+                <apex:image style="max-width:172px;" height="100px" value="{!ianb__Notice__c.ianb__NoticeBoard_Theme_Image_URL__c}" rendered="{!AND(NOT(ISNULL(ianb__Notice__c.ianb__NoticeBoard_Theme_Image_URL__c)), NOT(BEGINS(ianb__Notice__c.ianb__NoticeBoard_Theme_Image_URL__c, 'javascript:')))}" / >
+            
+                <span style="display: {!IF(showDiagnostics, 'inline', 'none')};">            
+                    {!DialogueLocalisations['InternationalisationDiagnostics']}            
+                </span>             
+            </td>
+        </tr>
+    </table>
+    
+    <script type="text/javascript">
+        
+      
+        var jQ = $.noConflict(true);
+        var requiredAction = '';
+        
+        // To control certain behaviours by browser type
+        // Actually, we can only offer "intelligent" button disabling for Chrome, so isFirefox in fact means
+        // "is not Chrome" !
+
+        //var isChrome = !!window.chrome && !!window.chrome.webstore;
+        var isChrome = !!window.chrome;
+
+        var isFirefox = !isChrome;       
+        jQ(document).ready(function () {
+        
+                if (isFirefox == true) {
+                    jQ('.btnPublishFF').show();
+                    jQ('.btnPublishNonFF').hide();
+                } else {
+                    jQ('.btnPublishFF').hide();
+                    jQ('.btnPublishNonFF').show();
+                }
+        });
+        
+
+        function blockRecipientTable() {
+           jQ('#recipientsResultPanel').block({
+               fadeIn: 0,
+               fadeOut: 0,
+               message: '<h1><img src="/img/loading.gif" style="vertical-align:middle;" />&nbsp;{!GlobalLocalisations['AdviceLabelLoading']}</h1>',
+               css: {
+                   border: 'none',
+                   backgroundColor: 'transparent',
+                   width: 'auto',
+                   left: '40%',
+                   color: '#4a4a56'
+               },
+               overlayCSS: {
+                   backgroundColor: '#fff',
+                   opacity: 0.8
+               }
+           });
+        }
+    
+        function unblockRecipientTable() {
+            jQ('#recipientsResultPanel').unblock({
+                fadeIn: 0,
+                fadeOut: 0
+            });
+        }
+    
+        function slctSize_OnChange(select) {
+            var table = jQ('[id$="tblRecipients"]');
+            if (table.length && table[0].rows.length > 0) {                 
+                refreshPage(select.options[select.selectedIndex].value);
+            }
+        }
+            
+        function txtNumber_OnChange(input) {
+            var table = jQ('[id$="tblRecipients"]');
+            if (table.length && table[0].rows.length > 0) {                 
+                goToPage(input.value);
+            }
+        }
+            
+        function setCookie (name, value, expires) {
+            document.cookie = name + "={!ianb__Notice__c}_" + escape(value) +
+            ((expires) ? "; expires=" + expires : "") +
+            "; path=/";
+        }
+    
+        function tab_ontabenter(tabName) {      
+            var expire = new Date();
+            expire.setTime(expire.getTime() + 60000*20);
+            setCookie('apex__ActiveTab', tabName, expire);
+        }
+        
+        function approvalConfirm() {
+            return confirm('{!JSENCODE(DialogueLocalisations['MessageConfirmSubmitForApproval'])}');
+        }
+        
+        function voidConfirm() {
+            var reason = prompt("{!JSENCODE(DialogueLocalisations['MessageConfirmVoidNotice'])}", "");
+            if (reason != null) {
+                jQ('[id$=hidVoidReason]').val(reason.trim());
+                return true;
+            }
+            return false;
+        }
+        
+
+        function publishConfirm() {
+            var externalUsers = {!ExternalUsersCount};
+            var cnf;
+            
+            // If using Firefox, just do a straight confirm
+            
+            if (isFirefox == true) {
+                if (externalUsers) {
+                    return confirm('{!JSENCODE(DialogueLocalisations['MessageConfirmPublishNoticeWithExternals'])} {!ExternalUsersCount}');
+                }
+                else {
+                    return confirm('{!JSENCODE(DialogueLocalisations['MessageConfirmPublishNotice'])}');
+                }
+                
+            } else {
+                if (externalUsers) {
+                    cnf = confirm('{!JSENCODE(DialogueLocalisations['MessageConfirmPublishNoticeWithExternals'])} {!ExternalUsersCount}');
+                }
+                else {
+                    cnf = confirm('{!JSENCODE(DialogueLocalisations['MessageConfirmPublishNotice'])}');
+                }
+                
+                if (cnf == true) {
+                    enableButton('.PublishButton', false);
+                    doPublish();
+                }
+                
+            }
+            
+        }
+        
+        // Enable / Disable buttons
+        function enableButton(btn, isEnabled) {
+            if (!isEnabled) {
+                jQ(btn).removeClass('btn');
+                jQ(btn).addClass('btnDisabled');
+                jQ(btn).attr('disabled', 'disabled');
+            } else {
+                jQ(btn).removeClass('btnDisabled');
+                jQ(btn).addClass('btn');
+                jQ(btn).removeAttr('disabled');
+            }
+        }
+        
+        
+                            
+        function deletionConfirm() {
+            return confirm('{!JSENCODE(GlobalLocalisations['MessageDeleteWarning'])}');
+        }
+        
+        function completedRefreshOptions() {
+        }
+        
+        function openPreview() {
+            var queryString;
+            
+            // Differentiate preview by required action: "Visit URL" types should simply open the desired URL
+            if ('{!JSENCODE(Notice__c.RequiredAction__c)}' == 'Visit URL') {//added JSENCODE for Stored xss 
+                queryString = '{!JSENCODE(Notice__c.Detail__c)}';
+            } else {
+                queryString = jQ('input[id*="hidQueryString"]').val();
+            }
+            
+            var params = "menubar=no,location=no,resizable=yes,scrollbars=yes,status=no";
+            return window.open(queryString, "PreviewNotification", params);
+            
+        }
+    
+        jQ(document).ready(function() {     
+            var c = jQ('[id$=txtRequiredAction_ileinner]');
+            requiredAction = c.val() || c.text();
+            window.setInterval(function() {
+                var ra = c.val() || c.text();
+                if (requiredAction != ra) {
+                    requiredAction = ra;
+                    refreshOptions(ra);
+                }
+            }, 200);            
+            
+        });
+        
+        
+        
+    </script>
+            
+    <apex:pageMessages id="pbMessages" />
+    
+    
+    <apex:actionStatus id="waitingRecipientsStatus" onstart="blockRecipientTable()" onstop="unblockRecipientTable()" />
+    
+    <apex:tabPanel switchType="client" id="AccountTabPanel" tabClass="activeTab" inactiveTabClass="inactiveTab" value="{!ActiveTab}">
+
+
+<!--   
+===============================================
+NOTICE DEFINITION TAB
+===============================================
+ -->            
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabNoticeDefinition']}" name="DraftNotice" id="tabDraftNotice" ontabenter="tab_ontabenter('DraftNotice');">
+            <apex:form >
+                <apex:inputHidden value="{!ianb__Notice__c.ianb__VoidReason__c}" id="hidVoidReason" />
+                <apex:outputPanel id="outQueryString"><apex:inputHidden id="hidQueryString" value="{!QueryStringValue}" /></apex:outputPanel>        
+
+                <apex:actionFunction name="refreshOptions" rerender="pbsOptionsSection,pbMessages" oncomplete="completedRefreshOptions();">
+                    <apex:param name="param1" assignTo="{!ianb__Notice__c.ianb__RequiredAction__c}" value="" />
+                </apex:actionFunction>
+                <apex:actionFunction name="getQueryString" action="{!GeneratePreviewUrl}" rerender="outQueryString" oncomplete="openPreview();" />
+
+                <apex:pageBlock mode="maindetail" title="{!DialogueLocalisations['TitleSubtitleNoticeDefinition']}">
+
+<!--   
+...............................................
+Command buttons
+...............................................
+ -->                                            
+                    <apex:pageBlockButtons location="top">
+                        <apex:commandButton action="{!edit}" id="editButton" value="{!GlobalLocalisations['ButtonEdit']}" style="display:{!IF(IsError, 'none', 'inline')};" rendered="{!ISNULL(ianb__Notice__c.ianb__PublishedDate__c)}" disabled="{!IsEditDisabled}"/>
+                        <apex:commandButton action="{!delete}" id="deleteButton" value="{!GlobalLocalisations['ButtonDelete']}" style="display:{!IF(IsError, 'none', 'inline')};" disabled="{!IsDeletionDisabled}" onclick="return deletionConfirm();"/>
+                        
+                        <apex:commandButton action="{!CloneNotice}" 
+                                            id="cloneButton" 
+                                            value="{!GlobalLocalisations['ButtonClone']}" 
+                                            style="display:{!IF(IsError, 'none', 'inline')};"
+                                            oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                                            
+                        <apex:commandButton action="{!SaveNotice}" 
+                                            id="saveButton" 
+                                            value="{!GlobalLocalisations['ButtonSave']}" 
+                                            style="display:{!IF(IsError, 'inline', 'none')};"
+                                            />
+<!-- 
+                                            oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+ -->                                            
+                        
+                        <apex:commandButton action="{!cancel}" id="cancelButton" value="{!GlobalLocalisations['ButtonCancel']}" style="display:{!IF(IsError, 'inline', 'none')};"/>
+                        <apex:commandButton action="{!SelectRecipients}" id="selectRecipient" value="{!DialogueLocalisations['TitleSubtitleSelectRecipients']}" style="display:{!IF(IsError, 'none', 'inline')};" disabled="{!IsSelectionRecipientsDisabled || UpdatesPending}"/>
+                        <apex:commandButton action="{!SubmitForApproval}" id="submitForApprovalButton" value="{!GlobalLocalisations['ButtonSubmitForApproval']}"  rendered="{!IsSubmitForApprovalAvailable}" style="display:{!IF(IsError, 'none', 'inline')};" onclick="return approvalConfirm();"/>
+
+                        <!--
+                        Publish btn switching - to allow for different behavious of confirms in FF: see doc ready function above 
+                         -->
+                        <apex:actionFunction name="doPublish" action="{!Publish}" />
+                        
+                        <span class="btnPublishNonFF" style="display: none;">
+                            <apex:commandButton id="publishButton"   
+                                                styleClass="PublishButton" 
+                                                value="{!GlobalLocalisations['ButtonPublish']}" 
+                                                rendered="{!IsPublishAvailable && !UpdatesPending}" 
+                                                style="display:{!IF(IsError, 'none', 'inline')};" 
+                                                onclick="publishConfirm();" />
+                        </span>
+                        
+                        <span class="btnPublishFF" style="display: none;">
+                            <apex:commandButton id="publishButtonFF" 
+                                                styleClass="PublishButton" 
+                                                value="{!GlobalLocalisations['ButtonPublish']}"  
+                                                rendered="{!IsPublishAvailable && !UpdatesPending}" 
+                                                style="display:{!IF(IsError, 'none', 'inline')};" 
+                                                onclick="return publishConfirm();" 
+                                                action="{!Publish}"  />
+                        </span>
+                        
+                        
+                        <apex:commandButton action="{!Suspend}" id="suspendButton"
+                                            value="{!GlobalLocalisations['ButtonSuspendPublication']}"
+                                            rendered="{!IsSuspendAvailable}"
+                                            style="display:{!IF(IsError, 'none', 'inline')};"
+                                            oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                       
+                        <apex:commandButton action="{!Close}" 
+                                            id="closeButton" 
+                                            value="{!GlobalLocalisations['ButtonCloseNotice']}" 
+                                            rendered="{!IsCloseAvailable}" 
+                                            style="display:{!IF(IsError, 'none', 'inline')};"
+                                            oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                        
+                        <apex:commandButton action="{!VoidNotice}"
+                                            value="{!GlobalLocalisations['ButtonVoidNotice']}"
+                                            rendered="{!IsVoidAvailable}" id="voidButton"
+                                            onclick="return voidConfirm();"
+                                            oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');"/>
+                        
+                    <input class="btn" type="button" onclick="getQueryString()" value="{!GlobalLocalisations['ButtonPreviewNotification']}" />
+                    </apex:pageBlockButtons>   
+
+                    <apex:pageBlockSection columns="1" collapsible="false" showHeader="false">
+                    </apex:pageBlockSection>          
+                    
+<!--   
+...............................................
+Fixed fields
+...............................................
+ -->                            
+                    <apex:pageBlockSection columns="2" collapsible="false" showHeader="false">
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelSignatory']}" value="{!ianb__Notice__c.ianb__Signatory__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField> 
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelNoticeBoard']}" value="{!ianb__Notice__c.ianb__NoticeBoard__c}" />
+                         
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelTitle']}" value="{!ianb__Notice__c.ianb__Title__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovalRequired']}" value="{!ianb__Notice__c.ianb__ApprovalRequired__c}" >
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelRequiredAction']}" id="txtRequiredAction" value="{!ianb__Notice__c.ianb__RequiredAction__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField> 
+                         <apex:outputField label="{!DialogueLocalisations['FieldLabelNoticeApprover']}" value="{!ianb__Notice__c.ianb__NoticeApprover__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>                 
+                    </apex:pageBlockSection>
+                    
+<!--   
+...............................................
+Options around response, scheduling, votes etc.
+...............................................
+ -->                            
+                    <apex:pageBlockSection id="pbsOptionsSection" columns="2" collapsible="false" showHeader="false"> 
+                        <apex:outputText />
+                        <apex:outputText />
+                        
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelNotificationResponseOption']}" value="{!ianb__Notice__c.ianb__NotificationResponseOption__c}" rendered="{!ianb__Notice__c.ianb__RequiredAction__c=='Read and Acknowledge'}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        <apex:outputText value="" rendered="{!ianb__Notice__c.ianb__RequiredAction__c!='Read and Acknowledge'}" />
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelPublicationOption']}" value="{!ianb__Notice__c.ianb__PublicationOption__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>                                
+        
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelVoteChoices']}" value="{!ianb__Notice__c.ianb__VoteChoices__c}" rendered="{!ianb__Notice__c.ianb__NotificationResponseOption__c=='Vote'}" style="width:275px;">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        <apex:outputText rendered="{!ianb__Notice__c.ianb__NotificationResponseOption__c=='Vote'}" />
+    
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelAllowComment']}" value="{!ianb__Notice__c.ianb__AllowComment__c}" rendered="{!ianb__Notice__c.ianb__RequiredAction__c=='Read and Acknowledge'}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        <apex:outputText rendered="{!ianb__Notice__c.ianb__RequiredAction__c=='Read and Acknowledge'}" />
+        
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelBannerActionMessage']}" value="{!ianb__Notice__c.ianb__BannerActionMessage__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelAutoPublishDate']}" value="{!ianb__Notice__c.ianb__AutoPublishDate__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelRequiredActionDeadline']}" value="{!ianb__Notice__c.ianb__RequiredActionDeadline__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>                                
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelSuspensionOption']}" value="{!ianb__Notice__c.ianb__SuspensionOption__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                                         
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelAcknowledgementStatement']}" value="{!ianb__Notice__c.ianb__AcknowledgementStatement__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>         
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelAutoSuspendDate']}" value="{!ianb__Notice__c.ianb__AutoSuspendDate__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                    </apex:pageBlockSection>
+                    
+<!--   
+...............................................
+Summary, Details, Custom style
+...............................................
+ -->                            
+                    <apex:pageBlockSection columns="1" collapsible="false" showHeader="false">
+                        <apex:outputText value=" " />
+
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelSummary']}" value="{!ianb__Notice__c.ianb__Summary__c}">
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                        
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelCustomStyle']}" value="{!ianb__Notice__c.ianb__CustomStyle__c}" >
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>           
+                        
+                        <!-- Note conditional labelling of details field depending on Required Action -->
+                        <apex:outputField label="{!IF(Notice__c.RequiredAction__c == 'Visit URL', DialogueLocalisations['FieldLabelURL'], 
+                                                            IF(Notice__c.RequiredAction__c == 'Click to Dismiss', DialogueLocalisations['FieldLabelDismissalMessage'], 
+                                                            DialogueLocalisations['FieldLabelDetail']))}" 
+                                                        value="{!ianb__Notice__c.ianb__Detail__c}">
+                                                        
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField> 
+                    </apex:pageBlockSection>
+                        
+<!--   
+...............................................
+Image & Preview, Salutation
+...............................................
+ -->                            
+                    <apex:pageBlockSection columns="2" collapsible="false" showHeader="false"> 
+
+                        <apex:outputText />
+                        <apex:outputText />
+
+                        <apex:pageBlockSectionItem >   
+                            <apex:outputLabel value="{!DialogueLocalisations['FieldLabelImageURL']}" for="txtImageURL" />
+                            <apex:outputText id="txtImageURL" value="{!ianb__Notice__c.ianb__ImageURL__c}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:pageBlockSectionItem >  
+                            <apex:outputLabel value="{!DialogueLocalisations['AdviceLabelImage']}" />        
+                            <apex:image onclick="javascript:window.open('{!ianb__Notice__c.ianb__ImageURL__c}');" title="{!DialogueLocalisations['AdviceLabelImage']}" alt="{!DialogueLocalisations['AdviceLabelImage']}" url="{!ianb__Notice__c.ianb__ImageURL__c}" height="75" style="border: none;'" />
+                        </apex:pageBlockSectionItem>
+
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelSalutation']}" value="{!ianb__Notice__c.ianb__Salutation__c}" >
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+
+                        <apex:outputField label="{!DialogueLocalisations['FieldLabelSalutationOther']}" value="{!ianb__Notice__c.ianb__Salutation_Other__c}" rendered="{!ianb__Notice__c.ianb__Salutation__c=='Other'}" >
+                            <apex:inlineEditSupport showOnEdit="saveButton, cancelButton" hideOnEdit="editButton,deleteButton,cloneButton,selectRecipient,submitForApprovalButton,publishButton,suspendButton,closeButton" event="ondblclick" />
+                        </apex:outputField>
+                    </apex:pageBlockSection>
+                    
+<!--   
+...............................................
+System Information
+...............................................
+ -->                            
+                    <apex:pageBlockSection columns="2" collapsible="false" showHeader="false">
+                        <apex:outputText />
+                        <apex:outputText />
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="{!GlobalLocalisations['FieldLabelCreatedBy']}" for="txtCreatedBy" />
+                            <apex:outputText id="txtCreatedBy" value="{!ianb__Notice__c.CreatedBy.Name}" />
+                        </apex:pageBlockSectionItem>
+                        
+                        <apex:outputField label="{!GlobalLocalisations['FieldLabelCreatedDate']}" value="{!ianb__Notice__c.CreatedDate}" />
+                        
+                        <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="{!GlobalLocalisations['FieldLabelOwner']}" for="txtOwner" />
+                            <apex:outputPanel >
+                                <apex:outputLink id="txtOwner" value="/{!ianb__Notice__c.Owner.Id}">{!ianb__Notice__c.Owner.Name}</apex:outputLink>
+                                &nbsp;
+                                <apex:outputLink value="/{!ianb__Notice__c.Id}/a?retURL={!ianb__Notice__c.Id}">{!GlobalLocalisations['ButtonChangeOwner']}</apex:outputLink>
+                            </apex:outputPanel>
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection> 
+                </apex:pageBlock>
+            </apex:form>      
+        </apex:tab>
+
+<!--   
+===============================================
+SELECTED RECIPIENTS TAB
+===============================================
+ -->            
+        <!-- NB: when viewing a notice, tab is SelectED Recipients - only Select(ing) when actually engaged in doing so / editing -->
+        <apex:tab label="{!DialogueLocalisations['AdviceLabelStep3ModeIndividual']}" name="SelectRecipients" id="tabSelectRecipients" ontabenter="tab_ontabenter('SelectRecipients');" disabled="{!IsNew}">
+            <apex:form >
+            
+            <apex:actionFunction name="firstPage" action="{!FirstClick}" reRender="recipientsPanel, pbMessages" status="waitingRecipientsStatus"/>
+            <apex:actionFunction name="prevPage" action="{!PreviousClick}" reRender="recipientsPanel, pbMessages" status="waitingRecipientsStatus"/>
+            <apex:actionFunction name="nextPage" action="{!NextClick}" reRender="recipientsPanel, pbMessages" status="waitingRecipientsStatus"/>
+            <apex:actionFunction name="lastPage" action="{!LastClick}" reRender="recipientsPanel, pbMessages" status="waitingRecipientsStatus"/>
+            <apex:actionFunction name="refreshPage" action="{!RefreshPage}" reRender="recipientsPanel, pbMessages" status="waitingRecipientsStatus">
+                <apex:param name="pageSize" assignTo="{!pageSize}" value="25" />
+            </apex:actionFunction>     
+            <apex:actionFunction name="goToPage" action="{!GoToPage}" reRender="recipientsPanel, pbMessages" status="waitingRecipientsStatus">
+                <apex:param name="pageNumber" assignTo="{!PageNumberString}" value="1" />
+            </apex:actionFunction>
+            <apex:actionFunction name="filterRecipients" action="{!FilterRecords}" reRender="filterPanel, recipientsPanel, pbMessages" status="waitingRecipientsStatus">
+                <apex:param name="alphaFilter" assignTo="{!AlphaFilter}" value="All" />
+            </apex:actionFunction>
+
+                  
+            <apex:pageBlock title="{!DialogueLocalisations['AdviceLabelStep3ModeIndividual']}" mode="maindetail">
+                <apex:pageBlockButtons location="top" >
+                    <apex:commandButton action="{!delete}" value="{!GlobalLocalisations['ButtonDelete']}" disabled="{!IsDeletionDisabled}" onclick="return deletionConfirm();"/>
+                    
+                    <apex:commandButton action="{!CloneNotice}" 
+                                        value="{!GlobalLocalisations['ButtonClone']}" 
+                                        style="display:{!IF(IsError, 'none', 'inline')};"
+                                        oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                    
+                    <apex:commandButton action="{!SelectRecipients}" value="{!DialogueLocalisations['TitleSubtitleSelectRecipients']}" disabled="{!IsSelectionRecipientsDisabled || UpdatesPending}"/>
+                    <apex:commandButton action="{!SubmitForApproval}" value="{!GlobalLocalisations['ButtonSubmitForApproval']}" rendered="{!IsSubmitForApprovalAvailable}" onclick="return approvalConfirm();"/>
+
+                    <!--
+                    Publish btn switching - to allow for different behavious of confirms in FF: see doc ready function above 
+                     -->
+ 
+                    <span class="btnPublishNonFF" style="display: none;">
+                        <apex:commandButton id="publishButton2"   
+                                            styleClass="PublishButton" 
+                                            value="{!GlobalLocalisations['ButtonPublish']}" 
+                                            rendered="{!IsPublishAvailable && !UpdatesPending}" 
+                                            style="display:{!IF(IsError, 'none', 'inline')};" 
+                                            onclick="publishConfirm();" />
+                    </span>
+
+                    <span class="btnPublishFF" style="display: none;">
+                        <apex:commandButton id="publishButtonFF2" 
+                                            styleClass="PublishButton" 
+                                            value="{!GlobalLocalisations['ButtonPublish']}"  
+                                            rendered="{!IsPublishAvailable && !UpdatesPending}" 
+                                            style="display:{!IF(IsError, 'none', 'inline')};" 
+                                            onclick="return publishConfirm();" 
+                                            action="{!Publish}" />
+                    </span>
+
+                    <apex:commandButton action="{!Suspend}" 
+                                        value="{!GlobalLocalisations['ButtonSuspendPublication']}" 
+                                        rendered="{!IsSuspendAvailable}"
+                                        oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                                        
+                    <apex:commandButton action="{!Close}" 
+                                        value="{!GlobalLocalisations['ButtonCloseNotice']}" 
+                                        rendered="{!IsCloseAvailable}"
+                                        oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                                        
+                    <apex:commandButton action="{!VoidNotice}"
+                                        value="{!GlobalLocalisations['ButtonVoidNotice']}"
+                                        rendered="{!IsVoidAvailable}" id="voidButton"
+                                        onclick="return voidConfirm();" 
+                                        oncomplete="confirmComplete(this, '{!JSENCODE(Diags)}');" />
+                                        
+                </apex:pageBlockButtons> 
+
+    <!--
+    -----------------------------------------------------
+    Apex Jobs (Recipient updates) Pending warning
+    -----------------------------------------------------
+     -->  
+                <apex:inputHidden value="{!ianb__Notice__c.ianb__UpdatesPending__c}" />
+                <div class="UpdatesPendingWarning" style="display: {!IF(UpdatesPending == true, 'block', 'none')};">
+                    <apex:outputText value="{!GlobalLocalisations['AdviceLabelUpdatesPending']}" />
+                </div>
+
+    <!--
+    -----------------------------------------------------
+    Advice message only when in List Mode pre-publication
+    -----------------------------------------------------
+     -->                                                 
+                <apex:pageBlockSection columns="1" collapsible="false" showHeader="false"> 
+                    <apex:pageBlockSectionItem rendered="{!NOT(HasResult) && ianb__Notice__c.ianb__NoticeMode__c == 'List'}">
+                        <apex:outputPanel >
+                            {!DialogueLocalisations['AdviceLabelNumbersTBAFull']}
+                            <br/>
+                            
+                            <ul>
+                                <apex:repeat value="{!RecipientListInfo}" var="RLI">
+                                    <li>
+                                        <apex:outputLink rendered="{!RecipientListInfo[RLI] != '#'}" value="/{!RecipientListInfo[RLI]}" target="_Blank"><apex:outputText value="{!RLI}" /></apex:outputLink>
+                                        <apex:outputText rendered="{!RecipientListInfo[RLI] == '#'}" value="{!RLI}" />
+                                    </li>
+                                </apex:repeat>
+                            </ul>
+                            
+                            <br/>
+                            <b>{!DialogueLocalisations['AdviceLabelNumbersTBAImplied']} {!RecipientListAprxCount}</b>
+
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem> 
+
+    <!--
+    -----------------------------------------------------
+    Recipient list & alpha selectors in all other cases
+    -----------------------------------------------------
+     -->                                                 
+                    <apex:pageBlockSectionItem rendered="{!ianb__Notice__c.ianb__NoticeMode__c == 'User' || HasResult}"> 
+                                        
+                        <apex:outputPanel >
+                            <apex:outputPanel id="filterPanel">
+                                <div class="rolodex">
+                                    <apex:repeat value="{!AlphaFilterList}" var="item"><a class="listItem{!IF(item=='All',' listItemLast','')}" href="javascript:filterRecipients('{!item}')"><span class="{!IF(AlphaFilter!=item,'listItemPad','listItemSelected')}">{!item}</span></a></apex:repeat>
+                                </div>
+                            </apex:outputPanel>
+
+                            <apex:outputPanel id="recipientsPanel" >
+
+                                <div id="recipientsResultPanel" class="{!IF(UpdatesPending == true, 'UpdatesPending', '')}">
+                                    <apex:pageBlockTable id="tblRecipients" value="{!notificationList}" var="rec">
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelRecipientFullName']}" value="{!rec.Recipient__r.Name}" />
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelRole']}" value="{!rec.Recipient__r.UserRole.Name}" />
+                                        <apex:column rendered="{!CanViewSetup}" headerValue="{!DialogueLocalisations['ColumnLabelProfile']}" value="{!rec.Recipient__r.Profile.Name}" />
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelNotificationStatus']}" value="{!rec.ianb__NotificationStatus__c}" />
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelDisplayedDate']}" value="{!rec.ianb__DisplayedDate__c}"/>
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelOpenedDate']}" value="{!rec.ianb__OpenedDate__c}"/>
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelAcknowledgedDate']}" value="{!rec.ianb__AcknowledgedDate__c}"/>
+                                        <apex:column headerValue="{!DialogueLocalisations['ColumnLabelAcknowledgedAndFlagged']}" value="{!rec.ianb__AcknowledgedAndFlagged__c}"/>              
+                                    </apex:pageBlockTable>
+                                    
+                                    <apex:outputPanel rendered="{!NOT(HasResult)}" layout="block" style="border-bottom:1px solid #CCCCCC;border-right:1px solid #CCCCCC;border-left:1px solid #CCCCCC;font-size:1em;font-weight:normal;text-align:center;">
+                                        {!GlobalLocalisations['AdviceLabelNoRecords']}
+                                    </apex:outputPanel>
+                                </div>
+
+                            </apex:outputPanel>
+                        </apex:outputPanel>
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>  
+            </apex:pageBlock>
+            </apex:form>         
+        </apex:tab> 
+
+<!--   
+===============================================
+NOTICE APPROVAL TAB
+===============================================
+ -->            
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabNoticeApproval']}" name="Approval Processes" id="tabApprovalProcesses" ontabenter="tab_ontabenter('Approval Processes');" disabled="{!IsApprovalDisabled}" rendered="{!IsApprovalRequired}">
+            <apex:relatedList list="ProcessSteps" ></apex:relatedList>
+        </apex:tab> 
+                           
+<!--   
+===============================================
+NOTICE STATUS TAB
+===============================================
+ -->            
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabNoticeStatus']}" name="MonitorProgress" id="tabMonitorProgress" ontabenter="tab_ontabenter('MonitorProgress');" disabled="{!IsNew}">
+            <apex:form >
+            <apex:pageBlock title="Notice Status" mode="maindetail">
+                
+                <apex:pageBlockButtons location="top">
+                    <!-- 
+                    <apex:commandButton value="{!GlobalLocalisations['ButtonRefreshStats']}" action="{!RefreshNotificationsCount}" rendered="{!ISNULL(Notice__c.SuspendedDate__c)}" />                   
+                     -->
+
+                    <apex:commandButton value="{!GlobalLocalisations['ButtonRefreshStats']}" action="{!RefreshNotificationsCount}" />                   
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockSection columns="2" collapsible="false" showHeader="false" >
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNoticeStatus']}" value="{!ianb__Notice__c.ianb__NoticeStatus__c}" />
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNumSelectedRecipients']}" value="{!ianb__Notice__c.ianb__SelectedRecipients__c}" />
+                    
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovalStatus']}" value="{!ianb__Notice__c.ianb__ApprovalStatus__c}"/>
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNumIssued']}" value="{!ianb__Notice__c.ianb__IssuedNotifications__c}" />
+                    
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovalRequestSubmittedDate']}" value="{!ianb__Notice__c.ianb__ApprovalRequestSubmittedDate__c}" />
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNumDisplayed']}" value="{!ianb__Notice__c.ianb__DisplayedNotifications__c}" />
+                    
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelRejectedDate']}" value="{!ianb__Notice__c.ianb__RejectedDate__c}"/>
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNumOpened']}" value="{!ianb__Notice__c.ianb__OpenedNotifications__c}" />
+                                    
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelApprovedDate']}" value="{!ianb__Notice__c.ianb__ApprovedDate__c}" />
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNumAcknowledged']}" value="{!ianb__Notice__c.ianb__AcknowledgedNotifications__c}" />
+                    
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelAutoPublishDate']}" value="{!ianb__Notice__c.ianb__AutoPublishDate__c}" />
+                    <apex:outputText rendered="{!ianb__Notice__c.ianb__AcknowledgedAndFlaggedNotifications__c == 0}" />
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelNumAcknowledgedFlagged']}" rendered="{!ianb__Notice__c.ianb__AcknowledgedAndFlaggedNotifications__c != 0}" value="{!ianb__Notice__c.ianb__AcknowledgedAndFlaggedNotifications__c}" />                 
+            
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelPublishedDate']}" value="{!ianb__Notice__c.ianb__PublishedDate__c}"/>
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelStatisticsRefreshed']}" value="{!ianb__Notice__c.ianb__NotificationStatisticsRefreshed__c}" />
+                    
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelAutoSuspendDate']}" value="{!ianb__Notice__c.ianb__AutoSuspendDate__c}"/>
+                    <apex:outputText />                 
+                   
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelSuspendedDate']}" value="{!ianb__Notice__c.ianb__SuspendedDate__c}"/>
+                    <apex:pageBlockSectionItem rendered="{!IsLightning==false}">
+                        <apex:outputText />
+                        <apex:outputPanel >
+                            <a title="{!DialogueLocalisations['TipButtonAnalyseStatus']}"                              
+                               href="{!urlList[0]}" >
+                         <!--  href="/00OU0000001PEfl?drillcol=FK_CUSTENT_ID&drillval={!URLENCODE(LEFT(Notice__c.Id, 15))}&drilldown=1">  -->  
+                                {!DialogueLocalisations['ButtonAnalyseStatus']}
+                            </a>                                                                                             
+                        </apex:outputPanel> 
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!IsLightning==true}">
+                        <apex:outputText />
+                        <apex:outputPanel >
+                            <a title="{!DialogueLocalisations['TipButtonAnalyseStatus']}" 
+                                href="{!urlList[1]}">
+                                {!DialogueLocalisations['ButtonAnalyseStatus']}
+                            </a>
+                        </apex:outputPanel> 
+                    </apex:pageBlockSectionItem>
+                     
+                     
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelClosedDate']}" value="{!ianb__Notice__c.ianb__ClosedDate__c}"/>
+                    <apex:outputText rendered="{!ianb__Notice__c.ianb__NotificationResponseOption__c != 'Vote'}" />
+                    <apex:pageBlockSectionItem rendered="{!ianb__Notice__c.ianb__NotificationResponseOption__c == 'Vote' && IsLightning==false}">
+                        <apex:outputText />
+                        <apex:outputPanel >
+                            <a title="{!DialogueLocalisations['TipButtonAnalyseVotes']}" 
+                               href="{!urlList[2]}">
+                          <!-- href="/00OU00000032Xeu?drillcol=FK_CUSTENT_ID&drillval={!URLENCODE(LEFT(Notice__c.Id, 15))}&drilldown=1"> -->
+                           
+                            
+                                {!DialogueLocalisations['ButtonAnalyseVotes']}
+                            </a>
+                        </apex:outputPanel> 
+                    </apex:pageBlockSectionItem>
+                     <apex:pageBlockSectionItem rendered="{!ianb__Notice__c.ianb__NotificationResponseOption__c == 'Vote' && IsLightning==true}">
+                        <apex:outputText />
+                        <apex:outputPanel >
+                            <a title="{!DialogueLocalisations['TipButtonAnalyseVotes']}" 
+                                href="{!urlList[3]}">
+                                {!DialogueLocalisations['ButtonAnalyseVotes']}
+                            </a>
+                        </apex:outputPanel> 
+                    </apex:pageBlockSectionItem>
+                    <apex:outputField label="{!DialogueLocalisations['FieldLabelVoidReason']}" value="{!ianb__Notice__c.ianb__VoidReason__c}"/>
+                    <apex:outputText rendered="{!ianb__Notice__c.ianb__AllowComment__c == false}" />
+                    <apex:pageBlockSectionItem rendered="{!ianb__Notice__c.ianb__AllowComment__c == true && IsLightning==false}">
+                        <apex:outputText />
+                        <apex:outputPanel >
+                            <a title="{!DialogueLocalisations['TipButtonAnalyseComments']}" 
+                                href="{!urlList[4]}">
+                       <!--     href="/00OU00000032XhU?drillcol=FK_CUSTENT_ID&drillval={!URLENCODE(LEFT(Notice__c.Id, 15))} &drilldown=1 "> -->
+                                {!DialogueLocalisations['ButtonAnalyseComments']}
+                            </a>
+                        </apex:outputPanel> 
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem rendered="{!ianb__Notice__c.ianb__AllowComment__c == true && IsLightning==true}">
+                        <apex:outputText />
+                        <apex:outputPanel >
+                            <a title="{!DialogueLocalisations['TipButtonAnalyseComments']}" 
+                                href="{!urlList[5]}">
+                                {!DialogueLocalisations['ButtonAnalyseComments']}
+                            </a>
+                        </apex:outputPanel> 
+                    </apex:pageBlockSectionItem>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+            </apex:form>
+             <!--c:NoticeViewStatusTab /-->    
+        </apex:tab>
+
+<!--   
+===============================================
+NOTICE HISTORY TAB
+===============================================
+ -->            
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabNoticeHistory']}" name="Notice History" id="tabNoticeHistory" ontabenter="tab_ontabenter('Notice History');">
+            <c:GenericHistory myObject="{!ianb__Notice__c}" recordLimit="50"/>        
+        </apex:tab>
+             
+<!--   
+===============================================
+OPEN ACTIVITIES TAB
+===============================================
+ -->
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabOpenActivities']}" name="Open Activities" id="tabOpenActivities" ontabenter="tab_ontabenter('Open Activities');">
+            <apex:relatedList subject="{!ianb__Notice__c}" list="OpenActivities" />
+        </apex:tab>
+             
+<!--   
+===============================================
+ACTIVITY HISTORY TAB
+===============================================
+ -->            
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabActivityHistory']}" name="Activity History" id="tabActivityHistory" ontabenter="tab_ontabenter('Activity History');">
+            <apex:relatedList subject="{!ianb__Notice__c}" list="ActivityHistories" />         
+        </apex:tab>
+
+<!--   
+===============================================
+NOTES AND ATTACHMENTS TAB
+===============================================
+ -->            
+        <apex:tab label="{!DialogueLocalisations['TitleSubtitleTabNotes']}" name="Notes and Attachments" id="tabNotesAndAttachments" ontabenter="tab_ontabenter('Notes and Attachments');">
+            <apex:relatedList subject="{!ianb__Notice__c}" list="CombinedAttachments">
+            </apex:relatedList> 
+            <p><strong>{!DialogueLocalisations['AdviceLabelWarningNotesAndAttachments']}</strong></p>            
+        </apex:tab>
+
+    </apex:tabPanel>
+</apex:page>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>CaseNumber</field>
+        <field>Owner</field>
+        <field>Account</field>
+        <field>Status</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>FindLaw_Customer_Support</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <label>Step2</label>
+        <name>Step2</name>
+    </approvalStep>
+    <description>FindLaw customer credit requests less than $2,000</description>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <criteriaItems>
+            <field>Case.ANZ_Issue__c</field>
+            <operation>equals</operation>
+            <value>Billing</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Reason__c</field>
+            <operation>equals</operation>
+            <value>Credit/Returns Request</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Case.Total_Credit_Amount__c</field>
+            <operation>lessOrEqual</operation>
+            <value>&quot;USD 2,000&quot;</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>User.Profile</field>
+            <operation>equals</operation>
+            <value>TR Legal FindLaw User</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <label>FL Customer Credit Request 1</label>
+    <processOrder>1</processOrder>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

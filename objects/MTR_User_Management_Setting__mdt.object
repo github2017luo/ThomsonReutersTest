@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This metadata stores the settings for My TR user management service</description>
+    <fields>
+        <fullName>Source_Name__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Source Name</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ENTWRP</fullName>
+                    <default>true</default>
+                    <label>ENTWRP</label>
+                </value>
+                <value>
+                    <fullName>TFMS</fullName>
+                    <default>false</default>
+                    <label>TFMS</label>
+                </value>
+                <value>
+                    <fullName>MYTR</fullName>
+                    <default>false</default>
+                    <label>MYTR</label>
+                </value>
+                <value>
+                    <fullName>HANA</fullName>
+                    <default>false</default>
+                    <label>HANA</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Supported_Locales__c</fullName>
+        <description>This is the custom field to store supported locales/languages for respective Business Units.</description>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>Supported Locales</label>
+        <length>255</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>System__c</fullName>
+        <externalId>false</externalId>
+        <fieldManageability>DeveloperControlled</fieldManageability>
+        <label>System</label>
+        <required>false</required>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>S2E</fullName>
+                    <default>true</default>
+                    <label>S2E</label>
+                </value>
+                <value>
+                    <fullName>GLI</fullName>
+                    <default>false</default>
+                    <label>GLI</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>MTR User Management Setting</label>
+    <pluralLabel>MTR User Management Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

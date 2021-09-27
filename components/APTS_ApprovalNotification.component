@@ -1,0 +1,42 @@
+<apex:component controller="Apttus_CQApprov.CartApprovalEmailController" extensions="APTS_ProductConfigApprovalExtension" access="global">
+    <apex:attribute name="ApprovalRequestSO" 
+                    description="This is the Approval Request SObject." 
+                    type="Apttus_Approval__Approval_Request__c" 
+                    access="global"
+                    assignTo="{!requestSO}" />
+    
+    <apex:attribute name="ApprovalRecipientSO" 
+                    description="This is the Approval Recipient SObject." 
+                    type="User" 
+                    access="global"
+                    assignTo="{!recipientSO}" />
+    
+    <div>
+        <b>Approval Actions: </b> <apex:outputField value="{!requestSO.Apttus_QPApprov__ProposalId__r.Apttus_QPApprov__Approval_Status__c}" /><br /><br />
+    </div>
+    <div>
+        <b>Approval Request Approver Comments: </b> <apex:outputField value="{!requestSO.Apttus_Approval__Approver_Comments__c}" /><br /><br />
+    </div>
+    <div>
+        
+        <b>Customer Number: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.Source_System_Account_Number__c}" /><br />
+        <b>Customer Name: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.Name}" /><br />
+        <b>Frozen Market Segment: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.LCRM_Frozen_Market_Segment__c}" /><br />
+        <b>Submitting Rep: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Owner.Name}" /><br />
+        <b>Approval Request Comments: </b> 
+        <apex:outputField value="{!requestSO.Apttus_Approval__SubmissionComment1__c}" /> 
+        <apex:outputField value="{!requestSO.Apttus_Approval__SubmissionComment2__c}" /> 
+        <apex:outputField value="{!requestSO.Apttus_Approval__SubmissionComment3__c }" /> 
+        <br />
+        <b>Customer Category: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.Apttus_QPConfig__Proposald__r.APTS_SSD_Sold_To__r.APTS_Customer_Category__c}" /><br />
+        <b>Value of New Holdings: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.APTS_New_Holdings__c}" /><br />
+        <b>Value of Lapsed Holdings: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.APTS_Lapsed_Holdings__c}" /><br />
+        <b>Value of Current Holdings: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.APTS_Current_Holdings__c}" /><br />
+        <b>Incremental Growth: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.APTS_Incremental_Growth__c}" /><br />
+        <b>Least Contract Term: </b> <apex:outputField value="{!requestSO.Apttus_CQApprov__CartId__r.APTS_Least_Contract_Term__c}" /><br /> 
+        <b>Approval Request Assigned To: </b> <apex:outputField value="{!requestSO.Apttus_Approval__Assigned_To_Name__c}" /><br />
+    </div>
+    <br />
+
+    
+</apex:component>

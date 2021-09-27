@@ -1,0 +1,259 @@
+<apex:page standardController="Account" extensions="USL_ServiceNotesESI" id="pageServiceNotes">
+<apex:includeScript value="/support/console/42.0/integration.js"/>
+<apex:form id="formServiceNotes">
+<style>
+.linkClass {
+            color:blue;
+            font-size:11px;
+        }
+.columnClass {
+    text-align:left;
+}
+.requiredClass {
+    background-color:#C00000;
+}
+</style>  
+<script>
+    function ServiceNoteDetailPopup(linkId)
+    {            
+        var pp = document.getElementById('snDetail_loading');            
+        pp.style.display='block';
+        var longDesc = document.getElementById('pageServiceNotes:formServiceNotes:ServiceNoteDetailSection:sectionServiceNote:sectionitemlongDesc:longDesc');
+        longDesc.value = longDesc.value.replace("* ","replacedfirstoccurence");
+        longDesc.value = longDesc.value.replace(/\* /g,"\n* ");
+        longDesc.value = longDesc.value.replace("replacedfirstoccurence","* ");
+        longDesc.value = unescape(longDesc.value);
+    }
+    function CloseServiceNoteDetailPopup()
+    {            
+        var pp = document.getElementById('snDetail_loading');
+        pp.style.display='none';
+        var tbl = document.getElementById('pageServiceNotes:formServiceNotes:blockServiceNotesResults:tableServiceNotes');
+        tbl.style.display = 'block';
+
+    }
+    function getClickedLinkPosition(linkId)
+    {
+        var tbl = document.getElementById('pageServiceNotes:formServiceNotes:blockServiceNotesResults:tableServiceNotes');
+        tbl.style.display = 'none';  
+
+    }    
+</script>
+    
+<script>
+window.onload = function(){
+    document.getElementById("ServiceNotesESI").focus();
+};
+    var closeSubtab = function closeSubtab(result) {                
+        var tabId = result.id;
+        sforce.console.closeTab(tabId);
+        
+    };    
+function testOpenSubtab(){
+        
+        if('Theme4u' == '{!$User.UIThemeDisplayed}'){
+           sforce.console.getEnclosingTabId(closeSubtab);
+        }else{
+            window.self.close();
+        }
+        
+        if (sforce.console.isInConsole()) { 
+        sforce.console.getEnclosingTabId(closeSubtab);
+
+        } else {                          
+        var url = '/{!Account.Id}';        
+        window.open(url,'_top'); 
+        } 
+    }
+</script>
+<apex:sectionHeader id="pageTitle" title="" subtitle="Service Notes" />
+&nbsp;&nbsp;&nbsp;<a href="#" onclick="testOpenSubtab();" style="color:#015BA7;">Back to {!Account.Name}</a> <!--SFD-16-->
+
+                    &nbsp;<br/>
+<apex:messages id="msg"/>
+        <apex:actionStatus id="ServiceNoteDetail_Status">
+            <apex:facet name="start" >
+            <div class="waitingSearchDiv" id="el_loading" style="background-color: #fbfbfb; height: 100%;opacity:0.90;width:100%;">
+                <div class="waitingHolder" style="top:50%">        
+                Loading...
+                </div>
+            </div>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:pageBlock id="blockServiceNotes">
+            <apex:pageBlockSection title="Enter Date Range" columns="2" collapsible="false" id="sectionDate">                
+                <apex:pageblockSectionItem id="sectionDateItem1">
+                    <apex:outputLabel for="fromdt" >From</apex:outputLabel>
+                    <apex:panelGroup >
+                    <!--<apex:inputField required="true" id="fromdt" value="{!DateRange.Begin_Date__c}"/>-->
+                    <span class="requiredClass">&nbsp;</span>
+                    <apex:inputText required="false" size="10" id="fromdt" value="{!dFromDt}" onfocus="DatePicker.pickDate(true, 'pageServiceNotes:formServiceNotes:blockServiceNotes:sectionDate:sectionDateItem1:fromdt', false);"/>
+                    </apex:panelGroup>
+                </apex:pageblockSectionItem>  
+                <apex:pageBlockSectionItem id="sectionDateItem2">                    
+                    <apex:outputLabel for="todt" >To</apex:outputLabel>
+                    <apex:panelGroup >                      
+                       <!--<apex:inputField required="true" id="todt" value="{!DateRange.End_Date__c}"/>-->
+                       <span class="requiredClass">&nbsp;</span>
+                       <apex:inputText required="false" id="todt" size="10" value="{!dToDt}" onfocus="DatePicker.pickDate(true, 'pageServiceNotes:formServiceNotes:blockServiceNotes:sectionDate:sectionDateItem2:todt', false);"/>
+                       <apex:commandButton status="ServiceNoteDetail_Status" Id="Go" value="Go" action="{!getlistServiceNoteItems}" rerender="ServiceNoteList,showFilter,msg,blockServiceNotesResults"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" id="ServiceNoteList">
+                <apex:pageblockSectionItem >
+                <apex:panelGrid columns="6">
+                <apex:panelGroup >
+                    &nbsp;&nbsp;
+                    <apex:outputText rendered="{!showFilter}" Id="FilterLink" style="text-decoration:underline" value="Filter By Department:"/>                    
+                    <apex:image url="/s.gif" rendered="{!showFilter}"  styleClass="helpIcon" title="You may filter on a single department value or multiple department values separated by commas."/> 
+                    <apex:inputText rendered="{!showFilter}" Id="FilterByDepartmentValue" value="{!FilterByDepartmentValue}"/>
+                    <apex:commandButton status="Filter_Status" rendered="{!showFilter}" Id="FilterButton" action="{!FilterByDepartment}" value="Filter"/>
+                </apex:panelGroup>
+               </apex:panelGrid>        
+                </apex:pageblockSectionItem>
+                       </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+         <apex:pageBlock id="blockServiceNotesResults" mode="detail">
+            <apex:facet name="header">
+                <apex:panelGrid id="gridSnapshotHeader" styleclass="vertical-align: middle;" columns="2"  columnClasses="pbTitle, pbButton, pbHelp">
+                    <apex:panelGroup layout="none">
+                        <h2>Search Results [{!ServiceNotesResults.listServiceNotesItems.size}]</h2>
+                    </apex:panelGroup>
+                    <apex:panelGroup layout="none">
+                        <span>&nbsp;</span>
+                    </apex:panelGroup>
+                </apex:panelGrid>
+            </apex:facet>
+            <apex:actionStatus id="loadingSearchResults">
+                <apex:facet name="start">
+                    <apex:outputPanel layout="block"   rendered="{!ServiceNotesResults.listServiceNotesItems.size = 0}" style="border:1px solid #D4DADC; padding: 5px 2px 5px 4px;">
+                        <img src="/img/loading.gif" height="16px" width="16px"/>
+                        <span>&nbsp;&nbsp;Searching, please wait...</span>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:facet name="stop">
+                    <apex:outputPanel layout="block">
+                        <apex:outputPanel layout="block" rendered="{!ServiceNotesResults.listServiceNotesItems.size = 0}"  style="border:1px solid #D4DADC; padding: 5px 2px 5px 4px;">
+                            <span>No records to display</span>
+                        </apex:outputPanel>
+                <apex:pageBlockTable value="{!ServiceNotesResults.CurrentPage}" var="lsn" id="tableServiceNotes" rendered="{!ServiceNotesResults.listServiceNotesItems.size > 0}">
+                <apex:facet name="footer">
+                    <apex:outputPanel layout="block" style="height:16px; vertical-align:middle;">
+                    <apex:outputPanel layout="inline">
+                                            Page: {!ServiceNotesResults.PageIndex + 1} of {!ServiceNotesResults.NumOfPages}
+                    </apex:outputPanel>
+                                    
+                   <apex:outputPanel layout="inline" rendered="{!ServiceNotesResults.AllowMovePrev}">
+                                        <span>&nbsp;|&nbsp;</span>
+                                        <apex:commandLink id="linkMovePrev"  value="Prev Page"  immediate="true" status="statusPaging"  action="{!ServiceNotesResults.movePrev}" rerender="tableServiceNotes, msg" />
+                  </apex:outputPanel>
+                  <apex:outputPanel layout="inline" rendered="{!ServiceNotesResults.AllowMoveNext}">
+                                        <span>&nbsp;|&nbsp;</span>
+                                        <apex:commandLink id="linkMoveNext"  value="Next Page"  immediate="true"  status="statusPaging" action="{!ServiceNotesResults.moveNext}"  rerender="tableServiceNotes, msg" />
+                  </apex:outputPanel>
+                  <span>&nbsp;&nbsp;</span>
+                  <apex:actionStatus id="statusPaging">
+                                        <apex:facet name="start">
+                                            <img src="/img/loading.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                                        
+                                        <apex:facet name="stop">
+                                            <img src="/img/s.gif" height="14px" width="14px"/>
+                                        </apex:facet>
+                  </apex:actionStatus>
+                   <apex:outputPanel layout="inline" style="height:16px; vertical-align:middle; float:right;">
+                                            {!ServiceNotesResults.RecordStart}-{!ServiceNotesResults.RecordEnd} of {!ServiceNotesResults.listServiceNotesItems.size}
+                    </apex:outputPanel>
+                  </apex:outputPanel>
+              </apex:facet>                   
+                    <apex:column headerValue="Status" value="{!lsn.StatusDesc}"/>
+                    <apex:column headerValue="Department" value="{!lsn.DepartmentDesc}"/>
+                    <apex:column headerValue="Requester" value="{!lsn.Requester}"/>
+                    <apex:column headerValue="Contact Method" value="{!lsn.ContactMethod}"/>
+                    <apex:column headerValue="Created Date">
+                        <!-- <apex:outputText value=" {0,date,MM/dd/yyyy HH:mm:ss}" >
+                        <apex:param value="{!lsn.CreateTS}" />
+                        </apex:outputText> -->
+                        <apex:outputText value=" {!lsn.CreateTS}" />
+                    </apex:column>
+                    <apex:column headerValue="Priority" value="{!lsn.PriorityDesc}"/>                    
+                    <apex:column headerValue="Description" value="{!lsn.ShortDesc}"/>
+                    <apex:column headerValue="Service Note Id" >
+                        <apex:commandLink id="ServiceNoteLink" status="ServiceNoteDetail_Status" action="{!changeServiceNoteDetail}" rerender="ServiceNoteDetailSection" onclick="getClickedLinkPosition('{!$Component.ServiceNoteLink}');" oncomplete="ServiceNoteDetailPopup('{!$Component.ServiceNoteLink}');">
+                            {!lsn.ServiceNoteId}
+                            <apex:param name="snId" value="{!lsn.ServiceNoteId}"/>                            
+                        </apex:commandLink>
+                    </apex:column>
+                </apex:pageBlockTable>
+        </apex:outputPanel>
+        </apex:facet>
+        </apex:actionStatus>
+        </apex:pageBlock>
+        <div class="waitingSearchDiv" id="snDetail_loading" style="text-align:left; height:100%; background-color:#fbfbfb;opacity:0.98;width:100%;display:none">
+        <div class="waitingHolder" id="snDetail" style="top:10%;width:100%;height:100%;">
+        <apex:pageBlock id="ServiceNoteDetailSection" >
+        <apex:facet name="header">
+            <table>
+            <tr align="right"><td textAlign="right">[&nbsp;<b><a href="#" onclick="CloseServiceNoteDetailPopup()">X</a></b>&nbsp;]</td></tr>
+            </table>
+        </apex:facet>
+            <apex:pageBlockSection collapsible="true" title="Service Note Detail"  columns="2" id="sectionServiceNote">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Service Note Id</apex:outputLabel>
+                    <apex:outputText >{!ServiceNoteDetail.ServiceNoteId}</apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Created Date</apex:outputLabel>
+                    <apex:outputText value=" {!ServiceNoteDetail.CreateTS}" />
+                </apex:pageBlockSectionItem>
+               <apex:pageBlockSectionItem >
+                   <apex:outputLabel >Status</apex:outputLabel>
+                   <apex:outputText >{!ServiceNoteDetail.StatusDesc}</apex:outputText>
+               </apex:pageBlockSectionItem>
+               <apex:pageBlockSectionItem >
+                   <apex:outputLabel >Department</apex:outputLabel>
+                   <apex:outputText >{!ServiceNoteDetail.DepartmentDesc}</apex:outputText>
+               </apex:pageBlockSectionItem>
+               <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Requestor</apex:outputLabel>
+                    <apex:outputText >{!ServiceNoteDetail.Requester}</apex:outputText>
+                </apex:pageBlockSectionItem>
+               <apex:pageBlockSectionItem >
+                   <apex:outputLabel >Contact Method</apex:outputLabel>
+                   <apex:outputText >{!ServiceNoteDetail.ContactMethod}</apex:outputText>
+               </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Priority</apex:outputLabel>
+                    <apex:outputText >{!ServiceNoteDetail.PriorityDesc}</apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Changed By</apex:outputLabel>
+                    <apex:outputText >{!ServiceNoteDetail.ChangedBy}</apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Short Description</apex:outputLabel>
+                    <apex:outputText >{!ServiceNoteDetail.ShortDesc}</apex:outputText>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >Changed On Date</apex:outputLabel>
+                    <apex:outputText value=" {!ServiceNoteDetail.ChangedOnDate}"/>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem id="sectionitemlongDesc">
+                    <apex:outputLabel >Long Description</apex:outputLabel>                    
+                    <apex:inputTextarea id="longDesc" cols="100" disabled="false" readonly="true" rows="5" value="{!ServiceNoteDetail.LongDesc}"/>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection collapsible="true" title="Activities"  columns="1">
+                <apex:pageBlockTable value="{!listServiceNoteActivities}" var="sna">
+                    <apex:column styleClass="columnClass" headerValue="Activity Code" value="{!sna.ActivityCodeId}"/>
+                    <apex:column styleClass="columnClass" headerValue="Activity Code Description" value="{!sna.ActivityCodeDesc}"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        </div>
+        </div>    
+        <script>function setFocusOnLoad() {} </script>        
+    </apex:form>
+</apex:page>

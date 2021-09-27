@@ -1,0 +1,13 @@
+<apex:page standardController="Lead" extensions="LOTUS_FlipS2ELeadsToGSI_Controller" action="{!flipLead}"  tabStyle="Lead">
+    <style>
+        .messages ul,.messageText{
+            font-size: 15px;
+        }
+        .a{
+        font-size: 15px;
+        }
+    </style>
+    <apex:Pagemessages />
+    <apex:outputLink rendered="{!IF(oLead.RecordTypeId==$Label.S2E_RecordtypeId,true,false)}" value="/{!oLead.id}">Back to Lead</apex:outputLink> 
+	<apex:outputLink rendered="{!IF(oLead.RecordTypeId==$Label.GLI_RecordtypeId,true,false)}" value="{!URLFOR($Action.Lead.List, $ObjectType.Lead)}">Back to Lead Home</apex:outputLink>
+</apex:page>

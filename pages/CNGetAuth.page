@@ -1,0 +1,17 @@
+<apex:page controller="CNGetAuthController" showHeader="false" standardStylesheets="true" doctype="html-5.0">
+<apex:image url="{!$Resource.CN_IMAGE_Async_Loading_Icon}"/>
+<script>
+    function go()
+    { 
+        CallApexMethod() ;
+    }
+    function doNothing(){}
+</script>
+<apex:form >
+ <apex:pageMessages id="showmsg"></apex:pageMessages> 
+<apex:actionFunction name="CallApexMethod" action="{!returnToPage}" onComplete="doNothing();"/>   
+</apex:form>
+<script>
+	go();
+</script> 
+</apex:page>

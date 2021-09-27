@@ -1,0 +1,603 @@
+<apex:page controller="USL_CCController" tabstyle="case" doctype="html-5.0" title="{!Formtitle}" showheader="false">
+    <apex:slds />   
+    <script src="/support/console/42.0/integration.js" type="text/javascript"></script>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-3.2.1.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/jquery-ui.min.js')}"/>
+    <apex:stylesheet value="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"/>
+    <apex:includeScript value="https://code.jquery.com/jquery-3.3.1.js"/>
+    <apex:includeScript value="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"/>
+    
+     <style>
+    input[type=date]::-webkit-inner-spin-button, 
+    input[type=date]::-webkit-outer-spin-button { 
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0; 
+    }
+    </style>
+    
+    <script type="text/javascript">         
+        
+        function Refreshtab() {
+            if('Theme4u' == '{!$User.UIThemeDisplayed}'){
+                //alert('In lightning');
+                if (j$('.infoM3').length > 0){
+                    alert('Your data saved succesfully!! This form will now close');
+                    sforce.console.getFocusedSubtabId(function(result){
+                        sforce.console.closeTab(result.id);
+                    });    
+                    sforce.console.getEnclosingPrimaryTabId(function(result) {
+                        sforce.console.refreshPrimaryTabById(result.id, true);
+                    });
+                }
+            }
+            else{
+            sforce.console.getEnclosingPrimaryTabId(function(result){
+            var PrimaryTabId=result.id;
+            sforce.console.refreshPrimaryTabById(PrimaryTabId, true);
+            });
+            }
+        }
+        
+        $(document).ready(function() {
+            setDataTables1();
+            setDataTables3();
+        } );   
+        function setDataTables1(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],
+             "info":false,             
+             "scrollX":false,
+             "sScrollX":"100%"
+             } );
+        }
+        function setDataTables2(){
+            $('.tableARInfo').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],             
+             "info":false,
+             "scrollX":false             
+             } );
+        }
+        function setDataTables3(){
+            $('.tableARInfo1').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "info":false,
+             "order": [[ 2, "desc" ]],
+             "scrollX":false,
+             "sScrollX":"100%"
+             } );
+        }
+        function setDataTables4(){
+            $('.tableARInfo1').DataTable({
+             "columnDefs": [
+                { "orderable": false, "targets": 0 }
+              ],
+             "paging":false,
+             "stateSave": true,
+             "ordering": true,
+             "order": [[ 2, "desc" ]],
+             "info":false,
+             "scrollX":false             
+             } );
+        }
+    </script>
+    <apex:form >        
+        <apex:pagemessages id="msg1" />
+        <apex:actionFunction name="saveselectedopen" action="{!saveselectedopen}" status="fetchStatus2" rerender=""/>
+        <apex:actionFunction name="saveselectedclear" action="{!saveselectedclear}" status="fetchStatus2" rerender=""/>
+        <apex:actionStatus id="fetchStatus2">
+            <apex:facet name="start">
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                    &nbsp;
+                </div>
+                <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                    <img src="/img/loading.gif" />
+                </div>
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:pageblock id="pblock">        
+            <apex:outputPanel id="PreviewPanel">
+            <apex:pageBlockSection collapsible="false" title="Charge Cancellation Form" rendered="{! ISPreview}">
+                <apex:outputField value="{!caseacc.USL_SAP_Account_Number__c}"/>
+                <apex:outputField label="Account Name" value="{!caseacc.Account.Name}"/>
+                <apex:inputField value="{!formext.USL_Requester_Title__c}"/> 
+                <apex:inputField label="Requestor Name" value="{!formext.ESC_Cancel_Requestor__c}"/> 
+                <apex:inputField value="{!formext.USL_Requestor_ID__c}"/> 
+                <apex:selectList label="Westlaw Plan" size="1" value="{!formext.USL_WestLaw_Plan__c}" disabled="{!IsWL}">
+                    <apex:selectOptions value="{!WLPlanOptions}"/>
+                </apex:selectList>  
+                </apex:pageblockSection>  
+                <!-- changed code from select list to inputfield to implement rerender when Charge cancellation bu is 'TRTA Corporate' -->           
+               <!-- <apex:selectList label="Charge Cancellation BU" size="1" value="{!formext.USL_Approval_Type__c}">
+                    <apex:selectOptions value="{!BUOptions}"/>
+                </apex:selectList>-->
+              <apex:pageblockSection rendered="{! ISPreview}">
+              <apex:actionRegion >
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <apex:outputLabel value="Charge Cancellation BU" style="padding-left:80px;"></apex:outputLabel>
+                            </td>
+                            <td>
+                                <apex:inputField label="Charge Cancellation BU" required="true" style="padding-right:65px;" value="{!formext.USL_Approval_Type__c}">
+                                <apex:actionSupport event="onchange" reRender="ajaxrequest"/>
+                                </apex:inputField>
+                            </td>
+                         </tr>
+                     </table>
+                 </div>
+              </apex:actionRegion>
+              </apex:pageblockSection>
+              <apex:outputPanel id="ajaxrequest" >
+                <apex:PageBlockSection >
+                    <apex:inputField label="BU" required="true" value="{!formext.ESC_CC_Form_BU__c}"  rendered="{!formext.USL_Approval_Type__c== 'TRTA_Corporates'}" onchange="cbrerenderr();"/>
+                    <apex:inputField label="Line of Business" required="true"   rendered="{!formext.USL_Approval_Type__c== 'TRTA_Corporates'}" value="{!formext.ESC_CC_Line_of_Business__c}"/>
+                </apex:PageBlockSection>
+              </apex:outputPanel>
+            <apex:pageBlockSection collapsible="false" columns="1" id="openpre" rendered="{! ISPreview}" title="Invoice Details({!InvoiceWrapperList1.size})">
+                <apex:pageBlockTable value="{!InvoiceWrapperList}" var="invoice" id="invtable" rendered="{!InvoiceWrapperList.size>0}">
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:inputCheckbox value="{!SelectAll}" onchange="sainv();return false;" />
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!invoice.isselected}" />
+                    </apex:column> 
+                    <apex:column >
+                        <apex:facet name="header">Billing Doc</apex:facet> 
+                        <apex:outputField value="{!invoice.cfli.ESC_Billing_Doc__c}" />
+                    </apex:column>  
+                    <apex:column >
+                        <apex:facet name="header">Invoice List #</apex:facet> 
+                        <apex:outputField value="{!invoice.cfli.USL_InvListNumber__c}" />
+                    </apex:column>              
+                    <apex:column >
+                        <apex:facet name="header">Line #</apex:facet>  
+                        <apex:outputField value="{!invoice.cfli.ESC_Line__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Billing Doc Description</apex:facet>  
+                        <apex:outputField value="{!invoice.cfli.USL_OShortDescription__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Doc Type</apex:facet>  
+                        <apex:outputField value="{!invoice.cfli.USL_ODocType__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Net Amount</apex:facet>   
+                        <apex:inputField value="{!invoice.cfli.ESC_Net_Amount__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Tax Amount</apex:facet>  
+                        <apex:inputField value="{!invoice.cfli.ESC_Tax_Amount__c }" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Root Cause</apex:facet>
+                        <apex:inputField value="{!invoice.cfli.ESC_Root_Cause__c}"  onchange="cbrerenderr();"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Reason Code</apex:facet>
+                        <apex:inputField value="{!invoice.cfli.ESC_Reason_Code__c}" />
+                    </apex:column> 
+                    <apex:column rendered="{!showErrorMsg}">
+                        <apex:facet name="header">Error Message</apex:facet>
+                        <apex:outputField value="{!invoice.cfli.ESC_Error_Message__c}" />
+                    </apex:column>
+                </apex:pageBlockTable>
+                <apex:outputPanel rendered="{!AND(IF(invpaginater.isAll, false, true), IF(invpaginater.totalPage == 1, false, true))}" id="navb">
+                    <apex:commandButton value="Previous" rerender="invtable,navb" action="{!ipreviousPage}" rendered="{!invpaginater.showPrevious}"/>
+                    <apex:commandButton style="float:right" value="Next" rerender="invtable,navb" action="{!inextPage}" rendered="{!invpaginater.showNext}"/>
+                </apex:outputPanel>
+                <apex:actionFunction status="actStatusId" name="sainv" reRender="invtable" action="{!selectalllineitem}" />
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection collapsible="false" columns="1" id="clinelist" title="Custom Line Item Section" rendered="{! ISPreview}">
+                <apex:pageBlockTable value="{!customLineList}" var="li" id="linetable">                     
+                    <apex:variable var="rowNumber" value="{!0}"/>
+                    <apex:column >
+                        <apex:facet name="header">Type</apex:facet> 
+                        <apex:inputField required="true" value="{!li.ESC_Type__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Request Description</apex:facet> 
+                        <apex:inputtext required="true" list="{!DescList}" value="{!li.ESC_Request_Description__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Billing Doc</apex:facet> 
+                        <apex:inputField required="true" value="{!li.ESC_Billing_Doc__c}" />
+                    </apex:column>                
+                    <apex:column >
+                        <apex:facet name="header">Line #</apex:facet>  
+                        <apex:inputField required="true" value="{!li.ESC_Line__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Net Amount</apex:facet>   
+                        <apex:inputField required="true" value="{!li.ESC_Net_Amount__c}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Tax Amount</apex:facet>  
+                        <apex:inputField required="true" value="{!li.ESC_Tax_Amount__c }" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Root Cause</apex:facet>
+                        <apex:inputField required="true" value="{!li.ESC_Root_Cause__c}"  onchange="cbrerenderr();"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">Reason Code</apex:facet>
+                        <apex:inputField required="true" value="{!li.ESC_Reason_Code__c}" />
+                    </apex:column> 
+                     <apex:column >
+                        <apex:commandLink value="{!$Label.USL_Delete}" reRender="linetable" immediate="true" action="{!deleteRow}">
+                            <apex:param name="rn" value="{!rowNumber}"/>
+                        </apex:commandLink> 
+                    <apex:variable var="rowNumber" value="{!rowNumber+1}" />                                    
+                    </apex:column>                        
+                </apex:pageBlockTable>
+                <apex:commandlink value="{!$Label.USL_AddRow}" style="margin-left: 30%;" rerender="linetable" action="{!addRow}" />
+                                
+            </apex:pageBlockSection>
+            <apex:pageblockSection id="actionpre" columns="1" rendered="{! ISPreview}" >
+                <apex:outputpanel id="ab">
+                    <table >
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td><apex:outputtext style="font-weight:bold" value="Root Cause"/></td>
+                            <td><apex:outputtext style="font-weight:bold" value="Reason Code"/></td>
+                        </tr>
+                        <tr>
+                            <td><apex:inputCheckbox id="applyall" disabled="{!IsCancellAllWL||IsCancelAllNWL}"  value="{!IsApplyAll}" onchange="cbrerenderr();return false;"/></td><td>
+                            <apex:outputtext style="font-weight:bold" value="Apply RootCause/Reason Code to All"/></td>                       
+                            <td>
+                                <apex:inputField value="{!Allclitem.ESC_Root_Cause__c}"  onchange="cbrerenderr();"/>
+                            </td>
+                            <td>
+                                <apex:inputField value="{!Allclitem.ESC_Reason_Code__c}" onchange="actionrender();return false;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><apex:inputCheckbox value="{!IsCancellAllWL}" disabled="{!IsApplyAll||IsCancelAllNWL}" onchange="cbrerenderr();" /></td><td >
+                            <apex:outputtext style="font-weight:bold" value="Cancel All WestLaw items"/></td>                       
+                            <td>
+                                <apex:inputField value="{!WLclitem.ESC_Root_Cause__c}"  onchange="cbrerenderr();"/>
+                            </td>
+                            <td>
+                                <apex:inputField value="{!WLclitem.ESC_Reason_Code__c}" onchange="actionrender();return false;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><apex:inputCheckbox value="{!IsCancelAllNWL}" disabled="{!IsApplyAll||IsCancellAllWL}" onchange="cbrerenderr();" /></td><td >
+                            <apex:outputtext style="font-weight:bold" value="Cancel All Non-WestLaw Items"/></td>
+                            <td>
+                                <apex:inputField value="{!NWLclitem.ESC_Root_Cause__c}"  onchange="cbrerenderr();"/>
+                            </td>
+                            <td>
+                                <apex:inputField value="{!NWLclitem.ESC_Reason_Code__c}" onchange="actionrender();return false;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><apex:inputCheckbox value="{!canceltax}" onchange="actionrender();return false;" /></td><td >
+                            <apex:outputtext style="font-weight:bold" value="Cancel Tax"/></td><td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                         <tr>
+                            <td><apex:inputCheckbox value="{!RouteToConsultant}" onchange="actionrender();return false;" /></td><td >
+                            <apex:outputtext style="font-weight:bold" value="Route To Consultant"/></td><td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td><apex:inputCheckbox value="{!formext.Route_To_USL_Print_CD_Credits__c}" onchange="actionrender();return false;" /></td><td >
+                            <apex:outputtext style="font-weight:bold" value="Route to USL Print CD Credits ($1000.00 Over route to Print CD)"/></td><td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr> 
+                        <tr></tr>
+                        <tr></tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <apex:outputText value="Apply Percentage off each items selected" style="font-weight:bold"/>
+                            </td>
+                            <td>
+                                <apex:input value="{!Discount}" />
+                            </td>
+                            <td>
+                                <apex:commandButton value="Apply" action="{!applydiscount}" status="actStatusId" reRender="pblock,actionpre,linetable"/>&nbsp;
+                                <apex:commandButton action="{!removediscount}" value="Reset" status="actStatusId" reRender="pblock,actionpre,linetable" />
+                            </td>
+                        </tr>
+                        <tr><td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td> 
+                                 <apex:outputPanel id="calpanel">
+                                 <apex:outputText value="Net Amount" style="font-weight:bold"/> &nbsp;&nbsp;&nbsp; <apex:outputText value="{!netamount}"/> <br/>
+                                 <apex:outputText value="Tax Amount" style="font-weight:bold"/> &nbsp;&nbsp;&nbsp; <apex:outputText value="{!taxamount}"/> <br/>
+                                 <apex:outputText value="Total Amount" style="font-weight:bold"/> &nbsp; <apex:input value="{!totalamount}"/><br/> 
+                                 <apex:outputLabel value="($1000 and under Rep Approval)" style="padding-left:80px;"></apex:outputLabel>
+                                </apex:outputPanel>
+                                </td> 
+                                <td><apex:commandButton value="Calculate" action="{!calculate}" reRender="calpanel,linetable" status="actStatusId"/>&nbsp;&nbsp;
+                                </td>
+                        </tr>
+                    </table>
+                    
+                    <apex:actionStatus id="actStatusId" >
+                        <apex:facet name="start" >
+                            <img src="/img/loading.gif" />                    
+                        </apex:facet>
+                    </apex:actionStatus> 
+                    <apex:actionfunction status="actStatusId" name="actionrender" action="{!Applydefaults}" rerender="pblock,msg1,linetable" />
+                    <apex:actionfunction immediate="true" status="actStatusId"  name="cbrerenderr" rerender="ab,linetable" />
+                </apex:outputpanel>
+            </apex:pageblockSection>
+            <apex:pageblockSection rendered="{! ISPreview}">
+            <apex:actionRegion >
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <apex:inputCheckbox value="{!preapproved}">
+                                <apex:actionSupport event="onchange" reRender="ajaxrequest1"/></apex:inputCheckbox>
+                            </td>
+                            <td>
+                                <apex:outputtext style="font-weight:bold" value="Pre-Approved"/>
+                            </td>
+                         </tr>
+                     </table>
+                 </div>
+              </apex:actionRegion>
+            </apex:pageblockSection>
+            <apex:outputPanel id="ajaxrequest1" >
+                <apex:PageBlockSection >
+                    <apex:inputField label="Pre-Approved By" required="true" value="{!formext.ESC_Pre_Approved_By__c}" rendered="{!preapproved}"/>
+                </apex:PageBlockSection>
+              </apex:outputPanel>
+            <apex:pageblockSection columns="1" rendered="{! ISPreview}">
+                <ul>
+                    <li><b>{!$Label.USL_CC_PartialCancellation}</b>{!$Label.USL_CC_PartialCancels}</li>
+                    <li><b>{!$Label.USL_CC_TaxCancel}</b>{!$Label.USL_CC_ChargeCancels} <b>{!$Label.USL_CC_Cancelbutton}</b> button</li>
+                    <li>AND fill in the other necessary details on the form</li>
+                    <!--<li>If you are processing a Westlaw Credit request, Please enter 0.00 in the tax field for each selected item before submitting</li>
+                    <li>If you are processing a partial non-Westlaw Credit request, Please enter 0.00 in the tax field for each selected item before submitting</li>-->
+                </ul>
+                <!--<apex:inputField value="{!formext.ESC_Instructions__c}" label="Notes" style="width:50%"/>-->
+                <apex:inputtextarea value="{!Notes}" label="Notes" style="width:50%" />
+            </apex:pageblockSection>
+            </apex:outputPanel>
+            <apex:outputPanel id="SelectPanel">
+            <apex:pageBlockSection rendered="{!!ISPreview}" columns="6" id="sectionFilters" collapsible="false" title="{!$Label.AccountRec_DateRangeSecTitle}" >
+                <apex:selectList value="{!sSelectedOption}" size="1" id="i" onchange="rerenderInvoice1();" >
+                    <apex:selectOptions value="{!ARItemType}" />
+                </apex:selectList>
+                <apex:input type="date" id="BeginDate" value="{!BeginDt}" label="{!$Label.AccountRec_BeginDate}" />
+                <apex:input type="date" id="EndDate" value="{!EndDt}" label="{!$Label.AccountRec_EndDate}" />
+                <apex:commandButton value="{!$Label.AccountRec_DateRangeSecButton}" reRender="pblock,msg1" status="actStatusId1" action="{!setInvoiceDateRange}" oncomplete="setDataTables2();setDataTables4();" />
+            </apex:pageBlockSection>
+            <!--<apex:image rendered="{! clearwrapperlist2.size==0 && openwrapperlist2.size==0 && !ISPreview}" value="/img/loading.gif" width="30px" height="30px" alt="Loading..."/> -->
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionOpenItems" title="{!$Label.AccountRec_SOOpen} {!$Label.AccountRec_ItemsTrans}"
+                                    rendered="{!(sSelectedOption == $Label.AccountRec_SOOpen||sSelectedOption == $Label.AccountRec_SOAll)&& !IsError  && !isPreview && openwrapperlist2.size>0}"
+                                    collapsible="false">
+                <apex:dataTable value="{!openwrapperlist2}"  rendered="{! openwrapperlist2.size>0}" var="Olist" styleclass="tableARInfo">
+                    <apex:column >
+                         <apex:facet name="header">
+                            <apex:inputCheckbox value="{!SelectAllOpen}" onchange="saopen();return false;" />
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!Olist.isselected}" onchange="saveselectedopen();"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_docNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.docNumber}" />
+                    </apex:column>                
+                    <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.lineNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.amount}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DCIndicator}</apex:facet>
+                        <apex:outputText value="{!IF(Olist.openlist.debitCreditInd == 'H','C', IF(Olist.openlist.debitCreditInd == 'S','D',Olist.openlist.debitCreditInd))}" />
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.netArrers}" />
+                    </apex:column>  
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.type}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.shortDescription}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">RefKey1</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.referencekey}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">RefKey2</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.account.sourceOrTargetReference[0].referenceID}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.baselineDate}" />
+                    </apex:column> 
+                        <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                        <apex:outputText value="{!Olist.openlist.document.additionalPdfDocumentId}" />
+                    </apex:column>   
+                </apex:dataTable>
+                
+                <apex:outputPanel rendered="{!AND(IF(paginater.isAll, false, true), IF(paginater.totalPage == 1, false, true))}">
+                    <apex:commandButton value="Previous" rerender="bPageBlockSectionOpenItems" action="{!previousPage}" rendered="{!paginater.showPrevious}" status="fetchStatus1" oncomplete="setDataTables2();"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:repeat value="{!paginater.pageList}" var="pl">
+                        <apex:outputText rendered="{!!pl.isActive}" value="">
+                            <apex:commandLink action="{!updatePage}" rerender="bPageBlockSectionOpenItems" status="fetchStatus1" oncomplete="setDataTables2();">
+                                {!pl.pageNum}                                
+                                <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!paginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                            </apex:commandLink>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                    </apex:repeat>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Next" rerender="bPageBlockSectionOpenItems" action="{!nextPage}" rendered="{!paginater.showNext}" status="fetchStatus1" oncomplete="setDataTables2();"/>
+                </apex:outputPanel>
+                <apex:actionStatus id="fetchStatus1">
+                    <apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                            &nbsp;
+                        </div>
+                        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                            <img src="/img/loading.gif" />
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection columns="1" id="bPageBlockSectionClearedItems" title="{!$Label.AccountRec_SOCleared} {!$Label.AccountRec_ItemsTrans}"
+                                    rendered="{!(sSelectedOption == $Label.AccountRec_SOCleared ||sSelectedOption == $Label.AccountRec_SOAll)&&!IsError && !isPreview && clearwrapperlist2.size>0}"
+                                    collapsible="false">
+                <apex:dataTable value="{!clearwrapperlist2}" rendered="{! clearwrapperlist2.size>0}" var="Clist" styleclass="tableARInfo1">
+                    <apex:column >
+                         <apex:facet name="header">
+                            <apex:inputCheckbox value="{!SelectAllCleared}" onchange="sacleared();return false;" />
+                        </apex:facet>
+                        <apex:inputCheckbox value="{!Clist.isselected}" onchange="saveselectedclear();"/>
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Rnum}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.referenceNumber}" />
+                    </apex:column>
+                    <apex:column rendered="{!showLineNumber}">
+                        <apex:facet name="header">{!$Label.ESC_LineNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.lineNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.AccountRec_Amount}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.amount}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_DCIndicator}</apex:facet>
+                        <apex:outputText value="{!IF(Clist.clearlist.debitCreditInd == 'H','C', IF(Clist.clearlist.debitCreditInd == 'S','D',Clist.clearlist.debitCreditInd))}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_ClearingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.clearingDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_ClearingDocNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.clearingDocumentNumber}" />
+                    </apex:column>
+                    <apex:column > 
+                        <apex:facet name="header">{!$Label.USL_DocType}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.type}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_AllocationNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.allocationNumber}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_netArrers}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.netArrers}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_Sdec}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.shortDescription}" />
+                    </apex:column>
+                    
+                    <apex:column >
+                        <apex:facet name="header">RefKey1</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.referencekey}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">RefKey2</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.document.account.sourceOrTargetReference[0].referenceID}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_BillingDate}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.baselineDate}" />
+                    </apex:column>
+                    <apex:column >
+                        <apex:facet name="header">{!$Label.USL_InvoiceNumber}</apex:facet>
+                        <apex:outputText value="{!Clist.clearlist.allocationNumber}" />
+                    </apex:column>
+                </apex:dataTable>
+                
+                <apex:outputPanel rendered="{!AND(IF(clearpaginater.isAll, false, true), IF(clearpaginater.totalPage == 1, false, true))}">
+                    <apex:commandButton value="Previous" rerender="bPageBlockSectionClearedItems" action="{!cpreviousPage}" rendered="{!clearpaginater.showPrevious}" status="fetchStatus" oncomplete="setDataTables4();"/>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:repeat value="{!clearpaginater.pageList}" var="pl">
+                        <apex:outputText rendered="{!!pl.isActive}" value="">
+                            <apex:commandLink action="{!cupdatePage}" rerender="bPageBlockSectionClearedItems" status="fetchStatus" oncomplete="setDataTables4();">
+                                {!pl.pageNum}                                
+                                <apex:param name="selectedPage" value="{!pl.pageNum}" assignTo="{!clearpaginater.pageNum}" />&nbsp;&nbsp;&nbsp;
+                            </apex:commandLink>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!pl.isActive}" value="{!pl.pageNum}" />
+                    </apex:repeat>
+                    &nbsp;&nbsp;&nbsp;
+                    <apex:commandButton value="Next" rerender="bPageBlockSectionClearedItems" action="{!cnextPage}" rendered="{!clearpaginater.showNext}" status="fetchStatus" oncomplete="setDataTables4();"/>
+                </apex:outputPanel> 
+                <apex:actionStatus id="fetchStatus">
+                    <apex:facet name="start">
+                        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; opacity: 0; z-index: 1000; background-color: white;">
+                            &nbsp;
+                        </div>
+                        <div style="position: fixed; left: 0; top: 0; bottom: 0; right: 0; z-index: 1001; margin: 30% 50%">
+                            <img src="/img/loading.gif" />
+                        </div>
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageBlockSection>
+            </apex:outputPanel>            
+            <apex:pagemessages id="msg2"></apex:pagemessages>
+            <apex:pageBlockButtons id="pbbuttons">
+                <apex:commandButton rendered="{!ispreview}" value="Update Change" action="{!savecomponent}" reRender="pblock,msg1" status="actStatusId1" oncomplete="Refreshtab(); return false;"> 
+                <apex:param name="CFEIdParam" value="False" assignTo="{!appFlag}"/>
+                </apex:commandButton>
+                <apex:commandButton rendered="{!ispreview}" value="Submit" action="{!savecomponent}" reRender="pblock,msg1" status="actStatusId1" oncomplete="Refreshtab(); return false;">
+                <apex:param name="CFEIdParam" value="True" assignTo="{!appFlag}"/>
+                </apex:commandButton>
+                <apex:commandButton value="Preview" reRender="pblock,msg1" status="actStatusId1" action="{!showpreview}"  rendered="{!!ispreview}" oncomplete="setDataTables2();setDataTables4();"/>
+                <apex:commandButton rendered="{!ispreview}" action="{!goback}" reRender="PreviewPanel,SelectPanel,pblock,msg1" immediate="true" value="Back" status="actStatusId1"  oncomplete="setDataTables2();setDataTables4();"/>
+                <!--<apex:actionFunction name="continuationcall" reRender="pblock,msg1" status="actStatusId1" action="{!showpreview}" />-->
+                <!--<apex:actionFunction name="backbu" reRender="pblock,msg1" status="actStatusId1" action="{!goback}" />-->
+                <!--<apex:actionFunction name="rerenderInvoice" reRender="pblock,msg1" status="actStatusId1" action="{!setInvoiceDateRange}" /> -->
+                <apex:actionFunction name="rerenderInvoice1" reRender="pblock,msg1" status="actStatusId1" oncomplete="setDataTables2();setDataTables4();"/>
+                <apex:actionFunction status="actStatusId1" name="saopen" reRender="bPageBlockSectionOpenItems" action="{!selectallOpenitem}" oncomplete="setDataTables2();" />
+                <apex:actionFunction status="actStatusId1" name="sacleared" reRender="bPageBlockSectionClearedItems" action="{!selectallCleareditem}" oncomplete="setDataTables4();" />
+                <apex:actionStatus id="actStatusId1" >
+                    <apex:facet name="start" >
+                        <img src="/img/loading.gif" />                    
+                    </apex:facet>
+                </apex:actionStatus>
+            </apex:pageblockButtons> 
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

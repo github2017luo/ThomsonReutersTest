@@ -1,0 +1,12 @@
+<apex:page controller="AccountCreateController_SF1">
+  <h1>Please Wait</h1>
+    Redirecting ....
+  <script>
+    if ( (typeof window.sforce != 'undefined') && (window.sforce!=null) ) {
+      sforce.one.navigateToURL('/apex/sf1NewAccountCreate?id={!Account.id}');
+    }
+    else {
+      alert('Not in SF1 :(');
+    }
+ </script>
+</apex:page>

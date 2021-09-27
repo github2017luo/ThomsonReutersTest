@@ -1,0 +1,169 @@
+<apex:page sidebar="false" showHeader="false">
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.cnx__CnxSfdcResources,'js/ConnectsIntegrationAPI.min.js')}"/>
+        <script>
+        
+        function enableControls() {
+            document.getElementById('pausebtn').disabled = false;
+            document.getElementById('resumebtn').disabled = false;
+            document.getElementById('stopbtn').disabled = false;
+            
+        }
+        function disableControls() {
+            document.getElementById('pausebtn').disabled = true;
+            document.getElementById('resumebtn').disabled = true;
+            document.getElementById('stopbtn').disabled = true;
+            
+        }
+        
+        
+     
+        console.log('special script loaded...');
+        var cHost = 'https://hc060-stats.tteccloud.com/TTEC_TR_MLCalabrio_Server/api/Command/';
+       
+         // ---------------------
+         
+        
+         function doPause() {
+         
+            var currentCtiData = ConnectsIntegrationAPI.getCtiData(); 
+            if (currentCtiData) {     
+            console.log(currentCtiData);
+            
+                ConnectsIntegrationAPI.writeLogDebug("The name of this agent is " +  currentCtiData.FirstName + " " + currentCtiData.Agent) ;
+            } else { 
+                console.log('did not find a ctidata object..'); 
+            }
+
+            xhr = new XMLHttpRequest();
+            var url = cHost + 'pause/'+ currentCtiData.Agent;
+            xhr.open("GET", url, true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            
+            xhr.onload  = function() {
+            var jsonResponse = JSON.parse(xhr.responseText);
+            console.log('return from login...');
+            console.log(jsonResponse);
+            
+            };
+            var data = '';
+            xhr.send(data);
+            alert('Recording paused..');
+            
+         }
+         function doStop() {
+         
+            var currentCtiData = ConnectsIntegrationAPI.getCtiData(); 
+            if (currentCtiData) {     
+            console.log(currentCtiData);
+            
+                ConnectsIntegrationAPI.writeLogDebug("The name of this agent is " +  currentCtiData.FirstName + " " + currentCtiData.Agent) ;
+            } else { 
+                console.log('did not find a ctidata object..'); 
+            }
+
+            xhr = new XMLHttpRequest();
+            var url = cHost +  'SendMetadata/' + currentCtiData.Agent + '/meta-data-test-key/Delete%20Contact/';
+            xhr.open("GET", url, true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            
+            xhr.onload  = function() {
+            console.log(xhr.responseText);
+            };
+            
+            var data = '';
+            xhr.send(data);
+            alert('Stopping recording..');
+            
+         }
+         
+         
+         function doResume() {
+         
+            var currentCtiData = ConnectsIntegrationAPI.getCtiData(); 
+            if (currentCtiData) {     
+            console.log(currentCtiData);
+            
+                ConnectsIntegrationAPI.writeLogDebug("The name of this agent is " +  currentCtiData.FirstName + " " + currentCtiData.Agent) ;
+            } else { 
+                console.log('did not find a ctidata object..'); 
+            }
+
+            xhr = new XMLHttpRequest();
+            var url = cHost + 'resume/' + currentCtiData.Agent;
+            xhr.open("GET", url, true);
+            xhr.setRequestHeader("Content-type", "application/json");
+            
+            xhr.onload  = function() {
+            var jsonResponse = JSON.parse(xhr.responseText);
+            console.log('return from login...');
+            console.log(jsonResponse);
+            
+            };
+            var data = '';
+            xhr.send(data);
+            alert('Resuming recording');
+         }
+         
+        // -------------------------------- 
+         
+        
+        
+         var defaultCallback = function(response) {
+             if (response.success) {
+                console.log('API method call executed successfully! returnValue:', response.returnValue);
+             } else {
+                console.error('Something went wrong! Errors:', response.errors);
+             }
+            };
+            
+            var currentItem = '';
+            var answeredItem = '';
+            var latestTask = '';
+            var connectItem;
+             ConnectsIntegrationAPI.waitReady(function () {
+            ConnectsIntegrationAPI.onWorkItemConnect = function (event) {
+                enableControls();
+                if (event.item.Channel == "VOICE") {
+                    console.log(event);
+                
+                    console.log('onworkitemconnect has been called, setting connectItem var');
+                    ConnectsIntegrationAPI.writeLogDebug("Call from " + event.item.Sender + " to " +
+                    event.item.Destination + " is connected.");
+                    
+                    // call connected area..
+                    
+                    
+                    connectItem = event.item;
+                    
+                    
+                }
+            };
+            ConnectsIntegrationAPI.onAgentStateChange = function (event) {  
+              console.log(event);
+              if (event.newState.State == 'READY' || event.newState.State == 'NOTREADY') {
+                  disableControls();
+              }
+              
+             ConnectsIntegrationAPI.writeLogDebug("New state in channel " + event.channelType + ": " +                event.newState.State + "(" + event.newState.ReasonCode + ")" );
+             
+              };
+           });
+            
+        </script>
+    </head>
+    
+    
+    <table width="50%">
+    
+    <tr>
+    
+       
+        <td><input id="pausebtn" type="button" onClick="doPause();" value="Pause" disabled="true"/></td>
+        <td><input id="resumebtn" type="button" onClick="doResume();" value="Resume" disabled="true"/></td>
+        <td><input id="stopbtn" type="button" onClick="doStop();" value="Delete Contact" disabled="true"/></td>
+     </tr>
+     
+    </table>
+
+</apex:page>

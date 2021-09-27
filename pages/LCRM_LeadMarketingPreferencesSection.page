@@ -1,0 +1,59 @@
+<apex:page standardController="Lead" extensions="LeadMarketingPreferencesController" lightningStylesheets="true">
+
+    <apex:form >
+        <!-- Onload Page its looks like-->
+        <apex:messages />
+        <apex:pageBlock >
+            <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Preferences"   />
+                    <apex:outputLink target="_blank" value="{!preferenceCenterLink}">Preference Center</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{! Lead.Do_Not_call_Contact__c}"/>
+            </apex:pageBlockSection> 
+             <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                 <!---- Added as a part of DPS-20792--->
+                 <apex:outputField value="{! Lead.LCRM_Do_Not_Email__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                 <!---- Added as a part of DPS-19132 --->
+                 <apex:outputField value="{! Lead.Do_not_Email__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!NOT(isEuropeanCountry)}">
+                 <apex:inputField value="{! Lead.Do_not_mail_Contact__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Preferences"   />
+                    <apex:outputLink target="_blank" value="{!preferenceCenterLink}">Preference Center</apex:outputLink>
+                </apex:pageBlockSectionItem>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+                 <!---- Added as a part of DPS-19132 --->
+                 <apex:outputField value="{! Lead.Do_not_Email__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection rendered="{!isEuropeanCountry}">
+              <apex:outputField value="{! Lead.LCRM_Consent_To_Landline_Call__c}"/>
+              <apex:outputField value="{! Lead.LCRM_Consent_To_Mail__c}"/>
+              <apex:outputField value="{! Lead.LCRM_Consent_To_Mobile_Call__c}"/>
+              <apex:outputField value="{! Lead.LCRM_Consent_To_SMS__c}"/>
+            </apex:pageBlockSection> 
+        </apex:pageBlock>
+        
+        <!--apex:pageBlock rendered="{!NOT(chkContact)}">
+            <apex:pageBlockSection >
+                 <apex:outputField value="{! Lead.Do_Not_call_Contact__c}"/>
+                 <apex:outputField value="{! Lead.Do_not_mail_Contact__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockSection >
+            <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Do Not Email"   />
+                    <apex:outputLink target="_blank" value="{!preferenceCenterLink}">Preference Center</apex:outputLink>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!Lead.LCRM_TPS_Screening__c}"/>
+            </apex:pageBlockSection> 
+            
+        </apex:pageBlock -->
+    </apex:form>
+  
+</apex:page>

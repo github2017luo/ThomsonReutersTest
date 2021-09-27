@@ -1,0 +1,57 @@
+<!--
+This is a legacy page
+CHANGE HISTORY
+===============================================================================
+   Date                Name                         Description
+ 2017-10-10   Harika Devi Kalidindi   Modified as a part of CRM -12852  for inline editing of status field
+ 2019-02-12       Tejasree                  DPS-1836 : Added custom labels instead of Hard Coded values
+===============================================================================
+-->
+<apex:page standardController="Training_Event__c" extensions="LCRMTrainingEventStatusSectionController" lightningStylesheets="true">
+<script>
+    function statusPicklistChanged(statusPicklist){
+        var status = statusPicklist.options[statusPicklist.selectedIndex].value;
+        var result;
+        if(status == 'Cancelled'){
+            result = confirm('{!$Label.ConfirmCancellation}');
+            statusFunction(result,status);
+        }
+        else if(status == 'Completed'){
+            result = confirm('{!$Label.ConfirmCompletion}');
+            statusFunction(result,status);
+        }
+    }
+</script>
+  <apex:form >
+      <apex:commandButton value="{!$Label.Edit}" action="{! changetoEdit}" rendered="{! AND(NOT(isEditable),isTrainingUser)}" style="margin-left:15cm;" />
+       <!-- Harika - Added as part of CRM -12852 to enable save button for training users -->
+      <apex:commandButton value="{!$Label.Save}" action="{! save}" rendered="{! AND(NOT(isEditable),isTrainingUser)}"/>
+      <apex:commandButton value="{!$Label.Save}" action="{! save}" rendered="{! isEditable}" style="margin-left:15cm;"/>
+      <apex:commandButton value="{!$Label.Cancel}" action="{! cancel}" rendered="{! isEditable}"/>
+      
+      <apex:outputPanel id="ErrorBlock">
+            <apex:pageMessages id="messagesGlobal" escape="false" />
+        </apex:outputPanel>
+      
+      <apex:actionFunction name="statusFunction" action="{! setStatus}" reRender="mySection,ErrorBlock"> 
+          <apex:param id="para1" name="param1" value="" />
+          <apex:param id="para2" name="param2" value="" />
+      </apex:actionFunction>
+         
+      <apex:pageBlock >
+          <apex:pageBlockSection rendered="{! NOT(isEditable)}">
+              <apex:outputField id="statusPicklist" value="{! Training_Event__c.Status__c}" >
+              <!-- Harika - Added as part of CRM -12852 for inline editing of status field -->
+              <apex:inlineEditSupport event="ondblClick"  />
+              </apex:outputField>
+              <apex:outputField value="{! Training_Event__c.LCRM_Cancelled_Reason__c}" />
+          </apex:pageBlockSection>
+          <apex:pageBlockSection rendered="{! isEditable}" id="mySection">
+              <apex:inputField id="statusPicklist" value="{! Training_Event__c.Status__c}" onchange="statusPicklistChanged(this);"/>
+              
+              <apex:inputField value="{! Training_Event__c.LCRM_Cancelled_Reason__c}" required="true"/>
+          </apex:pageBlockSection>
+          
+      </apex:pageBlock>
+  </apex:form>
+</apex:page>

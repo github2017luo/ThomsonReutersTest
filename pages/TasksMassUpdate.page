@@ -1,0 +1,87 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+  
+2019-02-05   Samarpreet Singh      Enabled LightningStylesheets as part of Sales Lightning
+=================================================================================
+ -->
+
+
+<apex:page standardController="Task" Extensions="massUpdateTasks" showHeader="false" lightningStylesheets="true" sidebar="false" id="thePage" >
+  <apex:slds />
+  <apex:form id="ss">
+    <apex:outputLink value="/apex/TasksShow"  rendered="{!$User.UIThemeDisplayed == 'Theme3'}" >«Go Back to List View</apex:outputLink>  
+    <!-- Added Theme based render button for lightning -->
+    <apex:commandLink target="_self"  action="{! URLFOR( '/one/one.app#/alohaRedirect/apex/TasksShow' ) }"  rendered="{!$User.UIThemeDisplayed == 'Theme4d' ||  $User.UIThemeDisplayed=='Theme4t'}" immediate="true" value="«Go Back to List View New"/>
+    
+    <br/><br/><br/>
+  
+    
+    <apex:pageBlock title="Task Mass-Update" id="mub1" rendered="{!msgflag}">
+        
+    <apex:pageMessages />
+    
+    <apex:actionRegion >
+    
+        <apex:selectRadio value="{!selvalue}" >
+            <apex:selectOptions value="{!items}" />
+               <apex:actionSupport event="onclick" action="{!renderfun}"  rerender="pstable,owid,pbb,ss"  status="ActionStatus"/>               
+        </apex:selectRadio>
+        
+    </apex:actionRegion><br></br><br></br>
+    
+    <apex:pageBlockSection id="pbb">
+        <apex:inputField value="{!selTskOwner.ownerid}" id="owid" rendered="{!seletOwner}"/>
+    </apex:pageBlockSection>
+    
+</apex:pageBlock>
+<apex:actionRegion >    
+<apex:pageBlock title="Select The Tasks to Update" id="pstable" rendered="{!msgflag}">
+        
+        <apex:pageBlockButtons id="pbb" location="bottom">
+        
+            <apex:commandButton value="Save" action="{!UpdateallTasks}" rendered="{!updateBtn}" />
+            <apex:commandButton value="Save" action="{!UpdateindualTasks}" rendered="{!!updateBtn}" />
+            <apex:commandButton value="Cancel" action="{!cancelBtn}" immediate="true"  />
+            
+        </apex:pageBlockButtons>
+        
+        <apex:pageBlockSection columns="1" id="pst">
+        
+         <apex:actionStatus id="ActionStatus" startText="Refreshing List..." startStyle="color:red;font-weight:bold"></apex:actionStatus> 
+           
+            
+         
+            <apex:pageBlockTable value="{!wTasks}" var="tsk" rendered="{!msgflag}"  
+                >
+            
+                                     
+               <apex:column headerValue="Subject" width="15%">
+                    <apex:outputLink value="/{!tsk.st.id}">
+                        <apex:outputField value="{!tsk.st.Subject}" />
+                    </apex:outputLink>
+                </apex:column>
+                
+                <apex:column value="{!tsk.st.whoID}"/>
+                
+                <apex:column value="{!tsk.st.WhatID}"/>
+                
+                <apex:column value="{!tsk.st.Priority }"/>
+                
+                <apex:column headerValue="Owner">
+                    <apex:inputField value="{!tsk.st.Ownerid}" rendered="{!ivOwner}"/>
+                    <apex:outputField value="{!tsk.st.Ownerid}" rendered="{!owner}"/>
+                </apex:column>
+                
+               
+            </apex:pageBlockTable>
+        
+        </apex:pageBlockSection>
+    
+</apex:pageBlock>    
+</apex:actionRegion>
+
+<apex:outputLabel style="color:red;font-weight:bold" rendered="{!!msgflag}">**There are No Associated Task Record to Update</apex:outputLabel>
+</apex:form>
+
+</apex:page>

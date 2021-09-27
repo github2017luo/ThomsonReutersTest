@@ -1,0 +1,119 @@
+<template>
+  <lightning-card>
+    <!--<h2>This is LWC</h2>-->
+    <!--
+<template for:each = {countrycodetrack} for:item="countrycode">
+{countrycode.value}
+  </template> -->
+    <!-- <div>
+      <label>Country Code</label>
+        <select class="slds-select" id="select-01" onchange={changeCountryCode}>
+          <template for:each={countrycodetrack} for:item="countrycode">
+            <option key={countrycode.key} value={countrycode.key} class="optionClass">{countrycode.value}</option>
+          </template>
+        </select>
+
+    </div>-->
+    <!-- <div>
+    <template if:true={fieldErrorCheck}>
+  
+      <template if:true={postalCodeIsBlank}>
+        {label.Billing_Street_or_PO_Box}
+      </template>
+    </template>
+  </div>-->
+
+    <div class="slds-text-color_destructive">
+
+      <div class="log" lwc:dom="manual" style="background-color: #F8F8F8;"></div>
+
+    </div>
+    <!--<div class="slds-grid slds-gutters">-->
+    <!--view address-->
+    <template if:false={displayAddress}>
+
+      <lightning-record-view-form record-id={recordId} object-api-name="Account">
+        <!-- <div class="slds-grid">-->
+        <div class="slds-box">
+          <lightning-output-field field-name="BillingAddress">
+          </lightning-output-field>
+          
+          <lightning-output-field field-name="County__c">
+          </lightning-output-field>          
+
+        </div>
+        <!-- </div>-->
+      </lightning-record-view-form><br>
+
+
+      <template if:false={EditButtonAddress}>
+        <lightning-button variant="brand" label="Edit Address" title="EditAddress" onclick={handleEditAddress}>
+        </lightning-button>
+      </template>
+
+      <br><br>
+
+      <lightning-map map-markers={mapMarkers} zoom-level='10'></lightning-map>
+    </template>
+    <!--</div>-->
+
+    <!--Edit Address-->
+    <template if:true={displayAddress}>
+      <!--<lightning-input label="Id" disabled value={recordId}></lightning-input>-->
+      <lightning-input type="text" class="billingStreetClass" value={AddressMap.AccountBillingStreet}
+        placeholder="Enter Street" label="Billing Street" name="billingstreet" maxlength='35'></lightning-input>
+
+      <lightning-input type="text" class="billingStreet2Class" value={AddressMap.AccountBillingStreet2}
+        placeholder="Enter Street" label="Billing Street 2" name="billingstreet2" maxlength='35'></lightning-input>
+
+      <lightning-input type="text" class="cityClass" value={AddressMap.AccountCity} label="Billing City"
+        placeholder="Enter City" name="billingcity" maxlength='40'></lightning-input>
+
+      <lightning-input type="text" class="postalClass" value={AddressMap.AccountPostalCode} label="Postal Code"
+        placeholder="Enter postalcode" name="billingpostalcode" required maxlength='10'></lightning-input>
+
+      <lightning-input type="text" class="POBoxClass" value={AddressMap.PoBox} placeholder="Enter PO Box" label="PO Box"
+        name="POBox"></lightning-input>
+
+      <lightning-input type="text" class="SuiteNumberClass" value={AddressMap.SuiteNumber}
+        placeholder="Enter Suite Number" label="Suite Number" name="SuiteNumber"></lightning-input>
+
+      <lightning-combobox label="Country Code" options={reasonOptions} name="CountryCode" value={value}
+        onchange={handleChange} placeholder={AddressMap.AccountBillingCountry} class="countryCodeClass">
+      </lightning-combobox>
+
+      <template if:true={showBillingState}>
+        <lightning-combobox label="State" options={countryOptions} name="CountryCode" value={value}
+          onchange={countryChange} placeholder={AddressMap.AccountBillingState} class="stateClass">
+        </lightning-combobox>
+      </template>
+
+
+      <lightning-input type="text" class="countyClass" value={AddressMap.County}
+        placeholder={AddressMap.County} label="County" name="county"></lightning-input>
+
+      <br>
+      <!--Save-->
+      <div>
+        <lightning-button variant="brand" label="Save" title="Save" onclick={handleClick} class="slds-m-left_x-small">
+        </lightning-button>
+        <lightning-button label="Cancel" title="Cancel" onclick={handleCancelClick} class="slds-m-left_x-small">
+        </lightning-button>
+      </div>
+    </template>
+    <template if:true={displaySpinner}>
+      <!--<div class="exampleHolder">
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+      </div>-->
+      <div class="demo-only" style="height:6rem">
+        <div class="slds-spinner_container">
+          <div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+            <span class="slds-assistive-text">Loading</span>
+            <div class="slds-spinner__dot-a"></div>
+            <div class="slds-spinner__dot-b"></div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </lightning-card>
+</template>

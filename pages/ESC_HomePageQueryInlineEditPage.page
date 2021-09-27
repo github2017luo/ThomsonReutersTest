@@ -1,0 +1,40 @@
+<apex:page standardController="ESC_HomePageQuery__c" extensions="ESC_HomePageQueryController">
+
+    <apex:form > 
+    
+        <apex:pageBlock rendered="{!inlineEditFlg}">
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Edit" action="{!updateInlineEditFlg}"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection >            
+                <apex:outputField value="{!ehqr.ESC_PushTopicName__c}"/>
+                <apex:outputField value="{!ehqr.ESC_Profiles__c}"/>
+                <apex:outputField value="{!ehqr.ESC_Sequence__c}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+           
+           
+        <apex:pageBlock id="InlineEditSection" rendered="{!NOT(inlineEditFlg)}">
+        <apex:pagemessages ></apex:pagemessages>
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Cancel" action="{!reset}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >            
+                 <!--<apex:inputField value="{!ehqr.ESC_PushTopicName__c}"/> -->
+                 <apex:selectList value="{!selectedPTName}"  id="ptNames" label="Pushtopic" size="1"> 
+                  <apex:selectOptions value="{!ptnameList}" />  
+                </apex:selectList>
+                <apex:pageblockSectionItem HelpText="{!$Label.ESC_HPQHelptext}">
+                <apex:outputLabel value="Applicable Profiles"/>
+                <apex:selectList value="{!selectedProfileList}" multiselect="true" id="profileNames"  size="5"> 
+                  <apex:selectOptions value="{!profileList}" />  
+                </apex:selectList>
+                 </apex:pageblockSectionItem>
+                
+                <apex:inputField value="{!ehqr.ESC_Sequence__c}" required="true" />
+            </apex:pageBlockSection>
+           </apex:pageBlock>  
+    </apex:form>
+</apex:page>

@@ -1,0 +1,77 @@
+<apex:page standardStylesheets="false" sidebar="false" controller="ESC_CaseHomePageController" 
+    language="{!$CurrentPage.Parameters.lang } " showHeader="false">
+
+    <div id="demo">
+        
+       
+        
+        <div id="mainDivCont">
+            <div class="slds-scope">
+                <div styleClass="slds-col">
+                   
+                    <div >
+                        <apex:repeat value="{!resultList}" var="result">
+                            <c:ESC_HomePage result="{!result}" showHeader="false"/>
+
+                        </apex:repeat>
+                        
+                        <div id="myJSON" style="display:none"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+-
+    <apex:includeScript value="{!URLFOR($Resource.ESC_UniversalResource, '/Jquery_CometDReplay/jquery.js')}" />
+
+<script>
+
+
+ js$ = jQuery.noConflict();
+
+ function modifyIDS() {
+    try {
+        js$(".alink").each(function(index) {
+            js$(this).attr('index', index);
+        });
+        js$("a[id *='lookup']").each(function(index) {
+            var newID = "referencedFieldSM" + index;
+            var elem = js$(this);
+            var fullHTML = elem[0].outerHTML;
+            var oldID = elem.attr('id');
+            var regex = new RegExp(oldID, 'g');
+            // console.log(fullHTML);
+
+            try {
+
+                elem[0].outerHTML = fullHTML.replace(regex,
+                    newID);
+            } catch (e) {
+
+            }
+        });
+    } catch (e) {
+        console.log('modify id erro');
+    }
+}
+
+js$(document).ready(function() {
+    try {
+       modifyIDS();
+       //modifyDataSearch();
+       js$(".myCol img").each(function(i) {
+        var jq = js$(this);
+        jq.closest('td').attr('data-order', jq.prop(
+            'src'));
+    });
+       
+    } catch (e) {
+        console.log(e);
+    }
+
+    //
+    return false;
+});
+</script>
+</apex:page>

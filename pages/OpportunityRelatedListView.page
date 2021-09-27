@@ -1,0 +1,88 @@
+<apex:page standardcontroller="Opportunity" extensions="OpportunityRelatedListView" id="pageOpportunityRelatedListView">  
+      <style type="text/css">
+      .loadingIcon {
+            background-image: url(/img/loading.gif);
+            width: 16px;
+            height: 16px;
+        }
+     </style>   
+    <apex:outputPanel >
+    <br/>
+    <apex:outputLink value="/{!Opportunity.Id}">Opportunity: {!Opportunity.name}</apex:outputLink>
+    <br/><br/>
+    </apex:outputPanel>
+    <apex:form id="formOpportunityRelatedListView">
+        <apex:actionStatus id="status">
+                     <apex:facet name="start">
+                          <apex:outputPanel layout="block" styleClass="message infoM4">
+                               <apex:panelGrid columns="2"   styleClass="messageTable"   columnClasses="messageCell"  style="padding:0px;margin:0px;">
+                                  <apex:panelGroup >
+                                     <img class="loadingIcon" src="/s.gif" />
+                                      </apex:panelGroup>
+                                      <apex:panelGroup >
+                                       <div class="messageText">Loading ...</div>
+                                    </apex:panelGroup>
+                                  </apex:panelGrid>
+                              </apex:outputPanel>
+                         </apex:facet>                            
+                         <apex:facet name="stop">
+                              <apex:outputPanel layout="none" >
+                              
+  <!-- ******************************************************Sales Team ****************************************************** -->      
+       <apex:pageBlock id="blockSalesTeam" title="Sales Team">
+             <!-- ** TO show Next and previous Links in related list view ** -->
+             <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setSalesTeam.previous}" rendered="{!setSalesTeam.hasPrevious}" status="status" rerender="blockSalesTeam">Previous</apex:commandLink>
+                    <apex:commandLink action="{!setSalesTeam.next}" rendered="{!setSalesTeam.hasNext}" status="status" rerender="blockSalesTeam">Next</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>
+            <!-- ** Pageblock table will display max of 100 records in detail view or display all records with pagination of 40 records in related list view through standard set controller** -->
+            <apex:pageBlockTable id="tableSalesTeam"   var="Team"    value="{!GoToListSalesTeam}">      
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockSalesTeam" status="status">
+                            Team Member
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                         <apex:outputLink value="/{!Team.Id}">{!Team.Name}</apex:outputLink>
+                </apex:column>                
+                <apex:column value="{!Team.Rep_Type_Description__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockSalesTeam" status="status">
+                            Team Role
+                            <apex:param assignTo="{!sortField}" value="Rep_Type_Description__c"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!Team.Email}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockSalesTeam" status="status">
+                            Email
+                            <apex:param assignTo="{!sortField}" value="Email"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column> 
+                <apex:column value="{!Team.Phone}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockSalesTeam" status="status">
+                            Phone
+                            <apex:param assignTo="{!sortField}" value="Phone"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                                
+            </apex:pageBlockTable>
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+           <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setSalesTeam.previous}" rendered="{!setSalesTeam.hasPrevious}" status="status" rerender="blockSalesTeam">Previous</apex:commandLink>
+                    <apex:commandLink action="{!setSalesTeam.next}" rendered="{!setSalesTeam.hasNext}" status="status" rerender="blockSalesTeam">Next</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>        
+        </apex:pageBlock>
+      </apex:outputpanel>                             
+       </apex:facet>
+      </apex:actionStatus>      
+    </apex:form>
+</apex:page>

@@ -1,0 +1,407 @@
+<apex:page id="pageAccount" standardController="Account" action="{!onPageLoad}" extensions="AccountDetailController" lightningStylesheets="true">
+       
+       <apex:slds />
+    <!-- **To remove the link go to top appearing in middle **-->
+    <style>
+        .fewerMore { display: none;}
+        
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script><script>
+    $j = jQuery.noConflict();
+    $j(document).ready(function hideButton(){   
+    var archiveBtn = $j('[name="request_archive"]');
+        //if('{!$Profile.Name}'!='LatAm User')
+    if('{!$Profile.Name}'!='LatAm User' && '{!$Profile.Name}'!='TR Business Administrator' && '{!$Profile.Name}'!='TR Legal ANZ Temp' && '{!$Profile.Name}'!='TR Legal FindLaw Advanced Lead Mgmt' && '{!$Profile.Name}'!='TR Legal FindLaw User' && '{!$Profile.Name}'!='TR Legal Read-Only One Time User' && '{!$Profile.Name}'!='TR Legal Read-Only User' && '{!$Profile.Name}'!='TR Legal Reporting Admin' && '{!$Profile.Name}'!='TR Legal Small Law Contractors' && '{!$Profile.Name}'!='TR Legal UKI User' && '{!$Profile.Name}'!='TR Legal US Sales User' && '{!$Profile.Name}'!='TR Legal US Sales User Adv Lead Mgmt' && '{!$Profile.Name}'!='TR Legal US Sales User with CDM' && '{!$Profile.Name}'!='TR Legal WPD Advanced Lead Mgmt' && '{!$Profile.Name}'!='TR Legal WPD User' && '{!$Profile.Name}'!='TR Legal US Sales User with LM & CDM' && '{!$Profile.Name}'!='TR US Litigation Support' && '{!$Profile.Name}'!='Transfer Pricing Inside Sales Standard User' && '{!$Profile.Name}'!='LatAM Help Desk Manager' && '{!$Profile.Name}'!='LatAM Helpdesk Agent')
+   	{
+    archiveBtn.css({"display":"none"});
+    }
+
+    });
+    </script> 
+    
+    
+    
+    <apex:pageMessages id="messagesGlobal" />
+    
+    <apex:outputPanel rendered="{!IF($Profile.Name=='GLI Sales User' || $Profile.Name=='GLI Sales Ops User' || $Profile.Name=='GLI Read Only' || $Profile.Name=='GLI Marketing User' || $Profile.Name=='ANZ Users' || $Profile.Name == 'System Administrator' || $Profile.Name == 'LMS - User' || $Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users' || GLIServiceUser ==true || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name == 'UKI Sales Ops' || $Profile.Name = 'GLI Marketing User'|| $Profile.Name = 'GLI Read Only',true,false)}">
+        <div class="listHoverLinks" style="visibility: visible;">
+            <a class="linklet" href="#pageAccount_formAccountDetail_blockAccountTeam_target" id="pageAccount_formAccountDetail_blockAccountTeam_target_link" data-uidsfdc="33"><span class="listTitle">Account Team Member<span class="count">[{!listAccountTeamMembers.size}]</span></span></a>
+        <!--    <apex:form rendered="{!OR($Profile.Name='GLI Sales User',$Profile.Name='GLI Sales Ops User',$Profile.Name='Elite User',$Profile.Name='UKI Users',GLIServiceUser ==true,$Profile.Name ='DQA User', $Profile.Name = 'Elite Sales Ops', $Profile.Name = 'UKI Sales Ops',$Profile.Name = 'System Administrator',$Profile.Name = 'GLI Marketing User',$Profile.Name = 'GLI Read Only')}">
+                <apex:commandButton value="Show ALL BU Related Info" action="{!URLFOR($Action.Account.Show_All_Child_Records,Account.id)}"/>
+                <apex:commandButton value="Show MY BU Related Info" action="{!URLFOR($Action.Account.Show_My_BU_Child_Records,Account.id)}"/>
+                Removed this four buttons from here as discussed to be on the Mockup Section-->
+                <!--<apex:commandButton rendered="{!IF($Profile.Name='GLI Sales User' || $Profile.Name='GLI Sales Ops User' ,true,false)}" value="Online Passwords" action="{!onlinepassword}"/>    
+                <apex:commandButton value="Subscriptions" action="{!renderSubscriptionPg}" rendered="{!IF(($Profile.Name='GLI Sales User' || $Profile.Name='GLI Sales Ops User') && (ISPICKVAL($User.Sub_Bu__c,'USL') || ISPICKVAL($User.Sub_Bu__c,'LMS') || ISPICKVAL($User.Sub_Bu__c,'FindLaw')) ,true,false)}"/>
+                <apex:commandButton value="Orders" action="{!renderOrderPg}" rendered="{!IF($Profile.Name='GLI Sales User' || $Profile.Name='GLI Sales Ops User'|| $Profile.Name == 'System Administrator',true,false)}"/>    
+                <apex:commandButton rendered="{!IF($Profile.Name='GLI Sales User' || $Profile.Name='GLI Sales Ops User' || $Profile.Name == 'System Administrator',true,false)}" value="Create Promo Password" action="{!promopassword}"/>
+                
+                
+            </apex:form> -->
+        </div>
+    </apex:outputPanel>   
+    
+    
+    
+    
+    <apex:form id="formAccountDetail" rendered="{!showPage}">
+        <apex:actionFunction name="afReltdLst" action="{!getCusReltdLst}" rerender="formAccountDetail" status="actStatusId"/><!-- Priyanka -->
+        <!-- ******************************************************Account Team ****************************************************** -->      
+        
+        <div class="bRelatedList" id="pageAccount_formAccountDetail_blockAccountTeam"><a name="pageAccount_formAccountDetail_blockAccountTeam_target"></a>
+            <apex:actionFunction action="{!deleteRow}" name="deleteRow" reRender="tableAccountTeam,messagesGlobal">
+                <apex:param name="firstParam" value="" assignTo="{!delRowId}"/>                
+            </apex:actionFunction>
+            <apex:pageBlock id="blockAccountTeam" title="{!$Label.Account_Team}">
+                    
+            <!--- filter condation base on (Sub_Bu CRM-5)---->
+            
+            <apex:panelGroup layout="none"  rendered="{!IF(($Profile.Name=='GLI Sales User'|| $Profile.Name=='System Administrator'|| $Profile.Name=='GLI Sales Ops User' || $Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users' || $Profile.Name=='Elite Sales Ops' || $Profile.Name == 'UKI Sales Ops'|| $Profile.Name=='GLI Marketing User'),true,false)}">
+             <apex:outputLabel for="selectViewOptions" value="{!$Label.View}: "  style="font-weight:bold;" />
+                 <apex:selectList id="selectViewOptions" value="{!AccountTeamview}"  size="1">
+                         <apex:actionSupport event="onchange" status="statusLoadingView"  Action="{!FliterAccountteam}" rerender="tableAccountTeam" />
+                         <apex:selectOptions value="{!AccountTeamViews}" />
+                  </apex:selectList>
+                  <apex:actionStatus id="statusLoadingView">
+                            <apex:facet name="start">
+                                <img src="/img/loading.gif" height="14px" width="14px" />
+                            </apex:facet>
+                            <apex:facet name="stop">
+                                <img src="/img/s.gif" height="14px" width="14px" />
+                            </apex:facet>
+                        </apex:actionStatus>
+              </apex:panelGroup>
+             <br/><br/>       
+              <apex:pageBlockButtons id="buttonNewAccountTeam" location="top" rendered="{!IF(($Profile.Name == 'LatAm User' && bAccountTeam) || $Profile.Name == 'System Administrator' || ($Profile.Name == 'ANZ Users' && Account.RecordType.Name == 'Prospect'), true, false)}">              
+                    <apex:commandButton title="Add" value="Add" action="{!addSalesTeam}" reRender="none" >  
+                        
+                    </apex:commandButton>       
+                </apex:pageBlockButtons>   
+                <!-- ** Pageblock table will display max of 250 records in detail view ** -->
+                <!-- updated the table for CRM-12987-->
+                <apex:pageBlockTable id="tableAccountTeam" var="aTeam" value="{!dispAccTeamlist}" rows="{!AccountTeamRowsToDisplay}"> <!--rendered="{!ListAccountTeamvalues.size!=0}" --> <!--value="{!ListAccountTeamvalues}" -->
+                    <apex:column headerValue="Action" rendered="{!IF(($Profile.Name == 'LatAm User' && bAccountTeam) || $Profile.Name == 'System Administrator'|| ($Profile.Name == 'ANZ Users' && Account.RecordType.Name == 'Prospect') , true, false)}">
+                        <apex:commandLink style="color: #015BA7;text-decoration: none" reRender="none" onclick="window.top.location='/acc/salesteamedit.jsp?id={!aTeam.teamId}&retURL={!Account.Id}'" ><!--id={!aTeam.Id}-->
+                            Edit
+                        </apex:commandLink>
+                        
+                        &nbsp;|&nbsp;
+                        <apex:commandLink style="color: #015BA7;text-decoration: none" onclick="var c = window.confirm('Are you sure?');if(c){deleteRow('{!aTeam.teamId}');}" reRender="none" ><!--deleteRow('{!aTeam.id}');-->
+                            Del                        
+                        </apex:commandLink>
+                    </apex:column>          
+                    <apex:column headervalue="Team Member">
+                        <apex:outputLink value="/{!aTeam.UserId}"><!-->{!aTeam.user.Name}-->{!aTeam.TeamMember}</apex:outputLink> 
+                    </apex:column>
+
+                    <apex:column headervalue="Primary Rep Role" value="{!aTeam.PrimaryRepRole}" rendered="{!IF($Profile.Name == 'LatAm User'  || $Profile.Name == 'System Administrator' ||$Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users' || GLIServiceUser ==true || $Profile.Name =='DQA User'|| $Profile.Name =='Elite Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name =='UKI Sales Ops' || $Profile.Name=='GLI Marketing User',true,false)}" /><!--headervalue="Team Role"  value="{!aTeam.User.Rep_Type_Description__c}"-->
+                    <apex:column headervalue="Team Member Role" value="{!aTeam.TeamMemberRole}"  /><!--headervalue="TeamMemberRole"-->
+                    <!--Added for CRM-12987-->
+                    <!--Removing as a components removal for TM1.0 references <apex:column headervalue="Team Member Territory" value="{!aTeam.TerritoryNumber}" rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name =='UKI Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name=='GLI Helpdesk Manager'|| $Profile.Name=='GLI Helpdesk Agent'|| $Profile.Name=='GLI Marketing User', true, false)}"/>-->
+                    <apex:column headervalue="Sub-BU" value="{!aTeam.Subbu}"  rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' ||  GLIServiceUser ==true || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name =='UKI Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name=='GLI Marketing User', true, false)}"/><!--value="{!aTeam.User.Sub_Bu__c}"-->
+                    <apex:column headervalue="Region" value="{!aTeam.Region}"  rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users'  ||  GLIServiceUser ==true || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name =='UKI Sales Ops' || $Profile.Name=='GLI Marketing User',true, false)}"/><!--value="{!aTeam.User.District__c}"-->
+                    <apex:column headervalue="Email" value="{!aTeam.Email}" /><!--value="{!aTeam.User.Email}"-->
+                    <!--Added for CRM-12987--><apex:column headervalue="District" value="{!aTeam.District}" rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name =='UKI Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name=='GLI Helpdesk Manager'|| $Profile.Name=='GLI Helpdesk Agent'|| $Profile.Name=='GLI Marketing User', true, false)}"/> 
+                    <!-- <apex:column headervalue="TeamMemberRole" value="{!aTeam.TeamMemberRole}"  rendered="{!IF($Profile.Name == 'LatAm User', true, false)}"/>  -->
+                    <!-- <apex:column headervalue="Phone" value="{!aTeam.User.Phone}" rendered="{!IF($Profile.Name == 'LatAm User' ||$Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users' || $Profile.Name =='DQA User',false,true)}"/>  -->
+                    <!-- <apex:column headervalue="Territory Number" rendered="{!IF($Profile.Name != 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name != 'UKI Users' || $Profile.Name != 'DQA User', true, false)}"/>  -->
+                    
+                </apex:pageBlockTable>            
+                <!-- **To display show more and Go to list in detail view** -->           
+                <apex:outputpanel rendered="{!(dispAccTeamlist.size)>AccountTeamRowsToDisplay}"><!--rendered="{!(dispAccTeamlist.size)>AccountTeamRowsToDisplay}-->
+                    <br/>
+                    <apex:commandLink action="{!showMore}" rerender="blockAccountTeam" rendered="{!AccountTeamRowsToDisplay<=80}">
+                        Show More &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="AccountTeam"/>
+                    </apex:commandlink>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <apex:commandLink action="{!goToList}">
+                    <!--Updated for CRM-12987-->
+                        Go To List ({!dispAccTeamlist.size }{!if(dispAccTeamlist.size=250,'+','')})  &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="AccountTeam"/>
+                    </apex:commandlink>
+                </apex:outputpanel>
+                <apex:outputPanel layout="block" rendered="{!dispAccTeamlist.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel> <!--rendered="{!dispAccTeamlist.size=0}"-->
+                
+            </apex:pageBlock>       
+        </div> 
+        
+        
+        
+        <apex:outputpanel rendered="{!IsMasterAccount}">
+            
+            <!-- ***************************************Account Hierarchy Training Events ***************************************************************** -->     
+            <apex:pageBlock id="blockMasterAccountTraningEvts" title="{!$Label.Account_Hierarchy_Training_Events}" rendered="{!($Profile.Name != 'GLI Sales User' && $Profile.Name != 'GLI Sales Ops User' && $Profile.Name != 'LMS - User' && $Profile.Name != 'Elite User' && $Profile.Name != 'UKI Users' && $Profile.Name != 'Elite Sales Ops' && $Profile.Name != 'UKI Sales Ops' && GLIServiceUser !=true && $Profile.Name != 'DQA User' && GGOUser !=true && $Profile.Name != 'GLI Sales User' && $Profile.Name != 'GLI Sales Ops User' && $Profile.Name != 'GLI Marketing User' && $Profile.Name != 'GLI Read Only')}" >
+                <apex:pageBlockTable id="tableMasterAccountTrainingEvts" var="tevt" value="{!MasterAccountTrainingEvents}" rows="{!TrainingEvtRowsToDisplay}" rendered="{!MasterAccountTrainingEvents.size!=0}">                
+                    <apex:column width="15%" headerValue="{!$ObjectType.Training_Event__c.Fields.Name.Label}">
+                        <apex:outputLink value="/{!tevt.Id}">{!tevt.Name}</apex:outputLink> 
+                    </apex:column>   
+                    <apex:column width="15%" headerValue="{!$ObjectType.Training_Event__c.Fields.Account__c.Label}">
+                        <apex:outputLink value="/{!tevt.Account__c}">{!tevt.Account__r.Name}</apex:outputLink> 
+                    </apex:column> 
+                    <apex:column width="20%" headerValue="{!$ObjectType.Training_Event__c.Fields.Training_Name__c.Label}" value="{!tevt.Training_Name__c}"/>
+                    <apex:column width="10%" headerValue="{!$ObjectType.Account.Fields.BillingCity.Label}" value="{!tevt.Account__r.BillingCity }"/>                    
+                    <apex:column width="15%" headerValue="{!$ObjectType.Training_Event__c.Fields.State__c.Label}" value="{!tevt.State__c}"/>
+                    <apex:column width="10%" headerValue="{!$ObjectType.Training_Event__c.Fields.Training_Date__c.Label}" value="{!tevt.Training_Date__c}"/>
+                    <apex:column width="10%" headerValue="{!$ObjectType.Training_Event__c.Fields.Training_Type__c.Label}" value="{!tevt.Training_Type__c}"/>                    
+                    <apex:column width="15%" headerValue="{!$ObjectType.Training_Event__c.Fields.Status__c.Label}" value="{!tevt.Status__c}"/>
+                    <apex:column width="3%" headerValue="{!$ObjectType.Training_Event__c.Fields.Number_of_Candidates__c.Label}" value="{!tevt.Number_of_Candidates__c}"/>
+                    <apex:column width="2%" headerValue="{!$ObjectType.Training_Event__c.Fields.Number_Trained__c.Label}" value="{!tevt.Number_Trained__c}"/>  
+                    <apex:column width="15%" headerValue="{!$ObjectType.Training_Event__c.Fields.Campaign_Name__c.Label}">
+                        <apex:outputLink value="/{!tevt.Campaign_Name__r.Id}">{!tevt.Campaign_Name__r.Name}</apex:outputLink> 
+                    </apex:column>  
+                    <apex:column width="10%" headerValue="Owner Last Name">
+                        <apex:outputLink value="/{!tevt.OwnerId}">{!tevt.Owner.LastName}</apex:outputLink> 
+                    </apex:column>                       
+                    
+                </apex:pageBlockTable>   
+                
+                <apex:outputpanel rendered="{!(MasterAccountTrainingEvents.size)>TrainingEvtRowsToDisplay}">
+                    <br/>
+                    <apex:commandLink action="{!showMore}" rerender="blockMasterAccountTraningEvts" rendered="{!TrainingEvtRowsToDisplay<=20}">
+                        Show More &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="TrainingEvents"/>
+                    </apex:commandlink>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <apex:commandLink action="{!goToList}">
+                        Go To List ({!MasterAccountTrainingEvents.size}{!if(MasterAccountTrainingEvents.size=50,'+','')}) &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="TrainingEvents"/>
+                    </apex:commandlink>
+                </apex:outputpanel>
+                <apex:outputPanel layout="block" rendered="{!MasterAccountTrainingEvents.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>           
+            </apex:pageBlock>       
+            
+            
+            <!-- ******************************************************Account Hierarchy Contacts ****************************************************** -->      
+       <apex:pageBlock id="blockMasterAccountContacts" title="{!$Label.Account_Hierarchy_Contacts}" rendered="{!($Profile.Name != 'LMS - User' && $Profile.Name != 'Elite User' && $Profile.Name != 'UKI Users' && $Profile.Name != 'Elite Sales Ops' && $Profile.Name != 'UKI Sales Ops' && GLIServiceUser !=true && $Profile.Name != 'DQA User' && GGOUser !=true && $Profile.Name != 'GLI Sales User' && $Profile.Name != 'GLI Sales Ops User' && $Profile.Name != 'GLI Marketing User' && $Profile.Name != 'GLI Read Only')}"> 
+            <!-- ** Pageblock table will display max of 250 records in detail view ** -->
+            <apex:pageBlockTable id="tableMasterAccountContacts" var="con" value="{!MasterAccountContacts}" rows="{!contactRowsToDisplay}" rendered="{!MasterAccountContacts.size!=0}">                
+                <apex:column headerValue="{!$ObjectType.Account.Fields.Name.Label}">
+                        <apex:outputLink value="/{!con.AccountId}">{!con.Account.Name}</apex:outputLink> 
+                    </apex:column>                
+                    <apex:column headervalue="{!$ObjectType.Contact.Label} {!$ObjectType.Contact.Fields.Name.Label}">
+                        <apex:outputLink value="/{!con.Id}">{!con.Name}</apex:outputLink> 
+                    </apex:column>                
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.LastName.Label}" value="{!con.LastName}" />
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.FirstName.Label}" value="{!con.FirstName}" />
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.Title.Label}" value="{!con.Title}" />
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.Email.Label}" value="{!con.Email}" />
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.Phone.Label}" value="{!con.Phone}" />
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.Contact_Type__c.Label}" value="{!con.Contact_Type__c}" />
+                    <apex:column headervalue="{!$ObjectType.Contact.Fields.SAP_Role__c.Label}" value="{!con.SAP_Role__c}" />
+                    
+                </apex:pageBlockTable>     
+                
+                <!-- **To display show more and Go to list in detail view** -->           
+                <apex:outputpanel rendered="{!(MasterAccountContacts.size)>contactRowsToDisplay}">
+                    <br/>
+                    <apex:commandLink action="{!showMore}" rerender="blockMasterAccountContacts" rendered="{!contactRowsToDisplay<=20}">
+                        Show More &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="Contact"/>
+                    </apex:commandlink>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <apex:commandLink action="{!goToList}">
+                        Go To List ({!MasterAccountContacts.size}{!if(MasterAccountContacts.size=50,'+','')}) &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="Contact"/>
+                </apex:commandlink>
+            </apex:outputpanel>
+            <apex:outputPanel layout="block" rendered="{!MasterAccountContacts.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>            
+        </apex:pageBlock>
+       
+       
+  
+<!-- ***************************************Account Hierarchy Opportunities ***************************************************************** -->     
+        <apex:pageBlock id="blockMasterAccountOpportunities" title="{!$Label.Account_Hierarchy_Opportunities}" rendered="{!($Profile.Name != 'LMS - User' && $Profile.Name != 'Elite User' && $Profile.Name != 'UKI Users' && $Profile.Name != 'Elite Sales Ops' && $Profile.Name != 'UKI Sales Ops' && GLIServiceUser !=true && $Profile.Name != 'DQA User' && GGOUser !=true && $Profile.Name != 'GLI Sales User' && $Profile.Name != 'GLI Sales Ops User' && $Profile.Name != 'GLI Marketing User' && $Profile.Name != 'GLI Read Only')}">
+            <apex:pageBlockTable id="tableMasterAccountOpportunities" var="opp" value="{!MasterAccountOpportunities}" rows="{!OpportunityRowsToDisplay}" rendered="{!MasterAccountOpportunities.size!=0}">                
+                <apex:column headerValue="{!$ObjectType.Account.Fields.Name.Label}">
+                    <apex:outputLink value="/{!opp.AccountId}">{!opp.Account.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column headervalue="{!$ObjectType.Opportunity.Label} {!$ObjectType.Opportunity.Fields.Name.Label}">
+                    <apex:outputLink value="/{!opp.Id}">{!opp.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column headervalue="{!$ObjectType.Opportunity.Fields.StageName.Label}" value="{!opp.StageName}" />
+                <apex:column headervalue="{!$ObjectType.Opportunity.Fields.Amount.Label}" value="{!opp.Amount}" />
+                <apex:column headervalue="{!$ObjectType.Opportunity.Fields.CloseDate.Label}" value="{!opp.CloseDate}" />
+            </apex:pageBlockTable>   
+            
+            <apex:outputpanel rendered="{!(MasterAccountOpportunities.size)>OpportunityRowsToDisplay}">
+             <br/>
+                <apex:commandLink action="{!showMore}" rerender="blockMasterAccountOpportunities" rendered="{!OpportunityRowsToDisplay<=20}">
+                    Show More &raquo;
+                    <apex:param name="relListName" assignTo="{!relListName}" value="Opportunity"/>
+                </apex:commandlink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <apex:commandLink action="{!goToList}">
+                    Go To List ({!MasterAccountOpportunities.size}{!if(MasterAccountOpportunities.size=50,'+','')}) &raquo;
+                    <apex:param name="relListName" assignTo="{!relListName}" value="Opportunity"/>
+                </apex:commandlink>
+            </apex:outputpanel>
+            <apex:outputPanel layout="block" rendered="{!MasterAccountOpportunities.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>            
+        </apex:pageBlock>   
+
+<!-- ********************************************Account Hierarchy Open Activities ******************************************************** -->       
+       <apex:pageBlock id="blockMasterAccountOpenActivities" title="{!$Label.Account_Hierarchy_Open_Activities}" rendered="{!($Profile.Name != 'LMS - User' && $Profile.Name != 'Elite User' && $Profile.Name != 'UKI Users' && $Profile.Name != 'Elite Sales Ops' && $Profile.Name != 'UKI Sales Ops' && GLIServiceUser !=true && $Profile.Name != 'DQA User' && GGOUser !=true && $Profile.Name != 'GLI Sales User' && $Profile.Name != 'GLI Sales Ops User' && $Profile.Name != 'GLI Marketing User' && $Profile.Name != 'GLI Read Only')}">
+            <apex:pageBlockTable id="tableMasterAccountOpenActivities" var="openact" value="{!MasterAccountOpenActivities}" rows="{!OpenActivityRowsToDisplay}"  rendered="{!MasterAccountOpenActivities.size!=0}">       
+                <apex:column headerValue="{!$ObjectType.OpenActivity.Fields.subject.Label}">
+                    <apex:outputLink value="/{!openact.id}">{!openact.subject}</apex:outputLink> 
+                </apex:column>
+               <apex:column headervalue="{!$ObjectType.OpenActivity.Fields.activitytype.Label}">
+               <apex:outputtext value="{!openact.activitytype}"/> 
+               </apex:column>
+                <apex:column headerValue="{!$ObjectType.OpenActivity.Fields.WhoId.Label}">
+                    <apex:outputLink value="/{!openact.WhoId}">{!openact.who.name}</apex:outputLink> 
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.OpenActivity.Fields.WhatId.Label}">
+                    <apex:outputLink value="/{!openact.WhatId}">{!openact.what.name}</apex:outputLink> 
+                </apex:column>
+                <apex:column headervalue="{!$ObjectType.OpenActivity.Fields.Activitydate.Label}" value="{!openact.Activitydate}" />
+                <apex:column headervalue="{!$ObjectType.OpenActivity.Fields.status.Label}" value="{!openact.status}" />
+                <apex:column headerValue="{!$ObjectType.OpenActivity.Fields.ownerId.Label}">
+                    <apex:outputLink value="/{!openact.ownerId}">{!openact.owner.name}</apex:outputLink> 
+                </apex:column>
+            </apex:pageBlockTable>          
+                
+                <apex:outputpanel rendered="{!(MasterAccountOpenActivities.size)>OpenActivityRowsToDisplay}">
+                    <br/>
+                    <apex:commandLink action="{!showMore}" rerender="blockMasterAccountOpenActivities" rendered="{!OpenActivityRowsToDisplay<=20}">
+                        Show More &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="OpenActivity"/>
+                    </apex:commandlink>
+                    &nbsp;&nbsp;|&nbsp;&nbsp;
+                    <apex:commandLink action="{!goToList}">
+                        Go To List ({!MasterAccountOpenActivities.size}{!if(MasterAccountOpenActivities.size=50,'+','')}) &raquo;
+                        <apex:param name="relListName" assignTo="{!relListName}" value="OpenActivity"/>
+                </apex:commandlink>
+            </apex:outputpanel>
+            <apex:outputPanel layout="block" rendered="{!MasterAccountOpenActivities.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>            
+        </apex:pageBlock>
+        
+        
+<!-- ************************************Account Hierarchy Activity History ******************************************************************** -->  
+       
+        <apex:pageBlock id="blockMasterAccountActivityHistories" title="{!$Label.Account_Hierarchy_Activity_History}" rendered="{!($Profile.Name != 'LMS - User' && $Profile.Name != 'Elite User' && $Profile.Name != 'UKI Users' && $Profile.Name != 'Elite Sales Ops' && $Profile.Name != 'UKI Sales Ops' && GLIServiceUser !=true && $Profile.Name != 'DQA User' && GGOUser !=true && $Profile.Name != 'GLI Sales User' && $Profile.Name != 'GLI Sales Ops User' && $Profile.Name != 'GLI Marketing User' && $Profile.Name != 'GLI Read Only')}">
+            <apex:pageBlockTable id="tableMasterAccountActivityHistories" var="acthistory" value="{!MasterAccountActivityHistories}" rows="{!ActivityHistoryRowsToDisplay}" rendered="{!MasterAccountActivityHistories.size!=0}">           
+                <apex:column headerValue="{!$ObjectType.ActivityHistory.Fields.subject.Label}">
+                    <apex:outputLink value="/{!acthistory.id}">{!acthistory.subject}</apex:outputLink> 
+                </apex:column>
+               <apex:column headervalue="{!$ObjectType.ActivityHistory.Fields.activitytype.Label}">
+               <apex:outputtext value="{!acthistory.activitytype}"/> 
+               </apex:column>
+                <apex:column headerValue="{!$ObjectType.ActivityHistory.Fields.WhoId.Label}">
+                    <apex:outputLink value="/{!acthistory.WhoId}">{!acthistory.who.name}</apex:outputLink> 
+                </apex:column>
+                <apex:column headerValue="{!$ObjectType.ActivityHistory.Fields.WhatId.Label}">
+                    <apex:outputLink value="/{!acthistory.WhatId}">{!acthistory.what.name}</apex:outputLink> 
+                </apex:column>
+                <apex:column headervalue="{!$ObjectType.ActivityHistory.Fields.Activitydate.Label}" value="{!acthistory.Activitydate}" />
+                <apex:column headervalue="{!$ObjectType.ActivityHistory.Fields.status.Label}" value="{!acthistory.status}" />
+                <apex:column headerValue="{!$ObjectType.ActivityHistory.Fields.ownerId.Label}">
+                    <apex:outputLink value="/{!acthistory.ownerId}">{!acthistory.owner.name}</apex:outputLink> 
+                </apex:column>
+            </apex:pageBlockTable>            
+            
+               
+            <apex:outputpanel rendered="{!(MasterAccountActivityHistories.size)>ActivityHistoryRowsToDisplay}">
+                <br/>
+                <apex:commandLink action="{!showMore}" rerender="blockMasterAccountActivityHistories" rendered="{!ActivityHistoryRowsToDisplay<=20}">
+                    Show More &raquo;
+                    <apex:param name="relListName" assignTo="{!relListName}" value="ActivityHistory"/>
+                </apex:commandlink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                <apex:commandLink action="{!goToList}">
+                    Go To List ({!MasterAccountActivityHistories.size}{!if(MasterAccountActivityHistories.size=50,'+','')}) &raquo;
+                    <apex:param name="relListName" assignTo="{!relListName}" value="ActivityHistory"/>
+                </apex:commandlink>
+            </apex:outputpanel>
+            <apex:outputPanel layout="block" rendered="{!MasterAccountActivityHistories.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>             
+        </apex:pageBlock>
+        </apex:outputpanel>
+        <apex:actionStatus id="actStatusId" >
+            <apex:facet name="start" >
+                <img src="/img/loading.gif" />                    
+            </apex:facet>
+        </apex:actionStatus>
+        <apex:outputPanel layout="none" rendered="false">
+            <apex:includeScript value="/support/console/20.0/integration.js"/>
+            <script>
+            sforce.console.setTabTitle('{!Account.Name}');
+        </script>  
+        </apex:outputPanel> 
+        <!----------------------- Tax Documents ------------------------------>
+        <apex:pageBlock id="blockTaxDocuments" title="Tax Documents" rendered="{!($Profile.Name == 'LatAm User' || $Profile.Name == 'Partner Portal User'||$Profile.Name == 'System Administrator')}">
+            <apex:pageBlockTable id="tableTaxDcouments" var="taxdoc" value="{!AccountTaxDocuments}" rows="{!TaxDocumentsRowsToDisplay}" rendered="{!AccountTaxDocuments.size!=0}">           
+                <apex:column headerValue="{!$ObjectType.Tax_Document__c.Fields.name.Label}">
+                    <apex:outputLink value="/{!taxdoc.id}">{!taxdoc.name}</apex:outputLink> 
+                </apex:column>
+               
+                <apex:column headervalue="{!$ObjectType.Tax_Document__c.Fields.Tax_Document_Type__c.Label}" value="{!taxdoc.Tax_Document_Type__c}" />
+                <apex:column headervalue="{!$ObjectType.Tax_Document__c.Fields.Tax_Document_Effective_Date__c.Label}" value="{!taxdoc.Tax_Document_Effective_Date__c}" />                   
+                
+            </apex:pageBlockTable>            
+            
+               
+            <apex:outputpanel rendered="{!(AccountTaxDocuments.size)>TaxDocumentsRowsToDisplay}">
+                <br/>
+                <apex:commandLink action="{!showMore}" rerender="blockTaxDocuments" rendered="{!TaxDocumentsRowsToDisplay<=20}">
+                    Show More &raquo;
+                    <apex:param name="relListName" assignTo="{!relListName}" value="TaxDocuments"/>
+                </apex:commandlink>
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+              <!--  <apex:commandLink action="{!goToList}">
+                    Go To List ({!AccountTaxDocuments.size}{!if(AccountTaxDocuments.size=50,'+','')}) &raquo;
+                    <apex:param name="relListName" assignTo="{!relListName}" value="TaxDocuments"/>
+                </apex:commandlink> -->
+            </apex:outputpanel>
+            <apex:outputPanel layout="block" rendered="{!AccountTaxDocuments.size=0}" style="border:1px solid #D4DADC; padding:4px 2px 4px 5px;">No records to display</apex:outputPanel>             
+        </apex:pageBlock>
+   </apex:form>  
+    
+    <apex:outputPanel layout="none" rendered="{!NOT(ISNULL($CurrentPage.parameters.isdtp))}">
+        <apex:includeScript value="/support/console/25.0/integration.js"/>
+        <script>
+         
+            try {
+                sforce.console.setTabTitle('{!Account.Name}');
+            }
+            catch (e) { /*Ignore Error*/ }
+        </script> 
+        
+    </apex:outputPanel>    
+    
+    <apex:outputPanel rendered="true">
+        <script type="text/javascript">
+        
+        try {
+        sfdcPage.registerRelatedList('pageAccount:blockAccountTeam', '', '', false, '', '',false,false,true, '');
+       
+        } catch (e) {}
+ 
+        </script>
+    <!-- Added By Debarghya For S2E Optimisation Start -->
+        <script type="text/javascript">
+            //----This onload function is written in this manner to make the page compatible with inline editing----
+            function addLoadEvent(func) {
+                var oldonload = window.onload;
+                //alert(0000);
+                if (typeof window.onload != 'function') {
+                    window.onload = func;
+                    //alert(1111);
+                } else {
+                    window.onload = function() {
+                        //alert(2222);
+                        if (oldonload) {
+                            //alert(3333);
+                            oldonload();
+                        }
+                        func();
+                        //alert(4444);
+                    }
+                }
+            }
+            if({!IsMasterAccount}){
+                addLoadEvent(afReltdLst);
+                //alert(5555);
+            }
+        </script>
+        <!-- Added By Debarghya For S2E Optimisation End -->
+    </apex:outputPanel>
+</apex:page>

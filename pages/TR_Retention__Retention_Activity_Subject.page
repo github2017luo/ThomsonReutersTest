@@ -1,0 +1,62 @@
+<apex:page StandardController="TR_Retention__Retention_Activity_Subject__c" extensions="TR_Retention.RetentionActivitySubjectController">
+  <apex:form >   
+      <apex:pageMessages ></apex:pageMessages>
+               <!--
+                <apex:inputField value="{!retAct.Name}" required="true" rendered="{!retAct.Name != ''}"/>
+                <apex:selectList value="{!retAct.TR_Retention__SUB_BU__c}" size="1" required="true" label="SUB BU" >
+                    <apex:selectOptions value="{!AssetSubBU}" />
+                </apex:selectList>  
+                <apex:inputField value="{!retAct.TR_Retention__Activity_Subject__c}" required="true"/>
+               -->
+        <apex:pageBlock id="actSub" title="Retention Subject-Description" >
+        <apex:pageBlockSection title="Information">
+ 
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.Name.inlineHelpText}" rendered="{!retAct.Name != ''}">
+                    <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.Name.Label}</apex:outputtext>
+                    <apex:inputField value="{!retAct.Name}" required="true"/>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__SUB_BU__c.inlineHelpText}">
+                <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__SUB_BU__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!retAct.TR_Retention__SUB_BU__c}" size="1" required="true" label="SUB BU" >
+                            <apex:selectOption itemValue="None" itemLabel="--None--"/>
+                            <apex:selectOptions value="{!AssetSubBU}" />
+                        </apex:selectList>
+                    </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+    
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__Activity_Subject__c.inlineHelpText}">
+                    <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__Activity_Subject__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:inputField value="{!retAct.TR_Retention__Activity_Subject__c}" required="false"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSectionItem helpText="{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__Activity_Subject__c.inlineHelpText}">
+                    <apex:outputtext >{!$ObjectType.TR_Retention__Retention_Activity_Subject__c.fields.TR_Retention__Activity_Description__c.Label}</apex:outputtext>
+                    <apex:outputPanel >
+                    <div class="requiredInput">
+                        <div class="requiredBlock"></div>
+                        <apex:inputField value="{!retAct.TR_Retention__Activity_Description__c}" required="false" style="width: 460px; height: 120px"/>
+                        </div>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                
+            </apex:pageBlockSection>
+        
+           <apex:pageBlockButtons >
+                 <apex:commandButton value="Save" action="{!save}"/>
+                 <apex:commandButton value="Save & New" action="{!saveandnew}"/>
+                 <apex:commandButton id="buttonCancel" value="Cancel" action="{!cancel}" />
+           </apex:pageBlockButtons>
+              
+      </apex:pageBlock>
+  </apex:form>
+</apex:page>

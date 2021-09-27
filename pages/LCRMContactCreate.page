@@ -1,0 +1,253 @@
+<!--
+* CHANGE HISTORY
+* =============================================================================
+* Date         Name                    Description
+* 2019-01-30   Akansha Gill          Jira no-DPS-2008-Enabled LightningStylesheets as part of Sales Lightning   
+* =============================================================================
+-->
+<apex:page standardController="Contact" extensions="LCRMContactCreateController" lightningStylesheets="true">
+    <style>
+    body .bPageBlock .pbBody .heading .pbSubheader{
+        background-color: #F8C471;
+        color:black;
+    }
+    .colorBlue{
+        color:blue;
+    } 
+    .colorblack{
+        color:black;
+    }   
+    </style>
+    <apex:form id="formEdit">
+        <apex:actionFunction name="callCancel"  action="{!cancel}" />
+        <apex:pageBlock title="{!$Label.LTS_NewContact}" mode="edit" rendered="{!NOT(HasMatchingContacts)}">
+                <apex:pageMessages ></apex:pageMessages>      
+                
+                <apex:actionStatus id="statusValidateContact">
+                    <apex:facet name="start">
+                        <c:PageStatusMessage message="{!$Label.LTS_OutputMsg}" />
+                    </apex:facet>
+                </apex:actionStatus>
+                
+                <apex:pageBlockButtons location="top" >
+                <apex:commandButton id="btnNext" value="{!$Label.LTS_NextContactCreate}" action="{!Next}" rerender="formEdit" status="statusValidateContact"/>
+                <!--<apex:commandButton id="btnCancel" value="Cancel" action="{!cancel}" />-->
+                <input type ="button" id ="btnCancel" value="{!$Label.LTS_CancelContactCreate}" onclick="javascript:cancelTab();" class="btn" />
+                </apex:pageBlockButtons>
+                <apex:pageBlockSection columns="1" >
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel >{!$ObjectType.Contact.fields.FirstName.Label}</apex:outputLabel>
+                        <apex:panelGroup >
+                            <apex:inputField value="{!oContact.salutation}"/>
+                            <apex:inputField value="{!oContact.FirstName}"/>
+                        </apex:panelGroup>
+                    </apex:pageBlockSectionItem>
+                    <apex:inputField value="{!oContact.LastName}"/>
+                    <apex:inputField required="true" value="{!oContact.accountId}"/>
+                    <apex:inputField value="{!oContact.Phone}"/>
+                    <apex:inputField value="{!oContact.Email}" required="true"/>              
+                    <apex:inputField value="{!oContact.Contact_Type__c}"/> 
+                    <apex:inputField value="{!oContact.Practice_Areas__c}"/>
+                    <apex:inputField value="{!oContact.Membership_Associations__c}"/> <!--As a part of DPS-5634 -->
+                    <apex:inputField value="{!oContact.Sales_Org__c}"/>
+                    <apex:inputField value="{!oContact.ESC_tocLanguage__c}"/> <!--As a part of DPS-5528 -->
+                    <apex:inputField required="true" value="{!oContact.Contact_Group__c}" />    <!--As a part of DPS-4510-->
+                </apex:pageBlockSection>
+        </apex:pageBlock>
+        <apex:pageBlock title="{!$Label.LTS_NewContact}" rendered="{!HasMatchingContacts}">
+            <apex:pageMessages ></apex:pageMessages>
+                <apex:pageBlockButtons location="top" >
+                <apex:commandButton id="btnBack" value="{!$Label.LTS_BackContactCreate}" action="{!Back}" rerender="formEdit" />
+                <!--<apex:commandButton id="btnCancel" value="Cancel" action="{!cancel}" />-->
+                <input type ="button" id ="btnCancel" value="Cancel" onclick="javascript:cancelTab();" class="btn" />
+                </apex:pageBlockButtons>
+                
+                <apex:pageBlockButtons location="bottom" >
+                <apex:commandButton id="btnCreate" value="{!$Label.LTS_CreateContact}" action="{!ContactCreate}" />
+                </apex:pageBlockButtons>
+                
+                <apex:outputPanel styleClass="heading" layout="block">
+                <apex:pageBlockSection id="sectionSalesforceContact" columns="1">
+                <apex:facet name="header" >
+                    <apex:outputPanel >
+                        <apex:outputText style="font-size: 1.1em" value="{!$Label.LTS_ClickContactMsg}" styleClass="colorblack" ></apex:outputText>
+                        <!--<apex:outputText style="font-size: 1.1em" value="*RECOMMENDED*" styleClass="colorBlue"></apex:outputText>
+                        <apex:outputText style="font-size: 1.1em" value=")" styleClass="colorblack"></apex:outputText>-->
+                        <apex:outputText style="float:right;font-size: 1.1em" value="Displaying {!maxSFDCConRecordsDisplayed} of {!maxSFDCConRecordsDisplayed}" styleClass="colorblack" ></apex:outputText>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputPanel rendered="{!NOT(sfdcMatchAvailable)}">
+                    <apex:image url="{!$Resource.Information_Ico}" width="25" height="20"/>
+                    <apex:outputText >{!$Label.No_Salesforce_Contact_On_Search}</apex:outputText>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!sfdcMatchAvailable}">
+                    <apex:pageBlockTable id="tableAccounts"  value="{!oResponse.SFDCContacts}" var="option" styleClass="tableClass">
+                    <apex:column style="white-space: nowrap; " headervalue="{!$Label.LTS_ContactNameLabel}" >
+                            <apex:outputText id="textContactName" 
+                            value="{!option.First_Name} {!option.Last_Name}"  
+                            rendered="{!ISNULL(option.Source_System_Id)}"/>
+                            
+                        <apex:outputLink id="linkContact"
+                            value="/{!option.Source_System_Id}" 
+                            rendered="{!NOT(ISNULL(option.Source_System_Id))}">{!option.First_Name} {!option.Last_Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column style="white-space: nowrap; " headervalue="{!$Label.LTS_AccountNameLabel}" >
+                            <apex:outputText id="textAccountName" 
+                            value="{!option.Account_Name}"  
+                            rendered="{!ISNULL(option.GLI_Account_ID)}"/>
+                            
+                        <apex:outputLink id="linkAccount"
+                            value="/{!option.GLI_Account_ID}" 
+                            rendered="{!NOT(ISNULL(option.GLI_Account_ID))}">{!option.Account_Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column value="{!option.Account_Address}" headerValue="{!$Label.LTS_StreetAddressLabel}" /> 
+                    <apex:column value="{!option.City}, {!option.State}" headerValue="{!$Label.LTS_AccountCityLabel}" /> 
+                    <apex:column value="{!option.Contact_Email}" headerValue="{!$Label.LTS_ContactEmailLabel}" /> 
+                    <apex:column value="{!option.Contact_Phone}" headerValue="{!$Label.LTS_ContactPhoneLabel}" /> 
+                    <apex:column value="{!option.Job_Function}" headerValue="{!$Label.LTS_JobFunctionLabel}" /> 
+                    <apex:column value="{!option.Title}" headerValue="{!$Label.LTS_TitleLabel}" />
+                    <apex:column headerValue="{!$Label.LTS_ContactInactiveLabel}"><!--Added by Shovon for CRM-6056-->
+                        <img src="/img/checkbox_{!IF(option.Contact_Inactive == false, 'un', '')}checked.gif" />
+                    </apex:column>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                </apex:pageBlockSection>
+                
+                
+                <apex:pageBlockSection id="sectionCDSContact" columns="1">
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText style="font-size: 1.1em" value="Copy a Contact From Another System" styleClass="colorblack"></apex:outputText>
+                        <apex:outputText style="float:right;font-size: 1.1em" value="Displaying {!maxCDSConRecordsDisplayed} of {!maxCDSConRecordsDisplayed}" styleClass="colorblack"></apex:outputText>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputPanel rendered="{!NOT(cdsMatchAvailable)}">
+                    <apex:image url="{!$Resource.Information_Ico}" width="25" height="20"/>
+                    <apex:outputText >{!$Label.No_CDS_Contact_On_Search}</apex:outputText>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none" rendered="{!cdsMatchAvailable}">
+                    <apex:inputHidden id="cdscontactDetails" value="{!selectedContact}" />
+                    <apex:inputHidden id="cdscontactDetailsType" value="{!selectedType}" />
+                    
+                    <apex:pageBlockTable id="tableAccounts"  value="{!oResponse.CDSContacts}" var="option" styleClass="tableClass">
+                        <apex:column headerValue="Selected"> 
+                            <input type="radio" 
+                                   value="{!option.Source_System_Id}" 
+                                   name="radio_options"    
+                                   onchange="javascript: setSelectedCDSContactId('{!$Component.cdscontactDetails}', '{!$Component.cdscontactDetailsType}', this, 'CDSContact');"
+                            /> 
+                        </apex:column>
+                    <!--<apex:column value="{!option.Source_System_Id}" headerValue="S.L."/> -->
+                    <apex:column value="{!option.First_Name} {!option.Last_Name}" headerValue="{!$Label.LTS_ContactNameLabel}"/>  
+                    <apex:column value="{!option.Account_Name}" headerValue="{!$Label.LTS_AccountNameLabel}"/> 
+                    <apex:column value="{!option.Contact_Email}" headerValue="{!$Label.LTS_ContactEmailLabel}"/> 
+                    <apex:column value="{!option.Contact_Phone}" headerValue="{!$Label.LTS_ContactPhoneLabel}"/> 
+                    <apex:column value="{!option.Job_Function}" headerValue="{!$Label.LTS_JobFunctionLabel}"/> 
+                    <apex:column value="{!option.Title}" headerValue="{!$Label.LTS_TitleLabel}" />
+                    <apex:column headerValue="{!$Label.LTS_ContactInactiveLabel}"><!--Added by Shovon for CRM-6056-->
+                        <img src="/img/checkbox_{!IF(option.Contact_Inactive == false, 'un', '')}checked.gif" />
+                    </apex:column>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                </apex:pageBlockSection>
+                <!--<apex:actionFunction name="passStringToController" action="{!myMethod}"/>-->     
+                <apex:pageBlockSection id="sectionNewAccount" columns="1">
+                <apex:facet name="header">
+                    <apex:outputPanel >
+                        <apex:outputText style="font-size: 1.1em" value="{!$Label.LTS_CreateContactInfoLabel}" styleClass="colorblack"></apex:outputText>
+                    </apex:outputPanel>
+                </apex:facet>
+                <apex:outputPanel layout="none">
+                <apex:inputHidden id="newContactDetailsType"  value="{!selectedType}" />
+                    <apex:pageBlockTable value="{!NewContactOptions}" var="option" id="theTable" rowClasses="odd,even" styleClass="tableClass" border="1">
+                            
+                            <apex:column headerValue="Selected">
+                                <input type="radio" 
+                               value="NewContact" 
+                               name="radio_options"  
+                               onchange="javascript: setSelectedNewContact('{!$Component.newContactDetailsType}',  this);"
+                               />
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.LTS_ContactNameLabel}</apex:facet>
+                                <apex:outputText value="{!option.name}"/>
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.LTS_AccountNameLabel}</apex:facet>
+                                <apex:outputText value="{!option.AccName}"/>
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.LTS_StreetAddressLabel}</apex:facet>
+                                <apex:outputText value="{!option.AccStAdd}"/>
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.LTS_AccountCityLabel}</apex:facet>
+                                <apex:outputText value="{!option.cityState}"/>
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.LTS_ContactEmailLabel}</apex:facet>
+                                <apex:outputText value="{!option.contact.Email}"/>
+                            </apex:column>
+                            
+                            <apex:column >
+                                <apex:facet name="header">{!$Label.LTS_ContactPhoneLabel}</apex:facet>
+                                <apex:outputText value="{!option.contact.Phone}"/>
+                            </apex:column>
+                    </apex:pageBlockTable>
+                </apex:outputPanel>
+                </apex:pageBlockSection>
+                </apex:outputPanel>
+        </apex:pageBlock>
+    </apex:form>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <apex:includeScript value="/support/console/26.0/integration.js"/>
+    <script type="text/javascript">
+    function setSelectedNewContact(hiddenInputElementId, radioElement) {
+            var elRadio = jQuery(radioElement);
+            
+            if (elRadio.is(':checked')) {
+                var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId));                
+                elHiddenInput.val('NEWContact');    
+                //alert('+++ value is '+ elHiddenInput.val());
+            }
+        //rerenderAccountpbsi();
+        }
+    function setSelectedCDSContactId(hiddenInputElementId, typehiddenInputElementId,  radioElement, typeOfContact) {
+            var elRadio = jQuery(radioElement);
+            
+            if (elRadio.is(':checked')) {
+                var elHiddenInput = jQuery(document.getElementById(hiddenInputElementId));                
+                elHiddenInput.val(elRadio.val());    
+                
+                var elHiddenInputType = jQuery(document.getElementById(typehiddenInputElementId));                
+                elHiddenInputType.val(typeOfContact);  
+                //passStringToController(); 
+            }
+        //rerenderAccountpbsi();
+        }
+        
+        function cancelTab() {                       
+               if(sforce.console.isInConsole()){                         
+                //First find the ID of the current tab to close it
+                sforce.console.getEnclosingTabId(closeSubtab);                    
+                redirectToCamp();
+               }else{                        
+                   redirectToCamp();
+               }
+            }
+            var closeSubtab = function closeSubtab(result) {
+                //Now that we have the tab ID, we can close it
+                var tabId = result.id;
+                sforce.console.closeTab(tabId);
+            };
+            
+            function redirectToCamp(){
+                callCancel();
+            } 
+    </script> 
+</apex:page>

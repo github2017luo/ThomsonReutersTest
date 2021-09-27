@@ -1,0 +1,881 @@
+<!--
+CHANGE HISTORY
+===============================================================================
+Date         Name                    Description
+2012-12-19   Parthasarathy  M       Created
+2012-05-09   Srikanth Kuruva        Modified the table columns for 
+                                       Online Contacts, Business Contacts. 
+2012-07-30   Parthasarathy M        Modified the table columns for 
+                                       Online Contacts, Business Contacts.  
+2012-08-30   Anshita Sharma         Added list 'Account Hierarchy Training Events'
+2017-10-10   Harsha Naik            Created listView Filter condation base on Sub_BU(CRM-5)
+2018-03-12   Seema Nagdev          Added changes for Account Team Member Related list(CRM-12987)  
+2019-03-02   Kumar Shubham     Enabled LightningStylesheets as part of Sales Lightning  
+=================================================================================
+ -->
+<apex:page standardcontroller="account" extensions="AccountDetailRelatedListView" id="pageAccountDetailRelatedListView" lightningStylesheets="true">       
+      <style type="text/css">
+      .loadingIcon {
+            background-image: url(/img/loading.gif);
+            width: 16px;
+            height: 16px;
+        }
+     </style>   
+    <!-- ** URL parameter 'Related list name' is used to describe Detail view or Objects Related List View **-->    
+    <apex:outputPanel >
+    <br/>
+    <!-- <apex:outputLink onclick="window.frames[3]='/{!Account.id}';">Account: {!Account.name}</apex:outputLink> -->
+    <apex:form >    
+    <apex:commandLink action="{!gotoAccount}" reRender="pageAccountDetailRelatedListView" value="{!$Label.LTS_AccountLabel} {!Account.Name}"></apex:commandLink>
+    </apex:form>
+    <br/><br/>
+    </apex:outputPanel>
+    <apex:form id="formAccountDetail" rendered="{!$CurrentPage.parameters.RelatedListName!=null}">
+        <apex:actionStatus id="status">
+                     <apex:facet name="start">
+                          <apex:outputPanel layout="block" styleClass="message infoM4">
+                               <apex:panelGrid columns="2" styleClass="messageTable" columnClasses="messageCell" style="padding:0px;margin:0px;">
+                                  <apex:panelGroup >
+                                     <img class="loadingIcon" src="/s.gif" />
+                                   </apex:panelGroup>
+                                   <apex:panelGroup >
+                                      <div class="messageText">{!$Label.LTS_Loading}</div>
+                                   </apex:panelGroup>
+                               </apex:panelGrid>
+                          </apex:outputPanel>
+                      </apex:facet>                            
+                      <apex:facet name="stop">
+                          <apex:outputPanel layout="none" >
+  <!-- ******************************************************Account Team ****************************************************** -->      
+       <apex:pageBlock id="blockAccountTeam"  title="{!$Label.LTS_AccountTeam}"  rendered="{!$CurrentPage.parameters.RelatedListName='AccountTeam'}">
+             <!-- ** TO show Next and previous Links in related list view ** -->
+             <!--<apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountTeam.previous}" rendered="{!setAccountTeam.hasPrevious}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountTeam.next}" rendered="{!setAccountTeam.hasNext}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel> --><!--Updated for CRM-12987-->
+             <apex:outputPanel > 
+                <apex:panelGrid columns="2">                 
+                    <apex:commandLink action="{!oAccTeam.previous}" rendered="{!oAccTeam.hasPrevious}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!oAccTeam.next}" rendered="{!oAccTeam.hasNext}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Next}</apex:commandLink>            
+                </apex:panelGrid>
+            </apex:outputPanel> 
+            
+              <!--- filter condation base on (Sub_Bu CRM-5)---->
+            <apex:panelGroup layout="none"  rendered="{!IF(($Profile.Name='GLI Sales User'|| $Profile.Name='System Administrator'|| $Profile.Name='GLI Sales Ops User' || $Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name == 'UKI Sales Ops'|| $Profile.Name=='GLI Marketing User'),true,false)}">
+             <apex:outputLabel for="selectViewOptions" value="{!$Label.View}: "  style="font-weight:bold;" />
+                 <apex:selectList id="selectViewOptions" value="{!AccountTeamview}"  size="1">
+                         <apex:actionSupport event="onchange" status="statusLoadingView"  Action="{!FliterAccountteam}" rerender="tableAccountTeam" />
+                         <apex:selectOptions value="{!AccountTeamViews}" />
+                  </apex:selectList>
+                  <apex:actionStatus id="statusLoadingView">
+                            <apex:facet name="start">
+                                <img src="/img/loading.gif" height="14px" width="14px" />
+                            </apex:facet>
+                            <apex:facet name="stop">
+                                <img src="/img/s.gif" height="14px" width="14px" />
+                            </apex:facet>
+                        </apex:actionStatus>
+              </apex:panelGroup>
+              <br/><br/>          
+            <!-- ** Pageblock table will display max of 100 records in detail view or display all records with pagination of 40 records in related list view through standard set controller** -->
+            <!-- Updated the table for CRM-12987 to display Wrapper for AccounTEam Members-->
+           <!--<apex:pageBlockTable id="tableAccountTeam" var="aTeam" value="{!GoToListAccountTeam}">      
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            Team Member
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                         <apex:outputLink value="/{!aTeam.Id}">{!aTeam.Name}</apex:outputLink>
+                </apex:column>                
+                <apex:column value="{!aTeam.Rep_Type_Description__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            Team Role
+                            <apex:param assignTo="{!sortField}" value="Rep_Type_Description__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!aTeam.Sub_Bu__c}" >
+                                    <apex:facet name="header">                    
+                                       <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                                            Sub-BU
+                                            <apex:param assignTo="{!sortField}" value="Sub_Bu__c"/>
+                                       </apex:commandLink>
+                                    </apex:facet>
+                  </apex:column>
+                <apex:column value="{!aTeam.Email}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            Email
+                            <apex:param assignTo="{!sortField}" value="Email"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                                
+            </apex:pageBlockTable> -->
+            <apex:pageBlockTable value="{!dispAccTeamlist}" var="aTeam" id="tableAccountTeam" >
+                 <apex:column >
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                             {!$Label.LTS_TeamMember}
+                             <apex:param assignTo="{!sortField}" value="TeamMember"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!aTeam.UserId}">{!aTeam.TeamMember}</apex:outputLink>
+                </apex:column>                 
+                <apex:column value="{!aTeam.PrimaryRepRole}" rendered="{!IF($Profile.Name == 'LatAm User'  || $Profile.Name == 'System Administrator' ||$Profile.Name == 'Elite User' || $Profile.Name == 'UKI Users' || $Profile.Name =='DQA User'|| $Profile.Name =='Elite Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name =='UKI Sales Ops'|| $Profile.Name=='GLI Marketing User',true,false)}">
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_PrimaryRepRole}
+                            <apex:param assignTo="{!sortField}" value="PrimaryRepRole"/>
+                        </apex:commandLink>
+                     </apex:facet>
+                </apex:column>  
+                <apex:column value="{!aTeam.TeamMemberRole}">
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_TeamMemberRole}
+                            <apex:param assignTo="{!sortField}" value="TeamMemberRole"/>
+                        </apex:commandLink>
+                     </apex:facet>
+                </apex:column> 
+				<!-- Commenting out as a part of removing TM1.0 references
+                <apex:column value="{!aTeam.TerritoryNumber}" rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name =='UKI Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name=='GLI Helpdesk Manager'|| $Profile.Name=='GLI Helpdesk Agent'|| $Profile.Name=='GLI Marketing User', true, false)}">
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_TeamMemberTerritory}
+                            <apex:param assignTo="{!sortField}" value="TerritoryNumber"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column> -->
+                <apex:column value="{!aTeam.Subbu}" rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name =='UKI Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name=='GLI Marketing User', true, false)}" >
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_SubBU}
+                            <apex:param assignTo="{!sortField}" value="Subbu"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column> 
+                <apex:column value="{!aTeam.Region}" rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name =='UKI Sales Ops'|| $Profile.Name=='GLI Marketing User', true, false)}">
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_Region}
+                            <apex:param assignTo="{!sortField}" value="Region"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!aTeam.Email}">
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_Email}
+                            <apex:param assignTo="{!sortField}" value="Email"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!aTeam.District}" rendered="{!IF($Profile.Name == 'Elite User'  || $Profile.Name == 'System Administrator' || $Profile.Name == 'UKI Users' || $Profile.Name == 'DQA User' || $Profile.Name == 'Elite Sales Ops' || $Profile.Name =='UKI Sales Ops' || $Profile.Name == 'GLI Sales User'|| $Profile.Name=='GLI Sales Ops User'|| $Profile.Name=='GLI Helpdesk Manager'|| $Profile.Name=='GLI Helpdesk Agent'|| $Profile.Name=='GLI Marketing User', true, false)}">
+                    <apex:facet name="header">                    
+                        <apex:commandLink action="{!doSort}" reRender="blockAccountTeam" status="status">
+                            {!$Label.LTS_District}
+                            <apex:param assignTo="{!sortField}" value="District"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+            </apex:pageBlockTable>
+
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+          <!--Updated the panel for CRM-12987-->
+          <!-- <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountTeam.previous}" rendered="{!setAccountTeam.hasPrevious}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountTeam.next}" rendered="{!setAccountTeam.hasNext}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>    -->    
+            <apex:outputPanel > 
+                <apex:panelGrid columns="2">                 
+                    <apex:commandLink action="{!oAccTeam.previous}" rendered="{!oAccTeam.hasPrevious}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!oAccTeam.next}" rendered="{!oAccTeam.hasNext}" status="status" rerender="blockAccountTeam">{!$Label.LTS_Next}</apex:commandLink>            
+                </apex:panelGrid>
+            </apex:outputPanel> 
+        </apex:pageBlock>
+      <!-- ******************************************************Account Opportunites **************************************** -->      
+       <apex:pageBlock id="blockAccountOpportunities"  title="Opportunites"  rendered="{!$CurrentPage.parameters.RelatedListName='AccountOpportunities'}">
+             <!-- ** TO show Next and previous Links in related list view ** -->
+             <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountOpportunities.previous}" rendered="{!setAccountOpportunities.hasPrevious}" status="status" rerender="blockAccountOpportunities">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountOpportunities.next}" rendered="{!setAccountOpportunities.hasNext}" status="status" rerender="blockAccountOpportunities">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>
+            <!-- ** Pageblock table will display max of 100 records in detail view or display all records with pagination of 40 records in related list view through standard set controller** -->
+            <apex:pageBlockTable id="tableAccountOpportunities"  var="opp" value="{!GoToListAccountOpportunities}">      
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Label} {!$ObjectType.Opportunity.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!opp.Id}">{!opp.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column value="{!opp.StageName}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Fields.StageName.Label}
+                            <apex:param assignTo="{!sortField}" value="StageName"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!opp.Amount}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Fields.Amount.Label}
+                            <apex:param assignTo="{!sortField}" value="Amount"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!opp.CloseDate}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Fields.CloseDate.Label}
+                            <apex:param assignTo="{!sortField}" value="CloseDate"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column> 
+            </apex:pageBlockTable>
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountOpportunities.previous}" rendered="{!setAccountOpportunities.hasPrevious}" status="status" rerender="blockAccountOpportunities">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountOpportunities.next}" rendered="{!setAccountOpportunities.hasNext}" status="status" rerender="blockAccountOpportunities">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>           
+        </apex:pageBlock>
+ <!-- ******************************************************Account Online Contacts ****************************************************** -->      
+       <apex:pageBlock id="blockAccountOnlineContacts"  title="Online Contacts"  rendered="{!$CurrentPage.parameters.RelatedListName='OnlineContact'}">
+             <!-- ** TO show Next and previous Links in related list view ** -->
+             <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountOnlineContacts.previous}" rendered="{!setAccountOnlineContacts.hasPrevious}" status="status" rerender="blockAccountOnlineContacts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountOnlineContacts.next}" rendered="{!setAccountOnlineContacts.hasNext}" status="status" rerender="blockAccountOnlineContacts">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>
+            <!-- ** Pageblock table will display max of 100 records in detail view or display all records with pagination of 40 records in related list view through standard set controller** -->
+            <apex:pageBlockTable id="tableAccountOnlineContacts"  var="con"  value="{!GoToListOnlineContacts}">      
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Label} {!$ObjectType.Contact.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                      </apex:commandLink>
+                    </apex:facet>
+                        <apex:outputLink value="/{!con.Id}">{!con.Name}</apex:outputLink> 
+                </apex:column>
+                <apex:column headervalue="{!$ObjectType.Account.Fields.Name.Label}" value="{!con.Account.Name}" />   
+                <apex:column value="{!con.Title}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Title.Label}
+                            <apex:param assignTo="{!sortField}" value="Title"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.Job_Function__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Job_Function__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Job_Function__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.Phone}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Phone.Label}
+                            <apex:param assignTo="{!sortField}" value="Phone"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                
+                <apex:column value="{!con.Work_Direct__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Work_Direct__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Work_Direct__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.email}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.email.Label}
+                            <apex:param assignTo="{!sortField}" value="email"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.Contact_Type__c}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Contact_Type__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Contact_Type__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.SAP_Role__c}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.SAP_Role__c.Label}
+                            <apex:param assignTo="{!sortField}" value="SAP_Role__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.MailingCity}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountOnlineContacts" status="status">
+                            {!$ObjectType.Contact.Fields.MailingCity.Label}
+                            <apex:param assignTo="{!sortField}" value="MailingCity"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                
+            </apex:pageBlockTable>
+              
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountOnlineContacts.previous}" rendered="{!setAccountOnlineContacts.hasPrevious}" status="status" rerender="blockAccountOnlineContacts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountOnlineContacts.next}" rendered="{!setAccountOnlineContacts.hasNext}" status="status" rerender="blockAccountOnlineContacts">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>           
+        </apex:pageBlock>
+<!-- ******************************************************Account Business Contacts ****************************************************** -->      
+       <apex:pageBlock id="blockAccountBusinessContacts" title="Business Contacts" rendered="{!$CurrentPage.parameters.RelatedListName='BusinessContact'}">
+             <!-- ** TO show Next and previous Links in related list view ** -->
+             <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountBusinessContacts.previous}" rendered="{!setAccountBusinessContacts.hasPrevious}" status="status" rerender="blockAccountBusinessContacts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountBusinessContacts.next}" rendered="{!setAccountBusinessContacts.hasNext}" status="status" rerender="blockAccountBusinessContacts">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>
+            <!-- ** Pageblock table will display max of 100 records in detail view or display all records with pagination of 40 records in related list view through standard set controller** -->
+            <apex:pageBlockTable id="tableAccountBusinessContacts"  var="con"  value="{!GoToListBusinessContacts}" >               
+               <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Label} {!$ObjectType.Contact.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                      </apex:commandLink>
+                    </apex:facet>
+                        <apex:outputLink value="/{!con.Id}">{!con.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column headervalue="{!$ObjectType.Account.Fields.Name.Label}" value="{!con.Account.Name}" />   
+                <apex:column value="{!con.Title}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Title.Label}
+                            <apex:param assignTo="{!sortField}" value="Title"/>
+                      </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.Job_Function__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Job_Function__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Job_Function__c"/>
+                      </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.Phone}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Phone.Label}
+                            <apex:param assignTo="{!sortField}" value="Phone"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.Work_Direct__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Work_Direct__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Work_Direct__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.email}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.email.Label}
+                            <apex:param assignTo="{!sortField}" value="email"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.Contact_Type__c}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Contact_Type__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Contact_Type__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.SAP_Role__c}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.SAP_Role__c.Label}
+                            <apex:param assignTo="{!sortField}" value="SAP_Role__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!con.MailingCity}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockAccountBusinessContacts" status="status">
+                            {!$ObjectType.Contact.Fields.MailingCity.Label}
+                            <apex:param assignTo="{!sortField}" value="MailingCity"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+            </apex:pageBlockTable>
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setAccountBusinessContacts.previous}" rendered="{!setAccountBusinessContacts.hasPrevious}" status="status" rerender="blockAccountBusinessContacts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setAccountBusinessContacts.next}" rendered="{!setAccountBusinessContacts.hasNext}" status="status" rerender="blockAccountBusinessContacts">{!$Label.LTS_Next}</apex:commandLink>
+                 </apex:panelGrid>              
+            </apex:outputPanel>
+        </apex:pageBlock>
+    <apex:outputpanel rendered="{!IsMasterAccount}">
+    <!-- ***************************************Account Hierarchy Training Events ***************************************************************** -->     
+        <apex:pageBlock id="blockMasterAccountTraningEvts"  title="Account Hierarchy Training Events" rendered="{!$CurrentPage.parameters.RelatedListName='TrainingEvents'}">
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+             <apex:outputPanel >
+                 <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setHierarchyTrainingEvents.previous}" rendered="{!setHierarchyTrainingEvents.hasPrevious}" status="status" rerender="blockMasterAccountTraningEvts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setHierarchyTrainingEvents.next}" rendered="{!setHierarchyTrainingEvents.hasNext}" status="status" rerender="blockMasterAccountTraningEvts">{!$Label.LTS_Next}</apex:commandLink>
+                </apex:panelGrid>            
+            </apex:outputPanel> 
+            <apex:pageBlockTable id="blockMasterAccountTraningEvts" var="tevt" value="{!GoToListTrainingEvents}" >
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!tevt.Id}">{!tevt.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Account__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Account__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!tevt.Account__r.Id}">{!tevt.Account__r.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column value="{!tevt.Training_Name__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Training_Name__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Training_Name__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!tevt.Account__r.BillingCity}">
+                </apex:column>    
+                    <apex:column value="{!tevt.State__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.State__c.Label}
+                            <apex:param assignTo="{!sortField}" value="State__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                 </apex:column>    
+                <apex:column value="{!tevt.Training_Date__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Training_Date__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Training_Date__c"/>
+                      </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!tevt.Training_Type__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Training_Type__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Training_Type__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!tevt.Status__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Status__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Status__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!tevt.Number_of_Candidates__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Number_of_Candidates__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Number_of_Candidates__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!tevt.Number_Trained__c}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Number_Trained__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Number_Trained__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountTraningEvts" status="status">
+                            {!$ObjectType.Training_Event__c.Fields.Campaign_Name__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Campaign_Name__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!tevt.Campaign_Name__r.Id}">{!tevt.Campaign_Name__r.Name}</apex:outputLink> 
+                </apex:column> 
+                
+                <apex:column headerValue="Owner Name">
+                    
+                    <apex:outputLink value="/{!tevt.OwnerId}">{!tevt.Owner.LastName}</apex:outputLink> 
+                </apex:column> 
+                
+            </apex:pageBlockTable>
+            
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >
+                <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setHierarchyTrainingEvents.previous}" rendered="{!setHierarchyTrainingEvents.hasPrevious}"  status="status" rerender="blockMasterAccountTraningEvts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setHierarchyTrainingEvents.next}" rendered="{!setHierarchyTrainingEvents.hasNext}" status="status" rerender="blockMasterAccountTraningEvts" >{!$Label.LTS_Next}</apex:commandLink>
+                </apex:panelGrid>            
+            </apex:outputPanel>          
+        </apex:pageBlock>
+<!-- ******************************************************Account Hierarchy Contacts ****************************************************** -->      
+       <apex:pageBlock id="blockMasterAccountContacts" title="Account Hierarchy Contacts" rendered="{!$CurrentPage.parameters.RelatedListName='Contact'}">
+             <!-- ** TO show Next and previous Links in related list view ** -->
+             <apex:outputPanel >
+                  <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setHierarchyContacts.previous}" rendered="{!setHierarchyContacts.hasPrevious}" status="status" rerender="blockMasterAccountContacts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setHierarchyContacts.next}" rendered="{!setHierarchyContacts.hasNext}" status="status" rerender="blockMasterAccountContacts">{!$Label.LTS_Next}</apex:commandLink>
+                  </apex:panelGrid>              
+            </apex:outputPanel>
+            <!-- ** Pageblock table will display max of 100 records in detail view or display all records with pagination of 40 records in related list view through standard set controller** -->
+            <apex:pageBlockTable id="tableMasterAccountContacts"  var="con"  value="{!GoToListContacts}" >
+                <apex:variable value="{!$ObjectType.Contact.Fields}" var="ContactFields"/>             
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}"  reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Account.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="accountid"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                        <apex:outputLink value="/{!con.AccountId}">{!con.Account.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Label} {!$ObjectType.Contact.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!con.Id}">{!con.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column value="{!con.LastName}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.LastName.Label}
+                            <apex:param assignTo="{!sortField}" value="LastName"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.FirstName}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.FirstName.Label}
+                            <apex:param assignTo="{!sortField}" value="FirstName"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.Title}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Title.Label}
+                            <apex:param assignTo="{!sortField}" value="Title"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.Email}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Email.Label}
+                            <apex:param assignTo="{!sortField}" value="Email"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.Phone}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Phone.Label}
+                            <apex:param assignTo="{!sortField}" value="Phone"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.Contact_Type__c}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.Contact_Type__c.Label}
+                            <apex:param assignTo="{!sortField}" value="Contact_Type__c"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!con.SAP_Role__c}" >
+                <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountContacts" status="status">
+                            {!$ObjectType.Contact.Fields.SAP_Role__c.Label}
+                            <apex:param assignTo="{!sortField}" value="SAP_Role__c"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                
+            </apex:pageBlockTable>
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >
+                <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setHierarchyContacts.previous}" rendered="{!setHierarchyContacts.hasPrevious}" status="status" rerender="blockMasterAccountContacts">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setHierarchyContacts.next}" rendered="{!setHierarchyContacts.hasNext}" status="status" rerender="blockMasterAccountContacts">{!$Label.LTS_Next}</apex:commandLink>
+                </apex:panelGrid>                
+            </apex:outputPanel>            
+        </apex:pageBlock>
+<!-- ***************************************Account Hierarchy Opportunities ***************************************************************** -->     
+        <apex:pageBlock id="blockMasterAccountOpportunities"  title="Account Hierarchy Opportunities" rendered="{!$CurrentPage.parameters.RelatedListName='Opportunity'}">
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+             <apex:outputPanel >
+                 <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setHierarchyOpportunities.previous}" rendered="{!setHierarchyOpportunities.hasPrevious}" status="status" rerender="blockMasterAccountOpportunities">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setHierarchyOpportunities.next}" rendered="{!setHierarchyOpportunities.hasNext}" status="status" rerender="blockMasterAccountOpportunities">{!$Label.LTS_Next}</apex:commandLink>
+                </apex:panelGrid>            
+            </apex:outputPanel> 
+            <apex:pageBlockTable id="tableMasterAccountOpportunities"  var="opp" value="{!GoToListOpportunities}" >
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpportunities" status="status">
+                            {!$ObjectType.Account.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="accountid"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!opp.AccountId}">{!opp.Account.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Label} {!$ObjectType.Opportunity.Fields.Name.Label}
+                            <apex:param assignTo="{!sortField}" value="Name"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                    <apex:outputLink value="/{!opp.Id}">{!opp.Name}</apex:outputLink> 
+                </apex:column>                
+                <apex:column value="{!opp.StageName}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Fields.StageName.Label}
+                            <apex:param assignTo="{!sortField}" value="StageName"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column value="{!opp.Amount}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Fields.Amount.Label}
+                            <apex:param assignTo="{!sortField}" value="Amount"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>
+                <apex:column value="{!opp.CloseDate}">
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpportunities" status="status">
+                            {!$ObjectType.Opportunity.Fields.CloseDate.Label}
+                            <apex:param assignTo="{!sortField}" value="CloseDate"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+            </apex:pageBlockTable>
+            
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >
+                <apex:panelGrid columns="2">                  
+                    <apex:commandLink action="{!setHierarchyOpportunities.previous}" rendered="{!setHierarchyOpportunities.hasPrevious}"  status="status" rerender="blockMasterAccountOpportunities">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!setHierarchyOpportunities.next}" rendered="{!setHierarchyOpportunities.hasNext}" status="status" rerender="blockMasterAccountOpportunities" >{!$Label.LTS_Next}</apex:commandLink>
+                </apex:panelGrid>            
+            </apex:outputPanel>          
+        </apex:pageBlock>
+<!-- ********************************************Account Hierarchy Open Activities ******************************************************** -->       
+       <apex:pageBlock id="blockMasterAccountOpenActivities" title="Account Hierarchy Open Activities" rendered="{!$CurrentPage.parameters.RelatedListName='OpenActivity'}">
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+             <apex:outputPanel rendered="{!$CurrentPage.parameters.RelatedListName='OpenActivity'}"> 
+                 <apex:panelGrid columns="2">               
+                    <apex:commandLink action="{!oOpenActivity.previous}" rendered="{!oOpenActivity.hasPrevious}"  status="status" rerender="blockMasterAccountOpenActivities">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!oOpenActivity.next}" rendered="{!oOpenActivity.hasNext}"  status="status" rerender="blockMasterAccountOpenActivities">{!$Label.LTS_Next}</apex:commandLink>
+                </apex:panelGrid>              
+            </apex:outputPanel> 
+            <apex:pageBlockTable id="tableMasterAccountOpenActivities"  var="openact" value="{!GoToListOpenActivities}">                                              
+                <apex:column >
+                    <apex:outputLink value="/{!openact.id}">{!openact.subject}</apex:outputLink> 
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.subject.Label}
+                            <apex:param assignTo="{!sortField}" value="subject"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+               <apex:column >
+                    <apex:outputtext value="{!openact.activitytype}"/>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.activitytype.Label}
+                            <apex:param assignTo="{!sortField}" value="activitytype"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column >
+                    <apex:outputLink value="/{!openact.WhoId}">{!openact.who.name}</apex:outputLink>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.WhoId.Label}
+                            <apex:param assignTo="{!sortField}" value="WhoId"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column >
+                    <apex:outputLink value="/{!openact.WhatId}">{!openact.what.name}</apex:outputLink>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.WhatId.Label}
+                            <apex:param assignTo="{!sortField}" value="WhatId"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                
+                <apex:column value="{!openact.Activitydate}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.Activitydate.Label}
+                            <apex:param assignTo="{!sortField}" value="Activitydate"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>   
+                <apex:column value="{!openact.status}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.status.Label}
+                            <apex:param assignTo="{!sortField}" value="status"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>   
+                <apex:column >
+                    <apex:outputLink value="/{!openact.ownerId}">{!openact.owner.name}</apex:outputLink>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountOpenActivities" status="status">
+                            {!$ObjectType.OpenActivity.Fields.ownerId.Label}
+                            <apex:param assignTo="{!sortField}" value="ownerId"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                      
+            </apex:pageBlockTable>
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel >  
+                <apex:panelGrid columns="2">                 
+                        <apex:commandLink action="{!oOpenActivity.previous}" rendered="{!oOpenActivity.hasPrevious}"  status="status" rerender="blockMasterAccountOpenActivities">{!$Label.LTS_Previous}</apex:commandLink>
+                        <apex:commandLink action="{!oOpenActivity.next}" rendered="{!oOpenActivity.hasNext}"  status="status" rerender="blockMasterAccountOpenActivities">{!$Label.LTS_Next}</apex:commandLink>            
+                 </apex:panelGrid>
+            </apex:outputPanel>            
+        </apex:pageBlock>
+<!-- ************************************Account Hierarchy Activity History ******************************************************************** -->  
+       
+        <apex:pageBlock id="blockMasterAccountActivityHistories" title="Account Hierarchy Activity History" rendered="{!$CurrentPage.parameters.RelatedListName='ActivityHistory'}">
+            <!-- ** TO show Next and previous Links in related list view ** -->  
+            <apex:outputPanel > 
+                <apex:panelGrid columns="2">                 
+                    <apex:commandLink action="{!oActivityHistory.previous}" rendered="{!oActivityHistory.hasPrevious}" status="status" rerender="blockMasterAccountActivityHistories">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!oActivityHistory.next}" rendered="{!oActivityHistory.hasNext}" status="status" rerender="blockMasterAccountActivityHistories">{!$Label.LTS_Next}</apex:commandLink>            
+                </apex:panelGrid>
+            </apex:outputPanel>  
+            <apex:pageBlockTable id="tableMasterAccountActivityHistories"  var="acthistory"  value="{!GoToListActivityHistories}" >                                              
+                    <apex:column >
+                    <apex:outputLink value="/{!acthistory.id}">{!acthistory.subject}</apex:outputLink> 
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.subject.Label}
+                            <apex:param assignTo="{!sortField}" value="subject"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+               <apex:column >
+                    <apex:outputtext value="{!acthistory.activitytype}"/>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.activitytype.Label}
+                            <apex:param assignTo="{!sortField}" value="activitytype"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column >
+                    <apex:outputLink value="/{!acthistory.WhoId}">{!acthistory.who.name}</apex:outputLink>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.WhoId.Label}
+                            <apex:param assignTo="{!sortField}" value="WhoId"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>  
+                <apex:column >
+                    <apex:outputLink value="/{!acthistory.WhatId}">{!acthistory.what.name}</apex:outputLink>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.WhatId.Label}
+                            <apex:param assignTo="{!sortField}" value="WhatId"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>                
+                <apex:column value="{!acthistory.Activitydate}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.Activitydate.Label}
+                            <apex:param assignTo="{!sortField}" value="Activitydate"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>   
+                <apex:column value="{!acthistory.status}" >
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.status.Label}
+                            <apex:param assignTo="{!sortField}" value="status"/>
+                        </apex:commandLink>
+                    </apex:facet>
+                </apex:column>   
+                <apex:column >
+                    <apex:outputLink value="/{!acthistory.ownerId}">{!acthistory.owner.name}</apex:outputLink>
+                    <apex:facet name="header">                    
+                       <apex:commandLink action="{!doSort}" reRender="blockMasterAccountActivityHistories" status="status">
+                            {!$ObjectType.ActivityHistory.Fields.ownerId.Label}
+                            <apex:param assignTo="{!sortField}" value="ownerId"/>
+                       </apex:commandLink>
+                    </apex:facet>
+                </apex:column>   
+            </apex:pageBlockTable>
+                
+            <!-- ** TO show Next and previous Links in related list view **   --> 
+            <apex:outputPanel >
+                <apex:panelGrid columns="2">               
+                    <apex:commandLink action="{!oActivityHistory.previous}" rendered="{!oActivityHistory.hasPrevious}" status="status" rerender="blockMasterAccountActivityHistories">{!$Label.LTS_Previous}</apex:commandLink>
+                    <apex:commandLink action="{!oActivityHistory.next}" rendered="{!oActivityHistory.hasNext}" status="status" rerender="blockMasterAccountActivityHistories">{!$Label.LTS_Next}</apex:commandLink>            
+                </apex:panelGrid>
+            </apex:outputPanel>           
+        </apex:pageBlock>
+        </apex:outputpanel>
+        </apex:outputpanel>                             
+       </apex:facet>
+      </apex:actionStatus>      
+    </apex:form>
+</apex:page>

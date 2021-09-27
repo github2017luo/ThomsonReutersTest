@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>LOTUS_isGLI_Training_Event_Read_Only</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Based on DPS-14002</description>
+        <label>LOTUS-isGLI Training Event Read Only</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>GLI</roleAndSubordinatesInternal>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>S2E_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>S2E Sharing</label>
+        <sharedTo>
+            <roleAndSubordinates>S2E</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Is_GLI__c</field>
+            <operation>equals</operation>
+            <value>False</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Region_EQUALS_AEM</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Region EQUALS AEM</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_AEM_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>AEM</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Region_EQUALS_Canada</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Region EQUALS Canada</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Canada_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>Canada</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Region_EQUALS_Europe</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Region EQUALS Europe</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Europe_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>Europe</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Region_EQUALS_LatAm</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Region EQUALS LatAm</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_LatAm_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>LatAm</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Region_EQUALS_US</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Region EQUALS US</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_US_Region</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>US</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Region_Segment_EQUALS_Global</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training_Event_BU_Region_Segment_EQUALS_Global</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Global_Region_Segment</group>
+        </sharedTo>
+        <booleanFilter>1 OR 2 OR 3 OR 4 OR 5</booleanFilter>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>UKI</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>USL</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>FindLaw</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>LMS</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Segment_EQUALS_Corporate</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Segment EQUALS Corporate</label>
+        <sharedTo>
+            <group>LOTUS_Global_Users_Corporate_Segment</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Corporate</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Segment_EQUALS_Professional_Legal</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Segment EQUALS Professional Legal</label>
+        <sharedTo>
+            <group>LTSGlobalUsersProfessionalLegalSegment</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Legal</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_BU_Segment_EQUALS_Professional_Tax</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event BU Segment EQUALS Professional Tax</label>
+        <sharedTo>
+            <group>LTSGlobalUsersProfessionalTaxSegment</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>BU_Segment__c</field>
+            <operation>equals</operation>
+            <value>Professional Tax</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Training_Event_Elite</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Training Event Elite</label>
+        <sharedTo>
+            <group>Elite_Roles</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>Elite</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>UKI_Sharing</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>UKI Sharing</label>
+        <sharedTo>
+            <roleAndSubordinates>UKI_Managing_Director</roleAndSubordinates>
+        </sharedTo>
+        <criteriaItems>
+            <field>LCRM_Sub_Bu__c</field>
+            <operation>equals</operation>
+            <value>UKI</value>
+        </criteriaItems>
+    </sharingCriteriaRules>
+</SharingRules>

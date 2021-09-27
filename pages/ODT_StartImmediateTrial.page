@@ -1,0 +1,139 @@
+<!-- ============================================================================================
+Name            :   ODT_StartImmediateTrial
+Description     :   This page is developed as part of CXD-ODT project :DLT-16455
+                    This is referred in custom Button 'Start Immediate' in order to display invited colleague details along with product details.
+                    And changes the Trial Status of Trial and related Invited Colleague when clicked on 'Start Immediate' button.
+
+Author          :   Sneha Wali
+==============================================================================================*/ -->
+<apex:page extensions="ODT_StartImmediateTrialHandler" standardController="Trial__c" id="thePage" sidebar="false" lightningStylesheets="true">
+    
+    <apex:actionStatus id="myStatus" >
+        <apex:facet name="start" >
+         <div id="loadingDiv"/>                   
+        </apex:facet>
+    </apex:actionStatus>
+    
+    <script>
+        window.onload = function() {
+            //alert('opp');
+            callTrials();
+        };
+    </script> 
+    <script>
+        function updateTrialStatus(){
+            var checkbox =document.getElementById('{!$Component.thePage:theForm:theBlock:checkbox}').checked;
+            
+            if(!checkbox){
+                 alert('{!$Label.ODT_Checkbox_Validation_Msg}');
+                 return false;
+             }
+             else{
+                 UpdateTrial();
+             }
+             return true;
+        }
+    </script>  
+    
+    <body>
+        <apex:form id="theForm">
+            <apex:pageBlock id="theBlock">
+                
+                <apex:pageBlockSection showHeader="true" collapsible="false" rendered="true" columns="1">
+                    <apex:pageBlockTable value="{!trialList}" var="c">
+                        <apex:column headerValue="Trial Name">
+                            <apex:outputLink value="/{!c.id}" target="_blank" >{!c.name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column >
+                            <apex:pageBlockTable value="{!c.Invite_Colleagues__r}" var="ic">
+                            <apex:column value="{!ic.First_Name__c}" headerValue="First Name" />
+                            <apex:column value="{!ic.Last_Name__c}" headerValue="Last Name" />
+                            <apex:column value="{!ic.Email__c }" headerValue="Email" />
+                            </apex:pageBlockTable>
+                        </apex:column>                        
+                        <apex:column value="{!c.Trial_Id__c}" headerValue="Trial ID" />
+                        <apex:column value="{!c.ODT_Product_Bundle__r.Bundle_ID__c}" headerValue="Bundle ID" />
+                        <apex:column value="{!c.ODT_Product_Bundle__r.Product_Category__c}" headerValue="Product Category" />
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+                <apex:outputText >
+                   <p>
+                       {!$Label.ODT_OBO_Text1}<br/>
+                       <apex:inputCheckbox value="{!checkboxText}" id="checkbox" /> {!$Label.ODT_OBO_Text2}
+                       <br/>
+                   </p>
+                   <br/>                   
+               </apex:outputText>
+                <apex:pageBlockButtons location="bottom" >
+                       <apex:commandButton value="Start Immediately" onclick="return updateTrialStatus();" reRender="SuccessMsg" Status="myStatus"/>
+                       <apex:commandButton value="Back" action="{!back}" />                                                   
+                </apex:pageBlockButtons>
+                
+            </apex:pageBlock>
+        </apex:form>
+
+        <apex:form >
+            <apex:actionFunction action="{!getInvitedColleagueTrial}" reRender="theForm" id="loadTrialsFromJS" name="callTrials" status="myStatus"/>
+            <apex:actionFunction action="{!updateStatus}" name="UpdateTrial" status="myStatus"/>
+        </apex:form>
+        <apex:form >
+     <apex:outputPanel id="SuccessMsg">
+        <apex:outputPanel styleClass="popupBackground" layout="block" rendered="{!trialStartImmediate}"/>  
+           <apex:outputPanel styleClass="custPopup" layout="block" rendered="{!trialStartImmediate}"> 
+               <br/><br/>
+               {!$Label.ODT_Salesrep_success}
+               <br/><br/><br/><br/>
+               <apex:commandButton value="Back To Trial" action="{!back}" rerender="tstpopup" styleClass="successbtn" Status="myStatus"/>
+           </apex:outputPanel> 
+       </apex:outputPanel> 
+      </apex:form>
+    </body>           
+    
+    <style>
+         #loadingDiv{
+            position:fixed;
+            top:0px;
+            left:0px;
+            width:100%;
+            height:100%;
+            //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666; 
+            background: url({!URLFOR($Resource.ODTLoaderGIF)}) 50% 50% no-repeat #666;
+            
+            z-index:99999;
+            opacity: 0.4; /* You can adjust the opacity */
+            filter: alpha(opacity=40); /* For IE8 and earlier */
+        }    
+     .custPopup{
+            background-color: white;
+            border: 3px solid rgba(47,86,135,1);
+            border-style: solid;
+            z-index: 9999;
+            position: absolute;
+            top:100px;
+            border-radius: 10px;
+            display: block;
+          font-size: 1.5em;
+          font-family: sans-serif;
+          padding: 1em 2em;
+          margin: 2em auto;
+          width: 80%;      
+          text-align: center;
+        }
+       
+        .popupBackground{
+            background-color:black;
+            opacity: 0.20;
+            filter: alpha(opacity = 20);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 9998;
+        }
+        .successbtn{
+             width:250px;
+            }
+   </style> 
+
+</apex:page>

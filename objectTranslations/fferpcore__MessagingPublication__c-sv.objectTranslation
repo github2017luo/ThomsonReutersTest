@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <article>Definite</article>
+        <plural>false</plural>
+        <value>Offentliggörande</value>
+    </caseValues>
+    <caseValues>
+        <article>Indefinite</article>
+        <plural>false</plural>
+        <value>Offentliggörande</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>false</plural>
+        <value>Offentliggörande</value>
+    </caseValues>
+    <caseValues>
+        <article>Definite</article>
+        <plural>true</plural>
+        <value>Publikationer</value>
+    </caseValues>
+    <caseValues>
+        <article>Indefinite</article>
+        <plural>true</plural>
+        <value>Publikationer</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>true</plural>
+        <value>Publikationer</value>
+    </caseValues>
+    <fields>
+        <label><!-- Correlation Field --></label>
+        <name>fferpcore__CorrelationField__c</name>
+    </fields>
+    <fields>
+        <label><!-- Custom --></label>
+        <name>fferpcore__Custom__c</name>
+    </fields>
+    <fields>
+        <label><!-- Deprecated - Declarative Fields --></label>
+        <name>fferpcore__DeclarativeFields__c</name>
+    </fields>
+    <fields>
+        <label><!-- Number of Declarative Node --></label>
+        <name>fferpcore__DeclarativeNodeCount__c</name>
+    </fields>
+    <fields>
+        <label><!-- Describer --></label>
+        <name>fferpcore__Describer__c</name>
+    </fields>
+    <fields>
+        <label><!-- Description --></label>
+        <name>fferpcore__Description__c</name>
+    </fields>
+    <fields>
+        <label><!-- Documentation URL --></label>
+        <name>fferpcore__DocumentationURL__c</name>
+    </fields>
+    <fields>
+        <label><!-- Enabled --></label>
+        <name>fferpcore__Enabled__c</name>
+    </fields>
+    <fields>
+        <help>Identifier av publikationen. Detta måste vara unikt för anpassade publikationer. Om du inte anger ett värde, ställs det här fältet automatiskt på en kombination av publiceringsnamnet och källobjektet när du sparar publikationen.</help>
+        <label><!-- Identifier --></label>
+        <name>fferpcore__Identifier__c</name>
+    </fields>
+    <fields>
+        <help>Fältet måste fyllas i för att möjliggöra objektlänkning. Abonnemangsobjektobjekt som vill länka till det här källkodsobjektet bör ha specifikt namngivna fält som innehåller detta länkstyrningsutvecklarnamn.</help>
+        <label><!-- Link Control Developer Name --></label>
+        <name>fferpcore__LinkControlDeveloperName__c</name>
+    </fields>
+    <fields>
+        <help>Fältet fylls automatiskt när en publikation av Link Control skapas och bör inte fyllas av användaren.</help>
+        <label><!-- Link Control For --></label>
+        <name>fferpcore__LinkControlFor__c</name>
+        <relationshipLabel><!-- Link Control Publications --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Message Type --></label>
+        <name>fferpcore__MessageType__c</name>
+        <relationshipLabel><!-- Publications --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Om du väljer Obsolete markeras publikationen som inte längre används. Den kommer inte att visas på administrationsskärmen och kan inte aktiveras.</help>
+        <label><!-- Obsolete --></label>
+        <name>fferpcore__Obsolete__c</name>
+    </fields>
+    <fields>
+        <label><!-- Publisher --></label>
+        <name>fferpcore__OwnerProduct__c</name>
+        <relationshipLabel><!-- Publications --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Proxy --></label>
+        <name>fferpcore__ProductProxy__c</name>
+        <relationshipLabel><!-- Publications --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Namn på Apex-klassen som bestämmer hur meddelanden levereras. Denna klass måste implementera gränssnittet SendingHook.</help>
+        <label><!-- Sending Hook --></label>
+        <name>fferpcore__SendingHook__c</name>
+    </fields>
+    <fields>
+        <help>Objektet skriver att data kommer att tas från.</help>
+        <label><!-- Source Object --></label>
+        <name>fferpcore__SourceObject__c</name>
+    </fields>
+    <fields>
+        <label><!-- Uniqueness Constraint --></label>
+        <name>fferpcore__UniquenessConstraint__c</name>
+    </fields>
+    <fields>
+        <help>Anger om Process Builder används för att utlösa meddelandesändning. När det tas bort används utlösaren som medföljer publikationen. När den är vald används den process som är associerad med publikationsidentifieraren.</help>
+        <label><!-- Use Process Builder --></label>
+        <name>fferpcore__UseProcessBuilder__c</name>
+    </fields>
+    <fields>
+        <label><!-- Provider --></label>
+        <name>fferpcore__VirtualObjectProvider__c</name>
+    </fields>
+    <fields>
+        <label><!-- Virtual Object --></label>
+        <name>fferpcore__VirtualObject__c</name>
+    </fields>
+    <gender>Feminine</gender>
+    <nameFieldLabel>Publiceringsnamn</nameFieldLabel>
+    <webLinks>
+        <label><!-- DeepClone --></label>
+        <name>fferpcore__DeepClone</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- Export --></label>
+        <name>fferpcore__Export</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- ExportList --></label>
+        <name>fferpcore__ExportList</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- PublicationActivateLinkControl --></label>
+        <name>fferpcore__PublicationActivateLinkControl</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <article>Definite</article>
+        <plural>false</plural>
+        <value>Faktureringsdokumentlinjepost</value>
+    </caseValues>
+    <caseValues>
+        <article>Indefinite</article>
+        <plural>false</plural>
+        <value>Faktureringsdokumentlinjepost</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>false</plural>
+        <value>Faktureringsdokumentlinjepost</value>
+    </caseValues>
+    <caseValues>
+        <article>Definite</article>
+        <plural>true</plural>
+        <value>Faktureringsdokumentlinjeposter</value>
+    </caseValues>
+    <caseValues>
+        <article>Indefinite</article>
+        <plural>true</plural>
+        <value>Faktureringsdokumentlinjeposter</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>true</plural>
+        <value>Faktureringsdokumentlinjeposter</value>
+    </caseValues>
+    <fields>
+        <help>Salesforce-konto som representerer stedet produktet sendes til. Kontoen må være en etterkommer av den relaterte fakturadokumentkontoen og inneholde fullstendige adresseopplysninger. Etterkommere opptil fem forhold dypt inne i hierarkiet er gyldige.</help>
+        <label><!-- Shipping Account --></label>
+        <name>fferpcore__Account__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Brukes til å analysere faktureringsdokumentlinjer og kan brukes til å representere et antall forskjellige forretningskonsepter.</help>
+        <label><!-- Analysis Item 1 --></label>
+        <name>fferpcore__AnalysisItem1__c</name>
+        <relationshipLabel><!-- Related Document Lines 1 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Brukes til å analysere faktureringsdokumentlinjer og kan brukes til å representere et antall forskjellige forretningskonsepter.</help>
+        <label><!-- Analysis Item 2 --></label>
+        <name>fferpcore__AnalysisItem2__c</name>
+        <relationshipLabel><!-- Related Document Lines 2 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Brukes til å analysere faktureringsdokumentlinjer og kan brukes til å representere et antall forskjellige forretningskonsepter.</help>
+        <label><!-- Analysis Item 3 --></label>
+        <name>fferpcore__AnalysisItem3__c</name>
+        <relationshipLabel><!-- Related Document Lines 3 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Brukes til å analysere faktureringsdokumentlinjer og kan brukes til å representere et antall forskjellige forretningskonsepter.</help>
+        <label><!-- Analysis Item 4 --></label>
+        <name>fferpcore__AnalysisItem4__c</name>
+        <relationshipLabel><!-- Related Document Lines 4 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Ekstern skattestatus for faktureringsdokumentet som dette elementet i faktureringsdokumentet tilhører.</help>
+        <label><!-- Billing Document External Tax Status --></label>
+        <name>fferpcore__BillingDocumentExternalTaxStatus__c</name>
+    </fields>
+    <fields>
+        <help>Status for faktureringsdokumentet som denne fakturadokumentlinjeposten tilhører.</help>
+        <label><!-- Billing Document Status --></label>
+        <name>fferpcore__BillingDocumentStatus__c</name>
+    </fields>
+    <fields>
+        <help>Faktureringsdokument som dette fakturadokumentet tilhører.</help>
+        <label><!-- Billing Document --></label>
+        <name>fferpcore__BillingDocument__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Firmaside som representerer stedet produktet sendes fra. Nettstedet må være et barn i det tilhørende faktureringsdokumentfirmaet og inneholde fullstendige adresseopplysninger.</help>
+        <label><!-- Company Site --></label>
+        <name>fferpcore__CompanySite__c</name>
+        <relationshipLabel><!-- Billing Document Line Items --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Den totale rabatten for denne fakturadokumentlinjen.</help>
+        <label><!-- Discount Total --></label>
+        <name>fferpcore__DiscountTotal__c</name>
+    </fields>
+    <fields>
+        <help>Indikerer at den valgte firmasiden ikke er et barn i faktureringsdokumentfirmaet.</help>
+        <label><!-- Invalid Company Site --></label>
+        <name>fferpcore__InvalidCompanySite__c</name>
+    </fields>
+    <fields>
+        <help>Indikerer at den valgte forsendelseskontoen ikke er en etterkommer av fakturadokumentkontoen.</help>
+        <label><!-- Invalid Shipping Account --></label>
+        <name>fferpcore__InvalidShippingAccount__c</name>
+    </fields>
+    <fields>
+        <help>Beskrivelse av linjeelementet for faktureringsdokumentet.</help>
+        <label><!-- Description --></label>
+        <name>fferpcore__LineDescription__c</name>
+    </fields>
+    <fields>
+        <help>Indikerer at du vil angi og vedlikeholde leveringsadressen manuelt. Hvis ikke valgt og en forsendelseskonto er spesifisert, lagres postens leveringsadresse på linjen.</help>
+        <label><!-- Enter Shipping Address Manually --></label>
+        <name>fferpcore__ManualAddressOverride__c</name>
+    </fields>
+    <fields>
+        <help>Nettoværdien av fakturadokumentlinjen før rabatter blir brukt.</help>
+        <label><!-- Net Value Before Discount --></label>
+        <name>fferpcore__NetValueBeforeDiscount__c</name>
+    </fields>
+    <fields>
+        <help>Valgfri manuell beregning av nettoværdi.</help>
+        <label><!-- Net Value Override --></label>
+        <name>fferpcore__NetValueOverride__c</name>
+    </fields>
+    <fields>
+        <help>Totalverdi for denne fakturadokumentlinjeposten før skatt. Formelen som brukes til å beregne dette er Quantity x Unit Price.</help>
+        <label><!-- Net Value --></label>
+        <name>fferpcore__NetValue__c</name>
+    </fields>
+    <fields>
+        <help>Oppslag til Salesforce-produktet eller -tjenesten.</help>
+        <label><!-- Product or Service --></label>
+        <name>fferpcore__ProductService__c</name>
+        <relationshipLabel><!-- Product Service Relationship --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Antall elementer som er inkludert i dette fakturadokumentet. Dette brukes til å beregne totalverdien av fakturadokumentets linjeelement.</help>
+        <label><!-- Quantity --></label>
+        <name>fferpcore__Quantity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Reporting Net Value Number --></label>
+        <name>fferpcore__ReportingNetValueNumber__c</name>
+    </fields>
+    <fields>
+        <help>Totalverdi for denne fakturadokumentlinjeposten før skatt basert på dokumenttypen i faktureringsdokumentet.</help>
+        <label><!-- Reporting Net Value --></label>
+        <name>fferpcore__ReportingNetValue__c</name>
+    </fields>
+    <fields>
+        <help>Skattverdi 1 av den tilsvarende skattesatsen basert på dokumenttypen i faktureringsdokumentet.</help>
+        <label><!-- Reporting Tax Value 1 --></label>
+        <name>fferpcore__ReportingTaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>Skatteverdi 2 av den tilsvarende skattesatsen basert på dokumenttypen i faktureringsdokumentet.</help>
+        <label><!-- Reporting Tax Value 2 --></label>
+        <name>fferpcore__ReportingTaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>Skatteverdi 3 av tilsvarende skattesats basert på dokumenttypen i faktureringsdokumentet.</help>
+        <label><!-- Reporting Tax Value 3 --></label>
+        <name>fferpcore__ReportingTaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>Samlet skatt på fakturadokumentlinjeposten basert på dokumenttypen i faktureringsdokumentet.</help>
+        <label><!-- Reporting Tax Value Total --></label>
+        <name>fferpcore__ReportingTaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>Totalverdi av denne fakturadokumentlinjen, inkludert skatt basert på dokumenttypen i faktureringsdokumentet.</help>
+        <label><!-- Reporting Total Value --></label>
+        <name>fferpcore__ReportingTotalValue__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping City --></label>
+        <name>fferpcore__ShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Country --></label>
+        <name>fferpcore__ShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping State/Province --></label>
+        <name>fferpcore__ShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Street --></label>
+        <name>fferpcore__ShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help>Skattekode som skal brukes ved beregning av skatt for denne fakturadokumentlinjeposten. Du kan bruke skattekoder til å representere statens, fylke- og byskattemyndighetene.</help>
+        <label><!-- Tax Code 1 --></label>
+        <name>fferpcore__TaxCode1__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Skattekode som skal brukes ved beregning av skatt for denne fakturadokumentlinjeposten. Du kan bruke skattekoder til å representere statens, fylke- og byskattemyndighetene.</help>
+        <label><!-- Tax Code 2 --></label>
+        <name>fferpcore__TaxCode2__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 2) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Skattekode som skal brukes ved beregning av skatt for denne fakturadokumentlinjeposten. Du kan bruke skattekoder til å representere statens, fylke- og byskattemyndighetene.</help>
+        <label><!-- Tax Code 3 --></label>
+        <name>fferpcore__TaxCode3__c</name>
+        <relationshipLabel><!-- Billing Document Line Items (Tax Code 3) --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>Skattesats som skal benyttes ved beregning av skatt for dette fakturadokumentet.</help>
+        <label><!-- Tax Rate 1 --></label>
+        <name>fferpcore__TaxRate1__c</name>
+    </fields>
+    <fields>
+        <help>Skattesats som skal benyttes ved beregning av skatt for dette fakturadokumentet.</help>
+        <label><!-- Tax Rate 2 --></label>
+        <name>fferpcore__TaxRate2__c</name>
+    </fields>
+    <fields>
+        <help>Skattesats som skal benyttes ved beregning av skatt for dette fakturadokumentet.</help>
+        <label><!-- Tax Rate 3 --></label>
+        <name>fferpcore__TaxRate3__c</name>
+    </fields>
+    <fields>
+        <help>Total skattesats for linjeelementet for faktureringsdokumentet.</help>
+        <label><!-- Tax Rate Total --></label>
+        <name>fferpcore__TaxRateTotal__c</name>
+    </fields>
+    <fields>
+        <help>Skatteverdi beregnet ut fra tilsvarende skattesats ved bruk av formelen: Nettoværdi * (Skattesats / 100).</help>
+        <label><!-- Tax Value 1 --></label>
+        <name>fferpcore__TaxValue1__c</name>
+    </fields>
+    <fields>
+        <help>Skatteverdi beregnet ut fra tilsvarende skattesats ved bruk av formelen: Nettoværdi * (Skattesats / 100).</help>
+        <label><!-- Tax Value 2 --></label>
+        <name>fferpcore__TaxValue2__c</name>
+    </fields>
+    <fields>
+        <help>Skatteverdi beregnet ut fra tilsvarende skattesats ved bruk av formelen: Nettoværdi * (Skattesats / 100).</help>
+        <label><!-- Tax Value 3 --></label>
+        <name>fferpcore__TaxValue3__c</name>
+    </fields>
+    <fields>
+        <help>Total skatt for linjeposten for faktureringsdokumentet.</help>
+        <label><!-- Tax Value Total --></label>
+        <name>fferpcore__TaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <help>Totalverdi for denne fakturadokumentlinjeposten. Formelen som brukes til å beregne dette er nettoværdi + skatteverdi totalt.</help>
+        <label><!-- Total Value --></label>
+        <name>fferpcore__TotalValue__c</name>
+    </fields>
+    <fields>
+        <help>Pris på ett element for linjeelementet for faktureringsdokumentet. Dette brukes til å beregne totalverdien av fakturadokumentets linjeelement.</help>
+        <label><!-- Unit Price --></label>
+        <name>fferpcore__UnitPrice__c</name>
+    </fields>
+    <fields>
+        <help>Registrerer PSA Billing Event Item korrelasjonsnøkkel som brukes i Foundations-systemet.</help>
+        <label><!-- Billing Event Item Correlation ID --></label>
+        <name>pse__Billing_Event_Item_Correlation_Id__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>Dokumentlinje</nameFieldLabel>
+</CustomObjectTranslation>

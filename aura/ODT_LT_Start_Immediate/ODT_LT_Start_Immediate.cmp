@@ -1,0 +1,21 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader" >
+	 <aura:attribute name="startImmediate" type="Object"/>
+    <aura:attribute name="error" type="String"/>
+    
+    <aura:html tag="style">
+    .slds-backdrop {
+    background: rgba(43, 40, 38, 0) !important;  
+    }
+    .slds-fade-in-open {
+    display:none !important;
+   }
+</aura:html>
+    
+    <force:recordData aura:id="TrialRecord"                      
+                      recordId="{!v.recordId}"
+                      fields="Trial_Status__c, Trial_Source__c, Profile_Type__c,GSI_Trial__c"   
+                      targetFields="{!v.startImmediate}"
+                      targetError="{!v.error}"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      />
+</aura:component>

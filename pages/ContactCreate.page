@@ -1,0 +1,151 @@
+<!--  
+===============================================================================
+ $ContactCreate.page$
+===============================================================================
+
+PURPOSE:        Allow users to view and merge a new contact record      
+
+FUNCTIONALITY:  
+                
+COMMENTS:       
+
+CHANGE HISTORY
+===============================================================================
+DATE            NAME                    DESC
+2013-06-28      Srikanth Kuruva         Created
+2015-10-19      Brenda Shields          EWI-99 add phone (work_direct__c) to page layout
+===============================================================================
+-->
+<apex:page standardController="Contact" extensions="ContactCreateController" action="{!redirectnewPage}">
+    <apex:sectionHeader id="pageTitle" title="Create Contact" subtitle="New Contact" />
+    <apex:includeScript value="/support/console/26.0/integration.js"/>
+  
+<script type="text/javascript">
+/* [Rajashree] Including the below script for [SFD-16] */
+        var pageLoad = window.onload;
+        window.onload = function(){
+           if(pageLoad) {
+                pageLoad();
+            }
+           OpenSubtab_IP();
+        };
+
+        function OpenSubtab_IP() {
+            sforce.console.getEnclosingPrimaryTabId(openSubtab);
+        };
+
+        var openSubtab = function openSubtab(result){
+            var primaryTabId = result.id;
+            sforce.console.setTabTitle('New Contact');
+        };
+        
+        function saveTab() { 
+           if(sforce.console.isInConsole()){ 
+                callSave();
+                var firstName = document.getElementById('j_id0:formEdit:j_id39:j_id42:j_id43:frstName').value; 
+                var lastName = document.getElementById('j_id0:formEdit:j_id39:j_id42:lstName').value; 
+                sforce.console.setTabTitle('Contact: ' + firstName + ' ' + lastName);
+            }
+           else{
+                callSave();
+           }
+        }  
+        function cancelTab() {                       
+               if(sforce.console.isInConsole()){                         
+                //First find the ID of the current tab to close it
+                sforce.console.getEnclosingTabId(closeSubtab);                    
+                redirectToCamp();
+               }else{                        
+                   redirectToCamp();
+               }
+            }
+            var closeSubtab = function closeSubtab(result) {
+                //Now that we have the tab ID, we can close it
+                var tabId = result.id;
+                sforce.console.closeTab(tabId);
+            };
+            
+            function redirectToCamp(){
+                callCancel();
+            }     
+   </script>
+    <apex:form id="formEdit">
+        
+        <apex:pageMessages id="globalMessages" escape="false" />
+            
+        <apex:actionStatus id="statusValidateContact">
+            <apex:facet name="start">
+                <c:PageStatusMessage message="Validating contact please wait..."/>
+            </apex:facet>
+        </apex:actionStatus>
+        
+        <apex:pageBlock title="New Contact" mode="edit"  rendered="{!NOT(HasMatchingContacts)}">
+            <apex:pageBlockButtons location="top" >
+            <!--COmmenting this line and using input type for [SFD-16] apex:commandButton id="btnSave" value="Save" action="{!save}" rerender="formEdit" status="statusValidateContact" / -->
+                <input type ="button" id ="btnSave" value="Save" onclick="javascript:saveTab();" rerender="formEdit" status="statusValidateContact" class="btn" />
+          <!--<apex:commandButton id="btnRetry" value="Retry" action="{!save}" rendered="{!HasServiceErrors}" rerender="formEdit" status="statusValidateContact" />
+                <apex:commandButton id="btnContinue" value="Continue" action="{!continueSave}" rendered="{!HasServiceErrors}" />-->
+         <!--COmmenting this line and using input type for [SFD-16]apex:commandButton id="btnCancel" value="Cancel" action="{!cancel}" / -->
+            <input type ="button" id ="btnCancel" value="Cancel" onclick="javascript:cancelTab();" class="btn" />
+
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1" >
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Contact.fields.FirstName.Label}</apex:outputLabel>
+                    <apex:panelGroup >
+                        <apex:inputField value="{!oContact.salutation}"/>
+                        <apex:inputField value="{!oContact.FirstName}" id="frstName"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:inputField value="{!oContact.LastName}" id="lstName"/>
+                <apex:inputField value="{!oContact.Email}" required="true"/>
+                <apex:inputField value="{!oContact.Work_Direct__c}"/>
+                <apex:inputField required="true" value="{!oContact.accountId}"/>
+                
+           <!--     <apex:inputField value="{!oContact.Account_SAP_Phone1__c}" rendered="{!$Profile.Name == 'LMS - User'}"/> -->
+            </apex:pageBlockSection>
+            <apex:actionFunction name="callSave"  action="{!save}" />
+            <apex:actionFunction name="callCancel"  action="{!cancel}" />
+        </apex:pageBlock>
+      
+        <apex:pageBlock title="New Contact" mode="mainDetail" rendered="{!HasMatchingContacts}">
+            <apex:pageBlockButtons location="top" >
+                <apex:commandButton id="btnCreateContact" value="Create Contact" action="{!continueSave}" rerender="formEdit" status="statusValidateContact" />
+                <apex:commandButton id="btnCancel" value="Cancel" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel >{!$ObjectType.Contact.fields.FirstName.Label}</apex:outputLabel>
+                    <apex:panelGroup >
+                        <apex:outputField value="{!oContact.salutation}"/>
+                        <apex:outputField value="{!oContact.FirstName}"/>
+                    </apex:panelGroup>
+                </apex:pageBlockSectionItem>
+                <apex:outputField value="{!oContact.LastName}"/>
+                <apex:outputField value="{!oContact.Email}"/>
+                <apex:outputField value="{!oContact.Work_Direct__c}" />
+                <apex:outputField value="{!oContact.accountId}"/>
+              <!--  <apex:outputField value="{!oContact.Account_SAP_Phone1__c}" rendered="{!$Profile.Name == 'LMS - User'}"/> -->
+            </apex:pageBlockSection>
+            <apex:pageBlockSection id="sectionDuplicates" columns="1" title="Potential Duplicate Contacts">
+                <apex:pageBlockTable id="tblMatchedContacts" value="{!MatchedContacts}" var="match">
+                    <!-- <apex:column value="{!match.Name}" headerValue="Name"/>-->
+                    <apex:column style="white-space: nowrap; " headervalue="Name">
+                        <apex:outputText id="textContactName" 
+                            value="{!match.contactinfo.Name}"  
+                            rendered="{!ISNULL(match.contact.id)}"/>
+                            
+                        <apex:outputLink id="linkContact"
+                            value="/{!match.Contact.Id}" 
+                            rendered="{!NOT(ISNULL(match.contact.id))}">{!match.contactinfo.Name}</apex:outputLink>
+                    </apex:column>
+                    <apex:column value="{!match.contact.ID}" headerValue="contact id"/>
+                    <!--<apex:column value="{!match.MDBCustomerID}" headerValue="MDB Customer ID"/>-->
+                    <apex:column value="{!match.contactinfo.MDBContactID}" headerValue="MDB Contact ID"/>
+                    <apex:column value="{!match.contactinfo.EMail}" headerValue="Email"/>
+                    <apex:column value="{!match.contactinfo.Score}" headerValue="Score"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

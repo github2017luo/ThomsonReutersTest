@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <article>Definite</article>
+        <plural>false</plural>
+        <value>שער חליפין</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>false</plural>
+        <value>שער חליפין</value>
+    </caseValues>
+    <caseValues>
+        <article>Definite</article>
+        <plural>true</plural>
+        <value>שערי חליפין</value>
+    </caseValues>
+    <caseValues>
+        <article>None</article>
+        <plural>true</plural>
+        <value>שערי חליפין</value>
+    </caseValues>
+    <fields>
+        <label><!-- Currency Code --></label>
+        <name>appirio_core__Currency_Code__c</name>
+    </fields>
+    <fields>
+        <help>בדיקה זו מתייחסת לרשומת המטבעות שעליה חל שער החליפין המתוארך. השיעור מוגדר תמיד ככמה מהמטבע שהוזכר שווה ליחידה אחת (אחת) של המטבע המוצלח בתאריך התוקף שצוין.</help>
+        <label><!-- Currency --></label>
+        <name>appirio_core__Currency__c</name>
+        <relationshipLabel><!-- Dated Exchange Rates --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>תאריך אליו חל בפועל שער החליפין המתוארך, אפילו אם הוא משמש לטווח תאריכים רחב יותר. המרת מטבע תחפש תמיד את השער האחרון שלא נמצא בעתיד (כלומר היום או קודם לכן).</help>
+        <label><!-- Effective Date --></label>
+        <name>appirio_core__Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>מציין את התאריך שבו יפוג שער החליפין הזה, אם קיים. שער החליפין תקף עד ליום שלפני תאריך התפוגה, או לעולם לא יפוג אם הוא ריק.</help>
+        <label><!-- Expiration Date --></label>
+        <name>appirio_core__Expiration_Date__c</name>
+    </fields>
+    <fields>
+        <help>אם זה מסומן, מציין כי רשומת שער חליפין זו משמשת רק למצב בדיקה ואין להשתמש בה להמרות שערי חליפין ’אמיתיים’ (ייצור).</help>
+        <label><!-- Is Test --></label>
+        <name>appirio_core__Is_Test__c</name>
+    </fields>
+    <fields>
+        <help>אם הוא מסומן, מציין כי רשומת שער החליפין הזו אינה חוקית ואין להשתמש בה</help>
+        <label><!-- Is Void --></label>
+        <name>appirio_core__Is_Void__c</name>
+    </fields>
+    <fields>
+        <help>מגדיר את התאריך האפקטיבי של שער החליפין שלאחר מכן עבור המטבע אם קיים. זה יהיה ריק עבור התעריף האחרון. שדה זה צריך להיות מוגדר אוטומטית על ידי המערכת.</help>
+        <label><!-- Next Effective Date --></label>
+        <name>appirio_core__Next_Effective_Date__c</name>
+    </fields>
+    <fields>
+        <help>מגדיר את הערך המספרי של שער החליפין המתוארך בין המטבע המוזכר למטבע התאגידי עבור הארגון.</help>
+        <label><!-- Rate --></label>
+        <name>appirio_core__Rate__c</name>
+    </fields>
+    <gender>Masculine</gender>
+    <nameFieldLabel>מספר שער חליפין</nameFieldLabel>
+</CustomObjectTranslation>

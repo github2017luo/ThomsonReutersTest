@@ -1,0 +1,80 @@
+<!-- ============================================================================================
+Name            :   ODT_TrialInitiateFromOpportunity
+Description     :   This page is developed as part of CXD-ODT project :DLT-12947
+It serves as an inline VF page on GLI Opportunity record detail page to 
+display related Trial details and also to initiate new trial
+
+Modification History:
+Date            Name                    Description
+10/19/2018      Ameeta Antonio          Created.
+06/24/2019      David Hoel              DLT-16849: update New Trial command button.
+07/12/2019      David Hoel              DLT-17089: added New Customer Trial button.
+10/16/2020      Srinivasulu             DLT-20857: Added Additional Fields to display (Total Hours, Total Previous hours and Transactions)
+============================================================================================== -->
+
+<apex:page extensions="ODTTrialInitiateOpportunity" standardController="Opportunity" id="thePage" sidebar="false" lightningStylesheets="true">
+    <apex:actionStatus id="myStatus">
+        <apex:facet name="start">
+            <div id="loadingDiv" />
+        </apex:facet>
+    </apex:actionStatus>
+
+    <script>
+        window.onload = function () {
+            //alert('opp');
+            callTrials();
+        };
+    </script>
+
+    <body>
+        <apex:form id="theForm">
+            <apex:pageBlock id="theBlock">
+                <apex:pageBlockButtons location="top">
+                    <!---   <apex:commandLink action="{!newCustomerRedirect}" target="_blank">
+                        <apex:commandButton value="New Customer Trial" rendered="{!checkVisibility}" status="myStatus" />
+                    </apex:commandLink> ---->
+                    <apex:commandLink action="{!callToContactList}" target="_blank">
+                        <apex:commandButton value="New Trial" rendered="{!checkVisibility}" status="myStatus" />
+                    </apex:commandLink>
+                </apex:pageBlockButtons>
+                <apex:pageBlockSection showHeader="true" collapsible="false" rendered="true" columns="1">
+                    <apex:pageBlockTable value="{!listOppTrial}" var="c" rendered="{!listOppTrial.size != 0}">
+                        <apex:column headerValue="Trial Name">
+                            <apex:outputLink value="/{!c.Trial__r.id}" target="_blank">{!c.Trial__r.name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!c.Trial__r.Trial_Id__c}" headerValue="Trial ID" />
+                        <apex:column value="{!c.Trial__r.Trial_Start_Date__c}" headerValue="Trial Start Date" />
+                        <apex:column value="{!c.Trial__r.Trial_End_Date__c}" headerValue="Trial End Date" />
+                        <apex:column value="{!c.Trial__r.Trial_Status__c}" headerValue="Trial Status" />
+                        <apex:column value="{!c.Trial__r.ODT_Email__c}" headerValue="Primary User" />
+                        <apex:column value="{!c.Trial__r.ODT_SAP_Account_Number__c}" headerValue="Account Number" />
+                        <apex:column value="{!c.Trial__r.Source_System_Detail__r.Name}" headerValue="Account Name" />
+                        <apex:column value="{!c.Trial__r.Total_Hours__c}" headerValue="Total Hours" />
+                        <apex:column value="{!c.Trial__r.Total_Hours_Previous_Day__c}" headerValue="Total Hours Previous Day" />
+                        <apex:column value="{!c.Trial__r.Transactions_Views__c }" headerValue="Transactions\Views" />
+                    </apex:pageBlockTable>
+                </apex:pageBlockSection>
+            </apex:pageBlock>
+        </apex:form>
+
+        <apex:form >
+            <apex:actionFunction action="{!getTrialOpportunity}" reRender="theForm" id="loadTrialsFromJS" name="callTrials" status="myStatus" />
+        </apex:form>
+    </body>
+
+    <style>
+        #loadingDiv {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            //background: url('http://www.funnfood.com/images/loader.gif') 50% 50% no-repeat #666;
+            background: url({!URLFOR($Resource.ODTLoaderGIF)}) 50% 50% no-repeat #666;
+
+            z-index: 99999;
+            opacity: 0.4; /* You can adjust the opacity */
+            filter: alpha(opacity=40); /* For IE8 and earlier */
+        }
+    </style>
+</apex:page>

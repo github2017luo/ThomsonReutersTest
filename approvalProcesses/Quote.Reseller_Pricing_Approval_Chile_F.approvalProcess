@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Discount_Pricing_Notes__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <type>userHierarchyField</type>
+            </approver>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>Discount_Threshold__c &gt;  Max_Reseller_Discount_Percentage__c</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Discount Reseller Manager</label>
+        <name>Manager</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>rodrigo.hermida@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>Discount_Threshold__c &gt;  (Max_Reseller_Discount_Percentage__c +  $Setup.ResellerApprovalThresholdPercentage__c.Y_Percentage__c)</formula>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Discount Reseller Commercial Director</label>
+        <name>Commercial_Director_1</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>ricardo.tommasi@trpcorelegal.com</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <formula>Discount_Threshold__c &gt; (Max_Reseller_Discount_Percentage__c + $Setup.ResellerApprovalThresholdPercentage__c.Y_Percentage__c + $Setup.ResellerApprovalThresholdPercentage__c.Z_Percentage__c)</formula>
+        </entryCriteria>
+        <label>Discount Reseller Local CFO and MD</label>
+        <name>Commercial_Director_2</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>FRS: - SFD-449. Reseller Approval process for Business unit &quot;Chile&quot; and Sales Org &quot;LPCL&quot; and &quot;LPTC&quot;.</description>
+    <emailTemplate>LatAm_Order_Form/Price_Sent_for_Approval_English</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND( 
+OR( 
+	$Profile.Name = &quot;LatAm User&quot;, 
+	$Profile.Name = &quot;Partner Portal User&quot;
+), 
+$RecordType.Name = &quot;LATAM New Quote&quot;,Opportunity.Is_Child_Opportunity__c &lt;&gt; true, 
+ISPICKVAL(Opportunity.LATAM_Business_Unit__c , &quot;Chile&quot;),
+OR(
+	ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPCL&quot;),
+	ISPICKVAL(Opportunity.Sales_Org__c , &quot;LPTC&quot;)
+),
+NOT(OR(ISPICKVAL(Opportunity.StageName,&quot;0%&quot;),ISPICKVAL(Opportunity.StageName,&quot;1%&quot;),ISPICKVAL(Opportunity.StageName,&quot;5%&quot;),ISPICKVAL(Opportunity.StageName,&quot;10%&quot;))),
+Primary_Quote__c =True, 
+Promotion__c = False, 
+Pricing_Approval_Required__c = True, 
+Pricing_Approval_Complete__c = False, 
+OR(ISPICKVAL(Approval_Status__c,&quot;Pricing Approval Rejected&quot;),ISPICKVAL(Approval_Status__c,&quot;&quot;)), 
+Opportunity.Renewal_Flag__c = False, 
+NOT(ISPICKVAL(Opportunity.Sub_Category__c,&quot;Renewal&quot;)), 
+ISPICKVAL(Opportunity.Account.Customer_Class_c__c , &quot;Reseller&quot;),
+TRIM(TEXT(Account_LookUp__r.Sales_Org__c)) ==  TRIM(Sales_Org__c)  
+)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Chile_Quote_status_to_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Chile_Update_Approval_status_to_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Price_Approval_Complete</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Chile_Quote_status_to_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Chile_Update_ApprovalStatus_to_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Chile_Update_Approval_Status_to_PPA</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>Chile_Update_Quote_Status_to_In_Review</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>Reseller Pricing Approval - Chile_F</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>true</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>12</processOrder>
+    <recallActions>
+        <action>
+            <name>Chile_Final_Approval_Status_to</name>
+            <type>FieldUpdate</type>
+        </action>
+        <action>
+            <name>ChileFinal_QuoteStatus_to_In_Review</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

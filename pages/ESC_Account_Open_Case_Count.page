@@ -1,0 +1,20 @@
+<apex:page standardController="Account" extensions="ESC_AccountOpenCaseCountController" showHeader="false" lightningStylesheets="true">
+<apex:outputPanel rendered="{!NOT($User.UITheme == 'Theme4u')}">
+    <table align="left" width="50%">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<tr>
+    <td style="font-family: Arial,Helvetica,sans-serif; color: #4a4a56; font-weight: bold;font-size: 85%;text-align: left">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!$Label.Open_Case_Count}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {!casCountAcc}</td>
+    </tr>
+    </table>
+</apex:outputPanel>
+<apex:outputPanel rendered="{!$User.UITheme == 'Theme4u'}">
+    <table >
+    <tr>
+    <td class="test-id__field-label" style="font-family: Arial,Helvetica,sans-serif; color: #4a4a56; font-weight: bold;font-size: 100%;text-align: left">
+    {!$Label.Open_Case_Count}&nbsp;&nbsp;&nbsp;&nbsp; {!casCountAcc}</td>
+    <td>   
+    </td>
+    </tr>
+    </table>
+</apex:outputPanel>
+</apex:page>

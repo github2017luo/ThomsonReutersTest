@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>회사 세금 정보</value>
+    </caseValues>
+    <fields>
+        <help>이 회사의 VAT / GST 세금 코드.</help>
+        <label><!-- Tax Code --></label>
+        <name>fferpcore__TaxCode__c</name>
+        <relationshipLabel><!-- Company Tax Information Records --></relationshipLabel>
+    </fields>
+    <fields>
+        <help>이 회사의 국가 코드. 이것은 유럽 연합 내 국경 간 거래에 대한 부가가치세의 정확한보고를 위해 필요합니다.</help>
+        <label><!-- Tax Country Code --></label>
+        <name>fferpcore__TaxCountryCode__c</name>
+    </fields>
+    <fields>
+        <help>세금을 계산할 때 다른 세금 엔진을 선택하지 않는 한이 회사의 대금 청구 문서에 기본적으로 사용되는 세금 엔진.</help>
+        <label><!-- Default Tax Engine --></label>
+        <name>fferpcore__TaxEngine__c</name>
+        <picklistValues>
+            <masterLabel>Avalara AvaTax</masterLabel>
+            <translation>아 발라 라 AvaTax</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Internal</masterLabel>
+            <translation>내부의</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>이 회사에서 판매하는 제품에 사용할 세금 유형. 예 : GST, SUT 또는 VAT.</help>
+        <label><!-- Tax Type --></label>
+        <name>fferpcore__TaxType__c</name>
+        <picklistValues>
+            <masterLabel>GST</masterLabel>
+            <translation>GST</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>SUT</masterLabel>
+            <translation>SUT</translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>VAT</masterLabel>
+            <translation>큰 통</translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help>이 회사가 VAT / GST 그룹에 속해 있는지 여부를 나타냅니다. 이 체크 박스의 값은 사용할 기본 세금 코드를 가져올 위치를 결정할 때 사용됩니다.</help>
+        <label><!-- VAT/GST Group --></label>
+        <name>fferpcore__VatGstGroup__c</name>
+    </fields>
+    <fields>
+        <help>세금 목적으로 사용 된 번호 식별.</help>
+        <label><!-- Tax Registration Number --></label>
+        <name>fferpcore__VatRegistrationNumber__c</name>
+    </fields>
+    <nameFieldLabel>회사 세금 정보 이름</nameFieldLabel>
+    <webLinks>
+        <label><!-- AssignToCompanies --></label>
+        <name>fferpcore__AssignToCompanies</name>
+    </webLinks>
+</CustomObjectTranslation>

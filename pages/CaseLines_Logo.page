@@ -1,0 +1,29 @@
+<apex:page lightningStylesheets="true" >
+    
+    <style>
+        .heading {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Helvetica Neue",Arial,sans-serif;
+            font-weight: 400;
+            font-size: 18px;
+            color: #404040;
+        }
+        
+        .ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            -ms-text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+        }
+        
+        
+    </style> 
+    
+    <apex:outputPanel rendered="{!if($Profile.Name =='Enterprise Customer Community Profile',True,False)}" > 
+    <apex:image url="{!$Label.Caselines_Support5}" height="40px" width="250px"/>
+    <br/><br/><br/><br/><apex:outputText value="{!$Label.Caselines_Support1}" styleClass="heading ellipsis "/> <br/><br/>
+<apex:outputText value="{!$Label.CaseLines_Support2} " styleClass="heading ellipsis "/> 
+<a href="mailto:{!$Label.Caselines_Support4}" target="_blank"><apex:outputText value="{!$Label.Caselines_Support4}" styleClass="heading ellipsis "></apex:outputText> </a>  
+<br/><br/><apex:outputText value="{!$Label.CaseLines_Support3}" styleClass="heading ellipsis "></apex:outputText>
+</apex:outputPanel>
+</apex:page>

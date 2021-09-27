@@ -1,0 +1,230 @@
+<apex:page controller="RenewalRequestController" showHeader="false" sidebar="false">
+ <apex:includeScript value="{!URLFOR($Resource.TRRenewalSR,'RENEWSRC/Common/JS/jquery-1.7.1.min.js')}"/>
+ <apex:includeScript value="{!URLFOR($Resource.TRRenewalSR,'RENEWSRC/jQueryPopup/postmessage/jquery.ba-postmessage.js')}"/>
+ <apex:includeScript value="{!URLFOR($Resource.TRRenewalSR,'RENEWSRC/jQueryPopup/bbq/jquery.ba-bbq.min.js')}"/>
+ 
+  <script type="text/javascript">
+    var j$ = jQuery.noConflict();
+    
+    j$(document).ready(function() {                 
+        j$('input[id$="btnSubmit"]').click(function(){
+            //j$('#hdnIsSubmit').val('1');
+            j$('#spnWaitMsg').hide();
+            processRenewalRequest();
+            if(j$('#hdnActionType').val() == 'Remove'){
+                j$('#spnWaitMsg').show();
+            }
+            return false;
+        });
+        
+    }); 
+    
+  </script> 
+ 
+  <style>
+    .required {color: red; font-weight: bold; font-size: large; }
+    
+    .reqClass{
+      color:red;
+      font-weight:bold;
+      font-size: 11px;
+    }
+    
+    .scrollFullCancel {
+       width: 100%;
+       height: 253px;           
+       overflow-y: scroll;
+    }
+    .scrollFullCancel::-webkit-scrollbar {
+        width: 12px;
+    }
+    .scrollFullCancel::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        border-radius: 10px;
+    }
+    .scrollFullCancel::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);    
+    }
+    
+    .scrollRemove {
+       width: 100%;
+       height: 250px;           
+       overflow-y: scroll;
+    }
+    .scrollRemove::-webkit-scrollbar {
+        width: 12px;
+    }
+    .scrollRemove::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        border-radius: 10px;
+    }
+    .scrollRemove::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);    
+    }
+    
+   .Processing
+   {
+       z-index: 9997;
+       left: 35%;
+       top: 30%;
+       text-align: center;
+       position: fixed;
+   } 
+   
+   .ProcessingBackground
+   {
+        background-color: black;
+        opacity: 0.50;
+        filter: alpha(opacity = 50);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 9997;
+        top:0;
+        left:0;
+   }
+   
+   .waitMsgClass
+   {
+        color:black;
+        font-weight: bold;
+        font-size: 14px;
+   }
+  </style>
+  
+ <apex:form >
+ 
+    <div id="divProcessing" style="display:none;">
+        <div class="ProcessingBackground"></div>
+        <div class="Processing">
+            <apex:image alt="Processing" url="{!URLFOR($Resource.TRRenewalSR,'RENEWSRC/Common/IMAGE/loading.png')}" height="50%" width="50%" />
+        </div>
+    </div>  
+    
+    <apex:actionStatus id="Processing" onstart="document.getElementById('divProcessing').style.display = '';" onstop="document.getElementById('divProcessing').style.display = 'none';" />                            
+    
+    <apex:actionFunction action="{!saveRenewalRequest}" name="processRenewalRequest" reRender="pbRenewalRequest" status="Processing" />          
+    
+      <apex:pageblock id="pbRenewalRequest">
+          <div id="divScroll" class="scroll">  
+            <apex:pagemessages />  
+            
+            <apex:pageBlockButtons >
+                <!--<apex:commandButton id="btnSubmit" value="Submit" action="{!saveRenewalRequest}"/>-->
+                <apex:commandButton id="btnSubmit" value="{!$Label.Submit}" />
+                <apex:commandButton id="btnCancelPopup" value="{!$Label.Cancel}" immediate="true" />           
+            </apex:pageBlockButtons> 
+            
+            <apex:outputPanel rendered="{!sType == 'Remove'}">
+              <table width="100%">
+              
+                  <!--<tr style="backgorund-color:grey"><td colspan="4"></td></tr>-->
+                <tr>
+                    <td colSpan="4" align="center"><span id="spnWaitMsg" style="display:none; margin-top:3px;" class="waitMsgClass">{!$Label.RemoveWaitingResponseMsg}</span>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="height: 20px;"></td>
+                </tr>
+                
+                <tr> 
+                      <td valign="top" style="width:15%">Remove Reason </td>
+                      <td valign="top" style="width:25%">                      
+                          <apex:inputField id="slsRemoveReason" value="{!objRR.Remove_Reason__c}" required="true" style="width:100%;" /><br />                          
+                      </td>                   
+                                       
+                      <td valign="top" style="width:17%">Remove Comments </td> 
+                      <td valign="top" style="width:43%; valign:top;">                   
+                         <apex:inputField id="txtRemoveComments" value="{!objRR.Remove_Comments__c}" style="width:99%" required="true"/>                        
+                      </td>  
+                  </tr>
+                  <tr>   
+                      <!-- Added by Aman Bhansali - 8/4/2016 -->
+                      <td valign="bottom" style="width:15%">{!$Label.Was_there_a_competitor} </td>
+                      <td valign="bottom" style="width:25%">                      
+                          <apex:inputField id="slsRemoveCompetitor" value="{!objRR.Was_There_a_Competitor__c}" required="true"/>                       
+                      </td> 
+                      <td valign="bottom" style="width:17%">{!$Label.Competitor_Name} </td>
+                      <td valign="bottom" style="width:43%">                      
+                          <apex:inputField id="slsRemoveCompetitorName" value="{!objRR.Competitor_Name__c}" required="{!CompetitorName}" style="width:100%;" />                       
+                      </td> 
+                  </tr>
+                  
+              </table>          
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!sType == 'FullCancel'}">
+              <table width="100%">
+                  
+                  <tr>                    
+                      <td valign="top" style="width:15%">{!$Label.Cancel_Reason} </td>
+                      <td valign="top" style="width:25%">                      
+                          <apex:inputField id="slsCancelReason" value="{!objRR.Cancel_Reason__c}" required="true" style="width:100%;"/>                       
+                      </td>                   
+                                       
+                      <td valign="top" style="width:17%">{!$Label.Cancel_Comments} </td> 
+                      <td valign="top" style="width:43%; valign:top;">                   
+                         <apex:inputField id="txtCancelComments" value="{!objRR.Cancel_Comments__c}" style="width:99%" required="true"/>                        
+                      </td> 
+                   </tr>
+                   <tr>   
+                      <!-- Added by Aman Bhansali - 8/4/2016 -->
+                      <td valign="bottom" style="width:15%">{!$Label.Was_there_a_competitor} </td>
+                      <td valign="bottom" style="width:25%">                      
+                          <apex:inputField id="slsCompetitor" value="{!objRR.Was_There_a_Competitor__c}" required="true"/>                       
+                      </td> 
+                      <td valign="bottom" style="width:17%">{!$Label.Competitor_Name} </td>
+                      <td valign="bottom" style="width:43%">                      
+                          <apex:inputField id="slsCompetitorName" value="{!objRR.Competitor_Name__c}" required="{!CompetitorName}" style="width:100%;" />                       
+                      </td> 
+                  </tr>
+              </table>
+            </apex:outputPanel>  
+          </div>           
+          <input type="hidden" id="hdnSubmitSuccess" value="{!sSubmitSuccess}" />
+          
+          <script type="text/javascript">
+            var j$ = jQuery.noConflict();           
+            var parent_domain = '{!JSENCODE($CurrentPage.parameters.parent_domain)}';
+            j$(document).ready(function() {
+                //alert(j$('#hdnSubmitSuccess').val());     
+                if(j$('#hdnSubmitSuccess').val() == '1'){
+                    closeModalDialog('close_modal_dialog_refresh');
+                }
+                
+                j$('input[id$=btnCancelPopup]').click(function(event) {
+                     event.preventDefault();
+                     closeModalDialog('close_modal_dialog');
+                });
+                
+                j$('#divScroll').removeClass('scrollFullCancel');
+                j$('#divScroll').removeClass('scrollRemove');
+                
+                if(j$('#hdnActionType').val() == 'FullCancel'){ 
+                    j$('#divScroll').addClass('scrollFullCancel');
+                }
+                else if(j$('#hdnActionType').val() == 'Remove'){ 
+                    j$('#divScroll').addClass('scrollRemove');
+                }       
+                
+            });
+            
+            //  
+            function closeModalDialog(actionType){
+                var cross_result = new Object();
+                cross_result.action = actionType;       
+                //cross_result.redirect_url = 'parent url';     
+                j$.postMessage(
+                    cross_result,
+                    parent_domain,
+                    parent  
+                );                    
+            }
+          </script>
+      </apex:pageblock> 
+      <input type="hidden" id="hdnActionType" value="{!sType}" />
+  </apex:form>  
+</apex:page>

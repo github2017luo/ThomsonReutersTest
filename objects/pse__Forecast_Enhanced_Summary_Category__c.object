@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>pse__Forecast_Summary_Category_Compact_Layout</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>pse__Forecast_Summary_Category_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>pse__Category_Label__c</fields>
+        <fields>pse__Forecast_Value__c</fields>
+        <fields>pse__Forecast_Opportunities_Value__c</fields>
+        <fields>pse__Forecast_Projects_Value__c</fields>
+        <fields>pse__Forecast_Sublevels_Value__c</fields>
+        <label>Forecast Summary Category Compact Layout</label>
+    </compactLayouts>
+    <customHelpPage>pse__ForecastEnhancedSummaryCategoryHelp</customHelpPage>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <deprecated>false</deprecated>
+    <description>Stores the weighted category totals for the related region, practice, or group.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>false</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <fields>
+        <fullName>pse__Adjusted_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Formula field representing the value displayed on the Billing Forecast page for this billing forecast summary category.</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISNULL(pse__Override_Value__c)),pse__Override_Value__c,IF(NOT(ISNULL(pse__Override_Rollup_Variance__c)),pse__Override_Rollup_Variance__c+pse__Forecast_Value__c,pse__Forecast_Value__c))</formula>
+        <inlineHelpText>Formula field representing the value displayed on the Services Revenue Forecast page for this forecast summary category.</inlineHelpText>
+        <label>Adjusted Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Category_Label__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Lookup to the relevant billing forecast setup category label, for example, Expected.</description>
+        <externalId>false</externalId>
+        <formula>pse__Forecast_Setup_Category__r.pse__Label__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Lookup to the relevant forecast setup category label, for example, Expected.</inlineHelpText>
+        <label>Category Label</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Enhanced_Override__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the currently active billing forecast override applied to this billing forecast summary category.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the currently active forecast override applied to this forecast summary category.</inlineHelpText>
+        <label>Billing Forecast Override</label>
+        <referenceTo>pse__Forecast_Enhanced_Override__c</referenceTo>
+        <relationshipLabel>Billing Forecast Summary Categories</relationshipLabel>
+        <relationshipName>Forecast_Enhanced_Summary_Categories</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Enhanced_Summary__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Lookup to the relevant billing forecast summary record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the relevant forecast summary record.</inlineHelpText>
+        <label>Billing Forecast Summary</label>
+        <referenceTo>pse__Forecast_Enhanced_Summary__c</referenceTo>
+        <relationshipLabel>Billing Forecast Summary Categories</relationshipLabel>
+        <relationshipName>Forecast_Enhanced_Summary_Categories</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Opportunities_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total weighted opportunity amounts taken from the related billing forecast detail records for the selected time period in the relevant region, practice, or group.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total weighted opportunity amounts taken from the related forecast detail records for the selected Time Period in the relevant region, practice, or group.</inlineHelpText>
+        <label>Billing Forecast Opportunities Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Projects_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total weighted project amounts taken from the related billing forecast detail records for the selected time period in the relevant region, practice, or group.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total weighted project amounts taken from the related forecast detail records for the selected Time Period in the relevant region, practice, or group.</inlineHelpText>
+        <label>Billing Forecast Projects Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Setup_Category__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the billing forecast categories used on the Billing Forecast Setup page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the forecast categories used on the Forecast Setup page.</inlineHelpText>
+        <label>Billing Forecast Setup Category</label>
+        <referenceTo>pse__Forecast_Setup_Category__c</referenceTo>
+        <relationshipLabel>Billing Forecast Summary Categories Setup</relationshipLabel>
+        <relationshipName>Forecast_Enhanced_Summary_Categories</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Sublevels_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total weighted sublevel amounts taken from the related billing forecast summary records for the selected time period for the child regions, practices, or groups.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total weighted sublevel amounts taken from the related forecast summary records for the selected Time Period for the child regions, practices, or groups.</inlineHelpText>
+        <label>Billing Forecast Sublevels Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Forecast_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Total weighted amounts calculated for this billing forecast category, based on the billing forecast opportunities, project, and sublevels values in the related billing forecast detail records.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total weighted amounts calculated for this forecast category, based on the forecast opportunities, project, and sublevels values in the related forecast detail records.</inlineHelpText>
+        <label>Billing Forecast Total Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Override_CreatedBy__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <deprecated>false</deprecated>
+        <description>Lookup to the user who created the currently active billing forecast override applied to this billing forecast summary category.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Lookup to the user who created the currently active forecast override applied to this forecast summary category.</inlineHelpText>
+        <label>Override Created By</label>
+        <referenceTo>User</referenceTo>
+        <relationshipLabel>Billing Forecast Summary Categories</relationshipLabel>
+        <relationshipName>Forecast_Enhanced_Summary_Categories</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>pse__Override_CreatedDate__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Created date and time of the currently active billing forecast override applied to this billing forecast summary category.</description>
+        <externalId>false</externalId>
+        <formula>pse__Forecast_Enhanced_Override__r.CreatedDate</formula>
+        <inlineHelpText>Created date and time of the currently active forecast override applied to this forecast summary category.</inlineHelpText>
+        <label>Override Created Date</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>pse__Override_Notes__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Notes on the currently active billing forecast override applied to this billing forecast summary category.</description>
+        <externalId>false</externalId>
+        <formula>pse__Forecast_Enhanced_Override__r.pse__Notes__c</formula>
+        <inlineHelpText>Notes on the currently active forecast override applied to this forecast summary category.</inlineHelpText>
+        <label>Override Notes</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>pse__Override_Rollup_Variance__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Sum of roll-up variances for all summary categories below this summary category in the RPG hierarchy, including overrides on related billing forecast detail categories.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Sum of roll-up variances for all summary categories below this summary category in the RPG hierarchy, including overrides on related forecast detail categories.</inlineHelpText>
+        <label>Override Roll-Up Variance</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>pse__Override_Value__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Value of the currently active billing forecast override applied to this billing forecast summary category.</description>
+        <externalId>false</externalId>
+        <formula>pse__Forecast_Enhanced_Override__r.pse__Override_Value__c</formula>
+        <inlineHelpText>Value of the currently active forecast override applied to this forecast summary category.</inlineHelpText>
+        <label>Override Value</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <label>Billing Forecast Summary Category</label>
+    <nameField>
+        <displayFormat>FSummaryCategory-{0000}</displayFormat>
+        <label>Billing Forecast Summary Category Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Billing Forecast Summary Categories</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

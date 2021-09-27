@@ -1,0 +1,8 @@
+<apex:page standardController="Opportunity">
+    <script>
+       <!-- window.top.location.href = '{!URLFOR($Action.Opportunity.New, null, null , true)}';-->
+        var stringURL = '{!$Api.Enterprise_Server_URL_290}';
+        stringURL = stringURL.substring(0,stringURL.indexOf('/services'));
+        window.top.location.href = stringURL +'/setup/ui/recordtypeselect.jsp?ent=Opportunity&nooverride=true&save_new_url=%2F006%2Fe%3FretURL%3D%252F006%252Fo&accid={!Opportunity.AccountId}';
+    </script>
+</apex:page>

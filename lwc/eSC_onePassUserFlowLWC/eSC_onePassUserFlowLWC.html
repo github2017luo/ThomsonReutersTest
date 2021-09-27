@@ -1,0 +1,22 @@
+<template>
+    
+        
+        <div if:true={errorMsg} align="center">
+            <p style="color: red;">{errorMsg}</p>
+        </div>
+        
+        <div if:true={data}  >
+            <lightning-card title="OnePass Results" 
+                            icon-name="standard:record">
+                <lightning-datatable    data={data} 
+                                columns={columns} 
+                                key-field="Id" 
+                                class="example"
+                                id="table_id"
+                                hide-checkbox-column="true"
+                >
+                </lightning-datatable>
+            </lightning-card>
+        </div>
+    
+    </template>

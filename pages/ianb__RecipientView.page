@@ -1,0 +1,330 @@
+<!--
+============================================================================================== 
+PAGE RECIPIENTS USE TO VIEW A NOTIFICATION
+REQUIRES THE ID OF A NOTIFICATION, I.E:
+
+    [SF base URL]/Apex/[VF Page Name]?Id=[Notification id]
+
+Add parameter "HideHeader=true" to hide the standard Salesforce page header and sidebars.
+
+ProvenWorks for Improved Apps
+Copyright (c.) Improved Apps Limited 2012. All Rights Reserved.
+============================================================================================== 
+-->
+
+<apex:page standardController="ianb__Notification__c" extensions="ianb.ControllerExtensionRecipient" 
+        showHeader="{!!hideHeader}" sidebar="{!!hideHeader}" tabStyle="ianb__Notification__c"
+        title="{!BrandingLocalisations['ProductName']}: {!DialogueLocalisations['TitleDialogueTitleRecipient']}"       
+        action="{!SetOpenedStatus}">
+          
+    <style>
+        .bPageTitle .ptBody .content    {width: 95%;}
+        .Diags                          {color: red;}
+      
+         /* Notice custom styles */
+        .LUXRed #tHeader *              {background-color: #ffdde1 !important; }                /*SLDS Pippin*/
+        .LUXAmber #tHeader *            {background-color: #faffbd !important; }                /*SLDS Lemon Chiffon*/
+        .LUXGreen #tHeader *            {background-color: #d9ffdf !important; }                /*SLDS Snowy mint*/
+        .LUXLightBlue #tHeader *        {background-color: #d8edff !important; }                /*SLDS Patten Blue*/
+        .LUXDarkBlue #tHeader *         {background-color: #16325c !important; color: white;}   /*SLDS Biscay*/
+        .LUXLightGrey #tHeader *        {background-color: #f3f2f2 !important; }                /*SLDS Pattern Grey 3*/
+        .LUXDarkGrey #tHeader *         {background-color: #706e6b !important; color: white;}   /*SLDS Pattern Grey 9*/
+      
+    </style>
+
+    <apex:stylesheet value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/css/recipientview.css')}"/>
+    <apex:stylesheet value="{!BannerSettings.ianb__BrandCSS__c}"/> 
+
+    <apex:includeScript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/lib/jquery-3.5.1.min.js')}"/>
+    <apex:includescript value="{!URLFOR($Resource.ianb__noticeboard_resources, 'noticeboard_resources/js/jsEditOps.js')}" />
+
+
+    <apex:form >
+
+
+<!--   
+==================================================
+IF ACTION DEADLINE SPECIFIED, SHOW COUNTDOWN TIMER
+==================================================
+-->            
+        <apex:outputPanel id="updateTimerScript" rendered="{!AND(IsAcknowledgeAvailable, NOT(ISNULL(RequiredActionDeadline)), RequiredActionDeadline - NOW() > 0)}" layout="none">
+           <script type="text/javascript">      
+            (function($) {
+                $(document).ready(function(){
+                    window.setTimeout(function(){ updateTimerString(); }, 60000);
+                });
+            })(jQuery);
+            
+            </script>
+        </apex:outputPanel>
+
+<!--   
+===============================================
+OTHER COMMON SCRIPTS
+===============================================
+-->            
+        <script type="text/javascript">     
+            function tryUpdateTimerString() {
+                if (document.getElementById('{!$Component.txtTimer}').innerHTML.indexOf('<span><b>00</b></span>:<span><b>00</b></span>:<span><b>00</b></span> (Days:Hours:Minutes)') < 0) {
+                    window.setTimeout(function(){ updateTimerString(); }, 60000);
+                }
+            }
+        </script>       
+
+<!--   
+===============================================
+APPLY NOTICE CUSTOM STYLE
+===============================================
+-->
+        <div id="RecipientViewContainer" class="{!IF(CustomStyle != null, CustomStyle, '')}">
+
+<!--   
+===============================================
+URGENCY / ACKNOWLEDGEMENT BANNER
+===============================================
+-->
+            <table id="tHeader" style="width: 100%; border-spacing: 0px;">
+                <tr>
+                    <td id="sectionHeaderCell">
+                        <apex:sectionHeader subtitle="{!Title}" title="{!BrandingLocalisations['NotificationObjectName']}"></apex:sectionHeader>
+                        
+                        <!-- Diagnostics - typically rare cases, such as lack of rights to amend a viewed notification -->                        
+                        <span class="Diags">
+                            {!Diags}
+                        </span>                      
+                    </td>
+                    
+                    <td rowspan="2" id="themeImageCell">
+                        <apex:image style="max-width:172px;" height="100px" value="{!ThemeImageUrl}" rendered="{!AND(NOT(ISNULL(ThemeImageUrl)), NOT(BEGINS(ThemeImageUrl, 'javascript:')))}" />
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td id="urgencyPanel">
+                        <apex:outputPanel id="urgencyDiv" layout="block" rendered="{!AND(IsAcknowledgeRequired, ISNULL(notification.ianb__AcknowledgedDate__c), NOT(ISNULL(RequiredActionDeadline)))}">
+                            <table id="urgencyTable">
+                                <tr>
+                                    <td>
+                                        <table><tr>
+                                            <td class="urgencyTitle">{!DialogueLocalisations['TitleSubtitleUrgency']}</td>
+                                            <td class="urgencyImage">
+                                                <apex:outputPanel id="urgencyImage" rendered="{!UrgencyImage != null}">
+                                                    <img border="0" src="{!UrgencyImage.customIconUrl}" alt="{!UrgencyImage.state}" title="{!UrgencyImage.state}" width="18" height="18" />
+                                                </apex:outputPanel>
+                                            </td>
+                                        </tr></table>
+                                    </td>
+                                    
+                                    <td class="urgencyAcknowledgeBy" style="vertical-align:middle;">
+                                        {!DialogueLocalisations['FieldLabelAcknowledgeBy']}&nbsp;
+                                        <apex:outputField value="{!notification.Notice__r.ianb__RequiredActionDeadline__c}" rendered="{!IsPreview}"/>
+                                        <apex:outputField value="{!notification.ianb__RequiredActionDeadline__c}" rendered="{!NOT(IsPreview)}"/>
+                                    </td>
+                                     
+                                    <td class="urgencyTimeRemaining" style="vertical-align:middle;">
+                                        {!DialogueLocalisations['TitleSubtitleTimeRemaining']}
+                                        <apex:outputPanel id="txtTimer">
+                                            <span><b>{!CountdownTimerDays}</b></span>:<span><b>{!CountdownTimerHours}</b></span>:
+                                            <apex:outputPanel layout="none" rendered="{!AND(CountdownTimerDays=='00',CountdownTimerHours=='00',VALUE(CountdownTimerMinutes)>0)}">
+                                                <span style="color:red;"><b>{!CountdownTimerMinutes}</b></span>
+                                            </apex:outputPanel>
+                
+                                            <apex:outputPanel layout="none" rendered="{!NOT(AND(CountdownTimerDays=='00',CountdownTimerHours=='00',VALUE(CountdownTimerMinutes)>0))}">
+                                                <span><b>{!CountdownTimerMinutes}</b></span>
+                                            </apex:outputPanel> 
+                                            {!DialogueLocalisations['TitleSubtitleTimeRemainingDHM']}
+                                        </apex:outputPanel>
+                                     </td>
+                                    
+                                </tr>
+                            </table>
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+            </table>
+            <apex:pageMessages />
+    
+            <apex:actionFunction name="updateTimerString" action="{!updateCountdownTimer}" rerender="urgencyDiv,updateTimerScript" oncomplete="tryUpdateTimerString();" />
+            <apex:actionFunction name="setOpenedStatus" action="{!SetOpenedStatus}" rerender="sctStatus" />
+
+            <div class="notificationInfo" style="padding:0 3px 0 5px;">
+                <apex:pageBlock mode="maindetail">
+                    
+<!--   
+===============================================
+SIGNATORY BLOCK
+===============================================
+-->            
+                    <apex:outputPanel layout="block" styleClass="bordered-section nofirst">
+                        <apex:pageBlockSection showHeader="false" columns="2"> 
+                        
+                            <!-- Source of signatory swaps depending on whether or not published - but is only shown where a signatory is defined -->      
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelSignatory']}" value="{!notification.ianb__Signatory__c}" rendered="{!NOT(IsPreview) && notification.ianb__Signatory__c != '' && notification.ianb__Signatory__c != null}"/>
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelSignatory']}" value="{!notification.Notice__r.ianb__Signatory__c}" rendered="{!IsPreview && notification.Notice__r.ianb__Signatory__c != '' && notification.Notice__r.ianb__Signatory__c != null}"/>
+                            
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelPublishedDate']}" value="{!notification.ianb__PublishedDate__c}"/>
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                    
+<!--   
+===============================================
+SUMMARY AND DETAILS
+===============================================
+-->            
+                    <apex:outputPanel layout="block" styleClass="bordered-section nofirst" rendered="{!OR(NOT(ISNULL(Summary)), NOT(ISNULL(NotificationDetails)))}">
+                        <apex:pageBlockSection showHeader="false" columns="1">
+                            
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelSummary']}" value="{!notification.ianb__Summary__c}" rendered="{!AND(NOT(ISNULL(notification.ianb__Summary__c)), NOT(IsPreview))}" />
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelSummary']}" value="{!notification.Notice__r.ianb__Summary__c}" rendered="{!AND(NOT(ISNULL(notification.ianb__Summary__c)), IsPreview)}" />
+                            
+                            <apex:pageBlockSectionItem rendered="{!NOT(ISNULL(NotificationDetails))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelDetail']}" />
+                                <apex:outputText value="{!HTMLENCODE(Salutation)}{! IF(Salutation == '', '', '<br/><br/>')}{!NotificationDetails}" escape="false"/>
+                            </apex:pageBlockSectionItem>
+
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+
+<!--   
+===============================================
+IMAGE WHERE SUPPLIED
+===============================================
+-->                       
+                    <apex:outputPanel layout="block" styleClass="bordered-section nofirst" rendered="{!NOT(ISBLANK(ImageURL))}">
+                        <apex:pageBlockSection showHeader="false" columns="1">
+                            <apex:pageBlockSectionItem >
+                                <apex:outputLabel value="{!DialogueLocalisations['AdviceLabelImage']}" />        
+                                <apex:image onclick="javascript:window.open('{!ImageURL}');" 
+                                        title="{!DialogueLocalisations['AdviceLabelImage']}" 
+                                        alt="{!DialogueLocalisations['AdviceLabelImage']}" 
+                                        url="{!ImageURL}" height="75" style="border: none;'" />
+                            </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+        
+<!--   
+===============================================
+NOTIFICATION STATUS
+===============================================
+-->                       
+                    <apex:outputPanel id="sctStatus" layout="block" styleClass="bordered-section nofirst" rendered="{!OR(NOT(ISNULL(notification.ianb__DisplayedDate__c)),NOT(ISNULL(notification.ianb__OpenedDate__c)),NOT(ISNULL(notification.ianb__AcknowledgedDate__c)))}">
+                        <div class="bordered-section-header"><h3>{!DialogueLocalisations['ColumnLabelNotificationStatus']}</h3></div>
+                        <apex:pageBlockSection showHeader="false" columns="2" collapsible="false">
+                            
+                            <apex:outputText rendered="{!ISNULL(notification.ianb__DisplayedDate__c)}" />
+                            <apex:pageBlockSectionItem rendered="{!NOT(ISNULL(notification.ianb__DisplayedDate__c))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelDisplayedTo']} {!RecipientName} {!DialogueLocalisations['FieldLabelOn']} "/>
+                                <apex:outputField value="{!notification.ianb__DisplayedDate__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:outputText rendered="{!ISNULL(notification.ianb__OpenedDate__c)}" />
+                            <apex:pageBlockSectionItem rendered="{!NOT(ISNULL(notification.ianb__OpenedDate__c))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelOpenedBy']} {!RecipientName} {!DialogueLocalisations['FieldLabelOn']} "/>
+                                <apex:outputField value="{!notification.ianb__OpenedDate__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem >
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelNoticeBoard']}"/>
+                                <apex:outputText value="{!NoticeBoardName}"/>
+                            </apex:pageBlockSectionItem>
+                                                
+                            <apex:pageBlockSectionItem rendered="{!AND(NOT(notification.ianb__AcknowledgedAndFlagged__c), NOT(ISNULL(notification.ianb__AcknowledgedDate__c)))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelAcknowledgedBy']} {!RecipientName} {!DialogueLocalisations['FieldLabelOn']} "/>
+                                <apex:outputField value="{!notification.ianb__AcknowledgedDate__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem rendered="{!AND(notification.ianb__AcknowledgedAndFlagged__c, NOT(ISNULL(notification.ianb__AcknowledgedDate__c)))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelFlaggedBy']} {!RecipientName} {!DialogueLocalisations['FieldLabelOn']} "/>
+                                <apex:outputField value="{!notification.ianb__AcknowledgedDate__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem rendered="{!AND(ResponseOption=='Vote', NOT(ISNULL(notification.ianb__AcknowledgedDate__c)))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelRecipientVoted']}"/>
+                                <apex:outputField value="{!notification.ianb__VoteChoice__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:pageBlockSectionItem rendered="{!AND(AllowComment, NOT(ISNULL(notification.ianb__AcknowledgedDate__c)))}">
+                                <apex:outputText value="{!DialogueLocalisations['FieldLabelRecipientComments']}"/>
+                                <apex:outputField value="{!notification.ianb__Comment__c}"/>
+                            </apex:pageBlockSectionItem>
+                            
+                        </apex:pageBlockSection>
+                    </apex:outputPanel>
+                        
+<!--   
+===============================================
+User Input start
+===============================================
+--> 
+                    <apex:outputPanel layout="block" styleClass="bordered-section nofirst" rendered="{!AND(IsAcknowledgeRequired, ISNULL(notification.ianb__AcknowledgedDate__c))}">
+        
+                        <apex:pageBlockSection showHeader="false" columns="1" rendered="{!AND(NOT(ISNULL(AcknowledgementStatement)), IsAcknowledgeAvailable, NOT(IsPreview))}">
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelAcknowledgementStatement']}" value="{!notification.ianb__AcknowledgementStatement__c}"/>
+                        </apex:pageBlockSection>
+        
+                        <apex:pageBlockSection showHeader="false" columns="1" rendered="{!AND(NOT(ISNULL(AcknowledgementStatement)), IsPreview)}">
+                            <apex:outputField label="{!DialogueLocalisations['FieldLabelAcknowledgementStatement']}" value="{!notification.Notice__r.ianb__AcknowledgementStatement__c}"/>
+                        </apex:pageBlockSection>
+                        
+<!--   
+===============================================
+VOTING BUTTONS
+===============================================
+-->                    
+                        <apex:pageBlockSection rendered="{!ResponseOption=='Vote'}" showHeader="false" columns="1" >
+                            <apex:selectCheckboxes style="padding-left:17.5%;width:100%;" layout="pageDirection" value="{!CheckedVoteValues}" rendered="{!NOT(IsSelectRadio)}">
+                                <apex:selectOptions value="{!VoteOptions}"/>
+                            </apex:selectCheckboxes>
+                            
+                            <!-- 
+                            Note: acknowledgement not allowed when Voting is made available unless a vote has been cast:
+                            If no [default] option was specified by Notice Owner, "Vote" button will be disabled.
+                            Any radio selection thus enables this button  
+                            -->        
+                            <apex:selectRadio style="padding-left:17.5%;width:100%;" layout="pageDirection" value="{!CheckedVoteValue}" 
+                                    rendered="{!IsSelectRadio}" onchange="javascript:document.getElementById('{!$Component.btnVote}').disabled = false;">
+                                <apex:selectOptions value="{!VoteOptions}"/>
+                            </apex:selectRadio>
+                            
+                        </apex:pageBlockSection>
+        
+<!--   
+===============================================
+ACKNOWLEDGEMENT AND COMMENT CONTROLS
+===============================================
+-->            
+                        <apex:pageBlockSection showHeader="false" columns="1" rendered="{!AllowComment}" >
+                            <apex:inputField label="{!DialogueLocalisations['FieldLabelRecipientComments']}" style="width:75%;height:85px;margin-bottom:10px;" value="{!notification.ianb__Comment__c}" rendered="{!AllowComment}" />
+                        </apex:pageBlockSection>
+        
+                        <apex:outputPanel layout="block" styleClass="inner-section" rendered="{!IsAcknowledgeAvailable}">
+                            <apex:commandButton action="{!acknowledge}"                 value="{!DialogueLocalisations['ButtonAcknowledge']}"           rendered="{!ResponseOption != 'Vote'}" />&nbsp;
+                            <apex:commandButton action="{!acknowledgewithexceptions}"   value="{!DialogueLocalisations['ButtonAcknowledgeandFlag']}"    rendered="{!ResponseOption == 'Acknowledge / Acknowledge & Flag'}" />
+                            <apex:commandButton action="{!acknowledge}"                 value="{!DialogueLocalisations['ButtonVote']}"                  rendered="{!ResponseOption == 'Vote'}" id="btnVote" />
+                        </apex:outputPanel>
+        
+                        <apex:outputPanel layout="block" styleClass="inner-section" rendered="{!IsOpenedByAnothers}">
+                            <apex:outputText value="{!DialogueLocalisations['AdviceLabelPendingAcknowledgement']}"/>                              
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+        
+                    <script>
+                        // Disable voting unless/until a vote option is selected 
+                        if ('{!JSENCODE(CheckedVoteValue)}' == '') {// added JSENCODE to avoid stored xss issue
+                            document.getElementById('{!$Component.btnVote}').disabled = true;
+                            document.getElementById('{!$Component.btnVote}').className = '';
+                        }
+                    </script>
+        
+<!--   
+===============================================
+User Input end
+===============================================
+-->            
+                </apex:pageBlock>
+            </div>
+
+        </div>
+             
+    </apex:form>
+</apex:page>

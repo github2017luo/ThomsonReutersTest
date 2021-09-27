@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- Lookup to the Salesforce Account to which this document relates. --></help>
+        <label><!-- Account --></label>
+        <name>fferpcore__Account__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Indicates that the credit note allows rebilling. Do not edit this checkbox. It is set by the Convert to Credit Note process. --></help>
+        <label><!-- Allow Rebilling --></label>
+        <name>fferpcore__AllowRebilling__c</name>
+    </fields>
+    <fields>
+        <help><!-- Used to sub-analyze billing documents and can be used to represent a number of different business concepts. --></help>
+        <label><!-- Analysis Item 1 --></label>
+        <name>fferpcore__AnalysisItem1__c</name>
+        <relationshipLabel><!-- Related Documents 1 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Used to sub-analyze billing documents and can be used to represent a number of different business concepts. --></help>
+        <label><!-- Analysis Item 2 --></label>
+        <name>fferpcore__AnalysisItem2__c</name>
+        <relationshipLabel><!-- Related Documents 2 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Used to sub-analyze billing documents and can be used to represent a number of different business concepts. --></help>
+        <label><!-- Analysis Item 3 --></label>
+        <name>fferpcore__AnalysisItem3__c</name>
+        <relationshipLabel><!-- Related Documents 3 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Used to sub-analyze billing documents and can be used to represent a number of different business concepts. --></help>
+        <label><!-- Analysis Item 4 --></label>
+        <name>fferpcore__AnalysisItem4__c</name>
+        <relationshipLabel><!-- Related Documents 4 --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Name of the account to appear on the billing document as the account being billed. --></help>
+        <label><!-- Billing Account --></label>
+        <name>fferpcore__BillingAccountName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing City --></label>
+        <name>fferpcore__BillingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Country --></label>
+        <name>fferpcore__BillingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Zip/Postal Code --></label>
+        <name>fferpcore__BillingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing State/Province --></label>
+        <name>fferpcore__BillingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Billing Street --></label>
+        <name>fferpcore__BillingStreet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Company --></label>
+        <name>fferpcore__Company__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Lookup to the process tracking record to which this billing document currently relates. --></help>
+        <label><!-- Completion Process --></label>
+        <name>fferpcore__CompletionProcessTracking__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Reason for the credit note. Can also be set on negative invoices. --></help>
+        <label><!-- Credit Note Reason --></label>
+        <name>fferpcore__CreditNoteReason__c</name>
+        <picklistValues>
+            <masterLabel>Damaged Goods</masterLabel>
+            <translation><!-- Damaged Goods --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Goods Returned</masterLabel>
+            <translation><!-- Goods Returned --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Incorrect Shipment</masterLabel>
+            <translation><!-- Incorrect Shipment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Overcharge</masterLabel>
+            <translation><!-- Overcharge --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Retrospective Discount</masterLabel>
+            <translation><!-- Retrospective Discount --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- External customer reference. --></help>
+        <label><!-- Customer Reference --></label>
+        <name>fferpcore__CustomerReference__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the billing document was sent. --></help>
+        <label><!-- Date Issued --></label>
+        <name>fferpcore__DateIssued__c</name>
+    </fields>
+    <fields>
+        <help><!-- Description of the sales invoice or credit note. --></help>
+        <label><!-- Description --></label>
+        <name>fferpcore__Description__c</name>
+    </fields>
+    <fields>
+        <help><!-- The total saving of all billing document line items associated with this billing document. --></help>
+        <label><!-- Discount Total --></label>
+        <name>fferpcore__DiscountTotal__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which the document was created. --></help>
+        <label><!-- Document Date --></label>
+        <name>fferpcore__DocumentDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Date on which payment is expected. --></help>
+        <label><!-- Document Due Date --></label>
+        <name>fferpcore__DocumentDueDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates where this billing document originates from. --></help>
+        <label><!-- Document Source --></label>
+        <name>fferpcore__DocumentSource__c</name>
+        <picklistValues>
+            <masterLabel>Order Management</masterLabel>
+            <translation><!-- Order Management --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Services</masterLabel>
+            <translation><!-- Services --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Subscriptions</masterLabel>
+            <translation><!-- Subscriptions --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Status of the billing document. The status can be Draft or Complete. When the status is complete, you can only edit the Document Due Date, Customer Reference and Description. --></help>
+        <label><!-- Document Status --></label>
+        <name>fferpcore__DocumentStatus__c</name>
+        <picklistValues>
+            <masterLabel>Complete</masterLabel>
+            <translation><!-- Complete --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Discarded</masterLabel>
+            <translation><!-- Discarded --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Draft</masterLabel>
+            <translation><!-- Draft --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Superseded</masterLabel>
+            <translation><!-- Superseded --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Total value of all the billing document line items on this billing document. --></help>
+        <label><!-- Document Total --></label>
+        <name>fferpcore__DocumentTotal__c</name>
+    </fields>
+    <fields>
+        <label><!-- Document Type Prefix --></label>
+        <name>fferpcore__DocumentTypePrefix__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates whether the document is a sales invoice or a sales credit note. --></help>
+        <label><!-- Document Type --></label>
+        <name>fferpcore__DocumentType__c</name>
+        <picklistValues>
+            <masterLabel>Credit Note</masterLabel>
+            <translation><!-- Credit Note --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Invoice</masterLabel>
+            <translation><!-- Invoice --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Engagement this billing document relates to. --></help>
+        <label><!-- Engagement --></label>
+        <name>fferpcore__Engagement__c</name>
+        <relationshipLabel><!-- Billing Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- External Document Number --></label>
+        <name>fferpcore__ExternalDocumentNumber__c</name>
+    </fields>
+    <fields>
+        <help><!-- Status of the external tax calculation if using an external system to calculate tax on the billing document. The value can be Not Calculated, Calculated, Finalized or Voided. --></help>
+        <label><!-- External Tax Status --></label>
+        <name>fferpcore__ExternalTaxStatus__c</name>
+        <picklistValues>
+            <masterLabel>Calculated</masterLabel>
+            <translation><!-- Calculated --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Finalized</masterLabel>
+            <translation><!-- Finalized --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Calculated</masterLabel>
+            <translation><!-- Not Calculated --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Voided</masterLabel>
+            <translation><!-- Voided --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <help><!-- Text to be shown at the end of printed billing documents. --></help>
+        <label><!-- Footer Text --></label>
+        <name>fferpcore__FooterText__c</name>
+    </fields>
+    <fields>
+        <help><!-- Text to be shown at the start of printed billing documents. --></help>
+        <label><!-- Header Text --></label>
+        <name>fferpcore__HeaderText__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates whether the billing address has been validated against the addresses in the external tax calculation service. --></help>
+        <label><!-- Billing Address Validated --></label>
+        <name>fferpcore__IsBillingAddressValidated__c</name>
+    </fields>
+    <fields>
+        <label><!-- Is Complete --></label>
+        <name>fferpcore__IsComplete__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates whether the shipping address has been validated against the addresses in the external tax calculation service. --></help>
+        <label><!-- Shipping Address Validated --></label>
+        <name>fferpcore__IsShippingAddressValidated__c</name>
+    </fields>
+    <fields>
+        <help><!-- Indicates if the tax has been calculated for the billing document. --></help>
+        <label><!-- Tax Calculated --></label>
+        <name>fferpcore__IsTaxCalculated__c</name>
+    </fields>
+    <fields>
+        <help><!-- The total net value of all billing document line items associated with this billing document. --></help>
+        <label><!-- Net Total --></label>
+        <name>fferpcore__NetTotal__c</name>
+    </fields>
+    <fields>
+        <help><!-- Number of billing document line items currently associated with this billing document. --></help>
+        <label><!-- Number Of Billing Document Line Items --></label>
+        <name>fferpcore__NumberOfBillingDocumentLineItems__c</name>
+    </fields>
+    <fields>
+        <label><!-- Creating Tax Breakdown Records --></label>
+        <name>fferpcore__ProcessingTaxDetails__c</name>
+    </fields>
+    <fields>
+        <help><!-- Lookup to the related invoice or credit note. --></help>
+        <label><!-- Related Document --></label>
+        <name>fferpcore__RelatedDocument__c</name>
+        <relationshipLabel><!-- Related Documents --></relationshipLabel>
+    </fields>
+    <fields>
+        <help><!-- Total value of all the billing document line items on this billing document based on the Document Type. --></help>
+        <label><!-- Reporting Document Total --></label>
+        <name>fferpcore__ReportingDocumentTotal__c</name>
+    </fields>
+    <fields>
+        <help><!-- Name of the account to appear on the billing document as the Shipping Account. --></help>
+        <label><!-- Shipping Account --></label>
+        <name>fferpcore__ShippingAccountName__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping City --></label>
+        <name>fferpcore__ShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Country --></label>
+        <name>fferpcore__ShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping State/Province --></label>
+        <name>fferpcore__ShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shipping Street --></label>
+        <name>fferpcore__ShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help><!-- The date to use for tax calculation purposes if different from Document Date. --></help>
+        <label><!-- Tax Point Date --></label>
+        <name>fferpcore__TaxPointDate__c</name>
+    </fields>
+    <fields>
+        <help><!-- The total tax value of all billing document line items associated with this billing document. --></help>
+        <label><!-- Tax Value Total --></label>
+        <name>fferpcore__TaxValueTotal__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing City --></label>
+        <name>fferpcore__ValidatedBillingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing Country --></label>
+        <name>fferpcore__ValidatedBillingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing Zip/Postal Code --></label>
+        <name>fferpcore__ValidatedBillingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing State/Province --></label>
+        <name>fferpcore__ValidatedBillingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Billing Street --></label>
+        <name>fferpcore__ValidatedBillingStreet__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping City --></label>
+        <name>fferpcore__ValidatedShippingCity__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping Country --></label>
+        <name>fferpcore__ValidatedShippingCountry__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping Zip/Postal Code --></label>
+        <name>fferpcore__ValidatedShippingPostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping State/Province --></label>
+        <name>fferpcore__ValidatedShippingState__c</name>
+    </fields>
+    <fields>
+        <label><!-- Validated Shipping Street --></label>
+        <name>fferpcore__ValidatedShippingStreet__c</name>
+    </fields>
+    <fields>
+        <help><!-- Records the PSA Billing Event correlation key used within the Foundations system. --></help>
+        <label><!-- Billing Event Correlation ID --></label>
+        <name>pse__Billing_Event_Correlation_Id__c</name>
+    </fields>
+    <webLinks>
+        <label><!-- CalculateTax --></label>
+        <name>fferpcore__CalculateTax</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- CalculateTaxList --></label>
+        <name>fferpcore__CalculateTaxList</name>
+    </webLinks>
+</CustomObjectTranslation>

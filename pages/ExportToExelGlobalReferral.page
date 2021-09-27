@@ -1,0 +1,7 @@
+<apex:page controller="GlobalReferralController" action="{!callGeneva}" cache="true" contentType="text/csv#Export.csv" language="en-US">Companyname,LeadOwner,Referral Email,CorporatePayout,Payment Submission,BUCreatedDate,OpportunityCloseDate,Lead Status,OpportunityOwner,OpportunityValue,LeadReceivedBy,OpportunityStage,ReferrerEmployeeId, BULastModifiedDate  
+    <apex:repeat value="{!recordsList }" var="a">
+        <apex:repeat value="{!a}" var="asub">
+        {!asub.Companyname},{!asub.LeadOwner},{!asub.ReferrerEmail},{!asub.CorporatePayout},{!asub.PaymentSubmission},{!asub.BUCreatedDate},{!asub.OpportunityCloseDate},{!asub.LeadStatus},{!asub.OpportunityOwner},{!asub.OpportunityValue},{!asub.LeadReceivedBy},{!asub.OpportunityStage},{!asub.ReferrerEmployeeId},{!asub.BULastModifiedDate}
+        </apex:repeat>
+    </apex:repeat>
+</apex:page>

@@ -1,0 +1,10 @@
+<!--
+    Page: ResponseRelatedListOnAccount
+    Description: This page is used to display Response related list on Account details page 
+    Last Modified By: Mayank Solanki (14 May, 2018)
+-->
+<apex:page standardController="Account" sidebar="false" showHeader="false" applyHtmlTag="false" lightningStylesheets="true">
+<apex:form >
+    <c:ResponseListComponent vfPageName="VisualizationOnAccount" sobject="{!$ObjectType.Account.Name}" ></c:ResponseListComponent>       
+</apex:form>
+</apex:page>

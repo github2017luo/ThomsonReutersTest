@@ -1,0 +1,82 @@
+<!-- /**
+ * This page is used to created signing information for digital returns.  
+ * This page is rendered as a pdf and attached to the associated quote.
+ */
+/**
+ * CHANGE HISTORY
+ * =============================================================================
+ * Date         Name                    Description
+ * 2020-10-01   Brenda Shields          DLT-20850 - Add Logo and formatting to Signature PDF
+ * =============================================================================
+ */ -->
+<apex:page standardcontroller="Apttus_Proposal__Proposal__c" renderAs="pdf">
+<apex:form id="formAcceptance">
+
+<tbody>
+	<apex:image id="Logo" height="150" width="375" value="{!$Label.LCRMTemplateLogo}" alt="TRLogo"/>
+</tbody>
+  
+    <tbody>
+    <tr valign="top">
+        <td id="c1r1">
+		<hr size="8x" style="width:100%; border-color:#FF8000; background-color:#FF8000"></hr>
+		<br></br>
+       
+        <p><apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-size:12px;" value="This document includes the date, time of your digital agreement with Thomson Reuters. For full terms & conditions, please review the order form, a copy of which will be emailed to you separately."></apex:outputText></p>
+       
+        <p><apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:12px;" value="I have confirmed that I, {!Apttus_Proposal__Proposal__c.APTS_Order_Confirmation_Contact_Name__c}, am expressly authorized to submit the Order Form, and accept the contract Terms and Conditions, on behalf of {!Apttus_Proposal__Proposal__c.APTS_SSD_Sold_To__r.name}."></apex:outputText></p>
+       
+        <br></br>
+
+
+<hr size="3x" style="width:100%; border-color:#D3D3D3; background-color:#D3D3D3"></hr>
+		<table>
+            <tr>
+            <td style="width: 250px"> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;" value="Proposal-ID"></apex:outputText> </td>
+            <td> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-size:11px;" value=" {!Apttus_Proposal__Proposal__c.Name}"></apex:outputText></td></tr>
+		</table>
+		<hr size="1x" style="width:100%; border-color:#D3D3D3; background-color:#D3D3D3"></hr>
+		<table>
+            <tr>
+            <td style="width: 250px"> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;" value="Date/Time Stamp Proposal was accepted"></apex:outputText> </td>
+            <td> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-size:11px;" value="{0, date, MM-dd-yyyy hh:mm a} CDT">
+                  <apex:param value="{!if(Apttus_Proposal__Proposal__c.Digitally_Signed_Date__c == null, now(), Apttus_Proposal__Proposal__c.Digitally_Signed_Date__c) - 0.208333333}" />
+                 </apex:outputText></td></tr>
+		</table>
+		<hr size="1x" style="width:100%; border-color:#D3D3D3; background-color:#D3D3D3"></hr>
+		<table>           
+            <tr>
+            <td style="width: 250px"> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;" value="Name of Signer"></apex:outputText> </td>
+            <td> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-size:11px;" value=" {!Apttus_Proposal__Proposal__c.APTS_Order_Confirmation_Contact_Name__c}"></apex:outputText></td></tr>
+		</table>
+		<hr size="1x" style="width:100%; border-color:#D3D3D3; background-color:#D3D3D3"></hr>
+		<table>              
+            <tr>
+            <td style="width: 250px"> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;" value="Account Name"></apex:outputText> </td>
+            <td> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-size:11px;" value=" {!Apttus_Proposal__Proposal__c.APTS_SSD_Sold_To__r.name}"></apex:outputText></td></tr>
+		</table>
+		<hr size="1x" style="width:100%; border-color:#D3D3D3; background-color:#D3D3D3"></hr>
+		<table>              
+            <tr>
+            <td style="width: 250px"> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:11px;" value="Account Number"></apex:outputText> </td>
+            <td> <apex:outputText style="font-family:Arial,Helvetica,sans-serif;font-size:11px;" value=" {!Apttus_Proposal__Proposal__c.APTS_Sold_To_SAP_Account_Number__c}"></apex:outputText></td></tr>
+		</table>
+		<hr size="1x" style="width:100%; border-color:#D3D3D3; background-color:#D3D3D3"></hr>
+
+        <br/><br/>         
+        <apex:outputText value="Products" style="font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:12px;"></apex:outputText>
+        <table>
+        <apex:repeat var="cx" value="{!Apttus_Proposal__Proposal__c.R00N70000001yUfBEAU__r}">
+        <apex:outputPanel rendered="{!NOT(OR(cx.Apttus_QPConfig__LineStatus__c == 'Cancelled', cx.Apttus_QPConfig__LineStatus__c == 'Amended'))}">
+        <tr>
+        <td><apex:outputText value="{!cx.Apttus_Proposal__Product__r.name}" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;"></apex:outputText> </td>
+        </tr>
+        </apex:outputPanel>
+        </apex:repeat>
+        </table>
+
+ 	</td>
+ 	</tr>
+    </tbody>
+    </apex:form>
+</apex:page>

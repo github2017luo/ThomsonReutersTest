@@ -1,0 +1,20 @@
+<aura:component implements="force:hasRecordId,force:lightningQuickActionWithoutHeader" 
+                controller="ODT_LT_Extend" > 
+    <aura:attribute name="simpleTrial" type="Object"/>
+    <aura:attribute name="TrialError" type="String"/>
+    <aura:html tag="style">
+    .slds-backdrop {
+    background: rgba(43, 40, 38, 0) !important;  
+    }
+    .slds-fade-in-open {
+    display:none !important;
+   }
+</aura:html>
+    <force:recordData aura:id="TrialRecordLoader"                      
+                      recordId="{!v.recordId}"
+                      fields="Contact_LeadId__c,Is_Lead_Converted__c,Trial_Status__c,Early_End_Reason__c,Trial_Source__c,Trial_Id__c,GSI_Trial__c"   
+                      targetFields="{!v.simpleTrial}"
+                      targetError="{!v.TrialError}"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      />
+</aura:component>

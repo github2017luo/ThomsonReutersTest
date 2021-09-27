@@ -1,0 +1,59 @@
+<!--
+* {Purpose} – Displays icons for a relationship (eg: score, based on address book, based on phone book etc)
+*
+* @author	Shah Kadirmohideen
+* @version	2011-12-03
+*/
+
+/**
+* CHANGE HISTORY
+* =============================================================================
+* Date			Name					Description
+* 2011-12-03	Shah Kadirmohideen		Created
+* 2011-01-03	Shah Kadirmohideen		Rearranged the order of icons.
+* 2012-01-20	Shah Kadirmohideen		Incorporated enhanced list (go to list) functionality related changes.      
+* 2012-07-12	Shah Kadirmohideen		Incorporated calendar icon    
+* 2013-09-08	Mike Eaton				[CR-063] Incorporated signature icon   
+* =============================================================================
+/*Id	Name			Bitmask	HasConversations	ScoreProviderFunction			SFValue
+1		Email			1		1					EmailRelationshipScores			IsEmailSource
+2		AddressBook		2		0					AddressBookRelationshipScores	IsAddressBookSource
+3		Phone			16		1					AddressBookRelationshipScores	IsPhoneSource
+4		Visit			32		1					AddressBookRelationshipScores	IsVisit
+5		Contract		64		1					AddressBookRelationshipScores	IsBillingSource
+6		AccntMgr		128		0					AddressBookRelationshipScores	IsAccntMgr
+7		Calendar		512		1					CalendarRelationshipScores		IsCalendarSource
+8		CRMContact		1024	1					AddressBookRelationshipScores	IsCRMSource
+9		IARelationship	2048	0					AddressBookRelationshipScores	IsIARelationship
+10		Referral		4096	1					AddressBookRelationshipScores	IsReferral
+11		Signature		8192	0					AddressBookRelationshipScores   IsSignature*/
+-->  
+<apex:component >
+	<apex:attribute name="score" description="What is the relationship score?" type="String" required="required" />
+	<apex:attribute name="isEmailSource" description="Was the relationship fetched from email communication?" type="Boolean" required="required" />
+	<apex:attribute name="isAddressBookSource" description="Was the relationship fetched from Address Book?" type="Boolean" required="required" />
+	<apex:attribute name="isPhoneSource" description="Was the relationship fetched from phone book?" type="Boolean" required="required" />
+	<!--<apex:attribute name="isVisitSource" description="Was the relationship due to a visit?" type="Boolean" required="required" />-->
+	<apex:attribute name="isBillingSource" description="Was the relationship fetched from billing system?" type="Boolean" required="required" />
+	<apex:attribute name="IsAccntMgr" description="Was the relationship due to AccntMgr?" type="Boolean" required="required" />
+	<apex:attribute name="isCalendarSource" description="Was the relationship fetched from calendar?" type="Boolean" required="required" />
+	<apex:attribute name="isCRMSource" description="Was the relationship fetched from Salesforce?" type="Boolean" required="required" />
+	<!--<apex:attribute name="isIARelationship" description="Was the relationship fetched from IARelationship" type="Boolean" required="required" />-->
+	<apex:attribute name="isReferral" description="Was the relationship fetched from a Referral" type="Boolean" required="required" />
+	<apex:attribute name="isSignatureSource" description="Was the relationship fetched from signature?" type="Boolean" required="required" />
+	
+	
+	<table><tr><td style="white-space:nowrap; border-width: 0 0 0 0; padding: 0; spacing: 0; margin: 0;">
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/email_16.png')}" title="Email" rendered="{!isEmailSource}" />
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/addressBook_16.png')}" title="Address Book" rendered="{!isAddressBookSource}" />
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/phone_16.png')}" title="Phone" rendered="{!isPhoneSource}" />
+	   	<!--  <apex:image value="{!$Resource.CN_IMAGE_Visit_Icon}" title="Visit" rendered="{!isVisitSource}" />-->
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/timeBilling_16.png')}" title="Billing" rendered="{!isBillingSource}" />
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/acctMgmt_16.png')}" title="Billing" rendered="IsAccntMgr" />
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/visitCalendar_16.png')}" title="Calendar" rendered="{!isCalendarSource}" />
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/crm_16.png')}" title="CRM" rendered="{!isCRMSource}" />
+	   	<!--  <apex:image value="{!$Resource.CN_IMAGE_IARelationship_Icon}" title="IA Relationship" rendered="{!IsIARelationship}" />-->
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/referral_16.png')}" title="Referral" rendered="{!IsReferral}" />
+	   	<apex:image value="{!URLFOR($Resource.BDP_Images, '/signature_orange_16.png')}" title="Signature" rendered="{!isSignatureSource}" />
+	</td></tr></table>		
+</apex:component>

@@ -1,0 +1,4733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Large</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <formFactor>Small</formFactor>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <compactLayouts>
+        <fullName>TR_Account_Source_System_Compact_Layout</fullName>
+        <fields>Name</fields>
+        <fields>Source_System_Account_Number__c</fields>
+        <fields>LCRM_Count_of_Subscriptions__c</fields>
+        <fields>LCRM_Sales_Org__c</fields>
+        <fields>Suspended__c</fields>
+        <fields>Account_Inactive__c</fields>
+        <label>TR Account Source System Compact Layout</label>
+    </compactLayouts>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>true</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <externalSharingModel>Private</externalSharingModel>
+    <fields>
+        <fullName>APTS_Apttus_Customer_Pricing_Segment__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(OR(CONTAINS(UPPER(LCRM_Customer_Group__c), &quot;ACADEMIC&quot;),CONTAINS(UPPER(LCRM_Customer_Group__c), &quot;FEDERAL GOVERNMENT&quot;),CONTAINS(UPPER(LCRM_Customer_Group__c), &quot;GOVERNMENT&quot;)), &quot;Government&quot;, IF(CONTAINS(UPPER(LCRM_Customer_Group__c), &quot;CORPORATION&quot;), &quot;Corporation&quot;, &quot;Law Firm&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Apttus Customer Pricing Segment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>APTS_Customer_Category__c</fullName>
+        <description>Created as part of OC GLI implementation</description>
+        <externalId>false</externalId>
+        <label>APTS_Customer_Category</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>1</fullName>
+                    <default>false</default>
+                    <label>1</label>
+                </value>
+                <value>
+                    <fullName>2</fullName>
+                    <default>false</default>
+                    <label>2</label>
+                </value>
+                <value>
+                    <fullName>3</fullName>
+                    <default>false</default>
+                    <label>3</label>
+                </value>
+                <value>
+                    <fullName>4</fullName>
+                    <default>false</default>
+                    <label>4</label>
+                </value>
+                <value>
+                    <fullName>5</fullName>
+                    <default>false</default>
+                    <label>5</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>APTS_Has_Online_Assets__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as part of GLI Implementation under Sprint 6</description>
+        <externalId>false</externalId>
+        <label>Has Online Assets</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>APTS_Is_Customer__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Customer</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>APTS_ZPEND_Flag__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>ZPEND Flag</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Account_Inactive__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Account Inactive</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Account_Name__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>References the Name of the associated Account</description>
+        <externalId>false</externalId>
+        <label>Account Name</label>
+        <referenceTo>Account</referenceTo>
+        <relationshipName>Source_System_Details</relationshipName>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Account_SSD_Sync__c</fullName>
+        <description>Created as part of LOTUS, should be purposed for data quality. Should be checked when Account Name matches SSD Name. DPS-1983</description>
+        <externalId>false</externalId>
+        <formula>IF( UPPER(Name)  =  UPPER(Account_Name__r.Name) , True, False)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Account/SSD Sync</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Account__c</fullName>
+        <externalId>false</externalId>
+        <formula>Account_Name__r.Name</formula>
+        <label>Account</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Active_Digital_Offer__c</fullName>
+        <description>This field is used to display if there are any active digital offers (Opportunities) for this Source System Detail. It uses a rollup summary field to count the number of active digital offers. If that number is &gt; 0 than this checkbox is set to true.</description>
+        <externalId>false</externalId>
+        <formula>Digital_Active_Offer_Count__c &gt; 0</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Active Digital Offer</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Address_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Address 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BU_Segment_Level_2__c</fullName>
+        <description>Created as per Tax Prof ECM feed, DPS-9495</description>
+        <externalId>false</externalId>
+        <label>Frozen Market Current Year Segment L2</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BU_Segment_Level_3__c</fullName>
+        <externalId>false</externalId>
+        <label>Frozen Market Current Year Segment L3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>BU_Segment__c</fullName>
+        <description>Created as part of data segmentation for LOTUS, should hold different Business Segments. DPS-1444</description>
+        <externalId>false</externalId>
+        <label>Frozen Market Current Year Segment L1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bank_Account_Number__c</fullName>
+        <description>Required for Reps to see data during Quote creation, DPS-12359</description>
+        <externalId>false</externalId>
+        <label>Bank Account Number</label>
+        <length>50</length>
+        <maskChar>asterisk</maskChar>
+        <maskType>lastFour</maskType>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>EncryptedText</type>
+    </fields>
+    <fields>
+        <fullName>Bank_Name__c</fullName>
+        <description>Required for Reps to see data during Quote creation, DPS-12359</description>
+        <externalId>false</externalId>
+        <label>Bank Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Bank_Routing_Number__c</fullName>
+        <description>Required for Reps to see data during Quote creation, DPS-12359</description>
+        <externalId>false</externalId>
+        <label>Bank Routing Number</label>
+        <length>50</length>
+        <maskChar>asterisk</maskChar>
+        <maskType>all</maskType>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>EncryptedText</type>
+    </fields>
+    <fields>
+        <fullName>Billing_Currency__c</fullName>
+        <externalId>false</externalId>
+        <label>Billing Currency</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Billing_Product_Version__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Billing Product Version</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Business_Unit__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Business Unit</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Number__c</fullName>
+        <description>Required for Reps to see data during Quote creation, DPS-12359</description>
+        <externalId>false</externalId>
+        <label>Card Number</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Card_Type__c</fullName>
+        <description>Required for Reps to see data during Quote creation, DPS-12359</description>
+        <externalId>false</externalId>
+        <label>Card Type</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>City__c</fullName>
+        <externalId>false</externalId>
+        <label>City</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Client Type</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Collection_Status__c</fullName>
+        <description>Placeholder for Collection Status values as Red or Amber or Green. Will be loaded by Informatica from High Radius, DPS-19817</description>
+        <externalId>false</externalId>
+        <label>Collection Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Company_Code__c</fullName>
+        <description>This field is used to support WSS Account SSD Data mapping and migration. (DPS-1113)</description>
+        <externalId>false</externalId>
+        <label>Company Code</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Country__c</fullName>
+        <externalId>false</externalId>
+        <label>Country</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>County__c</fullName>
+        <externalId>false</externalId>
+        <label>County</label>
+        <length>25</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Created_By__c</fullName>
+        <externalId>false</externalId>
+        <label>Created By</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Default_Payment_Method__c</fullName>
+        <description>Create as part of Lotus program for DPS-11742. Field is read only for reps and will be populated by Informatica.</description>
+        <externalId>false</externalId>
+        <label>Default Payment Method</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Digital_Active_Offer_Count__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>This is a number field that will show the number of active digital opportunities. This is used to display a checkbox indicator (field: Active Digital Offer) on the Account SSD page layout.</description>
+        <externalId>false</externalId>
+        <label>Digital Active Offer Count</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Digital_Billing_City__c</fullName>
+        <description>Digital Format</description>
+        <externalId>false</externalId>
+        <label>Digital Billing City</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Digital_Firm_Name__c</fullName>
+        <description>Digital Format Firm Name</description>
+        <externalId>false</externalId>
+        <label>Digital Firm Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Digital_Firm__c</fullName>
+        <externalId>false</externalId>
+        <formula>CASE(BU_Segment_Level_2__c, &apos;Corp Emerging Existing&apos;,&apos;Corporate&apos;,&apos;Corp Large Existing&apos;,&apos;Corporate&apos;,&apos;Corp Counsel&apos;, &apos;Corporate&apos;, &apos;Corp Counsel Existing&apos;, &apos;Corporate&apos;, &apos;Corp Investigative&apos;, &apos;Corporate&apos;, &apos;Corp Investigative Financial&apos;, &apos;Corporate&apos;, &apos;Corp Major Accounts&apos;,&apos;Corporate&apos;, &apos;Corp National Investigative&apos;, &apos;Corporate&apos;, &apos;Corporation Enterprise&apos;, &apos;Corporate&apos;, &apos;Corporation National Accounts&apos;, &apos;Corporate&apos;, &apos;Corporation Strategic&apos;, &apos;Corporate&apos;, &apos;Corporation Strategic Existing&apos;, &apos;Corporate&apos;, &apos;SLF 11-20&apos;, &apos;Small Law&apos;, &apos;SLF 21-29&apos;, &apos;Small Law&apos;, &apos;SLF 2-3&apos;, &apos;Small Law&apos;, &apos;SLF 4-6&apos;, &apos;Small Law&apos;, &apos;SLF 7-10&apos;, &apos;Small Law&apos;, &apos;Solo Law Firm&apos;, &apos;Small Law&apos;,&apos;State Government&apos;, &apos;Government&apos;,&apos;Corp-Emerging&apos;,&apos;Corporate&apos;,
+&apos;Corp-Large&apos;,&apos;Corporate&apos;,
+&apos;Corp Large&apos;,&apos;Corporate&apos;,
+&apos;Corp-SMB&apos;,&apos;Corporate&apos;,
+&apos;Corp Strategic&apos;, &apos;Corporate&apos;,
+&apos;Global 7&apos;,&apos;Corporate&apos;,
+&apos;Federal&apos;,&apos;Government&apos;,
+&apos;Federal courts&apos;,&apos;Government&apos;,
+&apos;State/Local Courts&apos;,&apos;Government&apos;,
+&apos;Tribal&apos;,&apos;Government&apos;,
+&apos;Academia&apos;,&apos;Government&apos;,
+&apos;Academic&apos;,&apos;Government&apos;,
+&apos;State/Local&apos;,&apos;Government&apos;,
+&apos;Other - Government&apos;,&apos;&apos;,
+&apos;Medium Law&apos;,&apos;Medium Law&apos;,
+&apos;Small Law&apos;,&apos;Small Law&apos;,
+&apos;Large Law&apos;,&apos;Large Law&apos;,
+&apos;Other - Legal Professionals&apos;,&apos;&apos;,
+&apos;Other - Corporate&apos;,&apos;&apos;,&apos;None&apos;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Digital Firm</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EBD_Hosting_ShortName__c</fullName>
+        <externalId>false</externalId>
+        <label>EBD Hosting ShortName</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>EBD_Legacy_SalesForce_Account_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>EBD Legacy SalesForce Account Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ECC_Dynamic_Segment_L1__c</fullName>
+        <externalId>false</externalId>
+        <label>Dynamic Market Segment L1</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ECC_Dynamic_Segment_L2__c</fullName>
+        <externalId>false</externalId>
+        <label>Dynamic Market Segment L2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ECC_Dynamic_Segment_L3__c</fullName>
+        <externalId>false</externalId>
+        <label>Dynamic Market Segment L3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_Elite_Platform__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Source_System_Name__c =&quot;LGLELITE&quot; &amp;&amp; CONTAINS(Source_System_ID__c,&quot;A&quot;), HYPERLINK( &quot;https://apps.powerapps.com/play/d8492294-143d-4405-bf2f-f84e3a309458?tenantId=62ccb864-6a1a-4b5d-8e1c-397dec1a8258?SSID=&quot; &amp; Source_System_ID__c, &quot;View Platforms&quot;),&quot;&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Platform</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_SSD_Address__c</fullName>
+        <externalId>false</externalId>
+        <formula>Number_Street__c &amp; &apos;, &apos; &amp; City__c &amp; &apos;, &apos; &amp; State__c &amp; &apos;, &apos; &amp;  Country__c &amp; &apos;, &apos; &amp; Postal_Code__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>ESC SSD Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_USL_ACCOUNT_TIER_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>ESC USL ACCOUNT TIER CODE</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_USL_CREDIT_RISK_CATEGORY_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>ESC USL CREDIT RISK CATEGORY CODE</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_USL_CUSTOMER_GROUP_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>ESC USL CUSTOMER GROUP CODE</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_USL_INDUSTRY_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>ESC USL INDUSTRY CODE</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>ESC_USL_MARKET_SEGMENT_CODE__c</fullName>
+        <externalId>false</externalId>
+        <label>ESC USL MARKET SEGMENT CODE</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>E_Billing_Owned__c</fullName>
+        <externalId>false</externalId>
+        <label>3E Billing Owned</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>E_Live_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>3E Live Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>E_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>3E Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ebilling1__c</fullName>
+        <externalId>false</externalId>
+        <label>Ebilling1</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Ebilling2__c</fullName>
+        <externalId>false</externalId>
+        <label>Ebilling2</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Elite_Account_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Account Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Elite_Billing_Time_Keepers__c</fullName>
+        <description>Field used by Elite BU to keep track of the Time Keepers</description>
+        <externalId>false</externalId>
+        <label>Elite Billing Time Keepers</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Expiry_Date__c</fullName>
+        <description>Required for Reps to see data during Quote creation, DPS-12359</description>
+        <externalId>false</externalId>
+        <label>Expiry Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Invoice_Delivery_Option__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Invoice Delivery Option</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_APTS_Band_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>APTS_Band_Number</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_APTS_Special_Offer_Eligible__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>APTS_Special_Offer_Eligible</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_APTS_Waive_Government_Surcharge__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>APTS_Waive_Government_Surcharge</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Account_Group__c</fullName>
+        <description>Created as part of CRM-15276.
+Used within Order Capture for the SSD selection screen on the opportunity.</description>
+        <externalId>false</externalId>
+        <label>Account Group</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Account_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Account Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Building__c</fullName>
+        <externalId>false</externalId>
+        <label>Building</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Count_of_Subscriptions__c</fullName>
+        <externalId>false</externalId>
+        <label>Count of Active Subscriptions</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Country_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Country Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Available_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Available Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Exposure__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Exposure</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Issue__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Issue</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Limit_Amount__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Limit Amount</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Limit_Information__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Limit Information</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Limit_Used__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Limit Used</label>
+        <precision>13</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Percent</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Risk_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Risk Category</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Credit_Terms__c</fullName>
+        <externalId>false</externalId>
+        <label>Credit Terms</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Customer_Group__c</fullName>
+        <description>Created for US Legal Sales Users as part of LegalCRM-R4 project(CRM-6422)</description>
+        <externalId>false</externalId>
+        <label>Customer Group</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Customer_Master_Att_5__c</fullName>
+        <description>This field is created as a part of CRM -6622</description>
+        <externalId>false</externalId>
+        <label>Account Tier</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Customer_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Type</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Distribution_Channel__c</fullName>
+        <externalId>false</externalId>
+        <label>Distribution Channel</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Division_Code_Description__c</fullName>
+        <externalId>false</externalId>
+        <label>Division Code Description</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Elite_SecureLink_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite SecureLink Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Email__c</fullName>
+        <externalId>false</externalId>
+        <label>Email</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_External_Trail_Acount_ID__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>External Trail Acount ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_FL_Account_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>FL Account Type</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_FL_Annual_Spend__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Prior month’s gross subscription revenue * 12 – excludes PPC spend &amp; one-time charges. This is updated on the 15th of the month.</inlineHelpText>
+        <label>FL Annual Spend</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_FL_Risk_Level__c</fullName>
+        <externalId>false</externalId>
+        <label>FL Risk Level</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Fax__c</fullName>
+        <externalId>false</externalId>
+        <label>Fax</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Frozen_Market_Segment__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>Frozen Market Segment</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_GAM_Account__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>GAM Account</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Has_No_Online_Assets__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>Has No Online Assets</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Industry__c</fullName>
+        <description>Created for USL R4</description>
+        <externalId>false</externalId>
+        <label>Industry</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Is_Customer_Review_Complete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Is Customer Review Complete</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Is_Price_Default_Lock__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Price Default Lock Flag</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Is_Print_Download_Default__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Print Download Default Flag</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_L1_Node_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L1 Node Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L1_Node__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L1 Node</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L2_Node_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L2 Node Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L2_Node__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L2 Node</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L3_Node_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L3 Node Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L3_Node__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L3 Node</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L4_Node_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L4 Node Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L4_Node__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L4 Node</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L5_Node_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L5 Node Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_L5_Node__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI L5 Node</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Legacy_Billing__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Legacy Billing</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Market_Segment__c</fullName>
+        <externalId>false</externalId>
+        <label>Market Segment</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Name_2__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>Name 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Name_3__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>Name 3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_OMNI_Payer__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI OMNI Player</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Online_ACV__c</fullName>
+        <externalId>false</externalId>
+        <label>Online ACV</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Currency</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_OrgNode__c</fullName>
+        <externalId>false</externalId>
+        <label>UKI OrgNode</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_PO_Box__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>PO Box</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_PO_Flag__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created based on the DPS-22357</description>
+        <externalId>false</externalId>
+        <label>PO Flag</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Phone__c</fullName>
+        <externalId>false</externalId>
+        <label>Phone</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Price_Default__c</fullName>
+        <externalId>false</externalId>
+        <label>Price Default</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Print_Download_Default__c</fullName>
+        <externalId>false</externalId>
+        <label>Print Download Default</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Reason_for_Deletion__c</fullName>
+        <externalId>false</externalId>
+        <label>Reason for Deletion</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Record_Information_GLI__c</fullName>
+        <externalId>false</externalId>
+        <formula>if( LCRM_Source_System_Account_Is_Archived__c = TRUE,
+CASE($User.Language__c,
+&apos;Spanish&apos;, IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning_ES.png &quot;, &quot;Archive Warning&quot;, 100, 673),
+&apos;Portugués (Brasileño)&apos;, IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning_PT.png&quot;, &quot;Archive Warning&quot;, 100, 673),
+&apos;Portuguese (Brazilian)&apos;, IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning_PT.png&quot;, &quot;Archive Warning&quot;, 100, 673),
+&apos;Portuguese (Brazil)&apos;, IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning_PT.png&quot;, &quot;Archive Warning&quot;, 100, 673),
+&apos;Português (Brasil)&apos;, IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning_PT.png&quot;, &quot;Archive Warning&quot;, 100, 673),
+&apos;Portugués (Brasil)&apos;, IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning_PT.png&quot;, &quot;Archive Warning&quot;, 100, 673),
+IMAGE(&quot;/resource/TracArchive/ArchiveSourceSystemWarning.png&quot;, &quot;Archive Warning&quot;, 100, 673)
+),null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Record Information</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_SAP_Account_Number__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>SAP Account Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_SAP_Customer_Role__c</fullName>
+        <externalId>false</externalId>
+        <label>SAP Customer Role</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_SAP_URL__c</fullName>
+        <externalId>false</externalId>
+        <label>SAP URL</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Sales_Org__c</fullName>
+        <externalId>false</externalId>
+        <label>Sales Org</label>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>WEST</fullName>
+                    <default>false</default>
+                    <label>WEST</label>
+                </value>
+                <value>
+                    <fullName>CARS</fullName>
+                    <default>false</default>
+                    <label>CARS</label>
+                </value>
+                <value>
+                    <fullName>TA61</fullName>
+                    <default>false</default>
+                    <label>TA61</label>
+                </value>
+                <value>
+                    <fullName>TA78</fullName>
+                    <default>false</default>
+                    <label>TA78</label>
+                </value>
+                <value>
+                    <fullName>S100</fullName>
+                    <default>false</default>
+                    <label>S100</label>
+                </value>
+                <value>
+                    <fullName>LLEY</fullName>
+                    <default>false</default>
+                    <label>LLEY</label>
+                </value>
+                <value>
+                    <fullName>TSL</fullName>
+                    <default>false</default>
+                    <label>TSL</label>
+                </value>
+                <value>
+                    <fullName>SMHK</fullName>
+                    <default>false</default>
+                    <label>SMHK</label>
+                </value>
+                <value>
+                    <fullName>INWL</fullName>
+                    <default>false</default>
+                    <label>INWL</label>
+                </value>
+                <value>
+                    <fullName>LRA</fullName>
+                    <default>false</default>
+                    <label>LRA</label>
+                </value>
+                <value>
+                    <fullName>BKRS</fullName>
+                    <default>false</default>
+                    <label>BKRS</label>
+                </value>
+                <value>
+                    <fullName>TRFR</fullName>
+                    <default>false</default>
+                    <label>TRFR</label>
+                </value>
+                <value>
+                    <fullName>SMGE</fullName>
+                    <default>false</default>
+                    <label>SMGE</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LCRM_Segment__c</fullName>
+        <description>Created for USL R4</description>
+        <externalId>false</externalId>
+        <formula>LCRM_Market_Segment__c &amp;&apos;-&apos;&amp; LCRM_Sub_Segment__c &amp;&apos;-&apos;&amp; LCRM_Industry__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Segment</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Source_System_Account_Is_Archived__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Account_Name__r.RecordType.Name== &apos;GLI Archive&apos;, TRUE, FALSE)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Source System Account Is Archived</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Source_System_Sequence_Number__c</fullName>
+        <description>[SSDF JIRA DTC] (CRM-14777) DEV: Create new Auto-number fields on SSD, Contact SSD and Contact objects</description>
+        <displayFormat>{0000000000}</displayFormat>
+        <externalId>false</externalId>
+        <label>Source System Sequence Number</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>AutoNumber</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_Source__c</fullName>
+        <externalId>false</externalId>
+        <label>Source</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Street3__c</fullName>
+        <externalId>false</externalId>
+        <label>Street3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Street4__c</fullName>
+        <externalId>false</externalId>
+        <label>Street4</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Street_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Street 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Sub_BU__c</fullName>
+        <description>Renamed from ‘Sub-BU’ to ‘Region’ as part of data segmentation for LOTUS. DPS-1445</description>
+        <externalId>false</externalId>
+        <label>BU Region</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Sub_Segment__c</fullName>
+        <description>Created for USL R4</description>
+        <externalId>false</externalId>
+        <label>Sub-Segment</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Tax_3__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>Tax 3</label>
+        <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Tax_4__c</fullName>
+        <description>Created for R4</description>
+        <externalId>false</externalId>
+        <label>Tax 4</label>
+        <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Tax_Number__c</fullName>
+        <description>Created fro R4</description>
+        <externalId>true</externalId>
+        <label>Tax Number</label>
+        <length>150</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Total_Lapsed_Subscriptions__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Lapsed Subscriptions</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_VAT__c</fullName>
+        <externalId>false</externalId>
+        <label>VAT</label>
+        <length>20</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_WLD_ID__c</fullName>
+        <externalId>true</externalId>
+        <label>WLD ID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LCRM_Website__c</fullName>
+        <externalId>false</externalId>
+        <label>Website</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>LCRM_eOutput_Eligibility__c</fullName>
+        <externalId>false</externalId>
+        <label>eOutput Eligibility</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Last_Billing_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Billing Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Last_Sync_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Sync Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Archive_Status__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+(Account_Inactive__c), 
+IMAGE(&quot;/resource/TracArchive/STArchive16.png&quot;, &quot;STArchive&quot;, 16, 16),
+IMAGE(&quot;/resource/TracArchive/Active16.png&quot;, &quot;Active&quot;, 16, 16)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Archive Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Archive_Warning__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(Account_Inactive__c = TRUE, 
+CASE($User.Language__c,
+&apos;Spanish&apos;, IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning_ES.png &quot;, &quot;Archive Warning&quot;, 60, 673),
+&apos;Portugués (Brasileño)&apos;, IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning_PT.png&quot;, &quot;Archive Warning&quot;, 60, 673),
+&apos;Portuguese (Brazilian)&apos;, IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning_PT.png&quot;, &quot;Archive Warning&quot;, 60, 673),
+&apos;Portuguese (Brazil)&apos;, IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning_PT.png&quot;, &quot;Archive Warning&quot;, 60, 673),
+&apos;Português (Brasil)&apos;, IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning_PT.png&quot;, &quot;Archive Warning&quot;, 60, 673),
+&apos;Portugués (Brasil)&apos;, IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning_PT.png&quot;, &quot;Archive Warning&quot;, 60, 673),
+IMAGE(&quot;/resource/TracArchive/SSDArchiveWarning.png&quot;, &quot;Archive Warning&quot;, 60, 673)
+), null)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Record Information</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Archived_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Archived Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Customer_Class__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Class</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Intercompany</fullName>
+                    <default>false</default>
+                    <label>Intercompany</label>
+                </value>
+                <value>
+                    <fullName>LARGE</fullName>
+                    <default>false</default>
+                    <label>LARGE</label>
+                </value>
+                <value>
+                    <fullName>MEDIUM</fullName>
+                    <default>false</default>
+                    <label>MEDIUM</label>
+                </value>
+                <value>
+                    <fullName>Reseller</fullName>
+                    <default>false</default>
+                    <label>Reseller</label>
+                </value>
+                <value>
+                    <fullName>SMALL</fullName>
+                    <default>false</default>
+                    <label>SMALL</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LatAm_Customer_Group__c</fullName>
+        <externalId>false</externalId>
+        <label>Customer Group</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>ACADEMIC</fullName>
+                    <default>false</default>
+                    <label>ACADEMIC</label>
+                </value>
+                <value>
+                    <fullName>CORPORATION</fullName>
+                    <default>false</default>
+                    <label>CORPORATION</label>
+                </value>
+                <value>
+                    <fullName>FINANCIAL INST</fullName>
+                    <default>false</default>
+                    <label>FINANCIAL INST</label>
+                </value>
+                <value>
+                    <fullName>GOVERNMENT</fullName>
+                    <default>false</default>
+                    <label>GOVERNMENT</label>
+                </value>
+                <value>
+                    <fullName>PROFESSIONAL</fullName>
+                    <default>false</default>
+                    <label>PROFESSIONAL</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LatAm_Customer_Master_Check__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Customer Master Check</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Days_Since_Archived__c</fullName>
+        <externalId>false</externalId>
+        <formula>Today() - LatAm_Archived_Date__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Days Since Archived</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Desc_Company_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Description of Company Code</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Division__c</fullName>
+        <externalId>false</externalId>
+        <label>Division</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Industry__c</fullName>
+        <externalId>false</externalId>
+        <label>Industry</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>REAL ESTATE</fullName>
+                    <default>false</default>
+                    <label>REAL ESTATE</label>
+                </value>
+                <value>
+                    <fullName>FINANCIAL BUY-SIDE</fullName>
+                    <default>false</default>
+                    <label>FINANCIAL BUY-SIDE</label>
+                </value>
+                <value>
+                    <fullName>FINANCIAL SELL-SIDE</fullName>
+                    <default>false</default>
+                    <label>FINANCIAL SELL-SIDE</label>
+                </value>
+                <value>
+                    <fullName>LEGAL SERVICES</fullName>
+                    <default>false</default>
+                    <label>LEGAL SERVICES</label>
+                </value>
+                <value>
+                    <fullName>ACCOUNTING &amp; TAX</fullName>
+                    <default>false</default>
+                    <label>ACCOUNTING &amp; TAX</label>
+                </value>
+                <value>
+                    <fullName>GOVERNMENT</fullName>
+                    <default>false</default>
+                    <label>GOVERNMENT</label>
+                </value>
+                <value>
+                    <fullName>ACADEMIA</fullName>
+                    <default>false</default>
+                    <label>ACADEMIA</label>
+                </value>
+                <value>
+                    <fullName>CONSULT &amp; ADVISORY</fullName>
+                    <default>false</default>
+                    <label>CONSULT &amp; ADVISORY</label>
+                </value>
+                <value>
+                    <fullName>AUTOMOTIVE</fullName>
+                    <default>false</default>
+                    <label>AUTOMOTIVE</label>
+                </value>
+                <value>
+                    <fullName>BASIC MATERIALS</fullName>
+                    <default>false</default>
+                    <label>BASIC MATERIALS</label>
+                </value>
+                <value>
+                    <fullName>BUSINESS SERVICES</fullName>
+                    <default>false</default>
+                    <label>BUSINESS SERVICES</label>
+                </value>
+                <value>
+                    <fullName>CONSTRUCTION &amp; ENG</fullName>
+                    <default>false</default>
+                    <label>CONSTRUCTION &amp; ENG</label>
+                </value>
+                <value>
+                    <fullName>DIVERSIFIED HLDG CO</fullName>
+                    <default>false</default>
+                    <label>DIVERSIFIED HLDG CO</label>
+                </value>
+                <value>
+                    <fullName>ENERGY</fullName>
+                    <default>false</default>
+                    <label>ENERGY</label>
+                </value>
+                <value>
+                    <fullName>FOOD &amp; AGRICULTURE</fullName>
+                    <default>false</default>
+                    <label>FOOD &amp; AGRICULTURE</label>
+                </value>
+                <value>
+                    <fullName>HEALTHCARE</fullName>
+                    <default>false</default>
+                    <label>HEALTHCARE</label>
+                </value>
+                <value>
+                    <fullName>HOTELS &amp; LEISURE</fullName>
+                    <default>false</default>
+                    <label>HOTELS &amp; LEISURE</label>
+                </value>
+                <value>
+                    <fullName>MANUFACTURING</fullName>
+                    <default>false</default>
+                    <label>MANUFACTURING</label>
+                </value>
+                <value>
+                    <fullName>MEDIA &amp; PUBLISHING</fullName>
+                    <default>false</default>
+                    <label>MEDIA &amp; PUBLISHING</label>
+                </value>
+                <value>
+                    <fullName>MEMBERSHIP ORGS</fullName>
+                    <default>false</default>
+                    <label>MEMBERSHIP ORGS</label>
+                </value>
+                <value>
+                    <fullName>NON-PROFIT ORGS</fullName>
+                    <default>false</default>
+                    <label>NON-PROFIT ORGS</label>
+                </value>
+                <value>
+                    <fullName>PERS &amp; SOCIAL SVCS</fullName>
+                    <default>false</default>
+                    <label>PERS &amp; SOCIAL SVCS</label>
+                </value>
+                <value>
+                    <fullName>PHARMA &amp; MEDICAL RES</fullName>
+                    <default>false</default>
+                    <label>PHARMA &amp; MEDICAL RES</label>
+                </value>
+                <value>
+                    <fullName>RETAIL</fullName>
+                    <default>false</default>
+                    <label>RETAIL</label>
+                </value>
+                <value>
+                    <fullName>TECHNOLOGY</fullName>
+                    <default>false</default>
+                    <label>TECHNOLOGY</label>
+                </value>
+                <value>
+                    <fullName>TELECOMMUNICATIONS</fullName>
+                    <default>false</default>
+                    <label>TELECOMMUNICATIONS</label>
+                </value>
+                <value>
+                    <fullName>TRANS &amp; LOGISTICS</fullName>
+                    <default>false</default>
+                    <label>TRANS &amp; LOGISTICS</label>
+                </value>
+                <value>
+                    <fullName>UTILITIES</fullName>
+                    <default>false</default>
+                    <label>UTILITIES</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>LatAm_Pure_Payer__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Pure Payer</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Sales_Check__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Sales Check</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_2__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_Classification__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Classification</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_Document_Effective_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Document Effective Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_Document_Expiration_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Document Expiration Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_Document_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Document Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>CM-05 Certificate (Formulario Multilateral)</fullName>
+                    <default>false</default>
+                    <label>CM-05 Certificate (Formulario Multilateral)</label>
+                </value>
+                <value>
+                    <fullName>Turnover Certificate (Ingresos Brutos)</fullName>
+                    <default>false</default>
+                    <label>Turnover Certificate (Ingresos Brutos)</label>
+                </value>
+                <value>
+                    <fullName>Exemption Certificate (Certificado de Exencion)</fullName>
+                    <default>false</default>
+                    <label>Exemption Certificate (Certificado de Exencion)</label>
+                </value>
+                <value>
+                    <fullName>Other (CMT only)</fullName>
+                    <default>false</default>
+                    <label>Other (CMT only)</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_Number_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Number Type</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>LatAm_Tax_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Tax Type</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Foreign Customer</fullName>
+                    <default>false</default>
+                    <label>Foreign Customer</label>
+                </value>
+                <value>
+                    <fullName>Foreign Vendor</fullName>
+                    <default>false</default>
+                    <label>Foreign Vendor</label>
+                </value>
+                <value>
+                    <fullName>Not Categorized Subject</fullName>
+                    <default>false</default>
+                    <label>Not Categorized Subject</label>
+                </value>
+                <value>
+                    <fullName>Small Eventual Taxpayer</fullName>
+                    <default>false</default>
+                    <label>Small Eventual Taxpayer</label>
+                </value>
+                <value>
+                    <fullName>Social Small Eventual Taxpayer</fullName>
+                    <default>false</default>
+                    <label>Social Small Eventual Taxpayer</label>
+                </value>
+                <value>
+                    <fullName>Social VAT Responsible Monotributer</fullName>
+                    <default>false</default>
+                    <label>Social VAT Responsible Monotributer</label>
+                </value>
+                <value>
+                    <fullName>VAT Exempted Subject</fullName>
+                    <default>false</default>
+                    <label>VAT Exempted Subject</label>
+                </value>
+                <value>
+                    <fullName>VAT Final Consumer</fullName>
+                    <default>false</default>
+                    <label>VAT Final Consumer</label>
+                </value>
+                <value>
+                    <fullName>VAT Liberated - Law No 19.640</fullName>
+                    <default>false</default>
+                    <label>VAT Liberated - Law No 19.640</label>
+                </value>
+                <value>
+                    <fullName>VAT Not Responsible</fullName>
+                    <default>false</default>
+                    <label>VAT Not Responsible</label>
+                </value>
+                <value>
+                    <fullName>VAT Responsible Inscripted</fullName>
+                    <default>false</default>
+                    <label>VAT Responsible Inscripted</label>
+                </value>
+                <value>
+                    <fullName>VAT Responsible Inscripted - Perception Agent</fullName>
+                    <default>false</default>
+                    <label>VAT Responsible Inscripted - Perception Agent</label>
+                </value>
+                <value>
+                    <fullName>VAT Responsible Monotributer</fullName>
+                    <default>false</default>
+                    <label>VAT Responsible Monotributer</label>
+                </value>
+                <value>
+                    <fullName>VAT Responsible Not Inscripted</fullName>
+                    <default>false</default>
+                    <label>VAT Responsible Not Inscripted</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Legacy_Account_ID__c</fullName>
+        <description>Changed the field data type from Text(255) to Text Area Long (6400) as per BAU request, DPS-9076</description>
+        <externalId>false</externalId>
+        <label>Legacy Account ID</label>
+        <length>6400</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Legacy_System_ID__c</fullName>
+        <caseSensitive>true</caseSensitive>
+        <externalId>true</externalId>
+        <label>Legacy System ID</label>
+        <length>100</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>NACI_Date__c</fullName>
+        <description>Created as per Tax Prof S4 feed, DPS-11671</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates NACI validation date</inlineHelpText>
+        <label>NACI Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>NACI_Form__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as per Tax Prof S4 feed, DPS-11671</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Indicates that the customer has passed a credit check</inlineHelpText>
+        <label>NACI Form</label>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Number_Street__c</fullName>
+        <externalId>false</externalId>
+        <label>Street</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>OLC_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>OLC Account Number</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Operating_Unit__c</fullName>
+        <externalId>false</externalId>
+        <label>Operating Unit</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>SLF</fullName>
+                    <default>false</default>
+                    <label>SLF</label>
+                </value>
+                <value>
+                    <fullName>CORP</fullName>
+                    <default>false</default>
+                    <label>CORP</label>
+                </value>
+                <value>
+                    <fullName>GOVT</fullName>
+                    <default>false</default>
+                    <label>GOVT</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Original_Contract_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Original Contract Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>PAN_Number__c</fullName>
+        <description>This is used Store PAN Information (DPS-3143).</description>
+        <externalId>false</externalId>
+        <label>PAN Number</label>
+        <length>2000</length>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>40</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Postal_Code__c</fullName>
+        <externalId>false</externalId>
+        <label>Postal Code</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>PurgeIndicator__c</fullName>
+        <externalId>false</externalId>
+        <label>PurgeIndicator</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>None</fullName>
+                    <default>true</default>
+                    <label>None</label>
+                </value>
+                <value>
+                    <fullName>Purged</fullName>
+                    <default>false</default>
+                    <label>Purged</label>
+                </value>
+                <value>
+                    <fullName>Marked for Deletion</fullName>
+                    <default>false</default>
+                    <label>Marked for Deletion</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>SAPAccountID__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite SAPAccountID</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>SAP_Account_Number_and_Sales_Org__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>DPS-20711</description>
+        <externalId>true</externalId>
+        <label>SAP Account Number and Sales Org</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>SoftraxID__c</fullName>
+        <externalId>false</externalId>
+        <label>SoftraxID</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_System_Account_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Source System Account Number</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_System_Account_Number_del__c</fullName>
+        <externalId>false</externalId>
+        <label>Source System Account Number</label>
+        <length>30</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_System_Create_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Create Date (Source System)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Source_System_Created_By__c</fullName>
+        <externalId>false</externalId>
+        <label>Created By(Source System)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_System_ID__c</fullName>
+        <externalId>false</externalId>
+        <label>Source System ID</label>
+        <length>50</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_System_Last_Modified_By__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Modified By (Source System)</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Source_System_Last_Modified_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Last Modified Date (Source System)</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Source_System_Name__c</fullName>
+        <externalId>false</externalId>
+        <label>Source System Name</label>
+        <length>60</length>
+        <required>true</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>State__c</fullName>
+        <externalId>false</externalId>
+        <label>State</label>
+        <length>10</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Support_Queue__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Support Queue</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Support_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Support Status</label>
+        <length>255</length>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Suspended__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Created as part of DPS-14003 for Lotus program.Values will be fed to this field by Informatica. Please refer to DPS-14004 and DPS-14005 for informatica logic to populate this field.</description>
+        <externalId>false</externalId>
+        <label>Suspended</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Tax_Payment_Option__c</fullName>
+        <description>DOC-7148</description>
+        <externalId>false</externalId>
+        <label>Tax Payment Option</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Bill to Account</fullName>
+                    <default>false</default>
+                    <label>Bill to Account</label>
+                </value>
+                <value>
+                    <fullName>Auto EFT/Auto Charge</fullName>
+                    <default>false</default>
+                    <label>Auto EFT/Auto Charge</label>
+                </value>
+                <value>
+                    <fullName>One time EFT</fullName>
+                    <default>false</default>
+                    <label>One time EFT</label>
+                </value>
+                <value>
+                    <fullName>Credit Card</fullName>
+                    <default>false</default>
+                    <label>Credit Card</label>
+                </value>
+                <value>
+                    <fullName>Payment Express Auto EFT/Auto Charge</fullName>
+                    <default>false</default>
+                    <label>Payment Express Auto EFT/Auto Charge</label>
+                </value>
+                <value>
+                    <fullName>Auto Charge</fullName>
+                    <default>false</default>
+                    <label>Auto Charge</label>
+                </value>
+                <value>
+                    <fullName>Payment Express Auto ETF/Auto Charge</fullName>
+                    <default>false</default>
+                    <label>Payment Express Auto ETF/Auto Charge</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Timekeepers_Audit_Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Elite Timekeepers Audit Date</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Trial_Status__c</fullName>
+        <externalId>false</externalId>
+        <label>Trial Status</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Invited</fullName>
+                    <default>false</default>
+                    <label>Invited</label>
+                </value>
+                <value>
+                    <fullName>Accepted</fullName>
+                    <default>false</default>
+                    <label>Accepted</label>
+                </value>
+                <value>
+                    <fullName>Expired</fullName>
+                    <default>false</default>
+                    <label>Expired</label>
+                </value>
+                <value>
+                    <fullName>Rep Initiated</fullName>
+                    <default>false</default>
+                    <label>Rep Initiated</label>
+                </value>
+                <value>
+                    <fullName>Timed-out</fullName>
+                    <default>false</default>
+                    <label>Timed-out</label>
+                </value>
+                <value>
+                    <fullName>Bounceback</fullName>
+                    <default>false</default>
+                    <label>Bounceback</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>Account Source System</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <label>Source System Account Name</label>
+        <trackFeedHistory>true</trackFeedHistory>
+        <trackHistory>true</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>Account Source Systems</pluralLabel>
+    <recordTypeTrackFeedHistory>false</recordTypeTrackFeedHistory>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Elite_Source_Systems</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>TR_Account_Source_System_Compact_Layout</compactLayoutAssignment>
+        <label>Elite Source Systems</label>
+        <picklistValues>
+            <picklist>APTS_Customer_Category__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Sales_Org__c</picklist>
+            <values>
+                <fullName>WEST</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Class__c</picklist>
+            <values>
+                <fullName>Intercompany</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LARGE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIUM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reseller</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMALL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Group__c</picklist>
+            <values>
+                <fullName>ACADEMIC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CORPORATION</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL INST</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PROFESSIONAL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Industry__c</picklist>
+            <values>
+                <fullName>ACADEMIA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCOUNTING %26 TAX</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AUTOMOTIVE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BASIC MATERIALS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BUSINESS SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSTRUCTION %26 ENG</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSULT %26 ADVISORY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DIVERSIFIED HLDG CO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ENERGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL BUY-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL SELL-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FOOD %26 AGRICULTURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HEALTHCARE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HOTELS %26 LEISURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LEGAL SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MANUFACTURING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIA %26 PUBLISHING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEMBERSHIP ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NON-PROFIT ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PERS %26 SOCIAL SVCS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PHARMA %26 MEDICAL RES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>REAL ESTATE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RETAIL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TECHNOLOGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TELECOMMUNICATIONS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TRANS %26 LOGISTICS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UTILITIES</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Document_Type__c</picklist>
+            <values>
+                <fullName>CM-05 Certificate %28Formulario Multilateral%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exemption Certificate %28Certificado de Exencion%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other %28CMT only%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnover Certificate %28Ingresos Brutos%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Type__c</picklist>
+            <values>
+                <fullName>Foreign Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Foreign Vendor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Categorized Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Exempted Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Final Consumer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Liberated - Law No 19%2E640</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Not Responsible</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted - Perception Agent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Not Inscripted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Operating_Unit__c</picklist>
+            <values>
+                <fullName>CORP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SLF</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>PurgeIndicator__c</picklist>
+            <values>
+                <fullName>Marked for Deletion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Purged</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Tax_Payment_Option__c</picklist>
+            <values>
+                <fullName>Auto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill to Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One time EFT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto ETF%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Trial_Status__c</picklist>
+            <values>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invited</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rep Initiated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Timed-out</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>LatAm_Source_Systems</fullName>
+        <active>true</active>
+        <description>Dedicated record type for LatAm GGO users.</description>
+        <label>LatAm Source Systems</label>
+        <picklistValues>
+            <picklist>APTS_Customer_Category__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Class__c</picklist>
+            <values>
+                <fullName>Intercompany</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LARGE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIUM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reseller</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMALL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Group__c</picklist>
+            <values>
+                <fullName>ACADEMIC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CORPORATION</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL INST</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PROFESSIONAL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Industry__c</picklist>
+            <values>
+                <fullName>ACADEMIA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCOUNTING %26 TAX</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AUTOMOTIVE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BASIC MATERIALS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BUSINESS SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSTRUCTION %26 ENG</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSULT %26 ADVISORY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DIVERSIFIED HLDG CO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ENERGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL BUY-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL SELL-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FOOD %26 AGRICULTURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HEALTHCARE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HOTELS %26 LEISURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LEGAL SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MANUFACTURING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIA %26 PUBLISHING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEMBERSHIP ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NON-PROFIT ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PERS %26 SOCIAL SVCS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PHARMA %26 MEDICAL RES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>REAL ESTATE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RETAIL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TECHNOLOGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TELECOMMUNICATIONS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TRANS %26 LOGISTICS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UTILITIES</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Document_Type__c</picklist>
+            <values>
+                <fullName>CM-05 Certificate %28Formulario Multilateral%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exemption Certificate %28Certificado de Exencion%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other %28CMT only%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnover Certificate %28Ingresos Brutos%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Type__c</picklist>
+            <values>
+                <fullName>Foreign Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Foreign Vendor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Categorized Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Exempted Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Final Consumer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Liberated - Law No 19%2E640</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Not Responsible</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted - Perception Agent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Not Inscripted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Operating_Unit__c</picklist>
+            <values>
+                <fullName>CORP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SLF</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>PurgeIndicator__c</picklist>
+            <values>
+                <fullName>Marked for Deletion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Purged</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Tax_Payment_Option__c</picklist>
+            <values>
+                <fullName>Auto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill to Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One time EFT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto ETF%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Trial_Status__c</picklist>
+            <values>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bounceback</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invited</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rep Initiated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Timed-out</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>UKI_Source_Systems</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>TR_Account_Source_System_Compact_Layout</compactLayoutAssignment>
+        <label>UKI Source Systems</label>
+        <picklistValues>
+            <picklist>APTS_Customer_Category__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Sales_Org__c</picklist>
+            <values>
+                <fullName>WEST</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Class__c</picklist>
+            <values>
+                <fullName>Intercompany</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LARGE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIUM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reseller</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMALL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Group__c</picklist>
+            <values>
+                <fullName>ACADEMIC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CORPORATION</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL INST</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PROFESSIONAL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Industry__c</picklist>
+            <values>
+                <fullName>ACADEMIA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCOUNTING %26 TAX</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AUTOMOTIVE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BASIC MATERIALS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BUSINESS SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSTRUCTION %26 ENG</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSULT %26 ADVISORY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DIVERSIFIED HLDG CO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ENERGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL BUY-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL SELL-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FOOD %26 AGRICULTURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HEALTHCARE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HOTELS %26 LEISURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LEGAL SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MANUFACTURING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIA %26 PUBLISHING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEMBERSHIP ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NON-PROFIT ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PERS %26 SOCIAL SVCS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PHARMA %26 MEDICAL RES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>REAL ESTATE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RETAIL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TECHNOLOGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TELECOMMUNICATIONS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TRANS %26 LOGISTICS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UTILITIES</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Document_Type__c</picklist>
+            <values>
+                <fullName>CM-05 Certificate %28Formulario Multilateral%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exemption Certificate %28Certificado de Exencion%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other %28CMT only%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnover Certificate %28Ingresos Brutos%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Type__c</picklist>
+            <values>
+                <fullName>Foreign Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Foreign Vendor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Categorized Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Exempted Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Final Consumer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Liberated - Law No 19%2E640</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Not Responsible</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted - Perception Agent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Not Inscripted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Operating_Unit__c</picklist>
+            <values>
+                <fullName>CORP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SLF</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>PurgeIndicator__c</picklist>
+            <values>
+                <fullName>Marked for Deletion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Purged</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Tax_Payment_Option__c</picklist>
+            <values>
+                <fullName>Auto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill to Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One time EFT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto ETF%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Trial_Status__c</picklist>
+            <values>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invited</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rep Initiated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Timed-out</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>USL_Source_Systems</fullName>
+        <active>true</active>
+        <compactLayoutAssignment>TR_Account_Source_System_Compact_Layout</compactLayoutAssignment>
+        <label>LOTUS Source Systems</label>
+        <picklistValues>
+            <picklist>APTS_Customer_Category__c</picklist>
+            <values>
+                <fullName>1</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>5</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LCRM_Sales_Org__c</picklist>
+            <values>
+                <fullName>CARS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>WEST</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Class__c</picklist>
+            <values>
+                <fullName>Intercompany</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LARGE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIUM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reseller</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SMALL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Customer_Group__c</picklist>
+            <values>
+                <fullName>ACADEMIC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CORPORATION</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL INST</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PROFESSIONAL</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Industry__c</picklist>
+            <values>
+                <fullName>ACADEMIA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ACCOUNTING %26 TAX</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>AUTOMOTIVE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BASIC MATERIALS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>BUSINESS SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSTRUCTION %26 ENG</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>CONSULT %26 ADVISORY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>DIVERSIFIED HLDG CO</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>ENERGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL BUY-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FINANCIAL SELL-SIDE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>FOOD %26 AGRICULTURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVERNMENT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HEALTHCARE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>HOTELS %26 LEISURE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>LEGAL SERVICES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MANUFACTURING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEDIA %26 PUBLISHING</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>MEMBERSHIP ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>NON-PROFIT ORGS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PERS %26 SOCIAL SVCS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PHARMA %26 MEDICAL RES</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>REAL ESTATE</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>RETAIL</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TECHNOLOGY</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TELECOMMUNICATIONS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>TRANS %26 LOGISTICS</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>UTILITIES</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Document_Type__c</picklist>
+            <values>
+                <fullName>CM-05 Certificate %28Formulario Multilateral%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exemption Certificate %28Certificado de Exencion%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other %28CMT only%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turnover Certificate %28Ingresos Brutos%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>LatAm_Tax_Type__c</picklist>
+            <values>
+                <fullName>Foreign Customer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Foreign Vendor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not Categorized Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Small Eventual Taxpayer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Exempted Subject</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Final Consumer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Liberated - Law No 19%2E640</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Not Responsible</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Inscripted - Perception Agent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Monotributer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>VAT Responsible Not Inscripted</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Operating_Unit__c</picklist>
+            <values>
+                <fullName>CORP</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>GOVT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SLF</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>PurgeIndicator__c</picklist>
+            <values>
+                <fullName>Marked for Deletion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>None</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Purged</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Tax_Payment_Option__c</picklist>
+            <values>
+                <fullName>Auto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bill to Account</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One time EFT</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto EFT%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Payment Express Auto ETF%2FAuto Charge</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Trial_Status__c</picklist>
+            <values>
+                <fullName>Accepted</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Expired</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Invited</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rep Initiated</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Timed-out</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Source_System_Account_Number__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>PAN_Number__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LCRM_Name_2__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Billing_Currency__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LCRM_Street_2__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>BU_Segment__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LCRM_Account_Type__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LCRM_Count_of_Subscriptions__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>LCRM_Sales_Org__c</lookupDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Account_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LCRM_Name_2__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Source_System_Account_Number__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LCRM_Count_of_Subscriptions__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>BU_Segment_Level_2__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>LCRM_Sales_Org__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Source_System_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Billing_Currency__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>PAN_Number__c</searchResultsAdditionalFields>
+    </searchLayouts>
+    <sharingModel>Private</sharingModel>
+    <validationRules>
+        <fullName>LOTUS_LEX_Account_Address_is_Mandatory</fullName>
+        <active>true</active>
+        <description>Error on Address update of SSD where Sales Org falls within SAP WRP system, DPS-18941</description>
+        <errorConditionFormula>AND(
+($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c=false ),
+$Permission.LOTUS_Edit_Account_SSD,
+NOT(ISNEW()),
+OR(
+TEXT(LCRM_Sales_Org__c)  = &quot;WEST&quot;,
+TEXT(LCRM_Sales_Org__c)  = &quot;CARS&quot;,
+TEXT(LCRM_Sales_Org__c)  = &quot;TA61&quot;,
+TEXT(LCRM_Sales_Org__c)  = &quot;TA78&quot;,
+TEXT(LCRM_Sales_Org__c)  = &quot;S100&quot;,
+TEXT(LCRM_Sales_Org__c)  = &quot;SMGE&quot;
+)
+)</errorConditionFormula>
+        <errorMessage>You do not have access to modify Account Source System with the current Sales Org.</errorMessage>
+    </validationRules>
+    <validationRules>
+        <fullName>Prevent_Records_without_Account</fullName>
+        <active>true</active>
+        <description>DPS-20789/prevent records without Account</description>
+        <errorConditionFormula>AND(
+($Setup.LTS_Disable_Application_Automation__c.LTS_Disable_Validation_Rules__c=false ), 
+$Setup.LOTUS_Lightning_Profiles__c.End_State_Lightning__c,
+$User.UITheme = &apos;Theme4d&apos;,
+ISNEW(),
+OR(ISBLANK(Account_Name__c), ISNULL(Account_Name__c)))</errorConditionFormula>
+        <errorMessage>You do not have permissions to create an account SSD without an Account. To insure you are creating this correctly, use the Create New button on the details tab of the Opportunity.</errorMessage>
+    </validationRules>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>AccountsReceivable</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>AccountsReceivable</masterLabel>
+        <openType>newWindow</openType>
+        <page>USLARPage</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>Clear_Usage_Analytics</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Clear Usage Analytics</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://dashboards.int.thomsonreuters.com/#/site/Sales/workbooks/13155/views/CLEARUsageAnalytics/AccountDashboard?CUSTOMER_NUMBER={!Source_System_Detail__c.Source_System_Account_Number__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Client_Order_Brief_COB</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Client Order Brief (COB)</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://findlawordertool.thomsonreuters.com/cob</url>
+    </webLinks>
+    <webLinks>
+        <fullName>Digital_Offers_Account_Level</fullName>
+        <availability>online</availability>
+        <description>Digital Offers at SSD Level Report</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <linkType>url</linkType>
+        <masterLabel>Digital Offers - Account Level</masterLabel>
+        <openType>replace</openType>
+        <protected>false</protected>
+        <url>/00O1B000008qGVP?pv0{!Source_System_Detail__c.Id}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>ESC_FinPlanKeyCodes</fullName>
+        <availability>online</availability>
+        <description>This button is created for ESC FinPlanKeyCodes</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>FinPlanKeyCode</masterLabel>
+        <openType>newWindow</openType>
+        <page>USL_FinplanKeyCodes</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>ESC_LiveNoteKeyCode</fullName>
+        <availability>online</availability>
+        <description>This button is created for ESC LiveNoteKeyCode</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>LiveNoteKeyCode</masterLabel>
+        <openType>newWindow</openType>
+        <page>ESC_ProductKeyCodes</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>ESC_PRODOCKeyCodes</fullName>
+        <availability>online</availability>
+        <description>This button is created for ESC PRODOC KeyCode</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>PRODOCKeyCode</masterLabel>
+        <openType>newWindow</openType>
+        <page>ESC_PRODOCKeyCodes</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>ESC_SSD_Customer_Banding</fullName>
+        <availability>online</availability>
+        <description>This button is to display the westlaw banding details</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Customer Banding</masterLabel>
+        <openType>newWindow</openType>
+        <page>ESC_WLBandingPage</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>FL_Insight</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>FL Insight</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://insight.findlaw.com/manage/home.htm?searchType=search&amp;attributeValue={!Source_System_Detail__c.Source_System_Account_Number__c}http://%26showallfirms%3Dallactive%26issalesforce%3Dy/</url>
+    </webLinks>
+    <webLinks>
+        <fullName>FL_Performance_Console</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>FL Performance Console</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://performanceconsole.int.thomsonreuters.com/manage/customer/dashboard/sap?sapNumber={!Source_System_Detail__c.Source_System_Account_Number__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>FL_SAM_Portal</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>FL SAM Portal</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://samportal.thomsonreuters.com/index.jsp?page=customer_details&amp;sapCustomerNumber={!Source_System_Detail__c.Source_System_Account_Number__c}</url>
+    </webLinks>
+    <webLinks>
+        <fullName>FindLaw_Resource_Center</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>FindLaw Resource Center</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://thehub.thomsonreuters.com/groups/findlaw-resource-center</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LCRM_Accounts_Receivable</fullName>
+        <availability>online</availability>
+        <description>Created for USL R4</description>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <height>600</height>
+        <linkType>url</linkType>
+        <masterLabel>Accounts Receivable</masterLabel>
+        <openType>noSidebar</openType>
+        <protected>false</protected>
+        <url>/apex/LCRMAccountsReceivable?Id={!Source_System_Detail__c.Id}&amp;ApplicationId=GLI</url>
+    </webLinks>
+    <webLinks>
+        <fullName>LCRM_Get_Paid_Notes</fullName>
+        <availability>online</availability>
+        <description>Button triggers  &apos;GetPaidNoteServicesWS&apos; webservice</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Get Paid Notes</masterLabel>
+        <openType>newWindow</openType>
+        <page>LCRMGetPaidNote</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>Lotus_Get_Paid_Notes</fullName>
+        <availability>online</availability>
+        <description>This button invokes the realtime Get Paid Notes service (Rest Service)</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Get Paid Notes</masterLabel>
+        <openType>newWindow</openType>
+        <page>LTS_getPaidNotes</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>Real_Time_Subscription</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Real-Time Subscription</masterLabel>
+        <openType>newWindow</openType>
+        <page>USLSubscription</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
+    <webLinks>
+        <fullName>Small_Law_Account_Insights</fullName>
+        <availability>online</availability>
+        <description>Created as a part of DPS-15000</description>
+        <displayType>link</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Small Law Account Insights</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>http://dashboards.int.thomsonreuters.com/#/site/Legal/views/SLFAccountAnalyticsv2-param/AccountDashboard_1?Customer%20Number={!Source_System_Detail__c.Source_System_Account_Number__c}http://&amp;%3Arefresh</url>
+    </webLinks>
+</CustomObject>

@@ -1,0 +1,40 @@
+<apex:page standardController="ESC_HomePageQuery__c" recordsetVar="HomePQ" extensions="ESC_HomePagePreviewController">
+<apex:includeScript value="/support/console/20.0/integration.js"/>
+<script >
+    function openVF(){
+    
+    var profId=document.getElementById('j_id0:j_id3:j_id4:j_id5:profileName').value;
+    var langName=document.getElementById('j_id0:j_id3:j_id4:j_id5:lang').value;
+         var url='{!$Label.ESC_PageLink}profile='+profId+'&lang='+langName;
+         window.open(url, "MsgWindow","toolbar=yes,scrollbars=yes,resizable=No,top=1,left=0,width=1340,height=645");
+    }
+    function testSetTabTitle() {
+            //Set the current tab's title
+            sforce.console.setTabTitle('HomePagePreview');
+        }
+        var pageLoad = window.onload;
+          window.onload = function() {
+                if (pageLoad) {
+                        pageLoad();
+                }
+                  testSetTabTitle();
+                  
+          }
+    
+ </script>
+<apex:form >
+ <apex:pageBlock > 
+ <apex:pageBlockSection columns="1" Title="HomePage Preview As:" collapsible="false" >
+
+    <apex:selectList size="1" value="{!selectedProfile}" id="profileName" label="{!$Label.ESC_Profile}" > 
+          <apex:selectOptions value="{!Profile}" />  
+    </apex:selectList>
+     <apex:selectList size="1" value="{!selectedLanguage}" id="lang" label="{!$Label.ESC_language}" style="width:182px"> 
+         <apex:selectOptions value="{!language}"/>  
+    </apex:selectList>
+    </apex:pageblocksection>
+    <apex:commandButton style="margin-left:230px;" onclick="openVF();" value="Preview"/>
+    <apex:commandButton style="margin-left:50px;" action="{!cancel}"  value="cancel"/>
+  </apex:pageblock>
+</apex:form>
+</apex:page>
